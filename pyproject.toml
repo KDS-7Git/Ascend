@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ascend-tracker"
+version = "0.1.0"
+description = "Small, proof-backed steps toward skills that matter to you"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [{name = "KDS-7Git"}]
+dependencies = []
+
+[project.scripts]
+ascend = "ascend.cli:main"
+
+[project.optional-dependencies]
+test = ["pytest>=8"]
+
+[tool.setuptools.packages.find]
+include = ["ascend*"]
+
+[tool.setuptools.package-data]
+ascend = ["storage/migrations/*.sql", "community/*.toml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
