@@ -1,6 +1,6 @@
 FROM python:3.12-slim
 WORKDIR /app
-COPY pyproject.toml README.md ./
+COPY pyproject.toml setup.py MANIFEST.in README.md ./
 COPY ascend ./ascend
 COPY web ./web
 COPY packs/community ./packs/community

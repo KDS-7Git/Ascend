@@ -1,0 +1,28 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.2.0, pluggy-1.7.0 -- /home/kds-hacker/Documents/Projects/ascend/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/kds-hacker/Documents/Projects/ascend
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 1 item
+
+tests/test_distribution.py::test_built_wheel_contains_and_serves_bundled_assets FAILED [100%]
+
+=================================== FAILURES ===================================
+_____________ test_built_wheel_contains_and_serves_bundled_assets ______________
+
+tmp_path = PosixPath('/tmp/pytest-of-kds-hacker/pytest-5/test_built_wheel_contains_and_0')
+
+    def test_built_wheel_contains_and_serves_bundled_assets(tmp_path):
+        subprocess.run([sys.executable, "-m", "pip", "wheel", "--no-deps", "--no-build-isolation", "--wheel-dir", str(tmp_path), "."], check=True, capture_output=True)
+        wheel = next(tmp_path.glob("*.whl"))
+        with zipfile.ZipFile(wheel) as archive:
+>           assert "ascend/web/index.html" in archive.namelist()
+E           AssertionError: assert 'ascend/web/index.html' in ['ascend/__init__.py', 'ascend/__main__.py', 'ascend/application.py', 'ascend/cli/__init__.py', 'ascend/cli/remote.py', 'ascend/community/home-hack-lab.toml', ...]
+E            +  where ['ascend/__init__.py', 'ascend/__main__.py', 'ascend/application.py', 'ascend/cli/__init__.py', 'ascend/cli/remote.py', 'ascend/community/home-hack-lab.toml', ...] = namelist()
+E            +    where namelist = <zipfile.ZipFile filename='/tmp/pytest-of-kds-hacker/pytest-5/test_built_wheel_contains_and_0/ascend_tracker-0.1.0-py3-none-any.whl' mode='r'>.namelist
+
+tests/test_distribution.py:12: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_distribution.py::test_built_wheel_contains_and_serves_bundled_assets
+============================== 1 failed in 1.08s ===============================
