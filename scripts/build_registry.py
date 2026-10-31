@@ -1,4 +1,5 @@
 """Generate the bundled registry without fetching or trusting remote code."""
+
 import hashlib
 import json
 from pathlib import Path
@@ -9,6 +10,15 @@ packs = []
 for path in sorted(root.glob("*.toml")):
     raw = path.read_bytes()
     meta = tomllib.loads(raw.decode())["pack"]
-    packs.append({"id": meta["id"], "title": meta["title"], "version": meta["version"],
-                  "file": path.name, "sha256": hashlib.sha256(raw).hexdigest()})
-(root / "registry.json").write_text(json.dumps({"version": 1, "packs": packs}, indent=2) + "\n")
+    packs.append(
+        {
+            "id": meta["id"],
+            "title": meta["title"],
+            "version": meta["version"],
+            "file": path.name,
+            "sha256": hashlib.sha256(raw).hexdigest(),
+        }
+    )
+(root / "registry.json").write_text(
+    json.dumps({"version": 1, "packs": packs}, indent=2) + "\n"
+)

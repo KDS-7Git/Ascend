@@ -2,7 +2,9 @@ from datetime import date, datetime, timedelta
 from zoneinfo import ZoneInfo
 
 
-def logical_date(now: datetime, timezone: str | None = None, rollover_hour: int = 4) -> date:
+def logical_date(
+    now: datetime, timezone: str | None = None, rollover_hour: int = 4
+) -> date:
     if timezone:
         if now.tzinfo is None:
             raise ValueError("Timezone conversion requires an aware timestamp")
@@ -18,7 +20,9 @@ def streak_details(logged: set[date], today: date, freezes_per_week: int = 1):
             count += 1
         else:
             week = d.isocalendar()[:2]
-            isolated = d - timedelta(days=1) in logged and d + timedelta(days=1) in logged
+            isolated = (
+                d - timedelta(days=1) in logged and d + timedelta(days=1) in logged
+            )
             if isolated and used.get(week, 0) < freezes_per_week:
                 used[week] = used.get(week, 0) + 1
             else:

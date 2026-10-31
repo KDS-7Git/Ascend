@@ -18,6 +18,11 @@ def open_levels(pack: Pack, finished: set[str], overrides=frozenset()):
 def next_nodes(pack: Pack, state: dict, max_minutes=None, overrides=frozenset()):
     finished = {nid for nid, status in state.items() if status in {"done", "skipped"}}
     opened = open_levels(pack, finished, overrides)
-    return [n for n in pack.nodes if n.id not in finished and n.level in opened
-            and all(r in finished for r in n.needs)
-            and (max_minutes is None or n.estimate <= max_minutes)]
+    return [
+        n
+        for n in pack.nodes
+        if n.id not in finished
+        and n.level in opened
+        and all(r in finished for r in n.needs)
+        and (max_minutes is None or n.estimate <= max_minutes)
+    ]
