@@ -1,0 +1,192 @@
+# Starter pack: Home hack lab (Pi 5 as target, Ubuntu laptop as attacker)
+# kind = "project": this is one concrete build with a finish line, not a full proficiency track.
+# (Compare: a future "web app pentesting" or "networking" pack would be kind = "proficiency", 8-15 levels.)
+#
+# DRAFT written by Claude from the owner's goals. NOT reviewed yet.
+# Before trusting it: read every done_when, run `hack pack check-links` (URLs are from memory),
+# edit the [vars], then `hack review home-hack-lab`.
+# Bandit 0-12 were finished before hackstreak existed: `hack backfill` them if you want them shown as done.
+
+[pack]
+id = "home-hack-lab"
+title = "Home hack lab: attack and harden my own Pi"
+kind = "project"
+version = 3
+source = "ai-draft"
+reviewed = false
+
+[vars]
+pi_user = "pi"
+pi_ip = "192.168.1.50"        # CHANGE: run `hostname -I` on the Pi
+hack_dir = "~/hack"
+
+# ---------------------------------------------------------------- levels
+[[level]]
+id = "setup"
+title = "Build the lab"
+lane = "main"
+
+[[level]]
+id = "attack"
+title = "Recon and attack the basics"
+lane = "main"
+
+[[level]]
+id = "attack2"
+title = "Go deeper: more of the OWASP Top 10"
+lane = "main"
+
+[[level]]
+id = "defend"
+title = "Harden and report"
+lane = "main"
+
+[[level]]
+id = "warmup"
+title = "Daily warm-up (Bandit)"
+lane = "side"
+
+# ---------------------------------------------------------------- level 1: build the lab
+[[node]]
+level = "setup"
+id = "pi-reachable"
+title = "Pi updated, SSH on, reachable from the laptop"
+size = "M"
+needs = []
+done_when = "I can ping the Pi from the laptop and ssh in with my password"
+resource = "https://www.raspberrypi.com/documentation/computers/remote-access.html"
+verify = { type = "command", cmd = "ping -c 1 -W 2 {pi_ip}" }
+
+[[node]]
+level = "setup"
+id = "ssh-key-login"
+title = "Log in to the Pi with an SSH key"
+size = "S"
+needs = ["pi-reachable"]
+done_when = "ssh to the Pi works without typing a password"
+resource = "https://www.raspberrypi.com/documentation/computers/remote-access.html"
+verify = { type = "command", cmd = "ssh -o BatchMode=yes -o ConnectTimeout=5 {pi_user}@{pi_ip} true" }
+
+[[node]]
+level = "setup"
+id = "docker-on-pi"
+title = "Docker running on the Pi"
+size = "M"
+needs = ["ssh-key-login"]
+done_when = "`docker --version` works on the Pi and `docker run hello-world` succeeds"
+resource = "https://docs.docker.com/engine/install/raspberry-pi-os/"
+verify = { type = "command", cmd = "ssh -o BatchMode=yes -o ConnectTimeout=5 {pi_user}@{pi_ip} docker --version" }
+
+[[node]]
+level = "setup"
+id = "juice-shop-up"
+title = "OWASP Juice Shop running on the Pi (milestone)"
+size = "L"
+needs = ["docker-on-pi"]
+milestone = true
+done_when = "Juice Shop opens in the laptop browser at the Pi's port 3000, and I can explain in 3 sentences what Docker just did"
+resource = "https://owasp.org/www-project-juice-shop/"
+verify = { type = "command", cmd = "curl -sf --max-time 5 http://{pi_ip}:3000" }
+
+# ---------------------------------------------------------------- level 2: recon and attack the basics
+[[node]]
+level = "attack"
+id = "recon-scan"
+title = "Scan the Pi with nmap and explain the result"
+size = "M"
+needs = []
+done_when = "scan saved to {hack_dir}/scans/pi-before.txt, plus 5 lines in my own words on what each open port is"
+resource = "https://nmap.org/book/man.html"
+verify = { type = "file", path = "{hack_dir}/scans/pi-before.txt", min_bytes = 200 }
+
+[[node]]
+level = "attack"
+id = "burp-setup"
+title = "Burp Suite Community intercepting the browser"
+size = "M"
+needs = []
+done_when = "I can see a request to Juice Shop in Burp's HTTP history"
+resource = "https://portswigger.net/burp/communitydownload"
+
+[[node]]
+level = "attack"
+id = "juice-sqli"
+title = "Solve the login-bypass SQL injection challenge"
+size = "M"
+needs = ["burp-setup"]
+done_when = "logged in as admin without the real password; one paragraph in {hack_dir}/juice-notes.md on why the query broke"
+resource = "https://pwning.owasp-juice.shop/"
+
+[[node]]
+level = "attack"
+id = "juice-three"
+title = "Solve 3 easy Juice Shop challenges total (milestone)"
+size = "L"
+needs = ["juice-sqli", "recon-scan"]
+milestone = true
+done_when = "3 challenges solved, each with a one-line note on the flaw, in {hack_dir}/juice-notes.md, and I can explain each without notes"
+resource = "https://pwning.owasp-juice.shop/"
+verify = { type = "file", path = "{hack_dir}/juice-notes.md", min_bytes = 150 }
+
+# ---------------------------------------------------------------- level 3: go deeper
+[[node]]
+level = "attack2"
+id = "juice-xss"
+title = "Solve a stored or reflected XSS challenge"
+size = "M"
+needs = []
+done_when = "one XSS challenge solved; note in {hack_dir}/juice-notes.md on why the input was not sanitised"
+resource = "https://pwning.owasp-juice.shop/"
+
+[[node]]
+level = "attack2"
+id = "juice-broken-access"
+title = "Solve a broken-access-control challenge (view/edit someone else's data)"
+size = "M"
+needs = []
+done_when = "one broken-access-control challenge solved; note on which check was missing"
+resource = "https://pwning.owasp-juice.shop/"
+
+[[node]]
+level = "attack2"
+id = "owasp-top10-notes"
+title = "Write a one-pager mapping what I exploited to the OWASP Top 10 (milestone)"
+size = "M"
+needs = ["juice-xss", "juice-broken-access"]
+milestone = true
+done_when = "{hack_dir}/owasp-top10.md lists at least 4 Top 10 categories, each with which Juice Shop challenge demonstrated it"
+resource = "https://owasp.org/www-project-top-ten/"
+verify = { type = "file", path = "{hack_dir}/owasp-top10.md", min_bytes = 300 }
+
+# ---------------------------------------------------------------- level 4: harden and report
+[[node]]
+level = "defend"
+id = "harden-pi"
+title = "Harden the Pi: key-only SSH and a firewall"
+size = "M"
+needs = []
+done_when = "password SSH login is off, ufw allows only the ports I chose, and I re-scanned into {hack_dir}/scans/pi-after.txt"
+resource = "https://help.ubuntu.com/community/UFW"
+verify = { type = "file", path = "{hack_dir}/scans/pi-after.txt", min_bytes = 100 }
+
+[[node]]
+level = "defend"
+id = "report"
+title = "Write the one-page report (milestone)"
+size = "S"
+needs = ["harden-pi"]
+milestone = true
+done_when = "{hack_dir}/report.md says what I attacked, what I found, what I changed, and which mission is next"
+resource = "https://owasp.org/www-project-juice-shop/"
+verify = { type = "file", path = "{hack_dir}/report.md", min_bytes = 400 }
+
+# ---------------------------------------------------------------- side lane: always-open quick wins
+[[node]]
+level = "warmup"
+id = "bandit"
+title = "OverTheWire Bandit, level {n}"
+series = { from = 13, to = 33 }
+size = "S"
+needs = []
+done_when = "I logged in to level {next} and can explain the command that got me there"
+resource = "https://overthewire.org/wargames/bandit/"

@@ -1,0 +1,25 @@
+# Run on the Pi (or anywhere): `docker compose up -d` from the repo root (adjust the build context path if moved).
+# Same file works on a Pi 5 (arm64) and a normal PC/VPS (amd64) -- no platform-specific lines needed
+# for a plain `docker compose build`; cross-building FOR a Pi from your amd64 laptop needs buildx (see note below).
+
+services:
+  ascend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: ascend
+    restart: unless-stopped
+    ports:
+      - "8420:8420"
+    volumes:
+      - ./data:/data              # SQLite DB + uploaded packs persist here across rebuilds/updates
+    env_file:
+      - .env                      # create this next to the compose file; NEVER commit it
+    environment:
+      - AUTH_MODE=single          # "single" = just you, no login screen. "multi" = real accounts for others.
+
+# .env (same folder, gitignored) looks like:
+#   TELEGRAM_BOT_TOKEN=...          # optional, only if nudge-channel=telegram
+#   TELEGRAM_CHAT_ID=...
+#   NTFY_TOPIC=ascend-<random>      # optional, default nudge channel -- pick a hard-to-guess topic name
+#   JWT_SECRET=...                  # only used if AUTH_MODE=multi
