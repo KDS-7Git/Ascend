@@ -1,0 +1,97 @@
+[pack]
+"id" = "blender-first-scene"
+"title" = "Create a Blender still-life scene"
+"kind" = "project"
+"version" = 1
+"source" = "ai-draft"
+"reviewed" = false
+
+[vars]
+"work_dir" = "~/learning"
+
+[[level]]
+"id" = "model"
+"title" = "Make a small still life"
+
+[[level]]
+"id" = "light"
+"title" = "Materials and light"
+
+[[level]]
+"id" = "render"
+"title" = "Finish and explain"
+
+[[level]]
+"id" = "anytime"
+"title" = "Small observations"
+"lane" = "side"
+
+[[node]]
+"id" = "navigation"
+"level" = "model"
+"title" = "Save a scene from three viewpoints"
+"size" = "S"
+"needs" = []
+"done_when" = "A saved project contains screenshots of the same object from three chosen viewpoints"
+"resource" = "https://docs.blender.org/manual/en/latest/"
+"minutes" = 20
+
+[[node]]
+"id" = "objects"
+"level" = "model"
+"title" = "Model three recognizable objects"
+"size" = "M"
+"needs" = ["navigation"]
+"done_when" = "A saved Blender project contains three modeled objects with intentionally different silhouettes"
+"resource" = "https://docs.blender.org/manual/en/latest/"
+"milestone" = true
+
+[[node]]
+"id" = "materials"
+"level" = "light"
+"title" = "Give each object a distinct material"
+"size" = "S"
+"needs" = []
+"done_when" = "Each of the three objects has a deliberately chosen color and roughness visible in preview"
+"resource" = "https://docs.blender.org/manual/en/latest/"
+"minutes" = 30
+
+[[node]]
+"id" = "lighting"
+"level" = "light"
+"title" = "Light the composition"
+"size" = "M"
+"needs" = ["materials"]
+"done_when" = "Two saved lighting variations reveal the object forms and I can explain which light changes the shadows"
+"resource" = "https://docs.blender.org/manual/en/latest/"
+"milestone" = true
+
+[[node]]
+"id" = "camera"
+"level" = "render"
+"title" = "Compose a camera view"
+"size" = "S"
+"needs" = []
+"done_when" = "The camera frames all three objects without accidental cropping and the focal object is clear"
+"resource" = "https://docs.blender.org/manual/en/latest/"
+"minutes" = 20
+
+[[node]]
+"id" = "final"
+"level" = "render"
+"title" = "Render and compare the final image"
+"size" = "M"
+"needs" = ["camera"]
+"done_when" = "A final rendered image and source project are saved alongside a short note explaining three deliberate visual choices"
+"resource" = "https://docs.blender.org/manual/en/latest/"
+"milestone" = true
+
+[[node]]
+"id" = "observation"
+"level" = "anytime"
+"title" = "Explain one small observation"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "One original observation saved in my notes with a concrete example I can reproduce"
+"resource" = "https://docs.blender.org/manual/en/latest/"

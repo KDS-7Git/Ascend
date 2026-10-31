@@ -27,9 +27,12 @@ def parser():
     mission_time = mission.add_parser("nudge-time"); mission_time.add_argument("time")
     for name in ("finish", "pause", "list"): mission.add_parser(name)
     pack = sub.add_parser("pack").add_subparsers(dest="action", required=True)
-    for name in ("install", "lint", "trust", "review", "diff"):
+    for name in ("install", "lint", "trust", "review", "diff", "check-links"):
         action = pack.add_parser(name); action.add_argument("target")
     pack.add_parser("list")
+    registry = pack.add_parser("registry"); registry.add_argument("url", nargs="?")
+    plugin = sub.add_parser("plugin").add_subparsers(dest="action", required=True)
+    plugin_trust = plugin.add_parser("trust"); plugin_trust.add_argument("name")
     new = pack.add_parser("new"); new.add_argument("title"); new.add_argument("--path")
     review = sub.add_parser("review"); review.add_argument("target")
     mark = sub.add_parser("mark"); mark.add_argument("node"); mark.add_argument("status", choices=["done", "skipped", "todo"]); mark.add_argument("--note")
@@ -62,6 +65,10 @@ def pack_text(target):
     for root in (Path(__file__).resolve().parents[2] / "packs/community", Path(__file__).resolve().parents[1] / "community"):
         path = root / f"{target}.toml"
         if path.is_file(): return path.read_text()
+    import os
+    if os.environ.get("ASCEND_REGISTRY"):
+        from ascend.registry import fetch_pack
+        return fetch_pack(target, os.environ["ASCEND_REGISTRY"])
     raise ValueError("Pack not found; use a local TOML path or bundled pack ID")
 
 
@@ -83,6 +90,9 @@ def execute(tracker, args):
     if command in {"pack", "review"}:
         action = "review" if command == "review" else args.action
         if action == "list": return tracker.db.rows("packs")
+        if action == "registry":
+            from ascend.registry import registry_entries
+            return registry_entries(args.url)
         if action == "trust": return tracker.trust_pack(args.target)
         if action == "review": return tracker.review_pack(args.target)
         if action == "new":
@@ -97,6 +107,10 @@ def execute(tracker, args):
         if action == "install": return tracker.install_pack(text)
         pack = tracker.parse(text)
         if action == "lint": return {"valid": pack.id, "nodes": len(pack.nodes)}
+        if action == "check-links":
+            if getattr(tracker, "restricted", False): raise ValueError("Run link checks locally on a multi-user server")
+            from ascend.registry import check_links
+            return check_links(pack)
         if action == "diff":
             old = tracker.pack(pack.id)
             before, after = {n.id for n in old.nodes}, {n.id for n in pack.nodes}
@@ -132,6 +146,7 @@ def execute(tracker, args):
     if command == "split": return tracker.split(args.node, args.steps)
     if command == "sync": return tracker.sync()
     if command == "accept": return tracker.accept()
+    if command == "plugin": return tracker.trust_plugin(args.name)
     raise ValueError("Unknown command")
 
 
@@ -187,7 +202,7 @@ def main(argv=None):
             result = login(url)
         elif server:
             data = {"argv": argv}
-            if args.command == "pack" and args.action in {"install", "lint", "diff"}:
+            if args.command == "pack" and args.action in {"install", "lint", "diff", "check-links"}:
                 data["pack_text"] = pack_text(args.target)
             result = request(server, "/api/command", data)
         else:
@@ -198,7 +213,7 @@ def main(argv=None):
             Path(args.path).expanduser().write_text(result)
             print(f"Exported {args.path}")
         else: print(render(args, result))
-        return 0
+        return 1 if args.command == "pack" and args.action == "check-links" and any(not row["ok"] for row in result) else 0
     except (ValueError, OSError) as error:
         print(f"ascend: {error}", file=sys.stderr)
         return 2

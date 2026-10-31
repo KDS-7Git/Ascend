@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "packs": [
+    {
+      "id": "blender-first-scene",
+      "title": "Create a Blender still-life scene",
+      "version": 1,
+      "file": "blender-first-scene.toml",
+      "sha256": "27f160e464ae633cacbdd26f237b4270f78259308f3eb6e9dec5d5977a1ee6a6"
+    },
+    {
+      "id": "home-hack-lab",
+      "title": "Home hack lab: attack and harden my own Pi",
+      "version": 3,
+      "file": "home-hack-lab.toml",
+      "sha256": "ed452fdbede6c9e7ea971846ba9cedccdf904dd9718dc618160df959a55b687a"
+    },
+    {
+      "id": "python-file-tool",
+      "title": "Build a Python file organizer",
+      "version": 1,
+      "file": "python-file-tool.toml",
+      "sha256": "ac4726242d14ced5b8c7922fe03feab3e87d76f136c54a39cd11c723ac7cf1da"
+    }
+  ]
+}

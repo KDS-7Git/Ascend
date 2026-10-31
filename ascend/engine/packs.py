@@ -125,7 +125,7 @@ def parse_pack(text: str, variables=None, allowed_verifiers=None) -> Pack:
                 if series and number > start: needs = [f"{base_id}-{number - 1}"]
                 verify = original.get("verify", {"type": "manual"})
                 vtype = verify.get("type", "manual")
-                if vtype not in (allowed_verifiers or BUILTINS): raise PackError(f"Unknown verify.type: {vtype}")
+                if vtype not in (allowed_verifiers or BUILTINS) and not re.fullmatch(r"plugin:[a-z][a-z0-9_]*", vtype): raise PackError(f"Unknown verify.type: {vtype}")
                 if vtype == "file": _required(verify, "path")
                 if vtype == "command": _required(verify, "cmd")
                 minutes = n.get("minutes")

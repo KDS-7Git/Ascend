@@ -103,6 +103,25 @@ notifications, account isolation, migrations, concurrent writes, and complete
 browser logging flows. Every milestone runs the cumulative suite before its
 implementation commit. Full command output is retained in \texttt{docs/testing/}.
 
+The Phase 2 container smoke test found that editable source installs served the
+PWA correctly while built wheels omitted its assets. A failing distribution
+regression test was added first, then the build process was corrected to bundle
+the canonical web and community sources. Both the installed wheel and container
+now serve the PWA; the container also installs a bundled pack as UID 10001.
+
+\section{Community distribution and extensions}
+Phase 3 adds a bundled registry with SHA-256 digests, optional remote registries,
+and explicit link checking with HEAD-to-GET fallback. Examples cover a home lab,
+a Python file organizer, and a Blender still life. AI-authored examples remain
+marked as drafts awaiting human review. Pack generation does not create lessons
+or silently approve executable content. GitHub Actions runs the full suite and
+lints every community pack across Python 3.11, 3.12, and 3.13.
+
+Third-party verifier files are fingerprinted before trust, and their exact source
+is checked again inside the worker before import. A changed file cannot execute
+using an old trust decision. The worker's timeout and bounded result improve
+failure handling but do not restrict trusted code's host permissions.
+
 \section{Deployment and operational limits}
 Standalone mode requires Python 3.11 or newer and no third-party runtime packages.
 Server dependencies are optional extras. Docker uses a non-root runtime and a

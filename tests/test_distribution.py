@@ -6,7 +6,8 @@ import zipfile
 
 
 def test_built_wheel_contains_and_serves_bundled_assets(tmp_path):
-    subprocess.run([sys.executable, "-m", "pip", "wheel", "--no-deps", "--no-build-isolation", "--wheel-dir", str(tmp_path), "."], check=True, capture_output=True)
+    build = subprocess.run([sys.executable, "-m", "pip", "wheel", "--no-deps", "--no-build-isolation", "--wheel-dir", str(tmp_path), "."], text=True, capture_output=True)
+    assert build.returncode == 0, build.stdout + build.stderr
     wheel = next(tmp_path.glob("*.whl"))
     with zipfile.ZipFile(wheel) as archive:
         assert "ascend/web/index.html" in archive.namelist()

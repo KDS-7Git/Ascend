@@ -54,7 +54,8 @@ class Tracker:
                 (self.db.user_id, pack.id, str(target), pack.version, old[0]["reviewed"] if same else int(pack.reviewed),
                  old[0]["trusted"] if same else 0, digest))
             self.audit("pack-install", {"pack": pack.id, "version": pack.version})
-        return {"id": pack.id, "nodes": len(pack.nodes), "commands": [substitute(n.verify["cmd"], pack.vars) for n in pack.nodes if n.verify.get("type") == "command"], "reviewed": pack.reviewed}
+        return {"id": pack.id, "nodes": len(pack.nodes), "commands": [substitute(n.verify["cmd"], pack.vars) for n in pack.nodes if n.verify.get("type") == "command"],
+                "plugins": sorted({n.verify["type"][7:] for n in pack.nodes if n.verify.get("type", "").startswith("plugin:")}), "reviewed": pack.reviewed}
 
     def pack(self, pack_id=None):
         if pack_id is None:
@@ -211,6 +212,10 @@ class Tracker:
 
     def verify_node(self, pack, node):
         vtype = node.verify.get("type", "manual")
+        if vtype.startswith("plugin:"):
+            if getattr(self, "restricted", False): return VerifyResult(False, "Plugins require administrator permission on a multi-user server")
+            from ascend.verifiers.plugin import verify
+            return verify(self.db, vtype[7:], node.verify, pack.vars)
         if getattr(self, "restricted", False):
             if vtype in {"command", "git", "http"}:
                 return VerifyResult(False, "This verifier requires administrator permission on a multi-user server")
@@ -222,6 +227,12 @@ class Tracker:
             row = self.db.rows("packs", "id=?", (pack.id,))[0]
             if not row["trusted"]: return VerifyResult(False, f"Run ascend pack trust {pack.id} before executing commands")
         return {"manual": manual, "file": file, "command": command, "http": http, "git": git}[vtype].verify(node.verify, pack.vars)
+
+    def trust_plugin(self, name):
+        from ascend.verifiers.plugin import trust
+        result = trust(self.db, name)
+        self.audit("plugin-trust", {"name": name})
+        return result
 
     def _auto_evidence(self, pack, node, result):
         if not result.ok or not result.evidence_time or not self.db.setting("auto_counts_for_streak", True): return

@@ -1,0 +1,97 @@
+[pack]
+"id" = "python-file-tool"
+"title" = "Build a Python file organizer"
+"kind" = "project"
+"version" = 1
+"source" = "ai-draft"
+"reviewed" = false
+
+[vars]
+"work_dir" = "~/learning"
+
+[[level]]
+"id" = "files"
+"title" = "Read and describe files"
+
+[[level]]
+"id" = "organize"
+"title" = "Plan and safely organize"
+
+[[level]]
+"id" = "deliver"
+"title" = "Test and document the tool"
+
+[[level]]
+"id" = "anytime"
+"title" = "Small observations"
+"lane" = "side"
+
+[[node]]
+"id" = "inspect"
+"level" = "files"
+"title" = "List a temporary folder"
+"size" = "S"
+"needs" = []
+"done_when" = "A script lists filenames in a disposable folder and I can explain each line"
+"resource" = "https://docs.python.org/3/tutorial/"
+"minutes" = 20
+
+[[node]]
+"id" = "summarize"
+"level" = "files"
+"title" = "Summarize files by extension"
+"size" = "M"
+"needs" = ["inspect"]
+"done_when" = "My script reports file counts and sizes by extension and handles an empty folder"
+"resource" = "https://docs.python.org/3/tutorial/"
+"milestone" = true
+
+[[node]]
+"id" = "dry-run"
+"level" = "organize"
+"title" = "Preview an organization plan"
+"size" = "S"
+"needs" = []
+"done_when" = "A dry-run prints source and destination paths without modifying any files"
+"resource" = "https://docs.python.org/3/tutorial/"
+"minutes" = 30
+
+[[node]]
+"id" = "organizer"
+"level" = "organize"
+"title" = "Build the organizer"
+"size" = "M"
+"needs" = ["dry-run"]
+"done_when" = "My tool organizes a disposable fixture folder and refuses to overwrite an existing file"
+"resource" = "https://docs.python.org/3/tutorial/"
+"milestone" = true
+
+[[node]]
+"id" = "test-cases"
+"level" = "deliver"
+"title" = "Exercise failure cases"
+"size" = "S"
+"needs" = []
+"done_when" = "Automated tests cover empty input, duplicate names and invalid folders"
+"resource" = "https://docs.python.org/3/tutorial/"
+"minutes" = 30
+
+[[node]]
+"id" = "release"
+"level" = "deliver"
+"title" = "Demonstrate the finished tool"
+"size" = "M"
+"needs" = ["test-cases"]
+"done_when" = "A README shows installation, dry-run and execution, and all tests pass from a clean fixture"
+"resource" = "https://docs.python.org/3/tutorial/"
+"milestone" = true
+
+[[node]]
+"id" = "observation"
+"level" = "anytime"
+"title" = "Explain one small observation"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "One original observation saved in my notes with a concrete example I can reproduce"
+"resource" = "https://docs.python.org/3/tutorial/"
