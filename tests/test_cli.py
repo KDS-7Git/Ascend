@@ -47,3 +47,18 @@ def test_pack_new_refuses_to_overwrite(tmp_path):
     result = run_cli(tmp_path, "pack", "new", "Example", "--path", str(path))
     assert result.returncode == 2
     assert path.read_text() == "My existing roadmap"
+
+
+def test_login_without_posix_fchmod_keeps_password_out_of_profile(
+    tmp_path, monkeypatch
+):
+    from ascend.cli import remote
+
+    monkeypatch.setattr(remote, "default_home", lambda: tmp_path)
+    monkeypatch.setattr("builtins.input", lambda prompt: "learner")
+    monkeypatch.setattr(remote.getpass, "getpass", lambda prompt: "not-to-be-stored")
+    monkeypatch.setattr(remote, "request", lambda *args: {"token": "test-api-token"})
+    monkeypatch.delattr(remote.os, "fchmod")
+    remote.login("https://example.org")
+    assert "test-api-token" in (tmp_path / "token").read_text()
+    assert "not-to-be-stored" not in (tmp_path / "token").read_text()

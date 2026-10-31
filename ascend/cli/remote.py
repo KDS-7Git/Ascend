@@ -68,7 +68,10 @@ def login(server):
     tokens = json.loads(path.read_text()) if path.exists() else {}
     tokens[server] = result["token"]
     fd = os.open(path, os.O_CREAT | os.O_WRONLY | os.O_TRUNC, 0o600)
-    os.fchmod(fd, 0o600)
+    if hasattr(os, "fchmod"):
+        os.fchmod(fd, 0o600)
+    else:
+        os.chmod(path, 0o600)
     with os.fdopen(fd, "w") as stream:
         json.dump(tokens, stream)
     configure_server(server)
