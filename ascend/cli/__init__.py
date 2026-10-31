@@ -40,6 +40,10 @@ def parser():
     park = sub.add_parser("park"); park.add_argument("note")
     export = sub.add_parser("export"); export.add_argument("path", nargs="?", default="log.md")
     config = sub.add_parser("config"); config.add_argument("key"); config.add_argument("value", nargs="?")
+    sub.add_parser("nudge")
+    install = sub.add_parser("install-nudge")
+    install.add_argument("--dry-run", action="store_true"); install.add_argument("--directory")
+    install.add_argument("--no-enable", action="store_true")
     return p
 
 
@@ -97,6 +101,12 @@ def execute(tracker, args):
     if command == "parked": return tracker.db.rows("parked", "resolved=0")
     if command == "export": return tracker.export()
     if command == "remind-check": return tracker.stats()["today_logged"]
+    if command == "nudge" or (command == "config" and args.key == "nudge-test"):
+        from ascend.nudge import NudgeRunner
+        return NudgeRunner(tracker).run(test=command == "config")
+    if command == "install-nudge":
+        from ascend.nudge import install_timer
+        return install_timer(tracker.db.home, args.directory, not args.no_enable, args.dry_run)
     if command == "config": return tracker.configure(args.key, args.value)
     raise ValueError("Unknown command")
 
