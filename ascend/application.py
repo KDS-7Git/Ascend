@@ -268,7 +268,8 @@ class Tracker:
             mission = rows[0]
         pack = node = None
         if node_id or (mission and mission["pack_id"]):
-            pack, node = self.resolve_node(node_id)
+            reference = node_id or (f"{mission['pack_id']}:" if mission and mission["pack_id"] else None)
+            pack, node = self.resolve_node(reference)
             if mission and mission["pack_id"] != pack.id: raise ValueError("Node does not belong to the selected mission")
         if complete and node is None: raise ValueError("Completion requires a pack node")
         previous = self.entries()
@@ -303,10 +304,18 @@ class Tracker:
         for i in range(7, -1, -1):
             start = monday - timedelta(weeks=i)
             weeks.append({"week": start.isoformat(), "minutes": sum(e["minutes"] or 0 for e in entries if start.isoformat() <= e["day"] < (start + timedelta(days=7)).isoformat())})
+        minutes_by_level = []
+        for row in self.db.rows("packs"):
+            try: pack = self.pack(row["id"])
+            except (ValueError, OSError): continue
+            for level in pack.levels:
+                ids = {f"{pack.id}:{n.id}" for n in pack.nodes if n.level == level.id}
+                minutes_by_level.append({"pack_id": pack.id, "level_id": level.id, "title": level.title,
+                                         "minutes": sum(e["minutes"] or 0 for e in entries if e["node_id"] in ids)})
         return {"current_streak": streak, "best_streak": best_streak(days, allowance), "today": today.isoformat(),
                 "today_logged": today in days, "days_last_30": sum(today-timedelta(days=29) <= d <= today for d in days),
                 "freezes_used": used.get(today.isocalendar()[:2], 0), "freeze_available": max(0, allowance-used.get(today.isocalendar()[:2], 0)),
-                "minutes_this_week": weeks[-1]["minutes"], "weeks": weeks}
+                "minutes_this_week": weeks[-1]["minutes"], "weeks": weeks, "minutes_by_level": minutes_by_level}
 
     def heatmap(self):
         counts = {}
@@ -329,17 +338,18 @@ class Tracker:
         if not re.fullmatch(r"(?:[01]\d|2[0-3]):[0-5]\d", value): raise ValueError("Time must be HH:MM")
 
     def configure(self, key, value):
+        if value is None: raise ValueError("A setting value is required")
         key = key.replace("-", "_")
         if key == "nudge_time": self.validate_time(value)
         elif key == "nudge_channel":
-            if value not in {"desktop", "ntfy"}: raise ValueError("Unknown nudge channel")
+            if value not in {"desktop", "ntfy", "telegram", "webpush"}: raise ValueError("Unknown nudge channel")
         elif key == "ntfy_topic":
             if not re.fullmatch(r"[A-Za-z0-9_-]{1,128}", value or ""): raise ValueError("Invalid ntfy topic")
         elif key == "timezone":
             from zoneinfo import ZoneInfo
             try: ZoneInfo(value)
             except (KeyError, ValueError): raise ValueError("Unknown IANA timezone") from None
-        elif key in {"auto_counts_for_streak", "nudge_enabled"}:
+        elif key in {"auto_counts_for_streak", "nudge_enabled", "public_streak"}:
             if value not in {"true", "false"}: raise ValueError("Use true or false")
             value = value == "true"
         else: raise ValueError("Unknown setting")

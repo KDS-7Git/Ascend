@@ -3,6 +3,8 @@ import json
 from pathlib import Path
 import subprocess
 import sys
+import os
+import warnings
 from zoneinfo import ZoneInfo
 
 from ascend.nudge.channels.desktop import send
@@ -11,9 +13,21 @@ from ascend.nudge.channels.desktop import send
 class NudgeRunner:
     def __init__(self, tracker, sender=None):
         self.tracker = tracker
-        if sender is None and tracker.db.setting("nudge_channel", "desktop") == "ntfy":
+        channel = tracker.db.setting("nudge_channel", "desktop")
+        if sender is None and channel == "ntfy":
             from ascend.nudge.channels.ntfy import send as ntfy_send
             sender = lambda message: ntfy_send(message, topic=tracker.db.setting("ntfy_topic"))
+        if sender is None and channel == "telegram":
+            from ascend.nudge.channels import telegram
+            if not os.environ.get("TELEGRAM_BOT_TOKEN") or not telegram.chat_id(tracker.db.user_id):
+                if not tracker.db.setting("telegram_missing_warned", False):
+                    warnings.warn("Telegram credentials missing; trying desktop only", RuntimeWarning)
+                    tracker.db.set_setting("telegram_missing_warned", True)
+            else:
+                sender = lambda message: telegram.send(message, user_id=tracker.db.user_id)
+        if sender is None and channel == "webpush":
+            from ascend.nudge.channels.webpush import send_to_user
+            sender = lambda message: send_to_user(tracker.db, message)
         self.sender = sender or send
 
     def message(self):
@@ -24,7 +38,9 @@ class NudgeRunner:
 
     def run(self, test=False):
         if test:
-            self.sender("Ascend test: " + self.message())
+            delivery = self.sender("Ascend test: " + self.message())
+            if isinstance(delivery, dict) and delivery.get("sent") == 0:
+                return {"sent": False, "reason": "Browser subscriptions expired; subscribe again"}
             return {"sent": True, "test": True}
         tracker = self.tracker
         with tracker.db.transaction():
@@ -45,7 +61,9 @@ class NudgeRunner:
             sent = tracker.db.setting(key, [])
             if slot is None or slot in sent or len(sent) >= 2:
                 return {"sent": False, "reason": "No reminder due"}
-            self.sender(self.message())
+            delivery = self.sender(self.message())
+            if isinstance(delivery, dict) and delivery.get("sent") == 0:
+                return {"sent": False, "reason": "Browser subscriptions expired; subscribe again"}
             tracker.db.set_setting(key, [*sent, slot])
             return {"sent": True, "slot": slot}
 

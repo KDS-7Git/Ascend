@@ -12,7 +12,15 @@ def main():
     parser.add_argument("--auth-mode", choices=["single", "multi"], default=os.environ.get("AUTH_MODE", "single"))
     sub = parser.add_subparsers(dest="command")
     add = sub.add_parser("user-add"); add.add_argument("username"); add.add_argument("--timezone", required=True)
+    keys = sub.add_parser("push-keys"); keys.add_argument("--out", required=True)
     args = parser.parse_args()
+    if args.command == "push-keys":
+        from ascend.nudge.channels.webpush import generate_keys
+        try:
+            print("Public VAPID key:", generate_keys(args.out))
+            print("Private key saved with mode 0600. Set VAPID_PRIVATE_KEY to that path.")
+        except (ValueError, OSError) as error: parser.exit(2, f"{error}\n")
+        return
     if args.command == "user-add":
         from ascend.storage import Database
         from ascend.server.auth import create_user

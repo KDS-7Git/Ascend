@@ -3,6 +3,8 @@ import asyncio
 from contextlib import asynccontextmanager, suppress
 from dataclasses import asdict
 import logging
+import hashlib
+import hmac
 import os
 from pathlib import Path
 import re
@@ -10,7 +12,7 @@ import sqlite3
 from urllib.parse import urlparse
 
 from fastapi import Depends, FastAPI, File, HTTPException, Request, UploadFile
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -67,6 +69,7 @@ def create_app(home=None, auth_mode=None, scheduler=True):
                 db.user_id = user["id"]
                 if not db.setting("nudge_enabled", False): continue
                 if auth_mode == "multi": db.set_setting("timezone", user["timezone"])
+                if db.setting("nudge_channel") is None: db.set_setting("nudge_channel", "ntfy")
                 try: NudgeRunner(Tracker(db)).run()
                 except (ValueError, OSError): logging.getLogger("ascend.nudge").warning("Reminder delivery failed for user %s; check channel configuration", user["id"])
         finally: db.close()
@@ -120,6 +123,7 @@ def create_app(home=None, auth_mode=None, scheduler=True):
             result = Tracker(db)
             result.restricted = auth_mode == "multi" and os.environ.get("ASCEND_ALLOW_CODE") != "1"
             result.server_mode = True
+            if db.setting("nudge_channel") is None: db.set_setting("nudge_channel", "ntfy")
             yield result
         finally: db.close()
 
@@ -138,7 +142,75 @@ def create_app(home=None, auth_mode=None, scheduler=True):
     @app.get("/api/account")
     def account(t=Depends(tracker)):
         row = t.db.connection.execute("SELECT username,timezone FROM users WHERE id=?", (t.db.user_id,)).fetchone()
-        return {**dict(row), "auth_mode": auth_mode, "settings": {r["key"]: t.db.setting(r["key"]) for r in t.db.rows("settings") if r["key"] in {"nudge_time", "nudge_channel", "ntfy_topic", "nudge_enabled"}}}
+        return {**dict(row), "auth_mode": auth_mode, "settings": {r["key"]: t.db.setting(r["key"]) for r in t.db.rows("settings") if r["key"] in {"nudge_time", "nudge_channel", "ntfy_topic", "nudge_enabled", "public_streak"}}}
+
+    @app.post("/api/logout")
+    def logout(request: Request, t=Depends(tracker)):
+        auth = request.headers.get("authorization", "")
+        if auth.startswith("Bearer "):
+            t.db.connection.execute("DELETE FROM api_tokens WHERE user_id=? AND token=?", (t.db.user_id, hashlib.sha256(auth[7:].encode()).hexdigest()))
+        return {"logged_out": True}
+
+    @app.get("/api/push/key")
+    def push_key(t=Depends(tracker)):
+        from ascend.nudge.channels.webpush import public_key
+        return {"public_key": public_key()}
+
+    @app.post("/api/push/subscriptions")
+    def subscribe(body: dict, t=Depends(tracker)):
+        from ascend.nudge.channels.webpush import subscribe
+        return subscribe(t.db, body)
+
+    @app.delete("/api/push/subscriptions")
+    def unsubscribe(body: dict, t=Depends(tracker)):
+        from ascend.nudge.channels.webpush import unsubscribe
+        return unsubscribe(t.db, body.get("endpoint", ""))
+
+    def public_stats(username):
+        db = Database(home)
+        try:
+            user = db.connection.execute("SELECT * FROM users WHERE username=?", (username,)).fetchone()
+            if not user: raise HTTPException(404, "Public streak not enabled")
+            db.user_id = user["id"]
+            if not db.setting("public_streak", False): raise HTTPException(404, "Public streak not enabled")
+            if auth_mode == "multi": db.set_setting("timezone", user["timezone"])
+            stats = Tracker(db).stats()
+            return {"username": username, **{key: stats[key] for key in ("current_streak", "best_streak", "today_logged")}}
+        finally: db.close()
+
+    @app.get("/api/public/{username}/streak")
+    def public_streak(username: str): return public_stats(username)
+
+    @app.get("/api/public/{username}/badge.svg")
+    def badge(username: str):
+        count = public_stats(username)["current_streak"]
+        svg = f'<svg xmlns="http://www.w3.org/2000/svg" width="180" height="28" role="img" aria-label="Ascend streak: {count} days"><rect width="180" height="28" rx="6" fill="#2f6f5e"/><text x="90" y="19" text-anchor="middle" fill="white" font-family="sans-serif" font-size="12">Ascend · {count} days</text></svg>'
+        return Response(svg, media_type="image/svg+xml")
+
+    @app.post("/api/telegram/webhook")
+    def telegram_webhook(request: Request, body: dict):
+        from ascend.nudge.channels import telegram
+        from ascend.server.telegram import process_update
+        expected = os.environ.get("TELEGRAM_WEBHOOK_SECRET", "")
+        supplied = request.headers.get("x-telegram-bot-api-secret-token", "")
+        if not expected or not hmac.compare_digest(expected, supplied): raise HTTPException(401, "Invalid webhook secret")
+        message = body.get("message") or body.get("callback_query", {}).get("message", {})
+        chat = message.get("chat", {})
+        if chat.get("type", "private") != "private": return {"ignored": True}
+        incoming = str(chat.get("id", ""))
+        db = Database(home)
+        try:
+            users = list(db.connection.execute("SELECT * FROM users"))
+            user = next((u for u in users if telegram.chat_id(u["id"]) == incoming), None)
+            if not user: return {"ignored": True}
+            if auth_mode == "multi" and user["id"] == 1: return {"ignored": True}
+            if auth_mode == "single" and user["id"] != 1: return {"ignored": True}
+            db.user_id = user["id"]
+            if auth_mode == "multi": db.set_setting("timezone", user["timezone"])
+            result = process_update(Tracker(db), body)
+            if result.get("reply"): telegram.send(result["reply"], user_id=db.user_id, actions=False)
+            return result
+        finally: db.close()
 
     @app.get("/api/me")
     def me(minutes: int | None = None, t=Depends(tracker)):

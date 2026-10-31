@@ -5,7 +5,7 @@ import json
 import os
 import sqlite3
 
-TABLES = {"missions", "entries", "parked", "settings", "audit", "packs", "node_state", "level_unlocks", "evidence_log", "node_splits"}
+TABLES = {"missions", "entries", "parked", "settings", "audit", "packs", "node_state", "level_unlocks", "evidence_log", "node_splits", "push_subscriptions", "telegram_updates"}
 
 
 def default_home():

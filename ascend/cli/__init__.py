@@ -2,6 +2,7 @@
 import argparse
 from dataclasses import asdict
 import json
+import re
 from pathlib import Path
 import sys
 
@@ -173,11 +174,12 @@ def render(args, result):
         if quick: lines.append(f"Quick win: {quick['id']} — {quick['title']}{draft} (~{quick['estimate']} min)")
         lines.append(f"Streak  : {result['current_streak']} days (best {result['best_streak']}) · freeze available: {result['freeze_available']}")
         lines.append("Today   : " + ("Logged" if result["today_logged"] else "Pending — log before your 04:00 rollover"))
-        return "\n".join(lines)
+        return "\n".join(re.sub(r"[\x00-\x1f\x7f-\x9f]", " ", line) for line in lines)
     if args.command == "levels":
         return "\n".join(f"{lv['title']} ({lv['lane']}, {'open' if lv['open'] else 'locked'}) {bar(lv['done'], lv['total'])} {lv['done']}/{lv['total']} steps · {lv['active_days']} active days · {lv['minutes']} min" for lv in result)
     if args.command == "stats":
-        return f"Streak: {result['current_streak']} days · best: {result['best_streak']}\nDays logged in last 30: {result['days_last_30']}\nFreezes used this week: {result['freezes_used']}\nMinutes this week: {result['minutes_this_week']}"
+        text = f"Streak: {result['current_streak']} days · best: {result['best_streak']}\nDays logged in last 30: {result['days_last_30']}\nFreezes used this week: {result['freezes_used']}\nMinutes this week: {result['minutes_this_week']}"
+        return text + "".join(f"\n  {lv['title']}: {lv['minutes']} min total" for lv in result["minutes_by_level"])
     if args.command == "heatmap":
         rows = [result[i:i+7] for i in range(0, len(result), 7)]
         return "Mon Tue Wed Thu Fri Sat Sun\n" + "\n".join(" ".join(" # " if day["count"] else " . " for day in week) for week in rows)

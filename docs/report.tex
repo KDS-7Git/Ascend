@@ -134,10 +134,23 @@ also requires HTTPS and VAPID credentials. Browser and transport tests are repor
 separately from live external delivery. No package registry publication or public
 deployment is implied by a successful local build.
 
+\section{Advanced notifications and public endpoints}
+Phase 4 adds environment-configured Telegram delivery, authenticated webhooks,
+and inline quick actions that collect learning text and a next step. Conversations
+expire after twenty minutes, reject secrets, and deduplicate Telegram update IDs.
+They record partial work through the shared application layer.
+
+Web Push uses optional pywebpush dependencies for payload encryption and VAPID
+authentication. Browser subscriptions are isolated per user; endpoint allowlists
+prevent using the subscription API as an arbitrary HTTP client. Expired push
+subscriptions are removed. The PWA requests permission only after an explicit
+button click and supports unsubscribing the current browser. Public streak JSON
+and SVG badges require a separate opt-in and expose no learning notes.
+
 \section{Reproduction}
 \begin{verbatim}
 python3 -m venv .venv
-.venv/bin/pip install -e '.[server,dev]'
+.venv/bin/pip install -e '.[server,dev,push]'
 .venv/bin/playwright install chromium
 .venv/bin/pytest -v
 .venv/bin/python scripts/update_report.py

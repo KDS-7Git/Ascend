@@ -160,6 +160,8 @@ async function renderMore() {
   $("#ntfy-topic").value = account.settings.ntfy_topic || "";
   $("#nudge-enabled").checked = account.settings.nudge_enabled || false;
   $("#logout").hidden = account.auth_mode === "single";
+  $("#public-streak").checked = account.settings.public_streak || false;
+  $("#public-link").textContent = account.settings.public_streak ? `${location.origin}/api/public/${encodeURIComponent(account.username)}/badge.svg` : "Your streak is private.";
 }
 document.querySelectorAll("[data-tab]").forEach(node => node.addEventListener("click", () => switchTab(node.dataset.tab).catch(error => notify(error.message))));
 $("#streak-link").addEventListener("click", () => switchTab("stats").catch(error => notify(error.message)));
@@ -174,13 +176,38 @@ $("#start-mission").addEventListener("click", async () => { try { const args = [
 for (const action of ["pause", "finish"]) $(`#${action}-mission`).addEventListener("click", async () => { try { await command(["mission", action]); await refresh(); await renderMore(); } catch (error) { notify(error.message); } });
 $("#save-mission-time").addEventListener("click", async () => { try { await command(["mission", "nudge-time", $("#mission-time").value || "off"]); await refresh(); notify("Mission reminder saved."); } catch (error) { notify(error.message); } });
 handleForm("#reminder-form", async () => { await command(["config", "nudge-time", $("#nudge-time").value]); await command(["config", "nudge-channel", $("#nudge-channel").value]); if ($("#ntfy-topic").value) await command(["config", "ntfy-topic", $("#ntfy-topic").value]); await command(["config", "nudge-enabled", String($("#nudge-enabled").checked)]); notify("Reminders saved."); });
-$("#test-nudge").addEventListener("click", async () => { try { await command(["config", "nudge-test"]); notify("Test reminder sent."); } catch (error) { notify(error.message); } });
+$("#test-nudge").addEventListener("click", async () => { try { const result = await command(["config", "nudge-test"]); notify(result.sent ? "Test reminder sent." : result.reason); } catch (error) { notify(error.message); } });
 handleForm("#park-form", async () => { await command(["park", $("#park-note").value]); $("#park-note").value = ""; await renderMore(); });
 $("#save-timezone").addEventListener("click", async () => { try { await command(["config", "timezone", $("#account-timezone").value]); await refresh(); notify("Timezone saved."); } catch (error) { notify(error.message); } });
 function setTheme(theme) { if (theme === "system") delete document.documentElement.dataset.theme; else document.documentElement.dataset.theme = theme; localStorage.setItem("ascend-theme", theme); }
 $("#theme").value = localStorage.getItem("ascend-theme") || "system"; setTheme($("#theme").value);
 $("#theme").addEventListener("change", event => setTheme(event.target.value));
-$("#logout").addEventListener("click", () => { sessionStorage.removeItem("ascend-token"); state.token = null; location.reload(); });
+$("#logout").addEventListener("click", async () => { try { await api("logout", {}); sessionStorage.removeItem("ascend-token"); state.token = null; location.reload(); } catch (error) { notify(error.message); } });
+$("#public-streak").addEventListener("change", async event => { try { await command(["config", "public-streak", String(event.target.checked)]); await renderMore(); } catch (error) { notify(error.message); } });
+$("#enable-push").addEventListener("click", async () => {
+  try {
+    if (!("Notification" in window) || !("PushManager" in window) || !window.isSecureContext) throw new Error("Browser notifications require HTTPS and a supported browser.");
+    if (await Notification.requestPermission() !== "granted") throw new Error("Notification permission was not granted.");
+    const {public_key} = await api("push/key");
+    const raw = atob(public_key.replace(/-/g, "+").replace(/_/g, "/") + "=".repeat((4-public_key.length%4)%4));
+    const key = Uint8Array.from(raw, character => character.charCodeAt(0));
+    const worker = await navigator.serviceWorker.ready;
+    const subscription = await worker.pushManager.getSubscription() || await worker.pushManager.subscribe({userVisibleOnly: true, applicationServerKey: key});
+    await api("push/subscriptions", subscription.toJSON());
+    await command(["config", "nudge-channel", "webpush"]);
+    $("#nudge-channel").value = "webpush";
+    $("#push-status").textContent = "This browser is subscribed. Enable reminders and send a test when ready.";
+  } catch (error) { $("#push-status").textContent = error.message; }
+});
+$("#disable-push").addEventListener("click", async () => {
+  try {
+    if (!("serviceWorker" in navigator)) throw new Error("This browser does not support notifications.");
+    const worker = await navigator.serviceWorker.ready;
+    const subscription = await worker.pushManager.getSubscription();
+    if (subscription) { await api("push/subscriptions", {endpoint: subscription.endpoint}, "DELETE"); await subscription.unsubscribe(); }
+    $("#push-status").textContent = "Notifications are disabled on this browser.";
+  } catch (error) { $("#push-status").textContent = error.message; }
+});
 handleForm("#login-form", async () => { try { const result = await api("login", {username: $("#username").value, password: $("#password").value}); state.token = result.token; sessionStorage.setItem("ascend-token", result.token); $("#password").value = ""; $("#login-dialog").close(); await refresh(); await switchTab(state.tab); } catch (error) { $("#login-error").textContent = error.message; } });
 document.addEventListener("keydown", event => { if (event.key.toLowerCase() === "l" && !["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement.tagName) && !$("#sheet").open && state.overview?.next) openLog(state.overview.next); });
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => {});

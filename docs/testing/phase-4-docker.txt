@@ -1,0 +1,100 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 812B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-slim
+#2 DONE 1.8s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 125B done
+#3 DONE 0.0s
+
+#4 [stage-0 1/7] FROM docker.io/library/python:3.12-slim@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159
+#4 resolve docker.io/library/python:3.12-slim@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159 0.0s done
+#4 DONE 0.0s
+
+#5 [stage-0 2/7] WORKDIR /app
+#5 CACHED
+
+#6 [internal] load build context
+#6 transferring context: 9.19MB 0.1s done
+#6 DONE 0.1s
+
+#7 [stage-0 3/7] COPY pyproject.toml setup.py MANIFEST.in README.md LICENSE ./
+#7 DONE 0.0s
+
+#8 [stage-0 4/7] COPY ascend ./ascend
+#8 DONE 0.0s
+
+#9 [stage-0 5/7] COPY web ./web
+#9 DONE 0.0s
+
+#10 [stage-0 6/7] COPY packs/community ./packs/community
+#10 DONE 0.0s
+
+#11 [stage-0 7/7] RUN --mount=type=bind,source=docker,target=/build     if [ -d /build/wheelhouse ]; then       PIP_NO_INDEX=1 PIP_FIND_LINKS=/build/wheelhouse pip install '.[server,push]';     else pip install --no-cache-dir '.[server,push]'; fi     && useradd --uid 10001 --create-home ascend && mkdir /data && chown ascend:ascend /data
+#11 1.497 Looking in links: /build/wheelhouse
+#11 1.497 Processing /app
+#11 1.498   Installing build dependencies: started
+#11 2.179   Installing build dependencies: finished with status 'done'
+#11 2.180   Getting requirements to build wheel: started
+#11 2.347   Getting requirements to build wheel: finished with status 'done'
+#11 2.348   Preparing metadata (pyproject.toml): started
+#11 2.496   Preparing metadata (pyproject.toml): finished with status 'done'
+#11 2.505 Processing /build/wheelhouse/fastapi-0.162.0-py3-none-any.whl (from ascend-tracker==0.1.0)
+#11 2.512 Processing /build/wheelhouse/uvicorn-0.54.0-py3-none-any.whl (from ascend-tracker==0.1.0)
+#11 2.515 Processing /build/wheelhouse/python_multipart-0.0.32-py3-none-any.whl (from ascend-tracker==0.1.0)
+#11 2.517 Processing /build/wheelhouse/pywebpush-2.5.0-py3-none-any.whl (from ascend-tracker==0.1.0)
+#11 2.520 Processing /build/wheelhouse/starlette-1.10.0-py3-none-any.whl (from fastapi<1,>=0.115->ascend-tracker==0.1.0)
+#11 2.522 Processing /build/wheelhouse/pydantic-2.14.2-py3-none-any.whl (from fastapi<1,>=0.115->ascend-tracker==0.1.0)
+#11 2.527 Processing /build/wheelhouse/typing_extensions-4.16.0-py3-none-any.whl (from fastapi<1,>=0.115->ascend-tracker==0.1.0)
+#11 2.530 Processing /build/wheelhouse/typing_inspection-0.4.4-py3-none-any.whl (from fastapi<1,>=0.115->ascend-tracker==0.1.0)
+#11 2.532 Processing /build/wheelhouse/annotated_doc-0.0.5-py3-none-any.whl (from fastapi<1,>=0.115->ascend-tracker==0.1.0)
+#11 2.535 Processing /build/wheelhouse/opentelemetry_api-1.45.2-py3-none-any.whl (from fastapi<1,>=0.115->ascend-tracker==0.1.0)
+#11 2.539 Processing /build/wheelhouse/aiohttp-3.14.5-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (from pywebpush<3,>=2->ascend-tracker==0.1.0)
+#11 2.544 Processing /build/wheelhouse/cryptography-50.0.2-cp311-abi3-manylinux_2_34_x86_64.whl (from pywebpush<3,>=2->ascend-tracker==0.1.0)
+#11 2.554 Processing /build/wheelhouse/http_ece-1.2.1-py2.py3-none-any.whl (from pywebpush<3,>=2->ascend-tracker==0.1.0)
+#11 2.556 Processing /build/wheelhouse/requests-2.34.2-py3-none-any.whl (from pywebpush<3,>=2->ascend-tracker==0.1.0)
+#11 2.558 Processing /build/wheelhouse/py_vapid-1.9.6-py2.py3-none-any.whl (from pywebpush<3,>=2->ascend-tracker==0.1.0)
+#11 2.561 Processing /build/wheelhouse/click-8.5.0-py3-none-any.whl (from uvicorn<1,>=0.30->ascend-tracker==0.1.0)
+#11 2.562 Processing /build/wheelhouse/h11-0.16.0-py3-none-any.whl (from uvicorn<1,>=0.30->ascend-tracker==0.1.0)
+#11 2.566 Processing /build/wheelhouse/cffi-2.1.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (from cryptography>=47.0.0->pywebpush<3,>=2->ascend-tracker==0.1.0)
+#11 2.571 Processing /build/wheelhouse/annotated_types-0.8.0-py3-none-any.whl (from pydantic>=2.9.0->fastapi<1,>=0.115->ascend-tracker==0.1.0)
+#11 2.574 Processing /build/wheelhouse/pydantic_core-2.50.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (from pydantic>=2.9.0->fastapi<1,>=0.115->ascend-tracker==0.1.0)
+#11 2.583 Processing /build/wheelhouse/charset_normalizer-3.5.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (from requests>=2.21.0->pywebpush<3,>=2->ascend-tracker==0.1.0)
+#11 2.589 Processing /build/wheelhouse/idna-3.20-py3-none-any.whl (from requests>=2.21.0->pywebpush<3,>=2->ascend-tracker==0.1.0)
+#11 2.592 Processing /build/wheelhouse/urllib3-2.8.0-py3-none-any.whl (from requests>=2.21.0->pywebpush<3,>=2->ascend-tracker==0.1.0)
+#11 2.595 Processing /build/wheelhouse/certifi-2026.10.23-py3-none-any.whl (from requests>=2.21.0->pywebpush<3,>=2->ascend-tracker==0.1.0)
+#11 2.597 Processing /build/wheelhouse/anyio-4.15.1-py3-none-any.whl (from starlette>=0.46.0->fastapi<1,>=0.115->ascend-tracker==0.1.0)
+#11 2.602 Processing /build/wheelhouse/aiohappyeyeballs-2.7.1-py3-none-any.whl (from aiohttp->pywebpush<3,>=2->ascend-tracker==0.1.0)
+#11 2.603 Processing /build/wheelhouse/aiosignal-1.4.0-py3-none-any.whl (from aiohttp->pywebpush<3,>=2->ascend-tracker==0.1.0)
+#11 2.605 Processing /build/wheelhouse/attrs-26.1.0-py3-none-any.whl (from aiohttp->pywebpush<3,>=2->ascend-tracker==0.1.0)
+#11 2.607 Processing /build/wheelhouse/frozenlist-1.8.0-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (from aiohttp->pywebpush<3,>=2->ascend-tracker==0.1.0)
+#11 2.609 Processing /build/wheelhouse/multidict-7.2.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (from aiohttp->pywebpush<3,>=2->ascend-tracker==0.1.0)
+#11 2.611 Processing /build/wheelhouse/propcache-0.5.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (from aiohttp->pywebpush<3,>=2->ascend-tracker==0.1.0)
+#11 2.614 Processing /build/wheelhouse/yarl-1.25.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (from aiohttp->pywebpush<3,>=2->ascend-tracker==0.1.0)
+#11 2.624 Processing /build/wheelhouse/pycparser-3.12-py3-none-any.whl (from cffi>=2.0.0->cryptography>=47.0.0->pywebpush<3,>=2->ascend-tracker==0.1.0)
+#11 2.632 Building wheels for collected packages: ascend-tracker
+#11 2.633   Building wheel for ascend-tracker (pyproject.toml): started
+#11 2.801   Building wheel for ascend-tracker (pyproject.toml): finished with status 'done'
+#11 2.801   Created wheel for ascend-tracker: filename=ascend_tracker-0.1.0-py3-none-any.whl size=65731 sha256=76d78500042b7431279dce60495ff5233dbef300017dabd4440c5e089ebab65f
+#11 2.801   Stored in directory: /tmp/pip-ephem-wheel-cache-ixb15zc0/wheels/54/1b/b7/aa63e25c8f14f4f2ae7b04e6097bdecb770e455c5c1ee0a600
+#11 2.803 Successfully built ascend-tracker
+#11 2.844 Installing collected packages: urllib3, typing-extensions, python-multipart, pycparser, propcache, multidict, idna, h11, frozenlist, click, charset_normalizer, certifi, attrs, ascend-tracker, annotated-types, annotated-doc, aiohappyeyeballs, yarl, uvicorn, typing-inspection, requests, pydantic-core, opentelemetry-api, cffi, anyio, aiosignal, starlette, pydantic, cryptography, aiohttp, py-vapid, http-ece, fastapi, pywebpush
+#11 4.137 Successfully installed aiohappyeyeballs-2.7.1 aiohttp-3.14.5 aiosignal-1.4.0 annotated-doc-0.0.5 annotated-types-0.8.0 anyio-4.15.1 ascend-tracker-0.1.0 attrs-26.1.0 certifi-2026.10.23 cffi-2.1.1 charset_normalizer-3.5.2 click-8.5.0 cryptography-50.0.2 fastapi-0.162.0 frozenlist-1.8.0 h11-0.16.0 http-ece-1.2.1 idna-3.20 multidict-7.2.1 opentelemetry-api-1.45.2 propcache-0.5.4 py-vapid-1.9.6 pycparser-3.12 pydantic-2.14.2 pydantic-core-2.50.2 python-multipart-0.0.32 pywebpush-2.5.0 requests-2.34.2 starlette-1.10.0 typing-extensions-4.16.0 typing-inspection-0.4.4 urllib3-2.8.0 uvicorn-0.54.0 yarl-1.25.1
+#11 4.137 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#11 DONE 4.3s
+
+#12 exporting to image
+#12 exporting layers
+#12 exporting layers 2.3s done
+#12 exporting manifest sha256:fb921946db0063692e4e8d08909d95ac9ee2df34ba9f9e0eb9f68d046ffadf84 done
+#12 exporting config sha256:bb90fc07cceb7208c77812a52a9fdc86ac2f7ea778561d09b8be18af9c813bf4 done
+#12 exporting attestation manifest sha256:9d308751a2f26965d9db88f72edb19feb3989e3a3aa69f35418af23620b7d481 done
+#12 exporting manifest list sha256:582eb9532a098456de1b5d5b9a98717868c6fd5a91001b9531231561ae2c9ab3 done
+#12 naming to docker.io/library/ascend:phase4 done
+#12 unpacking to docker.io/library/ascend:phase4
+#12 unpacking to docker.io/library/ascend:phase4 0.5s done
+#12 DONE 2.8s

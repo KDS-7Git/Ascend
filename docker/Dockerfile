@@ -6,8 +6,8 @@ COPY web ./web
 COPY packs/community ./packs/community
 RUN --mount=type=bind,source=docker,target=/build \
     if [ -d /build/wheelhouse ]; then \
-      PIP_NO_INDEX=1 PIP_FIND_LINKS=/build/wheelhouse pip install '.[server]'; \
-    else pip install --no-cache-dir '.[server]'; fi \
+      PIP_NO_INDEX=1 PIP_FIND_LINKS=/build/wheelhouse pip install '.[server,push]'; \
+    else pip install --no-cache-dir '.[server,push]'; fi \
     && useradd --uid 10001 --create-home ascend && mkdir /data && chown ascend:ascend /data
 USER ascend
 ENV ASCEND_HOME=/data

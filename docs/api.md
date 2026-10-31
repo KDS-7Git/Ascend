@@ -28,6 +28,13 @@ at rest. Browser tokens are session-scoped, and CLI tokens are stored with mode 
 | `GET /api/search?q=text` | Reverse chronological substring matches |
 | `GET /api/account` | Current account and reminder preferences |
 | `POST /api/command` | `{argv:[...],pack_text?:"..."}`; same application commands as the CLI |
+| `POST /api/logout` | Revoke the current token |
+| `GET /api/push/key` | Configured public VAPID key |
+| `POST /api/push/subscriptions` | Browser PushSubscription JSON; user-scoped upsert |
+| `DELETE /api/push/subscriptions` | `{endpoint}`; remove caller's subscription |
+| `POST /api/telegram/webhook` | Telegram Update; requires the Telegram webhook secret header |
+| `GET /api/public/{username}/streak` | Minimal opt-in streak data; 404 otherwise |
+| `GET /api/public/{username}/badge.svg` | Opt-in SVG badge |
 
 `/api/command` supports mission lifecycle, config, edit/undo, backfill, split,
 verification, and parking. It rejects client-only timer installation and pack
