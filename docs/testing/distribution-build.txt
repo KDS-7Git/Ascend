@@ -1,0 +1,302 @@
+* Getting build dependencies for sdist...
+running egg_info
+writing ascend_tracker.egg-info/PKG-INFO
+writing dependency_links to ascend_tracker.egg-info/dependency_links.txt
+writing entry points to ascend_tracker.egg-info/entry_points.txt
+writing requirements to ascend_tracker.egg-info/requires.txt
+writing top-level names to ascend_tracker.egg-info/top_level.txt
+reading manifest file 'ascend_tracker.egg-info/SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+adding license file 'LICENSE'
+writing manifest file 'ascend_tracker.egg-info/SOURCES.txt'
+* Building sdist...
+running sdist
+running egg_info
+writing ascend_tracker.egg-info/PKG-INFO
+writing dependency_links to ascend_tracker.egg-info/dependency_links.txt
+writing entry points to ascend_tracker.egg-info/entry_points.txt
+writing requirements to ascend_tracker.egg-info/requires.txt
+writing top-level names to ascend_tracker.egg-info/top_level.txt
+reading manifest file 'ascend_tracker.egg-info/SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+adding license file 'LICENSE'
+writing manifest file 'ascend_tracker.egg-info/SOURCES.txt'
+running check
+creating ascend_tracker-0.1.0
+creating ascend_tracker-0.1.0/ascend
+creating ascend_tracker-0.1.0/ascend/cli
+creating ascend_tracker-0.1.0/ascend/engine
+creating ascend_tracker-0.1.0/ascend/nudge
+creating ascend_tracker-0.1.0/ascend/nudge/channels
+creating ascend_tracker-0.1.0/ascend/server
+creating ascend_tracker-0.1.0/ascend/storage
+creating ascend_tracker-0.1.0/ascend/storage/migrations
+creating ascend_tracker-0.1.0/ascend/verifiers
+creating ascend_tracker-0.1.0/ascend_tracker.egg-info
+creating ascend_tracker-0.1.0/packs/community
+creating ascend_tracker-0.1.0/tests
+creating ascend_tracker-0.1.0/web
+copying files to ascend_tracker-0.1.0...
+copying LICENSE -> ascend_tracker-0.1.0
+copying MANIFEST.in -> ascend_tracker-0.1.0
+copying README.md -> ascend_tracker-0.1.0
+copying pyproject.toml -> ascend_tracker-0.1.0
+copying setup.py -> ascend_tracker-0.1.0
+copying ascend/__init__.py -> ascend_tracker-0.1.0/ascend
+copying ascend/__main__.py -> ascend_tracker-0.1.0/ascend
+copying ascend/application.py -> ascend_tracker-0.1.0/ascend
+copying ascend/registry.py -> ascend_tracker-0.1.0/ascend
+copying ascend/cli/__init__.py -> ascend_tracker-0.1.0/ascend/cli
+copying ascend/cli/remote.py -> ascend_tracker-0.1.0/ascend/cli
+copying ascend/engine/__init__.py -> ascend_tracker-0.1.0/ascend/engine
+copying ascend/engine/levels.py -> ascend_tracker-0.1.0/ascend/engine
+copying ascend/engine/packs.py -> ascend_tracker-0.1.0/ascend/engine
+copying ascend/engine/streak.py -> ascend_tracker-0.1.0/ascend/engine
+copying ascend/engine/validation.py -> ascend_tracker-0.1.0/ascend/engine
+copying ascend/engine/verifiers.py -> ascend_tracker-0.1.0/ascend/engine
+copying ascend/nudge/__init__.py -> ascend_tracker-0.1.0/ascend/nudge
+copying ascend/nudge/channels/__init__.py -> ascend_tracker-0.1.0/ascend/nudge/channels
+copying ascend/nudge/channels/desktop.py -> ascend_tracker-0.1.0/ascend/nudge/channels
+copying ascend/nudge/channels/ntfy.py -> ascend_tracker-0.1.0/ascend/nudge/channels
+copying ascend/nudge/channels/telegram.py -> ascend_tracker-0.1.0/ascend/nudge/channels
+copying ascend/nudge/channels/webpush.py -> ascend_tracker-0.1.0/ascend/nudge/channels
+copying ascend/server/__init__.py -> ascend_tracker-0.1.0/ascend/server
+copying ascend/server/__main__.py -> ascend_tracker-0.1.0/ascend/server
+copying ascend/server/app.py -> ascend_tracker-0.1.0/ascend/server
+copying ascend/server/auth.py -> ascend_tracker-0.1.0/ascend/server
+copying ascend/server/telegram.py -> ascend_tracker-0.1.0/ascend/server
+copying ascend/storage/__init__.py -> ascend_tracker-0.1.0/ascend/storage
+copying ascend/storage/migrations/0001_init.sql -> ascend_tracker-0.1.0/ascend/storage/migrations
+copying ascend/storage/migrations/0002_packs.sql -> ascend_tracker-0.1.0/ascend/storage/migrations
+copying ascend/storage/migrations/0003_multiuser.sql -> ascend_tracker-0.1.0/ascend/storage/migrations
+copying ascend/storage/migrations/0004_notifications.sql -> ascend_tracker-0.1.0/ascend/storage/migrations
+copying ascend/verifiers/__init__.py -> ascend_tracker-0.1.0/ascend/verifiers
+copying ascend/verifiers/command.py -> ascend_tracker-0.1.0/ascend/verifiers
+copying ascend/verifiers/file.py -> ascend_tracker-0.1.0/ascend/verifiers
+copying ascend/verifiers/git.py -> ascend_tracker-0.1.0/ascend/verifiers
+copying ascend/verifiers/http.py -> ascend_tracker-0.1.0/ascend/verifiers
+copying ascend/verifiers/manual.py -> ascend_tracker-0.1.0/ascend/verifiers
+copying ascend/verifiers/plugin.py -> ascend_tracker-0.1.0/ascend/verifiers
+copying ascend/verifiers/plugin_worker.py -> ascend_tracker-0.1.0/ascend/verifiers
+copying ascend_tracker.egg-info/PKG-INFO -> ascend_tracker-0.1.0/ascend_tracker.egg-info
+copying ascend_tracker.egg-info/SOURCES.txt -> ascend_tracker-0.1.0/ascend_tracker.egg-info
+copying ascend_tracker.egg-info/dependency_links.txt -> ascend_tracker-0.1.0/ascend_tracker.egg-info
+copying ascend_tracker.egg-info/entry_points.txt -> ascend_tracker-0.1.0/ascend_tracker.egg-info
+copying ascend_tracker.egg-info/requires.txt -> ascend_tracker-0.1.0/ascend_tracker.egg-info
+copying ascend_tracker.egg-info/top_level.txt -> ascend_tracker-0.1.0/ascend_tracker.egg-info
+copying packs/community/blender-first-scene.toml -> ascend_tracker-0.1.0/packs/community
+copying packs/community/home-hack-lab.toml -> ascend_tracker-0.1.0/packs/community
+copying packs/community/python-file-tool.toml -> ascend_tracker-0.1.0/packs/community
+copying packs/community/registry.json -> ascend_tracker-0.1.0/packs/community
+copying tests/test_cli.py -> ascend_tracker-0.1.0/tests
+copying tests/test_core.py -> ascend_tracker-0.1.0/tests
+copying tests/test_distribution.py -> ascend_tracker-0.1.0/tests
+copying tests/test_integration.py -> ascend_tracker-0.1.0/tests
+copying tests/test_nudge.py -> ascend_tracker-0.1.0/tests
+copying tests/test_packs.py -> ascend_tracker-0.1.0/tests
+copying tests/test_phase2.py -> ascend_tracker-0.1.0/tests
+copying tests/test_phase3.py -> ascend_tracker-0.1.0/tests
+copying tests/test_phase4.py -> ascend_tracker-0.1.0/tests
+copying tests/test_regressions.py -> ascend_tracker-0.1.0/tests
+copying tests/test_streak.py -> ascend_tracker-0.1.0/tests
+copying tests/test_verifiers.py -> ascend_tracker-0.1.0/tests
+copying web/app.js -> ascend_tracker-0.1.0/web
+copying web/icon.svg -> ascend_tracker-0.1.0/web
+copying web/index.html -> ascend_tracker-0.1.0/web
+copying web/manifest.webmanifest -> ascend_tracker-0.1.0/web
+copying web/style.css -> ascend_tracker-0.1.0/web
+copying web/sw.js -> ascend_tracker-0.1.0/web
+Writing ascend_tracker-0.1.0/setup.cfg
+Creating tar archive
+removing 'ascend_tracker-0.1.0' (and everything under it)
+* Building wheel from sdist
+* Getting build dependencies for wheel...
+running egg_info
+writing ascend_tracker.egg-info/PKG-INFO
+writing dependency_links to ascend_tracker.egg-info/dependency_links.txt
+writing entry points to ascend_tracker.egg-info/entry_points.txt
+writing requirements to ascend_tracker.egg-info/requires.txt
+writing top-level names to ascend_tracker.egg-info/top_level.txt
+reading manifest file 'ascend_tracker.egg-info/SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+adding license file 'LICENSE'
+writing manifest file 'ascend_tracker.egg-info/SOURCES.txt'
+* Building wheel...
+running bdist_wheel
+running build
+running build_py
+creating build/lib/ascend
+copying ascend/registry.py -> build/lib/ascend
+copying ascend/application.py -> build/lib/ascend
+copying ascend/__init__.py -> build/lib/ascend
+copying ascend/__main__.py -> build/lib/ascend
+creating build/lib/ascend/verifiers
+copying ascend/verifiers/manual.py -> build/lib/ascend/verifiers
+copying ascend/verifiers/file.py -> build/lib/ascend/verifiers
+copying ascend/verifiers/http.py -> build/lib/ascend/verifiers
+copying ascend/verifiers/__init__.py -> build/lib/ascend/verifiers
+copying ascend/verifiers/plugin.py -> build/lib/ascend/verifiers
+copying ascend/verifiers/git.py -> build/lib/ascend/verifiers
+copying ascend/verifiers/plugin_worker.py -> build/lib/ascend/verifiers
+copying ascend/verifiers/command.py -> build/lib/ascend/verifiers
+creating build/lib/ascend/storage
+copying ascend/storage/__init__.py -> build/lib/ascend/storage
+creating build/lib/ascend/engine
+copying ascend/engine/verifiers.py -> build/lib/ascend/engine
+copying ascend/engine/validation.py -> build/lib/ascend/engine
+copying ascend/engine/streak.py -> build/lib/ascend/engine
+copying ascend/engine/__init__.py -> build/lib/ascend/engine
+copying ascend/engine/levels.py -> build/lib/ascend/engine
+copying ascend/engine/packs.py -> build/lib/ascend/engine
+creating build/lib/ascend/server
+copying ascend/server/telegram.py -> build/lib/ascend/server
+copying ascend/server/app.py -> build/lib/ascend/server
+copying ascend/server/__init__.py -> build/lib/ascend/server
+copying ascend/server/__main__.py -> build/lib/ascend/server
+copying ascend/server/auth.py -> build/lib/ascend/server
+creating build/lib/ascend/nudge
+copying ascend/nudge/__init__.py -> build/lib/ascend/nudge
+creating build/lib/ascend/cli
+copying ascend/cli/__init__.py -> build/lib/ascend/cli
+copying ascend/cli/remote.py -> build/lib/ascend/cli
+creating build/lib/ascend/nudge/channels
+copying ascend/nudge/channels/telegram.py -> build/lib/ascend/nudge/channels
+copying ascend/nudge/channels/desktop.py -> build/lib/ascend/nudge/channels
+copying ascend/nudge/channels/webpush.py -> build/lib/ascend/nudge/channels
+copying ascend/nudge/channels/__init__.py -> build/lib/ascend/nudge/channels
+copying ascend/nudge/channels/ntfy.py -> build/lib/ascend/nudge/channels
+running egg_info
+writing ascend_tracker.egg-info/PKG-INFO
+writing dependency_links to ascend_tracker.egg-info/dependency_links.txt
+writing entry points to ascend_tracker.egg-info/entry_points.txt
+writing requirements to ascend_tracker.egg-info/requires.txt
+writing top-level names to ascend_tracker.egg-info/top_level.txt
+reading manifest file 'ascend_tracker.egg-info/SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+adding license file 'LICENSE'
+writing manifest file 'ascend_tracker.egg-info/SOURCES.txt'
+creating build/lib/ascend/storage/migrations
+copying ascend/storage/migrations/0001_init.sql -> build/lib/ascend/storage/migrations
+copying ascend/storage/migrations/0004_notifications.sql -> build/lib/ascend/storage/migrations
+copying ascend/storage/migrations/0003_multiuser.sql -> build/lib/ascend/storage/migrations
+copying ascend/storage/migrations/0002_packs.sql -> build/lib/ascend/storage/migrations
+installing to build/bdist.linux-x86_64/wheel
+running install
+running install_lib
+creating build/bdist.linux-x86_64/wheel
+creating build/bdist.linux-x86_64/wheel/ascend
+creating build/bdist.linux-x86_64/wheel/ascend/web
+copying build/lib/ascend/web/index.html -> build/bdist.linux-x86_64/wheel/./ascend/web
+copying build/lib/ascend/web/icon.svg -> build/bdist.linux-x86_64/wheel/./ascend/web
+copying build/lib/ascend/web/app.js -> build/bdist.linux-x86_64/wheel/./ascend/web
+copying build/lib/ascend/web/sw.js -> build/bdist.linux-x86_64/wheel/./ascend/web
+copying build/lib/ascend/web/style.css -> build/bdist.linux-x86_64/wheel/./ascend/web
+copying build/lib/ascend/web/manifest.webmanifest -> build/bdist.linux-x86_64/wheel/./ascend/web
+creating build/bdist.linux-x86_64/wheel/ascend/verifiers
+copying build/lib/ascend/verifiers/manual.py -> build/bdist.linux-x86_64/wheel/./ascend/verifiers
+copying build/lib/ascend/verifiers/file.py -> build/bdist.linux-x86_64/wheel/./ascend/verifiers
+copying build/lib/ascend/verifiers/http.py -> build/bdist.linux-x86_64/wheel/./ascend/verifiers
+copying build/lib/ascend/verifiers/__init__.py -> build/bdist.linux-x86_64/wheel/./ascend/verifiers
+copying build/lib/ascend/verifiers/plugin.py -> build/bdist.linux-x86_64/wheel/./ascend/verifiers
+copying build/lib/ascend/verifiers/git.py -> build/bdist.linux-x86_64/wheel/./ascend/verifiers
+copying build/lib/ascend/verifiers/plugin_worker.py -> build/bdist.linux-x86_64/wheel/./ascend/verifiers
+copying build/lib/ascend/verifiers/command.py -> build/bdist.linux-x86_64/wheel/./ascend/verifiers
+creating build/bdist.linux-x86_64/wheel/ascend/storage
+creating build/bdist.linux-x86_64/wheel/ascend/storage/migrations
+copying build/lib/ascend/storage/migrations/0001_init.sql -> build/bdist.linux-x86_64/wheel/./ascend/storage/migrations
+copying build/lib/ascend/storage/migrations/0004_notifications.sql -> build/bdist.linux-x86_64/wheel/./ascend/storage/migrations
+copying build/lib/ascend/storage/migrations/0003_multiuser.sql -> build/bdist.linux-x86_64/wheel/./ascend/storage/migrations
+copying build/lib/ascend/storage/migrations/0002_packs.sql -> build/bdist.linux-x86_64/wheel/./ascend/storage/migrations
+copying build/lib/ascend/storage/__init__.py -> build/bdist.linux-x86_64/wheel/./ascend/storage
+copying build/lib/ascend/registry.py -> build/bdist.linux-x86_64/wheel/./ascend
+copying build/lib/ascend/application.py -> build/bdist.linux-x86_64/wheel/./ascend
+copying build/lib/ascend/__init__.py -> build/bdist.linux-x86_64/wheel/./ascend
+creating build/bdist.linux-x86_64/wheel/ascend/engine
+copying build/lib/ascend/engine/verifiers.py -> build/bdist.linux-x86_64/wheel/./ascend/engine
+copying build/lib/ascend/engine/validation.py -> build/bdist.linux-x86_64/wheel/./ascend/engine
+copying build/lib/ascend/engine/streak.py -> build/bdist.linux-x86_64/wheel/./ascend/engine
+copying build/lib/ascend/engine/__init__.py -> build/bdist.linux-x86_64/wheel/./ascend/engine
+copying build/lib/ascend/engine/levels.py -> build/bdist.linux-x86_64/wheel/./ascend/engine
+copying build/lib/ascend/engine/packs.py -> build/bdist.linux-x86_64/wheel/./ascend/engine
+copying build/lib/ascend/__main__.py -> build/bdist.linux-x86_64/wheel/./ascend
+creating build/bdist.linux-x86_64/wheel/ascend/server
+copying build/lib/ascend/server/telegram.py -> build/bdist.linux-x86_64/wheel/./ascend/server
+copying build/lib/ascend/server/app.py -> build/bdist.linux-x86_64/wheel/./ascend/server
+copying build/lib/ascend/server/__init__.py -> build/bdist.linux-x86_64/wheel/./ascend/server
+copying build/lib/ascend/server/__main__.py -> build/bdist.linux-x86_64/wheel/./ascend/server
+copying build/lib/ascend/server/auth.py -> build/bdist.linux-x86_64/wheel/./ascend/server
+creating build/bdist.linux-x86_64/wheel/ascend/community
+copying build/lib/ascend/community/registry.json -> build/bdist.linux-x86_64/wheel/./ascend/community
+copying build/lib/ascend/community/python-file-tool.toml -> build/bdist.linux-x86_64/wheel/./ascend/community
+copying build/lib/ascend/community/blender-first-scene.toml -> build/bdist.linux-x86_64/wheel/./ascend/community
+copying build/lib/ascend/community/home-hack-lab.toml -> build/bdist.linux-x86_64/wheel/./ascend/community
+creating build/bdist.linux-x86_64/wheel/ascend/nudge
+copying build/lib/ascend/nudge/__init__.py -> build/bdist.linux-x86_64/wheel/./ascend/nudge
+creating build/bdist.linux-x86_64/wheel/ascend/nudge/channels
+copying build/lib/ascend/nudge/channels/telegram.py -> build/bdist.linux-x86_64/wheel/./ascend/nudge/channels
+copying build/lib/ascend/nudge/channels/desktop.py -> build/bdist.linux-x86_64/wheel/./ascend/nudge/channels
+copying build/lib/ascend/nudge/channels/webpush.py -> build/bdist.linux-x86_64/wheel/./ascend/nudge/channels
+copying build/lib/ascend/nudge/channels/__init__.py -> build/bdist.linux-x86_64/wheel/./ascend/nudge/channels
+copying build/lib/ascend/nudge/channels/ntfy.py -> build/bdist.linux-x86_64/wheel/./ascend/nudge/channels
+creating build/bdist.linux-x86_64/wheel/ascend/cli
+copying build/lib/ascend/cli/__init__.py -> build/bdist.linux-x86_64/wheel/./ascend/cli
+copying build/lib/ascend/cli/remote.py -> build/bdist.linux-x86_64/wheel/./ascend/cli
+running install_egg_info
+Copying ascend_tracker.egg-info to build/bdist.linux-x86_64/wheel/./ascend_tracker-0.1.0-py3.12.egg-info
+running install_scripts
+creating build/bdist.linux-x86_64/wheel/ascend_tracker-0.1.0.dist-info/WHEEL
+creating '/home/kds-hacker/Documents/Projects/ascend/dist/.tmp-f404bq0m/ascend_tracker-0.1.0-py3-none-any.whl' and adding 'build/bdist.linux-x86_64/wheel' to it
+adding 'ascend/__init__.py'
+adding 'ascend/__main__.py'
+adding 'ascend/application.py'
+adding 'ascend/registry.py'
+adding 'ascend/cli/__init__.py'
+adding 'ascend/cli/remote.py'
+adding 'ascend/community/blender-first-scene.toml'
+adding 'ascend/community/home-hack-lab.toml'
+adding 'ascend/community/python-file-tool.toml'
+adding 'ascend/community/registry.json'
+adding 'ascend/engine/__init__.py'
+adding 'ascend/engine/levels.py'
+adding 'ascend/engine/packs.py'
+adding 'ascend/engine/streak.py'
+adding 'ascend/engine/validation.py'
+adding 'ascend/engine/verifiers.py'
+adding 'ascend/nudge/__init__.py'
+adding 'ascend/nudge/channels/__init__.py'
+adding 'ascend/nudge/channels/desktop.py'
+adding 'ascend/nudge/channels/ntfy.py'
+adding 'ascend/nudge/channels/telegram.py'
+adding 'ascend/nudge/channels/webpush.py'
+adding 'ascend/server/__init__.py'
+adding 'ascend/server/__main__.py'
+adding 'ascend/server/app.py'
+adding 'ascend/server/auth.py'
+adding 'ascend/server/telegram.py'
+adding 'ascend/storage/__init__.py'
+adding 'ascend/storage/migrations/0001_init.sql'
+adding 'ascend/storage/migrations/0002_packs.sql'
+adding 'ascend/storage/migrations/0003_multiuser.sql'
+adding 'ascend/storage/migrations/0004_notifications.sql'
+adding 'ascend/verifiers/__init__.py'
+adding 'ascend/verifiers/command.py'
+adding 'ascend/verifiers/file.py'
+adding 'ascend/verifiers/git.py'
+adding 'ascend/verifiers/http.py'
+adding 'ascend/verifiers/manual.py'
+adding 'ascend/verifiers/plugin.py'
+adding 'ascend/verifiers/plugin_worker.py'
+adding 'ascend/web/app.js'
+adding 'ascend/web/icon.svg'
+adding 'ascend/web/index.html'
+adding 'ascend/web/manifest.webmanifest'
+adding 'ascend/web/style.css'
+adding 'ascend/web/sw.js'
+adding 'ascend_tracker-0.1.0.dist-info/licenses/LICENSE'
+adding 'ascend_tracker-0.1.0.dist-info/METADATA'
+adding 'ascend_tracker-0.1.0.dist-info/WHEEL'
+adding 'ascend_tracker-0.1.0.dist-info/entry_points.txt'
+adding 'ascend_tracker-0.1.0.dist-info/top_level.txt'
+adding 'ascend_tracker-0.1.0.dist-info/RECORD'
+removing build/bdist.linux-x86_64/wheel
+Successfully built ascend_tracker-0.1.0.tar.gz and ascend_tracker-0.1.0-py3-none-any.whl

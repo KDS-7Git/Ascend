@@ -4,6 +4,8 @@
 \usepackage{longtable}
 \usepackage{hyperref}
 \usepackage{xcolor}
+\usepackage{graphicx}
+\graphicspath{{screenshots/}{docs/screenshots/}}
 \hypersetup{colorlinks=true,linkcolor=teal,urlcolor=teal}
 \title{Ascend\\\large Implementation and Verification Report}
 \author{KDS-7Git}
@@ -79,6 +81,12 @@ The service worker caches static application assets only. Private API responses
 are not cached. Offline writes are explicitly rejected; no background write queue
 or conflict-resolution system is claimed. Editing and short-window undo retain
 audit rows, and completion undo checks the node revision before reverting state.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{today-desktop.png}
+\caption{Actual Chromium rendering of the Today screen, using a disposable demonstration profile.}
+\end{figure}
 
 \section{Security boundaries}
 Passwords use scrypt with random salts. API tokens are returned once and stored
@@ -160,4 +168,20 @@ pdflatex -interaction=nonstopmode -halt-on-error report.tex
 \end{verbatim}
 The generated status section is refreshed after each milestone. Compile twice to
 resolve the table of contents and internal references.
+
+\section{Handoff artifacts}
+The complete CLI demonstration is saved in
+\texttt{docs/testing/cli-demo.md}; it includes pack installation, mission start,
+backfill, levels, default and time-filtered views, completion, statistics, and
+the notification configuration/test commands. The demonstration uses synthetic
+records in a temporary profile and a stub desktop notifier. It does not alter
+the owner's real log or claim live desktop delivery.
+
+The file tree is recorded in \texttt{docs/testing/file-tree.txt}. Container
+build and smoke transcripts accompany the full pytest outputs. A separate
+standalone-wheel smoke test installs the distribution into a new environment
+without optional dependencies. Screenshots in \texttt{docs/screenshots/} show
+the actual desktop and mobile layouts. All implementation commits use the
+requested KDS-7Git author identity. The repository and release artifacts remain
+local; no registry publication or external deployment has been performed.
 \end{document}

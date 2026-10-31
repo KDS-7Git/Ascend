@@ -1,0 +1,143 @@
+ascend/
+├── .github/
+│   └── workflows/
+│       └── ci.yml
+├── ascend/
+│   ├── cli/
+│   │   ├── __init__.py
+│   │   └── remote.py
+│   ├── engine/
+│   │   ├── __init__.py
+│   │   ├── levels.py
+│   │   ├── packs.py
+│   │   ├── streak.py
+│   │   ├── validation.py
+│   │   └── verifiers.py
+│   ├── nudge/
+│   │   ├── channels/
+│   │   │   ├── __init__.py
+│   │   │   ├── desktop.py
+│   │   │   ├── ntfy.py
+│   │   │   ├── telegram.py
+│   │   │   └── webpush.py
+│   │   └── __init__.py
+│   ├── server/
+│   │   ├── __init__.py
+│   │   ├── __main__.py
+│   │   ├── app.py
+│   │   ├── auth.py
+│   │   └── telegram.py
+│   ├── storage/
+│   │   ├── migrations/
+│   │   │   ├── 0001_init.sql
+│   │   │   ├── 0002_packs.sql
+│   │   │   ├── 0003_multiuser.sql
+│   │   │   └── 0004_notifications.sql
+│   │   └── __init__.py
+│   ├── verifiers/
+│   │   ├── __init__.py
+│   │   ├── command.py
+│   │   ├── file.py
+│   │   ├── git.py
+│   │   ├── http.py
+│   │   ├── manual.py
+│   │   ├── plugin.py
+│   │   └── plugin_worker.py
+│   ├── __init__.py
+│   ├── __main__.py
+│   ├── application.py
+│   └── registry.py
+├── docker/
+│   ├── .dockerignore
+│   ├── Dockerfile
+│   └── docker-compose.yml
+├── docs/
+│   ├── design/
+│   │   ├── hackstreak-spec-v2.md
+│   │   ├── hackstreak-spec.md
+│   │   ├── kickoff-prompt.md
+│   │   ├── new-unit-request-template.md
+│   │   ├── original-readme.md
+│   │   ├── spec-v3-public-release.md
+│   │   └── ui-ux-spec.md
+│   ├── screenshots/
+│   │   ├── path-desktop.png
+│   │   ├── path-mobile.png
+│   │   ├── today-desktop.png
+│   │   └── today-mobile.png
+│   ├── testing/
+│   │   ├── README.md
+│   │   ├── cli-demo.md
+│   │   ├── community-links.txt
+│   │   ├── distribution-build.txt
+│   │   ├── file-tree.txt
+│   │   ├── phase-1-red.txt
+│   │   ├── phase-1.txt
+│   │   ├── phase-1b-red.txt
+│   │   ├── phase-1b.txt
+│   │   ├── phase-2-container.txt
+│   │   ├── phase-2-docker.txt
+│   │   ├── phase-2-packaging-red.txt
+│   │   ├── phase-2-red.txt
+│   │   ├── phase-2.txt
+│   │   ├── phase-3-red.txt
+│   │   ├── phase-3.txt
+│   │   ├── phase-4-container.txt
+│   │   ├── phase-4-docker.txt
+│   │   ├── phase-4-red.txt
+│   │   ├── phase-4.txt
+│   │   ├── spec-decisions.md
+│   │   └── standalone-wheel.txt
+│   ├── api.md
+│   ├── deployment.md
+│   ├── notifications.md
+│   ├── pack-format.md
+│   ├── report-status.tex
+│   ├── report.pdf
+│   ├── report.tex
+│   └── writing-a-verifier.md
+├── examples/
+│   └── README.md
+├── packs/
+│   └── community/
+│       ├── blender-first-scene.toml
+│       ├── home-hack-lab.toml
+│       ├── python-file-tool.toml
+│       └── registry.json
+├── scripts/
+│   ├── build_registry.py
+│   ├── container_smoke.py
+│   ├── demo.py
+│   ├── file_tree.py
+│   ├── screenshots.py
+│   ├── standalone_smoke.py
+│   └── update_report.py
+├── tests/
+│   ├── conftest.py
+│   ├── test_cli.py
+│   ├── test_core.py
+│   ├── test_distribution.py
+│   ├── test_integration.py
+│   ├── test_nudge.py
+│   ├── test_packs.py
+│   ├── test_phase2.py
+│   ├── test_phase3.py
+│   ├── test_phase4.py
+│   ├── test_regressions.py
+│   ├── test_streak.py
+│   └── test_verifiers.py
+├── web/
+│   ├── app.js
+│   ├── icon.svg
+│   ├── index.html
+│   ├── manifest.webmanifest
+│   ├── style.css
+│   └── sw.js
+├── .dockerignore
+├── .gitignore
+├── CONTRIBUTING.md
+├── LICENSE
+├── MANIFEST.in
+├── README.md
+├── pyproject.toml
+└── setup.py
