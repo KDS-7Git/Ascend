@@ -11,6 +11,9 @@ from ascend.nudge.channels.desktop import send
 class NudgeRunner:
     def __init__(self, tracker, sender=None):
         self.tracker = tracker
+        if sender is None and tracker.db.setting("nudge_channel", "desktop") == "ntfy":
+            from ascend.nudge.channels.ntfy import send as ntfy_send
+            sender = lambda message: ntfy_send(message, topic=tracker.db.setting("ntfy_topic"))
         self.sender = sender or send
 
     def message(self):

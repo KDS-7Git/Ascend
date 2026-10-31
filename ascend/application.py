@@ -2,7 +2,7 @@
 
 Rules live in engine; persistence and external checks enter through adapters.
 """
-from dataclasses import asdict
+from dataclasses import asdict, replace
 from datetime import date, datetime, timedelta
 import hashlib
 import json
@@ -11,11 +11,11 @@ import re
 import tempfile
 
 from ascend.engine.levels import next_nodes, open_levels
-from ascend.engine.packs import parse_pack, substitute
+from ascend.engine.packs import Node, parse_pack, substitute
 from ascend.engine.streak import best_streak, logical_date, streak_details
 from ascend.engine.validation import guard_secrets, validate_entry
 from ascend.engine.verifiers import VerifyResult
-from ascend.verifiers import command, file, manual
+from ascend.verifiers import command, file, manual, http, git
 
 
 class Tracker:
@@ -67,7 +67,18 @@ class Tracker:
         digest = hashlib.sha256(text.encode()).hexdigest()
         if digest != row["fingerprint"]:
             self.db.update("packs", "id=?", (pack_id,), fingerprint=digest, trusted=0, reviewed=0)
-        return self.parse(text, self.db.setting(f"vars:{pack_id}", {}))
+        pack = self.parse(text, self.db.setting(f"vars:{pack_id}", {}))
+        splits = {r["node_id"]: json.loads(r["steps"]) for r in self.db.rows("node_splits", "pack_id=?", (pack_id,))}
+        nodes = []
+        for node in pack.nodes:
+            if node.id in splits:
+                previous = node.needs
+                for i, title in enumerate(splits[node.id], 1):
+                    child = Node(f"{node.id}-part-{i}", node.level, title, "S", f"I completed this step: {title}", node.resource, previous, minutes=10)
+                    nodes.append(child); previous = (child.id,)
+                node = replace(node, needs=previous)
+            nodes.append(node)
+        return replace(pack, nodes=tuple(nodes))
 
     def trust_pack(self, pack_id):
         pack = self.pack(pack_id)
@@ -182,9 +193,16 @@ class Tracker:
         with self.db.transaction():
             self.db.connection.execute("""INSERT INTO node_state(user_id,pack_id,node_id,status,done_at,evidence,how)
                 VALUES (?,?,?,?,?,?,?) ON CONFLICT(user_id,pack_id,node_id) DO UPDATE SET
-                status=excluded.status,done_at=excluded.done_at,evidence=excluded.evidence,how=excluded.how""",
+                status=excluded.status,done_at=excluded.done_at,evidence=excluded.evidence,how=excluded.how,revision=node_state.revision+1""",
                 (self.db.user_id, pack.id, node.id, status, self.now().isoformat() if status != "todo" else None, note, how))
             self.audit("mark", {"pack": pack.id, "node": node.id, "status": status, "how": how})
+            if status in {"done", "skipped"}:
+                for split in self.db.rows("node_splits", "pack_id=?", (pack.id,)):
+                    parent = split["node_id"]
+                    children = [f"{parent}-part-{i}" for i in range(1, len(json.loads(split["steps"]))+1)]
+                    states = self.states(pack.id)
+                    if node.id in children and all(states.get(c, {}).get("status") in {"done", "skipped"} for c in children):
+                        self.mark(f"{pack.id}:{parent}", "done", "All user-defined parts completed")
         return {"node": node.id, "status": status, "how": how}
 
     def backfill(self, references):
@@ -193,10 +211,17 @@ class Tracker:
 
     def verify_node(self, pack, node):
         vtype = node.verify.get("type", "manual")
+        if getattr(self, "restricted", False):
+            if vtype in {"command", "git", "http"}:
+                return VerifyResult(False, "This verifier requires administrator permission on a multi-user server")
+            if vtype == "file":
+                target = Path(substitute(node.verify["path"], pack.vars)).expanduser().resolve()
+                root = (self.db.home / "artifacts" / str(self.db.user_id)).resolve()
+                if not target.is_relative_to(root): return VerifyResult(False, "Evidence must be in your server artifact directory")
         if vtype == "command":
             row = self.db.rows("packs", "id=?", (pack.id,))[0]
             if not row["trusted"]: return VerifyResult(False, f"Run ascend pack trust {pack.id} before executing commands")
-        return {"manual": manual, "file": file, "command": command}[vtype].verify(node.verify, pack.vars)
+        return {"manual": manual, "file": file, "command": command, "http": http, "git": git}[vtype].verify(node.verify, pack.vars)
 
     def _auto_evidence(self, pack, node, result):
         if not result.ok or not result.evidence_time or not self.db.setting("auto_counts_for_streak", True): return
@@ -249,8 +274,10 @@ class Tracker:
                                       proof=proof, minutes=minutes, node_id=f"{pack.id}:{node.id}" if node else None,
                                       source="manual", complete=int(completed))
             if completed:
+                before = self.states(pack.id).get(node.id)
                 how = "forced" if force else ("manual" if node.verify.get("type", "manual") == "manual" else "verifier:" + node.verify["type"])
                 self.mark(f"{pack.id}:{node.id}", "done", force or verification.summary, how)
+                self.db.update("entries", "id=?", (entry_id,), completion_before=json.dumps(before), completion_revision=self.states(pack.id)[node.id]["revision"])
         return {"id": entry_id, "day": self.day().isoformat(), "completed": completed,
                 "verification": verification.summary if verification else None}
 
@@ -294,14 +321,80 @@ class Tracker:
         key = key.replace("-", "_")
         if key == "nudge_time": self.validate_time(value)
         elif key == "nudge_channel":
-            if value != "desktop": raise ValueError("Only desktop notifications are available in this phase")
+            if value not in {"desktop", "ntfy"}: raise ValueError("Unknown nudge channel")
+        elif key == "ntfy_topic":
+            if not re.fullmatch(r"[A-Za-z0-9_-]{1,128}", value or ""): raise ValueError("Invalid ntfy topic")
         elif key == "timezone":
             from zoneinfo import ZoneInfo
             try: ZoneInfo(value)
             except (KeyError, ValueError): raise ValueError("Unknown IANA timezone") from None
-        elif key == "auto_counts_for_streak":
+        elif key in {"auto_counts_for_streak", "nudge_enabled"}:
             if value not in {"true", "false"}: raise ValueError("Use true or false")
             value = value == "true"
         else: raise ValueError("Unknown setting")
         self.db.set_setting(key, value)
+        if key == "timezone" and getattr(self, "server_mode", False):
+            self.db.connection.execute("UPDATE users SET timezone=? WHERE id=?", (value, self.db.user_id))
         return {key: value}
+
+    def edit(self, entry_id, learned=None, next_step=None):
+        with self.db.transaction():
+            rows = self.db.rows("entries", "id=?", (entry_id,))
+            if not rows: raise ValueError("Entry not found")
+            entry = rows[0]
+            previous = self.db.rows("entries", "id<?", (entry_id,), order="id DESC")
+            text, step = validate_entry(learned if learned is not None else entry["learned"], next_step if next_step is not None else entry["next_step"],
+                                       entry["proof"], previous[0]["learned"] if previous else None, entry["minutes"], manual=entry["source"] == "manual")
+            self.audit("edit", {"before": entry, "after": {"learned": text, "next_step": step}})
+            self.db.update("entries", "id=?", (entry_id,), learned=text, next_step=step)
+        return {"edited": entry_id}
+
+    def undo(self):
+        with self.db.transaction():
+            rows = self.db.rows("entries", order="id DESC")
+            if not rows: raise ValueError("No entry to undo")
+            entry = rows[0]
+            age = (self.now() - datetime.fromisoformat(entry["logged_at"])).total_seconds()
+            if not 0 <= age <= 600: raise ValueError("Undo is limited to the last 10 minutes")
+            if entry["complete"] and entry["node_id"] and entry["completion_revision"] is not None:
+                pid, nid = entry["node_id"].split(":", 1)
+                state = self.states(pid).get(nid)
+                if state and state["revision"] == entry["completion_revision"]:
+                    before = json.loads(entry["completion_before"] or "null")
+                    self.mark(entry["node_id"], before["status"] if before else "todo", before["evidence"] if before else "Entry undone", before["how"] if before else "manual")
+            self.audit("undo", entry)
+            self.db.connection.execute("DELETE FROM entries WHERE user_id=? AND id=?", (self.db.user_id, entry["id"]))
+        return {"undone": entry["id"]}
+
+    def search(self, query):
+        escaped = query.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+        pattern = f"%{escaped}%"
+        return self.db.rows("entries", "(learned LIKE ? ESCAPE '\\' OR next_step LIKE ? ESCAPE '\\' OR proof LIKE ? ESCAPE '\\')", (pattern, pattern, pattern), order="id DESC")
+
+    def split(self, reference, steps):
+        if len(steps) < 2 or any(len(s.strip()) < 3 for s in steps): raise ValueError("Supply at least two concrete smaller steps")
+        guard_secrets(*steps)
+        pack, node = self.resolve_node(reference)
+        if node.id in self.states(pack.id) and self.states(pack.id)[node.id]["status"] != "todo": raise ValueError("Only unfinished nodes can be split")
+        if self.db.rows("node_splits", "pack_id=? AND node_id=?", (pack.id, node.id)): raise ValueError("This node is already split")
+        child_ids = {f"{node.id}-part-{i}" for i in range(1, len(steps)+1)}
+        if child_ids & {n.id for n in pack.nodes}: raise ValueError("Split IDs would collide with existing nodes")
+        with self.db.transaction():
+            self.db.insert("node_splits", pack_id=pack.id, node_id=node.id, steps=json.dumps(steps))
+            self.audit("split", {"pack": pack.id, "node": node.id, "steps": steps})
+        return {"split": node.id, "parts": len(steps)}
+
+    def sync(self):
+        pack = self.pack()
+        proposals = []
+        for node in self.candidates(pack):
+            if node.verify.get("type", "manual") == "manual": continue
+            result = self.check(f"{pack.id}:{node.id}")
+            if result["ok"]: proposals.append(result)
+        self.db.set_setting("proposals", [f"{pack.id}:{p['node']}" for p in proposals if not p["completed"]])
+        return proposals
+
+    def accept(self):
+        results = [self.check(ref, confirm=True) for ref in self.db.setting("proposals", [])]
+        self.db.set_setting("proposals", [])
+        return results

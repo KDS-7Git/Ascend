@@ -1,0 +1,131 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=25mm]{geometry}
+\usepackage{longtable}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\hypersetup{colorlinks=true,linkcolor=teal,urlcolor=teal}
+\title{Ascend\\\large Implementation and Verification Report}
+\author{KDS-7Git}
+\date{\today}
+\begin{document}
+\maketitle
+\begin{abstract}
+Ascend turns a learning roadmap into one concrete next step, a proof-backed
+learning log, and derived progress. It operates as a dependency-free local CLI or
+as an optional server with a browser client. This report records the implementation
+as it evolves, distinguishing automated verification from deployment and habitual
+use that require a real operating environment.
+\end{abstract}
+\tableofcontents
+\newpage
+\section{Scope and specification precedence}
+The supplied three specifications describe one evolving design. Later versions
+supersede conflicting earlier details. Work follows the phases in version 3,
+Section 10: standalone core; local reminders; server and PWA; plugins and community
+distribution; advanced notification channels and public extras. The owner's
+subsequent instruction authorizes completion of all phases with testing and Git
+commits at milestones. Original documents are preserved under \texttt{docs/design/}.
+
+\section{Current build and verification status}
+\input{report-status.tex}
+
+\section{Architecture}
+\begin{longtable}{p{0.23\textwidth}p{0.7\textwidth}}
+\textbf{Component} & \textbf{Responsibility} \\
+\hline
+\texttt{ascend/engine} & Pure streak, pack, prerequisite, level, and validation rules. No subject-specific learning content. \\
+\texttt{ascend/storage} & Scoped SQLite persistence, WAL connections, transactional numbered migrations. \\
+Application layer & Shared use cases for logging, completion, missions, pack trust, corrections, and progress queries. \\
+\texttt{ascend/cli} & Arguments, plain output, and an optional standard-library HTTP client. Remote mode never opens the local database. \\
+\texttt{ascend/verifiers} & Local file and command adapters, HTTP/Git checks, and explicitly trusted extensions. \\
+\texttt{ascend/server} & Optional FastAPI transport, account authentication, API contracts, static assets, and scheduled reminders. \\
+\texttt{web} & Four-screen PWA: Today, Path, Stats, More. Same API and validation as the CLI. \\
+\texttt{ascend/nudge} & Schedule decisions separated from delivery channels. \\
+\end{longtable}
+
+\section{Core rules and persistence}
+The logical day rolls over at 04:00 in the user's timezone. Streaks are computed
+from distinct logged days, never incremented counters. An isolated missing day
+may bridge a chain once per ISO week; the freeze contributes zero days. Two
+consecutive missing days break the chain. Today remains pending until rollover.
+One acceptance-test row incorrectly counts a freeze as an extra day: the retained
+reference algorithm and implemented test yield two logged days, not three.
+
+Manual entries require at least twenty characters of learning and a next step.
+Repeated learning text and recognizable passwords or challenge flags are rejected.
+Partial work counts toward the streak; node completion is a separate decision.
+Backfill adds historical node progress without manufacturing streak entries.
+Main levels use milestone gates when available and otherwise require all steps;
+side levels do not gate the main path. Conservative S/M/L time bounds are
+30/120/240 minutes, with an optional more precise estimate.
+
+Packs remain data, installed as private copies. Stable node identifiers preserve
+progress across pack updates. Review and executable-code trust are independent,
+content-bound decisions. SQLite migrations are applied in order, each in its own
+transaction. Every business table is user-scoped from the first migration; the
+server migration adds account and token tables without rekeying existing logs.
+
+\section{Clients and interaction design}
+The CLI's default view stays within six lines. It presents a mission, level,
+next step, optional quick win, and streak status. The PWA follows the supplied
+four-screen structure. Today emphasizes a single next action, with a visually
+secondary quick win. Path shows level groups, node states, and a separate side
+lane. Stats exposes a heatmap, minutes, and note search. More contains infrequent
+settings and pack management. Layouts are tested at mobile, tablet, and desktop
+sizes. Theme preference is local to the browser.
+
+The service worker caches static application assets only. Private API responses
+are not cached. Offline writes are explicitly rejected; no background write queue
+or conflict-resolution system is claimed. Editing and short-window undo retain
+audit rows, and completion undo checks the node revision before reverting state.
+
+\section{Security boundaries}
+Passwords use scrypt with random salts. API tokens are returned once and stored
+as hashes on the server. CLI token files use mode 0600. Users' data is isolated by
+scoped storage operations, and server logical dates use account timezones.
+Accounts are administrator-created rather than openly registered.
+
+Command verifiers execute argument arrays with \texttt{shell=False}, a ten-second
+timeout, and no implicit \texttt{sudo}. Variables are substituted after splitting
+the trusted template, so values cannot add arguments. Arbitrary command output
+is not retained as evidence because it may contain secrets. Multi-user servers
+restrict executable and network verifiers unless explicitly enabled by an
+administrator; file checks are confined to the user's artifact directory.
+Trusted plugins are code running with the host's permissions, not a security
+sandbox. Network deployment should use TLS and an appropriate reverse proxy.
+
+\section{Testing method}
+The v1 and v2 acceptance tests were written before the implementation. Their
+initial failing run is preserved alongside milestone results. Additional tests
+cover input validation, pack updates, trust invalidation, proof timestamps,
+notifications, account isolation, migrations, concurrent writes, and complete
+browser logging flows. Every milestone runs the cumulative suite before its
+implementation commit. Full command output is retained in \texttt{docs/testing/}.
+
+\section{Deployment and operational limits}
+Standalone mode requires Python 3.11 or newer and no third-party runtime packages.
+Server dependencies are optional extras. Docker uses a non-root runtime and a
+persistent SQLite volume; Compose binds loopback by default. Profiles, tokens,
+environment files, and user data are excluded from version control.
+
+Automated tests do not establish that a real learning habit has lasted a week.
+Android notification delivery requires a configured device/channel; real Web Push
+also requires HTTPS and VAPID credentials. Browser and transport tests are reported
+separately from live external delivery. No package registry publication or public
+deployment is implied by a successful local build.
+
+\section{Reproduction}
+\begin{verbatim}
+python3 -m venv .venv
+.venv/bin/pip install -e '.[server,dev]'
+.venv/bin/playwright install chromium
+.venv/bin/pytest -v
+.venv/bin/python scripts/update_report.py
+cd docs
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{verbatim}
+The generated status section is refreshed after each milestone. Compile twice to
+resolve the table of contents and internal references.
+\end{document}

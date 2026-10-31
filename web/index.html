@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2f6f5e">
+  <meta name="description" content="One small, real step toward the skills that matter to you.">
+  <title>Ascend</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <nav aria-label="Main navigation">
+    <a class="brand" href="#today" aria-label="Ascend home"><img src="/icon.svg" alt="" width="32" height="32">Ascend</a>
+    <button class="nav-item active" data-tab="today" aria-current="page"><span aria-hidden="true">◷</span>Today</button>
+    <button class="nav-item" data-tab="path"><span aria-hidden="true">⌁</span>Path</button>
+    <button class="nav-item" data-tab="stats"><span aria-hidden="true">▥</span>Stats</button>
+    <button class="nav-item" data-tab="more"><span aria-hidden="true">☷</span>More</button>
+    <p class="rail-note">A little, often.</p>
+  </nav>
+  <main id="main">
+    <section id="today" class="screen" aria-labelledby="today-heading">
+      <header class="page-header"><div><p class="eyebrow">ONE STEP AT A TIME</p><h1 id="today-heading">Your next small step.</h1></div><button id="streak-link" class="streak-chip" aria-label="View streak stats">♧ <span id="streak">0</span> days</button></header>
+      <div class="time-chips" role="group" aria-label="Time available">
+        <button data-minutes="10" aria-pressed="false">10 min</button>
+        <button data-minutes="30" aria-pressed="false">30 min</button>
+        <button data-minutes="240" aria-pressed="false">2 hr+</button>
+        <button data-minutes="" aria-pressed="true">Surprise me</button>
+      </div>
+      <div id="today-cards" class="today-cards"></div>
+    </section>
+    <section id="path" class="screen" aria-labelledby="path-heading" hidden>
+      <header class="page-header"><div><p class="eyebrow">THE BIGGER PICTURE</p><h1 id="path-heading">Your path.</h1></div></header>
+      <div id="path-content"></div>
+    </section>
+    <section id="stats" class="screen" aria-labelledby="stats-heading" hidden>
+      <header class="page-header"><div><p class="eyebrow">SMALL STEPS ADD UP</p><h1 id="stats-heading">Look how far.</h1></div></header>
+      <form id="search-form" role="search"><label for="search">Search your notes</label><div class="input-row"><input id="search" type="search" placeholder="A thought, a topic, an aha moment…"><button>Search</button></div></form>
+      <div id="search-results" aria-live="polite"></div>
+      <div id="stats-content"></div>
+    </section>
+    <section id="more" class="screen" aria-labelledby="more-heading" hidden>
+      <header class="page-header"><div><p class="eyebrow">MAKE IT YOURS</p><h1 id="more-heading">The little details.</h1></div></header>
+      <section class="card settings"><h2>Active mission</h2><p id="mission-name">No mission yet.</p><div class="input-row"><select id="mission-pack" aria-label="Mission pack"></select><button id="start-mission">Start mission</button><button id="pause-mission" class="secondary">Pause</button><button id="finish-mission" class="secondary">Finish</button></div><label for="mission-time">Mission reminder override</label><div class="input-row"><input id="mission-time" type="time"><button id="save-mission-time" class="secondary">Save override</button></div></section>
+      <section class="card settings"><h2>Packs</h2><div id="pack-list"></div><form id="install-form"><label for="pack-id">Install a community pack</label><div class="input-row"><input id="pack-id" placeholder="home-hack-lab" required><button>Install</button></div></form><label for="pack-upload">Or choose a TOML pack</label><input id="pack-upload" type="file" accept=".toml"></section>
+      <section class="card settings"><h2>Reminders</h2><form id="reminder-form"><label for="nudge-time">First reminder</label><input id="nudge-time" type="time" value="21:30" required><label for="nudge-channel">Channel</label><select id="nudge-channel"><option value="ntfy">ntfy</option><option value="desktop">Desktop on server</option></select><label for="ntfy-topic">Private ntfy topic</label><input id="ntfy-topic" autocomplete="off" placeholder="Your hard-to-guess topic"><label class="check"><input id="nudge-enabled" type="checkbox">Enable reminders</label><div class="input-row"><button>Save reminders</button><button id="test-nudge" type="button" class="secondary">Send test</button></div></form></section>
+      <section class="card settings"><h2>Appearance</h2><label for="theme">Color theme</label><select id="theme"><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select></section>
+      <section class="card settings"><h2>Parked ideas</h2><p class="muted">Save the thought. Keep your place.</p><form id="park-form"><label for="park-note">An idea for later</label><div class="input-row"><input id="park-note" required><button>Park it</button></div></form><ul id="parked-list"></ul></section>
+      <section class="card settings"><h2>Account / Server</h2><p id="account-info"></p><label for="account-timezone">Timezone</label><div class="input-row"><input id="account-timezone" placeholder="Asia/Kolkata"><button id="save-timezone">Save timezone</button></div><button id="logout" class="secondary">Log out</button></section>
+    </section>
+  </main>
+  <dialog id="sheet" aria-labelledby="sheet-title"><button class="close" aria-label="Close dialog">×</button><div id="sheet-content"></div></dialog>
+  <dialog id="login-dialog" aria-labelledby="login-title"><h2 id="login-title">Welcome back.</h2><p>Sign in to your Ascend server.</p><form id="login-form"><label for="username">Username</label><input id="username" autocomplete="username" required><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required><button>Sign in</button><p id="login-error" role="alert"></p></form></dialog>
+  <div id="notice" role="status" aria-live="polite" hidden></div>
+</body>
+</html>

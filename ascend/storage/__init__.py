@@ -5,7 +5,7 @@ import json
 import os
 import sqlite3
 
-TABLES = {"missions", "entries", "parked", "settings", "audit", "packs", "node_state", "level_unlocks", "evidence_log"}
+TABLES = {"missions", "entries", "parked", "settings", "audit", "packs", "node_state", "level_unlocks", "evidence_log", "node_splits"}
 
 
 def default_home():
@@ -17,7 +17,7 @@ class Database:
         self.home = Path(home or default_home()).expanduser()
         self.home.mkdir(parents=True, exist_ok=True, mode=0o700)
         self.user_id = user_id
-        self.connection = sqlite3.connect(self.home / "ascend.db", timeout=15, isolation_level=None)
+        self.connection = sqlite3.connect(self.home / "ascend.db", timeout=15, isolation_level=None, check_same_thread=False)
         self.connection.row_factory = sqlite3.Row
         self.connection.execute("PRAGMA journal_mode=WAL")
         self.connection.execute("PRAGMA foreign_keys=ON")

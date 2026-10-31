@@ -13,6 +13,7 @@ from ascend.storage import Database
 def parser():
     p = argparse.ArgumentParser(prog="ascend", description="One small, proof-backed step at a time")
     p.add_argument("--json", action="store_true")
+    p.add_argument("--server")
     sub = p.add_subparsers(dest="command")
     today = sub.add_parser("today"); today.add_argument("minutes", type=int, nargs="?")
     done = sub.add_parser("done")
@@ -23,6 +24,7 @@ def parser():
     mission = sub.add_parser("mission").add_subparsers(dest="action", required=True)
     new = mission.add_parser("new"); new.add_argument("title")
     start = mission.add_parser("start"); start.add_argument("pack"); start.add_argument("--nudge-time")
+    mission_time = mission.add_parser("nudge-time"); mission_time.add_argument("time")
     for name in ("finish", "pause", "list"): mission.add_parser(name)
     pack = sub.add_parser("pack").add_subparsers(dest="action", required=True)
     for name in ("install", "lint", "trust", "review", "diff"):
@@ -38,8 +40,15 @@ def parser():
     levels = sub.add_parser("levels"); levels.add_argument("--pack")
     for name in ("stats", "heatmap", "more", "parked", "remind-check"): sub.add_parser(name)
     park = sub.add_parser("park"); park.add_argument("note")
+    resolve = sub.add_parser("resolve"); resolve.add_argument("idea_id", type=int)
     export = sub.add_parser("export"); export.add_argument("path", nargs="?", default="log.md")
     config = sub.add_parser("config"); config.add_argument("key"); config.add_argument("value", nargs="?")
+    login = sub.add_parser("login"); login.add_argument("url", nargs="?")
+    edit = sub.add_parser("edit"); edit.add_argument("entry_id", type=int); edit.add_argument("--learned"); edit.add_argument("--next-step")
+    sub.add_parser("undo")
+    search = sub.add_parser("search"); search.add_argument("query")
+    split = sub.add_parser("split"); split.add_argument("node"); split.add_argument("steps", nargs="+")
+    sub.add_parser("sync"); sub.add_parser("accept")
     sub.add_parser("nudge")
     install = sub.add_parser("install-nudge")
     install.add_argument("--dry-run", action="store_true"); install.add_argument("--directory")
@@ -64,6 +73,12 @@ def execute(tracker, args):
         if args.action == "new": return tracker.new_mission(args.title)
         if args.action == "start": return tracker.start_mission(args.pack, args.nudge_time)
         if args.action == "list": return tracker.db.rows("missions")
+        if args.action == "nudge-time":
+            mission = tracker.active_mission()
+            if not mission: raise ValueError("No active mission")
+            if args.time != "off": tracker.validate_time(args.time)
+            tracker.db.update("missions", "id=?", (mission["id"],), nudge_time=None if args.time == "off" else args.time)
+            return {"nudge_time": args.time}
         return tracker.finish_mission("paused" if args.action == "pause" else "done")
     if command in {"pack", "review"}:
         action = "review" if command == "review" else args.action
@@ -78,7 +93,7 @@ def execute(tracker, args):
                     "done_when": "A small working example saved with an explanation", "resource": "https://docs.python.org/3/"}]})
             target = Path(args.path or f"{pid}.toml"); target.write_text(text)
             return {"created": str(target)}
-        text = pack_text(args.target)
+        text = getattr(args, "target_text", None) or pack_text(args.target)
         if action == "install": return tracker.install_pack(text)
         pack = tracker.parse(text)
         if action == "lint": return {"valid": pack.id, "nodes": len(pack.nodes)}
@@ -99,6 +114,9 @@ def execute(tracker, args):
         return [asdict(n) for n in tracker.candidates(pack)[1:3]]
     if command == "park": return tracker.park(args.note)
     if command == "parked": return tracker.db.rows("parked", "resolved=0")
+    if command == "resolve":
+        tracker.db.update("parked", "id=?", (args.idea_id,), resolved=1)
+        return {"resolved": args.idea_id}
     if command == "export": return tracker.export()
     if command == "remind-check": return tracker.stats()["today_logged"]
     if command == "nudge" or (command == "config" and args.key == "nudge-test"):
@@ -108,6 +126,12 @@ def execute(tracker, args):
         from ascend.nudge import install_timer
         return install_timer(tracker.db.home, args.directory, not args.no_enable, args.dry_run)
     if command == "config": return tracker.configure(args.key, args.value)
+    if command == "edit": return tracker.edit(args.entry_id, args.learned, args.next_step)
+    if command == "undo": return tracker.undo()
+    if command == "search": return tracker.search(args.query)
+    if command == "split": return tracker.split(args.node, args.steps)
+    if command == "sync": return tracker.sync()
+    if command == "accept": return tracker.accept()
     raise ValueError("Unknown command")
 
 
@@ -153,8 +177,22 @@ def main(argv=None):
     args = parser().parse_args(argv)
     db = None
     try:
-        db = Database()
-        result = execute(Tracker(db), args)
+        from ascend.cli.remote import configure_server, login, request, server_url
+        server = server_url(args.server)
+        if args.command == "config" and args.key == "server":
+            result = configure_server(args.value)
+        elif args.command == "login":
+            url = args.url or server
+            if not url: raise ValueError("Supply a server URL")
+            result = login(url)
+        elif server:
+            data = {"argv": argv}
+            if args.command == "pack" and args.action in {"install", "lint", "diff"}:
+                data["pack_text"] = pack_text(args.target)
+            result = request(server, "/api/command", data)
+        else:
+            db = Database()
+            result = execute(Tracker(db), args)
         if args.command == "remind-check": return 0 if result else 1
         if args.command == "export":
             Path(args.path).expanduser().write_text(result)

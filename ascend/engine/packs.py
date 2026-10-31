@@ -6,7 +6,7 @@ import tomllib
 from urllib.parse import urlparse
 
 SIZE_MIN = {"S": 30, "M": 120, "L": 240}
-BUILTINS = {"manual", "file", "command"}
+BUILTINS = {"manual", "file", "command", "http", "git"}
 IDENTIFIER = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 
 

@@ -1,0 +1,91 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.2.0, pluggy-1.7.0 -- /home/kds-hacker/Documents/Projects/ascend/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/kds-hacker/Documents/Projects/ascend
+configfile: pyproject.toml
+testpaths: tests
+plugins: anyio-4.15.1
+collecting ... collected 74 items
+
+tests/test_cli.py::test_cli_end_to_end PASSED                            [  1%]
+tests/test_core.py::test_rejects_invalid_or_secret_entries[too short-None] PASSED [  2%]
+tests/test_core.py::test_rejects_invalid_or_secret_entries[aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-None] PASSED [  4%]
+tests/test_core.py::test_rejects_invalid_or_secret_entries[I found flag{do-not-store-this} today-None] PASSED [  5%]
+tests/test_core.py::test_rejects_invalid_or_secret_entries[I found picoCTF{do-not-store-this}-None] PASSED [  6%]
+tests/test_core.py::test_rejects_invalid_or_secret_entries[I found THM{do-not-store-this} today-None] PASSED [  8%]
+tests/test_core.py::test_rejects_invalid_or_secret_entries[I explained the whole result today-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX] PASSED [  9%]
+tests/test_core.py::test_repeat_and_empty_next_rejected PASSED           [ 10%]
+tests/test_core.py::test_only_one_active_mission PASSED                  [ 12%]
+tests/test_core.py::test_database_idempotent PASSED                      [ 13%]
+tests/test_core.py::test_backfill_has_no_streak PASSED                   [ 14%]
+tests/test_core.py::test_partial_and_complete PASSED                     [ 16%]
+tests/test_core.py::test_failing_file_and_force PASSED                   [ 17%]
+tests/test_core.py::test_active_days_and_minutes PASSED                  [ 18%]
+tests/test_core.py::test_unlock_is_audited PASSED                        [ 20%]
+tests/test_core.py::test_verifier_evidence_uses_actual_day PASSED        [ 21%]
+tests/test_integration.py::test_remote_cli_uses_only_server_database PASSED [ 22%]
+tests/test_integration.py::test_concurrent_server_writes PASSED          [ 24%]
+tests/test_integration.py::test_phase_one_database_upgrades_without_losing_entries PASSED [ 25%]
+tests/test_integration.py::test_browser_complete_flow[390-844] PASSED    [ 27%]
+tests/test_integration.py::test_browser_complete_flow[768-1024] PASSED   [ 28%]
+tests/test_integration.py::test_browser_complete_flow[1440-1000] PASSED  [ 29%]
+tests/test_nudge.py::test_nudge_stops_after_log PASSED                   [ 31%]
+tests/test_nudge.py::test_two_nudges_max_and_risk_text PASSED            [ 32%]
+tests/test_nudge.py::test_mission_override PASSED                        [ 33%]
+tests/test_nudge.py::test_missing_desktop_is_actionable PASSED           [ 35%]
+tests/test_nudge.py::test_units_use_current_profile_and_minute_schedule PASSED [ 36%]
+tests/test_nudge.py::test_failed_send_does_not_consume_slot PASSED       [ 37%]
+tests/test_packs.py::test_lint_rejects_invalid_packs[duplicate] PASSED   [ 39%]
+tests/test_packs.py::test_lint_rejects_invalid_packs[done_when] PASSED   [ 40%]
+tests/test_packs.py::test_lint_rejects_invalid_packs[needs] PASSED       [ 41%]
+tests/test_packs.py::test_lint_rejects_invalid_packs[cycle] PASSED       [ 43%]
+tests/test_packs.py::test_lint_rejects_invalid_packs[size] PASSED        [ 44%]
+tests/test_packs.py::test_lint_rejects_invalid_packs[url] PASSED         [ 45%]
+tests/test_packs.py::test_lint_rejects_invalid_packs[level] PASSED       [ 47%]
+tests/test_packs.py::test_lint_rejects_invalid_packs[no-main] PASSED     [ 48%]
+tests/test_packs.py::test_lint_rejects_invalid_packs[kind] PASSED        [ 50%]
+tests/test_packs.py::test_lint_rejects_invalid_packs[missing-kind] PASSED [ 51%]
+tests/test_packs.py::test_lint_rejects_invalid_packs[verify] PASSED      [ 52%]
+tests/test_packs.py::test_series_expansion PASSED                        [ 54%]
+tests/test_packs.py::test_next_nodes_filtering PASSED                    [ 55%]
+tests/test_packs.py::test_gates_and_side_lane PASSED                     [ 56%]
+tests/test_packs.py::test_milestone_gate_does_not_require_every_exercise PASSED [ 58%]
+tests/test_packs.py::test_proficiency_needs_milestones PASSED            [ 59%]
+tests/test_packs.py::test_pack_update_preserves_progress PASSED          [ 60%]
+tests/test_packs.py::test_engine_is_subject_agnostic PASSED              [ 62%]
+tests/test_packs.py::test_sample_pack_lints_and_keeps_placeholder_vars PASSED [ 63%]
+tests/test_phase2.py::test_api_health_pack_mission_log_and_stats PASSED  [ 64%]
+tests/test_phase2.py::test_multi_user_isolation_and_tokens PASSED        [ 66%]
+tests/test_phase2.py::test_remote_command_validation_no_arbitrary_file_reads PASSED [ 67%]
+tests/test_phase2.py::test_timezone_and_dst_rollover PASSED              [ 68%]
+tests/test_phase2.py::test_edit_undo_are_audited_and_undo_window PASSED  [ 70%]
+tests/test_phase2.py::test_split_does_not_touch_pack_and_unlocks_dependents PASSED [ 71%]
+tests/test_phase2.py::test_ntfy_encodes_utf8_and_keeps_topic_out_of_db PASSED [ 72%]
+tests/test_phase2.py::test_sync_proposes_and_accepts_file_evidence PASSED [ 74%]
+tests/test_phase2.py::test_web_assets_and_no_cache_of_private_api PASSED [ 75%]
+tests/test_streak.py::test_reference_acceptance[days0-5-0] PASSED        [ 77%]
+tests/test_streak.py::test_reference_acceptance[days1-5-1] PASSED        [ 78%]
+tests/test_streak.py::test_reference_acceptance[days2-5-3] PASSED        [ 79%]
+tests/test_streak.py::test_reference_acceptance[days3-5-3] PASSED        [ 81%]
+tests/test_streak.py::test_reference_acceptance[days4-6-2] PASSED        [ 82%]
+tests/test_streak.py::test_reference_acceptance[days5-5-2] PASSED        [ 83%]
+tests/test_streak.py::test_reference_acceptance[days6-5-0] PASSED        [ 85%]
+tests/test_streak.py::test_reference_acceptance[days7-5-2] PASSED        [ 86%]
+tests/test_streak.py::test_iso_week_boundary_and_best PASSED             [ 87%]
+tests/test_streak.py::test_rollover[1-expected0] PASSED                  [ 89%]
+tests/test_streak.py::test_rollover[4-expected1] PASSED                  [ 90%]
+tests/test_streak.py::test_multiple_entries_are_one_day PASSED           [ 91%]
+tests/test_streak.py::test_freezes_can_be_disabled PASSED                [ 93%]
+tests/test_verifiers.py::test_file_expands_home PASSED                   [ 94%]
+tests/test_verifiers.py::test_command_uses_argv_timeout_and_expands_home PASSED [ 95%]
+tests/test_verifiers.py::test_command_timeout PASSED                     [ 97%]
+tests/test_verifiers.py::test_command_vars_cannot_inject_arguments PASSED [ 98%]
+tests/test_verifiers.py::test_trust_required_and_reset_on_edit PASSED    [100%]
+
+=============================== warnings summary ===============================
+.venv/lib/python3.12/site-packages/fastapi/testclient.py:1
+  /home/kds-hacker/Documents/Projects/ascend/.venv/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 74 passed, 1 warning in 12.26s ========================
