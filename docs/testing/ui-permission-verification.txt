@@ -1,0 +1,56 @@
+Final permission scoring, timezone guidance and page-wide cursor grid — 2026-11-01
+
+User-selected scoring policy: one final submission with partial XP, not retry penalties.
+Every permission request requires an explicit typed Allow/Deny decision. The server
+saves the first valid submission, its fixture and correct/total counts. XP is the
+integer floor of the time-based reward multiplied by correct/total: 4/6 within the
+target earns 66 XP; 4/6 at twice the target earns 33 XP. Wrong decisions earn no
+credit. The timer ends on submission. Only 6/6 completes the task; partial results
+can be explicitly skipped while keeping XP, without adding a fully verified task.
+Every result includes the expected decision, selected decision when known, and a
+rule explanation. Disabled identities are denied before considering ownership/admin.
+
+Migration 0007 adds permission_attempts and widens the XP constraint to 0–100.
+All existing XP is copied unchanged. Earlier successful puzzles become final with
+unknown original choices; no selections are fabricated. Unfinished legacy puzzles
+receive one final submission because earlier choices were not saved.
+Reload, new-instance requests, pack edits, expiry and simultaneous submissions cannot
+reset a saved result. Invalid/incomplete choices do not consume the one submission.
+Ending a session before submitting continues to prevent XP.
+
+Profile offers searchable timezone names and a visible Asia/Kolkata / UTC+05:30
+example. Invalid raw offsets receive an actionable format message. Tests save
+Asia/Kolkata and Europe/London and confirm account persistence. No real profile
+timezone was changed by the agent.
+
+The neutral pointer grid extends across the page background as a user-requested
+trial. It stays behind content, fades on pointer leave and honors Profile/OS motion
+settings. The card's grid and one-time glow remain. Docs lowers grid intensity.
+
+Full suite: 173 passed in 97.84s, including 27 integration/browser cases.
+Focused: 25 passed, 27 deselected in 22.41s.
+Coverage includes 0/6, 1/6, 4/6 and 6/6 scoring; overtime; ended sessions; malformed
+booleans; immutable results; account boundaries; concurrent opposite submissions;
+legacy migration preservation; responsive form geometry; partial-result reload and
+skip; timezone feedback/persistence; and the grid outside the challenge card.
+68 Python files pass formatting. F401/F841, JavaScript syntax and whitespace pass.
+
+Visual audit: 95 screenshots and a motion preview, disposable profiles only.
+82 screen/state/viewport axe-core 4.10.3 checks have zero detected violations in the
+selected WCAG 2 A/AA and 2.1 AA rules. Not a complete accessibility certification.
+Shared page alignment and no horizontal overflow checked from 320 to 1920 px.
+Partial results cover desktop, mobile, narrow mobile and mobile dark; page grid
+covers desktop light/dark. Partial-result mobile and page-grid desktop images were
+also manually inspected. All scored test examples belong to disposable accounts.
+
+Live backend restarted with original argv, working directory and environment.
+A private SQLite backup was created. Health and schema 7 checks passed; before/after
+hashes of missions, entries, node states, level unlocks, evidence, lab runs, sessions,
+XP and case receipts are unchanged. The existing permission completion and earned XP
+were not regraded. Live server PID after restart: 761719, port 8420.
+
+Developer handbook and related LaTeX guides explain the formula, rule precedence,
+transaction boundary, schema migration, immutable receipts, UI states and limitations.
+Strict PDF build results are recorded in docs/testing/docs-build.txt.
+
+RESULT: 173 tests passed; 95 captures; 82 axe checks with no detected violations.

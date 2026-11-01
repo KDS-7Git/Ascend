@@ -106,6 +106,17 @@ state and ownership. Allow/Deny groups replace isolated checkboxes. Every reques
 requires an explicit choice, including Deny; saved drafts survive reload. Raw data
 is available in a disclosure. The shared exercise form keeps actions in their own
 row below all fields on desktop and mobile.
+Each permission puzzle accepts one final submission, with proportional XP for
+correct classifications and a rule explanation for every request. All-correct
+submissions complete the task; partial results may be explicitly skipped while
+retaining earned XP. A disabled identity is always denied, even when it owns the
+object or has the admin role. Existing rewards remain unchanged.
+
+Profile's timezone input offers searchable city/timezone suggestions and an explicit
+\texttt{Asia/Kolkata} example for India (UTC+05:30). The server accepts timezone
+names such as \texttt{Europe/London} and \texttt{UTC}, and its error explains the
+format. City zones account for applicable daylight-saving changes. The neutral
+cursor grid also extends across the page background as a user-requested trial.
 
 \subsection{Navigation and information hierarchy}
 The persistent top bar shows the verified XP balance, day streak and a profile avatar. The
@@ -167,13 +178,13 @@ application shell. Private API responses remain uncached. The standalone wheel
 regression checks the guide, font/license and theme asset and serves them from an
 installed wheel outside the source checkout.
 
-The expanded automated suite records 165 passing tests. Browser regressions cover
+The expanded automated suite records 173 passing tests. Browser regressions cover
 inline pack-row geometry, readable previews, in-dialog failure messages, persistence
 of errors, Escape/focus restoration, XP updates after verification, profile/theme/
 timezone persistence, guide search and direct links, and offline help. Navigation
 geometry checks cover the guide drawer, filtering and breakpoint changes. The visual
-audit retains 89 captures at 320, 390, 768, 1024, 1440 and 1920 px, including dark mode,
-plus a short motion preview. Axe-core 4.10.3 checks WCAG 2 A/AA and 2.1 AA tagged rules on 76 screen/state/viewport
+audit retains 95 captures at 320, 390, 768, 1024, 1440 and 1920 px, including dark mode,
+plus a short motion preview. Axe-core 4.10.3 checks WCAG 2 A/AA and 2.1 AA tagged rules on 82 screen/state/viewport
 combinations. Its results are bounded automated evidence, not a claim of complete
 accessibility conformance or an expert usability score.
 
@@ -196,6 +207,8 @@ Retained evidence is in \path{docs/testing/ui-workspace-tests.txt},
 \path{docs/testing/ui-visual-audit.txt}, \path{docs/testing/ui-accessibility.json}
 and \path{docs/screenshots/ui-workspace/}. The concise UI, startup and one-submission
 revision is recorded in \path{docs/testing/ui-refinement-verification.txt}.
+The final permission scoring, timezone guidance and page-wide grid follow-up is in
+\path{docs/testing/ui-permission-verification.txt}.
 The neobrutalism revision is recorded in
 \path{docs/testing/ui-neobrutalism-verification.txt}; the earlier layout revision is in
 \path{docs/testing/ui-layout-review.txt}. Earlier browser, container and local-refresh

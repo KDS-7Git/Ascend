@@ -80,7 +80,7 @@ remain custom. Changing domains clears the track selection. Installing content,
 starting a mission, starting a timed task and completing a task are four separate
 operations, each with its own visible action.
 
-\subsection{Seven records with different responsibilities}
+\subsection{Eight records with different responsibilities}
 \begin{longtable}{P{.23\textwidth}P{.69\textwidth}}
 \textbf{Record} & \textbf{Meaning and invariant}\\\hline
 Mission & The selected learning track: active, paused or done. At most one active
@@ -98,6 +98,8 @@ question snapshot, chosen answer and result. Reload, concurrent requests, new
 instances and pack wording changes cannot reset this decision.\\
 XP award & One immutable reward per account/pack/node, backed by a database primary
 key and an idempotent insert. An award is not a mutable browser counter.\\
+Permission attempt & One final classification of every request, its fixture snapshot
+and correct/total counts. Partial credit does not claim full task completion.\\
 Learning entry & A dated account-scoped note with optional task/proof/minutes and
 completion metadata. Entries drive streak and time summaries; a task mark alone
 does not necessarily create a learning day.\\
@@ -129,7 +131,9 @@ the installed pack independently of the currently selected mission and returns:
 }
 \end{verbatim}
 This is a shape illustration; optional session/exercise values can be null and
-the authoritative fields come from the code. Expected answers are never included.
+the authoritative fields come from the code. Expected answers stay private before
+submission; submitted knowledge checks and permission puzzles include their saved
+result explanations.
 Reading uses \texttt{labs.current} and \texttt{view}, not \texttt{start}. It therefore
 does not create a fixture or restart a clock. Invalid, expired or changed instances
 produce an exercise error while preserving access to the authored task.
@@ -152,6 +156,20 @@ one valid option and save a permanent receipt in migration 0006; malformed choic
 do not consume it. A wrong MCQ answer ends timing, reveals the explanation and earns
 no XP. Continue without XP explicitly skips it. Repeated submissions return the
 first result, and fresh-instance requests cannot bypass the account/pack/node key.
+
+Permission puzzles use the same one-submission lifecycle through migration 0007.
+Every request requires a typed boolean; missing fields and numeric lookalikes are
+rejected without consuming the submission. The server counts correct classifications,
+saves the full fixture and decisions under an account/pack/node key, and ends timing.
+The award is the integer floor of the time-based reward multiplied by correct/total.
+Thus four correct out of six within target earns 66 XP; all incorrect earns zero.
+Only an all-correct result invokes full completion. A partial result has evidence kind
+\texttt{verifier:permission-partial}; it contributes XP but not a fully verified-task
+count. Continue with partial result explicitly skips the unresolved task. Reload,
+concurrent submissions, expiry and fresh-instance requests return the saved outcome.
+The migration preserves existing XP exactly and makes earlier successful puzzles
+final; older selected answers remain unknown. Unfinished legacy puzzles receive one
+new final submission because their earlier choices were not retained.
 
 End session is an explicit alternative to completion. It stores elapsed time and a
 finished timestamp, without marking the node done or granting XP. A later successful
@@ -235,6 +253,9 @@ have a choice before the typed boolean object reaches server validation. The sha
 exercise form uses a column layout and a separate action row, so submit cannot sit
 beside the final input. Numeric and text exercises retain their data/result columns
 on wide screens and stack on narrower ones.
+After a permission submission, controls become a read-only result with each expected
+decision, the selected decision when known, and its rule explanation. The disabled
+identity rule is evaluated before ownership or role: a disabled owner/admin is denied.
 The icon and installed-app colors share the new palette; shell cache v8 replaces
 older assets without caching private API responses.
 
@@ -261,7 +282,8 @@ transforms and opacity; visual checks sample the actual geometry of all three la
 
 Hover uses normal pointer and keyboard affordances. Fine-pointer events update
 pointer coordinates and the nearest 24 px cell on a decorative layer behind the
-main challenge's content. A radial mask reveals a neutral grid around the pointer,
+main challenge's content and a fixed layer across the page background. A radial mask
+reveals a neutral grid around the pointer,
 and a lightly filled cell follows it. The grid replaces the colored spotlight.
 These layers ignore pointer events and clip within that layer, leaving text, controls and
 focus rings intact. Action buttons lift 2 px with a larger hard shadow on hover;
@@ -269,6 +291,8 @@ pressing moves them into the shadow. Navigation icons move slightly, while path
 markers gain an offset shadow. All decorative effects honor the motion setting. There
 is no custom cursor, scroll interception or continuous JavaScript render loop.
 Background animation uses CSS; heading transitions use the Web Animations API.
+The page-wide grid is a user-requested trial. It stays behind content, disappears on
+pointer leave and follows the same motion preference; Docs lowers its intensity.
 These choices bound the work, but do not establish a measured frame-rate guarantee.
 
 Profile exposes the saved On/Off motion preference; the stored enabled value remains

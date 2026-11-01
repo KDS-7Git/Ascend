@@ -76,7 +76,7 @@ Know exactly what a green check establishes.\par
 \item Human assessment: some explanations and changed-case demonstrations need review rather than a machine check.
 \end{itemize}
 Knowledge checks (multiple-choice questions) allow one submitted answer per question. Read the scenario, select an option, then press Submit answer. The server saves your first result and explanation; reloading or requesting a fresh instance cannot reset it. An incorrect answer earns no XP and ends the timer. Continue without XP skips that question so you can move on without claiming completion.\par
-Permission exercises show the action, role, account status and ownership for each request. Choose Allow or Deny for every row, then press Verify my result. Neither choice is selected for you. Your selections survive a reload in this tab, and View raw request data opens the original fixture.\par
+Permission puzzles allow one final submission. Choose Allow or Deny for every request, then press Submit decisions. The result explains each rule and gives equal partial credit for correctly classified requests: XP = the time-based reward × correct requests ÷ total requests, rounded down. Four of six correct within the target earns 66 XP. Incorrect decisions earn no credit. Only all-correct results complete the task; Continue with partial result skips it while retaining earned XP. Reloading or requesting a fresh instance cannot reset your submitted result.\par
 \subsubsection{Built-in logging example}
 \begin{enumerate}
 \item Start the verified exercise.
@@ -84,7 +84,7 @@ Permission exercises show the action, role, account status and ownership for eac
 \item Find the failed event with your exercise marker, ignoring unrelated records.
 \item Enter its request ID and the number of failures for that marker, then verify.
 \end{enumerate}
-Hands-on instances belong to one account and the current pack content. A fresh instance replaces the old one without resetting your accumulated task time. Unfinished instances expire after 24 hours; hands-on exercises allow ten unsuccessful submissions before requiring a fresh instance.\par
+Logging, subnet, integrity and timeline exercises allow ten unsuccessful submissions before requiring a fresh instance. Fresh instances preserve the original timer. Unfinished instances expire after 24 hours. Knowledge checks and permission puzzles have one final submission; their saved results remain available for review.\par
 Passing a small exercise is evidence of that result, not a certificate of overall proficiency. Real learning also means explaining the mechanism and handling an unfamiliar variation.\par
 \noindent\textbf{Related guides:} Timers \& XP, Docker \& external labs\par
 \subsection{Timers \& XP}
@@ -104,7 +104,7 @@ While an attempt is active, the session bar shows elapsed time / target (for exa
 \item Minimum reward: 25 XP. You never lose XP already earned.
 \item One reward per stable task ID and account. Repeating, reopening, or undoing a note does not award it again.
 \end{itemize}
-For a 20-minute target, completing at 20 minutes earns 100 XP, at 30 minutes earns 75 XP, and at 40 minutes earns 50 XP. The timer cannot be paused. Completing, skipping or ending stops that task’s session; later practice is unscored. Ending before verification cannot be used to preserve a higher reward.\par
+For a 20-minute target, completing at 20 minutes earns 100 XP, at 30 minutes earns 75 XP, and at 40 minutes earns 50 XP. The timer cannot be paused. Completing, skipping or ending stops that task’s session; later practice is unscored. Ending before verification cannot be used to preserve a higher reward. Permission puzzles multiply this time-based reward by the fraction of correct decisions, so a partial result may earn fewer than 25 XP or zero.\par
 The app reminds you at three quarters of the target and at the target. Reminders can also use your configured notification channel. External game observations do not establish the exact original solve time; the timer measures your Ascend session.\par
 \begin{verbatim}
 ascend session start PACK:NODE --minutes 20
@@ -131,6 +131,7 @@ The server checks timed reminders every 30 seconds, so delivery is not a precise
 Manage your account without interrupting your learning path.\par
 The avatar in the top bar opens your Profile. It shows your actual account name, verified XP, verified task count, and current day streak. There is no invented rank or profile completion score.\par
 \begin{itemize}
+\item Timezone: search for a city timezone, such as Asia/Kolkata for India (UTC+05:30), Europe/London or UTC, then save. A city timezone also handles daylight-saving changes where applicable; a raw UTC offset is not accepted.
 \item Preferences: choose your timezone, System/Light/Dark appearance and On/Off motion effects. Appearance choices are saved in this browser. Your device’s reduced motion setting always takes priority.
 \item Reminders: configure notification timing and delivery.
 \item Privacy \& account: choose whether to publish a streak badge. Sharing is off unless you enable it.

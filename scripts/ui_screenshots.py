@@ -273,6 +273,11 @@ def main():
                     page.screenshot(path=TARGET / "motion-hover-desktop.png")
                     audit(page, "desktop-light", "today-hover")
                     captures += 1
+                    page.mouse.move(1030, 260)
+                    page.wait_for_timeout(250)
+                    page.screenshot(path=TARGET / "motion-page-grid-desktop.png")
+                    audit(page, "desktop-light", "page-grid")
+                    captures += 1
                     # Inspect actual landing geometry, including the SVG transform origin.
                     for step, milliseconds in enumerate([0, 2430, 4482], start=1):
                         page.locator(".ascent-climber").evaluate(
@@ -309,6 +314,11 @@ def main():
                     page.wait_for_timeout(250)
                     page.screenshot(path=TARGET / "motion-hover-desktop-dark.png")
                     audit(page, "desktop-dark", "today-hover")
+                    captures += 1
+                    page.mouse.move(1030, 260)
+                    page.wait_for_timeout(250)
+                    page.screenshot(path=TARGET / "motion-page-grid-desktop-dark.png")
+                    audit(page, "desktop-dark", "page-grid")
                     captures += 1
                     page.get_by_role("button", name="Stats", exact=True).click()
                     page.wait_for_timeout(900)
@@ -386,7 +396,7 @@ def main():
                         tracker.db.close()
                 tracker = Tracker(Database(folder))
                 policy_ref = "ethical-hacking-foundations:quick-access-check"
-                labs.start(tracker, policy_ref)
+                policy_run = labs.start(tracker, policy_ref)
                 tracker.db.close()
                 for label, width, height, theme in [
                     *cases,
@@ -412,9 +422,50 @@ def main():
                     )
                     audit(page, label, "permission-form")
                     page.get_by_role(
-                        "button", name="Verify my result"
+                        "button", name="Submit decisions"
                     ).scroll_into_view_if_needed()
                     page.screenshot(path=TARGET / f"permission-form-{label}.png")
+                    captures += 1
+                    page.close()
+                tracker = Tracker(Database(folder))
+                decisions = {
+                    r["id"]: r["enabled"]
+                    and (
+                        r["caller"] == r["owner"]
+                        or (r["role"] == "admin" and r["action"] == "read")
+                    )
+                    for r in policy_run["data"]["requests"]
+                }
+                for request_id in ["r1", "r2"]:
+                    decisions[request_id] = not decisions[request_id]
+                assert (
+                    labs.submit(tracker, policy_run["id"], decisions)["exercise"][
+                        "score"
+                    ]["correct"]
+                    == 4
+                )
+                tracker.db.close()
+                for label, width, height, theme in [
+                    *cases,
+                    ("narrow", 320, 740, "light"),
+                ]:
+                    page = browser.new_page(
+                        viewport={"width": width, "height": height},
+                        reduced_motion="reduce",
+                    )
+                    page.add_init_script(
+                        f"localStorage.setItem('ascend-theme', '{theme}')"
+                    )
+                    page.goto(base + "/#challenge/" + policy_ref)
+                    expect(page.locator("#policy-result")).to_have_text(
+                        "4 of 6 correct · +66 XP"
+                    )
+                    page.locator("#policy-result").scroll_into_view_if_needed()
+                    assert page.evaluate(
+                        "document.documentElement.scrollWidth <= innerWidth"
+                    )
+                    audit(page, label, "permission-result")
+                    page.screenshot(path=TARGET / f"permission-result-{label}.png")
                     captures += 1
                     page.close()
                 for theme in ["light", "dark"]:

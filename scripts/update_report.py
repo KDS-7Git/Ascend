@@ -43,6 +43,7 @@ milestones += [
     ("Local UI refresh", "ui-local-refresh.txt"),
     ("Neobrutalism UI", "ui-neobrutalism-verification.txt"),
     ("Challenge UX refinement", "ui-refinement-verification.txt"),
+    ("Permission scoring", "ui-permission-verification.txt"),
 ]
 for milestone, filename in milestones:
     path = ROOT / "docs/testing" / filename

@@ -35,7 +35,12 @@ completion awards
  X(t,b)=\max\left(25,100-\left\lfloor50\frac{\max(0,t-b)}{b}\right\rfloor\right).
 \]
 Completion within target gives 100 XP; twice the target gives 50 XP; the floor is
-25 XP. Only bundled exercises and signed CTF checks qualify. Files, self-marking
+25 XP before partial-credit scoring. A permission puzzle permits one final
+submission and awards $\lfloor X(t,b)c/n\rfloor$ XP for $c$ correct classifications
+out of $n$ requests. Incorrect classifications earn nothing, so this final award
+can be below 25 XP or zero. Only an all-correct puzzle completes the task; partial
+credit ends timing and retains the result for review. Existing awards are unchanged.
+Only bundled exercises and signed CTF checks qualify. Files, self-marking
 and skipped tasks receive no automatic skill XP. Start a session before an external
 check to qualify. XP measures timed verification in this app, not independent speed
 in an external game: the collector observes current game state, not the moment of

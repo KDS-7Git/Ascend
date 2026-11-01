@@ -323,6 +323,11 @@
       "violations": []
     },
     {
+      "viewport": "desktop-light",
+      "screen": "page-grid",
+      "violations": []
+    },
+    {
       "viewport": "desktop-dark",
       "screen": "today-motion",
       "violations": []
@@ -330,6 +335,11 @@
     {
       "viewport": "desktop-dark",
       "screen": "today-hover",
+      "violations": []
+    },
+    {
+      "viewport": "desktop-dark",
+      "screen": "page-grid",
       "violations": []
     },
     {
@@ -380,6 +390,26 @@
     {
       "viewport": "narrow",
       "screen": "permission-form",
+      "violations": []
+    },
+    {
+      "viewport": "desktop",
+      "screen": "permission-result",
+      "violations": []
+    },
+    {
+      "viewport": "mobile",
+      "screen": "permission-result",
+      "violations": []
+    },
+    {
+      "viewport": "mobile-dark",
+      "screen": "permission-result",
+      "violations": []
+    },
+    {
+      "viewport": "narrow",
+      "screen": "permission-result",
       "violations": []
     }
   ]

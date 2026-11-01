@@ -11,6 +11,19 @@ submitted cases receive a receipt without rewriting progress or XP; an existing
 verified outcome takes priority. Old runs did not store a selected option, so
 their review does not invent one.
 
+Migration 0007 adds an immutable \texttt{permission\_attempts} receipt with the
+fixture, selected booleans and correct/total counts. It also widens the XP constraint
+to 0--100 while copying every existing award unchanged. Successful legacy puzzles
+are seeded as final, with unknown original selections; unfinished legacy puzzles
+receive one final submission under the new policy. Exact request keys and boolean
+types are validated before consuming it. Submission, partial scoring and timer
+completion share the same transaction. Concurrent retries return one saved outcome.
+The server multiplies the time-based reward by the correct fraction and rounds
+down; only all-correct results complete the node. Partial awards use
+\texttt{verifier:permission-partial} and are excluded from the fully verified task
+count. Ending before submission still prevents any later XP. The saved explanation
+evaluates disabled identities first, before owner or admin privileges.
+
 The \texttt{lab} verifier accepts \texttt{exercise} equal to logging, subnet,
 access-policy, integrity, timeline or case. Case tasks additionally require a bundled
 \texttt{case\_id}. Typed equality prevents JSON true from substituting for integer 1.
@@ -66,7 +79,7 @@ are bounded correctness tests, not measurements of learning effectiveness.
 \path{GET /api/challenges/{reference}} resolves the caller's installed pack and node,
 returns the node's level/status, its task session and the current public exercise.
 \texttt{labs.current} calls the same ownership, fingerprint and expiry checks as
-\texttt{labs.view} for open exercises; submitted cases use their account-scoped
+\texttt{labs.view} for open exercises; submitted cases and permission puzzles use their account-scoped
 receipt. Reading never calls \texttt{labs.start} or \texttt{timing.start}.
 An invalid instance is reported through \texttt{exercise\_error} while the task's
 instructions remain available. Reading a workspace must not create random fixtures,
