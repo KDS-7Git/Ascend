@@ -1,0 +1,516 @@
+# Generated from docs/curriculum/specialist-paths.json; unreviewed draft.
+[pack]
+"id" = "mobile-application-security"
+"title" = "Mobile Application Security"
+"kind" = "proficiency"
+"version" = 1
+"source" = "ai-draft"
+"reviewed" = false
+
+[vars]
+"lab_dir" = "~/cyber/mobile-application-security"
+
+[[level]]
+"id" = "foundations"
+"title" = "Prove the entry skills in a small lab"
+"lane" = "main"
+
+[[level]]
+"id" = "platform-model"
+"title" = "Locate the mobile trust boundary"
+"lane" = "main"
+
+[[level]]
+"id" = "local-storage"
+"title" = "Find where the app leaves data"
+"lane" = "main"
+
+[[level]]
+"id" = "transport"
+"title" = "Inspect a request without weakening the conclusion"
+"lane" = "main"
+
+[[level]]
+"id" = "components"
+"title" = "Test the component's actual caller"
+"lane" = "main"
+
+[[level]]
+"id" = "backend"
+"title" = "The phone is not the authorization boundary"
+"lane" = "main"
+
+[[level]]
+"id" = "assessment"
+"title" = "Deliver a platform-aware mobile review"
+"lane" = "main"
+
+[[level]]
+"id" = "independent-transfer"
+"title" = "Revisit the skill on a fresh problem"
+"lane" = "main"
+
+[[level]]
+"id" = "recall-lane"
+"title" = "Return later: reasoning checks"
+"lane" = "side"
+
+[[level]]
+"id" = "quick"
+"title" = "Small verified exercises"
+"lane" = "side"
+
+[[node]]
+"id" = "lab-readiness"
+"level" = "foundations"
+"title" = "Start with a verifiable evidence exercise"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Compute the exact content hash of a fresh server-generated evidence fixture and pass its check."
+"brief" = "This small exercise tests evidence integrity. Track entry background: Understand HTTP and application permissions; use an owned test device or appropriate emulator."
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "lab", "exercise" = "integrity" }
+
+[[node]]
+"id" = "foundations-reasoning"
+"level" = "foundations"
+"title" = "Reason it through: Prove the entry skills in a small lab"
+"size" = "S"
+"minutes" = 10
+"needs" = ["lab-readiness"]
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Understand HTTP and application permissions; use an owned test device or appropriate emulator."
+"steps" = ["Work through this preparation: Understand HTTP and application permissions; use an owned test device or appropriate emulator.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "mobile-application-security:foundations" }
+
+[[node]]
+"id" = "foundations-experiment"
+"level" = "foundations"
+"title" = "Investigate: Prove the entry skills in a small lab"
+"size" = "M"
+"minutes" = 60
+"needs" = ["foundations-reasoning"]
+"done_when" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/foundations-experiment.json."
+"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
+"steps" = ["Understand HTTP and application permissions; use an owned test device or appropriate emulator.", "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/foundations-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "foundations-milestone"
+"level" = "foundations"
+"title" = "Apply it to a changed case: Prove the entry skills in a small lab"
+"size" = "M"
+"minutes" = 120
+"needs" = ["foundations-reasoning", "foundations-experiment", "lab-readiness"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/foundations-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
+"steps" = ["Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Transfer: Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.", "Control: Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/foundations-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-foundations"
+"level" = "recall-lane"
+"title" = "Return later: Prove the entry skills in a small lab"
+"size" = "S"
+"minutes" = 10
+"needs" = ["foundations-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct the environment and entry assumptions without following the setup notes."
+"steps" = ["Reconstruct the environment and entry assumptions without following the setup notes.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "mobile-application-security:foundations" }
+
+[[node]]
+"id" = "platform-model-reasoning"
+"level" = "platform-model"
+"title" = "Reason it through: Locate the mobile trust boundary"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Draw app sandbox, OS permissions, local storage and backend boundaries for a toy mobile app."
+"steps" = ["Work through this preparation: Draw app sandbox, OS permissions, local storage and backend boundaries for a toy mobile app.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "mobile-application-security:platform-model" }
+
+[[node]]
+"id" = "platform-model-experiment"
+"level" = "platform-model"
+"title" = "Investigate: Locate the mobile trust boundary"
+"size" = "M"
+"minutes" = 60
+"needs" = ["platform-model-reasoning"]
+"done_when" = "Inventory an owned practice app's manifest/entitlements, components and data flows and map two questions to MASTG tests. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/platform-model-experiment.json."
+"brief" = "Inventory an owned practice app's manifest/entitlements, components and data flows and map two questions to MASTG tests."
+"steps" = ["Draw app sandbox, OS permissions, local storage and backend boundaries for a toy mobile app.", "Inventory an owned practice app's manifest/entitlements, components and data flows and map two questions to MASTG tests.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/platform-model-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "platform-model-milestone"
+"level" = "platform-model"
+"title" = "Apply it to a changed case: Locate the mobile trust boundary"
+"size" = "M"
+"minutes" = 120
+"needs" = ["platform-model-reasoning", "platform-model-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/platform-model-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Inventory an owned practice app's manifest/entitlements, components and data flows and map two questions to MASTG tests."
+"steps" = ["Inventory an owned practice app's manifest/entitlements, components and data flows and map two questions to MASTG tests.", "Transfer: Add an exported component or a new permission in a toy build and reassess exposure.", "Control: Include a permission declaration that does not establish actual sensitive behavior by itself.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/platform-model-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-platform-model"
+"level" = "recall-lane"
+"title" = "Return later: Locate the mobile trust boundary"
+"size" = "S"
+"minutes" = 10
+"needs" = ["platform-model-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain how platform permissions and backend authorization differ."
+"steps" = ["Explain how platform permissions and backend authorization differ.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "mobile-application-security:platform-model" }
+
+[[node]]
+"id" = "local-storage-reasoning"
+"level" = "local-storage"
+"title" = "Reason it through: Find where the app leaves data"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Classify preferences, databases, caches and logs in a practice application's data model."
+"steps" = ["Work through this preparation: Classify preferences, databases, caches and logs in a practice application's data model.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "mobile-application-security:local-storage" }
+
+[[node]]
+"id" = "local-storage-experiment"
+"level" = "local-storage"
+"title" = "Investigate: Find where the app leaves data"
+"size" = "M"
+"minutes" = 60
+"needs" = ["local-storage-reasoning"]
+"done_when" = "Using an owned device/emulator and a sanctioned practice app, locate a synthetic sensitive value, document its storage/access assumptions and test a safer toy implementation. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/local-storage-experiment.json."
+"brief" = "Using an owned device/emulator and a sanctioned practice app, locate a synthetic sensitive value, document its storage/access assumptions and test a safer toy implementation."
+"steps" = ["Classify preferences, databases, caches and logs in a practice application's data model.", "Using an owned device/emulator and a sanctioned practice app, locate a synthetic sensitive value, document its storage/access assumptions and test a safer toy implementation.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/local-storage-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "local-storage-milestone"
+"level" = "local-storage"
+"title" = "Apply it to a changed case: Find where the app leaves data"
+"size" = "M"
+"minutes" = 120
+"needs" = ["local-storage-reasoning", "local-storage-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/local-storage-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Using an owned device/emulator and a sanctioned practice app, locate a synthetic sensitive value, document its storage/access assumptions and test a safer toy implementation."
+"steps" = ["Using an owned device/emulator and a sanctioned practice app, locate a synthetic sensitive value, document its storage/access assumptions and test a safer toy implementation.", "Transfer: Change device state or storage location and predict whether the same extraction method applies.", "Control: Keep intended app persistence working and show that unrelated sandboxed apps do not gain access through the proposed fix.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/local-storage-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-local-storage"
+"level" = "recall-lane"
+"title" = "Return later: Find where the app leaves data"
+"size" = "S"
+"minutes" = 10
+"needs" = ["local-storage-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain encryption-at-rest limits when the app itself can access the key."
+"steps" = ["Explain encryption-at-rest limits when the app itself can access the key.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "mobile-application-security:local-storage" }
+
+[[node]]
+"id" = "transport-reasoning"
+"level" = "transport"
+"title" = "Reason it through: Inspect a request without weakening the conclusion"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Explain the certificate trust path and difference between an interception setup and a production configuration."
+"steps" = ["Work through this preparation: Explain the certificate trust path and difference between an interception setup and a production configuration.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "mobile-application-security:transport" }
+
+[[node]]
+"id" = "transport-experiment"
+"level" = "transport"
+"title" = "Investigate: Inspect a request without weakening the conclusion"
+"size" = "M"
+"minutes" = 60
+"needs" = ["transport-reasoning"]
+"done_when" = "Capture permitted training-app traffic on your own device/emulator, identify transmitted synthetic data and evaluate server identity validation under documented test settings. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/transport-experiment.json."
+"brief" = "Capture permitted training-app traffic on your own device/emulator, identify transmitted synthetic data and evaluate server identity validation under documented test settings."
+"steps" = ["Explain the certificate trust path and difference between an interception setup and a production configuration.", "Capture permitted training-app traffic on your own device/emulator, identify transmitted synthetic data and evaluate server identity validation under documented test settings.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/transport-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "transport-milestone"
+"level" = "transport"
+"title" = "Apply it to a changed case: Inspect a request without weakening the conclusion"
+"size" = "M"
+"minutes" = 120
+"needs" = ["transport-reasoning", "transport-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/transport-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Capture permitted training-app traffic on your own device/emulator, identify transmitted synthetic data and evaluate server identity validation under documented test settings."
+"steps" = ["Capture permitted training-app traffic on your own device/emulator, identify transmitted synthetic data and evaluate server identity validation under documented test settings.", "Transfer: Change the server certificate or hostname and predict acceptance or rejection.", "Control: Verify a valid connection succeeds and an invalid identity is rejected by the corrected toy app.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/transport-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-transport"
+"level" = "recall-lane"
+"title" = "Return later: Inspect a request without weakening the conclusion"
+"size" = "S"
+"minutes" = 10
+"needs" = ["transport-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain why disabling pinning for analysis does not prove a production bypass."
+"steps" = ["Explain why disabling pinning for analysis does not prove a production bypass.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "mobile-application-security:transport" }
+
+[[node]]
+"id" = "components-reasoning"
+"level" = "components"
+"title" = "Reason it through: Test the component's actual caller"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Identify an exported activity, service or deep-link handler in an owned practice app."
+"steps" = ["Work through this preparation: Identify an exported activity, service or deep-link handler in an owned practice app.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "mobile-application-security:components" }
+
+[[node]]
+"id" = "components-experiment"
+"level" = "components"
+"title" = "Investigate: Test the component's actual caller"
+"size" = "M"
+"minutes" = 60
+"needs" = ["components-reasoning"]
+"done_when" = "Test a documented component boundary with benign input and record the caller identity, required permissions and resulting app behavior. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/components-experiment.json."
+"brief" = "Test a documented component boundary with benign input and record the caller identity, required permissions and resulting app behavior."
+"steps" = ["Identify an exported activity, service or deep-link handler in an owned practice app.", "Test a documented component boundary with benign input and record the caller identity, required permissions and resulting app behavior.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/components-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "components-milestone"
+"level" = "components"
+"title" = "Apply it to a changed case: Test the component's actual caller"
+"size" = "M"
+"minutes" = 120
+"needs" = ["components-reasoning", "components-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/components-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Test a documented component boundary with benign input and record the caller identity, required permissions and resulting app behavior."
+"steps" = ["Test a documented component boundary with benign input and record the caller identity, required permissions and resulting app behavior.", "Transfer: Change a deep-link parameter or invoking app identity and predict whether access should be permitted.", "Control: Keep the intended navigation working while rejecting an unauthorized or malformed invocation.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/components-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-components"
+"level" = "recall-lane"
+"title" = "Return later: Test the component's actual caller"
+"size" = "S"
+"minutes" = 10
+"needs" = ["components-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain why an exported component is a review target rather than automatically a vulnerability."
+"steps" = ["Explain why an exported component is a review target rather than automatically a vulnerability.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "mobile-application-security:components" }
+
+[[node]]
+"id" = "backend-reasoning"
+"level" = "backend"
+"title" = "Reason it through: The phone is not the authorization boundary"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Model two mobile users and backend objects using synthetic accounts."
+"steps" = ["Work through this preparation: Model two mobile users and backend objects using synthetic accounts.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "mobile-application-security:backend" }
+
+[[node]]
+"id" = "backend-experiment"
+"level" = "backend"
+"title" = "Investigate: The phone is not the authorization boundary"
+"size" = "M"
+"minutes" = 60
+"needs" = ["backend-reasoning"]
+"done_when" = "Exercise a training app's API with two roles and verify server-side ownership checks independently of the mobile interface. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/backend-experiment.json."
+"brief" = "Exercise a training app's API with two roles and verify server-side ownership checks independently of the mobile interface."
+"steps" = ["Model two mobile users and backend objects using synthetic accounts.", "Exercise a training app's API with two roles and verify server-side ownership checks independently of the mobile interface.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/backend-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "backend-milestone"
+"level" = "backend"
+"title" = "Apply it to a changed case: The phone is not the authorization boundary"
+"size" = "M"
+"minutes" = 120
+"needs" = ["backend-reasoning", "backend-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/backend-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Exercise a training app's API with two roles and verify server-side ownership checks independently of the mobile interface."
+"steps" = ["Exercise a training app's API with two roles and verify server-side ownership checks independently of the mobile interface.", "Transfer: Change object ID or request method and repeat the authorization decision with fresh evidence.", "Control: Preserve authorized access and deny an authenticated user who does not own the resource.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/backend-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-backend"
+"level" = "recall-lane"
+"title" = "Return later: The phone is not the authorization boundary"
+"size" = "S"
+"minutes" = 10
+"needs" = ["backend-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain which finding belongs to the mobile client and which belongs to the backend."
+"steps" = ["Explain which finding belongs to the mobile client and which belongs to the backend.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "mobile-application-security:backend" }
+
+[[node]]
+"id" = "assessment-reasoning"
+"level" = "assessment"
+"title" = "Reason it through: Deliver a platform-aware mobile review"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Specify app version, device OS, test state and permitted instrumentation before an assessment."
+"steps" = ["Work through this preparation: Specify app version, device OS, test state and permitted instrumentation before an assessment.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "mobile-application-security:assessment" }
+
+[[node]]
+"id" = "assessment-experiment"
+"level" = "assessment"
+"title" = "Investigate: Deliver a platform-aware mobile review"
+"size" = "M"
+"minutes" = 60
+"needs" = ["assessment-reasoning"]
+"done_when" = "Review a fresh practice app against selected MASTG objectives, produce reproducible findings and retest one correction in an owned build. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/assessment-experiment.json."
+"brief" = "Review a fresh practice app against selected MASTG objectives, produce reproducible findings and retest one correction in an owned build."
+"steps" = ["Specify app version, device OS, test state and permitted instrumentation before an assessment.", "Review a fresh practice app against selected MASTG objectives, produce reproducible findings and retest one correction in an owned build.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/assessment-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "assessment-milestone"
+"level" = "assessment"
+"title" = "Apply it to a changed case: Deliver a platform-aware mobile review"
+"size" = "M"
+"minutes" = 120
+"needs" = ["assessment-reasoning", "assessment-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/assessment-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Review a fresh practice app against selected MASTG objectives, produce reproducible findings and retest one correction in an owned build."
+"steps" = ["Review a fresh practice app against selected MASTG objectives, produce reproducible findings and retest one correction in an owned build.", "Transfer: Change an OS/app version or component permission and independently re-evaluate the affected finding.", "Control: Record a test whose result depends on debug/rooted-device conditions and limit the production claim accordingly.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/assessment-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-assessment"
+"level" = "recall-lane"
+"title" = "Return later: Deliver a platform-aware mobile review"
+"size" = "S"
+"minutes" = 10
+"needs" = ["assessment-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct one finding including the exact platform assumptions required to reproduce it."
+"steps" = ["Reconstruct one finding including the exact platform assumptions required to reproduce it.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "mobile-application-security:assessment" }
+
+[[node]]
+"id" = "independent-transfer-reasoning"
+"level" = "independent-transfer"
+"title" = "Reason it through: Revisit the skill on a fresh problem"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution."
+"steps" = ["Work through this preparation: Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "mobile-application-security:independent-transfer" }
+
+[[node]]
+"id" = "independent-transfer-experiment"
+"level" = "independent-transfer"
+"title" = "Investigate: Revisit the skill on a fresh problem"
+"size" = "M"
+"minutes" = 60
+"needs" = ["independent-transfer-reasoning"]
+"done_when" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/independent-transfer-experiment.json."
+"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
+"steps" = ["Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "independent-transfer-milestone"
+"level" = "independent-transfer"
+"title" = "Apply it to a changed case: Revisit the skill on a fresh problem"
+"size" = "M"
+"minutes" = 120
+"needs" = ["independent-transfer-reasoning", "independent-transfer-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/independent-transfer-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
+"steps" = ["After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Transfer: Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.", "Control: Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-independent-transfer"
+"level" = "recall-lane"
+"title" = "Return later: Revisit the skill on a fresh problem"
+"size" = "S"
+"minutes" = 10
+"needs" = ["independent-transfer-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain what transferred, what required help and which prerequisite needs another small experiment."
+"steps" = ["Explain what transferred, what required help and which prerequisite needs another small experiment.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "mobile-application-security:independent-transfer" }
+
+[[node]]
+"id" = "quick-access-check"
+"level" = "quick"
+"title" = "A ten-minute permission puzzle"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Correctly evaluate every allow/deny decision for a fresh server-generated policy fixture."
+"resource" = "https://mas.owasp.org/MASTG/"
+"verify" = { "type" = "lab", "exercise" = "access-policy" }

@@ -1,0 +1,516 @@
+# Generated from docs/curriculum/specialist-paths.json; unreviewed draft.
+[pack]
+"id" = "ethical-hacking-foundations"
+"title" = "Ethical Hacking and Offensive Security Foundations"
+"kind" = "proficiency"
+"version" = 1
+"source" = "ai-draft"
+"reviewed" = false
+
+[vars]
+"lab_dir" = "~/cyber/ethical-hacking-foundations"
+
+[[level]]
+"id" = "foundations"
+"title" = "Prove the entry skills in a small lab"
+"lane" = "main"
+
+[[level]]
+"id" = "scope"
+"title" = "What authorizes this test?"
+"lane" = "main"
+
+[[level]]
+"id" = "method"
+"title" = "Follow a hypothesis, not a tool list"
+"lane" = "main"
+
+[[level]]
+"id" = "web-boundaries"
+"title" = "Two accounts, one boundary"
+"lane" = "main"
+
+[[level]]
+"id" = "permissions"
+"title" = "Who is this process allowed to be?"
+"lane" = "main"
+
+[[level]]
+"id" = "evidence"
+"title" = "Make a finding another person can verify"
+"lane" = "main"
+
+[[level]]
+"id" = "assessment"
+"title" = "Run a small authorized assessment"
+"lane" = "main"
+
+[[level]]
+"id" = "independent-transfer"
+"title" = "Revisit the skill on a fresh problem"
+"lane" = "main"
+
+[[level]]
+"id" = "recall-lane"
+"title" = "Return later: reasoning checks"
+"lane" = "side"
+
+[[level]]
+"id" = "quick"
+"title" = "Small verified exercises"
+"lane" = "side"
+
+[[node]]
+"id" = "lab-readiness"
+"level" = "foundations"
+"title" = "Start with a verifiable evidence exercise"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Compute the exact content hash of a fresh server-generated evidence fixture and pass its check."
+"brief" = "This small exercise tests evidence integrity. Track entry background: Use a terminal, explain an IP address and HTTP request, and create a disposable local target."
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "lab", "exercise" = "integrity" }
+
+[[node]]
+"id" = "foundations-reasoning"
+"level" = "foundations"
+"title" = "Reason it through: Prove the entry skills in a small lab"
+"size" = "S"
+"minutes" = 10
+"needs" = ["lab-readiness"]
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Use a terminal, explain an IP address and HTTP request, and create a disposable local target."
+"steps" = ["Work through this preparation: Use a terminal, explain an IP address and HTTP request, and create a disposable local target.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:foundations" }
+
+[[node]]
+"id" = "foundations-experiment"
+"level" = "foundations"
+"title" = "Investigate: Prove the entry skills in a small lab"
+"size" = "M"
+"minutes" = 60
+"needs" = ["foundations-reasoning"]
+"done_when" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/foundations-experiment.json."
+"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
+"steps" = ["Use a terminal, explain an IP address and HTTP request, and create a disposable local target.", "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/foundations-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "foundations-milestone"
+"level" = "foundations"
+"title" = "Apply it to a changed case: Prove the entry skills in a small lab"
+"size" = "M"
+"minutes" = 120
+"needs" = ["foundations-reasoning", "foundations-experiment", "lab-readiness"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/foundations-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
+"steps" = ["Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Transfer: Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.", "Control: Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/foundations-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-foundations"
+"level" = "recall-lane"
+"title" = "Return later: Prove the entry skills in a small lab"
+"size" = "S"
+"minutes" = 10
+"needs" = ["foundations-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct the environment and entry assumptions without following the setup notes."
+"steps" = ["Reconstruct the environment and entry assumptions without following the setup notes.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:foundations" }
+
+[[node]]
+"id" = "scope-reasoning"
+"level" = "scope"
+"title" = "Reason it through: What authorizes this test?"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Draw owner, tester and asset boundaries for a fictional assessment; identify one asset whose permission is missing."
+"steps" = ["Work through this preparation: Draw owner, tester and asset boundaries for a fictional assessment; identify one asset whose permission is missing.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:scope" }
+
+[[node]]
+"id" = "scope-experiment"
+"level" = "scope"
+"title" = "Investigate: What authorizes this test?"
+"size" = "M"
+"minutes" = 60
+"needs" = ["scope-reasoning"]
+"done_when" = "Write rules of engagement for a loopback training app, including allowed actions, rate limits, stop conditions, contacts and evidence handling. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/scope-experiment.json."
+"brief" = "Write rules of engagement for a loopback training app, including allowed actions, rate limits, stop conditions, contacts and evidence handling."
+"steps" = ["Draw owner, tester and asset boundaries for a fictional assessment; identify one asset whose permission is missing.", "Write rules of engagement for a loopback training app, including allowed actions, rate limits, stop conditions, contacts and evidence handling.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/scope-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "scope-milestone"
+"level" = "scope"
+"title" = "Apply it to a changed case: What authorizes this test?"
+"size" = "M"
+"minutes" = 120
+"needs" = ["scope-reasoning", "scope-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/scope-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Write rules of engagement for a loopback training app, including allowed actions, rate limits, stop conditions, contacts and evidence handling."
+"steps" = ["Write rules of engagement for a loopback training app, including allowed actions, rate limits, stop conditions, contacts and evidence handling.", "Transfer: Add a third-party login dependency and decide which requests must remain excluded until permission changes.", "Control: Show a technically reachable endpoint that the written scope forbids, and leave it untouched.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/scope-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-scope"
+"level" = "recall-lane"
+"title" = "Return later: What authorizes this test?"
+"size" = "S"
+"minutes" = 10
+"needs" = ["scope-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct the difference between technical access, ownership and authorization."
+"steps" = ["Reconstruct the difference between technical access, ownership and authorization.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:scope" }
+
+[[node]]
+"id" = "method-reasoning"
+"level" = "method"
+"title" = "Reason it through: Follow a hypothesis, not a tool list"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Explain the request path from browser to a local service and distinguish an observation from an assumption."
+"steps" = ["Work through this preparation: Explain the request path from browser to a local service and distinguish an observation from an assumption.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:method" }
+
+[[node]]
+"id" = "method-experiment"
+"level" = "method"
+"title" = "Investigate: Follow a hypothesis, not a tool list"
+"size" = "M"
+"minutes" = 60
+"needs" = ["method-reasoning"]
+"done_when" = "Inventory the disposable app, rank two vulnerability hypotheses, and run a small non-destructive check for each with sanitized request/response evidence. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/method-experiment.json."
+"brief" = "Inventory the disposable app, rank two vulnerability hypotheses, and run a small non-destructive check for each with sanitized request/response evidence."
+"steps" = ["Explain the request path from browser to a local service and distinguish an observation from an assumption.", "Inventory the disposable app, rank two vulnerability hypotheses, and run a small non-destructive check for each with sanitized request/response evidence.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/method-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "method-milestone"
+"level" = "method"
+"title" = "Apply it to a changed case: Follow a hypothesis, not a tool list"
+"size" = "M"
+"minutes" = 120
+"needs" = ["method-reasoning", "method-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/method-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Inventory the disposable app, rank two vulnerability hypotheses, and run a small non-destructive check for each with sanitized request/response evidence."
+"steps" = ["Inventory the disposable app, rank two vulnerability hypotheses, and run a small non-destructive check for each with sanitized request/response evidence.", "Transfer: Move the app to a new port or change a visible header and revise the hypotheses using actual behavior.", "Control: Compare a real route with an intentionally nonexistent route so a generic error page is not counted as a finding.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/method-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-method"
+"level" = "recall-lane"
+"title" = "Return later: Follow a hypothesis, not a tool list"
+"size" = "S"
+"minutes" = 10
+"needs" = ["method-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Given a new banner, name the next observation that could disprove your hypothesis."
+"steps" = ["Given a new banner, name the next observation that could disprove your hypothesis.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:method" }
+
+[[node]]
+"id" = "web-boundaries-reasoning"
+"level" = "web-boundaries"
+"title" = "Reason it through: Two accounts, one boundary"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Create two synthetic accounts in a training app and draw which objects each is intended to access."
+"steps" = ["Work through this preparation: Create two synthetic accounts in a training app and draw which objects each is intended to access.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:web-boundaries" }
+
+[[node]]
+"id" = "web-boundaries-experiment"
+"level" = "web-boundaries"
+"title" = "Investigate: Two accounts, one boundary"
+"size" = "M"
+"minutes" = 60
+"needs" = ["web-boundaries-reasoning"]
+"done_when" = "In an explicitly designated authorization lesson, test an owner and a second account against the same synthetic object and explain the server-side boundary. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/web-boundaries-experiment.json."
+"brief" = "In an explicitly designated authorization lesson, test an owner and a second account against the same synthetic object and explain the server-side boundary."
+"steps" = ["Create two synthetic accounts in a training app and draw which objects each is intended to access.", "In an explicitly designated authorization lesson, test an owner and a second account against the same synthetic object and explain the server-side boundary.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/web-boundaries-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "web-boundaries-milestone"
+"level" = "web-boundaries"
+"title" = "Apply it to a changed case: Two accounts, one boundary"
+"size" = "M"
+"minutes" = 120
+"needs" = ["web-boundaries-reasoning", "web-boundaries-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/web-boundaries-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "In an explicitly designated authorization lesson, test an owner and a second account against the same synthetic object and explain the server-side boundary."
+"steps" = ["In an explicitly designated authorization lesson, test an owner and a second account against the same synthetic object and explain the server-side boundary.", "Transfer: Change the object or HTTP method and predict whether the authorization decision should change.", "Control: Demonstrate legitimate owner access and a denied unauthorized request on a corrected local equivalent.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/web-boundaries-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-web-boundaries"
+"level" = "recall-lane"
+"title" = "Return later: Two accounts, one boundary"
+"size" = "S"
+"minutes" = 10
+"needs" = ["web-boundaries-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain why hiding a button is different from enforcing authorization."
+"steps" = ["Explain why hiding a button is different from enforcing authorization.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:web-boundaries" }
+
+[[node]]
+"id" = "permissions-reasoning"
+"level" = "permissions"
+"title" = "Reason it through: Who is this process allowed to be?"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Use identity and file-permission commands in an unprivileged lab folder; predict read and write access."
+"steps" = ["Work through this preparation: Use identity and file-permission commands in an unprivileged lab folder; predict read and write access.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:permissions" }
+
+[[node]]
+"id" = "permissions-experiment"
+"level" = "permissions"
+"title" = "Investigate: Who is this process allowed to be?"
+"size" = "M"
+"minutes" = 60
+"needs" = ["permissions-reasoning"]
+"done_when" = "Create two local test roles or use a supplied permissions fixture, identify an overbroad grant, and repair it while recording before/after effective access. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/permissions-experiment.json."
+"brief" = "Create two local test roles or use a supplied permissions fixture, identify an overbroad grant, and repair it while recording before/after effective access."
+"steps" = ["Use identity and file-permission commands in an unprivileged lab folder; predict read and write access.", "Create two local test roles or use a supplied permissions fixture, identify an overbroad grant, and repair it while recording before/after effective access.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/permissions-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "permissions-milestone"
+"level" = "permissions"
+"title" = "Apply it to a changed case: Who is this process allowed to be?"
+"size" = "M"
+"minutes" = 120
+"needs" = ["permissions-reasoning", "permissions-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/permissions-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Create two local test roles or use a supplied permissions fixture, identify an overbroad grant, and repair it while recording before/after effective access."
+"steps" = ["Create two local test roles or use a supplied permissions fixture, identify an overbroad grant, and repair it while recording before/after effective access.", "Transfer: Change group membership or parent-directory permissions and predict the new access result.", "Control: Keep the intended reader working and demonstrate that the unrelated role remains denied.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/permissions-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-permissions"
+"level" = "recall-lane"
+"title" = "Return later: Who is this process allowed to be?"
+"size" = "S"
+"minutes" = 10
+"needs" = ["permissions-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain the difference between authentication, authorization and process privilege."
+"steps" = ["Explain the difference between authentication, authorization and process privilege.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:permissions" }
+
+[[node]]
+"id" = "evidence-reasoning"
+"level" = "evidence"
+"title" = "Reason it through: Make a finding another person can verify"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Separate a reproduction step, observed impact, root cause and proposed fix in a sample report."
+"steps" = ["Work through this preparation: Separate a reproduction step, observed impact, root cause and proposed fix in a sample report.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:evidence" }
+
+[[node]]
+"id" = "evidence-experiment"
+"level" = "evidence"
+"title" = "Investigate: Make a finding another person can verify"
+"size" = "M"
+"minutes" = 60
+"needs" = ["evidence-reasoning"]
+"done_when" = "Write one lab finding with exact target/version, minimal steps, sanitized evidence, severity rationale and a tested local repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/evidence-experiment.json."
+"brief" = "Write one lab finding with exact target/version, minimal steps, sanitized evidence, severity rationale and a tested local repair."
+"steps" = ["Separate a reproduction step, observed impact, root cause and proposed fix in a sample report.", "Write one lab finding with exact target/version, minimal steps, sanitized evidence, severity rationale and a tested local repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/evidence-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "evidence-milestone"
+"level" = "evidence"
+"title" = "Apply it to a changed case: Make a finding another person can verify"
+"size" = "M"
+"minutes" = 120
+"needs" = ["evidence-reasoning", "evidence-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/evidence-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Write one lab finding with exact target/version, minimal steps, sanitized evidence, severity rationale and a tested local repair."
+"steps" = ["Write one lab finding with exact target/version, minimal steps, sanitized evidence, severity rationale and a tested local repair.", "Transfer: Give a peer a changed input or repeat on a second clean fixture and identify assumptions missing from the report.", "Control: Show that the fix rejects the bad case without breaking an ordinary valid request.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/evidence-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-evidence"
+"level" = "recall-lane"
+"title" = "Return later: Make a finding another person can verify"
+"size" = "S"
+"minutes" = 10
+"needs" = ["evidence-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct a finding from its root cause without copying the original prose."
+"steps" = ["Reconstruct a finding from its root cause without copying the original prose.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:evidence" }
+
+[[node]]
+"id" = "assessment-reasoning"
+"level" = "assessment"
+"title" = "Reason it through: Run a small authorized assessment"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Plan a bounded 60-minute assessment of a fresh training instance with explicit stop rules."
+"steps" = ["Work through this preparation: Plan a bounded 60-minute assessment of a fresh training instance with explicit stop rules.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:assessment" }
+
+[[node]]
+"id" = "assessment-experiment"
+"level" = "assessment"
+"title" = "Investigate: Run a small authorized assessment"
+"size" = "M"
+"minutes" = 60
+"needs" = ["assessment-reasoning"]
+"done_when" = "Perform scope confirmation, inventory, two hypothesis tests and one reproducible finding or justified negative result; deliver an executive summary and technical evidence. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/assessment-experiment.json."
+"brief" = "Perform scope confirmation, inventory, two hypothesis tests and one reproducible finding or justified negative result; deliver an executive summary and technical evidence."
+"steps" = ["Plan a bounded 60-minute assessment of a fresh training instance with explicit stop rules.", "Perform scope confirmation, inventory, two hypothesis tests and one reproducible finding or justified negative result; deliver an executive summary and technical evidence.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/assessment-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "assessment-milestone"
+"level" = "assessment"
+"title" = "Apply it to a changed case: Run a small authorized assessment"
+"size" = "M"
+"minutes" = 120
+"needs" = ["assessment-reasoning", "assessment-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/assessment-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Perform scope confirmation, inventory, two hypothesis tests and one reproducible finding or justified negative result; deliver an executive summary and technical evidence."
+"steps" = ["Perform scope confirmation, inventory, two hypothesis tests and one reproducible finding or justified negative result; deliver an executive summary and technical evidence.", "Transfer: Change an account role or route and independently reassess whether the suspected weakness remains.", "Control: Include an out-of-scope action you deliberately excluded and a benign workflow that survives the repair.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/assessment-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-assessment"
+"level" = "recall-lane"
+"title" = "Return later: Run a small authorized assessment"
+"size" = "S"
+"minutes" = 10
+"needs" = ["assessment-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain the assessment chain, one false lead and what evidence changed your mind."
+"steps" = ["Explain the assessment chain, one false lead and what evidence changed your mind.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:assessment" }
+
+[[node]]
+"id" = "independent-transfer-reasoning"
+"level" = "independent-transfer"
+"title" = "Reason it through: Revisit the skill on a fresh problem"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution."
+"steps" = ["Work through this preparation: Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:independent-transfer" }
+
+[[node]]
+"id" = "independent-transfer-experiment"
+"level" = "independent-transfer"
+"title" = "Investigate: Revisit the skill on a fresh problem"
+"size" = "M"
+"minutes" = 60
+"needs" = ["independent-transfer-reasoning"]
+"done_when" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/independent-transfer-experiment.json."
+"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
+"steps" = ["Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "independent-transfer-milestone"
+"level" = "independent-transfer"
+"title" = "Apply it to a changed case: Revisit the skill on a fresh problem"
+"size" = "M"
+"minutes" = 120
+"needs" = ["independent-transfer-reasoning", "independent-transfer-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/independent-transfer-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
+"steps" = ["After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Transfer: Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.", "Control: Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-independent-transfer"
+"level" = "recall-lane"
+"title" = "Return later: Revisit the skill on a fresh problem"
+"size" = "S"
+"minutes" = 10
+"needs" = ["independent-transfer-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain what transferred, what required help and which prerequisite needs another small experiment."
+"steps" = ["Explain what transferred, what required help and which prerequisite needs another small experiment.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:independent-transfer" }
+
+[[node]]
+"id" = "quick-access-check"
+"level" = "quick"
+"title" = "A ten-minute permission puzzle"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Correctly evaluate every allow/deny decision for a fresh server-generated policy fixture."
+"resource" = "https://www.offsec.com/courses/pen-200/"
+"verify" = { "type" = "lab", "exercise" = "access-policy" }

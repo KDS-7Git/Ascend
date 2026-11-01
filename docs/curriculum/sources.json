@@ -219,6 +219,336 @@
       "evidence_kind": "official public resource; page inspected",
       "finding": "The public database is an available starting point for matching service findings with documented vulnerability and exploit conditions.",
       "limits": "Individual entries still require version, configuration and source review; a listed exploit is not guaranteed to apply."
+    },
+    {
+      "id": "mitre-emulation",
+      "url": "https://github.com/center-for-threat-informed-defense/adversary_emulation_library",
+      "title": "GitHub - center-for-threat-informed-defense/adversary_emulation_library: An open library of adversary emulation plans designed to empower organizations to test their defenses based",
+      "accessed": "2026-11-01",
+      "status": 200,
+      "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
+      "finding": "Public behavior-based plans support objective-led emulation and explicit prerequisites.",
+      "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
+    },
+    {
+      "id": "offsec-pen",
+      "url": "https://www.offsec.com/courses/pen-200/",
+      "title": "Get your OSCP+ certification with PEN-200 | OffSec",
+      "accessed": "2026-11-01",
+      "status": 200,
+      "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
+      "finding": "The public outline combines enumeration, web/host/directory testing and evidence gathering.",
+      "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
+    },
+    {
+      "id": "microsoft-soc",
+      "url": "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200",
+      "title": "Study guide for Exam SC-200: Microsoft Security Operations Analyst | Microsoft Learn",
+      "accessed": "2026-11-01",
+      "status": 200,
+      "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
+      "finding": "The role outline separates security operations, incident response and hunting.",
+      "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
+    },
+    {
+      "id": "microsoft-ad",
+      "url": "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview",
+      "title": "Active Directory Domain Services overview | Microsoft Learn",
+      "accessed": "2026-11-01",
+      "status": 200,
+      "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
+      "finding": "Directory objects, discovery, authentication and permissions are distinct AD DS responsibilities.",
+      "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
+    },
+    {
+      "id": "microsoft-adcs",
+      "url": "https://learn.microsoft.com/en-us/windows-server/identity/ad-cs/active-directory-certificate-services-overview",
+      "title": "What is Active Directory Certificate Services in Windows Server? | Microsoft Learn",
+      "accessed": "2026-11-01",
+      "status": 200,
+      "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
+      "finding": "AD CS is a Windows Server PKI role with certificate enrollment and identity-use policies.",
+      "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
+    },
+    {
+      "id": "owasp-cloud",
+      "url": "https://owasp.org/www-project-cloud-native-application-security-top-10/",
+      "title": "OWASP Foundation",
+      "accessed": "2026-11-01",
+      "status": 200,
+      "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
+      "finding": "The interim risk list covers configuration, identity, supply chain, secrets and network boundaries.",
+      "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
+    },
+    {
+      "id": "kubernetes-checklist",
+      "url": "https://kubernetes.io/docs/concepts/security/application-security-checklist/",
+      "title": "Application Security Checklist | Kubernetes",
+      "accessed": "2026-11-01",
+      "status": 200,
+      "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
+      "finding": "The official checklist covers service accounts, security contexts, RBAC, images and network policies.",
+      "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
+    },
+    {
+      "id": "owasp-asvs",
+      "url": "https://owasp.org/www-project-application-security-verification-standard/",
+      "title": "Overview | OWASP Application Security Verification Standard",
+      "accessed": "2026-11-01",
+      "status": 200,
+      "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
+      "finding": "ASVS supplies testable application security requirements, not a certification of an untested implementation.",
+      "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
+    },
+    {
+      "id": "digitalcorpora",
+      "url": "https://digitalcorpora.org/corpora/scenarios/",
+      "title": "Scenarios \u2013 Digital Corpora",
+      "accessed": "2026-11-01",
+      "status": 200,
+      "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
+      "finding": "The public scenario index provides training evidence; dataset terms and storage requirements still need checking.",
+      "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
+    },
+    {
+      "id": "stix",
+      "url": "https://oasis-open.github.io/cti-documentation/stix/intro.html",
+      "title": "Introduction to STIX",
+      "accessed": "2026-11-01",
+      "status": 200,
+      "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
+      "finding": "Typed objects and relationships convey threat information; syntax validation cannot establish the underlying claim.",
+      "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
+    },
+    {
+      "id": "flare-vm",
+      "url": "https://github.com/mandiant/flare-vm",
+      "title": "GitHub - mandiant/flare-vm: A collection of software installations scripts for Windows systems that allows you to easily setup and maintain a reverse engineering environment on a V",
+      "accessed": "2026-11-01",
+      "status": 200,
+      "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
+      "finding": "The analysis toolkit is designed for an appropriate Windows virtual environment.",
+      "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
+    },
+    {
+      "id": "remnux",
+      "url": "https://docs.remnux.org/install-distro/get-virtual-appliance",
+      "title": "Get the Virtual Appliance | REMnux Documentation",
+      "accessed": "2026-11-01",
+      "status": 200,
+      "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
+      "finding": "The current guide offers both AMD64 and ARM64 appliances with hypervisor-specific instructions.",
+      "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
+    },
+    {
+      "id": "mastg",
+      "url": "https://mas.owasp.org/MASTG/",
+      "title": "OWASP MASTG - OWASP Mobile Application Security",
+      "accessed": "2026-11-01",
+      "status": 200,
+      "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
+      "finding": "Mobile tests cover platform behavior, storage, transport, components and application code.",
+      "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
+    },
+    {
+      "id": "owasp-api",
+      "url": "https://owasp.org/API-Security/editions/2023/en/0x11-t10/",
+      "title": "OWASP Top 10 API Security Risks \u2013 2023 - OWASP API Security Top 10",
+      "accessed": "2026-11-01",
+      "status": 200,
+      "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
+      "finding": "The 2023 risks distinguish object/property/function authorization, resource consumption and workflow risks.",
+      "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
+    },
+    {
+      "id": "cryptohack",
+      "url": "https://cryptohack.org/courses/",
+      "title": "CryptoHack \u2013 Courses",
+      "accessed": "2026-11-01",
+      "status": 200,
+      "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
+      "finding": "Public courses progress from representations and arithmetic to symmetric and public-key mechanisms.",
+      "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
+    },
+    {
+      "id": "owasp-iot",
+      "url": "https://owasp.org/www-project-internet-of-things/",
+      "title": "OWASP Internet of Things | OWASP Foundation",
+      "accessed": "2026-11-01",
+      "status": 200,
+      "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
+      "finding": "The project covers device, interface, data, firmware-update and ecosystem security concerns.",
+      "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
+    },
+    {
+      "id": "mosquitto",
+      "url": "https://mosquitto.org/documentation/",
+      "title": "Documentation | Eclipse Mosquitto",
+      "accessed": "2026-11-01",
+      "status": 200,
+      "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
+      "finding": "Official references describe broker/client behavior, configuration, authentication and topic controls.",
+      "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
+    },
+    {
+      "id": "cisa-ics",
+      "url": "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices",
+      "title": "ICS Recommended Practices | CISA",
+      "accessed": "2026-11-01",
+      "status": 200,
+      "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
+      "finding": "Industrial guidance addresses operational dependencies and safety as well as network protection.",
+      "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
+    },
+    {
+      "id": "pymodbus",
+      "url": "https://pymodbus.readthedocs.io/en/latest/",
+      "title": "Welcome to PyModbus\u2019s documentation! \u2014 PyModbus 4.0.0dev16 documentation",
+      "accessed": "2026-11-01",
+      "status": 200,
+      "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
+      "finding": "The project provides clients, servers and simulators with version-specific APIs.",
+      "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
+    },
+    {
+      "id": "nist-csf",
+      "url": "https://www.nist.gov/cyberframework",
+      "title": "Cybersecurity Framework | NIST",
+      "accessed": "2026-11-01",
+      "status": 200,
+      "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
+      "finding": "The framework supplies outcomes for governance and cybersecurity risk management.",
+      "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
+    },
+    {
+      "id": "cisa-kev",
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "title": "Known Exploited Vulnerabilities Catalog | CISA",
+      "accessed": "2026-11-01",
+      "status": 200,
+      "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
+      "finding": "Known exploitation informs prioritization; catalog membership does not prove compromise of a particular system.",
+      "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
+    },
+    {
+      "id": "epss",
+      "url": "https://www.first.org/epss/",
+      "title": "Exploit Prediction Scoring System (EPSS)",
+      "accessed": "2026-11-01",
+      "status": 200,
+      "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
+      "finding": "EPSS models exploitation probability, distinct from severity and an organization's specific exposure.",
+      "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
+    },
+    {
+      "id": "cisa-ssvc",
+      "url": "https://www.cisa.gov/stakeholder-specific-vulnerability-categorization-ssvc",
+      "title": "Stakeholder-Specific Vulnerability Categorization (SSVC) | CISA",
+      "accessed": "2026-11-01",
+      "status": 200,
+      "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
+      "finding": "SSVC uses stakeholder context and decision paths to prioritize vulnerability response.",
+      "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
+    },
+    {
+      "id": "owasp-llm",
+      "url": "https://genai.owasp.org/llm-top-10/",
+      "title": "LLMRisks Archive - OWASP Gen AI Security Project",
+      "accessed": "2026-11-01",
+      "status": 200,
+      "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
+      "finding": "The 2025 risks include prompt injection, data boundaries, output handling, excessive agency and resource use.",
+      "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
+    },
+    {
+      "id": "juice-docker",
+      "url": "https://pwning.owasp-juice.shop/companion-guide/latest/part1/running.html",
+      "title": "Running OWASP Juice Shop :: Pwning OWASP Juice Shop",
+      "accessed": "2026-11-01",
+      "status": 200,
+      "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
+      "finding": "The guide documents Docker and ARM variants; actual current image manifests were checked separately.",
+      "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
+    },
+    {
+      "id": "juice-repo",
+      "url": "https://github.com/juice-shop/juice-shop",
+      "title": "GitHub - juice-shop/juice-shop: OWASP Juice Shop: Probably the most modern and sophisticated insecure web application \u00b7 GitHub",
+      "accessed": "2026-11-01",
+      "status": 200,
+      "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
+      "finding": "The intentionally vulnerable application records challenge completion for its running instance.",
+      "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
+    },
+    {
+      "id": "webgoat",
+      "url": "https://github.com/WebGoat/WebGoat",
+      "title": "GitHub - WebGoat/WebGoat: WebGoat is a deliberately insecure application \u00b7 GitHub",
+      "accessed": "2026-11-01",
+      "status": 200,
+      "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
+      "finding": "Interactive lessons are designed for controlled training environments with limited network exposure.",
+      "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
+    },
+    {
+      "id": "dvwa",
+      "url": "https://github.com/digininja/DVWA",
+      "title": "GitHub - digininja/DVWA: Damn Vulnerable Web Application (DVWA) \u00b7 GitHub",
+      "accessed": "2026-11-01",
+      "status": 200,
+      "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
+      "finding": "The repository provides vulnerable web exercises and deployment instructions under an open license.",
+      "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
+    },
+    {
+      "id": "crapi",
+      "url": "https://github.com/OWASP/crAPI",
+      "title": "GitHub - OWASP/crAPI: completely ridiculous API (crAPI) \u00b7 GitHub",
+      "accessed": "2026-11-01",
+      "status": 200,
+      "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
+      "finding": "The deliberately vulnerable API application has a multi-service deployment with separate runtime requirements.",
+      "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
+    },
+    {
+      "id": "goad",
+      "url": "https://github.com/Orange-Cyberdefense/GOAD",
+      "title": "GitHub - Orange-Cyberdefense/GOAD: game of active directory \u00b7 GitHub",
+      "accessed": "2026-11-01",
+      "status": 200,
+      "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
+      "finding": "GOAD provisions Windows VMs; its Docker launcher does not turn the domain controllers into Linux containers.",
+      "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
+    },
+    {
+      "id": "go-labs",
+      "url": "https://github.com/dolevf/Damn-Vulnerable-GraphQL-Application",
+      "title": "GitHub - dolevf/Damn-Vulnerable-GraphQL-Application: Damn Vulnerable GraphQL Application is an intentionally vulnerable GraphQL service implementation designed for learning about a",
+      "accessed": "2026-11-01",
+      "status": 200,
+      "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
+      "finding": "The repository offers a vulnerable GraphQL training application; current architecture support needs separate verification.",
+      "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
+    },
+    {
+      "id": "atomic-red",
+      "url": "https://github.com/redcanaryco/atomic-red-team",
+      "title": "GitHub - redcanaryco/atomic-red-team: Small and highly portable detection tests based on MITRE's ATT&CK. \u00b7 GitHub",
+      "accessed": "2026-11-01",
+      "status": 200,
+      "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
+      "finding": "Individual emulation tests require review of commands, prerequisites and cleanup before execution.",
+      "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
+    },
+    {
+      "id": "cloudgoat",
+      "url": "https://github.com/RhinoSecurityLabs/cloudgoat",
+      "title": "GitHub - RhinoSecurityLabs/cloudgoat: CloudGoat is Rhino Security Labs' \"Vulnerable by Design\" AWS deployment tool \u00b7 GitHub",
+      "accessed": "2026-11-01",
+      "status": 200,
+      "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
+      "finding": "The tool provisions real AWS training resources and requires a scoped account, budget and teardown.",
+      "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
     }
   ],
   "discovery_limits": [
@@ -229,6 +559,14 @@
     {
       "url": "https://pwn.college/teaching/",
       "result": "404; not used as evidence."
+    },
+    {
+      "url": "https://academy.hackthebox.com/path/preview/red-teamer",
+      "result": "Expansion audit returned HTTP 404; no syllabus claim is based on this response."
+    },
+    {
+      "url": "https://training.zeropointsecurity.co.uk/courses/red-team-ops",
+      "result": "Expansion audit returned HTTP 403; no syllabus claim is based on this response."
     }
   ]
 }

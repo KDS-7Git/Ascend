@@ -1,0 +1,2614 @@
+{
+  "version": 1,
+  "tracks": [
+    {
+      "id": "ethical-hacking-foundations",
+      "title": "Ethical Hacking and Offensive Security Foundations",
+      "category": "Foundations",
+      "aliases": [
+        "ethical hacking",
+        "offensive security",
+        "pentesting",
+        "beginner"
+      ],
+      "entry": "Use a terminal, explain an IP address and HTTP request, and create a disposable local target.",
+      "background": [],
+      "labs": [
+        "juice-shop",
+        "webgoat"
+      ],
+      "limits": "An entry pathway into web, network and directory testing; not certification equivalence or permission to test third parties.",
+      "sources": [
+        "offsec-pen",
+        "htb-foundations",
+        "portswigger-paths"
+      ],
+      "levels": [
+        {
+          "id": "foundations",
+          "title": "Prove the entry skills in a small lab",
+          "primer": "Use a terminal, explain an IP address and HTTP request, and create a disposable local target.",
+          "experiment": "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.",
+          "variant": "Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.",
+          "control": "Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.",
+          "recall": "Reconstruct the environment and entry assumptions without following the setup notes.",
+          "case": {
+            "prompt": "A required training environment is unavailable, but a tool prints its version.",
+            "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+            "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+          }
+        },
+        {
+          "id": "scope",
+          "title": "What authorizes this test?",
+          "primer": "Draw owner, tester and asset boundaries for a fictional assessment; identify one asset whose permission is missing.",
+          "experiment": "Write rules of engagement for a loopback training app, including allowed actions, rate limits, stop conditions, contacts and evidence handling.",
+          "variant": "Add a third-party login dependency and decide which requests must remain excluded until permission changes.",
+          "control": "Show a technically reachable endpoint that the written scope forbids, and leave it untouched.",
+          "recall": "Reconstruct the difference between technical access, ownership and authorization.",
+          "case": {
+            "prompt": "An owned app redirects to a third-party login outside written scope.",
+            "correct": "Exclude testing that provider until separately authorized.",
+            "incorrect": "Ownership of the first app authorizes testing the provider."
+          }
+        },
+        {
+          "id": "method",
+          "title": "Follow a hypothesis, not a tool list",
+          "primer": "Explain the request path from browser to a local service and distinguish an observation from an assumption.",
+          "experiment": "Inventory the disposable app, rank two vulnerability hypotheses, and run a small non-destructive check for each with sanitized request/response evidence.",
+          "variant": "Move the app to a new port or change a visible header and revise the hypotheses using actual behavior.",
+          "control": "Compare a real route with an intentionally nonexistent route so a generic error page is not counted as a finding.",
+          "recall": "Given a new banner, name the next observation that could disprove your hypothesis.",
+          "case": {
+            "prompt": "A scanner identifies a product from one response header.",
+            "correct": "Treat the identification as a hypothesis and corroborate behavior.",
+            "incorrect": "Treat the header as proof of an exploitable version."
+          }
+        },
+        {
+          "id": "web-boundaries",
+          "title": "Two accounts, one boundary",
+          "primer": "Create two synthetic accounts in a training app and draw which objects each is intended to access.",
+          "experiment": "In an explicitly designated authorization lesson, test an owner and a second account against the same synthetic object and explain the server-side boundary.",
+          "variant": "Change the object or HTTP method and predict whether the authorization decision should change.",
+          "control": "Demonstrate legitimate owner access and a denied unauthorized request on a corrected local equivalent.",
+          "recall": "Explain why hiding a button is different from enforcing authorization.",
+          "case": {
+            "prompt": "An authenticated user requests another user's private object.",
+            "correct": "The server must enforce object-level authorization.",
+            "incorrect": "A hidden button in the client is sufficient authorization."
+          }
+        },
+        {
+          "id": "permissions",
+          "title": "Who is this process allowed to be?",
+          "primer": "Use identity and file-permission commands in an unprivileged lab folder; predict read and write access.",
+          "experiment": "Create two local test roles or use a supplied permissions fixture, identify an overbroad grant, and repair it while recording before/after effective access.",
+          "variant": "Change group membership or parent-directory permissions and predict the new access result.",
+          "control": "Keep the intended reader working and demonstrate that the unrelated role remains denied.",
+          "recall": "Explain the difference between authentication, authorization and process privilege.",
+          "case": {
+            "prompt": "A user can read a file but cannot traverse its parent directory.",
+            "correct": "Parent-directory permissions can still prevent access by pathname.",
+            "incorrect": "File read permission guarantees successful pathname access."
+          }
+        },
+        {
+          "id": "evidence",
+          "title": "Make a finding another person can verify",
+          "primer": "Separate a reproduction step, observed impact, root cause and proposed fix in a sample report.",
+          "experiment": "Write one lab finding with exact target/version, minimal steps, sanitized evidence, severity rationale and a tested local repair.",
+          "variant": "Give a peer a changed input or repeat on a second clean fixture and identify assumptions missing from the report.",
+          "control": "Show that the fix rejects the bad case without breaking an ordinary valid request.",
+          "recall": "Reconstruct a finding from its root cause without copying the original prose.",
+          "case": {
+            "prompt": "A patch removes a vulnerable response but breaks all valid requests.",
+            "correct": "The security repair has not passed the legitimate-use control.",
+            "incorrect": "Blocking every request is a complete successful repair."
+          }
+        },
+        {
+          "id": "assessment",
+          "title": "Run a small authorized assessment",
+          "primer": "Plan a bounded 60-minute assessment of a fresh training instance with explicit stop rules.",
+          "experiment": "Perform scope confirmation, inventory, two hypothesis tests and one reproducible finding or justified negative result; deliver an executive summary and technical evidence.",
+          "variant": "Change an account role or route and independently reassess whether the suspected weakness remains.",
+          "control": "Include an out-of-scope action you deliberately excluded and a benign workflow that survives the repair.",
+          "recall": "Explain the assessment chain, one false lead and what evidence changed your mind.",
+          "case": {
+            "prompt": "No finding is reproduced during a bounded assessment.",
+            "correct": "Report scope, tests and uncertainty; a justified negative result is legitimate.",
+            "incorrect": "Report the target as secure without qualification."
+          }
+        },
+        {
+          "id": "independent-transfer",
+          "title": "Revisit the skill on a fresh problem",
+          "primer": "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.",
+          "experiment": "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.",
+          "variant": "Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.",
+          "control": "Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.",
+          "recall": "Explain what transferred, what required help and which prerequisite needs another small experiment.",
+          "case": {
+            "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+            "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+            "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+          }
+        }
+      ]
+    },
+    {
+      "id": "red-team-adversary-emulation",
+      "title": "Red Teaming and Adversary Emulation",
+      "category": "Offensive",
+      "aliases": [
+        "red teaming",
+        "red team operator",
+        "purple team",
+        "adversary simulation"
+      ],
+      "entry": "Demonstrate scoped enumeration, identity/permission reasoning and the ability to inspect defender telemetry.",
+      "background": [
+        "network-penetration-testing",
+        "active-directory-security",
+        "defensive-security-and-detection"
+      ],
+      "labs": [],
+      "limits": "Assumed-breach, controlled emulation with harmless markers. Windows enterprise exercises need an isolated VM lab; no covert implants, live credential theft or production phishing are provisioned.",
+      "sources": [
+        "mitre-emulation",
+        "atomic-red",
+        "htb-pentest"
+      ],
+      "levels": [
+        {
+          "id": "foundations",
+          "title": "Prove the entry skills in a small lab",
+          "primer": "Demonstrate scoped enumeration, identity/permission reasoning and the ability to inspect defender telemetry.",
+          "experiment": "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.",
+          "variant": "Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.",
+          "control": "Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.",
+          "recall": "Reconstruct the environment and entry assumptions without following the setup notes.",
+          "case": {
+            "prompt": "A required training environment is unavailable, but a tool prints its version.",
+            "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+            "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+          }
+        },
+        {
+          "id": "objectives",
+          "title": "Measure an objective, not a shell",
+          "primer": "Convert a fictional business concern into an observable adversary objective and a bounded success criterion.",
+          "experiment": "Author an engagement plan with rules of engagement, white-cell contacts, allowed assets, deconfliction, stop conditions and a defender measurement plan.",
+          "variant": "Add an operational constraint such as unavailable endpoint logging and redesign the objective or telemetry plan honestly.",
+          "control": "Show a scenario that appears successful technically but fails the stated business objective.",
+          "recall": "State the difference between a penetration-test finding and an adversary-emulation objective.",
+          "case": {
+            "prompt": "A shell was obtained but the agreed business objective was not demonstrated.",
+            "correct": "Report technical access separately from objective success.",
+            "incorrect": "Count any shell as fulfillment of the agreed objective."
+          }
+        },
+        {
+          "id": "threat-model",
+          "title": "Choose techniques from evidence",
+          "primer": "Read a public emulation plan and separate observed campaign behavior from analyst inference.",
+          "experiment": "Build a small ATT&CK-aligned hypothesis from a cited threat report, specifying prerequisites, observable effects and a harmless substitute for each risky action.",
+          "variant": "Replace the assumed identity or endpoint type and remove techniques whose prerequisites no longer hold.",
+          "control": "Include one plausible but unsupported technique and explain why it was excluded.",
+          "recall": "Rebuild the evidence-to-technique chain and name its uncertainty.",
+          "case": {
+            "prompt": "A report names an actor but gives no evidence for a particular technique.",
+            "correct": "Do not add the technique merely because it is plausible.",
+            "incorrect": "Attribute all techniques associated with that actor to this campaign."
+          }
+        },
+        {
+          "id": "telemetry",
+          "title": "Know what the defender can see",
+          "primer": "Generate a benign process or file marker in an owned lab and locate its timestamped telemetry.",
+          "experiment": "Build a timeline joining the marker, account, process and network observations; label each missing source rather than inventing coverage.",
+          "variant": "Change the marker path or process argument and predict which detection features remain stable.",
+          "control": "Repeat an ordinary administration action and distinguish its evidence from the staged behavior.",
+          "recall": "Explain which sensor would be needed to resolve a missing observation.",
+          "case": {
+            "prompt": "A process event is absent because the relevant sensor was disabled.",
+            "correct": "Treat visibility as unknown for that event.",
+            "incorrect": "Treat the missing event as proof the action did not occur."
+          }
+        },
+        {
+          "id": "emulation",
+          "title": "Make a small emulation reversible",
+          "primer": "Review a single benign Atomic Red Team test or write a harmless equivalent; enumerate its commands, permissions and cleanup before execution.",
+          "experiment": "In a disposable authorized lab, run a reviewed marker-only micro-emulation, record setup and exact effects, then perform and verify cleanup.",
+          "variant": "Change a nonessential filename or account context and predict whether the intended behavior is still observable.",
+          "control": "Verify the artifact did not exist before, appears during the test, and is absent after cleanup; preserve unrelated files.",
+          "recall": "Reconstruct the prerequisites and rollback steps without running a script blindly.",
+          "case": {
+            "prompt": "A reviewed marker test creates a file outside its declared cleanup list.",
+            "correct": "Stop and reconcile the unexpected effect before claiming clean rollback.",
+            "incorrect": "Delete every file in the parent directory as a precaution."
+          }
+        },
+        {
+          "id": "purple-team",
+          "title": "Test detection with a partner",
+          "primer": "Express a detection hypothesis in terms of behavior and required data rather than a single indicator.",
+          "experiment": "Have a defender or second review pass classify shuffled benign and emulated events; record misses, false positives and one revised analytic.",
+          "variant": "Change a superficial indicator while preserving behavior and retest the revised analytic.",
+          "control": "Include an administration lookalike that should remain unalerted or receive a documented lower-confidence classification.",
+          "recall": "Explain why a detection that matches only the demonstration filename is fragile.",
+          "case": {
+            "prompt": "An analytic matches only the filename used in the demonstration.",
+            "correct": "Test a renamed behaviorally equivalent case.",
+            "incorrect": "Claim general technique coverage from the one filename match."
+          }
+        },
+        {
+          "id": "campaign",
+          "title": "Deliver a defensible exercise report",
+          "primer": "Define a three-step harmless emulation sequence with a stop point and evidence checkpoint per step.",
+          "experiment": "Run the scoped sequence in a resettable lab, measure defender visibility and response, and deliver an objective-based report with technical evidence and remediation retests.",
+          "variant": "Withhold one assumed permission or telemetry source and adapt the plan without exceeding scope.",
+          "control": "Demonstrate reset to baseline and distinguish untested coverage from a demonstrated miss.",
+          "recall": "Explain what the exercise supports about defensive readiness and what it cannot establish.",
+          "case": {
+            "prompt": "An exercise cannot obtain an assumed permission within scope.",
+            "correct": "Adapt or report the blocked prerequisite without expanding authority.",
+            "incorrect": "Exceed scope because the end objective was approved."
+          }
+        },
+        {
+          "id": "independent-transfer",
+          "title": "Revisit the skill on a fresh problem",
+          "primer": "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.",
+          "experiment": "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.",
+          "variant": "Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.",
+          "control": "Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.",
+          "recall": "Explain what transferred, what required help and which prerequisite needs another small experiment.",
+          "case": {
+            "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+            "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+            "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+          }
+        }
+      ]
+    },
+    {
+      "id": "soc-analyst",
+      "title": "SOC Analyst: Triage, Investigation and Response",
+      "category": "Defensive",
+      "aliases": [
+        "soc",
+        "soc analyst",
+        "blue team",
+        "security operations",
+        "tier 1",
+        "tier 2"
+      ],
+      "entry": "Read timestamps, IP addresses and basic authentication/web logs; distinguish an event from an alert.",
+      "background": [
+        "networking-for-security",
+        "defensive-security-and-detection"
+      ],
+      "labs": [],
+      "limits": "Use supplied or self-generated telemetry on the Pi; vendor-specific Sentinel/Defender tasks require that service or an appropriate training tenant.",
+      "sources": [
+        "microsoft-soc",
+        "htb-soc",
+        "cisa-kev"
+      ],
+      "levels": [
+        {
+          "id": "foundations",
+          "title": "Prove the entry skills in a small lab",
+          "primer": "Read timestamps, IP addresses and basic authentication/web logs; distinguish an event from an alert.",
+          "experiment": "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.",
+          "variant": "Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.",
+          "control": "Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.",
+          "recall": "Reconstruct the environment and entry assumptions without following the setup notes.",
+          "case": {
+            "prompt": "A required training environment is unavailable, but a tool prints its version.",
+            "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+            "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+          }
+        },
+        {
+          "id": "intake",
+          "title": "Turn an alert into a question",
+          "primer": "List an alert source, affected asset, time range and the claim the alert makes.",
+          "experiment": "Triage a synthetic queue containing a login anomaly, a web alert and a harmless maintenance event; assign urgency using evidence and business context.",
+          "variant": "Change an asset from a sandbox to a critical service and justify whether prioritization changes.",
+          "control": "Keep a noisy but low-impact event from outranking a corroborated compromise solely because of event volume.",
+          "recall": "Explain event, alert, incident, severity and confidence using one example.",
+          "case": {
+            "prompt": "A noisy sandbox alert competes with corroborated access to a critical service.",
+            "correct": "Prioritize using corroboration and business impact.",
+            "incorrect": "Rank solely by alert count."
+          }
+        },
+        {
+          "id": "queries",
+          "title": "Follow the entity across logs",
+          "primer": "Normalize two timestamp formats and join a user identifier across two small log files.",
+          "experiment": "Build reproducible queries over a supplied dataset to trace an identity, host and source address through a bounded time window, recording missing fields.",
+          "variant": "Change the time zone or host identifier in a synthetic copy and adjust the query without losing the same activity.",
+          "control": "Include a similarly named account and an event outside the window that must not be joined.",
+          "recall": "Recreate the query logic from the investigation question rather than memorizing syntax.",
+          "case": {
+            "prompt": "Two accounts share a display name but have different immutable IDs.",
+            "correct": "Join events using the correct identity keys.",
+            "incorrect": "Merge them because the displayed names match."
+          }
+        },
+        {
+          "id": "authentication",
+          "title": "Investigate a suspicious sign-in",
+          "primer": "Compare failed sign-ins, a success and a later privilege event for one synthetic identity.",
+          "experiment": "Investigate a provided authentication timeline, rank account misuse against benign alternatives, and identify the next discriminating evidence.",
+          "variant": "Add a service-account explanation or a contradictory device event and update the conclusion.",
+          "control": "Include known maintenance logins and avoid treating location or failure count alone as compromise.",
+          "recall": "Explain which evidence would raise or lower confidence in account misuse.",
+          "case": {
+            "prompt": "Many failed logins are followed by a successful maintenance login.",
+            "correct": "Investigate context and corroborating evidence before declaring compromise.",
+            "incorrect": "Failure count alone establishes account compromise."
+          }
+        },
+        {
+          "id": "web-and-mail",
+          "title": "Preserve evidence before following a lure",
+          "primer": "Parse headers and URLs from an inert training message without opening unknown links or executing attachments.",
+          "experiment": "Correlate an inert phishing-style message fixture with proxy/DNS and application logs, recording user exposure separately from demonstrated execution.",
+          "variant": "Change a redirect or add a blocked request and reassess how far the activity progressed.",
+          "control": "Include a legitimate message with similar wording and a blocked attempt with no evidence of execution.",
+          "recall": "Explain why receipt, click, execution and compromise are separate claims.",
+          "case": {
+            "prompt": "An inert message was received and its URL was blocked by the proxy.",
+            "correct": "Distinguish receipt and blocked access from execution.",
+            "incorrect": "Treat delivery as proof of endpoint execution."
+          }
+        },
+        {
+          "id": "response",
+          "title": "Make containment proportionate",
+          "primer": "Identify the owner, business dependency and rollback for a proposed containment action.",
+          "experiment": "Write and rehearse a lab incident runbook that preserves evidence, escalates uncertainty, contains a synthetic account or endpoint, and verifies intended access afterward.",
+          "variant": "Make the affected system unavailable to the responder and choose an alternative action with explicit residual risk.",
+          "control": "Show that an unrelated account or service still works after containment.",
+          "recall": "State the evidence needed before choosing a disruptive action.",
+          "case": {
+            "prompt": "Containment disables every account although one synthetic account is affected.",
+            "correct": "Prefer the scoped action with a verified rollback and business impact assessment.",
+            "incorrect": "Broader disruption is always stronger containment."
+          }
+        },
+        {
+          "id": "shift-handoff",
+          "title": "Close the case so someone can reopen it",
+          "primer": "Compare a useful case note with one that only lists tool output.",
+          "experiment": "Investigate an unfamiliar small log bundle and deliver a timeline, evidence references, confidence, response decision and shift handoff with unresolved questions.",
+          "variant": "Add a late contradictory event and revise the disposition while retaining the earlier reasoning.",
+          "control": "Document one rejected hypothesis and a known-benign comparison; do not turn missing logs into a clean bill of health.",
+          "recall": "Reconstruct the case and next action from the handoff alone after a delay.",
+          "case": {
+            "prompt": "A late event contradicts the incident disposition.",
+            "correct": "Revise the case while preserving the earlier reasoning.",
+            "incorrect": "Remove the contradictory event to preserve a consistent report."
+          }
+        },
+        {
+          "id": "independent-transfer",
+          "title": "Revisit the skill on a fresh problem",
+          "primer": "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.",
+          "experiment": "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.",
+          "variant": "Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.",
+          "control": "Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.",
+          "recall": "Explain what transferred, what required help and which prerequisite needs another small experiment.",
+          "case": {
+            "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+            "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+            "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+          }
+        }
+      ]
+    },
+    {
+      "id": "active-directory-security",
+      "title": "Active Directory and Windows Identity Security",
+      "category": "Offensive",
+      "aliases": [
+        "active directory",
+        "ad",
+        "kerberos",
+        "ad cs",
+        "windows domain",
+        "identity"
+      ],
+      "entry": "Demonstrate Windows users/groups, basic DNS and TCP/IP, and permission inspection.",
+      "background": [
+        "network-penetration-testing"
+      ],
+      "labs": [],
+      "limits": "Real Windows domain, GPO and AD CS exercises require isolated licensed/evaluation Windows VMs or a hosted lab. GOAD orchestrates Windows VMs; its Docker launcher does not make domain controllers Pi containers.",
+      "sources": [
+        "microsoft-ad",
+        "microsoft-adcs",
+        "goad",
+        "htb-pentest"
+      ],
+      "levels": [
+        {
+          "id": "foundations",
+          "title": "Prove the entry skills in a small lab",
+          "primer": "Demonstrate Windows users/groups, basic DNS and TCP/IP, and permission inspection.",
+          "experiment": "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.",
+          "variant": "Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.",
+          "control": "Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.",
+          "recall": "Reconstruct the environment and entry assumptions without following the setup notes.",
+          "case": {
+            "prompt": "A required training environment is unavailable, but a tool prints its version.",
+            "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+            "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+          }
+        },
+        {
+          "id": "domain-model",
+          "title": "Draw the domain before testing it",
+          "primer": "Identify domain, forest, OU, account, group and computer objects in a supplied directory export.",
+          "experiment": "On a training domain, document DNS discovery, one domain join and a normal domain sign-in; preserve an architecture diagram and baseline event evidence.",
+          "variant": "Change the client DNS server in the disposable lab and predict which discovery or authentication step fails.",
+          "control": "Compare a local login with a domain login and explain which identity authority answered.",
+          "recall": "Recreate the domain discovery and trust boundaries from memory.",
+          "case": {
+            "prompt": "A joined client uses an unrelated DNS resolver.",
+            "correct": "Domain discovery may fail despite ordinary network connectivity.",
+            "incorrect": "Successful ping proves domain discovery must work."
+          }
+        },
+        {
+          "id": "auth-protocols",
+          "title": "A ticket is not a password",
+          "primer": "Draw the normal Kerberos ticket flow and distinguish it from NTLM challenge-response using official protocol material.",
+          "experiment": "Capture permitted authentication telemetry in a training domain and correlate ticket issuance or fallback with a controlled client action, without collecting real credentials.",
+          "variant": "Change a service name or introduce documented clock skew in the disposable lab and predict the failure or fallback.",
+          "control": "Include a normal successful service access and a deliberately invalid service reference.",
+          "recall": "Explain why DNS, SPNs and time synchronization matter to Kerberos.",
+          "case": {
+            "prompt": "A service SPN does not match the requested service identity.",
+            "correct": "Investigate service identity and ticket behavior rather than assuming a password failure.",
+            "incorrect": "Kerberos does not use service identity."
+          }
+        },
+        {
+          "id": "permissions",
+          "title": "Prove an identity graph edge",
+          "primer": "Calculate effective membership for nested training groups and inspect one object's ACL.",
+          "experiment": "Trace a least-privilege violation in a supplied or owned directory graph and verify the claimed edge against native permissions before proposing a fix.",
+          "variant": "Remove one group membership or inherited permission and predict whether the path still exists.",
+          "control": "Include a graph edge that appears plausible but is denied by the effective permissions.",
+          "recall": "Explain the distinction between a graph hypothesis and a verified authorization path.",
+          "case": {
+            "prompt": "A graph shows nested membership but native effective access denies the action.",
+            "correct": "Treat the graph edge as unverified until permissions explain the discrepancy.",
+            "incorrect": "The graph diagram overrides the native authorization result."
+          }
+        },
+        {
+          "id": "gpo-delegation",
+          "title": "Separate management power from service identity",
+          "primer": "Identify which principal can edit a policy and where that policy is linked in a lab export.",
+          "experiment": "Inspect a training GPO and a documented delegation configuration, explain their intended function and identify an overbroad grant using effective access and normal service behavior.",
+          "variant": "Restrict the policy link or delegated target and predict which administrative or service action stops working.",
+          "control": "Keep an intended management action functioning after the proposed least-privilege change.",
+          "recall": "Explain why controlling a policy object and applying that policy are separate conditions.",
+          "case": {
+            "prompt": "An account can edit a policy object that is not applied to the target.",
+            "correct": "Editing and application are separate prerequisites.",
+            "incorrect": "Any policy edit automatically changes every domain computer."
+          }
+        },
+        {
+          "id": "certificate-services",
+          "title": "Follow the certificate enrollment decision",
+          "primer": "Read a training certificate's subject, SAN, EKU, issuer and validity; explain chain trust separately from identity mapping.",
+          "experiment": "In an isolated AD CS lab or supplied configuration exercise, map template enrollment permissions and identity settings to a concrete authentication risk; test a corrected configuration in a real lab before claiming operational completion.",
+          "variant": "Change enrollment rights or an identity-related template setting and predict which request is permitted or rejected.",
+          "control": "Show a legitimate enrollment still works and an unauthorized identity request is rejected after the repair.",
+          "recall": "Explain why possessing a valid certificate is not sufficient proof of an authorized identity.",
+          "case": {
+            "prompt": "A certificate chains to a trusted CA but is not authorized for the requested identity.",
+            "correct": "Chain trust alone does not establish authorized identity mapping.",
+            "incorrect": "Any trusted certificate grants any requested domain identity."
+          }
+        },
+        {
+          "id": "assessment",
+          "title": "Harden a small domain and retest it",
+          "primer": "Define scope, snapshot recovery and two identity hypotheses for an unfamiliar lab domain.",
+          "experiment": "Audit the training domain's discovery, authentication, permissions and one certificate or policy boundary; deliver native evidence, impact and a verified least-privilege repair.",
+          "variant": "Change one account's memberships or a policy scope and independently re-evaluate the affected path.",
+          "control": "Retest normal user/service sign-in and document which enterprise controls were not present in the lab.",
+          "recall": "Reconstruct one privilege path and the exact permission change that removed it.",
+          "case": {
+            "prompt": "A hardening change removes a privilege path and breaks the required service login.",
+            "correct": "Retest least privilege and legitimate service behavior before declaring success.",
+            "incorrect": "Removing all logins is an adequate domain repair."
+          }
+        },
+        {
+          "id": "independent-transfer",
+          "title": "Revisit the skill on a fresh problem",
+          "primer": "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.",
+          "experiment": "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.",
+          "variant": "Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.",
+          "control": "Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.",
+          "recall": "Explain what transferred, what required help and which prerequisite needs another small experiment.",
+          "case": {
+            "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+            "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+            "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+          }
+        }
+      ]
+    },
+    {
+      "id": "cloud-security",
+      "title": "Cloud Security: Identity, Exposure and Detection",
+      "category": "Engineering",
+      "aliases": [
+        "cloud",
+        "aws",
+        "azure",
+        "gcp",
+        "iam",
+        "entra"
+      ],
+      "entry": "Explain HTTP, role-based access and basic JSON; distinguish cloud control-plane actions from workload traffic.",
+      "background": [
+        "networking-for-security"
+      ],
+      "labs": [],
+      "limits": "Local policy fixtures teach reasoning; actual AWS/Azure/GCP enforcement requires a scoped training account. CloudGoat creates real billable resources and is not provisioned automatically.",
+      "sources": [
+        "owasp-cloud",
+        "cloudgoat",
+        "microsoft-soc"
+      ],
+      "levels": [
+        {
+          "id": "foundations",
+          "title": "Prove the entry skills in a small lab",
+          "primer": "Explain HTTP, role-based access and basic JSON; distinguish cloud control-plane actions from workload traffic.",
+          "experiment": "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.",
+          "variant": "Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.",
+          "control": "Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.",
+          "recall": "Reconstruct the environment and entry assumptions without following the setup notes.",
+          "case": {
+            "prompt": "A required training environment is unavailable, but a tool prints its version.",
+            "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+            "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+          }
+        },
+        {
+          "id": "shared-responsibility",
+          "title": "Identify who owns each control",
+          "primer": "Draw identity, workload, data and management-plane boundaries for a small fictional cloud service.",
+          "experiment": "Build an asset and responsibility inventory covering account ownership, regions, exposed endpoints, audit sources and recovery responsibilities.",
+          "variant": "Move one component from a VM to a managed service and revise the shared-responsibility assumptions.",
+          "control": "Include a provider-managed control that a workload operator cannot fix by changing application code.",
+          "recall": "Explain the difference between provider security and secure use of the provider.",
+          "case": {
+            "prompt": "A workload moves from a VM to a managed database.",
+            "correct": "Reassess which operational controls belong to provider and customer.",
+            "incorrect": "All customer responsibilities disappear."
+          }
+        },
+        {
+          "id": "iam",
+          "title": "Predict the authorization decision",
+          "primer": "Evaluate small identity/resource-policy fixtures with explicit grants, denies and conditions.",
+          "experiment": "Build an access matrix for two synthetic roles and one resource, test it in a provider policy simulator or scoped training account, and record where the simulator lacks runtime context.",
+          "variant": "Add a condition or a resource policy and predict how the effective decision changes.",
+          "control": "Demonstrate a denied unrelated principal and an intended allowed operation.",
+          "recall": "Explain why an identity policy alone may not determine effective access.",
+          "case": {
+            "prompt": "An identity allow conflicts with an applicable explicit deny.",
+            "correct": "Evaluate the effective policy including the deny and context.",
+            "incorrect": "The identity allow always wins."
+          }
+        },
+        {
+          "id": "exposure",
+          "title": "Public does not always mean intended",
+          "primer": "Identify ingress, egress and object-sharing settings in a supplied cloud configuration.",
+          "experiment": "Trace a fictional application's exposure through load balancer, workload and data storage; validate selected rules using a local model or training account and propose a minimal repair.",
+          "variant": "Change a resource from private to shared-with-one-role and verify that the intended boundary survives.",
+          "control": "Preserve legitimate client access and demonstrate that an unrelated identity cannot read the object.",
+          "recall": "Reconstruct the layers required to explain one exposure finding.",
+          "case": {
+            "prompt": "An object is reachable at a public URL but requires a valid restricted identity.",
+            "correct": "Test authorization before calling the object publicly readable.",
+            "incorrect": "URL reachability proves anonymous read access."
+          }
+        },
+        {
+          "id": "secrets",
+          "title": "Separate workload identity from static keys",
+          "primer": "Find synthetic hardcoded credentials in a toy repository and inventory every place they were copied.",
+          "experiment": "Replace a toy long-lived credential with a bounded local token or a training-provider workload identity, test expiration/revocation and document remaining trust assumptions.",
+          "variant": "Change the audience, role or expiry and predict whether the request should still authenticate.",
+          "control": "Verify a valid authorized request succeeds and a stale token is rejected without logging its contents.",
+          "recall": "Explain rotation, revocation and short-lived identity as different mechanisms.",
+          "case": {
+            "prompt": "A token has a valid signature but the wrong audience.",
+            "correct": "Reject it for the intended service.",
+            "incorrect": "A valid signature is sufficient for acceptance by every service."
+          }
+        },
+        {
+          "id": "logging",
+          "title": "Follow a control-plane change",
+          "primer": "Read an audit event and distinguish actor, resource, action, result and event time.",
+          "experiment": "Investigate supplied cloud audit events around a permission change and later resource access; construct a timeline and a detection query with explicit missing sources.",
+          "variant": "Change a resource name or actor and test whether the behavioral analytic still finds the sequence.",
+          "control": "Include a denied change and a known maintenance change that must not be labeled successful compromise.",
+          "recall": "Explain what the audit source can and cannot establish about data access.",
+          "case": {
+            "prompt": "A cloud audit record shows a denied permission change.",
+            "correct": "Distinguish attempted from successful modification.",
+            "incorrect": "Treat the requested action as if it succeeded."
+          }
+        },
+        {
+          "id": "assessment",
+          "title": "Deliver a bounded cloud review",
+          "primer": "Define an account, budget, allowed resources and teardown checklist for a small training exercise.",
+          "experiment": "Review a fresh configuration and audit bundle, verify one identity or exposure defect in a scoped lab, apply a repair and record cleanup; use only owned training resources.",
+          "variant": "Change one trust policy or network boundary and independently reassess the affected access path.",
+          "control": "Verify legitimate workload behavior and prove temporary lab resources were removed where a real account was used.",
+          "recall": "Reconstruct the finding, provider-specific limits and remaining assurance gaps.",
+          "case": {
+            "prompt": "A local IAM fixture passes its tests.",
+            "correct": "Limit the claim to the fixture until provider enforcement is tested.",
+            "incorrect": "Claim every cloud provider enforces the same policy semantics."
+          }
+        },
+        {
+          "id": "independent-transfer",
+          "title": "Revisit the skill on a fresh problem",
+          "primer": "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.",
+          "experiment": "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.",
+          "variant": "Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.",
+          "control": "Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.",
+          "recall": "Explain what transferred, what required help and which prerequisite needs another small experiment.",
+          "case": {
+            "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+            "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+            "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+          }
+        }
+      ]
+    },
+    {
+      "id": "container-kubernetes-security",
+      "title": "Container and Kubernetes Security",
+      "category": "Engineering",
+      "aliases": [
+        "docker",
+        "kubernetes",
+        "k8s",
+        "container security",
+        "cloud native"
+      ],
+      "entry": "Run a local container, identify its image and mounts, and explain processes and file permissions.",
+      "background": [
+        "networking-for-security"
+      ],
+      "labs": [
+        "juice-shop",
+        "webgoat",
+        "mqtt"
+      ],
+      "limits": "Docker exercises work on the supported Pi profiles. Kubernetes enforcement needs a real disposable cluster and a CNI that implements NetworkPolicy; YAML validation alone is not runtime evidence.",
+      "sources": [
+        "kubernetes-checklist",
+        "owasp-cloud"
+      ],
+      "levels": [
+        {
+          "id": "foundations",
+          "title": "Prove the entry skills in a small lab",
+          "primer": "Run a local container, identify its image and mounts, and explain processes and file permissions.",
+          "experiment": "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.",
+          "variant": "Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.",
+          "control": "Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.",
+          "recall": "Reconstruct the environment and entry assumptions without following the setup notes.",
+          "case": {
+            "prompt": "A required training environment is unavailable, but a tool prints its version.",
+            "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+            "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+          }
+        },
+        {
+          "id": "container-boundary",
+          "title": "A container still shares a kernel",
+          "primer": "Inspect a harmless container's user, capabilities, mounts, namespaces and configured resource limits.",
+          "experiment": "Run a toy service with a non-root user, dropped capabilities, no-new-privileges and a read-only root plus a bounded writable directory; explain observed failures.",
+          "variant": "Remove one required write path or change its owner and predict which operation fails.",
+          "control": "Preserve the service's intended request while showing it cannot write to an unrelated path.",
+          "recall": "Explain which risks these controls reduce and which require stronger isolation.",
+          "case": {
+            "prompt": "A non-root container has the host Docker socket mounted.",
+            "correct": "The socket can undermine the intended host boundary.",
+            "incorrect": "Non-root status alone makes the socket safe."
+          }
+        },
+        {
+          "id": "image-supply-chain",
+          "title": "Know exactly which image ran",
+          "primer": "Compare a mutable tag, an image digest and the platform manifest selected for ARM64 versus AMD64.",
+          "experiment": "Generate an image inventory/SBOM for a toy service, pin the source image digest and record provenance, vulnerability findings and applicability limits.",
+          "variant": "Resolve an updated tag and identify the changed digest and dependencies before accepting it.",
+          "control": "Include a scanner finding for an unused or unreachable component and separate presence from demonstrated exploitability.",
+          "recall": "Explain why a matching digest gives identity but not a guarantee of safety.",
+          "case": {
+            "prompt": "An image tag now resolves to a different digest.",
+            "correct": "Review the new image identity and dependencies before accepting it.",
+            "incorrect": "A stable tag name means the content is unchanged."
+          }
+        },
+        {
+          "id": "network-separation",
+          "title": "Test an isolation claim",
+          "primer": "Draw the Docker networks, published ports and services in the supplied lab Compose file.",
+          "experiment": "In a disposable project, verify loopback-only access, separate lab networks, resource bounds and the absence of tracker-volume or Docker-socket mounts.",
+          "variant": "Move the client to another lab network and predict which target it should fail to reach.",
+          "control": "Confirm a permitted same-network request works while cross-network and outbound probes fail within bounded timeouts.",
+          "recall": "Explain what an internal bridge blocks and why the host kernel is still shared.",
+          "case": {
+            "prompt": "A training service is published on every host interface.",
+            "correct": "A separate internal network does not make that published port private.",
+            "incorrect": "Internal networking cancels all host port exposure."
+          }
+        },
+        {
+          "id": "cluster-identity",
+          "title": "Give the workload only its job",
+          "primer": "Read a Role, RoleBinding and ServiceAccount and predict effective API actions.",
+          "experiment": "In a disposable Kubernetes cluster, bind a limited service account to one namespace and verify allowed and denied operations with the API authorization checks.",
+          "variant": "Change the namespace or requested verb and predict the decision before checking.",
+          "control": "Keep the intended read working and deny writes to unrelated secrets or namespaces.",
+          "recall": "Reconstruct the subject, role and binding needed for one API permission.",
+          "case": {
+            "prompt": "A RoleBinding grants read access in one namespace.",
+            "correct": "Evaluate the subject, role and namespace for the requested action.",
+            "incorrect": "The same permission automatically applies to every namespace."
+          }
+        },
+        {
+          "id": "cluster-network",
+          "title": "Observe enforcement, not just YAML",
+          "primer": "Explain how labels select pods and how a NetworkPolicy-capable CNI enforces traffic rules.",
+          "experiment": "Deploy a tiny client/server pair on an isolated test cluster, apply default-deny plus a specific allow rule, and test actual connectivity.",
+          "variant": "Change one pod label or allowed port and predict which connection changes.",
+          "control": "Include a matching permitted client and an unmatched client that must be denied; report an unsupported CNI as an unmet prerequisite.",
+          "recall": "Explain why a valid NetworkPolicy object can coexist with unrestricted traffic.",
+          "case": {
+            "prompt": "A NetworkPolicy exists on a cluster whose CNI does not enforce it.",
+            "correct": "Verify traffic; the object alone does not prove isolation.",
+            "incorrect": "Valid YAML guarantees packets are filtered."
+          }
+        },
+        {
+          "id": "review",
+          "title": "Review and repair a workload deployment",
+          "primer": "Inventory deployment manifests, image identity, writable paths, service account and network exposure.",
+          "experiment": "Review a fresh toy deployment, demonstrate one excessive permission or exposure, apply a minimal fix and retest the intended workload plus resource limits.",
+          "variant": "Change a namespace, image version or writable path and revise the controls instead of copying the old manifest.",
+          "control": "Show an unrelated workload and legitimate client remain functional after the fix.",
+          "recall": "Explain one runtime observation that would invalidate your review conclusion.",
+          "case": {
+            "prompt": "A read-only root blocks the application's required temporary write.",
+            "correct": "Provide only the necessary bounded writable path.",
+            "incorrect": "Remove all filesystem restrictions without investigating the path."
+          }
+        },
+        {
+          "id": "independent-transfer",
+          "title": "Revisit the skill on a fresh problem",
+          "primer": "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.",
+          "experiment": "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.",
+          "variant": "Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.",
+          "control": "Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.",
+          "recall": "Explain what transferred, what required help and which prerequisite needs another small experiment.",
+          "case": {
+            "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+            "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+            "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+          }
+        }
+      ]
+    },
+    {
+      "id": "secure-development-devsecops",
+      "title": "Secure Development and DevSecOps",
+      "category": "Engineering",
+      "aliases": [
+        "appsec",
+        "devsecops",
+        "secure coding",
+        "software supply chain"
+      ],
+      "entry": "Write a small program, use Git and run its tests.",
+      "background": [],
+      "labs": [],
+      "limits": "Exercises use owned toy services and local pipelines; a passing scanner is not a security certification.",
+      "sources": [
+        "owasp-asvs",
+        "owasp-cloud",
+        "kubernetes-checklist"
+      ],
+      "levels": [
+        {
+          "id": "foundations",
+          "title": "Prove the entry skills in a small lab",
+          "primer": "Write a small program, use Git and run its tests.",
+          "experiment": "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.",
+          "variant": "Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.",
+          "control": "Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.",
+          "recall": "Reconstruct the environment and entry assumptions without following the setup notes.",
+          "case": {
+            "prompt": "A required training environment is unavailable, but a tool prints its version.",
+            "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+            "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+          }
+        },
+        {
+          "id": "threat-model",
+          "title": "Draw the trust boundary before coding",
+          "primer": "Identify assets, actors and data flows for a small upload or note-taking service.",
+          "experiment": "Build a threat model with three concrete abuse cases and map each to an ASVS-style testable requirement.",
+          "variant": "Add a background worker or third-party integration and revise the boundaries and threats.",
+          "control": "Include a failure outside the service's responsibility and document the dependency instead of claiming to fix it.",
+          "recall": "Reconstruct one threat from asset through entry point to consequence.",
+          "case": {
+            "prompt": "A background worker introduces a new external data source.",
+            "correct": "Update the threat model and trust boundaries.",
+            "incorrect": "Reuse the old model without reviewing the new flow."
+          }
+        },
+        {
+          "id": "input-and-output",
+          "title": "Follow untrusted data to its sink",
+          "primer": "Trace a user-controlled field through parsing, validation, storage and rendering in a toy service.",
+          "experiment": "Repair one input or output handling defect in your own code and write tests that reproduce the defect and preserve intended behavior.",
+          "variant": "Change the input encoding or rendering context and update the defense rather than reusing an unrelated escaping rule.",
+          "control": "Include valid punctuation and an invalid structured input; reject the dangerous case without silently corrupting legitimate data.",
+          "recall": "Explain why validation and output encoding address different boundaries.",
+          "case": {
+            "prompt": "Input was validated before being inserted into a different output context.",
+            "correct": "Apply context-appropriate safe output handling as well.",
+            "incorrect": "Input validation makes every output sink safe."
+          }
+        },
+        {
+          "id": "authz",
+          "title": "Put authorization beside the resource",
+          "primer": "Model two synthetic users, two objects and one administrative action.",
+          "experiment": "Implement server-side authorization tests for owner access, cross-user access and the privileged operation; demonstrate the bug before the repair.",
+          "variant": "Add a new HTTP method or background operation and check that it enforces the same resource policy.",
+          "control": "Keep owner access working and deny an authenticated but unauthorized user.",
+          "recall": "State the policy independently of route names or UI controls.",
+          "case": {
+            "prompt": "The UI prevents a user from selecting someone else's object ID.",
+            "correct": "The backend must independently enforce ownership.",
+            "incorrect": "UI restrictions are a complete server authorization control."
+          }
+        },
+        {
+          "id": "supply-chain",
+          "title": "Make a dependency decision you can defend",
+          "primer": "Identify direct and transitive dependencies and distinguish an SBOM from a vulnerability report.",
+          "experiment": "Produce an SBOM and pinned dependency manifest, investigate one advisory's applicability, and test an update or documented mitigation.",
+          "variant": "Introduce a version change in a branch and assess both security and compatibility effects before merging.",
+          "control": "Include an advisory that does not apply to the used component/version and explain the evidence.",
+          "recall": "Explain why dependency presence, reachability and exploitability are separate claims.",
+          "case": {
+            "prompt": "An advisory names an unused feature of a transitive dependency.",
+            "correct": "Assess version, configuration and reachability with evidence.",
+            "incorrect": "Dependency presence alone proves exploitability."
+          }
+        },
+        {
+          "id": "pipeline",
+          "title": "Make the pipeline stop for a real defect",
+          "primer": "Create a local test pipeline for the toy application with explicit failure conditions.",
+          "experiment": "Add security regression tests, a synthetic-secret check and artifact identity recording; demonstrate that each relevant bad fixture fails the gate.",
+          "variant": "Change a fixture's filename or encoding and test whether the intended check still applies.",
+          "control": "Confirm clean code builds successfully and no test prints secret-like fixture values into published logs.",
+          "recall": "Explain the failure mode each gate detects and one it misses.",
+          "case": {
+            "prompt": "A security gate rejects every build, including the clean fixture.",
+            "correct": "The legitimate-build control has failed.",
+            "incorrect": "A permanently red pipeline is proof of a strong gate."
+          }
+        },
+        {
+          "id": "release",
+          "title": "Ship a small service with an assurance record",
+          "primer": "Prepare a release checklist tied to threat-model requirements rather than tool counts.",
+          "experiment": "Deliver the toy service with passing regression tests, reproducible build inputs, deployment permissions, rollback instructions and a documented residual risk.",
+          "variant": "Change a dependency or deployment setting and rerun only the checks whose assumptions changed, explaining the choice.",
+          "control": "Reproduce a known security regression on the old version and show the release rejects it while valid use works.",
+          "recall": "Reconstruct the assurance argument and the strongest remaining limitation.",
+          "case": {
+            "prompt": "A dependency update changes the service's authorization behavior.",
+            "correct": "Recheck the relevant security and compatibility assumptions before release.",
+            "incorrect": "A newer dependency version needs no regression checks."
+          }
+        },
+        {
+          "id": "independent-transfer",
+          "title": "Revisit the skill on a fresh problem",
+          "primer": "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.",
+          "experiment": "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.",
+          "variant": "Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.",
+          "control": "Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.",
+          "recall": "Explain what transferred, what required help and which prerequisite needs another small experiment.",
+          "case": {
+            "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+            "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+            "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+          }
+        }
+      ]
+    },
+    {
+      "id": "digital-forensics-incident-response",
+      "title": "Digital Forensics and Incident Response",
+      "category": "Defensive",
+      "aliases": [
+        "dfir",
+        "forensics",
+        "incident response",
+        "disk",
+        "memory"
+      ],
+      "entry": "Handle files, compute hashes and interpret timestamps without modifying the original evidence.",
+      "background": [
+        "defensive-security-and-detection"
+      ],
+      "labs": [],
+      "limits": "Use licensed public datasets and synthetic artifacts. Large disk/memory images may exceed Pi storage; Windows memory interpretation needs symbols/tools matching the supplied image.",
+      "sources": [
+        "digitalcorpora",
+        "security-onion-import",
+        "htb-soc"
+      ],
+      "levels": [
+        {
+          "id": "foundations",
+          "title": "Prove the entry skills in a small lab",
+          "primer": "Handle files, compute hashes and interpret timestamps without modifying the original evidence.",
+          "experiment": "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.",
+          "variant": "Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.",
+          "control": "Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.",
+          "recall": "Reconstruct the environment and entry assumptions without following the setup notes.",
+          "case": {
+            "prompt": "A required training environment is unavailable, but a tool prints its version.",
+            "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+            "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+          }
+        },
+        {
+          "id": "preservation",
+          "title": "Keep the original evidence original",
+          "primer": "Hash a harmless fixture, copy it, and demonstrate how one-byte mutation changes its digest.",
+          "experiment": "Create an evidence manifest with acquisition time, source, hashes, handling history and analysis-copy paths; verify the original remains unchanged after analysis.",
+          "variant": "Change the copy or filename and determine which identity assertions still hold.",
+          "control": "Include a corrupted copy that must fail integrity verification and a byte-identical renamed copy that must pass content verification.",
+          "recall": "Explain integrity, provenance and chain of custody as different properties.",
+          "case": {
+            "prompt": "Two files have identical bytes but different filenames.",
+            "correct": "Their content hashes match while provenance may differ.",
+            "incorrect": "A matching hash proves the same acquisition history."
+          }
+        },
+        {
+          "id": "filesystem",
+          "title": "Recover a story from file metadata",
+          "primer": "Inspect timestamps and file metadata on a small provided disk image or synthetic directory.",
+          "experiment": "Build a bounded account of file creation/modification using an analysis copy, recording filesystem semantics and tool/version assumptions.",
+          "variant": "Change the timezone display or introduce a copied file whose timestamps differ from its real acquisition time.",
+          "control": "Include metadata that cannot prove who created a file and explicitly withhold that conclusion.",
+          "recall": "Explain why one timestamp does not prove an event happened at that exact time.",
+          "case": {
+            "prompt": "A copied file retains a timestamp earlier than acquisition.",
+            "correct": "Interpret filesystem and copying semantics before dating the underlying activity.",
+            "incorrect": "Treat every timestamp as the acquisition time."
+          }
+        },
+        {
+          "id": "timeline",
+          "title": "Reconcile clocks before drawing conclusions",
+          "primer": "Normalize three event timestamps with explicit offsets and identify clock uncertainty.",
+          "experiment": "Correlate a small authentication, process and network evidence bundle into a timeline with confidence and source references.",
+          "variant": "Add a clock-skew correction or delayed event and revise the ordering where justified.",
+          "control": "Keep an unrelated similarly named process out of the incident chain.",
+          "recall": "Reconstruct which event ordering is certain and which depends on clock assumptions.",
+          "case": {
+            "prompt": "Two log sources have different clock offsets.",
+            "correct": "Normalize and represent remaining ordering uncertainty.",
+            "incorrect": "Sort displayed timestamp strings and claim exact chronology."
+          }
+        },
+        {
+          "id": "memory",
+          "title": "Separate a process artifact from a verdict",
+          "primer": "Identify OS/build and symbol requirements for a supplied training memory image.",
+          "experiment": "On a suitable analysis host, inspect process and connection artifacts from a public training image, compare them with the provided ground truth where available, and record unsupported interpretations.",
+          "variant": "Change the filter or investigate a second process and independently test the same hypothesis.",
+          "control": "Include a benign process with a suspicious-looking name and avoid treating its name alone as malware proof.",
+          "recall": "Explain how an incompatible symbol profile can invalidate an apparently plausible result.",
+          "case": {
+            "prompt": "A memory tool uses symbols for the wrong OS build.",
+            "correct": "Treat the output as potentially invalid and resolve the mismatch.",
+            "incorrect": "Plausible-looking process names prove the symbols are correct."
+          }
+        },
+        {
+          "id": "containment",
+          "title": "Preserve the question while containing the risk",
+          "primer": "Write a decision table for evidence preservation versus a time-sensitive containment action.",
+          "experiment": "Rehearse a synthetic incident using a disposable service: preserve relevant logs, disable only the affected test identity and verify intended service behavior.",
+          "variant": "Remove access to one evidence source and revise the plan without inventing missing facts.",
+          "control": "Preserve a legitimate user's access and document evidence lost because of the chosen intervention.",
+          "recall": "Explain one containment tradeoff and how it changes later interpretation.",
+          "case": {
+            "prompt": "Containment destroys volatile evidence before it is captured.",
+            "correct": "Record the tradeoff and resulting interpretation limit.",
+            "incorrect": "Recreate the missing observations from the incident hypothesis."
+          }
+        },
+        {
+          "id": "case",
+          "title": "Deliver an evidence-led incident report",
+          "primer": "Define the questions a stakeholder needs answered from a fresh training bundle.",
+          "experiment": "Produce an evidence-indexed timeline, affected scope, alternative hypotheses, response decision and remaining uncertainty from an unfamiliar dataset.",
+          "variant": "Introduce one contradictory artifact and revise the explanation while retaining an audit of the earlier hypothesis.",
+          "control": "Identify one tempting conclusion that the available evidence does not support.",
+          "recall": "Reconstruct the case from the evidence index and independently recheck one claim.",
+          "case": {
+            "prompt": "A new artifact contradicts the initial timeline.",
+            "correct": "Revise the hypothesis and preserve the reasoning history.",
+            "incorrect": "Ignore it because the report is already written."
+          }
+        },
+        {
+          "id": "independent-transfer",
+          "title": "Revisit the skill on a fresh problem",
+          "primer": "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.",
+          "experiment": "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.",
+          "variant": "Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.",
+          "control": "Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.",
+          "recall": "Explain what transferred, what required help and which prerequisite needs another small experiment.",
+          "case": {
+            "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+            "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+            "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+          }
+        }
+      ]
+    },
+    {
+      "id": "threat-hunting-intelligence",
+      "title": "Threat Hunting and Threat Intelligence",
+      "category": "Defensive",
+      "aliases": [
+        "threat hunting",
+        "cti",
+        "threat intelligence",
+        "osint",
+        "attack"
+      ],
+      "entry": "Query small log datasets and distinguish source facts from analyst judgments.",
+      "background": [
+        "soc-analyst"
+      ],
+      "labs": [],
+      "limits": "Use public reports and synthetic telemetry; this track does not authorize investigating private individuals or scanning report indicators.",
+      "sources": [
+        "mitre-emulation",
+        "stix",
+        "microsoft-soc"
+      ],
+      "levels": [
+        {
+          "id": "foundations",
+          "title": "Prove the entry skills in a small lab",
+          "primer": "Query small log datasets and distinguish source facts from analyst judgments.",
+          "experiment": "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.",
+          "variant": "Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.",
+          "control": "Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.",
+          "recall": "Reconstruct the environment and entry assumptions without following the setup notes.",
+          "case": {
+            "prompt": "A required training environment is unavailable, but a tool prints its version.",
+            "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+            "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+          }
+        },
+        {
+          "id": "source-quality",
+          "title": "Put confidence beside the claim",
+          "primer": "Label observations, vendor claims and analyst inferences in a public threat report.",
+          "experiment": "Produce a short intelligence note with source dates, collection limits, confidence and the concrete defender decision it informs.",
+          "variant": "Add a conflicting source or newer report and explain which claims change.",
+          "control": "Include a widely repeated claim without primary evidence and keep it below corroborated facts.",
+          "recall": "Explain how source reliability differs from confidence in an individual claim.",
+          "case": {
+            "prompt": "Three articles repeat one uncorroborated original claim.",
+            "correct": "Repetition is not three independent sources.",
+            "incorrect": "Count the articles as independent corroboration."
+          }
+        },
+        {
+          "id": "behavior",
+          "title": "Turn a report into a huntable hypothesis",
+          "primer": "Map one reported behavior to its required host or network observations.",
+          "experiment": "Write an ATT&CK-aligned hunt hypothesis, list needed fields and expected benign lookalikes, and define evidence that would falsify it.",
+          "variant": "Change the assumed platform or available sensor and revise or reject the hypothesis.",
+          "control": "Show a technique mapping that is too broad to justify the proposed query.",
+          "recall": "Reconstruct the hypothesis without using an indicator list.",
+          "case": {
+            "prompt": "A hunt hypothesis needs process ancestry but only DNS logs exist.",
+            "correct": "Acquire a suitable source or narrow the hypothesis.",
+            "incorrect": "Infer the missing process ancestry from the DNS name."
+          }
+        },
+        {
+          "id": "queries",
+          "title": "Search for behavior through the noise",
+          "primer": "Compare exact indicator matching with a sequence or rate-based query on a small fixture.",
+          "experiment": "Implement a reproducible hunt over synthetic telemetry and measure matches against labeled positive and benign events.",
+          "variant": "Change filenames, addresses or usernames while preserving behavior and evaluate coverage.",
+          "control": "Include an ordinary administration sequence with similar individual events.",
+          "recall": "Explain the false-positive mechanism of the original query.",
+          "case": {
+            "prompt": "A behavior rule stops matching when the filename changes.",
+            "correct": "Reassess its dependence on a superficial indicator.",
+            "incorrect": "Claim coverage because the original sample still matches."
+          }
+        },
+        {
+          "id": "context",
+          "title": "Enrich without inventing attribution",
+          "primer": "Distinguish an observed address, an infrastructure relationship and an actor attribution claim.",
+          "experiment": "Build a small evidence graph from supplied indicators and public context, assigning dates, confidence and alternative explanations to each edge.",
+          "variant": "Introduce a shared hosting address or recycled domain and remove unjustified relationships.",
+          "control": "Demonstrate that shared infrastructure alone does not establish a common operator.",
+          "recall": "Explain one edge that is useful operationally but insufficient for attribution.",
+          "case": {
+            "prompt": "Two domains share a large hosting provider's IP.",
+            "correct": "Shared hosting alone is insufficient attribution evidence.",
+            "incorrect": "Assign both domains to the same operator."
+          }
+        },
+        {
+          "id": "intelligence-format",
+          "title": "Exchange the meaning, not just the fields",
+          "primer": "Inspect a small STIX object and explain its type, timestamps and relationship semantics.",
+          "experiment": "Create and validate a minimal STIX bundle for a fictional incident using synthetic indicators, confidence and source references.",
+          "variant": "Update an observation or revoke an indicator and express the change without silently erasing its history.",
+          "control": "Include a malformed relationship or unsupported claim that validation/review must reject.",
+          "recall": "Reconstruct the difference between an observable, an indicator and an incident claim.",
+          "case": {
+            "prompt": "A STIX bundle is syntactically valid but contains an unsupported relationship.",
+            "correct": "Schema validity does not establish analytic truth.",
+            "incorrect": "Validation proves every relationship is factual."
+          }
+        },
+        {
+          "id": "hunt-report",
+          "title": "Turn a hunt into an operational decision",
+          "primer": "Define the scope and stopping criteria for a fresh hunt dataset.",
+          "experiment": "Conduct the hunt, document query versions, investigated matches, negative results and coverage limits, then propose a detection or data-collection improvement.",
+          "variant": "Add a changed positive sequence or remove a source and revise the result transparently.",
+          "control": "Keep absence of evidence separate from proof that the behavior never occurred.",
+          "recall": "Explain what action the hunt supports and what further collection is needed.",
+          "case": {
+            "prompt": "A query returns no matches from an incomplete dataset.",
+            "correct": "Report the coverage limit with the negative result.",
+            "incorrect": "Conclude the behavior never occurred."
+          }
+        },
+        {
+          "id": "independent-transfer",
+          "title": "Revisit the skill on a fresh problem",
+          "primer": "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.",
+          "experiment": "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.",
+          "variant": "Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.",
+          "control": "Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.",
+          "recall": "Explain what transferred, what required help and which prerequisite needs another small experiment.",
+          "case": {
+            "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+            "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+            "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+          }
+        }
+      ]
+    },
+    {
+      "id": "malware-analysis",
+      "title": "Malware Analysis with Safe Training Artifacts",
+      "category": "Specialist",
+      "aliases": [
+        "malware",
+        "reverse engineering",
+        "remnux",
+        "flare",
+        "yara"
+      ],
+      "entry": "Read simple code and binary metadata, understand hashes and distinguish static from dynamic analysis.",
+      "background": [
+        "reverse-engineering-and-binary-exploitation"
+      ],
+      "labs": [],
+      "limits": "Start with benign toy programs and published traces. Live malware must not run in these Docker labs; it requires an appropriately isolated VM environment and reviewed sample handling. REMnux now offers ARM64 appliances, but individual tools and Pi deployment remain separate compatibility questions.",
+      "sources": [
+        "flare-vm",
+        "remnux",
+        "pwn-college"
+      ],
+      "levels": [
+        {
+          "id": "foundations",
+          "title": "Prove the entry skills in a small lab",
+          "primer": "Read simple code and binary metadata, understand hashes and distinguish static from dynamic analysis.",
+          "experiment": "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.",
+          "variant": "Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.",
+          "control": "Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.",
+          "recall": "Reconstruct the environment and entry assumptions without following the setup notes.",
+          "case": {
+            "prompt": "A required training environment is unavailable, but a tool prints its version.",
+            "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+            "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+          }
+        },
+        {
+          "id": "triage",
+          "title": "Describe the file before naming a family",
+          "primer": "Compute hashes and identify format, architecture and imports of a benign training binary.",
+          "experiment": "Produce a static triage sheet separating measured properties from inferred behavior and identify one next question for deeper analysis.",
+          "variant": "Change compiler options or append harmless data and determine which identifiers and structural properties change.",
+          "control": "Include a packed-looking or high-entropy benign file and avoid classifying it as malicious solely from entropy.",
+          "recall": "Explain what a hash, import and string can each establish.",
+          "case": {
+            "prompt": "A high-entropy binary is a known benign compressed utility.",
+            "correct": "Entropy alone cannot classify it as malware.",
+            "incorrect": "High entropy proves malicious behavior."
+          }
+        },
+        {
+          "id": "static-flow",
+          "title": "Follow the branch that causes the effect",
+          "primer": "Read a small owned program containing a conditional file or network operation using dummy data.",
+          "experiment": "Trace the condition, data flow and effect in source and disassembly; predict two inputs before running the benign program.",
+          "variant": "Change the input or compile optimization and re-identify the controlling condition.",
+          "control": "Include an unreachable suspicious-looking string that does not prove execution.",
+          "recall": "Reconstruct the condition-to-effect chain without searching for keywords.",
+          "case": {
+            "prompt": "A suspicious string occurs only in unreachable code.",
+            "correct": "Separate static capability hints from observed execution.",
+            "incorrect": "Report that the string's implied action definitely ran."
+          }
+        },
+        {
+          "id": "behavior",
+          "title": "Investigate a trace without executing a sample",
+          "primer": "Identify process, file, registry-like and network events in a supplied training trace.",
+          "experiment": "Build a behavior timeline from published or synthetic telemetry and distinguish observed effects from capabilities only suggested by static analysis.",
+          "variant": "Add a failed operation or contradictory timestamp and revise the behavior claims.",
+          "control": "Include an attempted connection that never succeeded and avoid calling it confirmed data transfer.",
+          "recall": "Explain one gap that would require a different sensor or controlled VM analysis.",
+          "case": {
+            "prompt": "A trace records an attempted connection with no successful transfer.",
+            "correct": "Report the attempt and the missing success evidence.",
+            "incorrect": "Claim confirmed exfiltration from the destination alone."
+          }
+        },
+        {
+          "id": "configuration",
+          "title": "Decode only what the evidence supports",
+          "primer": "Explain a benign toy configuration encoding and identify its boundaries in a file.",
+          "experiment": "Write a bounded parser for a self-authored encoded configuration, validate recovered fields and preserve the original byte offsets and assumptions.",
+          "variant": "Change key order, length or encoding and make the parser fail clearly or support the documented variation.",
+          "control": "Include a malformed/truncated fixture that must not yield a fabricated valid configuration.",
+          "recall": "Explain why successful decoding is not equivalent to execution or attribution.",
+          "case": {
+            "prompt": "A configuration parser receives a truncated fixture.",
+            "correct": "Fail clearly instead of inventing absent fields.",
+            "incorrect": "Fill missing fields with likely values and report them as recovered."
+          }
+        },
+        {
+          "id": "signatures",
+          "title": "Write a rule that survives a renamed file",
+          "primer": "Identify structural features of two benign toy binary variants and unrelated control files.",
+          "experiment": "Write a YARA or equivalent declarative rule for the training family and measure true/false matches on a documented sample set.",
+          "variant": "Rename or recompile the toy sample and evaluate which features survive.",
+          "control": "Include unrelated binaries sharing a common string so an overbroad signature fails the assessment.",
+          "recall": "Explain one expected false positive and how to investigate it.",
+          "case": {
+            "prompt": "A signature matches many unrelated files containing a common string.",
+            "correct": "Evaluate false positives and choose more discriminating evidence.",
+            "incorrect": "A large match count proves broad detection quality."
+          }
+        },
+        {
+          "id": "report",
+          "title": "Present a defensible analysis, not a label",
+          "primer": "Define the behavior questions and analysis environment for an unfamiliar harmless training artifact.",
+          "experiment": "Produce a report with static evidence, trace evidence, configuration interpretation, a bounded detection rule and explicit uncertainty; do not execute unknown malware.",
+          "variant": "Change one fixture property or trace event and independently revise the affected conclusion.",
+          "control": "Demonstrate a claim you deliberately withheld because the artifact or trace was insufficient.",
+          "recall": "Reconstruct the strongest finding and the observation that could disprove it.",
+          "case": {
+            "prompt": "A published trace suggests behavior not visible in the binary examined.",
+            "correct": "Explain the source discrepancy and limit the claim.",
+            "incorrect": "Merge all hints into a single certain execution story."
+          }
+        },
+        {
+          "id": "independent-transfer",
+          "title": "Revisit the skill on a fresh problem",
+          "primer": "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.",
+          "experiment": "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.",
+          "variant": "Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.",
+          "control": "Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.",
+          "recall": "Explain what transferred, what required help and which prerequisite needs another small experiment.",
+          "case": {
+            "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+            "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+            "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+          }
+        }
+      ]
+    },
+    {
+      "id": "mobile-application-security",
+      "title": "Mobile Application Security",
+      "category": "Specialist",
+      "aliases": [
+        "mobile",
+        "android",
+        "ios",
+        "apk",
+        "mastg",
+        "masvs"
+      ],
+      "entry": "Understand HTTP and application permissions; use an owned test device or appropriate emulator.",
+      "background": [
+        "web-application-security"
+      ],
+      "labs": [],
+      "limits": "MASTG practice apps and an Android/iOS test environment are required for operational assessments. A Pi Docker container is not an Android/iOS emulator; fixtures are preparation, not a substitute for device evidence.",
+      "sources": [
+        "mastg",
+        "owasp-asvs"
+      ],
+      "levels": [
+        {
+          "id": "foundations",
+          "title": "Prove the entry skills in a small lab",
+          "primer": "Understand HTTP and application permissions; use an owned test device or appropriate emulator.",
+          "experiment": "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.",
+          "variant": "Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.",
+          "control": "Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.",
+          "recall": "Reconstruct the environment and entry assumptions without following the setup notes.",
+          "case": {
+            "prompt": "A required training environment is unavailable, but a tool prints its version.",
+            "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+            "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+          }
+        },
+        {
+          "id": "platform-model",
+          "title": "Locate the mobile trust boundary",
+          "primer": "Draw app sandbox, OS permissions, local storage and backend boundaries for a toy mobile app.",
+          "experiment": "Inventory an owned practice app's manifest/entitlements, components and data flows and map two questions to MASTG tests.",
+          "variant": "Add an exported component or a new permission in a toy build and reassess exposure.",
+          "control": "Include a permission declaration that does not establish actual sensitive behavior by itself.",
+          "recall": "Explain how platform permissions and backend authorization differ.",
+          "case": {
+            "prompt": "A manifest declares a sensitive permission.",
+            "correct": "Review use and runtime conditions before asserting sensitive behavior.",
+            "incorrect": "The declaration proves the permission was exercised."
+          }
+        },
+        {
+          "id": "local-storage",
+          "title": "Find where the app leaves data",
+          "primer": "Classify preferences, databases, caches and logs in a practice application's data model.",
+          "experiment": "Using an owned device/emulator and a sanctioned practice app, locate a synthetic sensitive value, document its storage/access assumptions and test a safer toy implementation.",
+          "variant": "Change device state or storage location and predict whether the same extraction method applies.",
+          "control": "Keep intended app persistence working and show that unrelated sandboxed apps do not gain access through the proposed fix.",
+          "recall": "Explain encryption-at-rest limits when the app itself can access the key.",
+          "case": {
+            "prompt": "An app encrypts data but stores the key beside it under the same access boundary.",
+            "correct": "Evaluate the actual threat model and key access.",
+            "incorrect": "Encryption alone guarantees protection from that boundary's attacker."
+          }
+        },
+        {
+          "id": "transport",
+          "title": "Inspect a request without weakening the conclusion",
+          "primer": "Explain the certificate trust path and difference between an interception setup and a production configuration.",
+          "experiment": "Capture permitted training-app traffic on your own device/emulator, identify transmitted synthetic data and evaluate server identity validation under documented test settings.",
+          "variant": "Change the server certificate or hostname and predict acceptance or rejection.",
+          "control": "Verify a valid connection succeeds and an invalid identity is rejected by the corrected toy app.",
+          "recall": "Explain why disabling pinning for analysis does not prove a production bypass.",
+          "case": {
+            "prompt": "A debug build disables certificate validation for interception.",
+            "correct": "Limit findings to the documented test configuration.",
+            "incorrect": "Claim the production build has the same validation behavior."
+          }
+        },
+        {
+          "id": "components",
+          "title": "Test the component's actual caller",
+          "primer": "Identify an exported activity, service or deep-link handler in an owned practice app.",
+          "experiment": "Test a documented component boundary with benign input and record the caller identity, required permissions and resulting app behavior.",
+          "variant": "Change a deep-link parameter or invoking app identity and predict whether access should be permitted.",
+          "control": "Keep the intended navigation working while rejecting an unauthorized or malformed invocation.",
+          "recall": "Explain why an exported component is a review target rather than automatically a vulnerability.",
+          "case": {
+            "prompt": "An exported component requires an effective permission.",
+            "correct": "Test the caller and enforced permission before declaring exposure.",
+            "incorrect": "Every exported component is automatically exploitable."
+          }
+        },
+        {
+          "id": "backend",
+          "title": "The phone is not the authorization boundary",
+          "primer": "Model two mobile users and backend objects using synthetic accounts.",
+          "experiment": "Exercise a training app's API with two roles and verify server-side ownership checks independently of the mobile interface.",
+          "variant": "Change object ID or request method and repeat the authorization decision with fresh evidence.",
+          "control": "Preserve authorized access and deny an authenticated user who does not own the resource.",
+          "recall": "Explain which finding belongs to the mobile client and which belongs to the backend.",
+          "case": {
+            "prompt": "The mobile client hides an administrative operation.",
+            "correct": "Verify backend authorization independently.",
+            "incorrect": "Hidden mobile controls eliminate the need for backend checks."
+          }
+        },
+        {
+          "id": "assessment",
+          "title": "Deliver a platform-aware mobile review",
+          "primer": "Specify app version, device OS, test state and permitted instrumentation before an assessment.",
+          "experiment": "Review a fresh practice app against selected MASTG objectives, produce reproducible findings and retest one correction in an owned build.",
+          "variant": "Change an OS/app version or component permission and independently re-evaluate the affected finding.",
+          "control": "Record a test whose result depends on debug/rooted-device conditions and limit the production claim accordingly.",
+          "recall": "Reconstruct one finding including the exact platform assumptions required to reproduce it.",
+          "case": {
+            "prompt": "A result depends on a rooted debug device.",
+            "correct": "State that assumption and assess production applicability separately.",
+            "incorrect": "Present it as universally reproducible on stock devices."
+          }
+        },
+        {
+          "id": "independent-transfer",
+          "title": "Revisit the skill on a fresh problem",
+          "primer": "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.",
+          "experiment": "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.",
+          "variant": "Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.",
+          "control": "Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.",
+          "recall": "Explain what transferred, what required help and which prerequisite needs another small experiment.",
+          "case": {
+            "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+            "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+            "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+          }
+        }
+      ]
+    },
+    {
+      "id": "api-security",
+      "title": "API Security and Authorization Engineering",
+      "category": "Offensive",
+      "aliases": [
+        "api",
+        "graphql",
+        "rest",
+        "bola",
+        "oauth"
+      ],
+      "entry": "Read HTTP and JSON, use two synthetic accounts and explain authentication versus authorization.",
+      "background": [
+        "web-application-security"
+      ],
+      "labs": [
+        "juice-shop",
+        "webgoat"
+      ],
+      "limits": "Use designated lessons and owned API fixtures. GraphQL introspection or a visible route alone is not a vulnerability.",
+      "sources": [
+        "owasp-api",
+        "portswigger-paths",
+        "owasp-asvs"
+      ],
+      "levels": [
+        {
+          "id": "foundations",
+          "title": "Prove the entry skills in a small lab",
+          "primer": "Read HTTP and JSON, use two synthetic accounts and explain authentication versus authorization.",
+          "experiment": "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.",
+          "variant": "Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.",
+          "control": "Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.",
+          "recall": "Reconstruct the environment and entry assumptions without following the setup notes.",
+          "case": {
+            "prompt": "A required training environment is unavailable, but a tool prints its version.",
+            "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+            "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+          }
+        },
+        {
+          "id": "inventory",
+          "title": "Find the contract the client assumes",
+          "primer": "Read a small OpenAPI schema and list methods, objects, identities and state-changing operations.",
+          "experiment": "Inventory an owned training API, compare its documented and observed behavior, and identify two testable boundary hypotheses.",
+          "variant": "Add a deprecated route or alternate version and update the inventory and risk assumptions.",
+          "control": "Distinguish an intentionally public endpoint from an unintentionally unprotected operation.",
+          "recall": "Reconstruct one API trust boundary from method, identity and object.",
+          "case": {
+            "prompt": "An intentionally public health route responds without login.",
+            "correct": "Compare behavior with the intended contract before reporting missing authorization.",
+            "incorrect": "Every unauthenticated route is a vulnerability."
+          }
+        },
+        {
+          "id": "object-authorization",
+          "title": "Change the object, keep the identity",
+          "primer": "Build an access matrix for two users and two synthetic objects.",
+          "experiment": "In a designated API lesson, test owner and cross-user access using recorded requests, explain the missing check and demonstrate a corrected local equivalent.",
+          "variant": "Change the object type or HTTP verb and test whether the same boundary is enforced.",
+          "control": "Show legitimate owner access and rejection of an unrelated authenticated user.",
+          "recall": "Explain why unpredictable IDs cannot replace authorization.",
+          "case": {
+            "prompt": "User A requests user B's private object using a guessed ID.",
+            "correct": "Enforce object ownership on the server.",
+            "incorrect": "Random identifiers are sufficient authorization."
+          }
+        },
+        {
+          "id": "property-authorization",
+          "title": "Who may write this field?",
+          "primer": "Separate user-editable, server-owned and privileged fields in a toy request model.",
+          "experiment": "Test a local API's property allowlist with a harmless administrative-flag fixture and patch overbroad binding or response exposure.",
+          "variant": "Nest the property or switch update methods and predict whether the policy should change.",
+          "control": "Keep ordinary editable fields working while rejecting privileged field writes and suppressing private response fields.",
+          "recall": "Explain the relationship between mass assignment and field-level authorization.",
+          "case": {
+            "prompt": "An update body contains a server-owned role field.",
+            "correct": "Apply field-level write authorization or an allowlist.",
+            "incorrect": "Bind every JSON field because the user is authenticated."
+          }
+        },
+        {
+          "id": "tokens",
+          "title": "Validate the whole token contract",
+          "primer": "Identify issuer, audience, expiration and granted scopes in a synthetic token description.",
+          "experiment": "Write or execute tests against an owned API for valid and invalid token contexts, separating signature validity from authorization.",
+          "variant": "Change audience, scope or expiry and predict which validation layer rejects the request.",
+          "control": "Include a correctly signed but wrong-audience token and an authorized valid token.",
+          "recall": "Explain why a valid signature does not make every action authorized.",
+          "case": {
+            "prompt": "A token is correctly signed but expired.",
+            "correct": "Reject it under the service's validity rules.",
+            "incorrect": "Signature correctness overrides expiration."
+          }
+        },
+        {
+          "id": "resource-limits",
+          "title": "Make expensive work bounded",
+          "primer": "Identify pagination, batch operations and query depth/complexity in a toy API.",
+          "experiment": "Apply explicit request-size and work limits to an owned small service, then test bounded valid and over-limit inputs without load-testing third parties.",
+          "variant": "Change nesting depth or batch composition and predict the work budget decision.",
+          "control": "Preserve a legitimate paginated request and reject an inexpensive-looking input that exceeds the actual work budget.",
+          "recall": "Explain why request count alone may not bound resource consumption.",
+          "case": {
+            "prompt": "One request contains an unbounded nested batch.",
+            "correct": "Bound actual work as well as request count.",
+            "incorrect": "A one-request-per-second limit always bounds resource use."
+          }
+        },
+        {
+          "id": "review",
+          "title": "Test a workflow across its endpoints",
+          "primer": "Draw the state and identity transitions for a small API workflow.",
+          "experiment": "Assess an unfamiliar owned API fixture for object, property, token and workflow boundaries; deliver evidence and a tested minimal repair.",
+          "variant": "Change operation order or user role and independently test whether the business invariant still holds.",
+          "control": "Verify normal workflow completion and a rejected unauthorized transition after the fix.",
+          "recall": "Reconstruct the finding from the business invariant rather than the endpoint name.",
+          "case": {
+            "prompt": "A valid endpoint sequence violates a business invariant when reordered.",
+            "correct": "Test workflow state and authorization across endpoints.",
+            "incorrect": "Individually valid endpoints guarantee a valid workflow."
+          }
+        },
+        {
+          "id": "independent-transfer",
+          "title": "Revisit the skill on a fresh problem",
+          "primer": "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.",
+          "experiment": "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.",
+          "variant": "Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.",
+          "control": "Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.",
+          "recall": "Explain what transferred, what required help and which prerequisite needs another small experiment.",
+          "case": {
+            "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+            "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+            "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+          }
+        }
+      ]
+    },
+    {
+      "id": "cryptography-protocol-security",
+      "title": "Applied Cryptography and Protocol Security",
+      "category": "Specialist",
+      "aliases": [
+        "crypto",
+        "cryptography",
+        "tls",
+        "pki"
+      ],
+      "entry": "Work with bytes, hexadecimal and small Python programs; distinguish encoding from encryption.",
+      "background": [],
+      "labs": [],
+      "limits": "Use established libraries and training data. Toy arithmetic explains mechanisms; it is not production cryptographic implementation guidance.",
+      "sources": [
+        "cryptohack",
+        "owasp-asvs"
+      ],
+      "levels": [
+        {
+          "id": "foundations",
+          "title": "Prove the entry skills in a small lab",
+          "primer": "Work with bytes, hexadecimal and small Python programs; distinguish encoding from encryption.",
+          "experiment": "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.",
+          "variant": "Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.",
+          "control": "Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.",
+          "recall": "Reconstruct the environment and entry assumptions without following the setup notes.",
+          "case": {
+            "prompt": "A required training environment is unavailable, but a tool prints its version.",
+            "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+            "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+          }
+        },
+        {
+          "id": "representations",
+          "title": "Bytes are not the text displaying them",
+          "primer": "Convert a short fixture between bytes, hex and Base64 and record exact lengths.",
+          "experiment": "Implement round-trip tests for a bounded binary message and diagnose one encoding mismatch without losing bytes.",
+          "variant": "Introduce a zero byte or non-ASCII character and predict the representation change.",
+          "control": "Reject malformed encoded input and preserve a valid binary message exactly.",
+          "recall": "Explain why encoding provides no confidentiality.",
+          "case": {
+            "prompt": "A message is Base64 encoded before transmission.",
+            "correct": "Encoding does not provide confidentiality.",
+            "incorrect": "Base64 hides the message from an observer with no secret."
+          }
+        },
+        {
+          "id": "integrity",
+          "title": "A checksum does not authenticate its author",
+          "primer": "Compare a hash with a keyed MAC using synthetic messages and a training key.",
+          "experiment": "Use a standard library to authenticate a message, test verification and record what the key ownership assumption means.",
+          "variant": "Change one message byte or use a different key and predict verification.",
+          "control": "Accept the valid message and reject both tampering and a MAC made with the wrong key.",
+          "recall": "Explain integrity versus origin authentication.",
+          "case": {
+            "prompt": "An attacker can replace both a message and its unkeyed hash.",
+            "correct": "The hash alone does not authenticate the message's origin.",
+            "incorrect": "The updated hash proves the replacement is authorized."
+          }
+        },
+        {
+          "id": "symmetric",
+          "title": "Make misuse visible in a toy experiment",
+          "primer": "Identify nonce, ciphertext and authentication tag in an established AEAD API.",
+          "experiment": "Encrypt and decrypt synthetic data with an established authenticated-encryption library and test tamper rejection.",
+          "variant": "Change associated data or the nonce and predict which operation should fail.",
+          "control": "Keep the valid round trip working and reject a changed tag without releasing plaintext.",
+          "recall": "Explain the nonce-use rule of the selected algorithm.",
+          "case": {
+            "prompt": "An authenticated-encryption tag fails validation.",
+            "correct": "Reject the result without releasing unauthenticated plaintext.",
+            "incorrect": "Return the plaintext because decryption produced bytes."
+          }
+        },
+        {
+          "id": "public-key",
+          "title": "State exactly what a signature proves",
+          "primer": "Distinguish public-key encryption, signatures and key agreement in small worked examples.",
+          "experiment": "Sign and verify a synthetic document with an established library and connect the verified key to an explicit identity assumption.",
+          "variant": "Change the message or trusted public key and predict the result.",
+          "control": "Reject a valid signature from an untrusted key while accepting the intended signer's document.",
+          "recall": "Explain why a signature alone does not establish a real-world identity.",
+          "case": {
+            "prompt": "A signature is valid under an unknown public key.",
+            "correct": "The identity trust decision is still unresolved.",
+            "incorrect": "Cryptographic validity alone proves the claimed real-world identity."
+          }
+        },
+        {
+          "id": "tls",
+          "title": "Test the certificate decision",
+          "primer": "Read certificate issuer, subject alternative names, validity and key usage.",
+          "experiment": "Run a local TLS test service with training certificates and verify hostname, trust-chain and expiry failures without disabling validation.",
+          "variant": "Change the hostname or CA trust set and predict acceptance.",
+          "control": "Demonstrate a valid connection and rejection of an unrelated trusted-but-wrong-host certificate.",
+          "recall": "Reconstruct the checks needed for server identity validation.",
+          "case": {
+            "prompt": "A trusted certificate names a different hostname.",
+            "correct": "Hostname validation must still reject the connection.",
+            "incorrect": "A trusted issuer makes the hostname irrelevant."
+          }
+        },
+        {
+          "id": "review",
+          "title": "Find a protocol assumption that can be tested",
+          "primer": "Diagram the messages and trust assumptions of a toy authenticated exchange.",
+          "experiment": "Review a toy protocol for replay, identity and integrity mistakes, repair one defect and provide executable regression tests.",
+          "variant": "Reorder or replay a message and predict the corrected protocol's response.",
+          "control": "Preserve a legitimate fresh exchange while rejecting a stale authenticated message.",
+          "recall": "Explain which property the repair establishes and which it does not.",
+          "case": {
+            "prompt": "An authenticated command can be replayed indefinitely.",
+            "correct": "Add freshness/state appropriate to the protocol.",
+            "incorrect": "Authentication automatically prevents replay."
+          }
+        },
+        {
+          "id": "independent-transfer",
+          "title": "Revisit the skill on a fresh problem",
+          "primer": "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.",
+          "experiment": "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.",
+          "variant": "Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.",
+          "control": "Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.",
+          "recall": "Explain what transferred, what required help and which prerequisite needs another small experiment.",
+          "case": {
+            "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+            "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+            "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+          }
+        }
+      ]
+    },
+    {
+      "id": "wireless-iot-security",
+      "title": "Wireless and IoT Security",
+      "category": "Specialist",
+      "aliases": [
+        "wireless",
+        "wifi",
+        "iot",
+        "mqtt",
+        "firmware"
+      ],
+      "entry": "Understand local networking, device ownership and basic authentication.",
+      "background": [
+        "networking-for-security"
+      ],
+      "labs": [
+        "mqtt"
+      ],
+      "limits": "MQTT exercises run in Docker. Radio capture/injection requires suitable owned hardware and legal scope; firmware emulation is device/architecture-specific.",
+      "sources": [
+        "owasp-iot",
+        "mosquitto"
+      ],
+      "levels": [
+        {
+          "id": "foundations",
+          "title": "Prove the entry skills in a small lab",
+          "primer": "Understand local networking, device ownership and basic authentication.",
+          "experiment": "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.",
+          "variant": "Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.",
+          "control": "Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.",
+          "recall": "Reconstruct the environment and entry assumptions without following the setup notes.",
+          "case": {
+            "prompt": "A required training environment is unavailable, but a tool prints its version.",
+            "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+            "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+          }
+        },
+        {
+          "id": "inventory",
+          "title": "Know which device and boundary you are testing",
+          "primer": "Inventory a fictional device's interfaces, firmware, identities and update path.",
+          "experiment": "Build a device threat model and an isolated test plan using an owned device or documented simulation.",
+          "variant": "Add a companion cloud service and revise the data and trust boundaries.",
+          "control": "Exclude unrelated nearby devices even when technically visible.",
+          "recall": "Explain which observations require physical hardware.",
+          "case": {
+            "prompt": "A nearby device is visible but outside the test permission.",
+            "correct": "Keep it out of the exercise.",
+            "incorrect": "Radio visibility establishes testing permission."
+          }
+        },
+        {
+          "id": "mqtt",
+          "title": "Follow a message through the broker",
+          "primer": "Explain topics, subscriptions, retained messages and session identity using a local broker.",
+          "experiment": "Publish and receive a unique harmless marker in the isolated MQTT profile and record exact topic/payload evidence.",
+          "variant": "Change the subscription wildcard and predict which messages are delivered.",
+          "control": "Include an unmatched topic that must not reach the subscriber.",
+          "recall": "Explain retained delivery versus a new live publication.",
+          "case": {
+            "prompt": "A retained MQTT message arrives immediately after subscribing.",
+            "correct": "Distinguish retained state from a newly published live event.",
+            "incorrect": "Arrival time proves a new publication happened then."
+          }
+        },
+        {
+          "id": "access",
+          "title": "Give each device only its topics",
+          "primer": "Model two synthetic device identities and allowed publish/subscribe topics.",
+          "experiment": "Configure a separate owned broker with authentication and topic ACLs; verify each identity's allowed and denied operations.",
+          "variant": "Change a wildcard or identity and predict effective topic access.",
+          "control": "Preserve a device's intended telemetry while denying another device's private topic.",
+          "recall": "Reconstruct the difference between broker authentication and topic authorization.",
+          "case": {
+            "prompt": "A device authenticates to a broker but lacks a topic grant.",
+            "correct": "Enforce topic authorization independently.",
+            "incorrect": "Authentication grants every topic."
+          }
+        },
+        {
+          "id": "wireless",
+          "title": "Interpret the capture you are actually able to make",
+          "primer": "Distinguish interface mode, channel and link-layer metadata in a supplied wireless capture.",
+          "experiment": "Analyze an owned or licensed training capture and explain association/security properties supported by visible frames.",
+          "variant": "Change the selected channel or capture source and reassess missing observations.",
+          "control": "Avoid claiming to see encrypted application content without the required decryption context.",
+          "recall": "Explain why a monitor-capable adapter is a prerequisite for some tests.",
+          "case": {
+            "prompt": "A wireless capture lacks the context needed to decrypt application traffic.",
+            "correct": "Limit conclusions to visible metadata and available evidence.",
+            "incorrect": "Infer plaintext contents from encrypted frame sizes alone."
+          }
+        },
+        {
+          "id": "firmware",
+          "title": "Examine a firmware image as evidence",
+          "primer": "Identify format, architecture and provenance of a permitted training firmware image.",
+          "experiment": "Inspect static configuration and update metadata from a supplied image, identify one concrete trust assumption and propose a testable improvement.",
+          "variant": "Change a signed metadata field or use a mismatched device model in a toy updater test.",
+          "control": "Accept valid matching metadata and reject tampering or a wrong-model update.",
+          "recall": "Explain what static image analysis cannot prove about a running device.",
+          "case": {
+            "prompt": "Firmware is signed for another device model.",
+            "correct": "Check model/version policy as well as signature validity.",
+            "incorrect": "Any valid vendor signature authorizes installation on every model."
+          }
+        },
+        {
+          "id": "assessment",
+          "title": "Review an end-to-end device workflow",
+          "primer": "Map device, broker, companion app and update service boundaries.",
+          "experiment": "Assess a small owned MQTT workflow, repair one access defect and report remaining hardware/firmware assumptions.",
+          "variant": "Introduce another device identity or a changed topic layout and retest separation.",
+          "control": "Keep legitimate telemetry working and deny the unrelated device.",
+          "recall": "Reconstruct the finding through the complete device-to-service path.",
+          "case": {
+            "prompt": "A topic ACL fix blocks unrelated devices and the intended device alike.",
+            "correct": "Restore the required allowed operation while retaining separation.",
+            "incorrect": "Total communication failure proves a correct IoT repair."
+          }
+        },
+        {
+          "id": "independent-transfer",
+          "title": "Revisit the skill on a fresh problem",
+          "primer": "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.",
+          "experiment": "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.",
+          "variant": "Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.",
+          "control": "Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.",
+          "recall": "Explain what transferred, what required help and which prerequisite needs another small experiment.",
+          "case": {
+            "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+            "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+            "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+          }
+        }
+      ]
+    },
+    {
+      "id": "ot-ics-security",
+      "title": "OT and Industrial Control Security",
+      "category": "Specialist",
+      "aliases": [
+        "ot",
+        "ics",
+        "scada",
+        "modbus",
+        "industrial"
+      ],
+      "entry": "Read network diagrams and distinguish operational safety from information confidentiality.",
+      "background": [
+        "networking-for-security"
+      ],
+      "labs": [],
+      "limits": "Use software simulators and supplied captures only. No real PLC, safety system or industrial network is targeted; a simulator cannot establish physical safety.",
+      "sources": [
+        "cisa-ics",
+        "pymodbus",
+        "nist-csf"
+      ],
+      "levels": [
+        {
+          "id": "foundations",
+          "title": "Prove the entry skills in a small lab",
+          "primer": "Read network diagrams and distinguish operational safety from information confidentiality.",
+          "experiment": "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.",
+          "variant": "Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.",
+          "control": "Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.",
+          "recall": "Reconstruct the environment and entry assumptions without following the setup notes.",
+          "case": {
+            "prompt": "A required training environment is unavailable, but a tool prints its version.",
+            "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+            "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+          }
+        },
+        {
+          "id": "process",
+          "title": "Start with the process consequence",
+          "primer": "Draw a simulated sensor, controller and actuator workflow with safety constraints.",
+          "experiment": "Build an asset/zone diagram and identify how loss of view, control or availability affects the simulated process.",
+          "variant": "Change a process dependency and revise the priority of affected controls.",
+          "control": "Distinguish a confidentiality issue from a change that could affect safe operation.",
+          "recall": "Explain why enterprise IT priorities cannot be copied blindly into OT.",
+          "case": {
+            "prompt": "Disconnecting a controller may violate a stated safety constraint.",
+            "correct": "Include process engineering and the safety consequence in containment decisions.",
+            "incorrect": "Copy the ordinary IT isolation action without process review."
+          }
+        },
+        {
+          "id": "protocol",
+          "title": "Read the register with its context",
+          "primer": "Interpret function code, address, unit identity and value from a supplied Modbus exchange.",
+          "experiment": "Use an isolated software simulator or capture to trace a benign register read and document address and data-type assumptions.",
+          "variant": "Change register address or byte order in a fixture and predict the interpretation.",
+          "control": "Reject an out-of-range or mismatched response instead of inventing a process value.",
+          "recall": "Explain why a register number alone does not identify a physical measurement.",
+          "case": {
+            "prompt": "A register value is interpreted with the wrong byte order.",
+            "correct": "Recheck data type and mapping before inferring process state.",
+            "incorrect": "The numeric output is trustworthy because the packet parsed."
+          }
+        },
+        {
+          "id": "segmentation",
+          "title": "Prove the permitted path",
+          "primer": "Define engineering, operator and monitoring roles for a simulated cell.",
+          "experiment": "Model and test a small allowlist of communication paths using local fixtures or a disposable network.",
+          "variant": "Change a client role or destination port and predict whether access should remain.",
+          "control": "Preserve required monitoring while denying an unrelated management path.",
+          "recall": "Reconstruct one zone boundary and its operational justification.",
+          "case": {
+            "prompt": "An engineering path is denied but required monitoring still works.",
+            "correct": "Verify that this matches the intended zone policy.",
+            "incorrect": "Every denied industrial connection is an operational failure."
+          }
+        },
+        {
+          "id": "monitoring",
+          "title": "Distinguish a maintenance action from an anomaly",
+          "primer": "Read baseline function codes and timing from a supplied industrial training trace.",
+          "experiment": "Create a detection hypothesis for an unexpected write or new peer and evaluate it against labeled simulator traffic.",
+          "variant": "Change a nonessential address or schedule and reassess the rule.",
+          "control": "Include approved maintenance and record the context needed to avoid a false incident.",
+          "recall": "Explain what the network sensor cannot establish about physical state.",
+          "case": {
+            "prompt": "An unexpected write occurs during an approved maintenance window.",
+            "correct": "Correlate authorization and process context before disposition.",
+            "incorrect": "Every unusual function code proves an incident."
+          }
+        },
+        {
+          "id": "change-control",
+          "title": "Rehearse a reversible change",
+          "primer": "Write a pre-check, change, validation and rollback plan for a simulator configuration.",
+          "experiment": "Apply one non-disruptive simulator hardening change, preserve the baseline and verify expected readings afterward.",
+          "variant": "Remove an assumed maintenance window and decide whether to defer or redesign the change.",
+          "control": "Demonstrate that a failed validation leads to rollback rather than an unsupported success claim.",
+          "recall": "Explain the evidence required before a change could be considered in a real plant.",
+          "case": {
+            "prompt": "A simulator change fails its validation.",
+            "correct": "Roll back using the documented baseline.",
+            "incorrect": "Declare success because the configuration command exited zero."
+          }
+        },
+        {
+          "id": "exercise",
+          "title": "Run an incident tabletop with technical evidence",
+          "primer": "Define process owners, safety contacts and evidence sources for a fictional incident.",
+          "experiment": "Investigate a supplied OT trace and conduct a tabletop containment decision with a technical timeline and explicit safety uncertainty.",
+          "variant": "Add contradictory process evidence and revise the decision.",
+          "control": "Reject an IT-style containment action that would violate the stated process constraint.",
+          "recall": "Reconstruct the decision and the unresolved question requiring a process engineer.",
+          "case": {
+            "prompt": "Network evidence is insufficient to determine physical state.",
+            "correct": "Escalate the uncertainty to the process owner.",
+            "incorrect": "Treat network logs as a complete measurement of physical safety."
+          }
+        },
+        {
+          "id": "independent-transfer",
+          "title": "Revisit the skill on a fresh problem",
+          "primer": "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.",
+          "experiment": "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.",
+          "variant": "Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.",
+          "control": "Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.",
+          "recall": "Explain what transferred, what required help and which prerequisite needs another small experiment.",
+          "case": {
+            "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+            "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+            "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+          }
+        }
+      ]
+    },
+    {
+      "id": "security-architecture-grc",
+      "title": "Security Architecture, Risk and Governance",
+      "category": "Engineering",
+      "aliases": [
+        "grc",
+        "risk",
+        "governance",
+        "security architecture",
+        "compliance"
+      ],
+      "entry": "Understand service users, data and business purpose; distinguish a requirement from evidence.",
+      "background": [],
+      "labs": [],
+      "limits": "Uses public NIST guidance and fictional organizations. Completion is not an audit attestation or legal/compliance advice.",
+      "sources": [
+        "nist-csf",
+        "owasp-asvs",
+        "cisa-ssvc"
+      ],
+      "levels": [
+        {
+          "id": "foundations",
+          "title": "Prove the entry skills in a small lab",
+          "primer": "Understand service users, data and business purpose; distinguish a requirement from evidence.",
+          "experiment": "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.",
+          "variant": "Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.",
+          "control": "Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.",
+          "recall": "Reconstruct the environment and entry assumptions without following the setup notes.",
+          "case": {
+            "prompt": "A required training environment is unavailable, but a tool prints its version.",
+            "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+            "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+          }
+        },
+        {
+          "id": "assets",
+          "title": "Define the system someone is responsible for",
+          "primer": "Inventory fictional assets, owners, data types and dependencies.",
+          "experiment": "Write a system boundary and data-flow diagram that includes outsourced services and critical business assumptions.",
+          "variant": "Add a new data recipient and revise ownership and control responsibilities.",
+          "control": "Identify an asset outside the boundary that still creates a dependency risk.",
+          "recall": "Explain why an incomplete boundary undermines an assessment.",
+          "case": {
+            "prompt": "An outsourced service is outside direct administration but handles critical data.",
+            "correct": "Record the dependency and assigned control responsibilities.",
+            "incorrect": "Omit it because it is not owned infrastructure."
+          }
+        },
+        {
+          "id": "threats",
+          "title": "Connect the threat to a business consequence",
+          "primer": "Separate asset value, threat, vulnerability, likelihood and impact in a sample scenario.",
+          "experiment": "Create a small risk register with evidence, uncertainty, existing controls and a named decision owner.",
+          "variant": "Change exposure or business criticality and justify the resulting priority.",
+          "control": "Avoid turning an unsupported numeric guess into a precise probability claim.",
+          "recall": "Reconstruct one risk from cause to consequence.",
+          "case": {
+            "prompt": "Likelihood is unknown and has no empirical basis.",
+            "correct": "State uncertainty rather than inventing a precise probability.",
+            "incorrect": "Choose a precise percentage to make the register look rigorous."
+          }
+        },
+        {
+          "id": "controls",
+          "title": "Make the control testable",
+          "primer": "Translate a broad policy statement into an observable control objective.",
+          "experiment": "Map selected NIST CSF outcomes to concrete controls and evidence collection for a fictional service.",
+          "variant": "Change the hosting model and identify controls whose evidence must change.",
+          "control": "Include a policy document that does not prove the operational control is running.",
+          "recall": "Explain control design versus control operating effectiveness.",
+          "case": {
+            "prompt": "A policy says backups are tested but no restoration evidence exists.",
+            "correct": "Operating effectiveness remains unsubstantiated.",
+            "incorrect": "The written policy proves restoration works."
+          }
+        },
+        {
+          "id": "architecture",
+          "title": "Compare designs against explicit assumptions",
+          "primer": "Diagram two authentication or segmentation designs and their failure modes.",
+          "experiment": "Evaluate the designs against the same threat model, operational needs and recovery requirements, then justify a bounded choice.",
+          "variant": "Remove one assumed trusted component and revise the recommendation.",
+          "control": "Document one risk accepted by the chosen design instead of claiming universal superiority.",
+          "recall": "Reconstruct the tradeoff that drove the decision.",
+          "case": {
+            "prompt": "A design relies on a component that is no longer trusted.",
+            "correct": "Reassess the design's assumptions and tradeoffs.",
+            "incorrect": "The old architecture decision remains valid without review."
+          }
+        },
+        {
+          "id": "assurance",
+          "title": "Trace a requirement to its evidence",
+          "primer": "Build a requirement, test, result and evidence-reference matrix for a toy service.",
+          "experiment": "Review a small evidence pack, identify stale or missing evidence and produce a remediation plan with owners and retest criteria.",
+          "variant": "Change a requirement version or evidence date and reassess adequacy.",
+          "control": "Reject a screenshot or scanner summary that cannot substantiate the actual claim.",
+          "recall": "Explain the difference between a failed control and insufficient evidence.",
+          "case": {
+            "prompt": "A scanner screenshot does not identify target or version.",
+            "correct": "Request traceable evidence for the actual claim.",
+            "incorrect": "Any green screenshot proves the current control passes."
+          }
+        },
+        {
+          "id": "review",
+          "title": "Deliver a decision-ready security review",
+          "primer": "Define review scope, stakeholders and acceptance criteria for a fictional launch.",
+          "experiment": "Deliver a concise architecture/risk review with prioritized actions, residual risks, evidence references and an accountable acceptance decision.",
+          "variant": "Introduce a new dependency or material finding and update the decision transparently.",
+          "control": "Keep a low-impact observation from obscuring an unresolved launch-critical control.",
+          "recall": "Reconstruct the strongest assurance claim and its limits.",
+          "case": {
+            "prompt": "A launch-critical control remains unverified among many low-risk fixes.",
+            "correct": "Make the unresolved decision and accountable owner explicit.",
+            "incorrect": "Count closed tickets and approve the launch automatically."
+          }
+        },
+        {
+          "id": "independent-transfer",
+          "title": "Revisit the skill on a fresh problem",
+          "primer": "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.",
+          "experiment": "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.",
+          "variant": "Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.",
+          "control": "Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.",
+          "recall": "Explain what transferred, what required help and which prerequisite needs another small experiment.",
+          "case": {
+            "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+            "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+            "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+          }
+        }
+      ]
+    },
+    {
+      "id": "vulnerability-management",
+      "title": "Vulnerability Management and Exposure Prioritization",
+      "category": "Defensive",
+      "aliases": [
+        "vulnerability management",
+        "exposure",
+        "cve",
+        "epss",
+        "ssvc"
+      ],
+      "entry": "Understand service versions, asset ownership and the difference between an advisory and confirmed exposure.",
+      "background": [
+        "networking-for-security"
+      ],
+      "labs": [],
+      "limits": "Use synthetic inventories and approved scan exports. EPSS estimates and KEV membership inform decisions but do not prove exploitation on your system.",
+      "sources": [
+        "cisa-kev",
+        "epss",
+        "cisa-ssvc"
+      ],
+      "levels": [
+        {
+          "id": "foundations",
+          "title": "Prove the entry skills in a small lab",
+          "primer": "Understand service versions, asset ownership and the difference between an advisory and confirmed exposure.",
+          "experiment": "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.",
+          "variant": "Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.",
+          "control": "Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.",
+          "recall": "Reconstruct the environment and entry assumptions without following the setup notes.",
+          "case": {
+            "prompt": "A required training environment is unavailable, but a tool prints its version.",
+            "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+            "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+          }
+        },
+        {
+          "id": "inventory",
+          "title": "Find the asset behind the finding",
+          "primer": "Normalize asset IDs, service names and owners across two small inventory exports.",
+          "experiment": "Reconcile a synthetic scan inventory with deployed components and identify unknown ownership or stale records.",
+          "variant": "Rename a host or move a service and preserve its identity without merging unrelated assets.",
+          "control": "Include two similar version strings that refer to different products.",
+          "recall": "Explain why asset identity must precede prioritization.",
+          "case": {
+            "prompt": "Two different products expose similar version strings.",
+            "correct": "Establish product identity before applying an advisory.",
+            "incorrect": "Treat matching numbers as the same component."
+          }
+        },
+        {
+          "id": "validation",
+          "title": "Is the advisory actually applicable?",
+          "primer": "Read affected versions, prerequisites and mitigations from one public advisory.",
+          "experiment": "Validate a supplied finding against exact component/configuration evidence and classify confirmed, not applicable or insufficient evidence.",
+          "variant": "Change a required feature or version and revise applicability.",
+          "control": "Include a matching product name with a nonaffected version.",
+          "recall": "Reconstruct the conditions required before calling the finding applicable.",
+          "case": {
+            "prompt": "The advisory's required feature is disabled and unavailable.",
+            "correct": "Verify that condition before deciding applicability.",
+            "incorrect": "A matching product name alone establishes exposure."
+          }
+        },
+        {
+          "id": "prioritization",
+          "title": "Prioritize action using context",
+          "primer": "Compare CVSS severity, EPSS probability and known-exploited status without treating them as synonyms.",
+          "experiment": "Prioritize a synthetic queue using exposure, business impact, exploitation evidence and an explicit SSVC-style decision path.",
+          "variant": "Change exposure or exploitation evidence and justify the revised action.",
+          "control": "Include a high-score isolated lab finding and a lower-score exposed critical asset.",
+          "recall": "Explain which new evidence would change the highest priority.",
+          "case": {
+            "prompt": "A vulnerability has high severity but low exposure on an isolated training asset.",
+            "correct": "Prioritize with exploitation evidence and business context.",
+            "incorrect": "Severity alone dictates the entire remediation queue."
+          }
+        },
+        {
+          "id": "remediation",
+          "title": "Verify the repair rather than the ticket",
+          "primer": "Define the desired safe state and rollback before a toy service update.",
+          "experiment": "Apply a patch or configuration mitigation in an owned test service and verify both the vulnerable condition and normal functionality.",
+          "variant": "Change the deployment variant and reassess whether the same mitigation applies.",
+          "control": "Keep a ticket marked resolved from passing when the affected instance still has the old configuration.",
+          "recall": "Explain patch presence versus effective remediation.",
+          "case": {
+            "prompt": "A ticket is closed but the affected instance retains its vulnerable configuration.",
+            "correct": "The repair is not verified on that instance.",
+            "incorrect": "Ticket status is sufficient remediation evidence."
+          }
+        },
+        {
+          "id": "exceptions",
+          "title": "Put an expiry date on accepted risk",
+          "primer": "Identify owner, rationale, compensating controls and review date in a sample exception.",
+          "experiment": "Write a bounded exception for a fictional unpatchable service, with measurable compensating controls and a retest trigger.",
+          "variant": "Remove a compensating control or change external exposure and reevaluate the exception.",
+          "control": "Reject an indefinite exception without an accountable owner.",
+          "recall": "Reconstruct when the exception must return to the remediation queue.",
+          "case": {
+            "prompt": "A risk exception has no owner or expiry.",
+            "correct": "Return it for accountable, bounded acceptance.",
+            "incorrect": "Leave it accepted indefinitely."
+          }
+        },
+        {
+          "id": "program",
+          "title": "Measure reduction in exposure",
+          "primer": "Define a metric whose denominator and asset population are explicit.",
+          "experiment": "Produce a vulnerability-management report from a synthetic inventory, separating verified fixes, accepted risk, missing data and recurring causes.",
+          "variant": "Add previously unknown assets and revise the metrics without hiding the changed denominator.",
+          "control": "Distinguish a fall in scan coverage from a real reduction in exposure.",
+          "recall": "Explain one metric that could look better while security became worse.",
+          "case": {
+            "prompt": "Scan coverage drops and the finding count falls.",
+            "correct": "Distinguish lost visibility from reduced exposure.",
+            "incorrect": "Report an improvement without revisiting the denominator."
+          }
+        },
+        {
+          "id": "independent-transfer",
+          "title": "Revisit the skill on a fresh problem",
+          "primer": "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.",
+          "experiment": "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.",
+          "variant": "Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.",
+          "control": "Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.",
+          "recall": "Explain what transferred, what required help and which prerequisite needs another small experiment.",
+          "case": {
+            "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+            "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+            "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+          }
+        }
+      ]
+    },
+    {
+      "id": "vulnerability-research-bug-bounty",
+      "title": "Vulnerability Research and Bug Bounty Practice",
+      "category": "Offensive",
+      "aliases": [
+        "bug bounty",
+        "vulnerability research",
+        "responsible disclosure",
+        "fuzzing"
+      ],
+      "entry": "Reproduce a lab web/API finding, read simple code and understand scope restrictions.",
+      "background": [
+        "web-application-security",
+        "api-security"
+      ],
+      "labs": [
+        "juice-shop",
+        "webgoat"
+      ],
+      "limits": "Practice on owned/open training software. Program rules and explicit authorization govern any later real target; no bounty or career result is promised.",
+      "sources": [
+        "portswigger-mystery",
+        "kettle-research",
+        "owasp-asvs"
+      ],
+      "levels": [
+        {
+          "id": "foundations",
+          "title": "Prove the entry skills in a small lab",
+          "primer": "Reproduce a lab web/API finding, read simple code and understand scope restrictions.",
+          "experiment": "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.",
+          "variant": "Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.",
+          "control": "Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.",
+          "recall": "Reconstruct the environment and entry assumptions without following the setup notes.",
+          "case": {
+            "prompt": "A required training environment is unavailable, but a tool prints its version.",
+            "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+            "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+          }
+        },
+        {
+          "id": "scope",
+          "title": "Treat program rules as part of the target",
+          "primer": "Extract allowed assets, excluded behaviors and reporting rules from a fictional program brief.",
+          "experiment": "Build a research plan using only an owned training target and a clearly testable vulnerability hypothesis.",
+          "variant": "Add an excluded third-party integration and revise the plan.",
+          "control": "Identify a technically possible test that the scope disallows.",
+          "recall": "Explain why a public bug-bounty page does not authorize every asset or technique.",
+          "case": {
+            "prompt": "A program excludes a third-party dependency from scope.",
+            "correct": "Do not test that dependency without separate authority.",
+            "incorrect": "A dependency relationship extends the program's permission."
+          }
+        },
+        {
+          "id": "model",
+          "title": "Find the invariant the software should preserve",
+          "primer": "Read a small owned handler and identify its trust assumptions and state transitions.",
+          "experiment": "Form a root-cause hypothesis from the code and design a minimal experiment that could disprove it.",
+          "variant": "Change input encoding or operation order and predict the effect on the invariant.",
+          "control": "Include a normal edge case that looks unusual but preserves the intended rule.",
+          "recall": "Reconstruct the vulnerability hypothesis without relying on a scanner label.",
+          "case": {
+            "prompt": "A code review suggests a defect with an untested prerequisite.",
+            "correct": "Design a discriminating experiment before claiming impact.",
+            "incorrect": "Report maximum impact as soon as the pattern looks familiar."
+          }
+        },
+        {
+          "id": "fuzzing",
+          "title": "Make a small test generator teach you something",
+          "primer": "Define valid and invalid input families for a tiny local parser.",
+          "experiment": "Write a bounded local input generator or property-based test, reproduce one failure and minimize the triggering fixture.",
+          "variant": "Change the parser or seed corpus and verify the failure still tests the same property.",
+          "control": "Include malformed input that is correctly rejected and must not count as a vulnerability.",
+          "recall": "Explain crash, bug, security impact and exploitability as separate claims.",
+          "case": {
+            "prompt": "A parser cleanly rejects malformed input.",
+            "correct": "Do not count expected rejection as a security finding.",
+            "incorrect": "Any error response is a vulnerability."
+          }
+        },
+        {
+          "id": "impact",
+          "title": "Prove only the minimum necessary effect",
+          "primer": "Separate a vulnerability mechanism from the business impact it could enable.",
+          "experiment": "Demonstrate a harmless synthetic impact in an owned reproduction and document exactly which privileges and data were involved.",
+          "variant": "Change the user role or object class and test whether the impact generalizes.",
+          "control": "Include a failed unauthorized action and avoid claiming access merely from a different response size.",
+          "recall": "Explain one stronger impact claim the evidence does not support.",
+          "case": {
+            "prompt": "A response changes size without evidence of unauthorized data.",
+            "correct": "Investigate further before claiming data access.",
+            "incorrect": "Response size alone proves access to private records."
+          }
+        },
+        {
+          "id": "disclosure",
+          "title": "Write a report that survives first triage",
+          "primer": "Identify scope, reproduction, evidence, impact and remediation in a good finding report.",
+          "experiment": "Produce a private training report with minimal reproducer, sanitized evidence and a proposed tested fix; do not submit to third parties as part of this exercise.",
+          "variant": "Have a peer or fresh environment follow the report with a changed fixture and repair any missing assumption.",
+          "control": "Keep credentials and live user data out of the evidence packet.",
+          "recall": "Reconstruct the report's root cause in two precise sentences.",
+          "case": {
+            "prompt": "A reproducer contains a real credential.",
+            "correct": "Replace it with synthetic or redacted evidence before sharing.",
+            "incorrect": "Include the credential to make triage easier."
+          }
+        },
+        {
+          "id": "research",
+          "title": "Generalize the mechanism carefully",
+          "primer": "Choose a fresh owned training component related to an earlier mechanism.",
+          "experiment": "Test the hypothesis on the new component, report positive or negative evidence, and produce a regression test and bounded generalization.",
+          "variant": "Change one relevant implementation detail and explain why the mechanism applies or fails.",
+          "control": "Include a superficially similar implementation where the required condition is absent.",
+          "recall": "Explain which properties transfer and which were accidents of the first target.",
+          "case": {
+            "prompt": "A similar component lacks the prerequisite that caused the first bug.",
+            "correct": "Limit the generalization and report the negative control.",
+            "incorrect": "Claim every similar component is vulnerable."
+          }
+        },
+        {
+          "id": "independent-transfer",
+          "title": "Revisit the skill on a fresh problem",
+          "primer": "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.",
+          "experiment": "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.",
+          "variant": "Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.",
+          "control": "Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.",
+          "recall": "Explain what transferred, what required help and which prerequisite needs another small experiment.",
+          "case": {
+            "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+            "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+            "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+          }
+        }
+      ]
+    },
+    {
+      "id": "ai-application-security",
+      "title": "AI and LLM Application Security",
+      "category": "Engineering",
+      "aliases": [
+        "ai security",
+        "llm",
+        "prompt injection",
+        "rag",
+        "agents"
+      ],
+      "entry": "Understand HTTP, JSON, application authorization and the difference between model output and trusted program state.",
+      "background": [
+        "secure-development-devsecops"
+      ],
+      "labs": [],
+      "limits": "Use deterministic mock models and synthetic data first. These tests validate application boundaries, not the general resistance of a real language model; real-model testing needs a separately configured model and budget.",
+      "sources": [
+        "owasp-llm",
+        "owasp-asvs"
+      ],
+      "levels": [
+        {
+          "id": "foundations",
+          "title": "Prove the entry skills in a small lab",
+          "primer": "Understand HTTP, JSON, application authorization and the difference between model output and trusted program state.",
+          "experiment": "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.",
+          "variant": "Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.",
+          "control": "Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.",
+          "recall": "Reconstruct the environment and entry assumptions without following the setup notes.",
+          "case": {
+            "prompt": "A required training environment is unavailable, but a tool prints its version.",
+            "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+            "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+          }
+        },
+        {
+          "id": "boundaries",
+          "title": "Treat generated text as untrusted input",
+          "primer": "Draw user, retrieved-document, model, tool and data-store boundaries for a toy assistant.",
+          "experiment": "Build a threat model that identifies which component may authorize each action and where untrusted text enters.",
+          "variant": "Add an external document source and revise the trust assumptions.",
+          "control": "Reject the idea that a model's assertion of permission is an authorization decision.",
+          "recall": "Reconstruct the tool-action boundary without referring to the system prompt.",
+          "case": {
+            "prompt": "A model claims the user approved access to a private resource.",
+            "correct": "Enforce authorization in trusted application code.",
+            "incorrect": "Accept the model's statement as the permission check."
+          }
+        },
+        {
+          "id": "retrieval",
+          "title": "Keep a document from becoming an instruction",
+          "primer": "Label instruction-like text inside a synthetic retrieved document as data from an untrusted source.",
+          "experiment": "In a deterministic toy pipeline, test adversarial documents and enforce authorization outside the mock model before any data access or action.",
+          "variant": "Change the document wording or source label and verify the same application boundary still holds.",
+          "control": "Keep a legitimate document answer working and deny a requested unrelated data access.",
+          "recall": "Explain why prompt wording alone cannot enforce a data-access policy.",
+          "case": {
+            "prompt": "A retrieved document contains tool-use instructions.",
+            "correct": "Treat those instructions as untrusted document content.",
+            "incorrect": "Give retrieved instructions authority over the tool policy."
+          }
+        },
+        {
+          "id": "output",
+          "title": "Validate what the application will execute",
+          "primer": "Identify output fields consumed by a renderer, query builder or tool dispatcher.",
+          "experiment": "Add strict schemas and safe handling to a toy assistant's output pipeline and test malformed or unauthorized synthetic outputs.",
+          "variant": "Nest a field or change output encoding and predict whether validation rejects it.",
+          "control": "Preserve a valid allowed output while rejecting an extra privileged field.",
+          "recall": "Explain schema validity versus authorization of a valid action.",
+          "case": {
+            "prompt": "Generated JSON matches the schema but requests an unauthorized action.",
+            "correct": "Apply authorization after structural validation.",
+            "incorrect": "Schema validity authorizes the requested action."
+          }
+        },
+        {
+          "id": "tools",
+          "title": "Give an agent a bounded capability",
+          "primer": "Define a toy tool's allowed arguments, resources, side effects and confirmation boundary.",
+          "experiment": "Implement or test an allowlisted dispatcher with synthetic files and a mock model; verify that model output cannot expand the allowed resource set.",
+          "variant": "Change a resource identifier or attempt a second action outside the allowlist.",
+          "control": "Permit the intended action and reject traversal-like or unrelated resource references.",
+          "recall": "Reconstruct where least privilege is enforced independently of the model.",
+          "case": {
+            "prompt": "A tool argument refers to a resource outside its allowlist.",
+            "correct": "Reject it independently of the model's explanation.",
+            "incorrect": "Allow it if the model supplies a persuasive rationale."
+          }
+        },
+        {
+          "id": "data",
+          "title": "Test retrieval separation between users",
+          "primer": "Create two synthetic users with distinct document collections.",
+          "experiment": "Test retrieval filters and result handling in an owned fixture so one user's documents cannot be returned to another user.",
+          "variant": "Change a document ID, cache key or role and independently retest isolation.",
+          "control": "Include a shared public document that remains legitimately accessible to both users.",
+          "recall": "Explain why hiding a private citation after retrieval is too late to guarantee isolation.",
+          "case": {
+            "prompt": "Private text is retrieved for the wrong user and hidden only in the final display.",
+            "correct": "Enforce isolation before retrieval and model exposure.",
+            "incorrect": "Hiding the citation repairs the earlier data disclosure."
+          }
+        },
+        {
+          "id": "evaluation",
+          "title": "State exactly what the evaluation measured",
+          "primer": "Define a small labeled set of benign and adversarial application-boundary cases.",
+          "experiment": "Run the cases against the toy system, record failures and repairs, and distinguish deterministic application tests from any real-model observations.",
+          "variant": "Add an unseen wording or tool-output shape and rerun the relevant boundary checks.",
+          "control": "Include benign lookalikes so blocking every input cannot pass the evaluation.",
+          "recall": "Explain why a passing finite test set does not prove universal prompt-injection resistance.",
+          "case": {
+            "prompt": "A deterministic mock pipeline passes every boundary test.",
+            "correct": "Claim the measured application properties and separately evaluate real-model behavior.",
+            "incorrect": "Claim universal resistance to all prompt injection."
+          }
+        },
+        {
+          "id": "independent-transfer",
+          "title": "Revisit the skill on a fresh problem",
+          "primer": "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.",
+          "experiment": "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.",
+          "variant": "Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.",
+          "control": "Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.",
+          "recall": "Explain what transferred, what required help and which prerequisite needs another small experiment.",
+          "case": {
+            "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+            "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+            "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+          }
+        }
+      ]
+    }
+  ]
+}

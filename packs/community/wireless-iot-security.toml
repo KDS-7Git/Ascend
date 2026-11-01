@@ -1,0 +1,516 @@
+# Generated from docs/curriculum/specialist-paths.json; unreviewed draft.
+[pack]
+"id" = "wireless-iot-security"
+"title" = "Wireless and IoT Security"
+"kind" = "proficiency"
+"version" = 1
+"source" = "ai-draft"
+"reviewed" = false
+
+[vars]
+"lab_dir" = "~/cyber/wireless-iot-security"
+
+[[level]]
+"id" = "foundations"
+"title" = "Prove the entry skills in a small lab"
+"lane" = "main"
+
+[[level]]
+"id" = "inventory"
+"title" = "Know which device and boundary you are testing"
+"lane" = "main"
+
+[[level]]
+"id" = "mqtt"
+"title" = "Follow a message through the broker"
+"lane" = "main"
+
+[[level]]
+"id" = "access"
+"title" = "Give each device only its topics"
+"lane" = "main"
+
+[[level]]
+"id" = "wireless"
+"title" = "Interpret the capture you are actually able to make"
+"lane" = "main"
+
+[[level]]
+"id" = "firmware"
+"title" = "Examine a firmware image as evidence"
+"lane" = "main"
+
+[[level]]
+"id" = "assessment"
+"title" = "Review an end-to-end device workflow"
+"lane" = "main"
+
+[[level]]
+"id" = "independent-transfer"
+"title" = "Revisit the skill on a fresh problem"
+"lane" = "main"
+
+[[level]]
+"id" = "recall-lane"
+"title" = "Return later: reasoning checks"
+"lane" = "side"
+
+[[level]]
+"id" = "quick"
+"title" = "Small verified exercises"
+"lane" = "side"
+
+[[node]]
+"id" = "lab-readiness"
+"level" = "foundations"
+"title" = "Start with a verifiable evidence exercise"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Compute the exact content hash of a fresh server-generated evidence fixture and pass its check."
+"brief" = "This small exercise tests evidence integrity. Track entry background: Understand local networking, device ownership and basic authentication."
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "lab", "exercise" = "integrity" }
+
+[[node]]
+"id" = "foundations-reasoning"
+"level" = "foundations"
+"title" = "Reason it through: Prove the entry skills in a small lab"
+"size" = "S"
+"minutes" = 10
+"needs" = ["lab-readiness"]
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Understand local networking, device ownership and basic authentication."
+"steps" = ["Work through this preparation: Understand local networking, device ownership and basic authentication.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "wireless-iot-security:foundations" }
+
+[[node]]
+"id" = "foundations-experiment"
+"level" = "foundations"
+"title" = "Investigate: Prove the entry skills in a small lab"
+"size" = "M"
+"minutes" = 60
+"needs" = ["foundations-reasoning"]
+"done_when" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/foundations-experiment.json."
+"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
+"steps" = ["Understand local networking, device ownership and basic authentication.", "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/foundations-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "foundations-milestone"
+"level" = "foundations"
+"title" = "Apply it to a changed case: Prove the entry skills in a small lab"
+"size" = "M"
+"minutes" = 120
+"needs" = ["foundations-reasoning", "foundations-experiment", "lab-readiness"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/foundations-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
+"steps" = ["Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Transfer: Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.", "Control: Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/foundations-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-foundations"
+"level" = "recall-lane"
+"title" = "Return later: Prove the entry skills in a small lab"
+"size" = "S"
+"minutes" = 10
+"needs" = ["foundations-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct the environment and entry assumptions without following the setup notes."
+"steps" = ["Reconstruct the environment and entry assumptions without following the setup notes.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "wireless-iot-security:foundations" }
+
+[[node]]
+"id" = "inventory-reasoning"
+"level" = "inventory"
+"title" = "Reason it through: Know which device and boundary you are testing"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Inventory a fictional device's interfaces, firmware, identities and update path."
+"steps" = ["Work through this preparation: Inventory a fictional device's interfaces, firmware, identities and update path.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "wireless-iot-security:inventory" }
+
+[[node]]
+"id" = "inventory-experiment"
+"level" = "inventory"
+"title" = "Investigate: Know which device and boundary you are testing"
+"size" = "M"
+"minutes" = 60
+"needs" = ["inventory-reasoning"]
+"done_when" = "Build a device threat model and an isolated test plan using an owned device or documented simulation. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/inventory-experiment.json."
+"brief" = "Build a device threat model and an isolated test plan using an owned device or documented simulation."
+"steps" = ["Inventory a fictional device's interfaces, firmware, identities and update path.", "Build a device threat model and an isolated test plan using an owned device or documented simulation.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/inventory-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "inventory-milestone"
+"level" = "inventory"
+"title" = "Apply it to a changed case: Know which device and boundary you are testing"
+"size" = "M"
+"minutes" = 120
+"needs" = ["inventory-reasoning", "inventory-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/inventory-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Build a device threat model and an isolated test plan using an owned device or documented simulation."
+"steps" = ["Build a device threat model and an isolated test plan using an owned device or documented simulation.", "Transfer: Add a companion cloud service and revise the data and trust boundaries.", "Control: Exclude unrelated nearby devices even when technically visible.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/inventory-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-inventory"
+"level" = "recall-lane"
+"title" = "Return later: Know which device and boundary you are testing"
+"size" = "S"
+"minutes" = 10
+"needs" = ["inventory-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain which observations require physical hardware."
+"steps" = ["Explain which observations require physical hardware.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "wireless-iot-security:inventory" }
+
+[[node]]
+"id" = "mqtt-reasoning"
+"level" = "mqtt"
+"title" = "Reason it through: Follow a message through the broker"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Explain topics, subscriptions, retained messages and session identity using a local broker."
+"steps" = ["Work through this preparation: Explain topics, subscriptions, retained messages and session identity using a local broker.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "wireless-iot-security:mqtt" }
+
+[[node]]
+"id" = "mqtt-experiment"
+"level" = "mqtt"
+"title" = "Investigate: Follow a message through the broker"
+"size" = "M"
+"minutes" = 60
+"needs" = ["mqtt-reasoning"]
+"done_when" = "Publish and receive a unique harmless marker in the isolated MQTT profile and record exact topic/payload evidence. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/mqtt-experiment.json."
+"brief" = "Publish and receive a unique harmless marker in the isolated MQTT profile and record exact topic/payload evidence."
+"steps" = ["Explain topics, subscriptions, retained messages and session identity using a local broker.", "Publish and receive a unique harmless marker in the isolated MQTT profile and record exact topic/payload evidence.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/mqtt-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "mqtt-milestone"
+"level" = "mqtt"
+"title" = "Apply it to a changed case: Follow a message through the broker"
+"size" = "M"
+"minutes" = 120
+"needs" = ["mqtt-reasoning", "mqtt-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/mqtt-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Publish and receive a unique harmless marker in the isolated MQTT profile and record exact topic/payload evidence."
+"steps" = ["Publish and receive a unique harmless marker in the isolated MQTT profile and record exact topic/payload evidence.", "Transfer: Change the subscription wildcard and predict which messages are delivered.", "Control: Include an unmatched topic that must not reach the subscriber.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/mqtt-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-mqtt"
+"level" = "recall-lane"
+"title" = "Return later: Follow a message through the broker"
+"size" = "S"
+"minutes" = 10
+"needs" = ["mqtt-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain retained delivery versus a new live publication."
+"steps" = ["Explain retained delivery versus a new live publication.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "wireless-iot-security:mqtt" }
+
+[[node]]
+"id" = "access-reasoning"
+"level" = "access"
+"title" = "Reason it through: Give each device only its topics"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Model two synthetic device identities and allowed publish/subscribe topics."
+"steps" = ["Work through this preparation: Model two synthetic device identities and allowed publish/subscribe topics.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "wireless-iot-security:access" }
+
+[[node]]
+"id" = "access-experiment"
+"level" = "access"
+"title" = "Investigate: Give each device only its topics"
+"size" = "M"
+"minutes" = 60
+"needs" = ["access-reasoning"]
+"done_when" = "Configure a separate owned broker with authentication and topic ACLs; verify each identity's allowed and denied operations. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/access-experiment.json."
+"brief" = "Configure a separate owned broker with authentication and topic ACLs; verify each identity's allowed and denied operations."
+"steps" = ["Model two synthetic device identities and allowed publish/subscribe topics.", "Configure a separate owned broker with authentication and topic ACLs; verify each identity's allowed and denied operations.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/access-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "access-milestone"
+"level" = "access"
+"title" = "Apply it to a changed case: Give each device only its topics"
+"size" = "M"
+"minutes" = 120
+"needs" = ["access-reasoning", "access-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/access-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Configure a separate owned broker with authentication and topic ACLs; verify each identity's allowed and denied operations."
+"steps" = ["Configure a separate owned broker with authentication and topic ACLs; verify each identity's allowed and denied operations.", "Transfer: Change a wildcard or identity and predict effective topic access.", "Control: Preserve a device's intended telemetry while denying another device's private topic.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/access-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-access"
+"level" = "recall-lane"
+"title" = "Return later: Give each device only its topics"
+"size" = "S"
+"minutes" = 10
+"needs" = ["access-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct the difference between broker authentication and topic authorization."
+"steps" = ["Reconstruct the difference between broker authentication and topic authorization.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "wireless-iot-security:access" }
+
+[[node]]
+"id" = "wireless-reasoning"
+"level" = "wireless"
+"title" = "Reason it through: Interpret the capture you are actually able to make"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Distinguish interface mode, channel and link-layer metadata in a supplied wireless capture."
+"steps" = ["Work through this preparation: Distinguish interface mode, channel and link-layer metadata in a supplied wireless capture.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "wireless-iot-security:wireless" }
+
+[[node]]
+"id" = "wireless-experiment"
+"level" = "wireless"
+"title" = "Investigate: Interpret the capture you are actually able to make"
+"size" = "M"
+"minutes" = 60
+"needs" = ["wireless-reasoning"]
+"done_when" = "Analyze an owned or licensed training capture and explain association/security properties supported by visible frames. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/wireless-experiment.json."
+"brief" = "Analyze an owned or licensed training capture and explain association/security properties supported by visible frames."
+"steps" = ["Distinguish interface mode, channel and link-layer metadata in a supplied wireless capture.", "Analyze an owned or licensed training capture and explain association/security properties supported by visible frames.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/wireless-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "wireless-milestone"
+"level" = "wireless"
+"title" = "Apply it to a changed case: Interpret the capture you are actually able to make"
+"size" = "M"
+"minutes" = 120
+"needs" = ["wireless-reasoning", "wireless-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/wireless-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Analyze an owned or licensed training capture and explain association/security properties supported by visible frames."
+"steps" = ["Analyze an owned or licensed training capture and explain association/security properties supported by visible frames.", "Transfer: Change the selected channel or capture source and reassess missing observations.", "Control: Avoid claiming to see encrypted application content without the required decryption context.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/wireless-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-wireless"
+"level" = "recall-lane"
+"title" = "Return later: Interpret the capture you are actually able to make"
+"size" = "S"
+"minutes" = 10
+"needs" = ["wireless-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain why a monitor-capable adapter is a prerequisite for some tests."
+"steps" = ["Explain why a monitor-capable adapter is a prerequisite for some tests.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "wireless-iot-security:wireless" }
+
+[[node]]
+"id" = "firmware-reasoning"
+"level" = "firmware"
+"title" = "Reason it through: Examine a firmware image as evidence"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Identify format, architecture and provenance of a permitted training firmware image."
+"steps" = ["Work through this preparation: Identify format, architecture and provenance of a permitted training firmware image.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "wireless-iot-security:firmware" }
+
+[[node]]
+"id" = "firmware-experiment"
+"level" = "firmware"
+"title" = "Investigate: Examine a firmware image as evidence"
+"size" = "M"
+"minutes" = 60
+"needs" = ["firmware-reasoning"]
+"done_when" = "Inspect static configuration and update metadata from a supplied image, identify one concrete trust assumption and propose a testable improvement. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/firmware-experiment.json."
+"brief" = "Inspect static configuration and update metadata from a supplied image, identify one concrete trust assumption and propose a testable improvement."
+"steps" = ["Identify format, architecture and provenance of a permitted training firmware image.", "Inspect static configuration and update metadata from a supplied image, identify one concrete trust assumption and propose a testable improvement.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/firmware-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "firmware-milestone"
+"level" = "firmware"
+"title" = "Apply it to a changed case: Examine a firmware image as evidence"
+"size" = "M"
+"minutes" = 120
+"needs" = ["firmware-reasoning", "firmware-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/firmware-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Inspect static configuration and update metadata from a supplied image, identify one concrete trust assumption and propose a testable improvement."
+"steps" = ["Inspect static configuration and update metadata from a supplied image, identify one concrete trust assumption and propose a testable improvement.", "Transfer: Change a signed metadata field or use a mismatched device model in a toy updater test.", "Control: Accept valid matching metadata and reject tampering or a wrong-model update.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/firmware-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-firmware"
+"level" = "recall-lane"
+"title" = "Return later: Examine a firmware image as evidence"
+"size" = "S"
+"minutes" = 10
+"needs" = ["firmware-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain what static image analysis cannot prove about a running device."
+"steps" = ["Explain what static image analysis cannot prove about a running device.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "wireless-iot-security:firmware" }
+
+[[node]]
+"id" = "assessment-reasoning"
+"level" = "assessment"
+"title" = "Reason it through: Review an end-to-end device workflow"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Map device, broker, companion app and update service boundaries."
+"steps" = ["Work through this preparation: Map device, broker, companion app and update service boundaries.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "wireless-iot-security:assessment" }
+
+[[node]]
+"id" = "assessment-experiment"
+"level" = "assessment"
+"title" = "Investigate: Review an end-to-end device workflow"
+"size" = "M"
+"minutes" = 60
+"needs" = ["assessment-reasoning"]
+"done_when" = "Assess a small owned MQTT workflow, repair one access defect and report remaining hardware/firmware assumptions. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/assessment-experiment.json."
+"brief" = "Assess a small owned MQTT workflow, repair one access defect and report remaining hardware/firmware assumptions."
+"steps" = ["Map device, broker, companion app and update service boundaries.", "Assess a small owned MQTT workflow, repair one access defect and report remaining hardware/firmware assumptions.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/assessment-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "assessment-milestone"
+"level" = "assessment"
+"title" = "Apply it to a changed case: Review an end-to-end device workflow"
+"size" = "M"
+"minutes" = 120
+"needs" = ["assessment-reasoning", "assessment-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/assessment-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Assess a small owned MQTT workflow, repair one access defect and report remaining hardware/firmware assumptions."
+"steps" = ["Assess a small owned MQTT workflow, repair one access defect and report remaining hardware/firmware assumptions.", "Transfer: Introduce another device identity or a changed topic layout and retest separation.", "Control: Keep legitimate telemetry working and deny the unrelated device.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/assessment-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-assessment"
+"level" = "recall-lane"
+"title" = "Return later: Review an end-to-end device workflow"
+"size" = "S"
+"minutes" = 10
+"needs" = ["assessment-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct the finding through the complete device-to-service path."
+"steps" = ["Reconstruct the finding through the complete device-to-service path.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "wireless-iot-security:assessment" }
+
+[[node]]
+"id" = "independent-transfer-reasoning"
+"level" = "independent-transfer"
+"title" = "Reason it through: Revisit the skill on a fresh problem"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution."
+"steps" = ["Work through this preparation: Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "wireless-iot-security:independent-transfer" }
+
+[[node]]
+"id" = "independent-transfer-experiment"
+"level" = "independent-transfer"
+"title" = "Investigate: Revisit the skill on a fresh problem"
+"size" = "M"
+"minutes" = 60
+"needs" = ["independent-transfer-reasoning"]
+"done_when" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/independent-transfer-experiment.json."
+"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
+"steps" = ["Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "independent-transfer-milestone"
+"level" = "independent-transfer"
+"title" = "Apply it to a changed case: Revisit the skill on a fresh problem"
+"size" = "M"
+"minutes" = 120
+"needs" = ["independent-transfer-reasoning", "independent-transfer-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/independent-transfer-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
+"steps" = ["After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Transfer: Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.", "Control: Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-independent-transfer"
+"level" = "recall-lane"
+"title" = "Return later: Revisit the skill on a fresh problem"
+"size" = "S"
+"minutes" = 10
+"needs" = ["independent-transfer-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain what transferred, what required help and which prerequisite needs another small experiment."
+"steps" = ["Explain what transferred, what required help and which prerequisite needs another small experiment.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "wireless-iot-security:independent-transfer" }
+
+[[node]]
+"id" = "quick-access-check"
+"level" = "quick"
+"title" = "A ten-minute permission puzzle"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Correctly evaluate every allow/deny decision for a fresh server-generated policy fixture."
+"resource" = "https://owasp.org/www-project-internet-of-things/"
+"verify" = { "type" = "lab", "exercise" = "access-policy" }

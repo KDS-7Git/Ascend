@@ -1,0 +1,516 @@
+# Generated from docs/curriculum/specialist-paths.json; unreviewed draft.
+[pack]
+"id" = "api-security"
+"title" = "API Security and Authorization Engineering"
+"kind" = "proficiency"
+"version" = 1
+"source" = "ai-draft"
+"reviewed" = false
+
+[vars]
+"lab_dir" = "~/cyber/api-security"
+
+[[level]]
+"id" = "foundations"
+"title" = "Prove the entry skills in a small lab"
+"lane" = "main"
+
+[[level]]
+"id" = "inventory"
+"title" = "Find the contract the client assumes"
+"lane" = "main"
+
+[[level]]
+"id" = "object-authorization"
+"title" = "Change the object, keep the identity"
+"lane" = "main"
+
+[[level]]
+"id" = "property-authorization"
+"title" = "Who may write this field?"
+"lane" = "main"
+
+[[level]]
+"id" = "tokens"
+"title" = "Validate the whole token contract"
+"lane" = "main"
+
+[[level]]
+"id" = "resource-limits"
+"title" = "Make expensive work bounded"
+"lane" = "main"
+
+[[level]]
+"id" = "review"
+"title" = "Test a workflow across its endpoints"
+"lane" = "main"
+
+[[level]]
+"id" = "independent-transfer"
+"title" = "Revisit the skill on a fresh problem"
+"lane" = "main"
+
+[[level]]
+"id" = "recall-lane"
+"title" = "Return later: reasoning checks"
+"lane" = "side"
+
+[[level]]
+"id" = "quick"
+"title" = "Small verified exercises"
+"lane" = "side"
+
+[[node]]
+"id" = "lab-readiness"
+"level" = "foundations"
+"title" = "Start with a verifiable evidence exercise"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Compute the exact content hash of a fresh server-generated evidence fixture and pass its check."
+"brief" = "This small exercise tests evidence integrity. Track entry background: Read HTTP and JSON, use two synthetic accounts and explain authentication versus authorization."
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "lab", "exercise" = "integrity" }
+
+[[node]]
+"id" = "foundations-reasoning"
+"level" = "foundations"
+"title" = "Reason it through: Prove the entry skills in a small lab"
+"size" = "S"
+"minutes" = 10
+"needs" = ["lab-readiness"]
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Read HTTP and JSON, use two synthetic accounts and explain authentication versus authorization."
+"steps" = ["Work through this preparation: Read HTTP and JSON, use two synthetic accounts and explain authentication versus authorization.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "api-security:foundations" }
+
+[[node]]
+"id" = "foundations-experiment"
+"level" = "foundations"
+"title" = "Investigate: Prove the entry skills in a small lab"
+"size" = "M"
+"minutes" = 60
+"needs" = ["foundations-reasoning"]
+"done_when" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/foundations-experiment.json."
+"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
+"steps" = ["Read HTTP and JSON, use two synthetic accounts and explain authentication versus authorization.", "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/foundations-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "foundations-milestone"
+"level" = "foundations"
+"title" = "Apply it to a changed case: Prove the entry skills in a small lab"
+"size" = "M"
+"minutes" = 120
+"needs" = ["foundations-reasoning", "foundations-experiment", "lab-readiness"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/foundations-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
+"steps" = ["Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Transfer: Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.", "Control: Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/foundations-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-foundations"
+"level" = "recall-lane"
+"title" = "Return later: Prove the entry skills in a small lab"
+"size" = "S"
+"minutes" = 10
+"needs" = ["foundations-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct the environment and entry assumptions without following the setup notes."
+"steps" = ["Reconstruct the environment and entry assumptions without following the setup notes.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "api-security:foundations" }
+
+[[node]]
+"id" = "inventory-reasoning"
+"level" = "inventory"
+"title" = "Reason it through: Find the contract the client assumes"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Read a small OpenAPI schema and list methods, objects, identities and state-changing operations."
+"steps" = ["Work through this preparation: Read a small OpenAPI schema and list methods, objects, identities and state-changing operations.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "api-security:inventory" }
+
+[[node]]
+"id" = "inventory-experiment"
+"level" = "inventory"
+"title" = "Investigate: Find the contract the client assumes"
+"size" = "M"
+"minutes" = 60
+"needs" = ["inventory-reasoning"]
+"done_when" = "Inventory an owned training API, compare its documented and observed behavior, and identify two testable boundary hypotheses. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/inventory-experiment.json."
+"brief" = "Inventory an owned training API, compare its documented and observed behavior, and identify two testable boundary hypotheses."
+"steps" = ["Read a small OpenAPI schema and list methods, objects, identities and state-changing operations.", "Inventory an owned training API, compare its documented and observed behavior, and identify two testable boundary hypotheses.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/inventory-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "inventory-milestone"
+"level" = "inventory"
+"title" = "Apply it to a changed case: Find the contract the client assumes"
+"size" = "M"
+"minutes" = 120
+"needs" = ["inventory-reasoning", "inventory-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/inventory-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Inventory an owned training API, compare its documented and observed behavior, and identify two testable boundary hypotheses."
+"steps" = ["Inventory an owned training API, compare its documented and observed behavior, and identify two testable boundary hypotheses.", "Transfer: Add a deprecated route or alternate version and update the inventory and risk assumptions.", "Control: Distinguish an intentionally public endpoint from an unintentionally unprotected operation.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/inventory-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-inventory"
+"level" = "recall-lane"
+"title" = "Return later: Find the contract the client assumes"
+"size" = "S"
+"minutes" = 10
+"needs" = ["inventory-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct one API trust boundary from method, identity and object."
+"steps" = ["Reconstruct one API trust boundary from method, identity and object.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "api-security:inventory" }
+
+[[node]]
+"id" = "object-authorization-reasoning"
+"level" = "object-authorization"
+"title" = "Reason it through: Change the object, keep the identity"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Build an access matrix for two users and two synthetic objects."
+"steps" = ["Work through this preparation: Build an access matrix for two users and two synthetic objects.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "api-security:object-authorization" }
+
+[[node]]
+"id" = "object-authorization-experiment"
+"level" = "object-authorization"
+"title" = "Investigate: Change the object, keep the identity"
+"size" = "M"
+"minutes" = 60
+"needs" = ["object-authorization-reasoning"]
+"done_when" = "In a designated API lesson, test owner and cross-user access using recorded requests, explain the missing check and demonstrate a corrected local equivalent. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/object-authorization-experiment.json."
+"brief" = "In a designated API lesson, test owner and cross-user access using recorded requests, explain the missing check and demonstrate a corrected local equivalent."
+"steps" = ["Build an access matrix for two users and two synthetic objects.", "In a designated API lesson, test owner and cross-user access using recorded requests, explain the missing check and demonstrate a corrected local equivalent.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/object-authorization-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "object-authorization-milestone"
+"level" = "object-authorization"
+"title" = "Apply it to a changed case: Change the object, keep the identity"
+"size" = "M"
+"minutes" = 120
+"needs" = ["object-authorization-reasoning", "object-authorization-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/object-authorization-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "In a designated API lesson, test owner and cross-user access using recorded requests, explain the missing check and demonstrate a corrected local equivalent."
+"steps" = ["In a designated API lesson, test owner and cross-user access using recorded requests, explain the missing check and demonstrate a corrected local equivalent.", "Transfer: Change the object type or HTTP verb and test whether the same boundary is enforced.", "Control: Show legitimate owner access and rejection of an unrelated authenticated user.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/object-authorization-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-object-authorization"
+"level" = "recall-lane"
+"title" = "Return later: Change the object, keep the identity"
+"size" = "S"
+"minutes" = 10
+"needs" = ["object-authorization-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain why unpredictable IDs cannot replace authorization."
+"steps" = ["Explain why unpredictable IDs cannot replace authorization.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "api-security:object-authorization" }
+
+[[node]]
+"id" = "property-authorization-reasoning"
+"level" = "property-authorization"
+"title" = "Reason it through: Who may write this field?"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Separate user-editable, server-owned and privileged fields in a toy request model."
+"steps" = ["Work through this preparation: Separate user-editable, server-owned and privileged fields in a toy request model.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "api-security:property-authorization" }
+
+[[node]]
+"id" = "property-authorization-experiment"
+"level" = "property-authorization"
+"title" = "Investigate: Who may write this field?"
+"size" = "M"
+"minutes" = 60
+"needs" = ["property-authorization-reasoning"]
+"done_when" = "Test a local API's property allowlist with a harmless administrative-flag fixture and patch overbroad binding or response exposure. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/property-authorization-experiment.json."
+"brief" = "Test a local API's property allowlist with a harmless administrative-flag fixture and patch overbroad binding or response exposure."
+"steps" = ["Separate user-editable, server-owned and privileged fields in a toy request model.", "Test a local API's property allowlist with a harmless administrative-flag fixture and patch overbroad binding or response exposure.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/property-authorization-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "property-authorization-milestone"
+"level" = "property-authorization"
+"title" = "Apply it to a changed case: Who may write this field?"
+"size" = "M"
+"minutes" = 120
+"needs" = ["property-authorization-reasoning", "property-authorization-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/property-authorization-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Test a local API's property allowlist with a harmless administrative-flag fixture and patch overbroad binding or response exposure."
+"steps" = ["Test a local API's property allowlist with a harmless administrative-flag fixture and patch overbroad binding or response exposure.", "Transfer: Nest the property or switch update methods and predict whether the policy should change.", "Control: Keep ordinary editable fields working while rejecting privileged field writes and suppressing private response fields.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/property-authorization-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-property-authorization"
+"level" = "recall-lane"
+"title" = "Return later: Who may write this field?"
+"size" = "S"
+"minutes" = 10
+"needs" = ["property-authorization-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain the relationship between mass assignment and field-level authorization."
+"steps" = ["Explain the relationship between mass assignment and field-level authorization.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "api-security:property-authorization" }
+
+[[node]]
+"id" = "tokens-reasoning"
+"level" = "tokens"
+"title" = "Reason it through: Validate the whole token contract"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Identify issuer, audience, expiration and granted scopes in a synthetic token description."
+"steps" = ["Work through this preparation: Identify issuer, audience, expiration and granted scopes in a synthetic token description.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "api-security:tokens" }
+
+[[node]]
+"id" = "tokens-experiment"
+"level" = "tokens"
+"title" = "Investigate: Validate the whole token contract"
+"size" = "M"
+"minutes" = 60
+"needs" = ["tokens-reasoning"]
+"done_when" = "Write or execute tests against an owned API for valid and invalid token contexts, separating signature validity from authorization. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/tokens-experiment.json."
+"brief" = "Write or execute tests against an owned API for valid and invalid token contexts, separating signature validity from authorization."
+"steps" = ["Identify issuer, audience, expiration and granted scopes in a synthetic token description.", "Write or execute tests against an owned API for valid and invalid token contexts, separating signature validity from authorization.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/tokens-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "tokens-milestone"
+"level" = "tokens"
+"title" = "Apply it to a changed case: Validate the whole token contract"
+"size" = "M"
+"minutes" = 120
+"needs" = ["tokens-reasoning", "tokens-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/tokens-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Write or execute tests against an owned API for valid and invalid token contexts, separating signature validity from authorization."
+"steps" = ["Write or execute tests against an owned API for valid and invalid token contexts, separating signature validity from authorization.", "Transfer: Change audience, scope or expiry and predict which validation layer rejects the request.", "Control: Include a correctly signed but wrong-audience token and an authorized valid token.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/tokens-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-tokens"
+"level" = "recall-lane"
+"title" = "Return later: Validate the whole token contract"
+"size" = "S"
+"minutes" = 10
+"needs" = ["tokens-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain why a valid signature does not make every action authorized."
+"steps" = ["Explain why a valid signature does not make every action authorized.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "api-security:tokens" }
+
+[[node]]
+"id" = "resource-limits-reasoning"
+"level" = "resource-limits"
+"title" = "Reason it through: Make expensive work bounded"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Identify pagination, batch operations and query depth/complexity in a toy API."
+"steps" = ["Work through this preparation: Identify pagination, batch operations and query depth/complexity in a toy API.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "api-security:resource-limits" }
+
+[[node]]
+"id" = "resource-limits-experiment"
+"level" = "resource-limits"
+"title" = "Investigate: Make expensive work bounded"
+"size" = "M"
+"minutes" = 60
+"needs" = ["resource-limits-reasoning"]
+"done_when" = "Apply explicit request-size and work limits to an owned small service, then test bounded valid and over-limit inputs without load-testing third parties. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/resource-limits-experiment.json."
+"brief" = "Apply explicit request-size and work limits to an owned small service, then test bounded valid and over-limit inputs without load-testing third parties."
+"steps" = ["Identify pagination, batch operations and query depth/complexity in a toy API.", "Apply explicit request-size and work limits to an owned small service, then test bounded valid and over-limit inputs without load-testing third parties.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/resource-limits-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "resource-limits-milestone"
+"level" = "resource-limits"
+"title" = "Apply it to a changed case: Make expensive work bounded"
+"size" = "M"
+"minutes" = 120
+"needs" = ["resource-limits-reasoning", "resource-limits-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/resource-limits-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Apply explicit request-size and work limits to an owned small service, then test bounded valid and over-limit inputs without load-testing third parties."
+"steps" = ["Apply explicit request-size and work limits to an owned small service, then test bounded valid and over-limit inputs without load-testing third parties.", "Transfer: Change nesting depth or batch composition and predict the work budget decision.", "Control: Preserve a legitimate paginated request and reject an inexpensive-looking input that exceeds the actual work budget.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/resource-limits-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-resource-limits"
+"level" = "recall-lane"
+"title" = "Return later: Make expensive work bounded"
+"size" = "S"
+"minutes" = 10
+"needs" = ["resource-limits-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain why request count alone may not bound resource consumption."
+"steps" = ["Explain why request count alone may not bound resource consumption.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "api-security:resource-limits" }
+
+[[node]]
+"id" = "review-reasoning"
+"level" = "review"
+"title" = "Reason it through: Test a workflow across its endpoints"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Draw the state and identity transitions for a small API workflow."
+"steps" = ["Work through this preparation: Draw the state and identity transitions for a small API workflow.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "api-security:review" }
+
+[[node]]
+"id" = "review-experiment"
+"level" = "review"
+"title" = "Investigate: Test a workflow across its endpoints"
+"size" = "M"
+"minutes" = 60
+"needs" = ["review-reasoning"]
+"done_when" = "Assess an unfamiliar owned API fixture for object, property, token and workflow boundaries; deliver evidence and a tested minimal repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/review-experiment.json."
+"brief" = "Assess an unfamiliar owned API fixture for object, property, token and workflow boundaries; deliver evidence and a tested minimal repair."
+"steps" = ["Draw the state and identity transitions for a small API workflow.", "Assess an unfamiliar owned API fixture for object, property, token and workflow boundaries; deliver evidence and a tested minimal repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/review-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "review-milestone"
+"level" = "review"
+"title" = "Apply it to a changed case: Test a workflow across its endpoints"
+"size" = "M"
+"minutes" = 120
+"needs" = ["review-reasoning", "review-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/review-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Assess an unfamiliar owned API fixture for object, property, token and workflow boundaries; deliver evidence and a tested minimal repair."
+"steps" = ["Assess an unfamiliar owned API fixture for object, property, token and workflow boundaries; deliver evidence and a tested minimal repair.", "Transfer: Change operation order or user role and independently test whether the business invariant still holds.", "Control: Verify normal workflow completion and a rejected unauthorized transition after the fix.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/review-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-review"
+"level" = "recall-lane"
+"title" = "Return later: Test a workflow across its endpoints"
+"size" = "S"
+"minutes" = 10
+"needs" = ["review-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct the finding from the business invariant rather than the endpoint name."
+"steps" = ["Reconstruct the finding from the business invariant rather than the endpoint name.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "api-security:review" }
+
+[[node]]
+"id" = "independent-transfer-reasoning"
+"level" = "independent-transfer"
+"title" = "Reason it through: Revisit the skill on a fresh problem"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution."
+"steps" = ["Work through this preparation: Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "api-security:independent-transfer" }
+
+[[node]]
+"id" = "independent-transfer-experiment"
+"level" = "independent-transfer"
+"title" = "Investigate: Revisit the skill on a fresh problem"
+"size" = "M"
+"minutes" = 60
+"needs" = ["independent-transfer-reasoning"]
+"done_when" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/independent-transfer-experiment.json."
+"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
+"steps" = ["Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "independent-transfer-milestone"
+"level" = "independent-transfer"
+"title" = "Apply it to a changed case: Revisit the skill on a fresh problem"
+"size" = "M"
+"minutes" = 120
+"needs" = ["independent-transfer-reasoning", "independent-transfer-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/independent-transfer-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
+"steps" = ["After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Transfer: Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.", "Control: Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-independent-transfer"
+"level" = "recall-lane"
+"title" = "Return later: Revisit the skill on a fresh problem"
+"size" = "S"
+"minutes" = 10
+"needs" = ["independent-transfer-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain what transferred, what required help and which prerequisite needs another small experiment."
+"steps" = ["Explain what transferred, what required help and which prerequisite needs another small experiment.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "api-security:independent-transfer" }
+
+[[node]]
+"id" = "quick-access-check"
+"level" = "quick"
+"title" = "A ten-minute permission puzzle"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Correctly evaluate every allow/deny decision for a fresh server-generated policy fixture."
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"verify" = { "type" = "lab", "exercise" = "access-policy" }

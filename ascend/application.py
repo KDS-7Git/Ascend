@@ -322,6 +322,10 @@ class Tracker:
         guard_secrets(note)
         pack, node = self.resolve_node(reference)
         with self.db.transaction():
+            if status == "done" and node.verify.get("type") in {"lab", "ctf"}:
+                result = self.verify_node(pack, node)
+                if not result.ok:
+                    raise ValueError(result.summary)
             self.db.connection.execute(
                 """INSERT INTO node_state(user_id,pack_id,node_id,status,done_at,evidence,how)
                 VALUES (?,?,?,?,?,?,?) ON CONFLICT(user_id,pack_id,node_id) DO UPDATE SET
@@ -339,6 +343,10 @@ class Tracker:
             self.audit(
                 "mark", {"pack": pack.id, "node": node.id, "status": status, "how": how}
             )
+            if status in {"done", "skipped"}:
+                from ascend import timing
+
+                timing.finish(self, pack, node, how if status == "done" else "skipped")
             if status in {"done", "skipped"}:
                 for split in self.db.rows("node_splits", "pack_id=?", (pack.id,)):
                     parent = split["node_id"]
@@ -366,6 +374,14 @@ class Tracker:
 
     def verify_node(self, pack, node):
         vtype = node.verify.get("type", "manual")
+        if vtype == "lab":
+            from ascend.labs import verify
+
+            return verify(self, pack, node)
+        if vtype == "ctf":
+            from ascend.verifiers.ctf import verify
+
+            return verify(self, pack, node)
         if vtype.startswith("plugin:"):
             if getattr(self, "restricted", False):
                 return VerifyResult(
@@ -763,6 +779,10 @@ class Tracker:
             raise ValueError("Supply at least two concrete smaller steps")
         guard_secrets(*steps)
         pack, node = self.resolve_node(reference)
+        if node.verify.get("type") in {"lab", "ctf"}:
+            raise ValueError(
+                "Verified exercises cannot be completed by splitting; pause the session or save partial progress"
+            )
         if (
             node.id in self.states(pack.id)
             and self.states(pack.id)[node.id]["status"] != "todo"

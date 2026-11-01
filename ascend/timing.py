@@ -1,0 +1,157 @@
+"""Server-clock task sessions and once-per-node verification rewards."""
+
+from datetime import datetime
+import math
+
+
+def elapsed(t, row):
+    value = row["elapsed_seconds"]
+    if row["status"] == "running":
+        value += max(
+            0, (t.now() - datetime.fromisoformat(row["running_since"])).total_seconds()
+        )
+    return value
+
+
+def points(seconds, budget):
+    return max(25, 100 - math.floor(50 * max(0, seconds - budget) / budget))
+
+
+def describe(t, row):
+    value = elapsed(t, row)
+    return {
+        **row,
+        "elapsed_seconds": int(value),
+        "remaining_seconds": max(0, math.ceil(row["budget_seconds"] - value)),
+        "potential_xp": points(value, row["budget_seconds"]),
+        "server_time": t.now().isoformat(),
+    }
+
+
+def summary(t):
+    rows = t.db.rows("task_sessions", "status='running'")
+    awards = t.db.rows("xp_awards")
+    return {
+        "active": describe(t, rows[0]) if rows else None,
+        "paused": [
+            describe(t, r) for r in t.db.rows("task_sessions", "status='paused'")
+        ],
+        "xp": sum(r["points"] for r in awards),
+        "verified_awards": len(awards),
+    }
+
+
+def start(t, reference, minutes=None):
+    pack, node = t.resolve_node(reference)
+    if node.id not in {n.id for n in t.candidates(pack)} and t.states(pack.id).get(
+        node.id, {}
+    ).get("status") not in {"done", "skipped"}:
+        raise ValueError("Complete the prerequisites before starting this task")
+    budget = node.estimate if minutes is None else minutes
+    if type(budget) is not int or not 1 <= budget <= 1440:
+        raise ValueError("Session target must be 1 to 1440 minutes")
+    with t.db.transaction():
+        active = t.db.rows("task_sessions", "status='running'")
+        if active and (active[0]["pack_id"], active[0]["node_id"]) != (
+            pack.id,
+            node.id,
+        ):
+            raise ValueError("Pause the current task session before starting another")
+        previous = t.db.rows(
+            "task_sessions", "pack_id=? AND node_id=?", (pack.id, node.id)
+        )
+        if previous:
+            row = previous[0]
+            if row["status"] == "paused":
+                t.db.update(
+                    "task_sessions",
+                    "id=?",
+                    (row["id"],),
+                    status="running",
+                    running_since=t.now().isoformat(),
+                )
+            # Resume preserves the original target and accumulated time.
+        else:
+            t.db.insert(
+                "task_sessions",
+                pack_id=pack.id,
+                node_id=node.id,
+                title=node.title,
+                budget_seconds=budget * 60,
+                running_since=t.now().isoformat(),
+                status="running",
+            )
+        row = t.db.rows("task_sessions", "pack_id=? AND node_id=?", (pack.id, node.id))[
+            0
+        ]
+    return describe(t, row)
+
+
+def pause(t):
+    with t.db.transaction():
+        rows = t.db.rows("task_sessions", "status='running'")
+        if not rows:
+            raise ValueError("No running task session")
+        row = rows[0]
+        t.db.update(
+            "task_sessions",
+            "id=?",
+            (row["id"],),
+            elapsed_seconds=elapsed(t, row),
+            running_since=None,
+            status="paused",
+        )
+    return summary(t)
+
+
+def finish(t, pack, node, how):
+    rows = t.db.rows("task_sessions", "pack_id=? AND node_id=?", (pack.id, node.id))
+    if not rows or rows[0]["status"] == "finished":
+        return
+    row = rows[0]
+    seconds = elapsed(t, row)
+    t.db.update(
+        "task_sessions",
+        "id=?",
+        (row["id"],),
+        elapsed_seconds=seconds,
+        running_since=None,
+        status="finished",
+        finished_at=t.now().isoformat(),
+    )
+    # Presence-only file checks and self-marking are not skill rewards.
+    if how in {"verifier:lab", "verifier:ctf"}:
+        t.db.connection.execute(
+            "INSERT OR IGNORE INTO xp_awards VALUES (?,?,?,?,?,?)",
+            (
+                t.db.user_id,
+                pack.id,
+                node.id,
+                points(seconds, row["budget_seconds"]),
+                t.now().isoformat(),
+                how,
+            ),
+        )
+
+
+def reminders(t, sender):
+    with t.db.transaction():
+        rows = t.db.rows("task_sessions", "status='running'")
+        if not rows:
+            return {"sent": False}
+        row = rows[0]
+        seconds = elapsed(t, row)
+        budget = row["budget_seconds"]
+        due = 2 if seconds >= budget else 1 if seconds >= budget * 0.75 else 0
+        if due <= row["notice"]:
+            return {"sent": False}
+        message = f"Ascend: {row['title']}. " + (
+            "Your target time has elapsed; verified completion still earns XP."
+            if due == 2
+            else "Three quarters of your planned session has elapsed."
+        )
+        delivery = sender(message)
+        if isinstance(delivery, dict) and delivery.get("sent") == 0:
+            return {"sent": False}
+        t.db.update("task_sessions", "id=?", (row["id"],), notice=due)
+        return {"sent": True, "notice": due}

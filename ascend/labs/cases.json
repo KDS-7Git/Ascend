@@ -1,0 +1,762 @@
+{
+  "ethical-hacking-foundations:foundations": {
+    "prompt": "A required training environment is unavailable, but a tool prints its version.",
+    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+  },
+  "ethical-hacking-foundations:scope": {
+    "prompt": "An owned app redirects to a third-party login outside written scope.",
+    "correct": "Exclude testing that provider until separately authorized.",
+    "incorrect": "Ownership of the first app authorizes testing the provider."
+  },
+  "ethical-hacking-foundations:method": {
+    "prompt": "A scanner identifies a product from one response header.",
+    "correct": "Treat the identification as a hypothesis and corroborate behavior.",
+    "incorrect": "Treat the header as proof of an exploitable version."
+  },
+  "ethical-hacking-foundations:web-boundaries": {
+    "prompt": "An authenticated user requests another user's private object.",
+    "correct": "The server must enforce object-level authorization.",
+    "incorrect": "A hidden button in the client is sufficient authorization."
+  },
+  "ethical-hacking-foundations:permissions": {
+    "prompt": "A user can read a file but cannot traverse its parent directory.",
+    "correct": "Parent-directory permissions can still prevent access by pathname.",
+    "incorrect": "File read permission guarantees successful pathname access."
+  },
+  "ethical-hacking-foundations:evidence": {
+    "prompt": "A patch removes a vulnerable response but breaks all valid requests.",
+    "correct": "The security repair has not passed the legitimate-use control.",
+    "incorrect": "Blocking every request is a complete successful repair."
+  },
+  "ethical-hacking-foundations:assessment": {
+    "prompt": "No finding is reproduced during a bounded assessment.",
+    "correct": "Report scope, tests and uncertainty; a justified negative result is legitimate.",
+    "incorrect": "Report the target as secure without qualification."
+  },
+  "ethical-hacking-foundations:independent-transfer": {
+    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+  },
+  "red-team-adversary-emulation:foundations": {
+    "prompt": "A required training environment is unavailable, but a tool prints its version.",
+    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+  },
+  "red-team-adversary-emulation:objectives": {
+    "prompt": "A shell was obtained but the agreed business objective was not demonstrated.",
+    "correct": "Report technical access separately from objective success.",
+    "incorrect": "Count any shell as fulfillment of the agreed objective."
+  },
+  "red-team-adversary-emulation:threat-model": {
+    "prompt": "A report names an actor but gives no evidence for a particular technique.",
+    "correct": "Do not add the technique merely because it is plausible.",
+    "incorrect": "Attribute all techniques associated with that actor to this campaign."
+  },
+  "red-team-adversary-emulation:telemetry": {
+    "prompt": "A process event is absent because the relevant sensor was disabled.",
+    "correct": "Treat visibility as unknown for that event.",
+    "incorrect": "Treat the missing event as proof the action did not occur."
+  },
+  "red-team-adversary-emulation:emulation": {
+    "prompt": "A reviewed marker test creates a file outside its declared cleanup list.",
+    "correct": "Stop and reconcile the unexpected effect before claiming clean rollback.",
+    "incorrect": "Delete every file in the parent directory as a precaution."
+  },
+  "red-team-adversary-emulation:purple-team": {
+    "prompt": "An analytic matches only the filename used in the demonstration.",
+    "correct": "Test a renamed behaviorally equivalent case.",
+    "incorrect": "Claim general technique coverage from the one filename match."
+  },
+  "red-team-adversary-emulation:campaign": {
+    "prompt": "An exercise cannot obtain an assumed permission within scope.",
+    "correct": "Adapt or report the blocked prerequisite without expanding authority.",
+    "incorrect": "Exceed scope because the end objective was approved."
+  },
+  "red-team-adversary-emulation:independent-transfer": {
+    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+  },
+  "soc-analyst:foundations": {
+    "prompt": "A required training environment is unavailable, but a tool prints its version.",
+    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+  },
+  "soc-analyst:intake": {
+    "prompt": "A noisy sandbox alert competes with corroborated access to a critical service.",
+    "correct": "Prioritize using corroboration and business impact.",
+    "incorrect": "Rank solely by alert count."
+  },
+  "soc-analyst:queries": {
+    "prompt": "Two accounts share a display name but have different immutable IDs.",
+    "correct": "Join events using the correct identity keys.",
+    "incorrect": "Merge them because the displayed names match."
+  },
+  "soc-analyst:authentication": {
+    "prompt": "Many failed logins are followed by a successful maintenance login.",
+    "correct": "Investigate context and corroborating evidence before declaring compromise.",
+    "incorrect": "Failure count alone establishes account compromise."
+  },
+  "soc-analyst:web-and-mail": {
+    "prompt": "An inert message was received and its URL was blocked by the proxy.",
+    "correct": "Distinguish receipt and blocked access from execution.",
+    "incorrect": "Treat delivery as proof of endpoint execution."
+  },
+  "soc-analyst:response": {
+    "prompt": "Containment disables every account although one synthetic account is affected.",
+    "correct": "Prefer the scoped action with a verified rollback and business impact assessment.",
+    "incorrect": "Broader disruption is always stronger containment."
+  },
+  "soc-analyst:shift-handoff": {
+    "prompt": "A late event contradicts the incident disposition.",
+    "correct": "Revise the case while preserving the earlier reasoning.",
+    "incorrect": "Remove the contradictory event to preserve a consistent report."
+  },
+  "soc-analyst:independent-transfer": {
+    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+  },
+  "active-directory-security:foundations": {
+    "prompt": "A required training environment is unavailable, but a tool prints its version.",
+    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+  },
+  "active-directory-security:domain-model": {
+    "prompt": "A joined client uses an unrelated DNS resolver.",
+    "correct": "Domain discovery may fail despite ordinary network connectivity.",
+    "incorrect": "Successful ping proves domain discovery must work."
+  },
+  "active-directory-security:auth-protocols": {
+    "prompt": "A service SPN does not match the requested service identity.",
+    "correct": "Investigate service identity and ticket behavior rather than assuming a password failure.",
+    "incorrect": "Kerberos does not use service identity."
+  },
+  "active-directory-security:permissions": {
+    "prompt": "A graph shows nested membership but native effective access denies the action.",
+    "correct": "Treat the graph edge as unverified until permissions explain the discrepancy.",
+    "incorrect": "The graph diagram overrides the native authorization result."
+  },
+  "active-directory-security:gpo-delegation": {
+    "prompt": "An account can edit a policy object that is not applied to the target.",
+    "correct": "Editing and application are separate prerequisites.",
+    "incorrect": "Any policy edit automatically changes every domain computer."
+  },
+  "active-directory-security:certificate-services": {
+    "prompt": "A certificate chains to a trusted CA but is not authorized for the requested identity.",
+    "correct": "Chain trust alone does not establish authorized identity mapping.",
+    "incorrect": "Any trusted certificate grants any requested domain identity."
+  },
+  "active-directory-security:assessment": {
+    "prompt": "A hardening change removes a privilege path and breaks the required service login.",
+    "correct": "Retest least privilege and legitimate service behavior before declaring success.",
+    "incorrect": "Removing all logins is an adequate domain repair."
+  },
+  "active-directory-security:independent-transfer": {
+    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+  },
+  "cloud-security:foundations": {
+    "prompt": "A required training environment is unavailable, but a tool prints its version.",
+    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+  },
+  "cloud-security:shared-responsibility": {
+    "prompt": "A workload moves from a VM to a managed database.",
+    "correct": "Reassess which operational controls belong to provider and customer.",
+    "incorrect": "All customer responsibilities disappear."
+  },
+  "cloud-security:iam": {
+    "prompt": "An identity allow conflicts with an applicable explicit deny.",
+    "correct": "Evaluate the effective policy including the deny and context.",
+    "incorrect": "The identity allow always wins."
+  },
+  "cloud-security:exposure": {
+    "prompt": "An object is reachable at a public URL but requires a valid restricted identity.",
+    "correct": "Test authorization before calling the object publicly readable.",
+    "incorrect": "URL reachability proves anonymous read access."
+  },
+  "cloud-security:secrets": {
+    "prompt": "A token has a valid signature but the wrong audience.",
+    "correct": "Reject it for the intended service.",
+    "incorrect": "A valid signature is sufficient for acceptance by every service."
+  },
+  "cloud-security:logging": {
+    "prompt": "A cloud audit record shows a denied permission change.",
+    "correct": "Distinguish attempted from successful modification.",
+    "incorrect": "Treat the requested action as if it succeeded."
+  },
+  "cloud-security:assessment": {
+    "prompt": "A local IAM fixture passes its tests.",
+    "correct": "Limit the claim to the fixture until provider enforcement is tested.",
+    "incorrect": "Claim every cloud provider enforces the same policy semantics."
+  },
+  "cloud-security:independent-transfer": {
+    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+  },
+  "container-kubernetes-security:foundations": {
+    "prompt": "A required training environment is unavailable, but a tool prints its version.",
+    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+  },
+  "container-kubernetes-security:container-boundary": {
+    "prompt": "A non-root container has the host Docker socket mounted.",
+    "correct": "The socket can undermine the intended host boundary.",
+    "incorrect": "Non-root status alone makes the socket safe."
+  },
+  "container-kubernetes-security:image-supply-chain": {
+    "prompt": "An image tag now resolves to a different digest.",
+    "correct": "Review the new image identity and dependencies before accepting it.",
+    "incorrect": "A stable tag name means the content is unchanged."
+  },
+  "container-kubernetes-security:network-separation": {
+    "prompt": "A training service is published on every host interface.",
+    "correct": "A separate internal network does not make that published port private.",
+    "incorrect": "Internal networking cancels all host port exposure."
+  },
+  "container-kubernetes-security:cluster-identity": {
+    "prompt": "A RoleBinding grants read access in one namespace.",
+    "correct": "Evaluate the subject, role and namespace for the requested action.",
+    "incorrect": "The same permission automatically applies to every namespace."
+  },
+  "container-kubernetes-security:cluster-network": {
+    "prompt": "A NetworkPolicy exists on a cluster whose CNI does not enforce it.",
+    "correct": "Verify traffic; the object alone does not prove isolation.",
+    "incorrect": "Valid YAML guarantees packets are filtered."
+  },
+  "container-kubernetes-security:review": {
+    "prompt": "A read-only root blocks the application's required temporary write.",
+    "correct": "Provide only the necessary bounded writable path.",
+    "incorrect": "Remove all filesystem restrictions without investigating the path."
+  },
+  "container-kubernetes-security:independent-transfer": {
+    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+  },
+  "secure-development-devsecops:foundations": {
+    "prompt": "A required training environment is unavailable, but a tool prints its version.",
+    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+  },
+  "secure-development-devsecops:threat-model": {
+    "prompt": "A background worker introduces a new external data source.",
+    "correct": "Update the threat model and trust boundaries.",
+    "incorrect": "Reuse the old model without reviewing the new flow."
+  },
+  "secure-development-devsecops:input-and-output": {
+    "prompt": "Input was validated before being inserted into a different output context.",
+    "correct": "Apply context-appropriate safe output handling as well.",
+    "incorrect": "Input validation makes every output sink safe."
+  },
+  "secure-development-devsecops:authz": {
+    "prompt": "The UI prevents a user from selecting someone else's object ID.",
+    "correct": "The backend must independently enforce ownership.",
+    "incorrect": "UI restrictions are a complete server authorization control."
+  },
+  "secure-development-devsecops:supply-chain": {
+    "prompt": "An advisory names an unused feature of a transitive dependency.",
+    "correct": "Assess version, configuration and reachability with evidence.",
+    "incorrect": "Dependency presence alone proves exploitability."
+  },
+  "secure-development-devsecops:pipeline": {
+    "prompt": "A security gate rejects every build, including the clean fixture.",
+    "correct": "The legitimate-build control has failed.",
+    "incorrect": "A permanently red pipeline is proof of a strong gate."
+  },
+  "secure-development-devsecops:release": {
+    "prompt": "A dependency update changes the service's authorization behavior.",
+    "correct": "Recheck the relevant security and compatibility assumptions before release.",
+    "incorrect": "A newer dependency version needs no regression checks."
+  },
+  "secure-development-devsecops:independent-transfer": {
+    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+  },
+  "digital-forensics-incident-response:foundations": {
+    "prompt": "A required training environment is unavailable, but a tool prints its version.",
+    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+  },
+  "digital-forensics-incident-response:preservation": {
+    "prompt": "Two files have identical bytes but different filenames.",
+    "correct": "Their content hashes match while provenance may differ.",
+    "incorrect": "A matching hash proves the same acquisition history."
+  },
+  "digital-forensics-incident-response:filesystem": {
+    "prompt": "A copied file retains a timestamp earlier than acquisition.",
+    "correct": "Interpret filesystem and copying semantics before dating the underlying activity.",
+    "incorrect": "Treat every timestamp as the acquisition time."
+  },
+  "digital-forensics-incident-response:timeline": {
+    "prompt": "Two log sources have different clock offsets.",
+    "correct": "Normalize and represent remaining ordering uncertainty.",
+    "incorrect": "Sort displayed timestamp strings and claim exact chronology."
+  },
+  "digital-forensics-incident-response:memory": {
+    "prompt": "A memory tool uses symbols for the wrong OS build.",
+    "correct": "Treat the output as potentially invalid and resolve the mismatch.",
+    "incorrect": "Plausible-looking process names prove the symbols are correct."
+  },
+  "digital-forensics-incident-response:containment": {
+    "prompt": "Containment destroys volatile evidence before it is captured.",
+    "correct": "Record the tradeoff and resulting interpretation limit.",
+    "incorrect": "Recreate the missing observations from the incident hypothesis."
+  },
+  "digital-forensics-incident-response:case": {
+    "prompt": "A new artifact contradicts the initial timeline.",
+    "correct": "Revise the hypothesis and preserve the reasoning history.",
+    "incorrect": "Ignore it because the report is already written."
+  },
+  "digital-forensics-incident-response:independent-transfer": {
+    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+  },
+  "threat-hunting-intelligence:foundations": {
+    "prompt": "A required training environment is unavailable, but a tool prints its version.",
+    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+  },
+  "threat-hunting-intelligence:source-quality": {
+    "prompt": "Three articles repeat one uncorroborated original claim.",
+    "correct": "Repetition is not three independent sources.",
+    "incorrect": "Count the articles as independent corroboration."
+  },
+  "threat-hunting-intelligence:behavior": {
+    "prompt": "A hunt hypothesis needs process ancestry but only DNS logs exist.",
+    "correct": "Acquire a suitable source or narrow the hypothesis.",
+    "incorrect": "Infer the missing process ancestry from the DNS name."
+  },
+  "threat-hunting-intelligence:queries": {
+    "prompt": "A behavior rule stops matching when the filename changes.",
+    "correct": "Reassess its dependence on a superficial indicator.",
+    "incorrect": "Claim coverage because the original sample still matches."
+  },
+  "threat-hunting-intelligence:context": {
+    "prompt": "Two domains share a large hosting provider's IP.",
+    "correct": "Shared hosting alone is insufficient attribution evidence.",
+    "incorrect": "Assign both domains to the same operator."
+  },
+  "threat-hunting-intelligence:intelligence-format": {
+    "prompt": "A STIX bundle is syntactically valid but contains an unsupported relationship.",
+    "correct": "Schema validity does not establish analytic truth.",
+    "incorrect": "Validation proves every relationship is factual."
+  },
+  "threat-hunting-intelligence:hunt-report": {
+    "prompt": "A query returns no matches from an incomplete dataset.",
+    "correct": "Report the coverage limit with the negative result.",
+    "incorrect": "Conclude the behavior never occurred."
+  },
+  "threat-hunting-intelligence:independent-transfer": {
+    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+  },
+  "malware-analysis:foundations": {
+    "prompt": "A required training environment is unavailable, but a tool prints its version.",
+    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+  },
+  "malware-analysis:triage": {
+    "prompt": "A high-entropy binary is a known benign compressed utility.",
+    "correct": "Entropy alone cannot classify it as malware.",
+    "incorrect": "High entropy proves malicious behavior."
+  },
+  "malware-analysis:static-flow": {
+    "prompt": "A suspicious string occurs only in unreachable code.",
+    "correct": "Separate static capability hints from observed execution.",
+    "incorrect": "Report that the string's implied action definitely ran."
+  },
+  "malware-analysis:behavior": {
+    "prompt": "A trace records an attempted connection with no successful transfer.",
+    "correct": "Report the attempt and the missing success evidence.",
+    "incorrect": "Claim confirmed exfiltration from the destination alone."
+  },
+  "malware-analysis:configuration": {
+    "prompt": "A configuration parser receives a truncated fixture.",
+    "correct": "Fail clearly instead of inventing absent fields.",
+    "incorrect": "Fill missing fields with likely values and report them as recovered."
+  },
+  "malware-analysis:signatures": {
+    "prompt": "A signature matches many unrelated files containing a common string.",
+    "correct": "Evaluate false positives and choose more discriminating evidence.",
+    "incorrect": "A large match count proves broad detection quality."
+  },
+  "malware-analysis:report": {
+    "prompt": "A published trace suggests behavior not visible in the binary examined.",
+    "correct": "Explain the source discrepancy and limit the claim.",
+    "incorrect": "Merge all hints into a single certain execution story."
+  },
+  "malware-analysis:independent-transfer": {
+    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+  },
+  "mobile-application-security:foundations": {
+    "prompt": "A required training environment is unavailable, but a tool prints its version.",
+    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+  },
+  "mobile-application-security:platform-model": {
+    "prompt": "A manifest declares a sensitive permission.",
+    "correct": "Review use and runtime conditions before asserting sensitive behavior.",
+    "incorrect": "The declaration proves the permission was exercised."
+  },
+  "mobile-application-security:local-storage": {
+    "prompt": "An app encrypts data but stores the key beside it under the same access boundary.",
+    "correct": "Evaluate the actual threat model and key access.",
+    "incorrect": "Encryption alone guarantees protection from that boundary's attacker."
+  },
+  "mobile-application-security:transport": {
+    "prompt": "A debug build disables certificate validation for interception.",
+    "correct": "Limit findings to the documented test configuration.",
+    "incorrect": "Claim the production build has the same validation behavior."
+  },
+  "mobile-application-security:components": {
+    "prompt": "An exported component requires an effective permission.",
+    "correct": "Test the caller and enforced permission before declaring exposure.",
+    "incorrect": "Every exported component is automatically exploitable."
+  },
+  "mobile-application-security:backend": {
+    "prompt": "The mobile client hides an administrative operation.",
+    "correct": "Verify backend authorization independently.",
+    "incorrect": "Hidden mobile controls eliminate the need for backend checks."
+  },
+  "mobile-application-security:assessment": {
+    "prompt": "A result depends on a rooted debug device.",
+    "correct": "State that assumption and assess production applicability separately.",
+    "incorrect": "Present it as universally reproducible on stock devices."
+  },
+  "mobile-application-security:independent-transfer": {
+    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+  },
+  "api-security:foundations": {
+    "prompt": "A required training environment is unavailable, but a tool prints its version.",
+    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+  },
+  "api-security:inventory": {
+    "prompt": "An intentionally public health route responds without login.",
+    "correct": "Compare behavior with the intended contract before reporting missing authorization.",
+    "incorrect": "Every unauthenticated route is a vulnerability."
+  },
+  "api-security:object-authorization": {
+    "prompt": "User A requests user B's private object using a guessed ID.",
+    "correct": "Enforce object ownership on the server.",
+    "incorrect": "Random identifiers are sufficient authorization."
+  },
+  "api-security:property-authorization": {
+    "prompt": "An update body contains a server-owned role field.",
+    "correct": "Apply field-level write authorization or an allowlist.",
+    "incorrect": "Bind every JSON field because the user is authenticated."
+  },
+  "api-security:tokens": {
+    "prompt": "A token is correctly signed but expired.",
+    "correct": "Reject it under the service's validity rules.",
+    "incorrect": "Signature correctness overrides expiration."
+  },
+  "api-security:resource-limits": {
+    "prompt": "One request contains an unbounded nested batch.",
+    "correct": "Bound actual work as well as request count.",
+    "incorrect": "A one-request-per-second limit always bounds resource use."
+  },
+  "api-security:review": {
+    "prompt": "A valid endpoint sequence violates a business invariant when reordered.",
+    "correct": "Test workflow state and authorization across endpoints.",
+    "incorrect": "Individually valid endpoints guarantee a valid workflow."
+  },
+  "api-security:independent-transfer": {
+    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+  },
+  "cryptography-protocol-security:foundations": {
+    "prompt": "A required training environment is unavailable, but a tool prints its version.",
+    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+  },
+  "cryptography-protocol-security:representations": {
+    "prompt": "A message is Base64 encoded before transmission.",
+    "correct": "Encoding does not provide confidentiality.",
+    "incorrect": "Base64 hides the message from an observer with no secret."
+  },
+  "cryptography-protocol-security:integrity": {
+    "prompt": "An attacker can replace both a message and its unkeyed hash.",
+    "correct": "The hash alone does not authenticate the message's origin.",
+    "incorrect": "The updated hash proves the replacement is authorized."
+  },
+  "cryptography-protocol-security:symmetric": {
+    "prompt": "An authenticated-encryption tag fails validation.",
+    "correct": "Reject the result without releasing unauthenticated plaintext.",
+    "incorrect": "Return the plaintext because decryption produced bytes."
+  },
+  "cryptography-protocol-security:public-key": {
+    "prompt": "A signature is valid under an unknown public key.",
+    "correct": "The identity trust decision is still unresolved.",
+    "incorrect": "Cryptographic validity alone proves the claimed real-world identity."
+  },
+  "cryptography-protocol-security:tls": {
+    "prompt": "A trusted certificate names a different hostname.",
+    "correct": "Hostname validation must still reject the connection.",
+    "incorrect": "A trusted issuer makes the hostname irrelevant."
+  },
+  "cryptography-protocol-security:review": {
+    "prompt": "An authenticated command can be replayed indefinitely.",
+    "correct": "Add freshness/state appropriate to the protocol.",
+    "incorrect": "Authentication automatically prevents replay."
+  },
+  "cryptography-protocol-security:independent-transfer": {
+    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+  },
+  "wireless-iot-security:foundations": {
+    "prompt": "A required training environment is unavailable, but a tool prints its version.",
+    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+  },
+  "wireless-iot-security:inventory": {
+    "prompt": "A nearby device is visible but outside the test permission.",
+    "correct": "Keep it out of the exercise.",
+    "incorrect": "Radio visibility establishes testing permission."
+  },
+  "wireless-iot-security:mqtt": {
+    "prompt": "A retained MQTT message arrives immediately after subscribing.",
+    "correct": "Distinguish retained state from a newly published live event.",
+    "incorrect": "Arrival time proves a new publication happened then."
+  },
+  "wireless-iot-security:access": {
+    "prompt": "A device authenticates to a broker but lacks a topic grant.",
+    "correct": "Enforce topic authorization independently.",
+    "incorrect": "Authentication grants every topic."
+  },
+  "wireless-iot-security:wireless": {
+    "prompt": "A wireless capture lacks the context needed to decrypt application traffic.",
+    "correct": "Limit conclusions to visible metadata and available evidence.",
+    "incorrect": "Infer plaintext contents from encrypted frame sizes alone."
+  },
+  "wireless-iot-security:firmware": {
+    "prompt": "Firmware is signed for another device model.",
+    "correct": "Check model/version policy as well as signature validity.",
+    "incorrect": "Any valid vendor signature authorizes installation on every model."
+  },
+  "wireless-iot-security:assessment": {
+    "prompt": "A topic ACL fix blocks unrelated devices and the intended device alike.",
+    "correct": "Restore the required allowed operation while retaining separation.",
+    "incorrect": "Total communication failure proves a correct IoT repair."
+  },
+  "wireless-iot-security:independent-transfer": {
+    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+  },
+  "ot-ics-security:foundations": {
+    "prompt": "A required training environment is unavailable, but a tool prints its version.",
+    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+  },
+  "ot-ics-security:process": {
+    "prompt": "Disconnecting a controller may violate a stated safety constraint.",
+    "correct": "Include process engineering and the safety consequence in containment decisions.",
+    "incorrect": "Copy the ordinary IT isolation action without process review."
+  },
+  "ot-ics-security:protocol": {
+    "prompt": "A register value is interpreted with the wrong byte order.",
+    "correct": "Recheck data type and mapping before inferring process state.",
+    "incorrect": "The numeric output is trustworthy because the packet parsed."
+  },
+  "ot-ics-security:segmentation": {
+    "prompt": "An engineering path is denied but required monitoring still works.",
+    "correct": "Verify that this matches the intended zone policy.",
+    "incorrect": "Every denied industrial connection is an operational failure."
+  },
+  "ot-ics-security:monitoring": {
+    "prompt": "An unexpected write occurs during an approved maintenance window.",
+    "correct": "Correlate authorization and process context before disposition.",
+    "incorrect": "Every unusual function code proves an incident."
+  },
+  "ot-ics-security:change-control": {
+    "prompt": "A simulator change fails its validation.",
+    "correct": "Roll back using the documented baseline.",
+    "incorrect": "Declare success because the configuration command exited zero."
+  },
+  "ot-ics-security:exercise": {
+    "prompt": "Network evidence is insufficient to determine physical state.",
+    "correct": "Escalate the uncertainty to the process owner.",
+    "incorrect": "Treat network logs as a complete measurement of physical safety."
+  },
+  "ot-ics-security:independent-transfer": {
+    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+  },
+  "security-architecture-grc:foundations": {
+    "prompt": "A required training environment is unavailable, but a tool prints its version.",
+    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+  },
+  "security-architecture-grc:assets": {
+    "prompt": "An outsourced service is outside direct administration but handles critical data.",
+    "correct": "Record the dependency and assigned control responsibilities.",
+    "incorrect": "Omit it because it is not owned infrastructure."
+  },
+  "security-architecture-grc:threats": {
+    "prompt": "Likelihood is unknown and has no empirical basis.",
+    "correct": "State uncertainty rather than inventing a precise probability.",
+    "incorrect": "Choose a precise percentage to make the register look rigorous."
+  },
+  "security-architecture-grc:controls": {
+    "prompt": "A policy says backups are tested but no restoration evidence exists.",
+    "correct": "Operating effectiveness remains unsubstantiated.",
+    "incorrect": "The written policy proves restoration works."
+  },
+  "security-architecture-grc:architecture": {
+    "prompt": "A design relies on a component that is no longer trusted.",
+    "correct": "Reassess the design's assumptions and tradeoffs.",
+    "incorrect": "The old architecture decision remains valid without review."
+  },
+  "security-architecture-grc:assurance": {
+    "prompt": "A scanner screenshot does not identify target or version.",
+    "correct": "Request traceable evidence for the actual claim.",
+    "incorrect": "Any green screenshot proves the current control passes."
+  },
+  "security-architecture-grc:review": {
+    "prompt": "A launch-critical control remains unverified among many low-risk fixes.",
+    "correct": "Make the unresolved decision and accountable owner explicit.",
+    "incorrect": "Count closed tickets and approve the launch automatically."
+  },
+  "security-architecture-grc:independent-transfer": {
+    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+  },
+  "vulnerability-management:foundations": {
+    "prompt": "A required training environment is unavailable, but a tool prints its version.",
+    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+  },
+  "vulnerability-management:inventory": {
+    "prompt": "Two different products expose similar version strings.",
+    "correct": "Establish product identity before applying an advisory.",
+    "incorrect": "Treat matching numbers as the same component."
+  },
+  "vulnerability-management:validation": {
+    "prompt": "The advisory's required feature is disabled and unavailable.",
+    "correct": "Verify that condition before deciding applicability.",
+    "incorrect": "A matching product name alone establishes exposure."
+  },
+  "vulnerability-management:prioritization": {
+    "prompt": "A vulnerability has high severity but low exposure on an isolated training asset.",
+    "correct": "Prioritize with exploitation evidence and business context.",
+    "incorrect": "Severity alone dictates the entire remediation queue."
+  },
+  "vulnerability-management:remediation": {
+    "prompt": "A ticket is closed but the affected instance retains its vulnerable configuration.",
+    "correct": "The repair is not verified on that instance.",
+    "incorrect": "Ticket status is sufficient remediation evidence."
+  },
+  "vulnerability-management:exceptions": {
+    "prompt": "A risk exception has no owner or expiry.",
+    "correct": "Return it for accountable, bounded acceptance.",
+    "incorrect": "Leave it accepted indefinitely."
+  },
+  "vulnerability-management:program": {
+    "prompt": "Scan coverage drops and the finding count falls.",
+    "correct": "Distinguish lost visibility from reduced exposure.",
+    "incorrect": "Report an improvement without revisiting the denominator."
+  },
+  "vulnerability-management:independent-transfer": {
+    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+  },
+  "vulnerability-research-bug-bounty:foundations": {
+    "prompt": "A required training environment is unavailable, but a tool prints its version.",
+    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+  },
+  "vulnerability-research-bug-bounty:scope": {
+    "prompt": "A program excludes a third-party dependency from scope.",
+    "correct": "Do not test that dependency without separate authority.",
+    "incorrect": "A dependency relationship extends the program's permission."
+  },
+  "vulnerability-research-bug-bounty:model": {
+    "prompt": "A code review suggests a defect with an untested prerequisite.",
+    "correct": "Design a discriminating experiment before claiming impact.",
+    "incorrect": "Report maximum impact as soon as the pattern looks familiar."
+  },
+  "vulnerability-research-bug-bounty:fuzzing": {
+    "prompt": "A parser cleanly rejects malformed input.",
+    "correct": "Do not count expected rejection as a security finding.",
+    "incorrect": "Any error response is a vulnerability."
+  },
+  "vulnerability-research-bug-bounty:impact": {
+    "prompt": "A response changes size without evidence of unauthorized data.",
+    "correct": "Investigate further before claiming data access.",
+    "incorrect": "Response size alone proves access to private records."
+  },
+  "vulnerability-research-bug-bounty:disclosure": {
+    "prompt": "A reproducer contains a real credential.",
+    "correct": "Replace it with synthetic or redacted evidence before sharing.",
+    "incorrect": "Include the credential to make triage easier."
+  },
+  "vulnerability-research-bug-bounty:research": {
+    "prompt": "A similar component lacks the prerequisite that caused the first bug.",
+    "correct": "Limit the generalization and report the negative control.",
+    "incorrect": "Claim every similar component is vulnerable."
+  },
+  "vulnerability-research-bug-bounty:independent-transfer": {
+    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+  },
+  "ai-application-security:foundations": {
+    "prompt": "A required training environment is unavailable, but a tool prints its version.",
+    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
+    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+  },
+  "ai-application-security:boundaries": {
+    "prompt": "A model claims the user approved access to a private resource.",
+    "correct": "Enforce authorization in trusted application code.",
+    "incorrect": "Accept the model's statement as the permission check."
+  },
+  "ai-application-security:retrieval": {
+    "prompt": "A retrieved document contains tool-use instructions.",
+    "correct": "Treat those instructions as untrusted document content.",
+    "incorrect": "Give retrieved instructions authority over the tool policy."
+  },
+  "ai-application-security:output": {
+    "prompt": "Generated JSON matches the schema but requests an unauthorized action.",
+    "correct": "Apply authorization after structural validation.",
+    "incorrect": "Schema validity authorizes the requested action."
+  },
+  "ai-application-security:tools": {
+    "prompt": "A tool argument refers to a resource outside its allowlist.",
+    "correct": "Reject it independently of the model's explanation.",
+    "incorrect": "Allow it if the model supplies a persuasive rationale."
+  },
+  "ai-application-security:data": {
+    "prompt": "Private text is retrieved for the wrong user and hidden only in the final display.",
+    "correct": "Enforce isolation before retrieval and model exposure.",
+    "incorrect": "Hiding the citation repairs the earlier data disclosure."
+  },
+  "ai-application-security:evaluation": {
+    "prompt": "A deterministic mock pipeline passes every boundary test.",
+    "correct": "Claim the measured application properties and separately evaluate real-model behavior.",
+    "incorrect": "Claim universal resistance to all prompt injection."
+  },
+  "ai-application-security:independent-transfer": {
+    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
+    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
+    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+  }
+}

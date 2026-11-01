@@ -3,11 +3,12 @@
 from dataclasses import dataclass, field
 import json
 import re
+from ascend.verifiers.catalog import CTF_PROVIDERS
 import tomllib
 from urllib.parse import urlparse
 
 SIZE_MIN = {"S": 30, "M": 120, "L": 240}
-BUILTINS = {"manual", "file", "command", "http", "git"}
+BUILTINS = {"manual", "file", "command", "http", "git", "lab", "ctf"}
 IDENTIFIER = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 
 
@@ -177,6 +178,28 @@ def parse_pack(text: str, variables=None, allowed_verifiers=None) -> Pack:
                     _required(verify, "path")
                 if vtype == "command":
                     _required(verify, "cmd")
+                if vtype == "lab":
+                    if verify.get("exercise") not in {
+                        "logging",
+                        "subnet",
+                        "access-policy",
+                        "integrity",
+                        "timeline",
+                        "case",
+                    }:
+                        raise PackError("Unknown bundled lab exercise")
+                    if verify["exercise"] == "case":
+                        _required(verify, "case_id")
+                if vtype == "ctf":
+                    if verify.get("provider") not in CTF_PROVIDERS:
+                        raise PackError("Unknown CTF proof provider")
+                    _required(verify, "challenge")
+                    required = verify.get("all_of", [])
+                    if not isinstance(required, list) or any(
+                        not isinstance(item, str) or not item.strip()
+                        for item in required
+                    ):
+                        raise PackError("CTF all_of must be a list of challenge IDs")
                 minutes = n.get("minutes")
                 if minutes is not None and (
                     type(minutes) is not int or not 1 <= minutes <= SIZE_MIN[n["size"]]

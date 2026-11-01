@@ -1,0 +1,516 @@
+# Generated from docs/curriculum/specialist-paths.json; unreviewed draft.
+[pack]
+"id" = "threat-hunting-intelligence"
+"title" = "Threat Hunting and Threat Intelligence"
+"kind" = "proficiency"
+"version" = 1
+"source" = "ai-draft"
+"reviewed" = false
+
+[vars]
+"lab_dir" = "~/cyber/threat-hunting-intelligence"
+
+[[level]]
+"id" = "foundations"
+"title" = "Prove the entry skills in a small lab"
+"lane" = "main"
+
+[[level]]
+"id" = "source-quality"
+"title" = "Put confidence beside the claim"
+"lane" = "main"
+
+[[level]]
+"id" = "behavior"
+"title" = "Turn a report into a huntable hypothesis"
+"lane" = "main"
+
+[[level]]
+"id" = "queries"
+"title" = "Search for behavior through the noise"
+"lane" = "main"
+
+[[level]]
+"id" = "context"
+"title" = "Enrich without inventing attribution"
+"lane" = "main"
+
+[[level]]
+"id" = "intelligence-format"
+"title" = "Exchange the meaning, not just the fields"
+"lane" = "main"
+
+[[level]]
+"id" = "hunt-report"
+"title" = "Turn a hunt into an operational decision"
+"lane" = "main"
+
+[[level]]
+"id" = "independent-transfer"
+"title" = "Revisit the skill on a fresh problem"
+"lane" = "main"
+
+[[level]]
+"id" = "recall-lane"
+"title" = "Return later: reasoning checks"
+"lane" = "side"
+
+[[level]]
+"id" = "quick"
+"title" = "Small verified exercises"
+"lane" = "side"
+
+[[node]]
+"id" = "lab-readiness"
+"level" = "foundations"
+"title" = "Start with a verifiable evidence exercise"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Compute the exact content hash of a fresh server-generated evidence fixture and pass its check."
+"brief" = "This small exercise tests evidence integrity. Track entry background: Query small log datasets and distinguish source facts from analyst judgments."
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "integrity" }
+
+[[node]]
+"id" = "foundations-reasoning"
+"level" = "foundations"
+"title" = "Reason it through: Prove the entry skills in a small lab"
+"size" = "S"
+"minutes" = 10
+"needs" = ["lab-readiness"]
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Query small log datasets and distinguish source facts from analyst judgments."
+"steps" = ["Work through this preparation: Query small log datasets and distinguish source facts from analyst judgments.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "threat-hunting-intelligence:foundations" }
+
+[[node]]
+"id" = "foundations-experiment"
+"level" = "foundations"
+"title" = "Investigate: Prove the entry skills in a small lab"
+"size" = "M"
+"minutes" = 60
+"needs" = ["foundations-reasoning"]
+"done_when" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/foundations-experiment.json."
+"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
+"steps" = ["Query small log datasets and distinguish source facts from analyst judgments.", "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "file", "path" = "{lab_dir}/foundations-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "foundations-milestone"
+"level" = "foundations"
+"title" = "Apply it to a changed case: Prove the entry skills in a small lab"
+"size" = "M"
+"minutes" = 120
+"needs" = ["foundations-reasoning", "foundations-experiment", "lab-readiness"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/foundations-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
+"steps" = ["Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Transfer: Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.", "Control: Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "file", "path" = "{lab_dir}/foundations-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-foundations"
+"level" = "recall-lane"
+"title" = "Return later: Prove the entry skills in a small lab"
+"size" = "S"
+"minutes" = 10
+"needs" = ["foundations-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct the environment and entry assumptions without following the setup notes."
+"steps" = ["Reconstruct the environment and entry assumptions without following the setup notes.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "threat-hunting-intelligence:foundations" }
+
+[[node]]
+"id" = "source-quality-reasoning"
+"level" = "source-quality"
+"title" = "Reason it through: Put confidence beside the claim"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Label observations, vendor claims and analyst inferences in a public threat report."
+"steps" = ["Work through this preparation: Label observations, vendor claims and analyst inferences in a public threat report.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "threat-hunting-intelligence:source-quality" }
+
+[[node]]
+"id" = "source-quality-experiment"
+"level" = "source-quality"
+"title" = "Investigate: Put confidence beside the claim"
+"size" = "M"
+"minutes" = 60
+"needs" = ["source-quality-reasoning"]
+"done_when" = "Produce a short intelligence note with source dates, collection limits, confidence and the concrete defender decision it informs. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/source-quality-experiment.json."
+"brief" = "Produce a short intelligence note with source dates, collection limits, confidence and the concrete defender decision it informs."
+"steps" = ["Label observations, vendor claims and analyst inferences in a public threat report.", "Produce a short intelligence note with source dates, collection limits, confidence and the concrete defender decision it informs.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "file", "path" = "{lab_dir}/source-quality-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "source-quality-milestone"
+"level" = "source-quality"
+"title" = "Apply it to a changed case: Put confidence beside the claim"
+"size" = "M"
+"minutes" = 120
+"needs" = ["source-quality-reasoning", "source-quality-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/source-quality-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Produce a short intelligence note with source dates, collection limits, confidence and the concrete defender decision it informs."
+"steps" = ["Produce a short intelligence note with source dates, collection limits, confidence and the concrete defender decision it informs.", "Transfer: Add a conflicting source or newer report and explain which claims change.", "Control: Include a widely repeated claim without primary evidence and keep it below corroborated facts.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "file", "path" = "{lab_dir}/source-quality-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-source-quality"
+"level" = "recall-lane"
+"title" = "Return later: Put confidence beside the claim"
+"size" = "S"
+"minutes" = 10
+"needs" = ["source-quality-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain how source reliability differs from confidence in an individual claim."
+"steps" = ["Explain how source reliability differs from confidence in an individual claim.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "threat-hunting-intelligence:source-quality" }
+
+[[node]]
+"id" = "behavior-reasoning"
+"level" = "behavior"
+"title" = "Reason it through: Turn a report into a huntable hypothesis"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Map one reported behavior to its required host or network observations."
+"steps" = ["Work through this preparation: Map one reported behavior to its required host or network observations.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "threat-hunting-intelligence:behavior" }
+
+[[node]]
+"id" = "behavior-experiment"
+"level" = "behavior"
+"title" = "Investigate: Turn a report into a huntable hypothesis"
+"size" = "M"
+"minutes" = 60
+"needs" = ["behavior-reasoning"]
+"done_when" = "Write an ATT&CK-aligned hunt hypothesis, list needed fields and expected benign lookalikes, and define evidence that would falsify it. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/behavior-experiment.json."
+"brief" = "Write an ATT&CK-aligned hunt hypothesis, list needed fields and expected benign lookalikes, and define evidence that would falsify it."
+"steps" = ["Map one reported behavior to its required host or network observations.", "Write an ATT&CK-aligned hunt hypothesis, list needed fields and expected benign lookalikes, and define evidence that would falsify it.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "file", "path" = "{lab_dir}/behavior-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "behavior-milestone"
+"level" = "behavior"
+"title" = "Apply it to a changed case: Turn a report into a huntable hypothesis"
+"size" = "M"
+"minutes" = 120
+"needs" = ["behavior-reasoning", "behavior-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/behavior-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Write an ATT&CK-aligned hunt hypothesis, list needed fields and expected benign lookalikes, and define evidence that would falsify it."
+"steps" = ["Write an ATT&CK-aligned hunt hypothesis, list needed fields and expected benign lookalikes, and define evidence that would falsify it.", "Transfer: Change the assumed platform or available sensor and revise or reject the hypothesis.", "Control: Show a technique mapping that is too broad to justify the proposed query.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "file", "path" = "{lab_dir}/behavior-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-behavior"
+"level" = "recall-lane"
+"title" = "Return later: Turn a report into a huntable hypothesis"
+"size" = "S"
+"minutes" = 10
+"needs" = ["behavior-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct the hypothesis without using an indicator list."
+"steps" = ["Reconstruct the hypothesis without using an indicator list.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "threat-hunting-intelligence:behavior" }
+
+[[node]]
+"id" = "queries-reasoning"
+"level" = "queries"
+"title" = "Reason it through: Search for behavior through the noise"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Compare exact indicator matching with a sequence or rate-based query on a small fixture."
+"steps" = ["Work through this preparation: Compare exact indicator matching with a sequence or rate-based query on a small fixture.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "threat-hunting-intelligence:queries" }
+
+[[node]]
+"id" = "queries-experiment"
+"level" = "queries"
+"title" = "Investigate: Search for behavior through the noise"
+"size" = "M"
+"minutes" = 60
+"needs" = ["queries-reasoning"]
+"done_when" = "Implement a reproducible hunt over synthetic telemetry and measure matches against labeled positive and benign events. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/queries-experiment.json."
+"brief" = "Implement a reproducible hunt over synthetic telemetry and measure matches against labeled positive and benign events."
+"steps" = ["Compare exact indicator matching with a sequence or rate-based query on a small fixture.", "Implement a reproducible hunt over synthetic telemetry and measure matches against labeled positive and benign events.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "file", "path" = "{lab_dir}/queries-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "queries-milestone"
+"level" = "queries"
+"title" = "Apply it to a changed case: Search for behavior through the noise"
+"size" = "M"
+"minutes" = 120
+"needs" = ["queries-reasoning", "queries-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/queries-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Implement a reproducible hunt over synthetic telemetry and measure matches against labeled positive and benign events."
+"steps" = ["Implement a reproducible hunt over synthetic telemetry and measure matches against labeled positive and benign events.", "Transfer: Change filenames, addresses or usernames while preserving behavior and evaluate coverage.", "Control: Include an ordinary administration sequence with similar individual events.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "file", "path" = "{lab_dir}/queries-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-queries"
+"level" = "recall-lane"
+"title" = "Return later: Search for behavior through the noise"
+"size" = "S"
+"minutes" = 10
+"needs" = ["queries-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain the false-positive mechanism of the original query."
+"steps" = ["Explain the false-positive mechanism of the original query.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "threat-hunting-intelligence:queries" }
+
+[[node]]
+"id" = "context-reasoning"
+"level" = "context"
+"title" = "Reason it through: Enrich without inventing attribution"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Distinguish an observed address, an infrastructure relationship and an actor attribution claim."
+"steps" = ["Work through this preparation: Distinguish an observed address, an infrastructure relationship and an actor attribution claim.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "threat-hunting-intelligence:context" }
+
+[[node]]
+"id" = "context-experiment"
+"level" = "context"
+"title" = "Investigate: Enrich without inventing attribution"
+"size" = "M"
+"minutes" = 60
+"needs" = ["context-reasoning"]
+"done_when" = "Build a small evidence graph from supplied indicators and public context, assigning dates, confidence and alternative explanations to each edge. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/context-experiment.json."
+"brief" = "Build a small evidence graph from supplied indicators and public context, assigning dates, confidence and alternative explanations to each edge."
+"steps" = ["Distinguish an observed address, an infrastructure relationship and an actor attribution claim.", "Build a small evidence graph from supplied indicators and public context, assigning dates, confidence and alternative explanations to each edge.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "file", "path" = "{lab_dir}/context-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "context-milestone"
+"level" = "context"
+"title" = "Apply it to a changed case: Enrich without inventing attribution"
+"size" = "M"
+"minutes" = 120
+"needs" = ["context-reasoning", "context-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/context-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Build a small evidence graph from supplied indicators and public context, assigning dates, confidence and alternative explanations to each edge."
+"steps" = ["Build a small evidence graph from supplied indicators and public context, assigning dates, confidence and alternative explanations to each edge.", "Transfer: Introduce a shared hosting address or recycled domain and remove unjustified relationships.", "Control: Demonstrate that shared infrastructure alone does not establish a common operator.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "file", "path" = "{lab_dir}/context-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-context"
+"level" = "recall-lane"
+"title" = "Return later: Enrich without inventing attribution"
+"size" = "S"
+"minutes" = 10
+"needs" = ["context-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain one edge that is useful operationally but insufficient for attribution."
+"steps" = ["Explain one edge that is useful operationally but insufficient for attribution.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "threat-hunting-intelligence:context" }
+
+[[node]]
+"id" = "intelligence-format-reasoning"
+"level" = "intelligence-format"
+"title" = "Reason it through: Exchange the meaning, not just the fields"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Inspect a small STIX object and explain its type, timestamps and relationship semantics."
+"steps" = ["Work through this preparation: Inspect a small STIX object and explain its type, timestamps and relationship semantics.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "threat-hunting-intelligence:intelligence-format" }
+
+[[node]]
+"id" = "intelligence-format-experiment"
+"level" = "intelligence-format"
+"title" = "Investigate: Exchange the meaning, not just the fields"
+"size" = "M"
+"minutes" = 60
+"needs" = ["intelligence-format-reasoning"]
+"done_when" = "Create and validate a minimal STIX bundle for a fictional incident using synthetic indicators, confidence and source references. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/intelligence-format-experiment.json."
+"brief" = "Create and validate a minimal STIX bundle for a fictional incident using synthetic indicators, confidence and source references."
+"steps" = ["Inspect a small STIX object and explain its type, timestamps and relationship semantics.", "Create and validate a minimal STIX bundle for a fictional incident using synthetic indicators, confidence and source references.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "file", "path" = "{lab_dir}/intelligence-format-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "intelligence-format-milestone"
+"level" = "intelligence-format"
+"title" = "Apply it to a changed case: Exchange the meaning, not just the fields"
+"size" = "M"
+"minutes" = 120
+"needs" = ["intelligence-format-reasoning", "intelligence-format-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/intelligence-format-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Create and validate a minimal STIX bundle for a fictional incident using synthetic indicators, confidence and source references."
+"steps" = ["Create and validate a minimal STIX bundle for a fictional incident using synthetic indicators, confidence and source references.", "Transfer: Update an observation or revoke an indicator and express the change without silently erasing its history.", "Control: Include a malformed relationship or unsupported claim that validation/review must reject.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "file", "path" = "{lab_dir}/intelligence-format-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-intelligence-format"
+"level" = "recall-lane"
+"title" = "Return later: Exchange the meaning, not just the fields"
+"size" = "S"
+"minutes" = 10
+"needs" = ["intelligence-format-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct the difference between an observable, an indicator and an incident claim."
+"steps" = ["Reconstruct the difference between an observable, an indicator and an incident claim.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "threat-hunting-intelligence:intelligence-format" }
+
+[[node]]
+"id" = "hunt-report-reasoning"
+"level" = "hunt-report"
+"title" = "Reason it through: Turn a hunt into an operational decision"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Define the scope and stopping criteria for a fresh hunt dataset."
+"steps" = ["Work through this preparation: Define the scope and stopping criteria for a fresh hunt dataset.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "threat-hunting-intelligence:hunt-report" }
+
+[[node]]
+"id" = "hunt-report-experiment"
+"level" = "hunt-report"
+"title" = "Investigate: Turn a hunt into an operational decision"
+"size" = "M"
+"minutes" = 60
+"needs" = ["hunt-report-reasoning"]
+"done_when" = "Conduct the hunt, document query versions, investigated matches, negative results and coverage limits, then propose a detection or data-collection improvement. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/hunt-report-experiment.json."
+"brief" = "Conduct the hunt, document query versions, investigated matches, negative results and coverage limits, then propose a detection or data-collection improvement."
+"steps" = ["Define the scope and stopping criteria for a fresh hunt dataset.", "Conduct the hunt, document query versions, investigated matches, negative results and coverage limits, then propose a detection or data-collection improvement.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "file", "path" = "{lab_dir}/hunt-report-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "hunt-report-milestone"
+"level" = "hunt-report"
+"title" = "Apply it to a changed case: Turn a hunt into an operational decision"
+"size" = "M"
+"minutes" = 120
+"needs" = ["hunt-report-reasoning", "hunt-report-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/hunt-report-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Conduct the hunt, document query versions, investigated matches, negative results and coverage limits, then propose a detection or data-collection improvement."
+"steps" = ["Conduct the hunt, document query versions, investigated matches, negative results and coverage limits, then propose a detection or data-collection improvement.", "Transfer: Add a changed positive sequence or remove a source and revise the result transparently.", "Control: Keep absence of evidence separate from proof that the behavior never occurred.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "file", "path" = "{lab_dir}/hunt-report-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-hunt-report"
+"level" = "recall-lane"
+"title" = "Return later: Turn a hunt into an operational decision"
+"size" = "S"
+"minutes" = 10
+"needs" = ["hunt-report-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain what action the hunt supports and what further collection is needed."
+"steps" = ["Explain what action the hunt supports and what further collection is needed.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "threat-hunting-intelligence:hunt-report" }
+
+[[node]]
+"id" = "independent-transfer-reasoning"
+"level" = "independent-transfer"
+"title" = "Reason it through: Revisit the skill on a fresh problem"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution."
+"steps" = ["Work through this preparation: Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "threat-hunting-intelligence:independent-transfer" }
+
+[[node]]
+"id" = "independent-transfer-experiment"
+"level" = "independent-transfer"
+"title" = "Investigate: Revisit the skill on a fresh problem"
+"size" = "M"
+"minutes" = 60
+"needs" = ["independent-transfer-reasoning"]
+"done_when" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/independent-transfer-experiment.json."
+"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
+"steps" = ["Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "independent-transfer-milestone"
+"level" = "independent-transfer"
+"title" = "Apply it to a changed case: Revisit the skill on a fresh problem"
+"size" = "M"
+"minutes" = 120
+"needs" = ["independent-transfer-reasoning", "independent-transfer-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/independent-transfer-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
+"steps" = ["After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Transfer: Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.", "Control: Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-independent-transfer"
+"level" = "recall-lane"
+"title" = "Return later: Revisit the skill on a fresh problem"
+"size" = "S"
+"minutes" = 10
+"needs" = ["independent-transfer-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain what transferred, what required help and which prerequisite needs another small experiment."
+"steps" = ["Explain what transferred, what required help and which prerequisite needs another small experiment.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "threat-hunting-intelligence:independent-transfer" }
+
+[[node]]
+"id" = "quick-access-check"
+"level" = "quick"
+"title" = "A ten-minute permission puzzle"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Correctly evaluate every allow/deny decision for a fresh server-generated policy fixture."
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "access-policy" }

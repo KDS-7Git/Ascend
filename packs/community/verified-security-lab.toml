@@ -1,0 +1,151 @@
+[pack]
+"id" = "verified-security-lab"
+"title" = "Verified security lab: solve and show the result"
+"kind" = "project"
+"version" = 1
+"source" = "ai-draft"
+"reviewed" = false
+
+[[level]]
+"id" = "logging"
+"title" = "Generate and investigate request logs"
+"lane" = "main"
+
+[[level]]
+"id" = "subnet"
+"title" = "Calculate a fresh IPv4 subnet"
+"lane" = "main"
+
+[[level]]
+"id" = "policy"
+"title" = "Test positive and negative access decisions"
+"lane" = "main"
+
+[[level]]
+"id" = "integrity"
+"title" = "Check evidence content integrity"
+"lane" = "main"
+
+[[level]]
+"id" = "timeline"
+"title" = "Reconstruct a suspicious login timeline"
+"lane" = "main"
+
+[[level]]
+"id" = "scoreboard"
+"title" = "Discover the assigned Juice Shop scoreboard"
+"lane" = "main"
+
+[[level]]
+"id" = "privacy"
+"title" = "Find the privacy policy in your assigned game"
+"lane" = "main"
+
+[[level]]
+"id" = "injection"
+"title" = "Prove a login bypass in your assigned game"
+"lane" = "main"
+
+[[node]]
+"id" = "lab-readiness"
+"level" = "logging"
+"title" = "Generate and investigate request logs"
+"size" = "S"
+"minutes" = 15
+"needs" = []
+"milestone" = true
+"done_when" = "Pass the fresh server exercise with the exact observed result."
+"brief" = "Start the exercise and inspect its generated data. Wrong answers do not complete the task or award XP."
+"resource" = "https://owasp.org/www-project-web-security-testing-guide/"
+"verify" = { "type" = "lab", "exercise" = "logging" }
+
+[[node]]
+"id" = "subnet"
+"level" = "subnet"
+"title" = "Calculate a fresh IPv4 subnet"
+"size" = "S"
+"minutes" = 15
+"needs" = []
+"milestone" = true
+"done_when" = "Pass the fresh server exercise with the exact observed result."
+"brief" = "Start the exercise and inspect its generated data. Wrong answers do not complete the task or award XP."
+"resource" = "https://owasp.org/www-project-web-security-testing-guide/"
+"verify" = { "type" = "lab", "exercise" = "subnet" }
+
+[[node]]
+"id" = "policy"
+"level" = "policy"
+"title" = "Test positive and negative access decisions"
+"size" = "S"
+"minutes" = 15
+"needs" = []
+"milestone" = true
+"done_when" = "Pass the fresh server exercise with the exact observed result."
+"brief" = "Start the exercise and inspect its generated data. Wrong answers do not complete the task or award XP."
+"resource" = "https://owasp.org/www-project-web-security-testing-guide/"
+"verify" = { "type" = "lab", "exercise" = "access-policy" }
+
+[[node]]
+"id" = "integrity"
+"level" = "integrity"
+"title" = "Check evidence content integrity"
+"size" = "S"
+"minutes" = 15
+"needs" = []
+"milestone" = true
+"done_when" = "Pass the fresh server exercise with the exact observed result."
+"brief" = "Start the exercise and inspect its generated data. Wrong answers do not complete the task or award XP."
+"resource" = "https://owasp.org/www-project-web-security-testing-guide/"
+"verify" = { "type" = "lab", "exercise" = "integrity" }
+
+[[node]]
+"id" = "timeline"
+"level" = "timeline"
+"title" = "Reconstruct a suspicious login timeline"
+"size" = "S"
+"minutes" = 15
+"needs" = []
+"milestone" = true
+"done_when" = "Pass the fresh server exercise with the exact observed result."
+"brief" = "Start the exercise and inspect its generated data. Wrong answers do not complete the task or award XP."
+"resource" = "https://owasp.org/www-project-web-security-testing-guide/"
+"verify" = { "type" = "lab", "exercise" = "timeline" }
+
+[[node]]
+"id" = "scoreboard"
+"level" = "scoreboard"
+"title" = "Discover the assigned Juice Shop scoreboard"
+"size" = "M"
+"minutes" = 45
+"needs" = []
+"milestone" = true
+"done_when" = "The signed bridge must confirm scoreBoardChallenge solved in your individually assigned Juice Shop instance."
+"brief" = "Start a timed session, use the isolated Juice Shop profile, then refresh the proof bridge and verify within five minutes. Record an explanation separately; game state does not grade it."
+"resource" = "https://owasp.org/www-project-juice-shop/"
+"verify" = { "type" = "ctf", "provider" = "juice-shop", "challenge" = "scoreBoardChallenge" }
+
+[[node]]
+"id" = "privacy"
+"level" = "privacy"
+"title" = "Find the privacy policy in your assigned game"
+"size" = "M"
+"minutes" = 45
+"needs" = []
+"milestone" = true
+"done_when" = "The signed bridge must confirm privacyPolicyChallenge solved in your individually assigned Juice Shop instance."
+"brief" = "Start a timed session, use the isolated Juice Shop profile, then refresh the proof bridge and verify within five minutes. Record an explanation separately; game state does not grade it."
+"resource" = "https://owasp.org/www-project-juice-shop/"
+"verify" = { "type" = "ctf", "provider" = "juice-shop", "challenge" = "privacyPolicyChallenge" }
+
+[[node]]
+"id" = "injection"
+"level" = "injection"
+"title" = "Prove a login bypass in your assigned game"
+"size" = "M"
+"minutes" = 45
+"needs" = []
+"milestone" = true
+"done_when" = "The signed bridge must confirm loginAdminChallenge solved in your individually assigned Juice Shop instance."
+"brief" = "Start a timed session, use the isolated Juice Shop profile, then refresh the proof bridge and verify within five minutes. Record an explanation separately; game state does not grade it."
+"resource" = "https://owasp.org/www-project-juice-shop/"
+"verify" = { "type" = "ctf", "provider" = "juice-shop", "challenge" = "loginAdminChallenge" }

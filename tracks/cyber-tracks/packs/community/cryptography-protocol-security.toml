@@ -1,0 +1,516 @@
+# Generated from docs/curriculum/specialist-paths.json; unreviewed draft.
+[pack]
+"id" = "cryptography-protocol-security"
+"title" = "Applied Cryptography and Protocol Security"
+"kind" = "proficiency"
+"version" = 1
+"source" = "ai-draft"
+"reviewed" = false
+
+[vars]
+"lab_dir" = "~/cyber/cryptography-protocol-security"
+
+[[level]]
+"id" = "foundations"
+"title" = "Prove the entry skills in a small lab"
+"lane" = "main"
+
+[[level]]
+"id" = "representations"
+"title" = "Bytes are not the text displaying them"
+"lane" = "main"
+
+[[level]]
+"id" = "integrity"
+"title" = "A checksum does not authenticate its author"
+"lane" = "main"
+
+[[level]]
+"id" = "symmetric"
+"title" = "Make misuse visible in a toy experiment"
+"lane" = "main"
+
+[[level]]
+"id" = "public-key"
+"title" = "State exactly what a signature proves"
+"lane" = "main"
+
+[[level]]
+"id" = "tls"
+"title" = "Test the certificate decision"
+"lane" = "main"
+
+[[level]]
+"id" = "review"
+"title" = "Find a protocol assumption that can be tested"
+"lane" = "main"
+
+[[level]]
+"id" = "independent-transfer"
+"title" = "Revisit the skill on a fresh problem"
+"lane" = "main"
+
+[[level]]
+"id" = "recall-lane"
+"title" = "Return later: reasoning checks"
+"lane" = "side"
+
+[[level]]
+"id" = "quick"
+"title" = "Small verified exercises"
+"lane" = "side"
+
+[[node]]
+"id" = "lab-readiness"
+"level" = "foundations"
+"title" = "Start with a verifiable evidence exercise"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Compute the exact content hash of a fresh server-generated evidence fixture and pass its check."
+"brief" = "This small exercise tests evidence integrity. Track entry background: Work with bytes, hexadecimal and small Python programs; distinguish encoding from encryption."
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "lab", "exercise" = "integrity" }
+
+[[node]]
+"id" = "foundations-reasoning"
+"level" = "foundations"
+"title" = "Reason it through: Prove the entry skills in a small lab"
+"size" = "S"
+"minutes" = 10
+"needs" = ["lab-readiness"]
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Work with bytes, hexadecimal and small Python programs; distinguish encoding from encryption."
+"steps" = ["Work through this preparation: Work with bytes, hexadecimal and small Python programs; distinguish encoding from encryption.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cryptography-protocol-security:foundations" }
+
+[[node]]
+"id" = "foundations-experiment"
+"level" = "foundations"
+"title" = "Investigate: Prove the entry skills in a small lab"
+"size" = "M"
+"minutes" = 60
+"needs" = ["foundations-reasoning"]
+"done_when" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/foundations-experiment.json."
+"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
+"steps" = ["Work with bytes, hexadecimal and small Python programs; distinguish encoding from encryption.", "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/foundations-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "foundations-milestone"
+"level" = "foundations"
+"title" = "Apply it to a changed case: Prove the entry skills in a small lab"
+"size" = "M"
+"minutes" = 120
+"needs" = ["foundations-reasoning", "foundations-experiment", "lab-readiness"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/foundations-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
+"steps" = ["Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Transfer: Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.", "Control: Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/foundations-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-foundations"
+"level" = "recall-lane"
+"title" = "Return later: Prove the entry skills in a small lab"
+"size" = "S"
+"minutes" = 10
+"needs" = ["foundations-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct the environment and entry assumptions without following the setup notes."
+"steps" = ["Reconstruct the environment and entry assumptions without following the setup notes.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cryptography-protocol-security:foundations" }
+
+[[node]]
+"id" = "representations-reasoning"
+"level" = "representations"
+"title" = "Reason it through: Bytes are not the text displaying them"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Convert a short fixture between bytes, hex and Base64 and record exact lengths."
+"steps" = ["Work through this preparation: Convert a short fixture between bytes, hex and Base64 and record exact lengths.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cryptography-protocol-security:representations" }
+
+[[node]]
+"id" = "representations-experiment"
+"level" = "representations"
+"title" = "Investigate: Bytes are not the text displaying them"
+"size" = "M"
+"minutes" = 60
+"needs" = ["representations-reasoning"]
+"done_when" = "Implement round-trip tests for a bounded binary message and diagnose one encoding mismatch without losing bytes. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/representations-experiment.json."
+"brief" = "Implement round-trip tests for a bounded binary message and diagnose one encoding mismatch without losing bytes."
+"steps" = ["Convert a short fixture between bytes, hex and Base64 and record exact lengths.", "Implement round-trip tests for a bounded binary message and diagnose one encoding mismatch without losing bytes.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/representations-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "representations-milestone"
+"level" = "representations"
+"title" = "Apply it to a changed case: Bytes are not the text displaying them"
+"size" = "M"
+"minutes" = 120
+"needs" = ["representations-reasoning", "representations-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/representations-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Implement round-trip tests for a bounded binary message and diagnose one encoding mismatch without losing bytes."
+"steps" = ["Implement round-trip tests for a bounded binary message and diagnose one encoding mismatch without losing bytes.", "Transfer: Introduce a zero byte or non-ASCII character and predict the representation change.", "Control: Reject malformed encoded input and preserve a valid binary message exactly.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/representations-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-representations"
+"level" = "recall-lane"
+"title" = "Return later: Bytes are not the text displaying them"
+"size" = "S"
+"minutes" = 10
+"needs" = ["representations-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain why encoding provides no confidentiality."
+"steps" = ["Explain why encoding provides no confidentiality.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cryptography-protocol-security:representations" }
+
+[[node]]
+"id" = "integrity-reasoning"
+"level" = "integrity"
+"title" = "Reason it through: A checksum does not authenticate its author"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Compare a hash with a keyed MAC using synthetic messages and a training key."
+"steps" = ["Work through this preparation: Compare a hash with a keyed MAC using synthetic messages and a training key.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cryptography-protocol-security:integrity" }
+
+[[node]]
+"id" = "integrity-experiment"
+"level" = "integrity"
+"title" = "Investigate: A checksum does not authenticate its author"
+"size" = "M"
+"minutes" = 60
+"needs" = ["integrity-reasoning"]
+"done_when" = "Use a standard library to authenticate a message, test verification and record what the key ownership assumption means. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/integrity-experiment.json."
+"brief" = "Use a standard library to authenticate a message, test verification and record what the key ownership assumption means."
+"steps" = ["Compare a hash with a keyed MAC using synthetic messages and a training key.", "Use a standard library to authenticate a message, test verification and record what the key ownership assumption means.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/integrity-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "integrity-milestone"
+"level" = "integrity"
+"title" = "Apply it to a changed case: A checksum does not authenticate its author"
+"size" = "M"
+"minutes" = 120
+"needs" = ["integrity-reasoning", "integrity-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/integrity-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Use a standard library to authenticate a message, test verification and record what the key ownership assumption means."
+"steps" = ["Use a standard library to authenticate a message, test verification and record what the key ownership assumption means.", "Transfer: Change one message byte or use a different key and predict verification.", "Control: Accept the valid message and reject both tampering and a MAC made with the wrong key.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/integrity-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-integrity"
+"level" = "recall-lane"
+"title" = "Return later: A checksum does not authenticate its author"
+"size" = "S"
+"minutes" = 10
+"needs" = ["integrity-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain integrity versus origin authentication."
+"steps" = ["Explain integrity versus origin authentication.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cryptography-protocol-security:integrity" }
+
+[[node]]
+"id" = "symmetric-reasoning"
+"level" = "symmetric"
+"title" = "Reason it through: Make misuse visible in a toy experiment"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Identify nonce, ciphertext and authentication tag in an established AEAD API."
+"steps" = ["Work through this preparation: Identify nonce, ciphertext and authentication tag in an established AEAD API.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cryptography-protocol-security:symmetric" }
+
+[[node]]
+"id" = "symmetric-experiment"
+"level" = "symmetric"
+"title" = "Investigate: Make misuse visible in a toy experiment"
+"size" = "M"
+"minutes" = 60
+"needs" = ["symmetric-reasoning"]
+"done_when" = "Encrypt and decrypt synthetic data with an established authenticated-encryption library and test tamper rejection. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/symmetric-experiment.json."
+"brief" = "Encrypt and decrypt synthetic data with an established authenticated-encryption library and test tamper rejection."
+"steps" = ["Identify nonce, ciphertext and authentication tag in an established AEAD API.", "Encrypt and decrypt synthetic data with an established authenticated-encryption library and test tamper rejection.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/symmetric-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "symmetric-milestone"
+"level" = "symmetric"
+"title" = "Apply it to a changed case: Make misuse visible in a toy experiment"
+"size" = "M"
+"minutes" = 120
+"needs" = ["symmetric-reasoning", "symmetric-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/symmetric-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Encrypt and decrypt synthetic data with an established authenticated-encryption library and test tamper rejection."
+"steps" = ["Encrypt and decrypt synthetic data with an established authenticated-encryption library and test tamper rejection.", "Transfer: Change associated data or the nonce and predict which operation should fail.", "Control: Keep the valid round trip working and reject a changed tag without releasing plaintext.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/symmetric-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-symmetric"
+"level" = "recall-lane"
+"title" = "Return later: Make misuse visible in a toy experiment"
+"size" = "S"
+"minutes" = 10
+"needs" = ["symmetric-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain the nonce-use rule of the selected algorithm."
+"steps" = ["Explain the nonce-use rule of the selected algorithm.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cryptography-protocol-security:symmetric" }
+
+[[node]]
+"id" = "public-key-reasoning"
+"level" = "public-key"
+"title" = "Reason it through: State exactly what a signature proves"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Distinguish public-key encryption, signatures and key agreement in small worked examples."
+"steps" = ["Work through this preparation: Distinguish public-key encryption, signatures and key agreement in small worked examples.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cryptography-protocol-security:public-key" }
+
+[[node]]
+"id" = "public-key-experiment"
+"level" = "public-key"
+"title" = "Investigate: State exactly what a signature proves"
+"size" = "M"
+"minutes" = 60
+"needs" = ["public-key-reasoning"]
+"done_when" = "Sign and verify a synthetic document with an established library and connect the verified key to an explicit identity assumption. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/public-key-experiment.json."
+"brief" = "Sign and verify a synthetic document with an established library and connect the verified key to an explicit identity assumption."
+"steps" = ["Distinguish public-key encryption, signatures and key agreement in small worked examples.", "Sign and verify a synthetic document with an established library and connect the verified key to an explicit identity assumption.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/public-key-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "public-key-milestone"
+"level" = "public-key"
+"title" = "Apply it to a changed case: State exactly what a signature proves"
+"size" = "M"
+"minutes" = 120
+"needs" = ["public-key-reasoning", "public-key-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/public-key-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Sign and verify a synthetic document with an established library and connect the verified key to an explicit identity assumption."
+"steps" = ["Sign and verify a synthetic document with an established library and connect the verified key to an explicit identity assumption.", "Transfer: Change the message or trusted public key and predict the result.", "Control: Reject a valid signature from an untrusted key while accepting the intended signer's document.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/public-key-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-public-key"
+"level" = "recall-lane"
+"title" = "Return later: State exactly what a signature proves"
+"size" = "S"
+"minutes" = 10
+"needs" = ["public-key-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain why a signature alone does not establish a real-world identity."
+"steps" = ["Explain why a signature alone does not establish a real-world identity.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cryptography-protocol-security:public-key" }
+
+[[node]]
+"id" = "tls-reasoning"
+"level" = "tls"
+"title" = "Reason it through: Test the certificate decision"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Read certificate issuer, subject alternative names, validity and key usage."
+"steps" = ["Work through this preparation: Read certificate issuer, subject alternative names, validity and key usage.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cryptography-protocol-security:tls" }
+
+[[node]]
+"id" = "tls-experiment"
+"level" = "tls"
+"title" = "Investigate: Test the certificate decision"
+"size" = "M"
+"minutes" = 60
+"needs" = ["tls-reasoning"]
+"done_when" = "Run a local TLS test service with training certificates and verify hostname, trust-chain and expiry failures without disabling validation. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/tls-experiment.json."
+"brief" = "Run a local TLS test service with training certificates and verify hostname, trust-chain and expiry failures without disabling validation."
+"steps" = ["Read certificate issuer, subject alternative names, validity and key usage.", "Run a local TLS test service with training certificates and verify hostname, trust-chain and expiry failures without disabling validation.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/tls-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "tls-milestone"
+"level" = "tls"
+"title" = "Apply it to a changed case: Test the certificate decision"
+"size" = "M"
+"minutes" = 120
+"needs" = ["tls-reasoning", "tls-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/tls-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Run a local TLS test service with training certificates and verify hostname, trust-chain and expiry failures without disabling validation."
+"steps" = ["Run a local TLS test service with training certificates and verify hostname, trust-chain and expiry failures without disabling validation.", "Transfer: Change the hostname or CA trust set and predict acceptance.", "Control: Demonstrate a valid connection and rejection of an unrelated trusted-but-wrong-host certificate.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/tls-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-tls"
+"level" = "recall-lane"
+"title" = "Return later: Test the certificate decision"
+"size" = "S"
+"minutes" = 10
+"needs" = ["tls-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct the checks needed for server identity validation."
+"steps" = ["Reconstruct the checks needed for server identity validation.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cryptography-protocol-security:tls" }
+
+[[node]]
+"id" = "review-reasoning"
+"level" = "review"
+"title" = "Reason it through: Find a protocol assumption that can be tested"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Diagram the messages and trust assumptions of a toy authenticated exchange."
+"steps" = ["Work through this preparation: Diagram the messages and trust assumptions of a toy authenticated exchange.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cryptography-protocol-security:review" }
+
+[[node]]
+"id" = "review-experiment"
+"level" = "review"
+"title" = "Investigate: Find a protocol assumption that can be tested"
+"size" = "M"
+"minutes" = 60
+"needs" = ["review-reasoning"]
+"done_when" = "Review a toy protocol for replay, identity and integrity mistakes, repair one defect and provide executable regression tests. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/review-experiment.json."
+"brief" = "Review a toy protocol for replay, identity and integrity mistakes, repair one defect and provide executable regression tests."
+"steps" = ["Diagram the messages and trust assumptions of a toy authenticated exchange.", "Review a toy protocol for replay, identity and integrity mistakes, repair one defect and provide executable regression tests.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/review-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "review-milestone"
+"level" = "review"
+"title" = "Apply it to a changed case: Find a protocol assumption that can be tested"
+"size" = "M"
+"minutes" = 120
+"needs" = ["review-reasoning", "review-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/review-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Review a toy protocol for replay, identity and integrity mistakes, repair one defect and provide executable regression tests."
+"steps" = ["Review a toy protocol for replay, identity and integrity mistakes, repair one defect and provide executable regression tests.", "Transfer: Reorder or replay a message and predict the corrected protocol's response.", "Control: Preserve a legitimate fresh exchange while rejecting a stale authenticated message.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/review-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-review"
+"level" = "recall-lane"
+"title" = "Return later: Find a protocol assumption that can be tested"
+"size" = "S"
+"minutes" = 10
+"needs" = ["review-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain which property the repair establishes and which it does not."
+"steps" = ["Explain which property the repair establishes and which it does not.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cryptography-protocol-security:review" }
+
+[[node]]
+"id" = "independent-transfer-reasoning"
+"level" = "independent-transfer"
+"title" = "Reason it through: Revisit the skill on a fresh problem"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution."
+"steps" = ["Work through this preparation: Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cryptography-protocol-security:independent-transfer" }
+
+[[node]]
+"id" = "independent-transfer-experiment"
+"level" = "independent-transfer"
+"title" = "Investigate: Revisit the skill on a fresh problem"
+"size" = "M"
+"minutes" = 60
+"needs" = ["independent-transfer-reasoning"]
+"done_when" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/independent-transfer-experiment.json."
+"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
+"steps" = ["Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "independent-transfer-milestone"
+"level" = "independent-transfer"
+"title" = "Apply it to a changed case: Revisit the skill on a fresh problem"
+"size" = "M"
+"minutes" = 120
+"needs" = ["independent-transfer-reasoning", "independent-transfer-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/independent-transfer-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
+"steps" = ["After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Transfer: Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.", "Control: Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-independent-transfer"
+"level" = "recall-lane"
+"title" = "Return later: Revisit the skill on a fresh problem"
+"size" = "S"
+"minutes" = 10
+"needs" = ["independent-transfer-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain what transferred, what required help and which prerequisite needs another small experiment."
+"steps" = ["Explain what transferred, what required help and which prerequisite needs another small experiment.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cryptography-protocol-security:independent-transfer" }
+
+[[node]]
+"id" = "quick-access-check"
+"level" = "quick"
+"title" = "A ten-minute permission puzzle"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Correctly evaluate every allow/deny decision for a fresh server-generated policy fixture."
+"resource" = "https://cryptohack.org/courses/"
+"verify" = { "type" = "lab", "exercise" = "access-policy" }

@@ -1,0 +1,516 @@
+# Generated from docs/curriculum/specialist-paths.json; unreviewed draft.
+[pack]
+"id" = "red-team-adversary-emulation"
+"title" = "Red Teaming and Adversary Emulation"
+"kind" = "proficiency"
+"version" = 1
+"source" = "ai-draft"
+"reviewed" = false
+
+[vars]
+"lab_dir" = "~/cyber/red-team-adversary-emulation"
+
+[[level]]
+"id" = "foundations"
+"title" = "Prove the entry skills in a small lab"
+"lane" = "main"
+
+[[level]]
+"id" = "objectives"
+"title" = "Measure an objective, not a shell"
+"lane" = "main"
+
+[[level]]
+"id" = "threat-model"
+"title" = "Choose techniques from evidence"
+"lane" = "main"
+
+[[level]]
+"id" = "telemetry"
+"title" = "Know what the defender can see"
+"lane" = "main"
+
+[[level]]
+"id" = "emulation"
+"title" = "Make a small emulation reversible"
+"lane" = "main"
+
+[[level]]
+"id" = "purple-team"
+"title" = "Test detection with a partner"
+"lane" = "main"
+
+[[level]]
+"id" = "campaign"
+"title" = "Deliver a defensible exercise report"
+"lane" = "main"
+
+[[level]]
+"id" = "independent-transfer"
+"title" = "Revisit the skill on a fresh problem"
+"lane" = "main"
+
+[[level]]
+"id" = "recall-lane"
+"title" = "Return later: reasoning checks"
+"lane" = "side"
+
+[[level]]
+"id" = "quick"
+"title" = "Small verified exercises"
+"lane" = "side"
+
+[[node]]
+"id" = "lab-readiness"
+"level" = "foundations"
+"title" = "Start with a verifiable evidence exercise"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Compute the exact content hash of a fresh server-generated evidence fixture and pass its check."
+"brief" = "This small exercise tests evidence integrity. Track entry background: Demonstrate scoped enumeration, identity/permission reasoning and the ability to inspect defender telemetry."
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "integrity" }
+
+[[node]]
+"id" = "foundations-reasoning"
+"level" = "foundations"
+"title" = "Reason it through: Prove the entry skills in a small lab"
+"size" = "S"
+"minutes" = 10
+"needs" = ["lab-readiness"]
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Demonstrate scoped enumeration, identity/permission reasoning and the ability to inspect defender telemetry."
+"steps" = ["Work through this preparation: Demonstrate scoped enumeration, identity/permission reasoning and the ability to inspect defender telemetry.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "red-team-adversary-emulation:foundations" }
+
+[[node]]
+"id" = "foundations-experiment"
+"level" = "foundations"
+"title" = "Investigate: Prove the entry skills in a small lab"
+"size" = "M"
+"minutes" = 60
+"needs" = ["foundations-reasoning"]
+"done_when" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/foundations-experiment.json."
+"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
+"steps" = ["Demonstrate scoped enumeration, identity/permission reasoning and the ability to inspect defender telemetry.", "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "file", "path" = "{lab_dir}/foundations-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "foundations-milestone"
+"level" = "foundations"
+"title" = "Apply it to a changed case: Prove the entry skills in a small lab"
+"size" = "M"
+"minutes" = 120
+"needs" = ["foundations-reasoning", "foundations-experiment", "lab-readiness"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/foundations-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
+"steps" = ["Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Transfer: Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.", "Control: Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "file", "path" = "{lab_dir}/foundations-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-foundations"
+"level" = "recall-lane"
+"title" = "Return later: Prove the entry skills in a small lab"
+"size" = "S"
+"minutes" = 10
+"needs" = ["foundations-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct the environment and entry assumptions without following the setup notes."
+"steps" = ["Reconstruct the environment and entry assumptions without following the setup notes.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "red-team-adversary-emulation:foundations" }
+
+[[node]]
+"id" = "objectives-reasoning"
+"level" = "objectives"
+"title" = "Reason it through: Measure an objective, not a shell"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Convert a fictional business concern into an observable adversary objective and a bounded success criterion."
+"steps" = ["Work through this preparation: Convert a fictional business concern into an observable adversary objective and a bounded success criterion.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "red-team-adversary-emulation:objectives" }
+
+[[node]]
+"id" = "objectives-experiment"
+"level" = "objectives"
+"title" = "Investigate: Measure an objective, not a shell"
+"size" = "M"
+"minutes" = 60
+"needs" = ["objectives-reasoning"]
+"done_when" = "Author an engagement plan with rules of engagement, white-cell contacts, allowed assets, deconfliction, stop conditions and a defender measurement plan. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/objectives-experiment.json."
+"brief" = "Author an engagement plan with rules of engagement, white-cell contacts, allowed assets, deconfliction, stop conditions and a defender measurement plan."
+"steps" = ["Convert a fictional business concern into an observable adversary objective and a bounded success criterion.", "Author an engagement plan with rules of engagement, white-cell contacts, allowed assets, deconfliction, stop conditions and a defender measurement plan.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "file", "path" = "{lab_dir}/objectives-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "objectives-milestone"
+"level" = "objectives"
+"title" = "Apply it to a changed case: Measure an objective, not a shell"
+"size" = "M"
+"minutes" = 120
+"needs" = ["objectives-reasoning", "objectives-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/objectives-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Author an engagement plan with rules of engagement, white-cell contacts, allowed assets, deconfliction, stop conditions and a defender measurement plan."
+"steps" = ["Author an engagement plan with rules of engagement, white-cell contacts, allowed assets, deconfliction, stop conditions and a defender measurement plan.", "Transfer: Add an operational constraint such as unavailable endpoint logging and redesign the objective or telemetry plan honestly.", "Control: Show a scenario that appears successful technically but fails the stated business objective.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "file", "path" = "{lab_dir}/objectives-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-objectives"
+"level" = "recall-lane"
+"title" = "Return later: Measure an objective, not a shell"
+"size" = "S"
+"minutes" = 10
+"needs" = ["objectives-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "State the difference between a penetration-test finding and an adversary-emulation objective."
+"steps" = ["State the difference between a penetration-test finding and an adversary-emulation objective.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "red-team-adversary-emulation:objectives" }
+
+[[node]]
+"id" = "threat-model-reasoning"
+"level" = "threat-model"
+"title" = "Reason it through: Choose techniques from evidence"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Read a public emulation plan and separate observed campaign behavior from analyst inference."
+"steps" = ["Work through this preparation: Read a public emulation plan and separate observed campaign behavior from analyst inference.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "red-team-adversary-emulation:threat-model" }
+
+[[node]]
+"id" = "threat-model-experiment"
+"level" = "threat-model"
+"title" = "Investigate: Choose techniques from evidence"
+"size" = "M"
+"minutes" = 60
+"needs" = ["threat-model-reasoning"]
+"done_when" = "Build a small ATT&CK-aligned hypothesis from a cited threat report, specifying prerequisites, observable effects and a harmless substitute for each risky action. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/threat-model-experiment.json."
+"brief" = "Build a small ATT&CK-aligned hypothesis from a cited threat report, specifying prerequisites, observable effects and a harmless substitute for each risky action."
+"steps" = ["Read a public emulation plan and separate observed campaign behavior from analyst inference.", "Build a small ATT&CK-aligned hypothesis from a cited threat report, specifying prerequisites, observable effects and a harmless substitute for each risky action.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "file", "path" = "{lab_dir}/threat-model-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "threat-model-milestone"
+"level" = "threat-model"
+"title" = "Apply it to a changed case: Choose techniques from evidence"
+"size" = "M"
+"minutes" = 120
+"needs" = ["threat-model-reasoning", "threat-model-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/threat-model-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Build a small ATT&CK-aligned hypothesis from a cited threat report, specifying prerequisites, observable effects and a harmless substitute for each risky action."
+"steps" = ["Build a small ATT&CK-aligned hypothesis from a cited threat report, specifying prerequisites, observable effects and a harmless substitute for each risky action.", "Transfer: Replace the assumed identity or endpoint type and remove techniques whose prerequisites no longer hold.", "Control: Include one plausible but unsupported technique and explain why it was excluded.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "file", "path" = "{lab_dir}/threat-model-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-threat-model"
+"level" = "recall-lane"
+"title" = "Return later: Choose techniques from evidence"
+"size" = "S"
+"minutes" = 10
+"needs" = ["threat-model-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Rebuild the evidence-to-technique chain and name its uncertainty."
+"steps" = ["Rebuild the evidence-to-technique chain and name its uncertainty.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "red-team-adversary-emulation:threat-model" }
+
+[[node]]
+"id" = "telemetry-reasoning"
+"level" = "telemetry"
+"title" = "Reason it through: Know what the defender can see"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Generate a benign process or file marker in an owned lab and locate its timestamped telemetry."
+"steps" = ["Work through this preparation: Generate a benign process or file marker in an owned lab and locate its timestamped telemetry.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "red-team-adversary-emulation:telemetry" }
+
+[[node]]
+"id" = "telemetry-experiment"
+"level" = "telemetry"
+"title" = "Investigate: Know what the defender can see"
+"size" = "M"
+"minutes" = 60
+"needs" = ["telemetry-reasoning"]
+"done_when" = "Build a timeline joining the marker, account, process and network observations; label each missing source rather than inventing coverage. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/telemetry-experiment.json."
+"brief" = "Build a timeline joining the marker, account, process and network observations; label each missing source rather than inventing coverage."
+"steps" = ["Generate a benign process or file marker in an owned lab and locate its timestamped telemetry.", "Build a timeline joining the marker, account, process and network observations; label each missing source rather than inventing coverage.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "file", "path" = "{lab_dir}/telemetry-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "telemetry-milestone"
+"level" = "telemetry"
+"title" = "Apply it to a changed case: Know what the defender can see"
+"size" = "M"
+"minutes" = 120
+"needs" = ["telemetry-reasoning", "telemetry-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/telemetry-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Build a timeline joining the marker, account, process and network observations; label each missing source rather than inventing coverage."
+"steps" = ["Build a timeline joining the marker, account, process and network observations; label each missing source rather than inventing coverage.", "Transfer: Change the marker path or process argument and predict which detection features remain stable.", "Control: Repeat an ordinary administration action and distinguish its evidence from the staged behavior.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "file", "path" = "{lab_dir}/telemetry-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-telemetry"
+"level" = "recall-lane"
+"title" = "Return later: Know what the defender can see"
+"size" = "S"
+"minutes" = 10
+"needs" = ["telemetry-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain which sensor would be needed to resolve a missing observation."
+"steps" = ["Explain which sensor would be needed to resolve a missing observation.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "red-team-adversary-emulation:telemetry" }
+
+[[node]]
+"id" = "emulation-reasoning"
+"level" = "emulation"
+"title" = "Reason it through: Make a small emulation reversible"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Review a single benign Atomic Red Team test or write a harmless equivalent; enumerate its commands, permissions and cleanup before execution."
+"steps" = ["Work through this preparation: Review a single benign Atomic Red Team test or write a harmless equivalent; enumerate its commands, permissions and cleanup before execution.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "red-team-adversary-emulation:emulation" }
+
+[[node]]
+"id" = "emulation-experiment"
+"level" = "emulation"
+"title" = "Investigate: Make a small emulation reversible"
+"size" = "M"
+"minutes" = 60
+"needs" = ["emulation-reasoning"]
+"done_when" = "In a disposable authorized lab, run a reviewed marker-only micro-emulation, record setup and exact effects, then perform and verify cleanup. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/emulation-experiment.json."
+"brief" = "In a disposable authorized lab, run a reviewed marker-only micro-emulation, record setup and exact effects, then perform and verify cleanup."
+"steps" = ["Review a single benign Atomic Red Team test or write a harmless equivalent; enumerate its commands, permissions and cleanup before execution.", "In a disposable authorized lab, run a reviewed marker-only micro-emulation, record setup and exact effects, then perform and verify cleanup.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "file", "path" = "{lab_dir}/emulation-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "emulation-milestone"
+"level" = "emulation"
+"title" = "Apply it to a changed case: Make a small emulation reversible"
+"size" = "M"
+"minutes" = 120
+"needs" = ["emulation-reasoning", "emulation-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/emulation-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "In a disposable authorized lab, run a reviewed marker-only micro-emulation, record setup and exact effects, then perform and verify cleanup."
+"steps" = ["In a disposable authorized lab, run a reviewed marker-only micro-emulation, record setup and exact effects, then perform and verify cleanup.", "Transfer: Change a nonessential filename or account context and predict whether the intended behavior is still observable.", "Control: Verify the artifact did not exist before, appears during the test, and is absent after cleanup; preserve unrelated files.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "file", "path" = "{lab_dir}/emulation-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-emulation"
+"level" = "recall-lane"
+"title" = "Return later: Make a small emulation reversible"
+"size" = "S"
+"minutes" = 10
+"needs" = ["emulation-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct the prerequisites and rollback steps without running a script blindly."
+"steps" = ["Reconstruct the prerequisites and rollback steps without running a script blindly.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "red-team-adversary-emulation:emulation" }
+
+[[node]]
+"id" = "purple-team-reasoning"
+"level" = "purple-team"
+"title" = "Reason it through: Test detection with a partner"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Express a detection hypothesis in terms of behavior and required data rather than a single indicator."
+"steps" = ["Work through this preparation: Express a detection hypothesis in terms of behavior and required data rather than a single indicator.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "red-team-adversary-emulation:purple-team" }
+
+[[node]]
+"id" = "purple-team-experiment"
+"level" = "purple-team"
+"title" = "Investigate: Test detection with a partner"
+"size" = "M"
+"minutes" = 60
+"needs" = ["purple-team-reasoning"]
+"done_when" = "Have a defender or second review pass classify shuffled benign and emulated events; record misses, false positives and one revised analytic. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/purple-team-experiment.json."
+"brief" = "Have a defender or second review pass classify shuffled benign and emulated events; record misses, false positives and one revised analytic."
+"steps" = ["Express a detection hypothesis in terms of behavior and required data rather than a single indicator.", "Have a defender or second review pass classify shuffled benign and emulated events; record misses, false positives and one revised analytic.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "file", "path" = "{lab_dir}/purple-team-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "purple-team-milestone"
+"level" = "purple-team"
+"title" = "Apply it to a changed case: Test detection with a partner"
+"size" = "M"
+"minutes" = 120
+"needs" = ["purple-team-reasoning", "purple-team-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/purple-team-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Have a defender or second review pass classify shuffled benign and emulated events; record misses, false positives and one revised analytic."
+"steps" = ["Have a defender or second review pass classify shuffled benign and emulated events; record misses, false positives and one revised analytic.", "Transfer: Change a superficial indicator while preserving behavior and retest the revised analytic.", "Control: Include an administration lookalike that should remain unalerted or receive a documented lower-confidence classification.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "file", "path" = "{lab_dir}/purple-team-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-purple-team"
+"level" = "recall-lane"
+"title" = "Return later: Test detection with a partner"
+"size" = "S"
+"minutes" = 10
+"needs" = ["purple-team-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain why a detection that matches only the demonstration filename is fragile."
+"steps" = ["Explain why a detection that matches only the demonstration filename is fragile.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "red-team-adversary-emulation:purple-team" }
+
+[[node]]
+"id" = "campaign-reasoning"
+"level" = "campaign"
+"title" = "Reason it through: Deliver a defensible exercise report"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Define a three-step harmless emulation sequence with a stop point and evidence checkpoint per step."
+"steps" = ["Work through this preparation: Define a three-step harmless emulation sequence with a stop point and evidence checkpoint per step.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "red-team-adversary-emulation:campaign" }
+
+[[node]]
+"id" = "campaign-experiment"
+"level" = "campaign"
+"title" = "Investigate: Deliver a defensible exercise report"
+"size" = "M"
+"minutes" = 60
+"needs" = ["campaign-reasoning"]
+"done_when" = "Run the scoped sequence in a resettable lab, measure defender visibility and response, and deliver an objective-based report with technical evidence and remediation retests. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/campaign-experiment.json."
+"brief" = "Run the scoped sequence in a resettable lab, measure defender visibility and response, and deliver an objective-based report with technical evidence and remediation retests."
+"steps" = ["Define a three-step harmless emulation sequence with a stop point and evidence checkpoint per step.", "Run the scoped sequence in a resettable lab, measure defender visibility and response, and deliver an objective-based report with technical evidence and remediation retests.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "file", "path" = "{lab_dir}/campaign-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "campaign-milestone"
+"level" = "campaign"
+"title" = "Apply it to a changed case: Deliver a defensible exercise report"
+"size" = "M"
+"minutes" = 120
+"needs" = ["campaign-reasoning", "campaign-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/campaign-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Run the scoped sequence in a resettable lab, measure defender visibility and response, and deliver an objective-based report with technical evidence and remediation retests."
+"steps" = ["Run the scoped sequence in a resettable lab, measure defender visibility and response, and deliver an objective-based report with technical evidence and remediation retests.", "Transfer: Withhold one assumed permission or telemetry source and adapt the plan without exceeding scope.", "Control: Demonstrate reset to baseline and distinguish untested coverage from a demonstrated miss.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "file", "path" = "{lab_dir}/campaign-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-campaign"
+"level" = "recall-lane"
+"title" = "Return later: Deliver a defensible exercise report"
+"size" = "S"
+"minutes" = 10
+"needs" = ["campaign-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain what the exercise supports about defensive readiness and what it cannot establish."
+"steps" = ["Explain what the exercise supports about defensive readiness and what it cannot establish.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "red-team-adversary-emulation:campaign" }
+
+[[node]]
+"id" = "independent-transfer-reasoning"
+"level" = "independent-transfer"
+"title" = "Reason it through: Revisit the skill on a fresh problem"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution."
+"steps" = ["Work through this preparation: Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "red-team-adversary-emulation:independent-transfer" }
+
+[[node]]
+"id" = "independent-transfer-experiment"
+"level" = "independent-transfer"
+"title" = "Investigate: Revisit the skill on a fresh problem"
+"size" = "M"
+"minutes" = 60
+"needs" = ["independent-transfer-reasoning"]
+"done_when" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/independent-transfer-experiment.json."
+"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
+"steps" = ["Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "independent-transfer-milestone"
+"level" = "independent-transfer"
+"title" = "Apply it to a changed case: Revisit the skill on a fresh problem"
+"size" = "M"
+"minutes" = 120
+"needs" = ["independent-transfer-reasoning", "independent-transfer-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/independent-transfer-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
+"steps" = ["After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Transfer: Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.", "Control: Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-independent-transfer"
+"level" = "recall-lane"
+"title" = "Return later: Revisit the skill on a fresh problem"
+"size" = "S"
+"minutes" = 10
+"needs" = ["independent-transfer-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain what transferred, what required help and which prerequisite needs another small experiment."
+"steps" = ["Explain what transferred, what required help and which prerequisite needs another small experiment.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "red-team-adversary-emulation:independent-transfer" }
+
+[[node]]
+"id" = "quick-access-check"
+"level" = "quick"
+"title" = "A ten-minute permission puzzle"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Correctly evaluate every allow/deny decision for a fresh server-generated policy fixture."
+"resource" = "https://github.com/center-for-threat-informed-defense/adversary_emulation_library"
+"verify" = { "type" = "lab", "exercise" = "access-policy" }

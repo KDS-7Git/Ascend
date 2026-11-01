@@ -1,0 +1,516 @@
+# Generated from docs/curriculum/specialist-paths.json; unreviewed draft.
+[pack]
+"id" = "digital-forensics-incident-response"
+"title" = "Digital Forensics and Incident Response"
+"kind" = "proficiency"
+"version" = 1
+"source" = "ai-draft"
+"reviewed" = false
+
+[vars]
+"lab_dir" = "~/cyber/digital-forensics-incident-response"
+
+[[level]]
+"id" = "foundations"
+"title" = "Prove the entry skills in a small lab"
+"lane" = "main"
+
+[[level]]
+"id" = "preservation"
+"title" = "Keep the original evidence original"
+"lane" = "main"
+
+[[level]]
+"id" = "filesystem"
+"title" = "Recover a story from file metadata"
+"lane" = "main"
+
+[[level]]
+"id" = "timeline"
+"title" = "Reconcile clocks before drawing conclusions"
+"lane" = "main"
+
+[[level]]
+"id" = "memory"
+"title" = "Separate a process artifact from a verdict"
+"lane" = "main"
+
+[[level]]
+"id" = "containment"
+"title" = "Preserve the question while containing the risk"
+"lane" = "main"
+
+[[level]]
+"id" = "case"
+"title" = "Deliver an evidence-led incident report"
+"lane" = "main"
+
+[[level]]
+"id" = "independent-transfer"
+"title" = "Revisit the skill on a fresh problem"
+"lane" = "main"
+
+[[level]]
+"id" = "recall-lane"
+"title" = "Return later: reasoning checks"
+"lane" = "side"
+
+[[level]]
+"id" = "quick"
+"title" = "Small verified exercises"
+"lane" = "side"
+
+[[node]]
+"id" = "lab-readiness"
+"level" = "foundations"
+"title" = "Start with a verifiable evidence exercise"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Compute the exact content hash of a fresh server-generated evidence fixture and pass its check."
+"brief" = "This small exercise tests evidence integrity. Track entry background: Handle files, compute hashes and interpret timestamps without modifying the original evidence."
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "lab", "exercise" = "integrity" }
+
+[[node]]
+"id" = "foundations-reasoning"
+"level" = "foundations"
+"title" = "Reason it through: Prove the entry skills in a small lab"
+"size" = "S"
+"minutes" = 10
+"needs" = ["lab-readiness"]
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Handle files, compute hashes and interpret timestamps without modifying the original evidence."
+"steps" = ["Work through this preparation: Handle files, compute hashes and interpret timestamps without modifying the original evidence.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "digital-forensics-incident-response:foundations" }
+
+[[node]]
+"id" = "foundations-experiment"
+"level" = "foundations"
+"title" = "Investigate: Prove the entry skills in a small lab"
+"size" = "M"
+"minutes" = 60
+"needs" = ["foundations-reasoning"]
+"done_when" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/foundations-experiment.json."
+"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
+"steps" = ["Handle files, compute hashes and interpret timestamps without modifying the original evidence.", "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/foundations-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "foundations-milestone"
+"level" = "foundations"
+"title" = "Apply it to a changed case: Prove the entry skills in a small lab"
+"size" = "M"
+"minutes" = 120
+"needs" = ["foundations-reasoning", "foundations-experiment", "lab-readiness"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/foundations-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
+"steps" = ["Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Transfer: Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.", "Control: Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/foundations-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-foundations"
+"level" = "recall-lane"
+"title" = "Return later: Prove the entry skills in a small lab"
+"size" = "S"
+"minutes" = 10
+"needs" = ["foundations-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct the environment and entry assumptions without following the setup notes."
+"steps" = ["Reconstruct the environment and entry assumptions without following the setup notes.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "digital-forensics-incident-response:foundations" }
+
+[[node]]
+"id" = "preservation-reasoning"
+"level" = "preservation"
+"title" = "Reason it through: Keep the original evidence original"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Hash a harmless fixture, copy it, and demonstrate how one-byte mutation changes its digest."
+"steps" = ["Work through this preparation: Hash a harmless fixture, copy it, and demonstrate how one-byte mutation changes its digest.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "digital-forensics-incident-response:preservation" }
+
+[[node]]
+"id" = "preservation-experiment"
+"level" = "preservation"
+"title" = "Investigate: Keep the original evidence original"
+"size" = "M"
+"minutes" = 60
+"needs" = ["preservation-reasoning"]
+"done_when" = "Create an evidence manifest with acquisition time, source, hashes, handling history and analysis-copy paths; verify the original remains unchanged after analysis. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/preservation-experiment.json."
+"brief" = "Create an evidence manifest with acquisition time, source, hashes, handling history and analysis-copy paths; verify the original remains unchanged after analysis."
+"steps" = ["Hash a harmless fixture, copy it, and demonstrate how one-byte mutation changes its digest.", "Create an evidence manifest with acquisition time, source, hashes, handling history and analysis-copy paths; verify the original remains unchanged after analysis.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/preservation-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "preservation-milestone"
+"level" = "preservation"
+"title" = "Apply it to a changed case: Keep the original evidence original"
+"size" = "M"
+"minutes" = 120
+"needs" = ["preservation-reasoning", "preservation-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/preservation-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Create an evidence manifest with acquisition time, source, hashes, handling history and analysis-copy paths; verify the original remains unchanged after analysis."
+"steps" = ["Create an evidence manifest with acquisition time, source, hashes, handling history and analysis-copy paths; verify the original remains unchanged after analysis.", "Transfer: Change the copy or filename and determine which identity assertions still hold.", "Control: Include a corrupted copy that must fail integrity verification and a byte-identical renamed copy that must pass content verification.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/preservation-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-preservation"
+"level" = "recall-lane"
+"title" = "Return later: Keep the original evidence original"
+"size" = "S"
+"minutes" = 10
+"needs" = ["preservation-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain integrity, provenance and chain of custody as different properties."
+"steps" = ["Explain integrity, provenance and chain of custody as different properties.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "digital-forensics-incident-response:preservation" }
+
+[[node]]
+"id" = "filesystem-reasoning"
+"level" = "filesystem"
+"title" = "Reason it through: Recover a story from file metadata"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Inspect timestamps and file metadata on a small provided disk image or synthetic directory."
+"steps" = ["Work through this preparation: Inspect timestamps and file metadata on a small provided disk image or synthetic directory.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "digital-forensics-incident-response:filesystem" }
+
+[[node]]
+"id" = "filesystem-experiment"
+"level" = "filesystem"
+"title" = "Investigate: Recover a story from file metadata"
+"size" = "M"
+"minutes" = 60
+"needs" = ["filesystem-reasoning"]
+"done_when" = "Build a bounded account of file creation/modification using an analysis copy, recording filesystem semantics and tool/version assumptions. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/filesystem-experiment.json."
+"brief" = "Build a bounded account of file creation/modification using an analysis copy, recording filesystem semantics and tool/version assumptions."
+"steps" = ["Inspect timestamps and file metadata on a small provided disk image or synthetic directory.", "Build a bounded account of file creation/modification using an analysis copy, recording filesystem semantics and tool/version assumptions.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/filesystem-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "filesystem-milestone"
+"level" = "filesystem"
+"title" = "Apply it to a changed case: Recover a story from file metadata"
+"size" = "M"
+"minutes" = 120
+"needs" = ["filesystem-reasoning", "filesystem-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/filesystem-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Build a bounded account of file creation/modification using an analysis copy, recording filesystem semantics and tool/version assumptions."
+"steps" = ["Build a bounded account of file creation/modification using an analysis copy, recording filesystem semantics and tool/version assumptions.", "Transfer: Change the timezone display or introduce a copied file whose timestamps differ from its real acquisition time.", "Control: Include metadata that cannot prove who created a file and explicitly withhold that conclusion.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/filesystem-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-filesystem"
+"level" = "recall-lane"
+"title" = "Return later: Recover a story from file metadata"
+"size" = "S"
+"minutes" = 10
+"needs" = ["filesystem-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain why one timestamp does not prove an event happened at that exact time."
+"steps" = ["Explain why one timestamp does not prove an event happened at that exact time.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "digital-forensics-incident-response:filesystem" }
+
+[[node]]
+"id" = "timeline-reasoning"
+"level" = "timeline"
+"title" = "Reason it through: Reconcile clocks before drawing conclusions"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Normalize three event timestamps with explicit offsets and identify clock uncertainty."
+"steps" = ["Work through this preparation: Normalize three event timestamps with explicit offsets and identify clock uncertainty.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "digital-forensics-incident-response:timeline" }
+
+[[node]]
+"id" = "timeline-experiment"
+"level" = "timeline"
+"title" = "Investigate: Reconcile clocks before drawing conclusions"
+"size" = "M"
+"minutes" = 60
+"needs" = ["timeline-reasoning"]
+"done_when" = "Correlate a small authentication, process and network evidence bundle into a timeline with confidence and source references. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/timeline-experiment.json."
+"brief" = "Correlate a small authentication, process and network evidence bundle into a timeline with confidence and source references."
+"steps" = ["Normalize three event timestamps with explicit offsets and identify clock uncertainty.", "Correlate a small authentication, process and network evidence bundle into a timeline with confidence and source references.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/timeline-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "timeline-milestone"
+"level" = "timeline"
+"title" = "Apply it to a changed case: Reconcile clocks before drawing conclusions"
+"size" = "M"
+"minutes" = 120
+"needs" = ["timeline-reasoning", "timeline-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/timeline-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Correlate a small authentication, process and network evidence bundle into a timeline with confidence and source references."
+"steps" = ["Correlate a small authentication, process and network evidence bundle into a timeline with confidence and source references.", "Transfer: Add a clock-skew correction or delayed event and revise the ordering where justified.", "Control: Keep an unrelated similarly named process out of the incident chain.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/timeline-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-timeline"
+"level" = "recall-lane"
+"title" = "Return later: Reconcile clocks before drawing conclusions"
+"size" = "S"
+"minutes" = 10
+"needs" = ["timeline-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct which event ordering is certain and which depends on clock assumptions."
+"steps" = ["Reconstruct which event ordering is certain and which depends on clock assumptions.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "digital-forensics-incident-response:timeline" }
+
+[[node]]
+"id" = "memory-reasoning"
+"level" = "memory"
+"title" = "Reason it through: Separate a process artifact from a verdict"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Identify OS/build and symbol requirements for a supplied training memory image."
+"steps" = ["Work through this preparation: Identify OS/build and symbol requirements for a supplied training memory image.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "digital-forensics-incident-response:memory" }
+
+[[node]]
+"id" = "memory-experiment"
+"level" = "memory"
+"title" = "Investigate: Separate a process artifact from a verdict"
+"size" = "M"
+"minutes" = 60
+"needs" = ["memory-reasoning"]
+"done_when" = "On a suitable analysis host, inspect process and connection artifacts from a public training image, compare them with the provided ground truth where available, and record unsupported interpretations. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/memory-experiment.json."
+"brief" = "On a suitable analysis host, inspect process and connection artifacts from a public training image, compare them with the provided ground truth where available, and record unsupported interpretations."
+"steps" = ["Identify OS/build and symbol requirements for a supplied training memory image.", "On a suitable analysis host, inspect process and connection artifacts from a public training image, compare them with the provided ground truth where available, and record unsupported interpretations.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/memory-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "memory-milestone"
+"level" = "memory"
+"title" = "Apply it to a changed case: Separate a process artifact from a verdict"
+"size" = "M"
+"minutes" = 120
+"needs" = ["memory-reasoning", "memory-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/memory-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "On a suitable analysis host, inspect process and connection artifacts from a public training image, compare them with the provided ground truth where available, and record unsupported interpretations."
+"steps" = ["On a suitable analysis host, inspect process and connection artifacts from a public training image, compare them with the provided ground truth where available, and record unsupported interpretations.", "Transfer: Change the filter or investigate a second process and independently test the same hypothesis.", "Control: Include a benign process with a suspicious-looking name and avoid treating its name alone as malware proof.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/memory-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-memory"
+"level" = "recall-lane"
+"title" = "Return later: Separate a process artifact from a verdict"
+"size" = "S"
+"minutes" = 10
+"needs" = ["memory-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain how an incompatible symbol profile can invalidate an apparently plausible result."
+"steps" = ["Explain how an incompatible symbol profile can invalidate an apparently plausible result.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "digital-forensics-incident-response:memory" }
+
+[[node]]
+"id" = "containment-reasoning"
+"level" = "containment"
+"title" = "Reason it through: Preserve the question while containing the risk"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Write a decision table for evidence preservation versus a time-sensitive containment action."
+"steps" = ["Work through this preparation: Write a decision table for evidence preservation versus a time-sensitive containment action.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "digital-forensics-incident-response:containment" }
+
+[[node]]
+"id" = "containment-experiment"
+"level" = "containment"
+"title" = "Investigate: Preserve the question while containing the risk"
+"size" = "M"
+"minutes" = 60
+"needs" = ["containment-reasoning"]
+"done_when" = "Rehearse a synthetic incident using a disposable service: preserve relevant logs, disable only the affected test identity and verify intended service behavior. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/containment-experiment.json."
+"brief" = "Rehearse a synthetic incident using a disposable service: preserve relevant logs, disable only the affected test identity and verify intended service behavior."
+"steps" = ["Write a decision table for evidence preservation versus a time-sensitive containment action.", "Rehearse a synthetic incident using a disposable service: preserve relevant logs, disable only the affected test identity and verify intended service behavior.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/containment-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "containment-milestone"
+"level" = "containment"
+"title" = "Apply it to a changed case: Preserve the question while containing the risk"
+"size" = "M"
+"minutes" = 120
+"needs" = ["containment-reasoning", "containment-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/containment-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Rehearse a synthetic incident using a disposable service: preserve relevant logs, disable only the affected test identity and verify intended service behavior."
+"steps" = ["Rehearse a synthetic incident using a disposable service: preserve relevant logs, disable only the affected test identity and verify intended service behavior.", "Transfer: Remove access to one evidence source and revise the plan without inventing missing facts.", "Control: Preserve a legitimate user's access and document evidence lost because of the chosen intervention.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/containment-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-containment"
+"level" = "recall-lane"
+"title" = "Return later: Preserve the question while containing the risk"
+"size" = "S"
+"minutes" = 10
+"needs" = ["containment-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain one containment tradeoff and how it changes later interpretation."
+"steps" = ["Explain one containment tradeoff and how it changes later interpretation.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "digital-forensics-incident-response:containment" }
+
+[[node]]
+"id" = "case-reasoning"
+"level" = "case"
+"title" = "Reason it through: Deliver an evidence-led incident report"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Define the questions a stakeholder needs answered from a fresh training bundle."
+"steps" = ["Work through this preparation: Define the questions a stakeholder needs answered from a fresh training bundle.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "digital-forensics-incident-response:case" }
+
+[[node]]
+"id" = "case-experiment"
+"level" = "case"
+"title" = "Investigate: Deliver an evidence-led incident report"
+"size" = "M"
+"minutes" = 60
+"needs" = ["case-reasoning"]
+"done_when" = "Produce an evidence-indexed timeline, affected scope, alternative hypotheses, response decision and remaining uncertainty from an unfamiliar dataset. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/case-experiment.json."
+"brief" = "Produce an evidence-indexed timeline, affected scope, alternative hypotheses, response decision and remaining uncertainty from an unfamiliar dataset."
+"steps" = ["Define the questions a stakeholder needs answered from a fresh training bundle.", "Produce an evidence-indexed timeline, affected scope, alternative hypotheses, response decision and remaining uncertainty from an unfamiliar dataset.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/case-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "case-milestone"
+"level" = "case"
+"title" = "Apply it to a changed case: Deliver an evidence-led incident report"
+"size" = "M"
+"minutes" = 120
+"needs" = ["case-reasoning", "case-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/case-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Produce an evidence-indexed timeline, affected scope, alternative hypotheses, response decision and remaining uncertainty from an unfamiliar dataset."
+"steps" = ["Produce an evidence-indexed timeline, affected scope, alternative hypotheses, response decision and remaining uncertainty from an unfamiliar dataset.", "Transfer: Introduce one contradictory artifact and revise the explanation while retaining an audit of the earlier hypothesis.", "Control: Identify one tempting conclusion that the available evidence does not support.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/case-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-case"
+"level" = "recall-lane"
+"title" = "Return later: Deliver an evidence-led incident report"
+"size" = "S"
+"minutes" = 10
+"needs" = ["case-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct the case from the evidence index and independently recheck one claim."
+"steps" = ["Reconstruct the case from the evidence index and independently recheck one claim.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "digital-forensics-incident-response:case" }
+
+[[node]]
+"id" = "independent-transfer-reasoning"
+"level" = "independent-transfer"
+"title" = "Reason it through: Revisit the skill on a fresh problem"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution."
+"steps" = ["Work through this preparation: Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "digital-forensics-incident-response:independent-transfer" }
+
+[[node]]
+"id" = "independent-transfer-experiment"
+"level" = "independent-transfer"
+"title" = "Investigate: Revisit the skill on a fresh problem"
+"size" = "M"
+"minutes" = 60
+"needs" = ["independent-transfer-reasoning"]
+"done_when" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/independent-transfer-experiment.json."
+"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
+"steps" = ["Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "independent-transfer-milestone"
+"level" = "independent-transfer"
+"title" = "Apply it to a changed case: Revisit the skill on a fresh problem"
+"size" = "M"
+"minutes" = 120
+"needs" = ["independent-transfer-reasoning", "independent-transfer-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/independent-transfer-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
+"steps" = ["After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Transfer: Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.", "Control: Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-independent-transfer"
+"level" = "recall-lane"
+"title" = "Return later: Revisit the skill on a fresh problem"
+"size" = "S"
+"minutes" = 10
+"needs" = ["independent-transfer-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain what transferred, what required help and which prerequisite needs another small experiment."
+"steps" = ["Explain what transferred, what required help and which prerequisite needs another small experiment.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "digital-forensics-incident-response:independent-transfer" }
+
+[[node]]
+"id" = "quick-access-check"
+"level" = "quick"
+"title" = "A ten-minute permission puzzle"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Correctly evaluate every allow/deny decision for a fresh server-generated policy fixture."
+"resource" = "https://digitalcorpora.org/corpora/scenarios/"
+"verify" = { "type" = "lab", "exercise" = "access-policy" }

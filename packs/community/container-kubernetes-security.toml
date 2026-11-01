@@ -1,0 +1,516 @@
+# Generated from docs/curriculum/specialist-paths.json; unreviewed draft.
+[pack]
+"id" = "container-kubernetes-security"
+"title" = "Container and Kubernetes Security"
+"kind" = "proficiency"
+"version" = 1
+"source" = "ai-draft"
+"reviewed" = false
+
+[vars]
+"lab_dir" = "~/cyber/container-kubernetes-security"
+
+[[level]]
+"id" = "foundations"
+"title" = "Prove the entry skills in a small lab"
+"lane" = "main"
+
+[[level]]
+"id" = "container-boundary"
+"title" = "A container still shares a kernel"
+"lane" = "main"
+
+[[level]]
+"id" = "image-supply-chain"
+"title" = "Know exactly which image ran"
+"lane" = "main"
+
+[[level]]
+"id" = "network-separation"
+"title" = "Test an isolation claim"
+"lane" = "main"
+
+[[level]]
+"id" = "cluster-identity"
+"title" = "Give the workload only its job"
+"lane" = "main"
+
+[[level]]
+"id" = "cluster-network"
+"title" = "Observe enforcement, not just YAML"
+"lane" = "main"
+
+[[level]]
+"id" = "review"
+"title" = "Review and repair a workload deployment"
+"lane" = "main"
+
+[[level]]
+"id" = "independent-transfer"
+"title" = "Revisit the skill on a fresh problem"
+"lane" = "main"
+
+[[level]]
+"id" = "recall-lane"
+"title" = "Return later: reasoning checks"
+"lane" = "side"
+
+[[level]]
+"id" = "quick"
+"title" = "Small verified exercises"
+"lane" = "side"
+
+[[node]]
+"id" = "lab-readiness"
+"level" = "foundations"
+"title" = "Start with a verifiable evidence exercise"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Compute the exact content hash of a fresh server-generated evidence fixture and pass its check."
+"brief" = "This small exercise tests evidence integrity. Track entry background: Run a local container, identify its image and mounts, and explain processes and file permissions."
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "lab", "exercise" = "integrity" }
+
+[[node]]
+"id" = "foundations-reasoning"
+"level" = "foundations"
+"title" = "Reason it through: Prove the entry skills in a small lab"
+"size" = "S"
+"minutes" = 10
+"needs" = ["lab-readiness"]
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Run a local container, identify its image and mounts, and explain processes and file permissions."
+"steps" = ["Work through this preparation: Run a local container, identify its image and mounts, and explain processes and file permissions.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "container-kubernetes-security:foundations" }
+
+[[node]]
+"id" = "foundations-experiment"
+"level" = "foundations"
+"title" = "Investigate: Prove the entry skills in a small lab"
+"size" = "M"
+"minutes" = 60
+"needs" = ["foundations-reasoning"]
+"done_when" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/foundations-experiment.json."
+"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
+"steps" = ["Run a local container, identify its image and mounts, and explain processes and file permissions.", "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/foundations-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "foundations-milestone"
+"level" = "foundations"
+"title" = "Apply it to a changed case: Prove the entry skills in a small lab"
+"size" = "M"
+"minutes" = 120
+"needs" = ["foundations-reasoning", "foundations-experiment", "lab-readiness"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/foundations-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
+"steps" = ["Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Transfer: Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.", "Control: Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/foundations-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-foundations"
+"level" = "recall-lane"
+"title" = "Return later: Prove the entry skills in a small lab"
+"size" = "S"
+"minutes" = 10
+"needs" = ["foundations-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct the environment and entry assumptions without following the setup notes."
+"steps" = ["Reconstruct the environment and entry assumptions without following the setup notes.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "container-kubernetes-security:foundations" }
+
+[[node]]
+"id" = "container-boundary-reasoning"
+"level" = "container-boundary"
+"title" = "Reason it through: A container still shares a kernel"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Inspect a harmless container's user, capabilities, mounts, namespaces and configured resource limits."
+"steps" = ["Work through this preparation: Inspect a harmless container's user, capabilities, mounts, namespaces and configured resource limits.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "container-kubernetes-security:container-boundary" }
+
+[[node]]
+"id" = "container-boundary-experiment"
+"level" = "container-boundary"
+"title" = "Investigate: A container still shares a kernel"
+"size" = "M"
+"minutes" = 60
+"needs" = ["container-boundary-reasoning"]
+"done_when" = "Run a toy service with a non-root user, dropped capabilities, no-new-privileges and a read-only root plus a bounded writable directory; explain observed failures. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/container-boundary-experiment.json."
+"brief" = "Run a toy service with a non-root user, dropped capabilities, no-new-privileges and a read-only root plus a bounded writable directory; explain observed failures."
+"steps" = ["Inspect a harmless container's user, capabilities, mounts, namespaces and configured resource limits.", "Run a toy service with a non-root user, dropped capabilities, no-new-privileges and a read-only root plus a bounded writable directory; explain observed failures.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/container-boundary-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "container-boundary-milestone"
+"level" = "container-boundary"
+"title" = "Apply it to a changed case: A container still shares a kernel"
+"size" = "M"
+"minutes" = 120
+"needs" = ["container-boundary-reasoning", "container-boundary-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/container-boundary-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Run a toy service with a non-root user, dropped capabilities, no-new-privileges and a read-only root plus a bounded writable directory; explain observed failures."
+"steps" = ["Run a toy service with a non-root user, dropped capabilities, no-new-privileges and a read-only root plus a bounded writable directory; explain observed failures.", "Transfer: Remove one required write path or change its owner and predict which operation fails.", "Control: Preserve the service's intended request while showing it cannot write to an unrelated path.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/container-boundary-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-container-boundary"
+"level" = "recall-lane"
+"title" = "Return later: A container still shares a kernel"
+"size" = "S"
+"minutes" = 10
+"needs" = ["container-boundary-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain which risks these controls reduce and which require stronger isolation."
+"steps" = ["Explain which risks these controls reduce and which require stronger isolation.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "container-kubernetes-security:container-boundary" }
+
+[[node]]
+"id" = "image-supply-chain-reasoning"
+"level" = "image-supply-chain"
+"title" = "Reason it through: Know exactly which image ran"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Compare a mutable tag, an image digest and the platform manifest selected for ARM64 versus AMD64."
+"steps" = ["Work through this preparation: Compare a mutable tag, an image digest and the platform manifest selected for ARM64 versus AMD64.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "container-kubernetes-security:image-supply-chain" }
+
+[[node]]
+"id" = "image-supply-chain-experiment"
+"level" = "image-supply-chain"
+"title" = "Investigate: Know exactly which image ran"
+"size" = "M"
+"minutes" = 60
+"needs" = ["image-supply-chain-reasoning"]
+"done_when" = "Generate an image inventory/SBOM for a toy service, pin the source image digest and record provenance, vulnerability findings and applicability limits. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/image-supply-chain-experiment.json."
+"brief" = "Generate an image inventory/SBOM for a toy service, pin the source image digest and record provenance, vulnerability findings and applicability limits."
+"steps" = ["Compare a mutable tag, an image digest and the platform manifest selected for ARM64 versus AMD64.", "Generate an image inventory/SBOM for a toy service, pin the source image digest and record provenance, vulnerability findings and applicability limits.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/image-supply-chain-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "image-supply-chain-milestone"
+"level" = "image-supply-chain"
+"title" = "Apply it to a changed case: Know exactly which image ran"
+"size" = "M"
+"minutes" = 120
+"needs" = ["image-supply-chain-reasoning", "image-supply-chain-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/image-supply-chain-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Generate an image inventory/SBOM for a toy service, pin the source image digest and record provenance, vulnerability findings and applicability limits."
+"steps" = ["Generate an image inventory/SBOM for a toy service, pin the source image digest and record provenance, vulnerability findings and applicability limits.", "Transfer: Resolve an updated tag and identify the changed digest and dependencies before accepting it.", "Control: Include a scanner finding for an unused or unreachable component and separate presence from demonstrated exploitability.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/image-supply-chain-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-image-supply-chain"
+"level" = "recall-lane"
+"title" = "Return later: Know exactly which image ran"
+"size" = "S"
+"minutes" = 10
+"needs" = ["image-supply-chain-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain why a matching digest gives identity but not a guarantee of safety."
+"steps" = ["Explain why a matching digest gives identity but not a guarantee of safety.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "container-kubernetes-security:image-supply-chain" }
+
+[[node]]
+"id" = "network-separation-reasoning"
+"level" = "network-separation"
+"title" = "Reason it through: Test an isolation claim"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Draw the Docker networks, published ports and services in the supplied lab Compose file."
+"steps" = ["Work through this preparation: Draw the Docker networks, published ports and services in the supplied lab Compose file.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "container-kubernetes-security:network-separation" }
+
+[[node]]
+"id" = "network-separation-experiment"
+"level" = "network-separation"
+"title" = "Investigate: Test an isolation claim"
+"size" = "M"
+"minutes" = 60
+"needs" = ["network-separation-reasoning"]
+"done_when" = "In a disposable project, verify loopback-only access, separate lab networks, resource bounds and the absence of tracker-volume or Docker-socket mounts. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/network-separation-experiment.json."
+"brief" = "In a disposable project, verify loopback-only access, separate lab networks, resource bounds and the absence of tracker-volume or Docker-socket mounts."
+"steps" = ["Draw the Docker networks, published ports and services in the supplied lab Compose file.", "In a disposable project, verify loopback-only access, separate lab networks, resource bounds and the absence of tracker-volume or Docker-socket mounts.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/network-separation-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "network-separation-milestone"
+"level" = "network-separation"
+"title" = "Apply it to a changed case: Test an isolation claim"
+"size" = "M"
+"minutes" = 120
+"needs" = ["network-separation-reasoning", "network-separation-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/network-separation-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "In a disposable project, verify loopback-only access, separate lab networks, resource bounds and the absence of tracker-volume or Docker-socket mounts."
+"steps" = ["In a disposable project, verify loopback-only access, separate lab networks, resource bounds and the absence of tracker-volume or Docker-socket mounts.", "Transfer: Move the client to another lab network and predict which target it should fail to reach.", "Control: Confirm a permitted same-network request works while cross-network and outbound probes fail within bounded timeouts.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/network-separation-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-network-separation"
+"level" = "recall-lane"
+"title" = "Return later: Test an isolation claim"
+"size" = "S"
+"minutes" = 10
+"needs" = ["network-separation-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain what an internal bridge blocks and why the host kernel is still shared."
+"steps" = ["Explain what an internal bridge blocks and why the host kernel is still shared.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "container-kubernetes-security:network-separation" }
+
+[[node]]
+"id" = "cluster-identity-reasoning"
+"level" = "cluster-identity"
+"title" = "Reason it through: Give the workload only its job"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Read a Role, RoleBinding and ServiceAccount and predict effective API actions."
+"steps" = ["Work through this preparation: Read a Role, RoleBinding and ServiceAccount and predict effective API actions.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "container-kubernetes-security:cluster-identity" }
+
+[[node]]
+"id" = "cluster-identity-experiment"
+"level" = "cluster-identity"
+"title" = "Investigate: Give the workload only its job"
+"size" = "M"
+"minutes" = 60
+"needs" = ["cluster-identity-reasoning"]
+"done_when" = "In a disposable Kubernetes cluster, bind a limited service account to one namespace and verify allowed and denied operations with the API authorization checks. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/cluster-identity-experiment.json."
+"brief" = "In a disposable Kubernetes cluster, bind a limited service account to one namespace and verify allowed and denied operations with the API authorization checks."
+"steps" = ["Read a Role, RoleBinding and ServiceAccount and predict effective API actions.", "In a disposable Kubernetes cluster, bind a limited service account to one namespace and verify allowed and denied operations with the API authorization checks.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/cluster-identity-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "cluster-identity-milestone"
+"level" = "cluster-identity"
+"title" = "Apply it to a changed case: Give the workload only its job"
+"size" = "M"
+"minutes" = 120
+"needs" = ["cluster-identity-reasoning", "cluster-identity-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/cluster-identity-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "In a disposable Kubernetes cluster, bind a limited service account to one namespace and verify allowed and denied operations with the API authorization checks."
+"steps" = ["In a disposable Kubernetes cluster, bind a limited service account to one namespace and verify allowed and denied operations with the API authorization checks.", "Transfer: Change the namespace or requested verb and predict the decision before checking.", "Control: Keep the intended read working and deny writes to unrelated secrets or namespaces.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/cluster-identity-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-cluster-identity"
+"level" = "recall-lane"
+"title" = "Return later: Give the workload only its job"
+"size" = "S"
+"minutes" = 10
+"needs" = ["cluster-identity-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct the subject, role and binding needed for one API permission."
+"steps" = ["Reconstruct the subject, role and binding needed for one API permission.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "container-kubernetes-security:cluster-identity" }
+
+[[node]]
+"id" = "cluster-network-reasoning"
+"level" = "cluster-network"
+"title" = "Reason it through: Observe enforcement, not just YAML"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Explain how labels select pods and how a NetworkPolicy-capable CNI enforces traffic rules."
+"steps" = ["Work through this preparation: Explain how labels select pods and how a NetworkPolicy-capable CNI enforces traffic rules.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "container-kubernetes-security:cluster-network" }
+
+[[node]]
+"id" = "cluster-network-experiment"
+"level" = "cluster-network"
+"title" = "Investigate: Observe enforcement, not just YAML"
+"size" = "M"
+"minutes" = 60
+"needs" = ["cluster-network-reasoning"]
+"done_when" = "Deploy a tiny client/server pair on an isolated test cluster, apply default-deny plus a specific allow rule, and test actual connectivity. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/cluster-network-experiment.json."
+"brief" = "Deploy a tiny client/server pair on an isolated test cluster, apply default-deny plus a specific allow rule, and test actual connectivity."
+"steps" = ["Explain how labels select pods and how a NetworkPolicy-capable CNI enforces traffic rules.", "Deploy a tiny client/server pair on an isolated test cluster, apply default-deny plus a specific allow rule, and test actual connectivity.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/cluster-network-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "cluster-network-milestone"
+"level" = "cluster-network"
+"title" = "Apply it to a changed case: Observe enforcement, not just YAML"
+"size" = "M"
+"minutes" = 120
+"needs" = ["cluster-network-reasoning", "cluster-network-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/cluster-network-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Deploy a tiny client/server pair on an isolated test cluster, apply default-deny plus a specific allow rule, and test actual connectivity."
+"steps" = ["Deploy a tiny client/server pair on an isolated test cluster, apply default-deny plus a specific allow rule, and test actual connectivity.", "Transfer: Change one pod label or allowed port and predict which connection changes.", "Control: Include a matching permitted client and an unmatched client that must be denied; report an unsupported CNI as an unmet prerequisite.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/cluster-network-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-cluster-network"
+"level" = "recall-lane"
+"title" = "Return later: Observe enforcement, not just YAML"
+"size" = "S"
+"minutes" = 10
+"needs" = ["cluster-network-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain why a valid NetworkPolicy object can coexist with unrestricted traffic."
+"steps" = ["Explain why a valid NetworkPolicy object can coexist with unrestricted traffic.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "container-kubernetes-security:cluster-network" }
+
+[[node]]
+"id" = "review-reasoning"
+"level" = "review"
+"title" = "Reason it through: Review and repair a workload deployment"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Inventory deployment manifests, image identity, writable paths, service account and network exposure."
+"steps" = ["Work through this preparation: Inventory deployment manifests, image identity, writable paths, service account and network exposure.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "container-kubernetes-security:review" }
+
+[[node]]
+"id" = "review-experiment"
+"level" = "review"
+"title" = "Investigate: Review and repair a workload deployment"
+"size" = "M"
+"minutes" = 60
+"needs" = ["review-reasoning"]
+"done_when" = "Review a fresh toy deployment, demonstrate one excessive permission or exposure, apply a minimal fix and retest the intended workload plus resource limits. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/review-experiment.json."
+"brief" = "Review a fresh toy deployment, demonstrate one excessive permission or exposure, apply a minimal fix and retest the intended workload plus resource limits."
+"steps" = ["Inventory deployment manifests, image identity, writable paths, service account and network exposure.", "Review a fresh toy deployment, demonstrate one excessive permission or exposure, apply a minimal fix and retest the intended workload plus resource limits.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/review-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "review-milestone"
+"level" = "review"
+"title" = "Apply it to a changed case: Review and repair a workload deployment"
+"size" = "M"
+"minutes" = 120
+"needs" = ["review-reasoning", "review-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/review-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Review a fresh toy deployment, demonstrate one excessive permission or exposure, apply a minimal fix and retest the intended workload plus resource limits."
+"steps" = ["Review a fresh toy deployment, demonstrate one excessive permission or exposure, apply a minimal fix and retest the intended workload plus resource limits.", "Transfer: Change a namespace, image version or writable path and revise the controls instead of copying the old manifest.", "Control: Show an unrelated workload and legitimate client remain functional after the fix.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/review-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-review"
+"level" = "recall-lane"
+"title" = "Return later: Review and repair a workload deployment"
+"size" = "S"
+"minutes" = 10
+"needs" = ["review-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain one runtime observation that would invalidate your review conclusion."
+"steps" = ["Explain one runtime observation that would invalidate your review conclusion.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "container-kubernetes-security:review" }
+
+[[node]]
+"id" = "independent-transfer-reasoning"
+"level" = "independent-transfer"
+"title" = "Reason it through: Revisit the skill on a fresh problem"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution."
+"steps" = ["Work through this preparation: Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "container-kubernetes-security:independent-transfer" }
+
+[[node]]
+"id" = "independent-transfer-experiment"
+"level" = "independent-transfer"
+"title" = "Investigate: Revisit the skill on a fresh problem"
+"size" = "M"
+"minutes" = 60
+"needs" = ["independent-transfer-reasoning"]
+"done_when" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/independent-transfer-experiment.json."
+"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
+"steps" = ["Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "independent-transfer-milestone"
+"level" = "independent-transfer"
+"title" = "Apply it to a changed case: Revisit the skill on a fresh problem"
+"size" = "M"
+"minutes" = 120
+"needs" = ["independent-transfer-reasoning", "independent-transfer-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/independent-transfer-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
+"steps" = ["After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Transfer: Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.", "Control: Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-independent-transfer"
+"level" = "recall-lane"
+"title" = "Return later: Revisit the skill on a fresh problem"
+"size" = "S"
+"minutes" = 10
+"needs" = ["independent-transfer-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain what transferred, what required help and which prerequisite needs another small experiment."
+"steps" = ["Explain what transferred, what required help and which prerequisite needs another small experiment.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "container-kubernetes-security:independent-transfer" }
+
+[[node]]
+"id" = "quick-access-check"
+"level" = "quick"
+"title" = "A ten-minute permission puzzle"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Correctly evaluate every allow/deny decision for a fresh server-generated policy fixture."
+"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"verify" = { "type" = "lab", "exercise" = "access-policy" }

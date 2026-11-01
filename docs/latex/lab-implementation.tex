@@ -1,0 +1,40 @@
+\section{Exercise and session implementation}
+Migration 0005 adds account-scoped \texttt{lab\_runs}, \texttt{task\_sessions} and
+\texttt{xp\_awards}. A partial unique index permits one running session per account;
+a unique account/pack/node key prevents duplicate rewards. Existing progress and
+missions are retained. A native instance records its pack fingerprint, randomized
+public fixture, private expected answer, attempts and verified time. A pack change
+invalidates its prior instance evidence; a superseded instance cannot be submitted.
+
+The \texttt{lab} verifier accepts \texttt{exercise} equal to logging, subnet,
+access-policy, integrity, timeline or case. Case tasks additionally require a bundled
+\texttt{case\_id}. Typed equality prevents JSON true from substituting for integer 1.
+Account-scoped lookups, transactions and completion guards apply to the browser,
+remote CLI, manual marking, force/backfill and split operations. Verified nodes
+cannot be completed by splitting them into manually marked children.
+
+The \texttt{ctf} verifier accepts a provider from the external capability catalog,
+a required \texttt{challenge}, and optional \texttt{all\_of} string IDs. It checks an
+HMAC-SHA256 administrator observation with an exact integer account ID, provider,
+solved-ID list and timezone-aware observation time. Receipt freshness is five minutes
+with five seconds of future-clock tolerance. The tracker reads a mounted receipt;
+it has neither a Docker socket nor network membership in a vulnerable target.
+Administrator access to the signing key is trusted. This is not tamper-proof exam
+proctoring, and shared game state cannot establish which person performed a solve.
+
+The existing authenticated \texttt{POST /api/command} accepts the session and lab CLI
+arguments. No browser-supplied score, elapsed time or solved boolean is accepted.
+Scheduler checkpoints use the existing account notification settings. The browser's
+countdown is a preview, refreshed from the server every 30 seconds while visible.
+Rendering the clock preserves the pause button so keyboard focus is not lost each
+second. More contains the searchable source-derived catalog; assessment metadata
+appears progressively inside challenge details.
+
+\subsection{Regression contracts}
+Exercise tests derive answers from the public generated fixture, not stored expected
+values. They cover positive and negative controls, no reward for wrong answers,
+account boundaries, typed comparisons, stale fingerprints, superseded instances,
+manual bypass attempts, pause/resume, declining rewards and checkpoint deduplication.
+Receipt tests cover malformed solved lists, signatures, account mismatches, stale
+and future timestamps, multi-challenge requirements and reward idempotency. These
+are bounded correctness tests, not measurements of learning effectiveness.

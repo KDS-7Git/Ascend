@@ -1,0 +1,516 @@
+# Generated from docs/curriculum/specialist-paths.json; unreviewed draft.
+[pack]
+"id" = "secure-development-devsecops"
+"title" = "Secure Development and DevSecOps"
+"kind" = "proficiency"
+"version" = 1
+"source" = "ai-draft"
+"reviewed" = false
+
+[vars]
+"lab_dir" = "~/cyber/secure-development-devsecops"
+
+[[level]]
+"id" = "foundations"
+"title" = "Prove the entry skills in a small lab"
+"lane" = "main"
+
+[[level]]
+"id" = "threat-model"
+"title" = "Draw the trust boundary before coding"
+"lane" = "main"
+
+[[level]]
+"id" = "input-and-output"
+"title" = "Follow untrusted data to its sink"
+"lane" = "main"
+
+[[level]]
+"id" = "authz"
+"title" = "Put authorization beside the resource"
+"lane" = "main"
+
+[[level]]
+"id" = "supply-chain"
+"title" = "Make a dependency decision you can defend"
+"lane" = "main"
+
+[[level]]
+"id" = "pipeline"
+"title" = "Make the pipeline stop for a real defect"
+"lane" = "main"
+
+[[level]]
+"id" = "release"
+"title" = "Ship a small service with an assurance record"
+"lane" = "main"
+
+[[level]]
+"id" = "independent-transfer"
+"title" = "Revisit the skill on a fresh problem"
+"lane" = "main"
+
+[[level]]
+"id" = "recall-lane"
+"title" = "Return later: reasoning checks"
+"lane" = "side"
+
+[[level]]
+"id" = "quick"
+"title" = "Small verified exercises"
+"lane" = "side"
+
+[[node]]
+"id" = "lab-readiness"
+"level" = "foundations"
+"title" = "Start with a verifiable evidence exercise"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Compute the exact content hash of a fresh server-generated evidence fixture and pass its check."
+"brief" = "This small exercise tests evidence integrity. Track entry background: Write a small program, use Git and run its tests."
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "lab", "exercise" = "integrity" }
+
+[[node]]
+"id" = "foundations-reasoning"
+"level" = "foundations"
+"title" = "Reason it through: Prove the entry skills in a small lab"
+"size" = "S"
+"minutes" = 10
+"needs" = ["lab-readiness"]
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Write a small program, use Git and run its tests."
+"steps" = ["Work through this preparation: Write a small program, use Git and run its tests.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "secure-development-devsecops:foundations" }
+
+[[node]]
+"id" = "foundations-experiment"
+"level" = "foundations"
+"title" = "Investigate: Prove the entry skills in a small lab"
+"size" = "M"
+"minutes" = 60
+"needs" = ["foundations-reasoning"]
+"done_when" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/foundations-experiment.json."
+"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
+"steps" = ["Write a small program, use Git and run its tests.", "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/foundations-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "foundations-milestone"
+"level" = "foundations"
+"title" = "Apply it to a changed case: Prove the entry skills in a small lab"
+"size" = "M"
+"minutes" = 120
+"needs" = ["foundations-reasoning", "foundations-experiment", "lab-readiness"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/foundations-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
+"steps" = ["Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Transfer: Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.", "Control: Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/foundations-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-foundations"
+"level" = "recall-lane"
+"title" = "Return later: Prove the entry skills in a small lab"
+"size" = "S"
+"minutes" = 10
+"needs" = ["foundations-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct the environment and entry assumptions without following the setup notes."
+"steps" = ["Reconstruct the environment and entry assumptions without following the setup notes.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "secure-development-devsecops:foundations" }
+
+[[node]]
+"id" = "threat-model-reasoning"
+"level" = "threat-model"
+"title" = "Reason it through: Draw the trust boundary before coding"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Identify assets, actors and data flows for a small upload or note-taking service."
+"steps" = ["Work through this preparation: Identify assets, actors and data flows for a small upload or note-taking service.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "secure-development-devsecops:threat-model" }
+
+[[node]]
+"id" = "threat-model-experiment"
+"level" = "threat-model"
+"title" = "Investigate: Draw the trust boundary before coding"
+"size" = "M"
+"minutes" = 60
+"needs" = ["threat-model-reasoning"]
+"done_when" = "Build a threat model with three concrete abuse cases and map each to an ASVS-style testable requirement. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/threat-model-experiment.json."
+"brief" = "Build a threat model with three concrete abuse cases and map each to an ASVS-style testable requirement."
+"steps" = ["Identify assets, actors and data flows for a small upload or note-taking service.", "Build a threat model with three concrete abuse cases and map each to an ASVS-style testable requirement.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/threat-model-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "threat-model-milestone"
+"level" = "threat-model"
+"title" = "Apply it to a changed case: Draw the trust boundary before coding"
+"size" = "M"
+"minutes" = 120
+"needs" = ["threat-model-reasoning", "threat-model-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/threat-model-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Build a threat model with three concrete abuse cases and map each to an ASVS-style testable requirement."
+"steps" = ["Build a threat model with three concrete abuse cases and map each to an ASVS-style testable requirement.", "Transfer: Add a background worker or third-party integration and revise the boundaries and threats.", "Control: Include a failure outside the service's responsibility and document the dependency instead of claiming to fix it.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/threat-model-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-threat-model"
+"level" = "recall-lane"
+"title" = "Return later: Draw the trust boundary before coding"
+"size" = "S"
+"minutes" = 10
+"needs" = ["threat-model-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct one threat from asset through entry point to consequence."
+"steps" = ["Reconstruct one threat from asset through entry point to consequence.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "secure-development-devsecops:threat-model" }
+
+[[node]]
+"id" = "input-and-output-reasoning"
+"level" = "input-and-output"
+"title" = "Reason it through: Follow untrusted data to its sink"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Trace a user-controlled field through parsing, validation, storage and rendering in a toy service."
+"steps" = ["Work through this preparation: Trace a user-controlled field through parsing, validation, storage and rendering in a toy service.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "secure-development-devsecops:input-and-output" }
+
+[[node]]
+"id" = "input-and-output-experiment"
+"level" = "input-and-output"
+"title" = "Investigate: Follow untrusted data to its sink"
+"size" = "M"
+"minutes" = 60
+"needs" = ["input-and-output-reasoning"]
+"done_when" = "Repair one input or output handling defect in your own code and write tests that reproduce the defect and preserve intended behavior. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/input-and-output-experiment.json."
+"brief" = "Repair one input or output handling defect in your own code and write tests that reproduce the defect and preserve intended behavior."
+"steps" = ["Trace a user-controlled field through parsing, validation, storage and rendering in a toy service.", "Repair one input or output handling defect in your own code and write tests that reproduce the defect and preserve intended behavior.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/input-and-output-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "input-and-output-milestone"
+"level" = "input-and-output"
+"title" = "Apply it to a changed case: Follow untrusted data to its sink"
+"size" = "M"
+"minutes" = 120
+"needs" = ["input-and-output-reasoning", "input-and-output-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/input-and-output-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Repair one input or output handling defect in your own code and write tests that reproduce the defect and preserve intended behavior."
+"steps" = ["Repair one input or output handling defect in your own code and write tests that reproduce the defect and preserve intended behavior.", "Transfer: Change the input encoding or rendering context and update the defense rather than reusing an unrelated escaping rule.", "Control: Include valid punctuation and an invalid structured input; reject the dangerous case without silently corrupting legitimate data.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/input-and-output-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-input-and-output"
+"level" = "recall-lane"
+"title" = "Return later: Follow untrusted data to its sink"
+"size" = "S"
+"minutes" = 10
+"needs" = ["input-and-output-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain why validation and output encoding address different boundaries."
+"steps" = ["Explain why validation and output encoding address different boundaries.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "secure-development-devsecops:input-and-output" }
+
+[[node]]
+"id" = "authz-reasoning"
+"level" = "authz"
+"title" = "Reason it through: Put authorization beside the resource"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Model two synthetic users, two objects and one administrative action."
+"steps" = ["Work through this preparation: Model two synthetic users, two objects and one administrative action.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "secure-development-devsecops:authz" }
+
+[[node]]
+"id" = "authz-experiment"
+"level" = "authz"
+"title" = "Investigate: Put authorization beside the resource"
+"size" = "M"
+"minutes" = 60
+"needs" = ["authz-reasoning"]
+"done_when" = "Implement server-side authorization tests for owner access, cross-user access and the privileged operation; demonstrate the bug before the repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/authz-experiment.json."
+"brief" = "Implement server-side authorization tests for owner access, cross-user access and the privileged operation; demonstrate the bug before the repair."
+"steps" = ["Model two synthetic users, two objects and one administrative action.", "Implement server-side authorization tests for owner access, cross-user access and the privileged operation; demonstrate the bug before the repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/authz-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "authz-milestone"
+"level" = "authz"
+"title" = "Apply it to a changed case: Put authorization beside the resource"
+"size" = "M"
+"minutes" = 120
+"needs" = ["authz-reasoning", "authz-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/authz-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Implement server-side authorization tests for owner access, cross-user access and the privileged operation; demonstrate the bug before the repair."
+"steps" = ["Implement server-side authorization tests for owner access, cross-user access and the privileged operation; demonstrate the bug before the repair.", "Transfer: Add a new HTTP method or background operation and check that it enforces the same resource policy.", "Control: Keep owner access working and deny an authenticated but unauthorized user.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/authz-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-authz"
+"level" = "recall-lane"
+"title" = "Return later: Put authorization beside the resource"
+"size" = "S"
+"minutes" = 10
+"needs" = ["authz-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "State the policy independently of route names or UI controls."
+"steps" = ["State the policy independently of route names or UI controls.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "secure-development-devsecops:authz" }
+
+[[node]]
+"id" = "supply-chain-reasoning"
+"level" = "supply-chain"
+"title" = "Reason it through: Make a dependency decision you can defend"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Identify direct and transitive dependencies and distinguish an SBOM from a vulnerability report."
+"steps" = ["Work through this preparation: Identify direct and transitive dependencies and distinguish an SBOM from a vulnerability report.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "secure-development-devsecops:supply-chain" }
+
+[[node]]
+"id" = "supply-chain-experiment"
+"level" = "supply-chain"
+"title" = "Investigate: Make a dependency decision you can defend"
+"size" = "M"
+"minutes" = 60
+"needs" = ["supply-chain-reasoning"]
+"done_when" = "Produce an SBOM and pinned dependency manifest, investigate one advisory's applicability, and test an update or documented mitigation. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/supply-chain-experiment.json."
+"brief" = "Produce an SBOM and pinned dependency manifest, investigate one advisory's applicability, and test an update or documented mitigation."
+"steps" = ["Identify direct and transitive dependencies and distinguish an SBOM from a vulnerability report.", "Produce an SBOM and pinned dependency manifest, investigate one advisory's applicability, and test an update or documented mitigation.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/supply-chain-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "supply-chain-milestone"
+"level" = "supply-chain"
+"title" = "Apply it to a changed case: Make a dependency decision you can defend"
+"size" = "M"
+"minutes" = 120
+"needs" = ["supply-chain-reasoning", "supply-chain-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/supply-chain-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Produce an SBOM and pinned dependency manifest, investigate one advisory's applicability, and test an update or documented mitigation."
+"steps" = ["Produce an SBOM and pinned dependency manifest, investigate one advisory's applicability, and test an update or documented mitigation.", "Transfer: Introduce a version change in a branch and assess both security and compatibility effects before merging.", "Control: Include an advisory that does not apply to the used component/version and explain the evidence.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/supply-chain-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-supply-chain"
+"level" = "recall-lane"
+"title" = "Return later: Make a dependency decision you can defend"
+"size" = "S"
+"minutes" = 10
+"needs" = ["supply-chain-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain why dependency presence, reachability and exploitability are separate claims."
+"steps" = ["Explain why dependency presence, reachability and exploitability are separate claims.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "secure-development-devsecops:supply-chain" }
+
+[[node]]
+"id" = "pipeline-reasoning"
+"level" = "pipeline"
+"title" = "Reason it through: Make the pipeline stop for a real defect"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Create a local test pipeline for the toy application with explicit failure conditions."
+"steps" = ["Work through this preparation: Create a local test pipeline for the toy application with explicit failure conditions.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "secure-development-devsecops:pipeline" }
+
+[[node]]
+"id" = "pipeline-experiment"
+"level" = "pipeline"
+"title" = "Investigate: Make the pipeline stop for a real defect"
+"size" = "M"
+"minutes" = 60
+"needs" = ["pipeline-reasoning"]
+"done_when" = "Add security regression tests, a synthetic-secret check and artifact identity recording; demonstrate that each relevant bad fixture fails the gate. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/pipeline-experiment.json."
+"brief" = "Add security regression tests, a synthetic-secret check and artifact identity recording; demonstrate that each relevant bad fixture fails the gate."
+"steps" = ["Create a local test pipeline for the toy application with explicit failure conditions.", "Add security regression tests, a synthetic-secret check and artifact identity recording; demonstrate that each relevant bad fixture fails the gate.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/pipeline-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "pipeline-milestone"
+"level" = "pipeline"
+"title" = "Apply it to a changed case: Make the pipeline stop for a real defect"
+"size" = "M"
+"minutes" = 120
+"needs" = ["pipeline-reasoning", "pipeline-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/pipeline-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Add security regression tests, a synthetic-secret check and artifact identity recording; demonstrate that each relevant bad fixture fails the gate."
+"steps" = ["Add security regression tests, a synthetic-secret check and artifact identity recording; demonstrate that each relevant bad fixture fails the gate.", "Transfer: Change a fixture's filename or encoding and test whether the intended check still applies.", "Control: Confirm clean code builds successfully and no test prints secret-like fixture values into published logs.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/pipeline-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-pipeline"
+"level" = "recall-lane"
+"title" = "Return later: Make the pipeline stop for a real defect"
+"size" = "S"
+"minutes" = 10
+"needs" = ["pipeline-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain the failure mode each gate detects and one it misses."
+"steps" = ["Explain the failure mode each gate detects and one it misses.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "secure-development-devsecops:pipeline" }
+
+[[node]]
+"id" = "release-reasoning"
+"level" = "release"
+"title" = "Reason it through: Ship a small service with an assurance record"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Prepare a release checklist tied to threat-model requirements rather than tool counts."
+"steps" = ["Work through this preparation: Prepare a release checklist tied to threat-model requirements rather than tool counts.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "secure-development-devsecops:release" }
+
+[[node]]
+"id" = "release-experiment"
+"level" = "release"
+"title" = "Investigate: Ship a small service with an assurance record"
+"size" = "M"
+"minutes" = 60
+"needs" = ["release-reasoning"]
+"done_when" = "Deliver the toy service with passing regression tests, reproducible build inputs, deployment permissions, rollback instructions and a documented residual risk. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/release-experiment.json."
+"brief" = "Deliver the toy service with passing regression tests, reproducible build inputs, deployment permissions, rollback instructions and a documented residual risk."
+"steps" = ["Prepare a release checklist tied to threat-model requirements rather than tool counts.", "Deliver the toy service with passing regression tests, reproducible build inputs, deployment permissions, rollback instructions and a documented residual risk.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/release-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "release-milestone"
+"level" = "release"
+"title" = "Apply it to a changed case: Ship a small service with an assurance record"
+"size" = "M"
+"minutes" = 120
+"needs" = ["release-reasoning", "release-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/release-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Deliver the toy service with passing regression tests, reproducible build inputs, deployment permissions, rollback instructions and a documented residual risk."
+"steps" = ["Deliver the toy service with passing regression tests, reproducible build inputs, deployment permissions, rollback instructions and a documented residual risk.", "Transfer: Change a dependency or deployment setting and rerun only the checks whose assumptions changed, explaining the choice.", "Control: Reproduce a known security regression on the old version and show the release rejects it while valid use works.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/release-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-release"
+"level" = "recall-lane"
+"title" = "Return later: Ship a small service with an assurance record"
+"size" = "S"
+"minutes" = 10
+"needs" = ["release-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct the assurance argument and the strongest remaining limitation."
+"steps" = ["Reconstruct the assurance argument and the strongest remaining limitation.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "secure-development-devsecops:release" }
+
+[[node]]
+"id" = "independent-transfer-reasoning"
+"level" = "independent-transfer"
+"title" = "Reason it through: Revisit the skill on a fresh problem"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution."
+"steps" = ["Work through this preparation: Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "secure-development-devsecops:independent-transfer" }
+
+[[node]]
+"id" = "independent-transfer-experiment"
+"level" = "independent-transfer"
+"title" = "Investigate: Revisit the skill on a fresh problem"
+"size" = "M"
+"minutes" = 60
+"needs" = ["independent-transfer-reasoning"]
+"done_when" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/independent-transfer-experiment.json."
+"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
+"steps" = ["Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "independent-transfer-milestone"
+"level" = "independent-transfer"
+"title" = "Apply it to a changed case: Revisit the skill on a fresh problem"
+"size" = "M"
+"minutes" = 120
+"needs" = ["independent-transfer-reasoning", "independent-transfer-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/independent-transfer-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
+"steps" = ["After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Transfer: Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.", "Control: Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-independent-transfer"
+"level" = "recall-lane"
+"title" = "Return later: Revisit the skill on a fresh problem"
+"size" = "S"
+"minutes" = 10
+"needs" = ["independent-transfer-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain what transferred, what required help and which prerequisite needs another small experiment."
+"steps" = ["Explain what transferred, what required help and which prerequisite needs another small experiment.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "secure-development-devsecops:independent-transfer" }
+
+[[node]]
+"id" = "quick-access-check"
+"level" = "quick"
+"title" = "A ten-minute permission puzzle"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Correctly evaluate every allow/deny decision for a fresh server-generated policy fixture."
+"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"verify" = { "type" = "lab", "exercise" = "access-policy" }

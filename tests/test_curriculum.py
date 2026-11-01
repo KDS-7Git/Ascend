@@ -20,7 +20,8 @@ PACK_IDS = sorted({row["pack"] for row in ASSESSMENTS})
 def test_curriculum_has_reachable_assessments_and_delayed_practice(pack_id):
     pack = parse_pack((ROOT / "packs/community" / f"{pack_id}.toml").read_text())
     nodes = {node.id: node for node in pack.nodes}
-    assert pack.version == 3 and pack.source == "ai-draft" and not pack.reviewed
+    assert pack.version == (4 if pack_id == "defensive-security-and-detection" else 3)
+    assert pack.source == "ai-draft" and not pack.reviewed
     assert next_nodes(pack, {})[0].id == "lab-readiness"
     assert next_nodes(pack, {}, 10), "A brief optional session must remain possible"
     for assessment in (row for row in ASSESSMENTS if row["pack"] == pack_id):
@@ -101,3 +102,65 @@ def test_assessment_sources_are_traceable_and_coverage_is_complete():
             assert sources[source]["limits"], (
                 "Every alignment claim must carry its evidence limit"
             )
+
+
+def test_specialist_catalog_has_real_assessments_and_reachable_tasks():
+    source = json.loads((ROOT / "docs/curriculum/specialist-paths.json").read_text())
+    sources = {
+        r["id"]
+        for r in json.loads((ROOT / "docs/curriculum/sources.json").read_text())[
+            "sources"
+        ]
+    }
+    cases = json.loads((ROOT / "ascend/labs/cases.json").read_text())
+    assert len(source["tracks"]) == 19
+    for track in source["tracks"]:
+        assert set(track["sources"]) <= sources
+        text = (ROOT / "packs/community" / (track["id"] + ".toml")).read_text()
+        pack = parse_pack(text)
+        assert len([lv for lv in pack.levels if lv.lane == "main"]) == 8
+        assert len(pack.nodes) == 34
+        assert len([n for n in pack.nodes if n.verify["type"] == "lab"]) == 18
+        for node in pack.nodes:
+            if node.verify.get("exercise") == "case":
+                case = cases[node.verify["case_id"]]
+                assert case["correct"] != case["incorrect"]
+            if node.milestone:
+                assert len(node.steps) >= 4 and "reviewer" in node.done_when
+        state = {}
+        while candidates := next_nodes(pack, state):
+            for node in candidates:
+                state[node.id] = "done"
+        assert len(state) == len(pack.nodes)
+        assert (
+            text
+            == (
+                ROOT / "tracks/cyber-tracks/packs/community" / (pack.id + ".toml")
+            ).read_text()
+        )
+
+
+def test_public_home_lab_includes_bandit_zero_and_preserves_existing_ids():
+    import subprocess
+
+    old = parse_pack(
+        subprocess.check_output(
+            ["git", "show", "3100297:packs/community/home-hack-lab.toml"], text=True
+        )
+    )
+    pack = parse_pack((ROOT / "packs/community/home-hack-lab.toml").read_text())
+    nodes = {n.id: n for n in pack.nodes}
+    assert {n.id for n in old.nodes} <= nodes.keys()
+    assert pack.version == 4
+    for i in range(33):
+        assert nodes[f"bandit-{i}"].verify == {
+            "type": "ctf",
+            "provider": "bandit",
+            "challenge": f"bandit-{i}",
+        }
+    assert nodes["bandit-33"].verify["challenge"] == "bandit-32"
+    practice = parse_pack(
+        (ROOT / "packs/community/verified-security-lab.toml").read_text()
+    )
+    assert len(practice.nodes) == 8
+    assert all(n.verify["type"] in {"lab", "ctf"} for n in practice.nodes)

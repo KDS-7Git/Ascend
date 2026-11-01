@@ -101,6 +101,24 @@ def parser():
     install.add_argument("--dry-run", action="store_true")
     install.add_argument("--directory")
     install.add_argument("--no-enable", action="store_true")
+    sessions = sub.add_parser("session").add_subparsers(dest="action", required=True)
+    begin = sessions.add_parser("start")
+    begin.add_argument("node")
+    begin.add_argument("--minutes", type=int)
+    sessions.add_parser("pause")
+    sessions.add_parser("status")
+    labs = sub.add_parser("lab").add_subparsers(dest="action", required=True)
+    begin = labs.add_parser("start")
+    begin.add_argument("node")
+    begin.add_argument("--fresh", action="store_true")
+    show = labs.add_parser("show")
+    show.add_argument("instance")
+    emit = labs.add_parser("emit")
+    emit.add_argument("instance")
+    emit.add_argument("kind", choices=["ok", "error"])
+    submit = labs.add_parser("submit")
+    submit.add_argument("instance")
+    submit.add_argument("answers", help="JSON answer object; no code is executed")
     return p
 
 
@@ -126,6 +144,28 @@ def pack_text(target):
 
 def execute(tracker, args):
     command = args.command
+    if command == "session":
+        from ascend import timing
+
+        if args.action == "start":
+            return timing.start(tracker, args.node, args.minutes)
+        return (
+            timing.pause(tracker) if args.action == "pause" else timing.summary(tracker)
+        )
+    if command == "lab":
+        from ascend import labs
+
+        if args.action == "start":
+            return labs.start(tracker, args.node, args.fresh)
+        if args.action == "show":
+            return labs.view(tracker, args.instance)
+        if args.action == "emit":
+            return labs.emit(tracker, args.instance, args.kind)
+        try:
+            answers = json.loads(args.answers)
+        except json.JSONDecodeError:
+            raise ValueError("Answers must be valid JSON") from None
+        return labs.submit(tracker, args.instance, answers)
     if command in {None, "today"}:
         return tracker.overview(getattr(args, "minutes", None))
     if command == "done":

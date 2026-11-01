@@ -1,0 +1,516 @@
+# Generated from docs/curriculum/specialist-paths.json; unreviewed draft.
+[pack]
+"id" = "active-directory-security"
+"title" = "Active Directory and Windows Identity Security"
+"kind" = "proficiency"
+"version" = 1
+"source" = "ai-draft"
+"reviewed" = false
+
+[vars]
+"lab_dir" = "~/cyber/active-directory-security"
+
+[[level]]
+"id" = "foundations"
+"title" = "Prove the entry skills in a small lab"
+"lane" = "main"
+
+[[level]]
+"id" = "domain-model"
+"title" = "Draw the domain before testing it"
+"lane" = "main"
+
+[[level]]
+"id" = "auth-protocols"
+"title" = "A ticket is not a password"
+"lane" = "main"
+
+[[level]]
+"id" = "permissions"
+"title" = "Prove an identity graph edge"
+"lane" = "main"
+
+[[level]]
+"id" = "gpo-delegation"
+"title" = "Separate management power from service identity"
+"lane" = "main"
+
+[[level]]
+"id" = "certificate-services"
+"title" = "Follow the certificate enrollment decision"
+"lane" = "main"
+
+[[level]]
+"id" = "assessment"
+"title" = "Harden a small domain and retest it"
+"lane" = "main"
+
+[[level]]
+"id" = "independent-transfer"
+"title" = "Revisit the skill on a fresh problem"
+"lane" = "main"
+
+[[level]]
+"id" = "recall-lane"
+"title" = "Return later: reasoning checks"
+"lane" = "side"
+
+[[level]]
+"id" = "quick"
+"title" = "Small verified exercises"
+"lane" = "side"
+
+[[node]]
+"id" = "lab-readiness"
+"level" = "foundations"
+"title" = "Start with a verifiable evidence exercise"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Compute the exact content hash of a fresh server-generated evidence fixture and pass its check."
+"brief" = "This small exercise tests evidence integrity. Track entry background: Demonstrate Windows users/groups, basic DNS and TCP/IP, and permission inspection."
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "lab", "exercise" = "integrity" }
+
+[[node]]
+"id" = "foundations-reasoning"
+"level" = "foundations"
+"title" = "Reason it through: Prove the entry skills in a small lab"
+"size" = "S"
+"minutes" = 10
+"needs" = ["lab-readiness"]
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Demonstrate Windows users/groups, basic DNS and TCP/IP, and permission inspection."
+"steps" = ["Work through this preparation: Demonstrate Windows users/groups, basic DNS and TCP/IP, and permission inspection.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "active-directory-security:foundations" }
+
+[[node]]
+"id" = "foundations-experiment"
+"level" = "foundations"
+"title" = "Investigate: Prove the entry skills in a small lab"
+"size" = "M"
+"minutes" = 60
+"needs" = ["foundations-reasoning"]
+"done_when" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/foundations-experiment.json."
+"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
+"steps" = ["Demonstrate Windows users/groups, basic DNS and TCP/IP, and permission inspection.", "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "file", "path" = "{lab_dir}/foundations-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "foundations-milestone"
+"level" = "foundations"
+"title" = "Apply it to a changed case: Prove the entry skills in a small lab"
+"size" = "M"
+"minutes" = 120
+"needs" = ["foundations-reasoning", "foundations-experiment", "lab-readiness"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/foundations-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
+"steps" = ["Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Transfer: Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.", "Control: Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "file", "path" = "{lab_dir}/foundations-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-foundations"
+"level" = "recall-lane"
+"title" = "Return later: Prove the entry skills in a small lab"
+"size" = "S"
+"minutes" = 10
+"needs" = ["foundations-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct the environment and entry assumptions without following the setup notes."
+"steps" = ["Reconstruct the environment and entry assumptions without following the setup notes.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "active-directory-security:foundations" }
+
+[[node]]
+"id" = "domain-model-reasoning"
+"level" = "domain-model"
+"title" = "Reason it through: Draw the domain before testing it"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Identify domain, forest, OU, account, group and computer objects in a supplied directory export."
+"steps" = ["Work through this preparation: Identify domain, forest, OU, account, group and computer objects in a supplied directory export.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "active-directory-security:domain-model" }
+
+[[node]]
+"id" = "domain-model-experiment"
+"level" = "domain-model"
+"title" = "Investigate: Draw the domain before testing it"
+"size" = "M"
+"minutes" = 60
+"needs" = ["domain-model-reasoning"]
+"done_when" = "On a training domain, document DNS discovery, one domain join and a normal domain sign-in; preserve an architecture diagram and baseline event evidence. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/domain-model-experiment.json."
+"brief" = "On a training domain, document DNS discovery, one domain join and a normal domain sign-in; preserve an architecture diagram and baseline event evidence."
+"steps" = ["Identify domain, forest, OU, account, group and computer objects in a supplied directory export.", "On a training domain, document DNS discovery, one domain join and a normal domain sign-in; preserve an architecture diagram and baseline event evidence.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "file", "path" = "{lab_dir}/domain-model-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "domain-model-milestone"
+"level" = "domain-model"
+"title" = "Apply it to a changed case: Draw the domain before testing it"
+"size" = "M"
+"minutes" = 120
+"needs" = ["domain-model-reasoning", "domain-model-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/domain-model-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "On a training domain, document DNS discovery, one domain join and a normal domain sign-in; preserve an architecture diagram and baseline event evidence."
+"steps" = ["On a training domain, document DNS discovery, one domain join and a normal domain sign-in; preserve an architecture diagram and baseline event evidence.", "Transfer: Change the client DNS server in the disposable lab and predict which discovery or authentication step fails.", "Control: Compare a local login with a domain login and explain which identity authority answered.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "file", "path" = "{lab_dir}/domain-model-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-domain-model"
+"level" = "recall-lane"
+"title" = "Return later: Draw the domain before testing it"
+"size" = "S"
+"minutes" = 10
+"needs" = ["domain-model-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Recreate the domain discovery and trust boundaries from memory."
+"steps" = ["Recreate the domain discovery and trust boundaries from memory.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "active-directory-security:domain-model" }
+
+[[node]]
+"id" = "auth-protocols-reasoning"
+"level" = "auth-protocols"
+"title" = "Reason it through: A ticket is not a password"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Draw the normal Kerberos ticket flow and distinguish it from NTLM challenge-response using official protocol material."
+"steps" = ["Work through this preparation: Draw the normal Kerberos ticket flow and distinguish it from NTLM challenge-response using official protocol material.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "active-directory-security:auth-protocols" }
+
+[[node]]
+"id" = "auth-protocols-experiment"
+"level" = "auth-protocols"
+"title" = "Investigate: A ticket is not a password"
+"size" = "M"
+"minutes" = 60
+"needs" = ["auth-protocols-reasoning"]
+"done_when" = "Capture permitted authentication telemetry in a training domain and correlate ticket issuance or fallback with a controlled client action, without collecting real credentials. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/auth-protocols-experiment.json."
+"brief" = "Capture permitted authentication telemetry in a training domain and correlate ticket issuance or fallback with a controlled client action, without collecting real credentials."
+"steps" = ["Draw the normal Kerberos ticket flow and distinguish it from NTLM challenge-response using official protocol material.", "Capture permitted authentication telemetry in a training domain and correlate ticket issuance or fallback with a controlled client action, without collecting real credentials.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "file", "path" = "{lab_dir}/auth-protocols-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "auth-protocols-milestone"
+"level" = "auth-protocols"
+"title" = "Apply it to a changed case: A ticket is not a password"
+"size" = "M"
+"minutes" = 120
+"needs" = ["auth-protocols-reasoning", "auth-protocols-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/auth-protocols-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Capture permitted authentication telemetry in a training domain and correlate ticket issuance or fallback with a controlled client action, without collecting real credentials."
+"steps" = ["Capture permitted authentication telemetry in a training domain and correlate ticket issuance or fallback with a controlled client action, without collecting real credentials.", "Transfer: Change a service name or introduce documented clock skew in the disposable lab and predict the failure or fallback.", "Control: Include a normal successful service access and a deliberately invalid service reference.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "file", "path" = "{lab_dir}/auth-protocols-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-auth-protocols"
+"level" = "recall-lane"
+"title" = "Return later: A ticket is not a password"
+"size" = "S"
+"minutes" = 10
+"needs" = ["auth-protocols-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain why DNS, SPNs and time synchronization matter to Kerberos."
+"steps" = ["Explain why DNS, SPNs and time synchronization matter to Kerberos.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "active-directory-security:auth-protocols" }
+
+[[node]]
+"id" = "permissions-reasoning"
+"level" = "permissions"
+"title" = "Reason it through: Prove an identity graph edge"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Calculate effective membership for nested training groups and inspect one object's ACL."
+"steps" = ["Work through this preparation: Calculate effective membership for nested training groups and inspect one object's ACL.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "active-directory-security:permissions" }
+
+[[node]]
+"id" = "permissions-experiment"
+"level" = "permissions"
+"title" = "Investigate: Prove an identity graph edge"
+"size" = "M"
+"minutes" = 60
+"needs" = ["permissions-reasoning"]
+"done_when" = "Trace a least-privilege violation in a supplied or owned directory graph and verify the claimed edge against native permissions before proposing a fix. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/permissions-experiment.json."
+"brief" = "Trace a least-privilege violation in a supplied or owned directory graph and verify the claimed edge against native permissions before proposing a fix."
+"steps" = ["Calculate effective membership for nested training groups and inspect one object's ACL.", "Trace a least-privilege violation in a supplied or owned directory graph and verify the claimed edge against native permissions before proposing a fix.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "file", "path" = "{lab_dir}/permissions-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "permissions-milestone"
+"level" = "permissions"
+"title" = "Apply it to a changed case: Prove an identity graph edge"
+"size" = "M"
+"minutes" = 120
+"needs" = ["permissions-reasoning", "permissions-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/permissions-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Trace a least-privilege violation in a supplied or owned directory graph and verify the claimed edge against native permissions before proposing a fix."
+"steps" = ["Trace a least-privilege violation in a supplied or owned directory graph and verify the claimed edge against native permissions before proposing a fix.", "Transfer: Remove one group membership or inherited permission and predict whether the path still exists.", "Control: Include a graph edge that appears plausible but is denied by the effective permissions.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "file", "path" = "{lab_dir}/permissions-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-permissions"
+"level" = "recall-lane"
+"title" = "Return later: Prove an identity graph edge"
+"size" = "S"
+"minutes" = 10
+"needs" = ["permissions-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain the distinction between a graph hypothesis and a verified authorization path."
+"steps" = ["Explain the distinction between a graph hypothesis and a verified authorization path.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "active-directory-security:permissions" }
+
+[[node]]
+"id" = "gpo-delegation-reasoning"
+"level" = "gpo-delegation"
+"title" = "Reason it through: Separate management power from service identity"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Identify which principal can edit a policy and where that policy is linked in a lab export."
+"steps" = ["Work through this preparation: Identify which principal can edit a policy and where that policy is linked in a lab export.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "active-directory-security:gpo-delegation" }
+
+[[node]]
+"id" = "gpo-delegation-experiment"
+"level" = "gpo-delegation"
+"title" = "Investigate: Separate management power from service identity"
+"size" = "M"
+"minutes" = 60
+"needs" = ["gpo-delegation-reasoning"]
+"done_when" = "Inspect a training GPO and a documented delegation configuration, explain their intended function and identify an overbroad grant using effective access and normal service behavior. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/gpo-delegation-experiment.json."
+"brief" = "Inspect a training GPO and a documented delegation configuration, explain their intended function and identify an overbroad grant using effective access and normal service behavior."
+"steps" = ["Identify which principal can edit a policy and where that policy is linked in a lab export.", "Inspect a training GPO and a documented delegation configuration, explain their intended function and identify an overbroad grant using effective access and normal service behavior.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "file", "path" = "{lab_dir}/gpo-delegation-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "gpo-delegation-milestone"
+"level" = "gpo-delegation"
+"title" = "Apply it to a changed case: Separate management power from service identity"
+"size" = "M"
+"minutes" = 120
+"needs" = ["gpo-delegation-reasoning", "gpo-delegation-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/gpo-delegation-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Inspect a training GPO and a documented delegation configuration, explain their intended function and identify an overbroad grant using effective access and normal service behavior."
+"steps" = ["Inspect a training GPO and a documented delegation configuration, explain their intended function and identify an overbroad grant using effective access and normal service behavior.", "Transfer: Restrict the policy link or delegated target and predict which administrative or service action stops working.", "Control: Keep an intended management action functioning after the proposed least-privilege change.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "file", "path" = "{lab_dir}/gpo-delegation-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-gpo-delegation"
+"level" = "recall-lane"
+"title" = "Return later: Separate management power from service identity"
+"size" = "S"
+"minutes" = 10
+"needs" = ["gpo-delegation-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain why controlling a policy object and applying that policy are separate conditions."
+"steps" = ["Explain why controlling a policy object and applying that policy are separate conditions.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "active-directory-security:gpo-delegation" }
+
+[[node]]
+"id" = "certificate-services-reasoning"
+"level" = "certificate-services"
+"title" = "Reason it through: Follow the certificate enrollment decision"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Read a training certificate's subject, SAN, EKU, issuer and validity; explain chain trust separately from identity mapping."
+"steps" = ["Work through this preparation: Read a training certificate's subject, SAN, EKU, issuer and validity; explain chain trust separately from identity mapping.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "active-directory-security:certificate-services" }
+
+[[node]]
+"id" = "certificate-services-experiment"
+"level" = "certificate-services"
+"title" = "Investigate: Follow the certificate enrollment decision"
+"size" = "M"
+"minutes" = 60
+"needs" = ["certificate-services-reasoning"]
+"done_when" = "In an isolated AD CS lab or supplied configuration exercise, map template enrollment permissions and identity settings to a concrete authentication risk; test a corrected configuration in a real lab before claiming operational completion. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/certificate-services-experiment.json."
+"brief" = "In an isolated AD CS lab or supplied configuration exercise, map template enrollment permissions and identity settings to a concrete authentication risk; test a corrected configuration in a real lab before claiming operational completion."
+"steps" = ["Read a training certificate's subject, SAN, EKU, issuer and validity; explain chain trust separately from identity mapping.", "In an isolated AD CS lab or supplied configuration exercise, map template enrollment permissions and identity settings to a concrete authentication risk; test a corrected configuration in a real lab before claiming operational completion.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "file", "path" = "{lab_dir}/certificate-services-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "certificate-services-milestone"
+"level" = "certificate-services"
+"title" = "Apply it to a changed case: Follow the certificate enrollment decision"
+"size" = "M"
+"minutes" = 120
+"needs" = ["certificate-services-reasoning", "certificate-services-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/certificate-services-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "In an isolated AD CS lab or supplied configuration exercise, map template enrollment permissions and identity settings to a concrete authentication risk; test a corrected configuration in a real lab before claiming operational completion."
+"steps" = ["In an isolated AD CS lab or supplied configuration exercise, map template enrollment permissions and identity settings to a concrete authentication risk; test a corrected configuration in a real lab before claiming operational completion.", "Transfer: Change enrollment rights or an identity-related template setting and predict which request is permitted or rejected.", "Control: Show a legitimate enrollment still works and an unauthorized identity request is rejected after the repair.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "file", "path" = "{lab_dir}/certificate-services-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-certificate-services"
+"level" = "recall-lane"
+"title" = "Return later: Follow the certificate enrollment decision"
+"size" = "S"
+"minutes" = 10
+"needs" = ["certificate-services-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain why possessing a valid certificate is not sufficient proof of an authorized identity."
+"steps" = ["Explain why possessing a valid certificate is not sufficient proof of an authorized identity.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "active-directory-security:certificate-services" }
+
+[[node]]
+"id" = "assessment-reasoning"
+"level" = "assessment"
+"title" = "Reason it through: Harden a small domain and retest it"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Define scope, snapshot recovery and two identity hypotheses for an unfamiliar lab domain."
+"steps" = ["Work through this preparation: Define scope, snapshot recovery and two identity hypotheses for an unfamiliar lab domain.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "active-directory-security:assessment" }
+
+[[node]]
+"id" = "assessment-experiment"
+"level" = "assessment"
+"title" = "Investigate: Harden a small domain and retest it"
+"size" = "M"
+"minutes" = 60
+"needs" = ["assessment-reasoning"]
+"done_when" = "Audit the training domain's discovery, authentication, permissions and one certificate or policy boundary; deliver native evidence, impact and a verified least-privilege repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/assessment-experiment.json."
+"brief" = "Audit the training domain's discovery, authentication, permissions and one certificate or policy boundary; deliver native evidence, impact and a verified least-privilege repair."
+"steps" = ["Define scope, snapshot recovery and two identity hypotheses for an unfamiliar lab domain.", "Audit the training domain's discovery, authentication, permissions and one certificate or policy boundary; deliver native evidence, impact and a verified least-privilege repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "file", "path" = "{lab_dir}/assessment-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "assessment-milestone"
+"level" = "assessment"
+"title" = "Apply it to a changed case: Harden a small domain and retest it"
+"size" = "M"
+"minutes" = 120
+"needs" = ["assessment-reasoning", "assessment-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/assessment-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Audit the training domain's discovery, authentication, permissions and one certificate or policy boundary; deliver native evidence, impact and a verified least-privilege repair."
+"steps" = ["Audit the training domain's discovery, authentication, permissions and one certificate or policy boundary; deliver native evidence, impact and a verified least-privilege repair.", "Transfer: Change one account's memberships or a policy scope and independently re-evaluate the affected path.", "Control: Retest normal user/service sign-in and document which enterprise controls were not present in the lab.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "file", "path" = "{lab_dir}/assessment-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-assessment"
+"level" = "recall-lane"
+"title" = "Return later: Harden a small domain and retest it"
+"size" = "S"
+"minutes" = 10
+"needs" = ["assessment-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct one privilege path and the exact permission change that removed it."
+"steps" = ["Reconstruct one privilege path and the exact permission change that removed it.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "active-directory-security:assessment" }
+
+[[node]]
+"id" = "independent-transfer-reasoning"
+"level" = "independent-transfer"
+"title" = "Reason it through: Revisit the skill on a fresh problem"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution."
+"steps" = ["Work through this preparation: Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "active-directory-security:independent-transfer" }
+
+[[node]]
+"id" = "independent-transfer-experiment"
+"level" = "independent-transfer"
+"title" = "Investigate: Revisit the skill on a fresh problem"
+"size" = "M"
+"minutes" = 60
+"needs" = ["independent-transfer-reasoning"]
+"done_when" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/independent-transfer-experiment.json."
+"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
+"steps" = ["Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "independent-transfer-milestone"
+"level" = "independent-transfer"
+"title" = "Apply it to a changed case: Revisit the skill on a fresh problem"
+"size" = "M"
+"minutes" = 120
+"needs" = ["independent-transfer-reasoning", "independent-transfer-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/independent-transfer-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
+"steps" = ["After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Transfer: Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.", "Control: Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-independent-transfer"
+"level" = "recall-lane"
+"title" = "Return later: Revisit the skill on a fresh problem"
+"size" = "S"
+"minutes" = 10
+"needs" = ["independent-transfer-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain what transferred, what required help and which prerequisite needs another small experiment."
+"steps" = ["Explain what transferred, what required help and which prerequisite needs another small experiment.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "active-directory-security:independent-transfer" }
+
+[[node]]
+"id" = "quick-access-check"
+"level" = "quick"
+"title" = "A ten-minute permission puzzle"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Correctly evaluate every allow/deny decision for a fresh server-generated policy fixture."
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"verify" = { "type" = "lab", "exercise" = "access-policy" }

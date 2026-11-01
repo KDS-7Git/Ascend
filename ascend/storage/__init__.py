@@ -7,6 +7,9 @@ import os
 import sqlite3
 
 TABLES = {
+    "lab_runs",
+    "task_sessions",
+    "xp_awards",
     "missions",
     "entries",
     "parked",

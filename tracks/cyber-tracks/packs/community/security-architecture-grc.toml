@@ -1,0 +1,516 @@
+# Generated from docs/curriculum/specialist-paths.json; unreviewed draft.
+[pack]
+"id" = "security-architecture-grc"
+"title" = "Security Architecture, Risk and Governance"
+"kind" = "proficiency"
+"version" = 1
+"source" = "ai-draft"
+"reviewed" = false
+
+[vars]
+"lab_dir" = "~/cyber/security-architecture-grc"
+
+[[level]]
+"id" = "foundations"
+"title" = "Prove the entry skills in a small lab"
+"lane" = "main"
+
+[[level]]
+"id" = "assets"
+"title" = "Define the system someone is responsible for"
+"lane" = "main"
+
+[[level]]
+"id" = "threats"
+"title" = "Connect the threat to a business consequence"
+"lane" = "main"
+
+[[level]]
+"id" = "controls"
+"title" = "Make the control testable"
+"lane" = "main"
+
+[[level]]
+"id" = "architecture"
+"title" = "Compare designs against explicit assumptions"
+"lane" = "main"
+
+[[level]]
+"id" = "assurance"
+"title" = "Trace a requirement to its evidence"
+"lane" = "main"
+
+[[level]]
+"id" = "review"
+"title" = "Deliver a decision-ready security review"
+"lane" = "main"
+
+[[level]]
+"id" = "independent-transfer"
+"title" = "Revisit the skill on a fresh problem"
+"lane" = "main"
+
+[[level]]
+"id" = "recall-lane"
+"title" = "Return later: reasoning checks"
+"lane" = "side"
+
+[[level]]
+"id" = "quick"
+"title" = "Small verified exercises"
+"lane" = "side"
+
+[[node]]
+"id" = "lab-readiness"
+"level" = "foundations"
+"title" = "Start with a verifiable evidence exercise"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Compute the exact content hash of a fresh server-generated evidence fixture and pass its check."
+"brief" = "This small exercise tests evidence integrity. Track entry background: Understand service users, data and business purpose; distinguish a requirement from evidence."
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "lab", "exercise" = "integrity" }
+
+[[node]]
+"id" = "foundations-reasoning"
+"level" = "foundations"
+"title" = "Reason it through: Prove the entry skills in a small lab"
+"size" = "S"
+"minutes" = 10
+"needs" = ["lab-readiness"]
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Understand service users, data and business purpose; distinguish a requirement from evidence."
+"steps" = ["Work through this preparation: Understand service users, data and business purpose; distinguish a requirement from evidence.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "security-architecture-grc:foundations" }
+
+[[node]]
+"id" = "foundations-experiment"
+"level" = "foundations"
+"title" = "Investigate: Prove the entry skills in a small lab"
+"size" = "M"
+"minutes" = 60
+"needs" = ["foundations-reasoning"]
+"done_when" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/foundations-experiment.json."
+"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
+"steps" = ["Understand service users, data and business purpose; distinguish a requirement from evidence.", "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "file", "path" = "{lab_dir}/foundations-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "foundations-milestone"
+"level" = "foundations"
+"title" = "Apply it to a changed case: Prove the entry skills in a small lab"
+"size" = "M"
+"minutes" = 120
+"needs" = ["foundations-reasoning", "foundations-experiment", "lab-readiness"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/foundations-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
+"steps" = ["Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Transfer: Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.", "Control: Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "file", "path" = "{lab_dir}/foundations-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-foundations"
+"level" = "recall-lane"
+"title" = "Return later: Prove the entry skills in a small lab"
+"size" = "S"
+"minutes" = 10
+"needs" = ["foundations-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct the environment and entry assumptions without following the setup notes."
+"steps" = ["Reconstruct the environment and entry assumptions without following the setup notes.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "security-architecture-grc:foundations" }
+
+[[node]]
+"id" = "assets-reasoning"
+"level" = "assets"
+"title" = "Reason it through: Define the system someone is responsible for"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Inventory fictional assets, owners, data types and dependencies."
+"steps" = ["Work through this preparation: Inventory fictional assets, owners, data types and dependencies.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "security-architecture-grc:assets" }
+
+[[node]]
+"id" = "assets-experiment"
+"level" = "assets"
+"title" = "Investigate: Define the system someone is responsible for"
+"size" = "M"
+"minutes" = 60
+"needs" = ["assets-reasoning"]
+"done_when" = "Write a system boundary and data-flow diagram that includes outsourced services and critical business assumptions. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/assets-experiment.json."
+"brief" = "Write a system boundary and data-flow diagram that includes outsourced services and critical business assumptions."
+"steps" = ["Inventory fictional assets, owners, data types and dependencies.", "Write a system boundary and data-flow diagram that includes outsourced services and critical business assumptions.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "file", "path" = "{lab_dir}/assets-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "assets-milestone"
+"level" = "assets"
+"title" = "Apply it to a changed case: Define the system someone is responsible for"
+"size" = "M"
+"minutes" = 120
+"needs" = ["assets-reasoning", "assets-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/assets-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Write a system boundary and data-flow diagram that includes outsourced services and critical business assumptions."
+"steps" = ["Write a system boundary and data-flow diagram that includes outsourced services and critical business assumptions.", "Transfer: Add a new data recipient and revise ownership and control responsibilities.", "Control: Identify an asset outside the boundary that still creates a dependency risk.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "file", "path" = "{lab_dir}/assets-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-assets"
+"level" = "recall-lane"
+"title" = "Return later: Define the system someone is responsible for"
+"size" = "S"
+"minutes" = 10
+"needs" = ["assets-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain why an incomplete boundary undermines an assessment."
+"steps" = ["Explain why an incomplete boundary undermines an assessment.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "security-architecture-grc:assets" }
+
+[[node]]
+"id" = "threats-reasoning"
+"level" = "threats"
+"title" = "Reason it through: Connect the threat to a business consequence"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Separate asset value, threat, vulnerability, likelihood and impact in a sample scenario."
+"steps" = ["Work through this preparation: Separate asset value, threat, vulnerability, likelihood and impact in a sample scenario.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "security-architecture-grc:threats" }
+
+[[node]]
+"id" = "threats-experiment"
+"level" = "threats"
+"title" = "Investigate: Connect the threat to a business consequence"
+"size" = "M"
+"minutes" = 60
+"needs" = ["threats-reasoning"]
+"done_when" = "Create a small risk register with evidence, uncertainty, existing controls and a named decision owner. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/threats-experiment.json."
+"brief" = "Create a small risk register with evidence, uncertainty, existing controls and a named decision owner."
+"steps" = ["Separate asset value, threat, vulnerability, likelihood and impact in a sample scenario.", "Create a small risk register with evidence, uncertainty, existing controls and a named decision owner.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "file", "path" = "{lab_dir}/threats-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "threats-milestone"
+"level" = "threats"
+"title" = "Apply it to a changed case: Connect the threat to a business consequence"
+"size" = "M"
+"minutes" = 120
+"needs" = ["threats-reasoning", "threats-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/threats-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Create a small risk register with evidence, uncertainty, existing controls and a named decision owner."
+"steps" = ["Create a small risk register with evidence, uncertainty, existing controls and a named decision owner.", "Transfer: Change exposure or business criticality and justify the resulting priority.", "Control: Avoid turning an unsupported numeric guess into a precise probability claim.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "file", "path" = "{lab_dir}/threats-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-threats"
+"level" = "recall-lane"
+"title" = "Return later: Connect the threat to a business consequence"
+"size" = "S"
+"minutes" = 10
+"needs" = ["threats-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct one risk from cause to consequence."
+"steps" = ["Reconstruct one risk from cause to consequence.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "security-architecture-grc:threats" }
+
+[[node]]
+"id" = "controls-reasoning"
+"level" = "controls"
+"title" = "Reason it through: Make the control testable"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Translate a broad policy statement into an observable control objective."
+"steps" = ["Work through this preparation: Translate a broad policy statement into an observable control objective.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "security-architecture-grc:controls" }
+
+[[node]]
+"id" = "controls-experiment"
+"level" = "controls"
+"title" = "Investigate: Make the control testable"
+"size" = "M"
+"minutes" = 60
+"needs" = ["controls-reasoning"]
+"done_when" = "Map selected NIST CSF outcomes to concrete controls and evidence collection for a fictional service. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/controls-experiment.json."
+"brief" = "Map selected NIST CSF outcomes to concrete controls and evidence collection for a fictional service."
+"steps" = ["Translate a broad policy statement into an observable control objective.", "Map selected NIST CSF outcomes to concrete controls and evidence collection for a fictional service.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "file", "path" = "{lab_dir}/controls-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "controls-milestone"
+"level" = "controls"
+"title" = "Apply it to a changed case: Make the control testable"
+"size" = "M"
+"minutes" = 120
+"needs" = ["controls-reasoning", "controls-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/controls-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Map selected NIST CSF outcomes to concrete controls and evidence collection for a fictional service."
+"steps" = ["Map selected NIST CSF outcomes to concrete controls and evidence collection for a fictional service.", "Transfer: Change the hosting model and identify controls whose evidence must change.", "Control: Include a policy document that does not prove the operational control is running.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "file", "path" = "{lab_dir}/controls-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-controls"
+"level" = "recall-lane"
+"title" = "Return later: Make the control testable"
+"size" = "S"
+"minutes" = 10
+"needs" = ["controls-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain control design versus control operating effectiveness."
+"steps" = ["Explain control design versus control operating effectiveness.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "security-architecture-grc:controls" }
+
+[[node]]
+"id" = "architecture-reasoning"
+"level" = "architecture"
+"title" = "Reason it through: Compare designs against explicit assumptions"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Diagram two authentication or segmentation designs and their failure modes."
+"steps" = ["Work through this preparation: Diagram two authentication or segmentation designs and their failure modes.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "security-architecture-grc:architecture" }
+
+[[node]]
+"id" = "architecture-experiment"
+"level" = "architecture"
+"title" = "Investigate: Compare designs against explicit assumptions"
+"size" = "M"
+"minutes" = 60
+"needs" = ["architecture-reasoning"]
+"done_when" = "Evaluate the designs against the same threat model, operational needs and recovery requirements, then justify a bounded choice. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/architecture-experiment.json."
+"brief" = "Evaluate the designs against the same threat model, operational needs and recovery requirements, then justify a bounded choice."
+"steps" = ["Diagram two authentication or segmentation designs and their failure modes.", "Evaluate the designs against the same threat model, operational needs and recovery requirements, then justify a bounded choice.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "file", "path" = "{lab_dir}/architecture-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "architecture-milestone"
+"level" = "architecture"
+"title" = "Apply it to a changed case: Compare designs against explicit assumptions"
+"size" = "M"
+"minutes" = 120
+"needs" = ["architecture-reasoning", "architecture-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/architecture-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Evaluate the designs against the same threat model, operational needs and recovery requirements, then justify a bounded choice."
+"steps" = ["Evaluate the designs against the same threat model, operational needs and recovery requirements, then justify a bounded choice.", "Transfer: Remove one assumed trusted component and revise the recommendation.", "Control: Document one risk accepted by the chosen design instead of claiming universal superiority.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "file", "path" = "{lab_dir}/architecture-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-architecture"
+"level" = "recall-lane"
+"title" = "Return later: Compare designs against explicit assumptions"
+"size" = "S"
+"minutes" = 10
+"needs" = ["architecture-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct the tradeoff that drove the decision."
+"steps" = ["Reconstruct the tradeoff that drove the decision.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "security-architecture-grc:architecture" }
+
+[[node]]
+"id" = "assurance-reasoning"
+"level" = "assurance"
+"title" = "Reason it through: Trace a requirement to its evidence"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Build a requirement, test, result and evidence-reference matrix for a toy service."
+"steps" = ["Work through this preparation: Build a requirement, test, result and evidence-reference matrix for a toy service.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "security-architecture-grc:assurance" }
+
+[[node]]
+"id" = "assurance-experiment"
+"level" = "assurance"
+"title" = "Investigate: Trace a requirement to its evidence"
+"size" = "M"
+"minutes" = 60
+"needs" = ["assurance-reasoning"]
+"done_when" = "Review a small evidence pack, identify stale or missing evidence and produce a remediation plan with owners and retest criteria. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/assurance-experiment.json."
+"brief" = "Review a small evidence pack, identify stale or missing evidence and produce a remediation plan with owners and retest criteria."
+"steps" = ["Build a requirement, test, result and evidence-reference matrix for a toy service.", "Review a small evidence pack, identify stale or missing evidence and produce a remediation plan with owners and retest criteria.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "file", "path" = "{lab_dir}/assurance-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "assurance-milestone"
+"level" = "assurance"
+"title" = "Apply it to a changed case: Trace a requirement to its evidence"
+"size" = "M"
+"minutes" = 120
+"needs" = ["assurance-reasoning", "assurance-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/assurance-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Review a small evidence pack, identify stale or missing evidence and produce a remediation plan with owners and retest criteria."
+"steps" = ["Review a small evidence pack, identify stale or missing evidence and produce a remediation plan with owners and retest criteria.", "Transfer: Change a requirement version or evidence date and reassess adequacy.", "Control: Reject a screenshot or scanner summary that cannot substantiate the actual claim.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "file", "path" = "{lab_dir}/assurance-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-assurance"
+"level" = "recall-lane"
+"title" = "Return later: Trace a requirement to its evidence"
+"size" = "S"
+"minutes" = 10
+"needs" = ["assurance-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain the difference between a failed control and insufficient evidence."
+"steps" = ["Explain the difference between a failed control and insufficient evidence.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "security-architecture-grc:assurance" }
+
+[[node]]
+"id" = "review-reasoning"
+"level" = "review"
+"title" = "Reason it through: Deliver a decision-ready security review"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Define review scope, stakeholders and acceptance criteria for a fictional launch."
+"steps" = ["Work through this preparation: Define review scope, stakeholders and acceptance criteria for a fictional launch.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "security-architecture-grc:review" }
+
+[[node]]
+"id" = "review-experiment"
+"level" = "review"
+"title" = "Investigate: Deliver a decision-ready security review"
+"size" = "M"
+"minutes" = 60
+"needs" = ["review-reasoning"]
+"done_when" = "Deliver a concise architecture/risk review with prioritized actions, residual risks, evidence references and an accountable acceptance decision. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/review-experiment.json."
+"brief" = "Deliver a concise architecture/risk review with prioritized actions, residual risks, evidence references and an accountable acceptance decision."
+"steps" = ["Define review scope, stakeholders and acceptance criteria for a fictional launch.", "Deliver a concise architecture/risk review with prioritized actions, residual risks, evidence references and an accountable acceptance decision.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "file", "path" = "{lab_dir}/review-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "review-milestone"
+"level" = "review"
+"title" = "Apply it to a changed case: Deliver a decision-ready security review"
+"size" = "M"
+"minutes" = 120
+"needs" = ["review-reasoning", "review-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/review-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Deliver a concise architecture/risk review with prioritized actions, residual risks, evidence references and an accountable acceptance decision."
+"steps" = ["Deliver a concise architecture/risk review with prioritized actions, residual risks, evidence references and an accountable acceptance decision.", "Transfer: Introduce a new dependency or material finding and update the decision transparently.", "Control: Keep a low-impact observation from obscuring an unresolved launch-critical control.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "file", "path" = "{lab_dir}/review-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-review"
+"level" = "recall-lane"
+"title" = "Return later: Deliver a decision-ready security review"
+"size" = "S"
+"minutes" = 10
+"needs" = ["review-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct the strongest assurance claim and its limits."
+"steps" = ["Reconstruct the strongest assurance claim and its limits.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "security-architecture-grc:review" }
+
+[[node]]
+"id" = "independent-transfer-reasoning"
+"level" = "independent-transfer"
+"title" = "Reason it through: Revisit the skill on a fresh problem"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution."
+"steps" = ["Work through this preparation: Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "security-architecture-grc:independent-transfer" }
+
+[[node]]
+"id" = "independent-transfer-experiment"
+"level" = "independent-transfer"
+"title" = "Investigate: Revisit the skill on a fresh problem"
+"size" = "M"
+"minutes" = 60
+"needs" = ["independent-transfer-reasoning"]
+"done_when" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/independent-transfer-experiment.json."
+"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
+"steps" = ["Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "independent-transfer-milestone"
+"level" = "independent-transfer"
+"title" = "Apply it to a changed case: Revisit the skill on a fresh problem"
+"size" = "M"
+"minutes" = 120
+"needs" = ["independent-transfer-reasoning", "independent-transfer-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/independent-transfer-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
+"steps" = ["After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Transfer: Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.", "Control: Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-independent-transfer"
+"level" = "recall-lane"
+"title" = "Return later: Revisit the skill on a fresh problem"
+"size" = "S"
+"minutes" = 10
+"needs" = ["independent-transfer-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain what transferred, what required help and which prerequisite needs another small experiment."
+"steps" = ["Explain what transferred, what required help and which prerequisite needs another small experiment.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "security-architecture-grc:independent-transfer" }
+
+[[node]]
+"id" = "quick-access-check"
+"level" = "quick"
+"title" = "A ten-minute permission puzzle"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Correctly evaluate every allow/deny decision for a fresh server-generated policy fixture."
+"resource" = "https://www.nist.gov/cyberframework"
+"verify" = { "type" = "lab", "exercise" = "access-policy" }

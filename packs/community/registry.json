@@ -2,6 +2,82 @@
   "version": 1,
   "packs": [
     {
+      "id": "active-directory-security",
+      "title": "Active Directory and Windows Identity Security",
+      "category": "Offensive",
+      "aliases": [
+        "active directory",
+        "ad",
+        "kerberos",
+        "ad cs",
+        "windows domain",
+        "identity"
+      ],
+      "entry": "Demonstrate Windows users/groups, basic DNS and TCP/IP, and permission inspection.",
+      "background": [
+        "network-penetration-testing"
+      ],
+      "labs": [],
+      "limits": "Real Windows domain, GPO and AD CS exercises require isolated licensed/evaluation Windows VMs or a hosted lab. GOAD orchestrates Windows VMs; its Docker launcher does not make domain controllers Pi containers.",
+      "main_levels": 8,
+      "nodes": 34,
+      "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
+      "version": 1,
+      "file": "active-directory-security.toml",
+      "sha256": "d75b338cbfde47792f76298330edfdedc69ca8b2cfe70b014fa334c09690875f"
+    },
+    {
+      "id": "ai-application-security",
+      "title": "AI and LLM Application Security",
+      "category": "Engineering",
+      "aliases": [
+        "ai security",
+        "llm",
+        "prompt injection",
+        "rag",
+        "agents"
+      ],
+      "entry": "Understand HTTP, JSON, application authorization and the difference between model output and trusted program state.",
+      "background": [
+        "secure-development-devsecops"
+      ],
+      "labs": [],
+      "limits": "Use deterministic mock models and synthetic data first. These tests validate application boundaries, not the general resistance of a real language model; real-model testing needs a separately configured model and budget.",
+      "main_levels": 8,
+      "nodes": 34,
+      "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
+      "version": 1,
+      "file": "ai-application-security.toml",
+      "sha256": "0399d91afb8ce8d98576e0a535b240df08a0fdc4a9c601b365b3b1e4151130cc"
+    },
+    {
+      "id": "api-security",
+      "title": "API Security and Authorization Engineering",
+      "category": "Offensive",
+      "aliases": [
+        "api",
+        "graphql",
+        "rest",
+        "bola",
+        "oauth"
+      ],
+      "entry": "Read HTTP and JSON, use two synthetic accounts and explain authentication versus authorization.",
+      "background": [
+        "web-application-security"
+      ],
+      "labs": [
+        "juice-shop",
+        "webgoat"
+      ],
+      "limits": "Use designated lessons and owned API fixtures. GraphQL introspection or a visible route alone is not a vulnerability.",
+      "main_levels": 8,
+      "nodes": 34,
+      "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
+      "version": 1,
+      "file": "api-security.toml",
+      "sha256": "03770bb43ce4aa08ab0c951a4e0c3852afaafcaf826b2a6bd1b68c1acbbba127"
+    },
+    {
       "id": "blender-first-scene",
       "title": "Create a Blender still-life scene",
       "version": 1,
@@ -9,22 +85,218 @@
       "sha256": "27f160e464ae633cacbdd26f237b4270f78259308f3eb6e9dec5d5977a1ee6a6"
     },
     {
+      "id": "cloud-security",
+      "title": "Cloud Security: Identity, Exposure and Detection",
+      "category": "Engineering",
+      "aliases": [
+        "cloud",
+        "aws",
+        "azure",
+        "gcp",
+        "iam",
+        "entra"
+      ],
+      "entry": "Explain HTTP, role-based access and basic JSON; distinguish cloud control-plane actions from workload traffic.",
+      "background": [
+        "networking-for-security"
+      ],
+      "labs": [],
+      "limits": "Local policy fixtures teach reasoning; actual AWS/Azure/GCP enforcement requires a scoped training account. CloudGoat creates real billable resources and is not provisioned automatically.",
+      "main_levels": 8,
+      "nodes": 34,
+      "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
+      "version": 1,
+      "file": "cloud-security.toml",
+      "sha256": "5b9562cdce3e810aceae549ce4c4bdc2dc3b4b7b545a2a72ac59f60b9e10eca0"
+    },
+    {
+      "id": "container-kubernetes-security",
+      "title": "Container and Kubernetes Security",
+      "category": "Engineering",
+      "aliases": [
+        "docker",
+        "kubernetes",
+        "k8s",
+        "container security",
+        "cloud native"
+      ],
+      "entry": "Run a local container, identify its image and mounts, and explain processes and file permissions.",
+      "background": [
+        "networking-for-security"
+      ],
+      "labs": [
+        "juice-shop",
+        "webgoat",
+        "mqtt"
+      ],
+      "limits": "Docker exercises work on the supported Pi profiles. Kubernetes enforcement needs a real disposable cluster and a CNI that implements NetworkPolicy; YAML validation alone is not runtime evidence.",
+      "main_levels": 8,
+      "nodes": 34,
+      "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
+      "version": 1,
+      "file": "container-kubernetes-security.toml",
+      "sha256": "e901dbc958f253fb8253a75c12f2c52e13e435550990d563f9fff86eafc86e69"
+    },
+    {
+      "id": "cryptography-protocol-security",
+      "title": "Applied Cryptography and Protocol Security",
+      "category": "Specialist",
+      "aliases": [
+        "crypto",
+        "cryptography",
+        "tls",
+        "pki"
+      ],
+      "entry": "Work with bytes, hexadecimal and small Python programs; distinguish encoding from encryption.",
+      "background": [],
+      "labs": [],
+      "limits": "Use established libraries and training data. Toy arithmetic explains mechanisms; it is not production cryptographic implementation guidance.",
+      "main_levels": 8,
+      "nodes": 34,
+      "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
+      "version": 1,
+      "file": "cryptography-protocol-security.toml",
+      "sha256": "8b52cd7d92c6e0e112daac70ab12246e7e80010a68ecdba75409f15e167821b2"
+    },
+    {
       "id": "defensive-security-and-detection",
       "title": "Defensive Security & Detection",
-      "version": 3,
+      "category": "Defensive",
+      "aliases": [
+        "defense",
+        "detection engineering",
+        "blue team"
+      ],
+      "entry": "Use the entry demonstration in the track to check your background.",
+      "background": [],
+      "labs": [],
+      "limits": "Established v3 assessment rubric; file checks do not grade reasoning.",
+      "main_levels": 8,
+      "nodes": 60,
+      "verification": "See each task: automated evidence, artifact checks and human assessment have different scope.",
+      "version": 4,
       "file": "defensive-security-and-detection.toml",
-      "sha256": "7c2bbdcfefff8516fc1975b32cb9a776a3ef69d895f04748cfd7c840e9a247cf"
+      "sha256": "a747ef72847daa525c6e0c08e63c7efbc1da9c945eb30fb9fdd118aa87ee4923"
+    },
+    {
+      "id": "digital-forensics-incident-response",
+      "title": "Digital Forensics and Incident Response",
+      "category": "Defensive",
+      "aliases": [
+        "dfir",
+        "forensics",
+        "incident response",
+        "disk",
+        "memory"
+      ],
+      "entry": "Handle files, compute hashes and interpret timestamps without modifying the original evidence.",
+      "background": [
+        "defensive-security-and-detection"
+      ],
+      "labs": [],
+      "limits": "Use licensed public datasets and synthetic artifacts. Large disk/memory images may exceed Pi storage; Windows memory interpretation needs symbols/tools matching the supplied image.",
+      "main_levels": 8,
+      "nodes": 34,
+      "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
+      "version": 1,
+      "file": "digital-forensics-incident-response.toml",
+      "sha256": "e9c9944d46f8438b480c0a2b068e6b4bea42f449fa8ed336e69c297c2409353e"
+    },
+    {
+      "id": "ethical-hacking-foundations",
+      "title": "Ethical Hacking and Offensive Security Foundations",
+      "category": "Foundations",
+      "aliases": [
+        "ethical hacking",
+        "offensive security",
+        "pentesting",
+        "beginner"
+      ],
+      "entry": "Use a terminal, explain an IP address and HTTP request, and create a disposable local target.",
+      "background": [],
+      "labs": [
+        "juice-shop",
+        "webgoat"
+      ],
+      "limits": "An entry pathway into web, network and directory testing; not certification equivalence or permission to test third parties.",
+      "main_levels": 8,
+      "nodes": 34,
+      "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
+      "version": 1,
+      "file": "ethical-hacking-foundations.toml",
+      "sha256": "bbca41f4de4b7cf226fb6b67411250f50409f2f8e930ec62a43d9ffbe293f18c"
     },
     {
       "id": "home-hack-lab",
-      "title": "Home hack lab: attack and harden my own Pi",
-      "version": 3,
+      "title": "Home hack lab: build, investigate and harden your own lab",
+      "version": 4,
       "file": "home-hack-lab.toml",
-      "sha256": "ed452fdbede6c9e7ea971846ba9cedccdf904dd9718dc618160df959a55b687a"
+      "sha256": "f2919d6f872b53f3ec96609d5edb994ed23d3a3da839a415ddb5c97278b8034a"
+    },
+    {
+      "id": "malware-analysis",
+      "title": "Malware Analysis with Safe Training Artifacts",
+      "category": "Specialist",
+      "aliases": [
+        "malware",
+        "reverse engineering",
+        "remnux",
+        "flare",
+        "yara"
+      ],
+      "entry": "Read simple code and binary metadata, understand hashes and distinguish static from dynamic analysis.",
+      "background": [
+        "reverse-engineering-and-binary-exploitation"
+      ],
+      "labs": [],
+      "limits": "Start with benign toy programs and published traces. Live malware must not run in these Docker labs; it requires an appropriately isolated VM environment and reviewed sample handling. REMnux now offers ARM64 appliances, but individual tools and Pi deployment remain separate compatibility questions.",
+      "main_levels": 8,
+      "nodes": 34,
+      "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
+      "version": 1,
+      "file": "malware-analysis.toml",
+      "sha256": "b8c6305ec3c8585e9b4fe286e3fbb8e59322d4bf190b25d7c262865c3fac4a3d"
+    },
+    {
+      "id": "mobile-application-security",
+      "title": "Mobile Application Security",
+      "category": "Specialist",
+      "aliases": [
+        "mobile",
+        "android",
+        "ios",
+        "apk",
+        "mastg",
+        "masvs"
+      ],
+      "entry": "Understand HTTP and application permissions; use an owned test device or appropriate emulator.",
+      "background": [
+        "web-application-security"
+      ],
+      "labs": [],
+      "limits": "MASTG practice apps and an Android/iOS test environment are required for operational assessments. A Pi Docker container is not an Android/iOS emulator; fixtures are preparation, not a substitute for device evidence.",
+      "main_levels": 8,
+      "nodes": 34,
+      "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
+      "version": 1,
+      "file": "mobile-application-security.toml",
+      "sha256": "72ec15d2561ebb8a8c148c204477b6907af0f00d88402c0bafa3f1ef641fe73b"
     },
     {
       "id": "network-penetration-testing",
       "title": "Network & System Penetration Testing",
+      "category": "Offensive",
+      "aliases": [
+        "pentest",
+        "offensive security"
+      ],
+      "entry": "Use the entry demonstration in the track to check your background.",
+      "background": [],
+      "labs": [],
+      "limits": "Established v3 assessment rubric; file checks do not grade reasoning.",
+      "main_levels": 8,
+      "nodes": 60,
+      "verification": "See each task: automated evidence, artifact checks and human assessment have different scope.",
       "version": 3,
       "file": "network-penetration-testing.toml",
       "sha256": "eaddd60b20e92f6e8341cf71936ffdc73347496c3c81176f3fb704da5232b63c"
@@ -32,9 +304,45 @@
     {
       "id": "networking-for-security",
       "title": "Networking for Security: how packets actually move",
+      "category": "Foundations",
+      "aliases": [
+        "networking",
+        "tcp ip"
+      ],
+      "entry": "Use the entry demonstration in the track to check your background.",
+      "background": [],
+      "labs": [],
+      "limits": "Established v3 assessment rubric; file checks do not grade reasoning.",
+      "main_levels": 8,
+      "nodes": 44,
+      "verification": "See each task: automated evidence, artifact checks and human assessment have different scope.",
       "version": 3,
       "file": "networking-for-security.toml",
       "sha256": "a7cfa1ba9cfc62d25ac4161d6bc0bc4549a877fca123f9544110b49f139f25ec"
+    },
+    {
+      "id": "ot-ics-security",
+      "title": "OT and Industrial Control Security",
+      "category": "Specialist",
+      "aliases": [
+        "ot",
+        "ics",
+        "scada",
+        "modbus",
+        "industrial"
+      ],
+      "entry": "Read network diagrams and distinguish operational safety from information confidentiality.",
+      "background": [
+        "networking-for-security"
+      ],
+      "labs": [],
+      "limits": "Use software simulators and supplied captures only. No real PLC, safety system or industrial network is targeted; a simulator cannot establish physical safety.",
+      "main_levels": 8,
+      "nodes": 34,
+      "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
+      "version": 1,
+      "file": "ot-ics-security.toml",
+      "sha256": "d9cca61cb260a63212ff9d19f53d17ae00e48390fc2791c259f79aa1a4ec0595"
     },
     {
       "id": "python-file-tool",
@@ -44,18 +352,260 @@
       "sha256": "ac4726242d14ced5b8c7922fe03feab3e87d76f136c54a39cd11c723ac7cf1da"
     },
     {
+      "id": "red-team-adversary-emulation",
+      "title": "Red Teaming and Adversary Emulation",
+      "category": "Offensive",
+      "aliases": [
+        "red teaming",
+        "red team operator",
+        "purple team",
+        "adversary simulation"
+      ],
+      "entry": "Demonstrate scoped enumeration, identity/permission reasoning and the ability to inspect defender telemetry.",
+      "background": [
+        "network-penetration-testing",
+        "active-directory-security",
+        "defensive-security-and-detection"
+      ],
+      "labs": [],
+      "limits": "Assumed-breach, controlled emulation with harmless markers. Windows enterprise exercises need an isolated VM lab; no covert implants, live credential theft or production phishing are provisioned.",
+      "main_levels": 8,
+      "nodes": 34,
+      "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
+      "version": 1,
+      "file": "red-team-adversary-emulation.toml",
+      "sha256": "2157b696fc2c8864a16edfefa2f174954cdb7aad9a2af91fc83f5d04a360cb6b"
+    },
+    {
       "id": "reverse-engineering-and-binary-exploitation",
       "title": "Reverse Engineering & Binary Exploitation",
+      "category": "Specialist",
+      "aliases": [
+        "reversing",
+        "binary exploitation",
+        "pwn"
+      ],
+      "entry": "Use the entry demonstration in the track to check your background.",
+      "background": [],
+      "labs": [],
+      "limits": "Established v3 assessment rubric; file checks do not grade reasoning.",
+      "main_levels": 8,
+      "nodes": 59,
+      "verification": "See each task: automated evidence, artifact checks and human assessment have different scope.",
       "version": 3,
       "file": "reverse-engineering-and-binary-exploitation.toml",
       "sha256": "33d87d3a326ca2d2a25200d704933f372b86f5fa114a06c5d544cd0093e20de4"
     },
     {
+      "id": "secure-development-devsecops",
+      "title": "Secure Development and DevSecOps",
+      "category": "Engineering",
+      "aliases": [
+        "appsec",
+        "devsecops",
+        "secure coding",
+        "software supply chain"
+      ],
+      "entry": "Write a small program, use Git and run its tests.",
+      "background": [],
+      "labs": [],
+      "limits": "Exercises use owned toy services and local pipelines; a passing scanner is not a security certification.",
+      "main_levels": 8,
+      "nodes": 34,
+      "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
+      "version": 1,
+      "file": "secure-development-devsecops.toml",
+      "sha256": "74a75ab17b38fb7ad425dded67e5ca815a0c46c44fd6dc3283f0137bbe54ccc5"
+    },
+    {
+      "id": "security-architecture-grc",
+      "title": "Security Architecture, Risk and Governance",
+      "category": "Engineering",
+      "aliases": [
+        "grc",
+        "risk",
+        "governance",
+        "security architecture",
+        "compliance"
+      ],
+      "entry": "Understand service users, data and business purpose; distinguish a requirement from evidence.",
+      "background": [],
+      "labs": [],
+      "limits": "Uses public NIST guidance and fictional organizations. Completion is not an audit attestation or legal/compliance advice.",
+      "main_levels": 8,
+      "nodes": 34,
+      "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
+      "version": 1,
+      "file": "security-architecture-grc.toml",
+      "sha256": "26bf55ab4b5a05f4dfb6bbdbd0f6a9b2e2f4f4cdc2851d2a967e5d8f2c5a0578"
+    },
+    {
+      "id": "soc-analyst",
+      "title": "SOC Analyst: Triage, Investigation and Response",
+      "category": "Defensive",
+      "aliases": [
+        "soc",
+        "soc analyst",
+        "blue team",
+        "security operations",
+        "tier 1",
+        "tier 2"
+      ],
+      "entry": "Read timestamps, IP addresses and basic authentication/web logs; distinguish an event from an alert.",
+      "background": [
+        "networking-for-security",
+        "defensive-security-and-detection"
+      ],
+      "labs": [],
+      "limits": "Use supplied or self-generated telemetry on the Pi; vendor-specific Sentinel/Defender tasks require that service or an appropriate training tenant.",
+      "main_levels": 8,
+      "nodes": 34,
+      "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
+      "version": 1,
+      "file": "soc-analyst.toml",
+      "sha256": "a487787d8ce3e77a2253fed6f9506ab1f8c85ddacc42bb3376404495f74903d8"
+    },
+    {
+      "id": "threat-hunting-intelligence",
+      "title": "Threat Hunting and Threat Intelligence",
+      "category": "Defensive",
+      "aliases": [
+        "threat hunting",
+        "cti",
+        "threat intelligence",
+        "osint",
+        "attack"
+      ],
+      "entry": "Query small log datasets and distinguish source facts from analyst judgments.",
+      "background": [
+        "soc-analyst"
+      ],
+      "labs": [],
+      "limits": "Use public reports and synthetic telemetry; this track does not authorize investigating private individuals or scanning report indicators.",
+      "main_levels": 8,
+      "nodes": 34,
+      "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
+      "version": 1,
+      "file": "threat-hunting-intelligence.toml",
+      "sha256": "7c4f89fd9b77d788787f7e0b13ee6e27d8c3785a43308302100770e805ce3edd"
+    },
+    {
+      "id": "verified-security-lab",
+      "title": "Verified security lab: solve and show the result",
+      "category": "Practice",
+      "aliases": [
+        "verified labs",
+        "ctf",
+        "logging lab"
+      ],
+      "entry": "No prior track completion needed for the built-in exercises.",
+      "background": [],
+      "labs": [
+        "juice-shop"
+      ],
+      "limits": "Five built-in graded exercises and three signed Juice Shop checks. External tasks need the proof bridge and an individually assigned instance.",
+      "main_levels": 8,
+      "nodes": 8,
+      "verification": "All eight tasks require verified results.",
+      "version": 1,
+      "file": "verified-security-lab.toml",
+      "sha256": "9ae594d3358befe6ab39a57a79b8f8713d5ff0cce244f89d5ae7d251478ae2e4"
+    },
+    {
+      "id": "vulnerability-management",
+      "title": "Vulnerability Management and Exposure Prioritization",
+      "category": "Defensive",
+      "aliases": [
+        "vulnerability management",
+        "exposure",
+        "cve",
+        "epss",
+        "ssvc"
+      ],
+      "entry": "Understand service versions, asset ownership and the difference between an advisory and confirmed exposure.",
+      "background": [
+        "networking-for-security"
+      ],
+      "labs": [],
+      "limits": "Use synthetic inventories and approved scan exports. EPSS estimates and KEV membership inform decisions but do not prove exploitation on your system.",
+      "main_levels": 8,
+      "nodes": 34,
+      "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
+      "version": 1,
+      "file": "vulnerability-management.toml",
+      "sha256": "6ba97b60b04b1e8a816fa5a1e0edd12991d8335ce8c1d11a402469447cf8c9a2"
+    },
+    {
+      "id": "vulnerability-research-bug-bounty",
+      "title": "Vulnerability Research and Bug Bounty Practice",
+      "category": "Offensive",
+      "aliases": [
+        "bug bounty",
+        "vulnerability research",
+        "responsible disclosure",
+        "fuzzing"
+      ],
+      "entry": "Reproduce a lab web/API finding, read simple code and understand scope restrictions.",
+      "background": [
+        "web-application-security",
+        "api-security"
+      ],
+      "labs": [
+        "juice-shop",
+        "webgoat"
+      ],
+      "limits": "Practice on owned/open training software. Program rules and explicit authorization govern any later real target; no bounty or career result is promised.",
+      "main_levels": 8,
+      "nodes": 34,
+      "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
+      "version": 1,
+      "file": "vulnerability-research-bug-bounty.toml",
+      "sha256": "28d57e65aff2c400a95fe923ef17516d924084cdd7f5d6cb77910e9b367123c5"
+    },
+    {
       "id": "web-application-security",
       "title": "Web Application Security: beyond the OWASP Top 10 basics",
+      "category": "Offensive",
+      "aliases": [
+        "web",
+        "owasp"
+      ],
+      "entry": "Use the entry demonstration in the track to check your background.",
+      "background": [],
+      "labs": [],
+      "limits": "Established v3 assessment rubric; file checks do not grade reasoning.",
+      "main_levels": 8,
+      "nodes": 64,
+      "verification": "See each task: automated evidence, artifact checks and human assessment have different scope.",
       "version": 3,
       "file": "web-application-security.toml",
       "sha256": "bad55e956d50a06601c0df3e81dc8612363c9b887798ac8c95b3d2eb05053a01"
+    },
+    {
+      "id": "wireless-iot-security",
+      "title": "Wireless and IoT Security",
+      "category": "Specialist",
+      "aliases": [
+        "wireless",
+        "wifi",
+        "iot",
+        "mqtt",
+        "firmware"
+      ],
+      "entry": "Understand local networking, device ownership and basic authentication.",
+      "background": [
+        "networking-for-security"
+      ],
+      "labs": [
+        "mqtt"
+      ],
+      "limits": "MQTT exercises run in Docker. Radio capture/injection requires suitable owned hardware and legal scope; firmware emulation is device/architecture-specific.",
+      "main_levels": 8,
+      "nodes": 34,
+      "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
+      "version": 1,
+      "file": "wireless-iot-security.toml",
+      "sha256": "25e35e365109e4cc600c5f595fb916e43dc89ddd38ae18141c0680a66f85fbd0"
     }
   ]
 }

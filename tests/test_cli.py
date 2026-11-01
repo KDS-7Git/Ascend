@@ -18,7 +18,8 @@ def test_cli_end_to_end(tmp_path):
     output = run_cli(tmp_path).stdout
     assert "Next" in output and "Quick win" in output and "[draft]" in output
     assert len(output.splitlines()) <= 6
-    assert "split" in run_cli(tmp_path, "20").stdout
+    assert "Bandit" in run_cli(tmp_path, "20").stdout
+    assert "split" in run_cli(tmp_path, "1").stdout
     assert run_cli(tmp_path, "remind-check").returncode == 1
     assert (
         run_cli(

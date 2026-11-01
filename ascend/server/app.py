@@ -76,7 +76,12 @@ def create_app(home=None, auth_mode=None, scheduler=True):
                 if db.setting("nudge_channel") is None:
                     db.set_setting("nudge_channel", "ntfy")
                 try:
-                    NudgeRunner(Tracker(db)).run()
+                    from ascend import timing
+
+                    task_tracker = Tracker(db)
+                    runner = NudgeRunner(task_tracker)
+                    timing.reminders(task_tracker, runner.sender)
+                    runner.run()
                 except (ValueError, OSError):
                     logging.getLogger("ascend.nudge").warning(
                         "Reminder delivery failed for user %s; check channel configuration",

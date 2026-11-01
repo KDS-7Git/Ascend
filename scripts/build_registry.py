@@ -7,11 +7,18 @@ import tomllib
 
 root = Path(__file__).resolve().parents[1] / "packs/community"
 packs = []
+catalog_path = root / "catalog.json"
+catalog = (
+    {row["id"]: row for row in json.loads(catalog_path.read_text())["tracks"]}
+    if catalog_path.exists()
+    else {}
+)
 for path in sorted(root.glob("*.toml")):
     raw = path.read_bytes()
     meta = tomllib.loads(raw.decode())["pack"]
     packs.append(
         {
+            **catalog.get(meta["id"], {}),
             "id": meta["id"],
             "title": meta["title"],
             "version": meta["version"],

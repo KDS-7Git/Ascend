@@ -299,3 +299,64 @@ def test_browser_skips_do_not_earn_milestones(live_server, pack_data):
         expect(page.locator(".earned-badge")).to_have_count(1)
         expect(page.locator(".earned-badge")).to_contain_text("Second task")
         browser.close()
+
+
+@pytest.mark.parametrize("width,height", [(390, 844), (1440, 1000)])
+def test_browser_verified_logging_timer_and_catalog(
+    live_server, width, height, tmp_path
+):
+    import httpx
+    from playwright.sync_api import sync_playwright, expect
+
+    def command(argv):
+        response = httpx.post(live_server + "/api/command", json={"argv": argv})
+        assert response.status_code == 200, response.text
+        return response.json()
+
+    command(["pack", "install", "verified-security-lab"])
+    command(["mission", "pause"])
+    command(["mission", "start", "verified-security-lab"])
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page(viewport={"width": width, "height": height})
+        errors = []
+        page.on("pageerror", lambda error: errors.append(str(error)))
+        page.goto(live_server)
+        page.locator(".next-card").get_by_role("button", name="Open challenge").click()
+        expect(page.get_by_label("Session target (minutes)")).to_have_value("15")
+        expect(
+            page.get_by_label("Split into smaller steps (one per line)")
+        ).to_have_count(0)
+        page.get_by_role("button", name="Start verified exercise").click()
+        page.get_by_role("button", name="Send successful request").click()
+        page.get_by_role("button", name="Send failed request").click()
+        page.wait_for_function("""() => {
+            const text = document.querySelector('.lab-data')?.textContent;
+            if (!text) return false;
+            const marker = [...document.querySelectorAll('#sheet p')].find(p => p.textContent.startsWith('Your exercise marker:'))?.textContent.split(': ')[1];
+            return JSON.parse(text).events.some(e => e.marker === marker && e.status >= 400);
+        }""")
+        import json
+
+        data = json.loads(page.locator(".lab-data").inner_text())
+        marker = (
+            page.get_by_text("Your exercise marker:").inner_text().split(": ", 1)[1]
+        )
+        event = next(
+            e for e in data["events"] if e["marker"] == marker and e["status"] >= 400
+        )
+        page.get_by_label("request id", exact=True).fill(event["request_id"])
+        page.get_by_label("errors", exact=True).fill("1")
+        page.get_by_role("button", name="Verify my result").click()
+        expect(page.get_by_text("✓ Verified. +100 XP.", exact=False)).to_be_visible()
+        assert command(["session", "status"])["xp"] == 100
+        page.screenshot(path=str(tmp_path / f"verified-{width}.png"), full_page=True)
+        assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+        page.keyboard.press("Escape")
+        page.get_by_role("button", name="More", exact=True).click()
+        page.get_by_role("button", name="Browse learning tracks").click()
+        page.get_by_label("Search subjects and roles").fill("active directory")
+        expect(page.locator(".catalog-card")).to_have_count(1)
+        expect(page.locator(".catalog-card h3")).to_contain_text("Active Directory")
+        assert not errors
+        browser.close()

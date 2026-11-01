@@ -1,0 +1,516 @@
+# Generated from docs/curriculum/specialist-paths.json; unreviewed draft.
+[pack]
+"id" = "ot-ics-security"
+"title" = "OT and Industrial Control Security"
+"kind" = "proficiency"
+"version" = 1
+"source" = "ai-draft"
+"reviewed" = false
+
+[vars]
+"lab_dir" = "~/cyber/ot-ics-security"
+
+[[level]]
+"id" = "foundations"
+"title" = "Prove the entry skills in a small lab"
+"lane" = "main"
+
+[[level]]
+"id" = "process"
+"title" = "Start with the process consequence"
+"lane" = "main"
+
+[[level]]
+"id" = "protocol"
+"title" = "Read the register with its context"
+"lane" = "main"
+
+[[level]]
+"id" = "segmentation"
+"title" = "Prove the permitted path"
+"lane" = "main"
+
+[[level]]
+"id" = "monitoring"
+"title" = "Distinguish a maintenance action from an anomaly"
+"lane" = "main"
+
+[[level]]
+"id" = "change-control"
+"title" = "Rehearse a reversible change"
+"lane" = "main"
+
+[[level]]
+"id" = "exercise"
+"title" = "Run an incident tabletop with technical evidence"
+"lane" = "main"
+
+[[level]]
+"id" = "independent-transfer"
+"title" = "Revisit the skill on a fresh problem"
+"lane" = "main"
+
+[[level]]
+"id" = "recall-lane"
+"title" = "Return later: reasoning checks"
+"lane" = "side"
+
+[[level]]
+"id" = "quick"
+"title" = "Small verified exercises"
+"lane" = "side"
+
+[[node]]
+"id" = "lab-readiness"
+"level" = "foundations"
+"title" = "Start with a verifiable evidence exercise"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Compute the exact content hash of a fresh server-generated evidence fixture and pass its check."
+"brief" = "This small exercise tests evidence integrity. Track entry background: Read network diagrams and distinguish operational safety from information confidentiality."
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "lab", "exercise" = "integrity" }
+
+[[node]]
+"id" = "foundations-reasoning"
+"level" = "foundations"
+"title" = "Reason it through: Prove the entry skills in a small lab"
+"size" = "S"
+"minutes" = 10
+"needs" = ["lab-readiness"]
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Read network diagrams and distinguish operational safety from information confidentiality."
+"steps" = ["Work through this preparation: Read network diagrams and distinguish operational safety from information confidentiality.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ot-ics-security:foundations" }
+
+[[node]]
+"id" = "foundations-experiment"
+"level" = "foundations"
+"title" = "Investigate: Prove the entry skills in a small lab"
+"size" = "M"
+"minutes" = 60
+"needs" = ["foundations-reasoning"]
+"done_when" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/foundations-experiment.json."
+"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
+"steps" = ["Read network diagrams and distinguish operational safety from information confidentiality.", "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "file", "path" = "{lab_dir}/foundations-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "foundations-milestone"
+"level" = "foundations"
+"title" = "Apply it to a changed case: Prove the entry skills in a small lab"
+"size" = "M"
+"minutes" = 120
+"needs" = ["foundations-reasoning", "foundations-experiment", "lab-readiness"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/foundations-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
+"steps" = ["Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Transfer: Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.", "Control: Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "file", "path" = "{lab_dir}/foundations-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-foundations"
+"level" = "recall-lane"
+"title" = "Return later: Prove the entry skills in a small lab"
+"size" = "S"
+"minutes" = 10
+"needs" = ["foundations-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct the environment and entry assumptions without following the setup notes."
+"steps" = ["Reconstruct the environment and entry assumptions without following the setup notes.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ot-ics-security:foundations" }
+
+[[node]]
+"id" = "process-reasoning"
+"level" = "process"
+"title" = "Reason it through: Start with the process consequence"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Draw a simulated sensor, controller and actuator workflow with safety constraints."
+"steps" = ["Work through this preparation: Draw a simulated sensor, controller and actuator workflow with safety constraints.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ot-ics-security:process" }
+
+[[node]]
+"id" = "process-experiment"
+"level" = "process"
+"title" = "Investigate: Start with the process consequence"
+"size" = "M"
+"minutes" = 60
+"needs" = ["process-reasoning"]
+"done_when" = "Build an asset/zone diagram and identify how loss of view, control or availability affects the simulated process. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/process-experiment.json."
+"brief" = "Build an asset/zone diagram and identify how loss of view, control or availability affects the simulated process."
+"steps" = ["Draw a simulated sensor, controller and actuator workflow with safety constraints.", "Build an asset/zone diagram and identify how loss of view, control or availability affects the simulated process.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "file", "path" = "{lab_dir}/process-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "process-milestone"
+"level" = "process"
+"title" = "Apply it to a changed case: Start with the process consequence"
+"size" = "M"
+"minutes" = 120
+"needs" = ["process-reasoning", "process-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/process-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Build an asset/zone diagram and identify how loss of view, control or availability affects the simulated process."
+"steps" = ["Build an asset/zone diagram and identify how loss of view, control or availability affects the simulated process.", "Transfer: Change a process dependency and revise the priority of affected controls.", "Control: Distinguish a confidentiality issue from a change that could affect safe operation.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "file", "path" = "{lab_dir}/process-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-process"
+"level" = "recall-lane"
+"title" = "Return later: Start with the process consequence"
+"size" = "S"
+"minutes" = 10
+"needs" = ["process-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain why enterprise IT priorities cannot be copied blindly into OT."
+"steps" = ["Explain why enterprise IT priorities cannot be copied blindly into OT.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ot-ics-security:process" }
+
+[[node]]
+"id" = "protocol-reasoning"
+"level" = "protocol"
+"title" = "Reason it through: Read the register with its context"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Interpret function code, address, unit identity and value from a supplied Modbus exchange."
+"steps" = ["Work through this preparation: Interpret function code, address, unit identity and value from a supplied Modbus exchange.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ot-ics-security:protocol" }
+
+[[node]]
+"id" = "protocol-experiment"
+"level" = "protocol"
+"title" = "Investigate: Read the register with its context"
+"size" = "M"
+"minutes" = 60
+"needs" = ["protocol-reasoning"]
+"done_when" = "Use an isolated software simulator or capture to trace a benign register read and document address and data-type assumptions. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/protocol-experiment.json."
+"brief" = "Use an isolated software simulator or capture to trace a benign register read and document address and data-type assumptions."
+"steps" = ["Interpret function code, address, unit identity and value from a supplied Modbus exchange.", "Use an isolated software simulator or capture to trace a benign register read and document address and data-type assumptions.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "file", "path" = "{lab_dir}/protocol-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "protocol-milestone"
+"level" = "protocol"
+"title" = "Apply it to a changed case: Read the register with its context"
+"size" = "M"
+"minutes" = 120
+"needs" = ["protocol-reasoning", "protocol-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/protocol-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Use an isolated software simulator or capture to trace a benign register read and document address and data-type assumptions."
+"steps" = ["Use an isolated software simulator or capture to trace a benign register read and document address and data-type assumptions.", "Transfer: Change register address or byte order in a fixture and predict the interpretation.", "Control: Reject an out-of-range or mismatched response instead of inventing a process value.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "file", "path" = "{lab_dir}/protocol-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-protocol"
+"level" = "recall-lane"
+"title" = "Return later: Read the register with its context"
+"size" = "S"
+"minutes" = 10
+"needs" = ["protocol-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain why a register number alone does not identify a physical measurement."
+"steps" = ["Explain why a register number alone does not identify a physical measurement.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ot-ics-security:protocol" }
+
+[[node]]
+"id" = "segmentation-reasoning"
+"level" = "segmentation"
+"title" = "Reason it through: Prove the permitted path"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Define engineering, operator and monitoring roles for a simulated cell."
+"steps" = ["Work through this preparation: Define engineering, operator and monitoring roles for a simulated cell.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ot-ics-security:segmentation" }
+
+[[node]]
+"id" = "segmentation-experiment"
+"level" = "segmentation"
+"title" = "Investigate: Prove the permitted path"
+"size" = "M"
+"minutes" = 60
+"needs" = ["segmentation-reasoning"]
+"done_when" = "Model and test a small allowlist of communication paths using local fixtures or a disposable network. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/segmentation-experiment.json."
+"brief" = "Model and test a small allowlist of communication paths using local fixtures or a disposable network."
+"steps" = ["Define engineering, operator and monitoring roles for a simulated cell.", "Model and test a small allowlist of communication paths using local fixtures or a disposable network.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "file", "path" = "{lab_dir}/segmentation-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "segmentation-milestone"
+"level" = "segmentation"
+"title" = "Apply it to a changed case: Prove the permitted path"
+"size" = "M"
+"minutes" = 120
+"needs" = ["segmentation-reasoning", "segmentation-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/segmentation-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Model and test a small allowlist of communication paths using local fixtures or a disposable network."
+"steps" = ["Model and test a small allowlist of communication paths using local fixtures or a disposable network.", "Transfer: Change a client role or destination port and predict whether access should remain.", "Control: Preserve required monitoring while denying an unrelated management path.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "file", "path" = "{lab_dir}/segmentation-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-segmentation"
+"level" = "recall-lane"
+"title" = "Return later: Prove the permitted path"
+"size" = "S"
+"minutes" = 10
+"needs" = ["segmentation-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct one zone boundary and its operational justification."
+"steps" = ["Reconstruct one zone boundary and its operational justification.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ot-ics-security:segmentation" }
+
+[[node]]
+"id" = "monitoring-reasoning"
+"level" = "monitoring"
+"title" = "Reason it through: Distinguish a maintenance action from an anomaly"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Read baseline function codes and timing from a supplied industrial training trace."
+"steps" = ["Work through this preparation: Read baseline function codes and timing from a supplied industrial training trace.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ot-ics-security:monitoring" }
+
+[[node]]
+"id" = "monitoring-experiment"
+"level" = "monitoring"
+"title" = "Investigate: Distinguish a maintenance action from an anomaly"
+"size" = "M"
+"minutes" = 60
+"needs" = ["monitoring-reasoning"]
+"done_when" = "Create a detection hypothesis for an unexpected write or new peer and evaluate it against labeled simulator traffic. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/monitoring-experiment.json."
+"brief" = "Create a detection hypothesis for an unexpected write or new peer and evaluate it against labeled simulator traffic."
+"steps" = ["Read baseline function codes and timing from a supplied industrial training trace.", "Create a detection hypothesis for an unexpected write or new peer and evaluate it against labeled simulator traffic.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "file", "path" = "{lab_dir}/monitoring-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "monitoring-milestone"
+"level" = "monitoring"
+"title" = "Apply it to a changed case: Distinguish a maintenance action from an anomaly"
+"size" = "M"
+"minutes" = 120
+"needs" = ["monitoring-reasoning", "monitoring-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/monitoring-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Create a detection hypothesis for an unexpected write or new peer and evaluate it against labeled simulator traffic."
+"steps" = ["Create a detection hypothesis for an unexpected write or new peer and evaluate it against labeled simulator traffic.", "Transfer: Change a nonessential address or schedule and reassess the rule.", "Control: Include approved maintenance and record the context needed to avoid a false incident.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "file", "path" = "{lab_dir}/monitoring-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-monitoring"
+"level" = "recall-lane"
+"title" = "Return later: Distinguish a maintenance action from an anomaly"
+"size" = "S"
+"minutes" = 10
+"needs" = ["monitoring-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain what the network sensor cannot establish about physical state."
+"steps" = ["Explain what the network sensor cannot establish about physical state.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ot-ics-security:monitoring" }
+
+[[node]]
+"id" = "change-control-reasoning"
+"level" = "change-control"
+"title" = "Reason it through: Rehearse a reversible change"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Write a pre-check, change, validation and rollback plan for a simulator configuration."
+"steps" = ["Work through this preparation: Write a pre-check, change, validation and rollback plan for a simulator configuration.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ot-ics-security:change-control" }
+
+[[node]]
+"id" = "change-control-experiment"
+"level" = "change-control"
+"title" = "Investigate: Rehearse a reversible change"
+"size" = "M"
+"minutes" = 60
+"needs" = ["change-control-reasoning"]
+"done_when" = "Apply one non-disruptive simulator hardening change, preserve the baseline and verify expected readings afterward. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/change-control-experiment.json."
+"brief" = "Apply one non-disruptive simulator hardening change, preserve the baseline and verify expected readings afterward."
+"steps" = ["Write a pre-check, change, validation and rollback plan for a simulator configuration.", "Apply one non-disruptive simulator hardening change, preserve the baseline and verify expected readings afterward.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "file", "path" = "{lab_dir}/change-control-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "change-control-milestone"
+"level" = "change-control"
+"title" = "Apply it to a changed case: Rehearse a reversible change"
+"size" = "M"
+"minutes" = 120
+"needs" = ["change-control-reasoning", "change-control-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/change-control-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Apply one non-disruptive simulator hardening change, preserve the baseline and verify expected readings afterward."
+"steps" = ["Apply one non-disruptive simulator hardening change, preserve the baseline and verify expected readings afterward.", "Transfer: Remove an assumed maintenance window and decide whether to defer or redesign the change.", "Control: Demonstrate that a failed validation leads to rollback rather than an unsupported success claim.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "file", "path" = "{lab_dir}/change-control-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-change-control"
+"level" = "recall-lane"
+"title" = "Return later: Rehearse a reversible change"
+"size" = "S"
+"minutes" = 10
+"needs" = ["change-control-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain the evidence required before a change could be considered in a real plant."
+"steps" = ["Explain the evidence required before a change could be considered in a real plant.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ot-ics-security:change-control" }
+
+[[node]]
+"id" = "exercise-reasoning"
+"level" = "exercise"
+"title" = "Reason it through: Run an incident tabletop with technical evidence"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Define process owners, safety contacts and evidence sources for a fictional incident."
+"steps" = ["Work through this preparation: Define process owners, safety contacts and evidence sources for a fictional incident.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ot-ics-security:exercise" }
+
+[[node]]
+"id" = "exercise-experiment"
+"level" = "exercise"
+"title" = "Investigate: Run an incident tabletop with technical evidence"
+"size" = "M"
+"minutes" = 60
+"needs" = ["exercise-reasoning"]
+"done_when" = "Investigate a supplied OT trace and conduct a tabletop containment decision with a technical timeline and explicit safety uncertainty. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/exercise-experiment.json."
+"brief" = "Investigate a supplied OT trace and conduct a tabletop containment decision with a technical timeline and explicit safety uncertainty."
+"steps" = ["Define process owners, safety contacts and evidence sources for a fictional incident.", "Investigate a supplied OT trace and conduct a tabletop containment decision with a technical timeline and explicit safety uncertainty.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "file", "path" = "{lab_dir}/exercise-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "exercise-milestone"
+"level" = "exercise"
+"title" = "Apply it to a changed case: Run an incident tabletop with technical evidence"
+"size" = "M"
+"minutes" = 120
+"needs" = ["exercise-reasoning", "exercise-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/exercise-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Investigate a supplied OT trace and conduct a tabletop containment decision with a technical timeline and explicit safety uncertainty."
+"steps" = ["Investigate a supplied OT trace and conduct a tabletop containment decision with a technical timeline and explicit safety uncertainty.", "Transfer: Add contradictory process evidence and revise the decision.", "Control: Reject an IT-style containment action that would violate the stated process constraint.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "file", "path" = "{lab_dir}/exercise-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-exercise"
+"level" = "recall-lane"
+"title" = "Return later: Run an incident tabletop with technical evidence"
+"size" = "S"
+"minutes" = 10
+"needs" = ["exercise-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct the decision and the unresolved question requiring a process engineer."
+"steps" = ["Reconstruct the decision and the unresolved question requiring a process engineer.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ot-ics-security:exercise" }
+
+[[node]]
+"id" = "independent-transfer-reasoning"
+"level" = "independent-transfer"
+"title" = "Reason it through: Revisit the skill on a fresh problem"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution."
+"steps" = ["Work through this preparation: Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ot-ics-security:independent-transfer" }
+
+[[node]]
+"id" = "independent-transfer-experiment"
+"level" = "independent-transfer"
+"title" = "Investigate: Revisit the skill on a fresh problem"
+"size" = "M"
+"minutes" = 60
+"needs" = ["independent-transfer-reasoning"]
+"done_when" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/independent-transfer-experiment.json."
+"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
+"steps" = ["Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "independent-transfer-milestone"
+"level" = "independent-transfer"
+"title" = "Apply it to a changed case: Revisit the skill on a fresh problem"
+"size" = "M"
+"minutes" = 120
+"needs" = ["independent-transfer-reasoning", "independent-transfer-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/independent-transfer-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
+"steps" = ["After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Transfer: Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.", "Control: Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-independent-transfer"
+"level" = "recall-lane"
+"title" = "Return later: Revisit the skill on a fresh problem"
+"size" = "S"
+"minutes" = 10
+"needs" = ["independent-transfer-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain what transferred, what required help and which prerequisite needs another small experiment."
+"steps" = ["Explain what transferred, what required help and which prerequisite needs another small experiment.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ot-ics-security:independent-transfer" }
+
+[[node]]
+"id" = "quick-access-check"
+"level" = "quick"
+"title" = "A ten-minute permission puzzle"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Correctly evaluate every allow/deny decision for a fresh server-generated policy fixture."
+"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"verify" = { "type" = "lab", "exercise" = "access-policy" }

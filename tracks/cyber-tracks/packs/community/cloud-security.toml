@@ -1,0 +1,516 @@
+# Generated from docs/curriculum/specialist-paths.json; unreviewed draft.
+[pack]
+"id" = "cloud-security"
+"title" = "Cloud Security: Identity, Exposure and Detection"
+"kind" = "proficiency"
+"version" = 1
+"source" = "ai-draft"
+"reviewed" = false
+
+[vars]
+"lab_dir" = "~/cyber/cloud-security"
+
+[[level]]
+"id" = "foundations"
+"title" = "Prove the entry skills in a small lab"
+"lane" = "main"
+
+[[level]]
+"id" = "shared-responsibility"
+"title" = "Identify who owns each control"
+"lane" = "main"
+
+[[level]]
+"id" = "iam"
+"title" = "Predict the authorization decision"
+"lane" = "main"
+
+[[level]]
+"id" = "exposure"
+"title" = "Public does not always mean intended"
+"lane" = "main"
+
+[[level]]
+"id" = "secrets"
+"title" = "Separate workload identity from static keys"
+"lane" = "main"
+
+[[level]]
+"id" = "logging"
+"title" = "Follow a control-plane change"
+"lane" = "main"
+
+[[level]]
+"id" = "assessment"
+"title" = "Deliver a bounded cloud review"
+"lane" = "main"
+
+[[level]]
+"id" = "independent-transfer"
+"title" = "Revisit the skill on a fresh problem"
+"lane" = "main"
+
+[[level]]
+"id" = "recall-lane"
+"title" = "Return later: reasoning checks"
+"lane" = "side"
+
+[[level]]
+"id" = "quick"
+"title" = "Small verified exercises"
+"lane" = "side"
+
+[[node]]
+"id" = "lab-readiness"
+"level" = "foundations"
+"title" = "Start with a verifiable evidence exercise"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Compute the exact content hash of a fresh server-generated evidence fixture and pass its check."
+"brief" = "This small exercise tests evidence integrity. Track entry background: Explain HTTP, role-based access and basic JSON; distinguish cloud control-plane actions from workload traffic."
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "lab", "exercise" = "integrity" }
+
+[[node]]
+"id" = "foundations-reasoning"
+"level" = "foundations"
+"title" = "Reason it through: Prove the entry skills in a small lab"
+"size" = "S"
+"minutes" = 10
+"needs" = ["lab-readiness"]
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Explain HTTP, role-based access and basic JSON; distinguish cloud control-plane actions from workload traffic."
+"steps" = ["Work through this preparation: Explain HTTP, role-based access and basic JSON; distinguish cloud control-plane actions from workload traffic.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cloud-security:foundations" }
+
+[[node]]
+"id" = "foundations-experiment"
+"level" = "foundations"
+"title" = "Investigate: Prove the entry skills in a small lab"
+"size" = "M"
+"minutes" = 60
+"needs" = ["foundations-reasoning"]
+"done_when" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/foundations-experiment.json."
+"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
+"steps" = ["Explain HTTP, role-based access and basic JSON; distinguish cloud control-plane actions from workload traffic.", "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/foundations-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "foundations-milestone"
+"level" = "foundations"
+"title" = "Apply it to a changed case: Prove the entry skills in a small lab"
+"size" = "M"
+"minutes" = 120
+"needs" = ["foundations-reasoning", "foundations-experiment", "lab-readiness"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/foundations-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
+"steps" = ["Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Transfer: Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.", "Control: Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/foundations-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-foundations"
+"level" = "recall-lane"
+"title" = "Return later: Prove the entry skills in a small lab"
+"size" = "S"
+"minutes" = 10
+"needs" = ["foundations-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct the environment and entry assumptions without following the setup notes."
+"steps" = ["Reconstruct the environment and entry assumptions without following the setup notes.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cloud-security:foundations" }
+
+[[node]]
+"id" = "shared-responsibility-reasoning"
+"level" = "shared-responsibility"
+"title" = "Reason it through: Identify who owns each control"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Draw identity, workload, data and management-plane boundaries for a small fictional cloud service."
+"steps" = ["Work through this preparation: Draw identity, workload, data and management-plane boundaries for a small fictional cloud service.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cloud-security:shared-responsibility" }
+
+[[node]]
+"id" = "shared-responsibility-experiment"
+"level" = "shared-responsibility"
+"title" = "Investigate: Identify who owns each control"
+"size" = "M"
+"minutes" = 60
+"needs" = ["shared-responsibility-reasoning"]
+"done_when" = "Build an asset and responsibility inventory covering account ownership, regions, exposed endpoints, audit sources and recovery responsibilities. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/shared-responsibility-experiment.json."
+"brief" = "Build an asset and responsibility inventory covering account ownership, regions, exposed endpoints, audit sources and recovery responsibilities."
+"steps" = ["Draw identity, workload, data and management-plane boundaries for a small fictional cloud service.", "Build an asset and responsibility inventory covering account ownership, regions, exposed endpoints, audit sources and recovery responsibilities.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/shared-responsibility-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "shared-responsibility-milestone"
+"level" = "shared-responsibility"
+"title" = "Apply it to a changed case: Identify who owns each control"
+"size" = "M"
+"minutes" = 120
+"needs" = ["shared-responsibility-reasoning", "shared-responsibility-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/shared-responsibility-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Build an asset and responsibility inventory covering account ownership, regions, exposed endpoints, audit sources and recovery responsibilities."
+"steps" = ["Build an asset and responsibility inventory covering account ownership, regions, exposed endpoints, audit sources and recovery responsibilities.", "Transfer: Move one component from a VM to a managed service and revise the shared-responsibility assumptions.", "Control: Include a provider-managed control that a workload operator cannot fix by changing application code.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/shared-responsibility-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-shared-responsibility"
+"level" = "recall-lane"
+"title" = "Return later: Identify who owns each control"
+"size" = "S"
+"minutes" = 10
+"needs" = ["shared-responsibility-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain the difference between provider security and secure use of the provider."
+"steps" = ["Explain the difference between provider security and secure use of the provider.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cloud-security:shared-responsibility" }
+
+[[node]]
+"id" = "iam-reasoning"
+"level" = "iam"
+"title" = "Reason it through: Predict the authorization decision"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Evaluate small identity/resource-policy fixtures with explicit grants, denies and conditions."
+"steps" = ["Work through this preparation: Evaluate small identity/resource-policy fixtures with explicit grants, denies and conditions.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cloud-security:iam" }
+
+[[node]]
+"id" = "iam-experiment"
+"level" = "iam"
+"title" = "Investigate: Predict the authorization decision"
+"size" = "M"
+"minutes" = 60
+"needs" = ["iam-reasoning"]
+"done_when" = "Build an access matrix for two synthetic roles and one resource, test it in a provider policy simulator or scoped training account, and record where the simulator lacks runtime context. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/iam-experiment.json."
+"brief" = "Build an access matrix for two synthetic roles and one resource, test it in a provider policy simulator or scoped training account, and record where the simulator lacks runtime context."
+"steps" = ["Evaluate small identity/resource-policy fixtures with explicit grants, denies and conditions.", "Build an access matrix for two synthetic roles and one resource, test it in a provider policy simulator or scoped training account, and record where the simulator lacks runtime context.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/iam-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "iam-milestone"
+"level" = "iam"
+"title" = "Apply it to a changed case: Predict the authorization decision"
+"size" = "M"
+"minutes" = 120
+"needs" = ["iam-reasoning", "iam-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/iam-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Build an access matrix for two synthetic roles and one resource, test it in a provider policy simulator or scoped training account, and record where the simulator lacks runtime context."
+"steps" = ["Build an access matrix for two synthetic roles and one resource, test it in a provider policy simulator or scoped training account, and record where the simulator lacks runtime context.", "Transfer: Add a condition or a resource policy and predict how the effective decision changes.", "Control: Demonstrate a denied unrelated principal and an intended allowed operation.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/iam-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-iam"
+"level" = "recall-lane"
+"title" = "Return later: Predict the authorization decision"
+"size" = "S"
+"minutes" = 10
+"needs" = ["iam-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain why an identity policy alone may not determine effective access."
+"steps" = ["Explain why an identity policy alone may not determine effective access.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cloud-security:iam" }
+
+[[node]]
+"id" = "exposure-reasoning"
+"level" = "exposure"
+"title" = "Reason it through: Public does not always mean intended"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Identify ingress, egress and object-sharing settings in a supplied cloud configuration."
+"steps" = ["Work through this preparation: Identify ingress, egress and object-sharing settings in a supplied cloud configuration.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cloud-security:exposure" }
+
+[[node]]
+"id" = "exposure-experiment"
+"level" = "exposure"
+"title" = "Investigate: Public does not always mean intended"
+"size" = "M"
+"minutes" = 60
+"needs" = ["exposure-reasoning"]
+"done_when" = "Trace a fictional application's exposure through load balancer, workload and data storage; validate selected rules using a local model or training account and propose a minimal repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/exposure-experiment.json."
+"brief" = "Trace a fictional application's exposure through load balancer, workload and data storage; validate selected rules using a local model or training account and propose a minimal repair."
+"steps" = ["Identify ingress, egress and object-sharing settings in a supplied cloud configuration.", "Trace a fictional application's exposure through load balancer, workload and data storage; validate selected rules using a local model or training account and propose a minimal repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/exposure-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "exposure-milestone"
+"level" = "exposure"
+"title" = "Apply it to a changed case: Public does not always mean intended"
+"size" = "M"
+"minutes" = 120
+"needs" = ["exposure-reasoning", "exposure-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/exposure-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Trace a fictional application's exposure through load balancer, workload and data storage; validate selected rules using a local model or training account and propose a minimal repair."
+"steps" = ["Trace a fictional application's exposure through load balancer, workload and data storage; validate selected rules using a local model or training account and propose a minimal repair.", "Transfer: Change a resource from private to shared-with-one-role and verify that the intended boundary survives.", "Control: Preserve legitimate client access and demonstrate that an unrelated identity cannot read the object.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/exposure-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-exposure"
+"level" = "recall-lane"
+"title" = "Return later: Public does not always mean intended"
+"size" = "S"
+"minutes" = 10
+"needs" = ["exposure-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct the layers required to explain one exposure finding."
+"steps" = ["Reconstruct the layers required to explain one exposure finding.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cloud-security:exposure" }
+
+[[node]]
+"id" = "secrets-reasoning"
+"level" = "secrets"
+"title" = "Reason it through: Separate workload identity from static keys"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Find synthetic hardcoded credentials in a toy repository and inventory every place they were copied."
+"steps" = ["Work through this preparation: Find synthetic hardcoded credentials in a toy repository and inventory every place they were copied.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cloud-security:secrets" }
+
+[[node]]
+"id" = "secrets-experiment"
+"level" = "secrets"
+"title" = "Investigate: Separate workload identity from static keys"
+"size" = "M"
+"minutes" = 60
+"needs" = ["secrets-reasoning"]
+"done_when" = "Replace a toy long-lived credential with a bounded local token or a training-provider workload identity, test expiration/revocation and document remaining trust assumptions. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/secrets-experiment.json."
+"brief" = "Replace a toy long-lived credential with a bounded local token or a training-provider workload identity, test expiration/revocation and document remaining trust assumptions."
+"steps" = ["Find synthetic hardcoded credentials in a toy repository and inventory every place they were copied.", "Replace a toy long-lived credential with a bounded local token or a training-provider workload identity, test expiration/revocation and document remaining trust assumptions.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/secrets-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "secrets-milestone"
+"level" = "secrets"
+"title" = "Apply it to a changed case: Separate workload identity from static keys"
+"size" = "M"
+"minutes" = 120
+"needs" = ["secrets-reasoning", "secrets-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/secrets-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Replace a toy long-lived credential with a bounded local token or a training-provider workload identity, test expiration/revocation and document remaining trust assumptions."
+"steps" = ["Replace a toy long-lived credential with a bounded local token or a training-provider workload identity, test expiration/revocation and document remaining trust assumptions.", "Transfer: Change the audience, role or expiry and predict whether the request should still authenticate.", "Control: Verify a valid authorized request succeeds and a stale token is rejected without logging its contents.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/secrets-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-secrets"
+"level" = "recall-lane"
+"title" = "Return later: Separate workload identity from static keys"
+"size" = "S"
+"minutes" = 10
+"needs" = ["secrets-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain rotation, revocation and short-lived identity as different mechanisms."
+"steps" = ["Explain rotation, revocation and short-lived identity as different mechanisms.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cloud-security:secrets" }
+
+[[node]]
+"id" = "logging-reasoning"
+"level" = "logging"
+"title" = "Reason it through: Follow a control-plane change"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Read an audit event and distinguish actor, resource, action, result and event time."
+"steps" = ["Work through this preparation: Read an audit event and distinguish actor, resource, action, result and event time.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cloud-security:logging" }
+
+[[node]]
+"id" = "logging-experiment"
+"level" = "logging"
+"title" = "Investigate: Follow a control-plane change"
+"size" = "M"
+"minutes" = 60
+"needs" = ["logging-reasoning"]
+"done_when" = "Investigate supplied cloud audit events around a permission change and later resource access; construct a timeline and a detection query with explicit missing sources. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/logging-experiment.json."
+"brief" = "Investigate supplied cloud audit events around a permission change and later resource access; construct a timeline and a detection query with explicit missing sources."
+"steps" = ["Read an audit event and distinguish actor, resource, action, result and event time.", "Investigate supplied cloud audit events around a permission change and later resource access; construct a timeline and a detection query with explicit missing sources.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/logging-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "logging-milestone"
+"level" = "logging"
+"title" = "Apply it to a changed case: Follow a control-plane change"
+"size" = "M"
+"minutes" = 120
+"needs" = ["logging-reasoning", "logging-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/logging-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Investigate supplied cloud audit events around a permission change and later resource access; construct a timeline and a detection query with explicit missing sources."
+"steps" = ["Investigate supplied cloud audit events around a permission change and later resource access; construct a timeline and a detection query with explicit missing sources.", "Transfer: Change a resource name or actor and test whether the behavioral analytic still finds the sequence.", "Control: Include a denied change and a known maintenance change that must not be labeled successful compromise.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/logging-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-logging"
+"level" = "recall-lane"
+"title" = "Return later: Follow a control-plane change"
+"size" = "S"
+"minutes" = 10
+"needs" = ["logging-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain what the audit source can and cannot establish about data access."
+"steps" = ["Explain what the audit source can and cannot establish about data access.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cloud-security:logging" }
+
+[[node]]
+"id" = "assessment-reasoning"
+"level" = "assessment"
+"title" = "Reason it through: Deliver a bounded cloud review"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Define an account, budget, allowed resources and teardown checklist for a small training exercise."
+"steps" = ["Work through this preparation: Define an account, budget, allowed resources and teardown checklist for a small training exercise.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cloud-security:assessment" }
+
+[[node]]
+"id" = "assessment-experiment"
+"level" = "assessment"
+"title" = "Investigate: Deliver a bounded cloud review"
+"size" = "M"
+"minutes" = 60
+"needs" = ["assessment-reasoning"]
+"done_when" = "Review a fresh configuration and audit bundle, verify one identity or exposure defect in a scoped lab, apply a repair and record cleanup; use only owned training resources. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/assessment-experiment.json."
+"brief" = "Review a fresh configuration and audit bundle, verify one identity or exposure defect in a scoped lab, apply a repair and record cleanup; use only owned training resources."
+"steps" = ["Define an account, budget, allowed resources and teardown checklist for a small training exercise.", "Review a fresh configuration and audit bundle, verify one identity or exposure defect in a scoped lab, apply a repair and record cleanup; use only owned training resources.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/assessment-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "assessment-milestone"
+"level" = "assessment"
+"title" = "Apply it to a changed case: Deliver a bounded cloud review"
+"size" = "M"
+"minutes" = 120
+"needs" = ["assessment-reasoning", "assessment-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/assessment-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "Review a fresh configuration and audit bundle, verify one identity or exposure defect in a scoped lab, apply a repair and record cleanup; use only owned training resources."
+"steps" = ["Review a fresh configuration and audit bundle, verify one identity or exposure defect in a scoped lab, apply a repair and record cleanup; use only owned training resources.", "Transfer: Change one trust policy or network boundary and independently reassess the affected access path.", "Control: Verify legitimate workload behavior and prove temporary lab resources were removed where a real account was used.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/assessment-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-assessment"
+"level" = "recall-lane"
+"title" = "Return later: Deliver a bounded cloud review"
+"size" = "S"
+"minutes" = 10
+"needs" = ["assessment-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Reconstruct the finding, provider-specific limits and remaining assurance gaps."
+"steps" = ["Reconstruct the finding, provider-specific limits and remaining assurance gaps.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cloud-security:assessment" }
+
+[[node]]
+"id" = "independent-transfer-reasoning"
+"level" = "independent-transfer"
+"title" = "Reason it through: Revisit the skill on a fresh problem"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
+"brief" = "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution."
+"steps" = ["Work through this preparation: Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cloud-security:independent-transfer" }
+
+[[node]]
+"id" = "independent-transfer-experiment"
+"level" = "independent-transfer"
+"title" = "Investigate: Revisit the skill on a fresh problem"
+"size" = "M"
+"minutes" = 60
+"needs" = ["independent-transfer-reasoning"]
+"done_when" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/independent-transfer-experiment.json."
+"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
+"steps" = ["Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-experiment.json", "min_bytes" = 200 }
+
+[[node]]
+"id" = "independent-transfer-milestone"
+"level" = "independent-transfer"
+"title" = "Apply it to a changed case: Revisit the skill on a fresh problem"
+"size" = "M"
+"minutes" = 120
+"needs" = ["independent-transfer-reasoning", "independent-transfer-experiment"]
+"milestone" = true
+"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/independent-transfer-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
+"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
+"steps" = ["After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Transfer: Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.", "Control: Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-assessment.json", "min_bytes" = 300 }
+
+[[node]]
+"id" = "recall-independent-transfer"
+"level" = "recall-lane"
+"title" = "Return later: Revisit the skill on a fresh problem"
+"size" = "S"
+"minutes" = 10
+"needs" = ["independent-transfer-milestone"]
+"done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
+"brief" = "Explain what transferred, what required help and which prerequisite needs another small experiment."
+"steps" = ["Explain what transferred, what required help and which prerequisite needs another small experiment.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cloud-security:independent-transfer" }
+
+[[node]]
+"id" = "quick-access-check"
+"level" = "quick"
+"title" = "A ten-minute permission puzzle"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"done_when" = "Correctly evaluate every allow/deny decision for a fresh server-generated policy fixture."
+"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"verify" = { "type" = "lab", "exercise" = "access-policy" }
