@@ -30,6 +30,7 @@ body { isolation: isolate; }
 .week rect { transform-box: fill-box; transform-origin: center bottom; rx: 1px; }
 .motion-preference { max-width: 680px; }
 button, a, summary, .node-shape { transition: color 140ms ease, background 140ms ease, border-color 140ms ease, box-shadow 180ms ease, transform 180ms cubic-bezier(.22, 1, .36, 1); }
+.text-button, .subtle-link, .resource-link, .challenge-back { transition: color 140ms ease, text-underline-offset 180ms ease, transform 180ms ease; }
 input, select, textarea { transition: border-color 160ms ease, box-shadow 160ms ease; }
 .nav-item .icon, .card-actions .icon { transition: transform 180ms ease; }
 .level-header::after { transition: transform 200ms ease; }
@@ -45,7 +46,8 @@ dialog[open]::backdrop { animation: backdrop-arrive 200ms ease-out; }
   .card-actions > button:hover .icon { transform: translateX(3px); }
   .path-node.open:hover .node-shape { transform: translate(-2px, -2px); box-shadow: var(--shadow-sm); }
   .path-node.milestone:hover .node-shape { transform: translate(-2px, -2px) rotate(45deg); }
-  .text-button:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .text-button:not(:disabled):hover, :is(.subtle-link, .resource-link, .challenge-back):hover { color: var(--accent-hover); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; transform: translateY(-1px); }
+  .text-button:not(:disabled):active { transform: none; text-underline-offset: 4px; }
 }
 @keyframes shape-drift { to { transform: translate(12px, -18px) rotate(8deg); } }
 @keyframes orbit-turn { to { transform: rotate(360deg); } }
@@ -64,9 +66,11 @@ dialog[open]::backdrop { animation: backdrop-arrive 200ms ease-out; }
 }
 .page-inactive .ambient-scene * { animation-play-state: paused; }
 :root[data-motion='off'] *, :root[data-motion='off'] *::before, :root[data-motion='off'] *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+:root[data-motion='off'] :is(.text-button, .subtle-link, .resource-link, .challenge-back):hover { transform: none; text-underline-offset: 4px; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
   .hover-light { display: none; }
+  :is(.text-button, .subtle-link, .resource-link, .challenge-back):not(:disabled):hover { transform: none; text-underline-offset: 4px; }
 }
 @media (forced-colors: active) { .ambient-scene, .hover-light, .next-card.challenge-intro::after { display: none; } }
 /* Directional entrances, living illustration and a bounded route-loading state. */

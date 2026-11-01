@@ -77,8 +77,8 @@ button:not(:where(.text-button, .icon-button, .nav-item, .path-node, .motion-tog
 button:where(.text-button, .icon-button, .nav-item, .path-node, .motion-toggle, .profile-button, .time-chips button) { border-color: transparent; }
 button.secondary { background: var(--surface); color: var(--text); border-color: var(--line); }
 button.secondary:hover { background: var(--hover); border-color: var(--muted); }
-button.text-button { background: transparent; color: var(--accent); padding-inline: 8px; }
-button.text-button:hover { background: var(--soft); }
+button.text-button { background: transparent; color: var(--accent); padding-inline: 8px; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+button.text-button:not(:disabled):hover { color: var(--accent-hover); text-decoration-thickness: 2px; }
 button:disabled { opacity: .55; cursor: not-allowed; }
 button[aria-busy='true'] { cursor: progress; opacity: .8; }
 button[aria-busy='true']::after { content: ''; width: 14px; height: 14px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: spin 750ms linear infinite; }

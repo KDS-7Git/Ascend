@@ -1,0 +1,37 @@
+Transparent text actions over the cursor grid — 2026-11-01
+
+Review last attempt and all shared text buttons retain transparent backgrounds
+and a visible underline. Hover deepens the underline, moves its offset from
+4 to 6 px and lifts the action by 1 px. Plain supporting links share the hover.
+Primary/secondary neobrutalist button surfaces and hard shadows remain unchanged.
+The page-wide cursor grid stays visible behind text actions. Keyboard focus
+outlines and 44 px button hit targets remain. Motion Off and OS reduced motion
+keep hover color/underline emphasis without the lift or underline movement.
+
+Focused browser review used a disposable profile with one verified fixture.
+Nine checks cover Today, Tracks and Profile at desktop light/dark and 390 px
+reduced motion. All visible text buttons were checked for transparent hover,
+no shadow, underline and minimum height. Primary button treatment, keyboard
+focus, page overflow and browser errors were checked. Nine axe checks found no
+violations in the selected WCAG 2 A/AA and 2.1 AA rules; this is not a complete
+accessibility assessment. Six hover/focus screenshots are retained under
+text-action-*.png. Desktop light/dark hover images were visually inspected.
+
+Existing targeted integration regressions:
+....                                                                     [100%]
+4 passed, 23 deselected in 11.56s
+
+Text-action styling documentation update; no generated references changed.
+developer-handbook, pass 1: exit 0
+developer-handbook, pass 2: exit 0
+handbook, pass 1: exit 0
+handbook, pass 2: exit 0
+report, pass 1: exit 0
+report, pass 2: exit 0
+RESULT: Three affected PDFs compiled; no missing glyphs, unresolved references or overflow above 1 pt.
+
+Live CSS responses match the checkout. No backend restart, private API action,
+challenge mutation or user-profile change was performed for this refinement.
+Whitespace checks passed. No new runtime dependencies or regression test files.
+
+RESULT: 4 browser regressions passed; 9 focused visual/accessibility checks; 6 captures; 3 PDFs rebuilt.

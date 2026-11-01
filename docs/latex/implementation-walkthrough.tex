@@ -291,6 +291,11 @@ pressing moves them into the shadow. Navigation icons move slightly, while path
 markers gain an offset shadow. All decorative effects honor the motion setting. There
 is no custom cursor, scroll interception or continuous JavaScript render loop.
 Background animation uses CSS; heading transitions use the Web Animations API.
+Quiet text actions, including Review last attempt, retain a transparent background
+and visible underline. Hover deepens the underline, moves it from 4 to 6 px below
+the text and lifts the action by 1 px; the page grid remains visible underneath.
+Keyboard focus retains its outline and text buttons keep their 44 px hit target.
+Primary and secondary neobrutalist buttons retain their filled/outlined treatment.
 The page-wide grid is a user-requested trial. It stays behind content, disappears on
 pointer leave and follows the same motion preference; Docs lowers its intensity.
 These choices bound the work, but do not establish a measured frame-rate guarantee.
