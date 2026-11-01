@@ -153,6 +153,6 @@ def test_engine_is_subject_agnostic():
 
 
 def test_sample_pack_lints_and_keeps_placeholder_vars():
-    pack = parse_pack(Path("packs/community/home-hack-lab.toml").read_text())
+    pack = parse_pack(Path("packs/community/projects/home-hack-lab.toml").read_text())
     assert pack.vars["pi_ip"] == "lab-host.local"
     assert pack.vars["hack_dir"] == "~/ascend-lab"

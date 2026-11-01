@@ -8,6 +8,7 @@ import pytest
 
 from ascend.engine.levels import next_nodes
 from ascend.engine.packs import parse_pack
+from ascend.registry import bundled_pack_path, community_root
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSESSMENTS = json.loads((ROOT / "docs/curriculum/assessment-map.json").read_text())[
@@ -16,9 +17,14 @@ ASSESSMENTS = json.loads((ROOT / "docs/curriculum/assessment-map.json").read_tex
 PACK_IDS = sorted({row["pack"] for row in ASSESSMENTS})
 
 
+def exported_pack_path(pack_id):
+    relative = bundled_pack_path(pack_id).relative_to(community_root())
+    return ROOT / "tracks/cyber-tracks/packs/community" / relative
+
+
 @pytest.mark.parametrize("pack_id", PACK_IDS)
 def test_curriculum_has_reachable_assessments_and_delayed_practice(pack_id):
-    pack = parse_pack((ROOT / "packs/community" / f"{pack_id}.toml").read_text())
+    pack = parse_pack(bundled_pack_path(pack_id).read_text())
     nodes = {node.id: node for node in pack.nodes}
     assert pack.version == (4 if pack_id == "defensive-security-and-detection" else 3)
     assert pack.source == "ai-draft" and not pack.reviewed
@@ -68,19 +74,14 @@ def test_curriculum_upgrade_preserves_progress_without_certifying_new_checks(
     milestone = next(n for n in previous.nodes if n.milestone)
     tracker.mark(milestone.id, "done")
     before = tracker.states(pack_id)
-    text = (ROOT / "packs/community" / f"{pack_id}.toml").read_text()
+    text = bundled_pack_path(pack_id).read_text()
     new = parse_pack(text)
     assert {n.id for n in previous.nodes} <= {n.id for n in new.nodes}
     tracker.install_pack(text)
     assert tracker.states(pack_id) == before
     assert "lab-readiness" not in before
     assert not any(key.startswith("recall-") for key in before)
-    assert (
-        text
-        == (
-            ROOT / "tracks/cyber-tracks/packs/community" / f"{pack_id}.toml"
-        ).read_text()
-    )
+    assert text == exported_pack_path(pack_id).read_text()
 
 
 def test_assessment_sources_are_traceable_and_coverage_is_complete():
@@ -92,7 +93,7 @@ def test_assessment_sources_are_traceable_and_coverage_is_complete():
     }
     expected = set()
     for pack_id in PACK_IDS:
-        pack = parse_pack((ROOT / "packs/community" / f"{pack_id}.toml").read_text())
+        pack = parse_pack(bundled_pack_path(pack_id).read_text())
         expected.update((pack.id, n.level, n.id) for n in pack.nodes if n.milestone)
     assert {(r["pack"], r["level"], r["milestone"]) for r in ASSESSMENTS} == expected
     assert len(ASSESSMENTS) == len(expected) == 40
@@ -116,7 +117,7 @@ def test_specialist_catalog_has_real_assessments_and_reachable_tasks():
     assert len(source["tracks"]) == 19
     for track in source["tracks"]:
         assert set(track["sources"]) <= sources
-        text = (ROOT / "packs/community" / (track["id"] + ".toml")).read_text()
+        text = bundled_pack_path(track["id"]).read_text()
         pack = parse_pack(text)
         assert len([lv for lv in pack.levels if lv.lane == "main"]) == 8
         assert len(pack.nodes) == 34
@@ -132,17 +133,12 @@ def test_specialist_catalog_has_real_assessments_and_reachable_tasks():
             for node in candidates:
                 state[node.id] = "done"
         assert len(state) == len(pack.nodes)
-        assert (
-            text
-            == (
-                ROOT / "tracks/cyber-tracks/packs/community" / (pack.id + ".toml")
-            ).read_text()
-        )
+        assert text == exported_pack_path(pack.id).read_text()
 
 
 def test_public_home_lab_includes_bandit_zero_and_preserves_existing_ids():
     old = parse_pack((ROOT / "tests/fixtures/home-hack-lab-v3.toml").read_text())
-    pack = parse_pack((ROOT / "packs/community/home-hack-lab.toml").read_text())
+    pack = parse_pack(bundled_pack_path("home-hack-lab").read_text())
     nodes = {n.id: n for n in pack.nodes}
     assert {n.id for n in old.nodes} <= nodes.keys()
     assert pack.version == 4
@@ -153,8 +149,6 @@ def test_public_home_lab_includes_bandit_zero_and_preserves_existing_ids():
             "challenge": f"bandit-{i}",
         }
     assert nodes["bandit-33"].verify["challenge"] == "bandit-32"
-    practice = parse_pack(
-        (ROOT / "packs/community/verified-security-lab.toml").read_text()
-    )
+    practice = parse_pack(bundled_pack_path("verified-security-lab").read_text())
     assert len(practice.nodes) == 8
     assert all(n.verify["type"] in {"lab", "ctf"} for n in practice.nodes)

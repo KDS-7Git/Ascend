@@ -76,14 +76,22 @@ def test_registry_requires_matching_hash(pack_data):
 
 
 def test_all_community_packs_lint_and_registry_matches():
+    from ascend.cli import pack_text
     from ascend.engine.packs import parse_pack
 
     entries = registry_entries()
     assert len(entries) >= 3
+    root = Path("packs/community")
+    assert not list(root.glob("*.toml"))
+    assert {root / entry["file"] for entry in entries} == set(root.rglob("*.toml"))
     for entry in entries:
-        text = (Path("packs/community") / f"{entry['id']}.toml").read_text()
+        assert (
+            Path(entry["file"]).parent.name == entry.get("category", "Projects").lower()
+        )
+        text = (root / entry["file"]).read_text()
         assert parse_pack(text).id == entry["id"]
         assert hashlib.sha256(text.encode()).hexdigest() == entry["sha256"]
+        assert pack_text(entry["id"]) == text
 
 
 @pytest.mark.parametrize("head_status", [404, 405, 501])

@@ -60,6 +60,12 @@ def registry_entries(url=None):
         raise ValueError("Invalid registry document") from None
 
 
+def bundled_pack_path(pack_id):
+    """Resolve a stable pack ID independently of its domain folder."""
+    entry = next((e for e in registry_entries() if e["id"] == pack_id), None)
+    return community_root() / entry["file"] if entry else None
+
+
 def fetch_pack(pack_id, registry_url):
     entry = next(
         (e for e in registry_entries(registry_url) if e["id"] == pack_id), None

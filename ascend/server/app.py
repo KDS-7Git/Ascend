@@ -18,6 +18,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from ascend.application import Tracker
 from ascend.cli import execute, parser
 from ascend.nudge import NudgeRunner
+from ascend.registry import registry_entries
 from ascend.server.auth import authenticate, login
 from ascend.storage import Database, default_home
 
@@ -344,6 +345,10 @@ def create_app(home=None, auth_mode=None, scheduler=True):
 
     @app.get("/api/packs")
     def packs(t=Depends(tracker)):
+        categories = {
+            entry["id"]: entry.get("category", "Projects")
+            for entry in registry_entries()
+        }
         result = []
         for row in t.db.rows("packs"):
             try:
@@ -369,6 +374,7 @@ def create_app(home=None, auth_mode=None, scheduler=True):
                     if k not in {"path", "fingerprint", "user_id"}
                 }
                 | metadata
+                | {"category": categories.get(row["id"], "Custom")}
             )
         return result
 

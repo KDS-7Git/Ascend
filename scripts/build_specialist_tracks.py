@@ -30,7 +30,7 @@ def outputs():
                 "id": pid,
                 "title": track["title"],
                 "kind": "proficiency",
-                "version": 1,
+                "version": track.get("version", 1),
                 "source": "ai-draft",
                 "reviewed": False,
             },
@@ -189,8 +189,9 @@ def outputs():
             + dump_toml(pack)
         )
         parse_pack(text)
-        files["packs/community/" + pid + ".toml"] = text
-        files["tracks/cyber-tracks/packs/community/" + pid + ".toml"] = text
+        relative = f"packs/community/{track['category'].lower()}/{pid}.toml"
+        files[relative] = text
+        files["tracks/cyber-tracks/" + relative] = text
         catalog.append(
             {
                 k: track[k]
@@ -227,7 +228,9 @@ def outputs():
             ["defense", "detection engineering", "blue team"],
         ),
     ]:
-        p = parse_pack((ROOT / "packs/community" / f"{pid}.toml").read_text())
+        p = parse_pack(
+            (ROOT / "packs/community" / category.lower() / f"{pid}.toml").read_text()
+        )
         catalog.append(
             {
                 "id": pid,
@@ -244,7 +247,7 @@ def outputs():
             }
         )
     practice = parse_pack(
-        (ROOT / "packs/community/verified-security-lab.toml").read_text()
+        (ROOT / "packs/community/practice/verified-security-lab.toml").read_text()
     )
     catalog.append(
         {

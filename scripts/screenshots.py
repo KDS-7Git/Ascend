@@ -19,7 +19,7 @@ with tempfile.TemporaryDirectory(prefix="ascend-screenshot-") as directory:
     db = Database(directory)
     tracker = Tracker(db)
     tracker.install_pack(
-        (root / "packs/community/networking-for-security.toml").read_text()
+        (root / "packs/community/foundations/networking-for-security.toml").read_text()
     )
     tracker.start_mission("networking-for-security")
     # Illustrative progress belongs only to this disposable screenshot database.

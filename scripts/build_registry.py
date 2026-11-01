@@ -13,7 +13,7 @@ catalog = (
     if catalog_path.exists()
     else {}
 )
-for path in sorted(root.glob("*.toml")):
+for path in sorted(root.rglob("*.toml"), key=lambda path: path.name):
     raw = path.read_bytes()
     meta = tomllib.loads(raw.decode())["pack"]
     packs.append(
@@ -22,7 +22,7 @@ for path in sorted(root.glob("*.toml")):
             "id": meta["id"],
             "title": meta["title"],
             "version": meta["version"],
-            "file": path.name,
+            "file": path.relative_to(root).as_posix(),
             "sha256": hashlib.sha256(raw).hexdigest(),
         }
     )

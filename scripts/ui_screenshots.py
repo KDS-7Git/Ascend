@@ -60,7 +60,7 @@ def main():
     TARGET.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="ascend-ui-review-") as folder:
         tracker = Tracker(Database(folder))
-        for pack in (ROOT / "packs/community").glob("*.toml"):
+        for pack in (ROOT / "packs/community").rglob("*.toml"):
             tracker.install_pack(pack.read_text())
         tracker.start_mission("verified-security-lab")
         run = labs.start(tracker, "verified-security-lab:lab-readiness")

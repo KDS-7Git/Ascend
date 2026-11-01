@@ -23,7 +23,7 @@
       "nodes": 34,
       "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
       "version": 1,
-      "file": "active-directory-security.toml",
+      "file": "offensive/active-directory-security.toml",
       "sha256": "d75b338cbfde47792f76298330edfdedc69ca8b2cfe70b014fa334c09690875f"
     },
     {
@@ -47,7 +47,7 @@
       "nodes": 34,
       "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
       "version": 1,
-      "file": "ai-application-security.toml",
+      "file": "engineering/ai-application-security.toml",
       "sha256": "0399d91afb8ce8d98576e0a535b240df08a0fdc4a9c601b365b3b1e4151130cc"
     },
     {
@@ -74,14 +74,14 @@
       "nodes": 34,
       "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
       "version": 1,
-      "file": "api-security.toml",
+      "file": "offensive/api-security.toml",
       "sha256": "03770bb43ce4aa08ab0c951a4e0c3852afaafcaf826b2a6bd1b68c1acbbba127"
     },
     {
       "id": "blender-first-scene",
       "title": "Create a Blender still-life scene",
       "version": 1,
-      "file": "blender-first-scene.toml",
+      "file": "projects/blender-first-scene.toml",
       "sha256": "27f160e464ae633cacbdd26f237b4270f78259308f3eb6e9dec5d5977a1ee6a6"
     },
     {
@@ -106,7 +106,7 @@
       "nodes": 34,
       "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
       "version": 1,
-      "file": "cloud-security.toml",
+      "file": "engineering/cloud-security.toml",
       "sha256": "5b9562cdce3e810aceae549ce4c4bdc2dc3b4b7b545a2a72ac59f60b9e10eca0"
     },
     {
@@ -134,7 +134,7 @@
       "nodes": 34,
       "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
       "version": 1,
-      "file": "container-kubernetes-security.toml",
+      "file": "engineering/container-kubernetes-security.toml",
       "sha256": "e901dbc958f253fb8253a75c12f2c52e13e435550990d563f9fff86eafc86e69"
     },
     {
@@ -155,7 +155,7 @@
       "nodes": 34,
       "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
       "version": 1,
-      "file": "cryptography-protocol-security.toml",
+      "file": "specialist/cryptography-protocol-security.toml",
       "sha256": "8b52cd7d92c6e0e112daac70ab12246e7e80010a68ecdba75409f15e167821b2"
     },
     {
@@ -175,7 +175,7 @@
       "nodes": 60,
       "verification": "See each task: automated evidence, artifact checks and human assessment have different scope.",
       "version": 4,
-      "file": "defensive-security-and-detection.toml",
+      "file": "defensive/defensive-security-and-detection.toml",
       "sha256": "a747ef72847daa525c6e0c08e63c7efbc1da9c945eb30fb9fdd118aa87ee4923"
     },
     {
@@ -199,16 +199,15 @@
       "nodes": 34,
       "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
       "version": 1,
-      "file": "digital-forensics-incident-response.toml",
+      "file": "defensive/digital-forensics-incident-response.toml",
       "sha256": "e9c9944d46f8438b480c0a2b068e6b4bea42f449fa8ed336e69c297c2409353e"
     },
     {
       "id": "ethical-hacking-foundations",
-      "title": "Ethical Hacking and Offensive Security Foundations",
+      "title": "Ethical Hacking Foundations",
       "category": "Foundations",
       "aliases": [
         "ethical hacking",
-        "offensive security",
         "pentesting",
         "beginner"
       ],
@@ -222,15 +221,15 @@
       "main_levels": 8,
       "nodes": 34,
       "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
-      "version": 1,
-      "file": "ethical-hacking-foundations.toml",
-      "sha256": "bbca41f4de4b7cf226fb6b67411250f50409f2f8e930ec62a43d9ffbe293f18c"
+      "version": 2,
+      "file": "foundations/ethical-hacking-foundations.toml",
+      "sha256": "ab3d7628abeaa2683f410df99c77df8a02c5db91bec32c3f3cdac2dd7b971506"
     },
     {
       "id": "home-hack-lab",
       "title": "Home hack lab: build, investigate and harden your own lab",
       "version": 4,
-      "file": "home-hack-lab.toml",
+      "file": "projects/home-hack-lab.toml",
       "sha256": "f2919d6f872b53f3ec96609d5edb994ed23d3a3da839a415ddb5c97278b8034a"
     },
     {
@@ -254,7 +253,7 @@
       "nodes": 34,
       "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
       "version": 1,
-      "file": "malware-analysis.toml",
+      "file": "specialist/malware-analysis.toml",
       "sha256": "b8c6305ec3c8585e9b4fe286e3fbb8e59322d4bf190b25d7c262865c3fac4a3d"
     },
     {
@@ -279,7 +278,7 @@
       "nodes": 34,
       "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
       "version": 1,
-      "file": "mobile-application-security.toml",
+      "file": "specialist/mobile-application-security.toml",
       "sha256": "72ec15d2561ebb8a8c148c204477b6907af0f00d88402c0bafa3f1ef641fe73b"
     },
     {
@@ -298,7 +297,7 @@
       "nodes": 60,
       "verification": "See each task: automated evidence, artifact checks and human assessment have different scope.",
       "version": 3,
-      "file": "network-penetration-testing.toml",
+      "file": "offensive/network-penetration-testing.toml",
       "sha256": "eaddd60b20e92f6e8341cf71936ffdc73347496c3c81176f3fb704da5232b63c"
     },
     {
@@ -317,7 +316,7 @@
       "nodes": 44,
       "verification": "See each task: automated evidence, artifact checks and human assessment have different scope.",
       "version": 3,
-      "file": "networking-for-security.toml",
+      "file": "foundations/networking-for-security.toml",
       "sha256": "a7cfa1ba9cfc62d25ac4161d6bc0bc4549a877fca123f9544110b49f139f25ec"
     },
     {
@@ -341,14 +340,14 @@
       "nodes": 34,
       "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
       "version": 1,
-      "file": "ot-ics-security.toml",
+      "file": "specialist/ot-ics-security.toml",
       "sha256": "d9cca61cb260a63212ff9d19f53d17ae00e48390fc2791c259f79aa1a4ec0595"
     },
     {
       "id": "python-file-tool",
       "title": "Build a Python file organizer",
       "version": 1,
-      "file": "python-file-tool.toml",
+      "file": "projects/python-file-tool.toml",
       "sha256": "ac4726242d14ced5b8c7922fe03feab3e87d76f136c54a39cd11c723ac7cf1da"
     },
     {
@@ -373,7 +372,7 @@
       "nodes": 34,
       "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
       "version": 1,
-      "file": "red-team-adversary-emulation.toml",
+      "file": "offensive/red-team-adversary-emulation.toml",
       "sha256": "2157b696fc2c8864a16edfefa2f174954cdb7aad9a2af91fc83f5d04a360cb6b"
     },
     {
@@ -393,7 +392,7 @@
       "nodes": 59,
       "verification": "See each task: automated evidence, artifact checks and human assessment have different scope.",
       "version": 3,
-      "file": "reverse-engineering-and-binary-exploitation.toml",
+      "file": "specialist/reverse-engineering-and-binary-exploitation.toml",
       "sha256": "33d87d3a326ca2d2a25200d704933f372b86f5fa114a06c5d544cd0093e20de4"
     },
     {
@@ -414,7 +413,7 @@
       "nodes": 34,
       "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
       "version": 1,
-      "file": "secure-development-devsecops.toml",
+      "file": "engineering/secure-development-devsecops.toml",
       "sha256": "74a75ab17b38fb7ad425dded67e5ca815a0c46c44fd6dc3283f0137bbe54ccc5"
     },
     {
@@ -436,7 +435,7 @@
       "nodes": 34,
       "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
       "version": 1,
-      "file": "security-architecture-grc.toml",
+      "file": "engineering/security-architecture-grc.toml",
       "sha256": "26bf55ab4b5a05f4dfb6bbdbd0f6a9b2e2f4f4cdc2851d2a967e5d8f2c5a0578"
     },
     {
@@ -462,7 +461,7 @@
       "nodes": 34,
       "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
       "version": 1,
-      "file": "soc-analyst.toml",
+      "file": "defensive/soc-analyst.toml",
       "sha256": "a487787d8ce3e77a2253fed6f9506ab1f8c85ddacc42bb3376404495f74903d8"
     },
     {
@@ -486,7 +485,7 @@
       "nodes": 34,
       "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
       "version": 1,
-      "file": "threat-hunting-intelligence.toml",
+      "file": "defensive/threat-hunting-intelligence.toml",
       "sha256": "7c4f89fd9b77d788787f7e0b13ee6e27d8c3785a43308302100770e805ce3edd"
     },
     {
@@ -508,7 +507,7 @@
       "nodes": 8,
       "verification": "All eight tasks require verified results.",
       "version": 1,
-      "file": "verified-security-lab.toml",
+      "file": "practice/verified-security-lab.toml",
       "sha256": "9ae594d3358befe6ab39a57a79b8f8713d5ff0cce244f89d5ae7d251478ae2e4"
     },
     {
@@ -532,7 +531,7 @@
       "nodes": 34,
       "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
       "version": 1,
-      "file": "vulnerability-management.toml",
+      "file": "defensive/vulnerability-management.toml",
       "sha256": "6ba97b60b04b1e8a816fa5a1e0edd12991d8335ce8c1d11a402469447cf8c9a2"
     },
     {
@@ -559,7 +558,7 @@
       "nodes": 34,
       "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
       "version": 1,
-      "file": "vulnerability-research-bug-bounty.toml",
+      "file": "offensive/vulnerability-research-bug-bounty.toml",
       "sha256": "28d57e65aff2c400a95fe923ef17516d924084cdd7f5d6cb77910e9b367123c5"
     },
     {
@@ -578,7 +577,7 @@
       "nodes": 64,
       "verification": "See each task: automated evidence, artifact checks and human assessment have different scope.",
       "version": 3,
-      "file": "web-application-security.toml",
+      "file": "offensive/web-application-security.toml",
       "sha256": "bad55e956d50a06601c0df3e81dc8612363c9b887798ac8c95b3d2eb05053a01"
     },
     {
@@ -604,7 +603,7 @@
       "nodes": 34,
       "verification": "18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.",
       "version": 1,
-      "file": "wireless-iot-security.toml",
+      "file": "specialist/wireless-iot-security.toml",
       "sha256": "25e35e365109e4cc600c5f595fb916e43dc89ddd38ae18141c0680a66f85fbd0"
     }
   ]

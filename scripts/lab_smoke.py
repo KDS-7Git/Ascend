@@ -156,7 +156,9 @@ def main():
             os.environ["ASCEND_LAB_RECEIPTS_DIR"] = str(root / "receipts")
             tracker = Tracker(Database(root / "profile"))
             tracker.install_pack(
-                (ROOT / "packs/community/verified-security-lab.toml").read_text()
+                (
+                    ROOT / "packs/community/practice/verified-security-lab.toml"
+                ).read_text()
             )
             assert tracker.check("verified-security-lab:scoreboard", confirm=True)[
                 "completed"
@@ -168,7 +170,9 @@ def main():
             assert not tracker.check("verified-security-lab:injection")["ok"]
             tracker.db.user_id = 2
             tracker.install_pack(
-                (ROOT / "packs/community/verified-security-lab.toml").read_text()
+                (
+                    ROOT / "packs/community/practice/verified-security-lab.toml"
+                ).read_text()
             )
             assert not tracker.check("verified-security-lab:scoreboard")["ok"]
             tracker.db.close()

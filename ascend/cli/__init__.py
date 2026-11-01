@@ -123,16 +123,14 @@ def parser():
 
 
 def pack_text(target):
+    from ascend.registry import bundled_pack_path
+
     path = Path(target).expanduser()
     if path.is_file():
         return path.read_text()
-    for root in (
-        Path(__file__).resolve().parents[2] / "packs/community",
-        Path(__file__).resolve().parents[1] / "community",
-    ):
-        path = root / f"{target}.toml"
-        if path.is_file():
-            return path.read_text()
+    path = bundled_pack_path(target)
+    if path and path.is_file():
+        return path.read_text()
     import os
 
     if os.environ.get("ASCEND_REGISTRY"):
