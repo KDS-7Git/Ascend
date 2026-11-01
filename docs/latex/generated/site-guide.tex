@@ -58,7 +58,7 @@ A challenge preview shows its finish line, steps and learning resource. Hints st
 \item Choose a session target and start the timed task or verified exercise. The clock keeps running until you complete or end the session.
 \item Work through the task. A hint is help with learning, not an automatic completion.
 \item Use Log progress to save what you tried and what to do next. Leave Mark as done unchecked for partial work.
-\item For built-in exercises, enter your result and press Verify my result. External CTF tasks use Verify lab completion after the administrator refreshes the proof.
+\item For hands-on exercises, enter your result and press Verify my result. Knowledge checks use Submit answer and allow one submission. External CTF tasks use Verify lab completion after the administrator refreshes the proof.
 \end{enumerate}
 Reloading the workspace restores the same exercise and its event data. Unfinished answers survive a reload in the same browser tab. From another page, use Resume challenge in the session strip. End session stops timing without completing the challenge or awarding XP.\par
 Preview and logging dialogs keep messages below their scrollable content, with Close and Escape controls. Workspace verification results appear beside the answer form. Errors stay visible so you have time to read them.\par
@@ -75,6 +75,8 @@ Know exactly what a green check establishes.\par
 \item Artifact check: a file exists and meets the configured checks. A person must still review whether its result and reasoning are correct.
 \item Human assessment: some explanations and changed-case demonstrations need review rather than a machine check.
 \end{itemize}
+Knowledge checks (multiple-choice questions) allow one submitted answer per question. Read the scenario, select an option, then press Submit answer. The server saves your first result and explanation; reloading or requesting a fresh instance cannot reset it. An incorrect answer earns no XP and ends the timer. Continue without XP skips that question so you can move on without claiming completion.\par
+Permission exercises show the action, role, account status and ownership for each request. Choose Allow or Deny for every row, then press Verify my result. Neither choice is selected for you. Your selections survive a reload in this tab, and View raw request data opens the original fixture.\par
 \subsubsection{Built-in logging example}
 \begin{enumerate}
 \item Start the verified exercise.
@@ -82,7 +84,7 @@ Know exactly what a green check establishes.\par
 \item Find the failed event with your exercise marker, ignoring unrelated records.
 \item Enter its request ID and the number of failures for that marker, then verify.
 \end{enumerate}
-Generated instances belong to one account and the current pack content. A fresh instance replaces the old one without resetting your accumulated task time. Unfinished instances expire after 24 hours, and ten unsuccessful submissions require a fresh attempt.\par
+Hands-on instances belong to one account and the current pack content. A fresh instance replaces the old one without resetting your accumulated task time. Unfinished instances expire after 24 hours; hands-on exercises allow ten unsuccessful submissions before requiring a fresh instance.\par
 Passing a small exercise is evidence of that result, not a certificate of overall proficiency. Real learning also means explaining the mechanism and handling an unfamiliar variation.\par
 \noindent\textbf{Related guides:} Timers \& XP, Docker \& external labs\par
 \subsection{Timers \& XP}
@@ -94,6 +96,7 @@ Your verified XP balance and day streak appear in the top bar on every screen. S
 \item The clock runs continuously, even if you reload or leave the page. Use Resume challenge to return to the same exercise; End session stops timing without completing it or awarding XP.
 \item Complete the verification. Only built-in exercises and signed CTF checks qualify for XP, and an external check needs a started session.
 \end{enumerate}
+While an attempt is active, the session bar shows elapsed time / target (for example, 2:15 / 10:00) as you scroll. Elapsed time keeps increasing during overtime. Resume challenge returns to the workspace from other pages. After completion, an incorrect knowledge-check answer, or End session, the bar shows the finished time and result. Review last attempt opens that saved result; it does not restart the clock.\par
 \subsubsection{How the reward changes}
 \begin{itemize}
 \item Within your target: 100 XP.
@@ -128,8 +131,7 @@ The server checks timed reminders every 30 seconds, so delivery is not a precise
 Manage your account without interrupting your learning path.\par
 The avatar in the top bar opens your Profile. It shows your actual account name, verified XP, verified task count, and current day streak. There is no invented rank or profile completion score.\par
 \begin{itemize}
-\item Preferences: choose your timezone, System/Light/Dark appearance and Calm/Off motion effects. Appearance choices are saved in this browser. Your device’s reduced motion setting always takes priority.
-\item The motion control in the top bar stops background and transition effects. It does not stop a challenge timer.
+\item Preferences: choose your timezone, System/Light/Dark appearance and On/Off motion effects. Appearance choices are saved in this browser. Your device’s reduced motion setting always takes priority.
 \item Reminders: configure notification timing and delivery.
 \item Privacy \& account: choose whether to publish a streak badge. Sharing is off unless you enable it.
 \item Log out: available on authenticated servers. A single-user local server has no login session to end.

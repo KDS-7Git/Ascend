@@ -1,0 +1,75 @@
+Challenge clarity, motion, loading and aligned exercise forms — 2026-11-01
+
+Milestones:
+1af1acf — one final MCQ submission, immutable question/result receipts, recent sessions.
+2d9ffe1 — compact overview, reliable loading, continuous timer, explicit permission forms.
+
+Behavior:
+- Overview cards retain title, duration/type and actions. Full instructions remain
+  in the dedicated challenge workspace. No challenge timer pause action exists.
+- The sticky session bar shows elapsed / original target (including overtime),
+  with Resume challenge on other pages. Finished attempts retain a review action.
+- One valid MCQ choice is final per account/pack/node; reload, concurrency, expiry
+  and fresh-instance requests cannot regrade it. Wrong answers end timing without
+  XP, explain the answer and offer an explicit Continue without XP action.
+- Migration 0006 retains legacy recorded outcomes without rewriting progress,
+  lab runs, sessions or XP. Old selected answers are unknown, never fabricated.
+- Access-policy requests pair readable context with required Allow/Deny groups.
+  No default answer; boolean false drafts restore Deny. Raw data is disclosed.
+  Shared column form layout places submit below all inputs, including on phones.
+- Boot styles establish the theme before the app loads. The animated loader has
+  a five-second escape path; slow routes use a skeleton and progress indicator.
+  A successful delayed startup clears its own fallback notice. Missing scripts
+  cannot leave an indefinite overlay. No artificial minimum loading delay.
+- The one-time visible challenge glow remains. Neutral 24 px pointer grid replaces
+  the colored spotlight. Marker hops upward, lands on each stair, fades and resets.
+  Profile and OS reduced-motion preferences remain; top-bar motion button removed.
+
+Validation commands:
+.venv/bin/pytest -q
+.venv/bin/pytest tests/test_integration.py -q -k 'permission_requests or mcq or loading_screen or motion_controls or timed_task_can_only'
+.venv/bin/python scripts/ui_screenshots.py --axe /tmp/ascend-axe.min.js --motion-demo
+.venv/bin/ruff format --check ascend tests scripts setup.py
+.venv/bin/ruff check --select F401,F841 ascend tests scripts setup.py
+node --check web/app.js
+node --check web/effects.js
+node --check web/theme.js
+git diff --check
+
+Full suite: 165 passed in 98.82s, including 27 integration/browser cases.
+Focused suite: 8 passed, 19 deselected in 23.67s.
+Formatting: 68 Python files formatted; F401/F841, JS syntax and whitespace pass.
+Permission regressions exercise 320, 390 and 1440 px, required choices, legacy
+boolean drafts, reload, no implicit false answer, >=44 px labels, aligned choices,
+separate submit geometry, no page overflow and a real typed submission.
+MCQ regressions include clear question/result, one submission, selected-answer
+restoration, session target display, review from Stats and explicit skip without XP.
+Backend checks include opposite concurrent answers, account boundaries, invalid
+choice preservation, fresh-instance prevention, changed-pack receipts and migration.
+
+Visual evidence: 89 screenshots plus motion-preview.webm in the UI workspace folder.
+Routes: Today, Path, Stats, Tracks, Profile, Docs and Challenge; widths 320, 390, 768,
+1024, 1440 and 1920 px, including dark mode, loading and modal states. Permission
+form coverage includes desktop, mobile, narrow mobile and mobile dark. Three
+illustration crops sample the actual marker/step contact at all three landings.
+Shared edges, contained sections, no horizontal overflow or route JavaScript errors.
+Manual visual inspection covered permission alignment, the neutral pointer grid,
+second/third stair landings, the dark mobile MCQ result and the themed loader.
+Axe-core 4.10.3: 76 screen/state/viewport checks; zero detected violations in the
+selected WCAG 2 A/AA and 2.1 AA rules. Not a complete accessibility certification.
+
+All test submissions, screenshots and demonstration progress use disposable profiles.
+Earlier in this refinement, the live backend was restarted with its original
+command/environment after a private SQLite backup. Health passed, and before/after
+hashes confirmed unchanged missions, entries, node states, level unlocks, evidence,
+lab runs, task sessions and XP awards. The latest permission and timer presentation
+fixes need only a browser refresh; no further backend restart was performed.
+Final live health and eight frontend-asset comparisons passed using static reads.
+The learner's active permission challenge was not answered, graded or ended.
+
+Developer documentation covers receipt transactions, server timing, draft typing,
+form semantics, loading failure handling, navigation and motion implementation.
+The source register distinguishes inspected public pages from timeouts/nav shells.
+LaTeX build results are recorded separately in docs/testing/docs-build.txt.
+
+RESULT: 165 tests passed; 89 captures; 76 axe checks with no detected violations.

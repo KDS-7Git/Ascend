@@ -136,7 +136,7 @@
         "https://github.com/DavidHDev/react-bits/blob/main/src/content/TextAnimations/BlurText/BlurText.jsx"
       ],
       "finding": "Aurora uses a configurable animated light field. FadeContent and BlurText use staggered entrances and reduced-motion handling.",
-      "application": "A restrained local CSS light field and short heading/section entrances, preserving complete accessible text.",
+      "application": "Short heading/section entrances preserve complete accessible text. The earlier CSS light field was replaced by printed geometry in the neobrutalist theme.",
       "limits": "The public page returned a blank client-rendered body in the audit browser; official repository source was inspected instead. No React Bits code or shaders were copied.",
       "accessed": "2026-11-01"
     },
@@ -145,7 +145,7 @@
       "url": "https://ui.aceternity.com/components/aurora-background",
       "status": 200,
       "finding": "A slow aurora and radial gradient mask give the backdrop depth without adding content containers.",
-      "application": "Violet and teal radial lights drift slowly behind the workspace; Docs receives lower background contrast.",
+      "application": "The earlier aurora informed slow background movement. The current neobrutalist theme uses outlined geometry and a sparse dot field; Docs receives lower background contrast.",
       "limits": "Rendered public documentation and preview inspected. Ascend uses original CSS without React/Tailwind dependencies or copied components.",
       "accessed": "2026-11-01"
     },
@@ -163,7 +163,7 @@
       "url": "https://motion.dev/docs/react-accessibility",
       "status": 200,
       "finding": "Respect reduced-motion settings, avoid large transform/parallax effects, and allow a site-level preference.",
-      "application": "Device reduced motion overrides decoration; a persistent top-bar pause button and saved Profile preference stop effects. Background motion pauses when the document is hidden.",
+      "application": "Device reduced motion overrides decoration; a saved Profile preference stops effects. The top-bar motion button was removed at the user’s request. Background motion pauses when the document is hidden.",
       "limits": "Official page text read from HTTP HTML after the rendered browser timed out. Motion’s APIs are reference guidance; the implementation uses CSS and the Web Animations API.",
       "accessed": "2026-11-01"
     },
@@ -184,6 +184,31 @@
       "finding": "Public page combines a restrained base surface with outlined controls, large headings and selective flat colorful illustrations.",
       "application": "Keep color concentrated on important actions and geometric decoration; use strong typography and whitespace instead of adding more card containers.",
       "limits": "Public home page text and screenshot inspected, not an authenticated creator dashboard. Branding and illustrations are not reused."
+    },
+    {
+      "title": "Linear public home page",
+      "url": "https://linear.app/",
+      "status": 200,
+      "accessed": "2026-11-01",
+      "finding": "Short headings and concise overview copy are paired with visual product demonstrations.",
+      "application": "Reduce repeated instructions on challenge summaries; use a small upward-moving illustration and retain complete instructions in the workspace.",
+      "limits": "Public rendered home page text and screenshot inspected. No authenticated workspace, loading flow or usability outcomes were audited."
+    },
+    {
+      "title": "Carbon loading usage",
+      "url": "https://carbondesignsystem.com/components/loading/usage/",
+      "status": "browser timeout",
+      "accessed": "2026-11-01",
+      "finding": "No new UI claims derived from this response.",
+      "limits": "The rendered page timed out; no loading guidance is claimed as inspected."
+    },
+    {
+      "title": "Material motion overview",
+      "url": "https://m3.material.io/styles/motion/overview",
+      "status": 200,
+      "accessed": "2026-11-01",
+      "finding": "No substantive motion guidance derived from the navigation shell.",
+      "limits": "Only navigation text was obtained; this is not a substantive inspection of the motion guidance."
     }
   ],
   "font": {

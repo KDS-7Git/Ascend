@@ -1,6 +1,7 @@
 """Capture the workspace UI against a disposable account with a real graded fixture."""
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 import socket
@@ -11,7 +12,7 @@ import time
 from urllib.request import urlopen
 
 from playwright.sync_api import sync_playwright, expect
-from ascend import labs
+from ascend import labs, timing
 from ascend.application import Tracker
 from ascend.storage import Database
 
@@ -272,6 +273,29 @@ def main():
                     page.screenshot(path=TARGET / "motion-hover-desktop.png")
                     audit(page, "desktop-light", "today-hover")
                     captures += 1
+                    # Inspect actual landing geometry, including the SVG transform origin.
+                    for step, milliseconds in enumerate([0, 2430, 4482], start=1):
+                        page.locator(".ascent-climber").evaluate(
+                            "(node, time) => { const a = node.getAnimations()[0]; a.pause(); a.currentTime = time; }",
+                            milliseconds,
+                        )
+                        landing = page.evaluate(
+                            """index => {
+                            const marker = document.querySelector('.ascent-climber').getBoundingClientRect();
+                            const step = document.querySelectorAll('.ascent-step')[index].getBoundingClientRect();
+                            return Math.abs(marker.bottom - step.top) < 1
+                                && marker.left >= step.left && marker.right <= step.right;
+                        }""",
+                            step - 1,
+                        )
+                        assert landing, (step, milliseconds)
+                        page.locator(".challenge-art").screenshot(
+                            path=TARGET / f"climber-step-{step}.png"
+                        )
+                        captures += 1
+                    page.locator(".ascent-climber").evaluate(
+                        "node => { const a = node.getAnimations()[0]; a.currentTime = 0; a.play(); }"
+                    )
                     page.evaluate("localStorage.setItem('ascend-theme', 'dark')")
                     page.reload()
                     page.locator(".next-card").wait_for()
@@ -290,13 +314,127 @@ def main():
                     page.wait_for_timeout(900)
                     page.get_by_role("button", name="Docs", exact=True).click()
                     page.wait_for_timeout(900)
-                    page.get_by_role(
-                        "button", name="Pause motion effects", exact=True
-                    ).click()
+                    page.get_by_role("button", name="Open profile", exact=True).click()
+                    page.get_by_label("Motion effects", exact=True).select_option("off")
                     video = page.video
                     video_path = TARGET / "motion-preview.webm"
                     context.close()
                     video.save_as(video_path)
+                # A separate, disposable MCQ records one wrong answer for review.
+                tracker = Tracker(Database(folder))
+                timing.end(tracker)
+                tracker.finish_mission("paused")
+                tracker.start_mission("ethical-hacking-foundations")
+                ready = labs.start(tracker, "ethical-hacking-foundations:lab-readiness")
+                labs.submit(
+                    tracker,
+                    ready["id"],
+                    {
+                        "sha256": hashlib.sha256(
+                            ready["data"]["content"].encode()
+                        ).hexdigest()
+                    },
+                )
+                case = labs.start(
+                    tracker, "ethical-hacking-foundations:foundations-reasoning"
+                )
+                tracker.db.close()
+                case_url = (
+                    base
+                    + "/#challenge/ethical-hacking-foundations%3Afoundations-reasoning"
+                )
+                cases = [
+                    ("desktop", 1440, 1000, "light"),
+                    ("mobile", 390, 844, "light"),
+                    ("mobile-dark", 390, 844, "dark"),
+                ]
+                for stage in ["question", "result"]:
+                    for label, width, height, theme in cases:
+                        page = browser.new_page(
+                            viewport={"width": width, "height": height},
+                            reduced_motion="reduce",
+                        )
+                        page.add_init_script(
+                            f"localStorage.setItem('ascend-theme', '{theme}')"
+                        )
+                        page.goto(case_url)
+                        expect(page.locator("#challenge-title")).to_have_text(
+                            "Does setup prove completion?"
+                        )
+                        if stage == "result":
+                            expect(page.locator(".case-feedback")).to_contain_text(
+                                "No XP earned"
+                            )
+                            page.locator(".case-feedback").scroll_into_view_if_needed()
+                        assert page.evaluate(
+                            "document.documentElement.scrollWidth <= innerWidth"
+                        )
+                        audit(page, label, "mcq-" + stage)
+                        page.screenshot(
+                            path=TARGET / f"mcq-{stage}-{label}.png", full_page=False
+                        )
+                        captures += 1
+                        page.close()
+                    if stage == "question":
+                        tracker = Tracker(Database(folder))
+                        wrong = next(
+                            key
+                            for key, value in case["choices"].items()
+                            if value.startswith("Yes.")
+                        )
+                        labs.submit(tracker, case["id"], {"choice": wrong})
+                        tracker.db.close()
+                tracker = Tracker(Database(folder))
+                policy_ref = "ethical-hacking-foundations:quick-access-check"
+                labs.start(tracker, policy_ref)
+                tracker.db.close()
+                for label, width, height, theme in [
+                    *cases,
+                    ("narrow", 320, 740, "light"),
+                ]:
+                    page = browser.new_page(
+                        viewport={"width": width, "height": height},
+                        reduced_motion="reduce",
+                    )
+                    page.add_init_script(
+                        f"localStorage.setItem('ascend-theme', '{theme}')"
+                    )
+                    page.goto(base + "/#challenge/" + policy_ref)
+                    expect(page.locator(".decision-field")).to_have_count(6)
+                    page.get_by_role(
+                        "group", name="Request r1", exact=True
+                    ).get_by_role("radio", name="Allow", exact=True).check()
+                    page.get_by_role(
+                        "group", name="Request r2", exact=True
+                    ).get_by_role("radio", name="Deny", exact=True).check()
+                    assert page.evaluate(
+                        "document.documentElement.scrollWidth <= innerWidth"
+                    )
+                    audit(page, label, "permission-form")
+                    page.get_by_role(
+                        "button", name="Verify my result"
+                    ).scroll_into_view_if_needed()
+                    page.screenshot(path=TARGET / f"permission-form-{label}.png")
+                    captures += 1
+                    page.close()
+                for theme in ["light", "dark"]:
+                    page = browser.new_page(
+                        viewport={"width": 1440, "height": 1000},
+                        service_workers="block",
+                    )
+                    page.add_init_script(
+                        f"localStorage.setItem('ascend-theme', '{theme}')"
+                    )
+                    pending = []
+                    page.route("**/api/me", lambda route: pending.append(route))
+                    page.goto(base, wait_until="domcontentloaded")
+                    expect(page.locator("#app-loader")).to_be_visible()
+                    page.screenshot(path=TARGET / f"loading-{theme}.png")
+                    captures += 1
+                    for request in pending:
+                        request.continue_()
+                    expect(page.locator("#app-loader")).not_to_be_visible()
+                    page.close()
                 browser.close()
         finally:
             process.terminate()

@@ -60,12 +60,13 @@ and Gumroad's public pages for outlined controls, flat color and clear hierarchy
 Original local CSS and Web Animations API code supply a printed dot field, outlined
 geometric shapes, sparse moving squares, an orbit motif, short heading and section
 entrances, and chart transitions. The native cursor remains. Hovering over the main
-challenge reveals a moving color field and halftone pattern behind its content;
+challenge reveals a neutral grid and emphasizes the cell under the pointer;
 buttons lift with a larger hard shadow and press back into place.
 The source register distinguishes rendered-page inspection from repository-source
 inspection when the React Bits page returned an empty browser body.
 
-The top-bar motion control and Profile preference stop decorative animation. Device
+The Profile preference stops decorative animation; the top-bar motion button has
+been removed. Device
 reduced motion always takes precedence and hidden pages pause background movement.
 The next challenge's border sweep runs for 2.4 seconds, once per page load when the
 card first becomes visible. The colored line is inset inside the card; only its
@@ -80,6 +81,31 @@ tab-scoped draft answers are restored separately. End session stops timing witho
 completion or XP, and an ended attempt cannot gain XP through a later submission.
 The implementation walkthrough in the developer handbook explains these flows,
 transaction boundaries, legacy state and debugging strategies in detail.
+
+The next refinement removes duplicated overview prose: challenge cards show a title,
+duration/type and actions, while the opened detail retains instructions. A climbing
+illustration, title reveals and staggered section/list entrances add movement.
+The marker hops upward onto each stair, then fades before resetting to the first.
+Linear's public home page informed the use of short overview copy with visual
+demonstrations; no authenticated product screens or engagement outcomes were audited.
+An early themed canvas and bounded loading illustration replace the unstyled flash.
+The loader clears on success, error, script failure or its five-second fallback;
+slower page requests use an in-place skeleton and progress line. No arbitrary minimum
+loading delay is added. The active timer bar stays visible while scrolling, and a
+finished attempt shows its elapsed time and a Review last attempt action. Both bars
+include the original target; the running display is elapsed / target and continues
+into overtime without pausing.
+
+Knowledge checks have a single-column scenario, explicit question and answer list.
+The confusing setup example now names the training app, installed tool and missing
+test. One valid submitted choice is final on the server, including after reload or
+a fresh-instance request. The saved explanation appears after submission. An
+incorrect result earns no XP; Continue without XP explicitly skips the question.
+Permission exercises show one row per request with readable action, role, account
+state and ownership. Allow/Deny groups replace isolated checkboxes. Every request
+requires an explicit choice, including Deny; saved drafts survive reload. Raw data
+is available in a disclosure. The shared exercise form keeps actions in their own
+row below all fields on desktop and mobile.
 
 \subsection{Navigation and information hierarchy}
 The persistent top bar shows the verified XP balance, day streak and a profile avatar. The
@@ -98,7 +124,7 @@ and saved ideas. A reader need not scan account settings to find an installed pa
 \subsection{Component and interaction contract}
 \begin{longtable}{P{.22\textwidth}P{.70\textwidth}}
 \textbf{Component} & \textbf{Behavior and rationale}\\\hline
-Top bar & Persistent XP, day streak, motion control and avatar; clear accessible names and real server totals. Narrow layouts may shorten or hide the context label, preserving actions.\\
+Top bar & Persistent XP, day streak and avatar; clear accessible names and real server totals. Narrow layouts may shorten or hide the context label, preserving actions.\\
 Track picker & Choose a domain first, then one of its installed tracks. Changing domains clears the track choice; starting requires a selected track and no active mission.\\
 Library row & Human title, supporting counts/review state and a right-aligned Read button. The title and action share one row. A long title truncates visually but retains its accessible text and full preview.\\
 Library controls & Search installed packs; initially show eight rows in a large library, with Show all/Show fewer. Import controls and parked ideas use disclosures.\\
@@ -111,7 +137,7 @@ Docs & Ten searchable help topics grouped into Start here, Daily practice and Se
 Profile & Actual account identity and verified totals, editable timezone, locally persisted theme, reminders and opt-in streak sharing. Unsupported username/password editing is not presented.\\
 Path & Uniform vertical task rows, current-level emphasis and distinct ready, locked, done, skipped and milestone states. Color supplements labels and shapes.\\
 Typography & Locally bundled Inter Variable with its SIL Open Font License. A limited hierarchy separates headings, body copy and supporting labels; mobile form text is 16 px to avoid focus zoom.\\
-Motion & Brief control transitions, 380--460 ms entrances and 600 ms chart bars, plus slow ambient decoration. A saved stop control and device reduced motion disable effects. The next challenge has a 2.4-second border sweep once per page load, deferred until visible; tab changes and data refreshes do not replay it.\\
+Motion & A 100 ms page exit, 320--480 ms staggered entrances and 600 ms chart bars, plus slow ambient decoration. Profile preferences and device reduced motion disable effects. The next challenge has a 2.4-second border sweep once per page load, deferred until visible; tab changes and data refreshes do not replay it.\\
 \end{longtable}
 
 The palette uses shared CSS variables for light and dark themes. Light mode uses
@@ -131,7 +157,8 @@ The account-scoped pack-list endpoint now includes title, kind, level count, tas
 count and validity. It still excludes private filesystem paths, user IDs and
 fingerprints. Invalid private pack content does not prevent the rest of the library
 from loading. Loading changed content rechecks its review/trust state before
-returning metadata. There is no schema migration or progress rewrite for this UI.
+returning metadata. Those metadata/layout changes need no progress rewrite. The
+later one-submission feature adds migration 0006, described in the exercise chapter.
 
 The in-app guide is structured content in \path{web/guide.json}; the documentation
 builder generates the matching LaTeX chapter from the same content. The service
@@ -140,13 +167,13 @@ application shell. Private API responses remain uncached. The standalone wheel
 regression checks the guide, font/license and theme asset and serves them from an
 installed wheel outside the source checkout.
 
-The expanded automated suite records 155 passing tests. Browser regressions cover
+The expanded automated suite records 165 passing tests. Browser regressions cover
 inline pack-row geometry, readable previews, in-dialog failure messages, persistence
 of errors, Escape/focus restoration, XP updates after verification, profile/theme/
 timezone persistence, guide search and direct links, and offline help. Navigation
 geometry checks cover the guide drawer, filtering and breakpoint changes. The visual
-audit retains 74 captures at 320, 390, 768, 1024, 1440 and 1920 px, including dark mode,
-plus a short motion preview. Axe-core 4.10.3 checks WCAG 2 A/AA and 2.1 AA tagged rules on 66 screen/state/viewport
+audit retains 89 captures at 320, 390, 768, 1024, 1440 and 1920 px, including dark mode,
+plus a short motion preview. Axe-core 4.10.3 checks WCAG 2 A/AA and 2.1 AA tagged rules on 76 screen/state/viewport
 combinations. Its results are bounded automated evidence, not a claim of complete
 accessibility conformance or an expert usability score.
 
@@ -167,7 +194,9 @@ to the real profile.
 
 Retained evidence is in \path{docs/testing/ui-workspace-tests.txt},
 \path{docs/testing/ui-visual-audit.txt}, \path{docs/testing/ui-accessibility.json}
-and \path{docs/screenshots/ui-workspace/}. The neobrutalism revision is recorded in
+and \path{docs/screenshots/ui-workspace/}. The concise UI, startup and one-submission
+revision is recorded in \path{docs/testing/ui-refinement-verification.txt}.
+The neobrutalism revision is recorded in
 \path{docs/testing/ui-neobrutalism-verification.txt}; the earlier layout revision is in
 \path{docs/testing/ui-layout-review.txt}. Earlier browser, container and local-refresh
 records are in \path{docs/testing/ui-final-regressions.txt},

@@ -5,6 +5,11 @@ a unique account/pack/node key prevents duplicate rewards. Existing progress and
 missions are retained. A native instance records its pack fingerprint, randomized
 public fixture, private expected answer, attempts and verified time. A pack change
 invalidates its prior instance evidence; a superseded instance cannot be submitted.
+Migration 0006 adds \texttt{case\_attempts}, an immutable decision receipt keyed by
+account, pack and node. It snapshots the question, answer and result. Legacy
+submitted cases receive a receipt without rewriting progress or XP; an existing
+verified outcome takes priority. Old runs did not store a selected option, so
+their review does not invent one.
 
 The \texttt{lab} verifier accepts \texttt{exercise} equal to logging, subnet,
 access-policy, integrity, timeline or case. Case tasks additionally require a bundled
@@ -12,6 +17,21 @@ access-policy, integrity, timeline or case. Case tasks additionally require a bu
 Account-scoped lookups, transactions and completion guards apply to the browser,
 remote CLI, manual marking, force/backfill and split operations. Verified nodes
 cannot be completed by splitting them into manually marked children.
+
+Multiple-choice cases accept one valid submission. A malformed or missing choice
+is rejected before consuming that submission. \texttt{labs.submit} inserts the
+receipt and grades under the same \texttt{BEGIN IMMEDIATE} transaction; concurrent
+requests therefore see one authoritative result. Repeated calls return that result.
+\texttt{labs.start} checks for a receipt before starting timing, and rejects a fresh
+instance after submission. Question identity survives pack wording changes. The
+receipt remains readable even when the old exercise has expired or its pack changed;
+reading it cannot create another completion or award.
+
+A wrong decision ends that task's timer without XP. The UI reveals the explanation
+and original choice. Continue without XP explicitly skips the unresolved question
+so the learner can move on; it does not mark it correct. Correct decisions complete
+through the existing verification path. The first result is permanent for that
+account/pack/node, rather than an unlimited unscored retry disguised as an exam.
 
 The \texttt{ctf} verifier accepts a provider from the external capability catalog,
 a required \texttt{challenge}, and optional \texttt{all\_of} string IDs. It checks an
@@ -25,9 +45,12 @@ proctoring, and shared game state cannot establish which person performed a solv
 The existing authenticated \texttt{POST /api/command} accepts the session and lab CLI
 arguments. No browser-supplied score, elapsed time or solved boolean is accepted.
 Scheduler checkpoints use the existing account notification settings. The browser's
-countdown is a preview, refreshed from the server every 30 seconds while visible.
+elapsed / target display is a preview, refreshed from the server every 30 seconds
+while visible. The target stays fixed and elapsed time continues during overtime.
 Rendering the clock preserves its action buttons so keyboard focus is not lost each
-second. Tracks contains the searchable source-derived catalog; assessment metadata
+second. The active bar stays visible while scrolling. Session status also returns
+the latest finished attempt with elapsed time, outcome and earned XP; Review last
+attempt navigates without starting timing. Tracks contains the searchable source-derived catalog; assessment metadata
 appears progressively inside challenge details.
 
 \subsection{Regression contracts}
@@ -43,7 +66,8 @@ are bounded correctness tests, not measurements of learning effectiveness.
 \path{GET /api/challenges/{reference}} resolves the caller's installed pack and node,
 returns the node's level/status, its task session and the current public exercise.
 \texttt{labs.current} calls the same ownership, fingerprint and expiry checks as
-\texttt{labs.view}; it never calls \texttt{labs.start} or \texttt{timing.start}.
+\texttt{labs.view} for open exercises; submitted cases use their account-scoped
+receipt. Reading never calls \texttt{labs.start} or \texttt{timing.start}.
 An invalid instance is reported through \texttt{exercise\_error} while the task's
 instructions remain available. Reading a workspace must not create random fixtures,
 resume timing or grant completion.
@@ -52,6 +76,6 @@ resume timing or grant completion.
 calling the completion or reward path. \texttt{timing.finish} awards XP only when
 the prior row was running and the evidence kind is a qualifying verifier. Finished
 and legacy paused attempts cannot preserve a higher reward for later submission.
-The old paused value remains in migration 0005 for compatibility; no new migration
-rewrites learner history. \texttt{lab start --minutes} nests \texttt{timing.start}
+The old paused value remains in migration 0005 for compatibility; migration 0006
+adds case receipts without rewriting these session rows. \texttt{lab start --minutes} nests \texttt{timing.start}
 inside the exercise transaction, so a failed setup rolls back the new timer too.

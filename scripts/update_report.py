@@ -42,6 +42,7 @@ milestones += [
     ("UI container delivery", "ui-deployment-smoke.txt"),
     ("Local UI refresh", "ui-local-refresh.txt"),
     ("Neobrutalism UI", "ui-neobrutalism-verification.txt"),
+    ("Challenge UX refinement", "ui-refinement-verification.txt"),
 ]
 for milestone, filename in milestones:
     path = ROOT / "docs/testing" / filename
