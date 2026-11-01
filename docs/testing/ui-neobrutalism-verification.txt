@@ -1,0 +1,43 @@
+Neobrutalism, visible challenge glow and stronger hover — 2026-11-01
+
+Implementation: warm paper and charcoal themes, ink outlines, bold typography,
+mustard primary actions, selective flat accents and hard offset shadows.
+Supporting content retains open rows and the shared 1080 px page frame.
+Docs keeps its stable desktop rail and compact-screen modal drawer.
+No new runtime dependencies, backend or database changes.
+
+The challenge border sweep was clipped outside its card. Its colored line now
+runs inside the visible edge while the outer glow preserves the hard shadow.
+It runs once per page load for 2.4 seconds, after fonts settle and the card first
+enters the usable viewport. Tab changes and data refreshes do not replay it.
+Fine-pointer hover reveals color and halftone behind the main challenge content;
+buttons lift and press with hard shadows. The native cursor and focus rings remain.
+Saved motion preferences and OS reduced motion disable decorative animation.
+
+Full suite: 155 passed in 77.03s (including 21 browser/integration cases).
+New regressions verify deferred mobile glow, once-per-load behavior, no replay on
+navigation or time filtering, and replay after reload. Existing challenge recovery,
+continuous timing, End session, theme, docs drawer and offline checks passed.
+Ruff formatting, F401/F841, JavaScript syntax and git diff whitespace checks passed.
+The test harness uses locator assertions for animation events; it does not relax
+the application's Content Security Policy to permit unsafe-eval.
+
+Visual evidence: 74 screenshots and motion-preview.webm, disposable learner only.
+Routes: Today, Path, Stats, Tracks, Profile, Docs and Challenge.
+Widths: 320, 390, 768, 1024, 1440 and 1920 px, including dark mode and modal states.
+Shared edges, contained sections, stable Docs geometry, no horizontal overflow or
+JavaScript errors. Light/dark glow and hover were also visually inspected.
+Axe-core 4.10.3: 66 screen/state/viewport checks, zero detected violations in the
+WCAG 2 A/AA and 2.1 AA tagged rules, including light/dark pointer-hover states.
+These automated checks do not constitute complete accessibility certification.
+
+Read-only live static checks on port 8420 confirmed the new styles, hover layers,
+visibility guard and shell v7 are served. No restart was needed. No private API
+read/write, challenge start/end/answer/grade, or notification was used in this pass.
+Earlier deployment and container evidence was not repeated for this visual change.
+
+Documentation: developer-handbook, handbook and report each compiled twice.
+No missing glyphs, unresolved references or overflow above 1 pt. Developer
+handbook effects and palette pages were visually inspected after compilation.
+
+RESULT: 155 tests passed; 74 captures; 66 axe checks with no detected violations.

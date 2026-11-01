@@ -23,9 +23,21 @@ Workspace UI & 146 passed in 44.32s \\
 UI visual review & 35 workspace screenshots captured at 320, 390, 768 and 1440 px, including dark mode; no horizontal overflow or JavaScript errors. Temporary learner account only. \\
 UI container delivery & Hardened Compose, bundled UI/docs/font, native grading, persistent XP after restart and read-only signed receipt overlay passed on AMD64. Synthetic temporary data only. \\
 Local UI refresh & Local server refreshed at http://127.0.0.1:8420 with its existing command and environment. SQLite backup created in the private profile. Health, XP/profile markup, ten guide topics and readable pack metadata passed; mission, entry, node, evidence, lab, timer and XP records unchanged. No synthetic progress added. \\
+Neobrutalism UI & 155 tests passed; 74 captures; 66 axe checks with no detected violations. \\
 \end{longtable}
 \subsection*{Recent recorded commits}
 \begin{verbatim}
+036a86d feat(ui): introduce neobrutalism and restore visible challenge
+  effects
+78950d6 docs: explain architecture, challenge lifecycle and UI
+  implementation
+729e4f2 feat(workspace): restore challenges and add calm motion
+462b2f0 feat(ui): align page layouts and keep docs navigation stable
+265cb90 feat(ui): sweep the next challenge border once per page load
+44a1983 feat(ui): group existing tracks by domain and show persistent streak
+d598ca1 refactor(tracks): organize bundled curricula by security domain
+e7c01d8 docs(ui): publish updated LaTeX guides and retain container
+  verification
 71b70fa feat(ui): add persistent XP, profile and integrated guides with
   reliable dialog feedback
 109c96b docs(release): publish complete LaTeX guides and verified public
@@ -34,17 +46,5 @@ Local UI refresh & Local server refreshed at http://127.0.0.1:8420 with its exis
   support
 58d052f feat(learning): add verified exercises, timed rewards and public
   specialist tracks
-3100297 chore(release): verify v3 learning checks and recoverable deployment
-b94fcb7 feat(curriculum): ground cyber assessments in research and publish
-  LaTeX handbooks
-fc8bfee feat(learning): add challenge briefs, progress paths and engaging
-  cyber track openings
-e9c8e60 fix(verifiers): omit an implicit epoch cutoff for git evidence
-533da50 docs: deliver living LaTeX report, reproducible demos and
-  verification artifacts
-55e6bda fix(auth): keep token storage portable across client platforms
-c15c070 refactor: format Python sources and validate style in CI
-9ba231b fix(cli): accept global flags with time budgets and preserve
-  existing packs
 \end{verbatim}
 \noindent Full transcripts: \texttt{docs/testing/phase-*.txt}. The implementation may have uncommitted work beyond the last validated milestone.

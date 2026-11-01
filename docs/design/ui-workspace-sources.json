@@ -166,6 +166,24 @@
       "application": "Device reduced motion overrides decoration; a persistent top-bar pause button and saved Profile preference stop effects. Background motion pauses when the document is hidden.",
       "limits": "Official page text read from HTTP HTML after the rendered browser timed out. Motion’s APIs are reference guidance; the implementation uses CSS and the Web Animations API.",
       "accessed": "2026-11-01"
+    },
+    {
+      "title": "Neobrutalism Components introduction",
+      "url": "https://www.neobrutalism.dev/docs",
+      "status": 200,
+      "accessed": "2026-11-01",
+      "finding": "Rendered documentation uses thick outlines, flat color surfaces, heavy typography, small corners and offset shadows on controls.",
+      "application": "Original CSS tokens for ink outlines, paper surfaces, mustard primary actions, lavender selection and hard shadows. Preserve the existing open layouts and native accessible controls.",
+      "limits": "Public rendered documentation inspected. No React, Tailwind or Base UI component code copied; no new runtime dependency."
+    },
+    {
+      "title": "Gumroad public home page",
+      "url": "https://gumroad.com/",
+      "status": 200,
+      "accessed": "2026-11-01",
+      "finding": "Public page combines a restrained base surface with outlined controls, large headings and selective flat colorful illustrations.",
+      "application": "Keep color concentrated on important actions and geometric decoration; use strong typography and whitespace instead of adding more card containers.",
+      "limits": "Public home page text and screenshot inspected, not an authenticated creator dashboard. Branding and illustrations are not reused."
     }
   ],
   "font": {

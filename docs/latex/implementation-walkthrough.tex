@@ -203,16 +203,39 @@ accessibility guidance. Their patterns were adapted in original CSS and browser
 animation code; the app does not import React, GSAP, Motion or a WebGL renderer.
 The source register records which rendered pages or repository sources were read.
 
-The ambient field combines violet/teal radial gradients, a masked dot pattern,
-sparse particles and an SVG orbit. Slow transform animations give depth while
+The current neobrutalist skin also draws on the public Neobrutalism Components
+documentation and Gumroad home page. \path{web/style.css} defines paper and charcoal
+surfaces, ink outlines, heavy Inter headings, 4 px corners and hard offset shadows.
+The mustard \texttt{--action} fill is separate from violet \texttt{--accent} links,
+so text links do not inherit a low-contrast yellow. \texttt{--divider} is distinct
+from the ink outline token; empty heatmap cells and progress tracks use quiet fills.
+This prevents a palette change from making every separator and empty cell heavy.
+The existing 1080 px frame, open supporting rows and stable Docs drawer remain.
+The icon and installed-app colors share the new palette; shell cache v7 replaces
+older assets without caching private API responses.
+
+The ambient field combines a masked dot pattern, outlined geometric shapes,
+sparse moving squares and an SVG orbit. Slow transform animations give depth while
 Docs lowers their visual intensity. \texttt{AscendMotion.enter} performs brief
 heading and section entrances and animates Stats bars; text stays complete in the
 DOM. A route key prevents data refreshes from replaying an entrance. The separately
-guarded next-challenge border sweep plays once per page load.
+guarded next-challenge border sweep plays once per page load. An
+\texttt{IntersectionObserver} waits, after fonts load, until at least one fifth of the card intersects
+the usable viewport, excluding header and bottom-navigation space. This keeps a
+phone's below-the-fold card from finishing its effect unseen. Replacing the card
+disconnects the previous observer; the page-scoped guard prevents tab changes and
+refreshes from replaying a completed sweep. The CSS masked conic gradient animates
+its angle for 2.4 seconds inside the card edge, with an outer violet glow that
+preserves the hard shadow. Only the pointer decoration clips overflow. Clipping the
+whole card while placing the animated line outside its edge had hidden the sweep.
 
-Hover uses normal pointer and keyboard affordances. A small radial highlight follows
-the native pointer only over the main challenge on devices with a fine pointer.
-It ignores pointer events, stays inside the card and is disabled with motion. There
+Hover uses normal pointer and keyboard affordances. Fine-pointer events update two
+CSS coordinates on a decorative layer behind the main challenge's content. Masked
+color and halftone layers reveal a larger print-like spotlight around the pointer.
+They ignore pointer events and clip within that layer, leaving text, controls and
+focus rings intact. Action buttons lift 2 px with a larger hard shadow on hover;
+pressing moves them into the shadow. Navigation icons move slightly, while path
+markers gain an offset shadow. All decorative effects honor the motion setting. There
 is no custom cursor, scroll interception or continuous JavaScript render loop.
 Background animation uses CSS; heading transitions use the Web Animations API.
 These choices bound the work, but do not establish a measured frame-rate guarantee.
@@ -311,6 +334,17 @@ native modal with controlled focus instead of expanding above the article.
 The selected effects need only gradients, SVG, transforms and short element
 animations. Existing browser APIs meet that scope without changing the app's stack.
 The choice can be reconsidered if future interaction complexity warrants it.
+\item \textbf{How can a visual redesign preserve usability?}
+Keep semantic controls and existing routes, introduce shared theme tokens, and
+separate action fills from link colors. Use heavy outlines and shadows selectively
+while retaining open supporting sections, responsive geometry and visible focus.
+Verify both themes, narrow screens, overlays and pointer states; appearance alone
+does not prove usability.
+\item \textbf{Why did a page-load animation need visibility tracking?}
+A card can start below a phone's viewport. Font loading can also move it. Wait for
+font layout, then observe visibility before spending the once-per-load effect.
+Disconnect stale observers, keep a page-scoped replay guard, and honor reduced
+motion. Keep decorative clipping separate from the card's border and focus rings.
 \item \textbf{How is accessibility checked?}
 Semantic regions, labels, keyboard/focus behavior and reduced motion are implemented
 directly, then tested with browser regressions and selected axe rules. Do not describe

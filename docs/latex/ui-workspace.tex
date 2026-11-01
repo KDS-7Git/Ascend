@@ -7,9 +7,10 @@ to an ordinary page toast outside a native modal dialog; that toast was behind t
 browser's top layer and often inaccessible to the learner. XP appeared only in
 Stats, while profile settings were mixed into More. There was no in-app guide.
 
-The refreshed interface uses a restrained learning-workspace pattern: neutral
-surfaces, a clear text hierarchy, compact lists, one accent for actions/current
-position, and additional semantic colors only for results, milestones and errors.
+The interface uses a neobrutalist learning-workspace pattern: paper-colored
+surfaces, ink outlines, bold headings, compact lists and flat accent colors.
+Mustard identifies primary actions, while lavender identifies the current position.
+Semantic colors still distinguish results, milestones and errors.
 Today keeps one primary next step, an optional shorter task, and a milestone when
 one is relevant. The path is a consistent vertical sequence. Advanced controls
 are disclosed when needed. Subsequent user and reviewer feedback identified
@@ -52,18 +53,24 @@ to the opener; selecting a guide closes the drawer and focuses its title. Resizi
 to desktop closes the drawer and restores navigation to the rail. Search filters
 topics in that navigation; it does not insert a list above the article.
 
-\subsection{Calm motion and recoverable challenges}
+\subsection{Neobrutalism, motion and recoverable challenges}
 The subsequent visual pass reviewed React Bits, Aceternity UI, Magic UI and Motion's
-accessibility guidance. Original local CSS and Web Animations API code supply a
-violet/teal ambient field, faint dots, sparse particles, an orbit motif, short heading
-and section entrances, chart transitions and restrained hover feedback. The native
-cursor remains; only the main challenge gets a soft pointer-following highlight.
+accessibility guidance. The neobrutalism pass also inspected Neobrutalism Components
+and Gumroad's public pages for outlined controls, flat color and clear hierarchy.
+Original local CSS and Web Animations API code supply a printed dot field, outlined
+geometric shapes, sparse moving squares, an orbit motif, short heading and section
+entrances, and chart transitions. The native cursor remains. Hovering over the main
+challenge reveals a moving color field and halftone pattern behind its content;
+buttons lift with a larger hard shadow and press back into place.
 The source register distinguishes rendered-page inspection from repository-source
 inspection when the React Bits page returned an empty browser body.
 
 The top-bar motion control and Profile preference stop decorative animation. Device
 reduced motion always takes precedence and hidden pages pause background movement.
-The next challenge's one-time border sweep is retained. Task timers are independent
+The next challenge's border sweep runs for 2.4 seconds, once per page load when the
+card first becomes visible. The colored line is inset inside the card; only its
+decorative hover layer clips overflow, preserving both the sweep and focus rings.
+Task timers are independent
 of this visual preference and run continuously until completion or End session.
 
 Starting a challenge now leaves the preview dialog for a dedicated workspace with
@@ -104,14 +111,18 @@ Docs & Ten searchable help topics grouped into Start here, Daily practice and Se
 Profile & Actual account identity and verified totals, editable timezone, locally persisted theme, reminders and opt-in streak sharing. Unsupported username/password editing is not presented.\\
 Path & Uniform vertical task rows, current-level emphasis and distinct ready, locked, done, skipped and milestone states. Color supplements labels and shapes.\\
 Typography & Locally bundled Inter Variable with its SIL Open Font License. A limited hierarchy separates headings, body copy and supporting labels; mobile form text is 16 px to avoid focus zoom.\\
-Motion & Brief control transitions, 380--460 ms entrances and 600 ms chart bars, plus slow ambient decoration. A saved stop control and device reduced motion disable effects. The next challenge has a 1.8-second border sweep once per page load; tab changes and data refreshes do not replay it.\\
+Motion & Brief control transitions, 380--460 ms entrances and 600 ms chart bars, plus slow ambient decoration. A saved stop control and device reduced motion disable effects. The next challenge has a 2.4-second border sweep once per page load, deferred until visible; tab changes and data refreshes do not replay it.\\
 \end{longtable}
 
-The palette is defined once using CSS variables for light and dark themes. Light
-mode uses background \texttt{\#f7f8fa}, text \texttt{\#242a38}, supporting text
-\texttt{\#626b7a}, and accent \texttt{\#5147c7}. Dark mode uses background
-\texttt{\#15181f}, text \texttt{\#eceef4}, and accent \texttt{\#b2aaff}.
-Cards, fields and buttons use a small, consistent corner-radius and spacing scale.
+The palette uses shared CSS variables for light and dark themes. Light mode uses
+background \texttt{\#f6f3e9}, text \texttt{\#252522}, supporting text
+\texttt{\#59574f}, violet links \texttt{\#5940a1} and mustard actions
+\texttt{\#f5ce47}. Dark mode uses background \texttt{\#1c1d1b}, cream text
+\texttt{\#f6f3e9}, lavender links \texttt{\#cab6ff} and the same mustard action
+fill with dark text. Link and button-fill tokens are separate to preserve contrast.
+Controls use 2 px outlines, 4 px corners and 3 px offset shadows; the featured
+challenge uses a 6 px shadow. Quiet list actions retain a flatter treatment.
+Supporting sections remain open rows with dividers, not extra bordered cards.
 The saved theme is applied before first paint. Fonts and the help guide are
 bundled locally; no third-party font request is required during use.
 
@@ -129,13 +140,13 @@ application shell. Private API responses remain uncached. The standalone wheel
 regression checks the guide, font/license and theme asset and serves them from an
 installed wheel outside the source checkout.
 
-The expanded automated suite records 153 passing tests. Browser regressions cover
+The expanded automated suite records 155 passing tests. Browser regressions cover
 inline pack-row geometry, readable previews, in-dialog failure messages, persistence
 of errors, Escape/focus restoration, XP updates after verification, profile/theme/
 timezone persistence, guide search and direct links, and offline help. Navigation
 geometry checks cover the guide drawer, filtering and breakpoint changes. The visual
-audit retains 72 captures at 320, 390, 768, 1024, 1440 and 1920 px, including dark mode,
-plus a short motion preview. Axe-core 4.10.3 checks WCAG 2 A/AA and 2.1 AA tagged rules on 64 screen/state/viewport
+audit retains 74 captures at 320, 390, 768, 1024, 1440 and 1920 px, including dark mode,
+plus a short motion preview. Axe-core 4.10.3 checks WCAG 2 A/AA and 2.1 AA tagged rules on 66 screen/state/viewport
 combinations. Its results are bounded automated evidence, not a claim of complete
 accessibility conformance or an expert usability score.
 
@@ -148,7 +159,7 @@ runtime check used AMD64 and disposable data and was not repeated for the layout
 revision. The previous ARM64 compatibility
 evidence does not constitute a new physical Raspberry Pi run.
 
-The existing local server was restarted with its original command and environment
+For the earlier challenge-recovery milestone, the local server was restarted with its original command and environment
 after creating a SQLite backup in the private profile. Health and pack metadata
 checks passed. Before/after comparisons confirmed unchanged mission, entry, node,
 unlock, evidence, lab, timer and XP records. No demonstration progress was added
@@ -156,7 +167,8 @@ to the real profile.
 
 Retained evidence is in \path{docs/testing/ui-workspace-tests.txt},
 \path{docs/testing/ui-visual-audit.txt}, \path{docs/testing/ui-accessibility.json}
-and \path{docs/screenshots/ui-workspace/}. The layout revision is recorded in
+and \path{docs/screenshots/ui-workspace/}. The neobrutalism revision is recorded in
+\path{docs/testing/ui-neobrutalism-verification.txt}; the earlier layout revision is in
 \path{docs/testing/ui-layout-review.txt}. Earlier browser, container and local-refresh
 records are in \path{docs/testing/ui-final-regressions.txt},
 \path{docs/testing/ui-deployment-smoke.txt} and
