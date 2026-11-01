@@ -6,6 +6,7 @@ const TAB_NAMES = {today: "Today", path: "Learning path", stats: "Progress", mor
 let noticeTimer;
 let challengeIntroPlayed = false;
 let challengeIntroObserver;
+let navigationVersion = 0;
 function el(tag, text, className) { const node = document.createElement(tag); if (text !== undefined) node.textContent = text; if (className) node.className = className; return node; }
 async function runAction(node, action, after) {
   if (node.getAttribute('aria-busy') === 'true') return;
@@ -30,6 +31,7 @@ function notify(message, kind = 'info') {
   const node = $('#notice');
   // A timer reminder must not replace an unresolved action error.
   if (kind === 'reminder' && !node.hidden && node.dataset.kind === 'error') return;
+  delete node.dataset.bootNotice;
   const dialog = [...document.querySelectorAll('dialog[open]')].at(-1);
   (dialog?.querySelector('.dialog-feedback') || document.body).append(node);
   node.dataset.kind = kind;
@@ -47,7 +49,7 @@ async function api(path, body, method = "POST", interactive = true) {
   const options = {headers, cache: "no-store"};
   if (body !== undefined) { options.method = method; if (body instanceof FormData) options.body = body; else { headers["Content-Type"] = "application/json"; options.body = JSON.stringify(body); } }
   let response;
-  try { response = await fetch(`/api/${path}`, options); } catch { throw new Error("You're offline. Reconnect to save your progress."); }
+  try { response = await fetch(`/api/${path}`, {...options, signal: AbortSignal.timeout(15000)}); } catch { throw new Error("The server is not responding. Check your connection and try again."); }
   if (response.status === 401) { if (interactive && !$("#login-dialog").open) $("#login-dialog").showModal(); throw new Error("Sign in to continue."); }
   const data = await response.json();
   if (!response.ok) throw new Error(typeof data.detail === "string" ? data.detail : "Please check the form fields.");
@@ -60,10 +62,14 @@ function currentRoute() {
 }
 async function switchTab(tab, options = {}) {
   if (!TABS.includes(tab)) return;
+  const version = ++navigationVersion;
+  const previous = $('.screen:not([hidden])');
   if ($('#docs-menu').open) $('#docs-menu').close();
   if (tab === 'challenge' && $('#sheet').open) $('#sheet').close();
   const changed = state.tab !== tab;
   state.tab = tab;
+  if (changed && document.documentElement.dataset.boot !== 'loading') await window.AscendMotion?.leave(previous);
+  if (version !== navigationVersion) return;
   document.querySelectorAll('.screen').forEach(screen => screen.hidden = screen.id !== tab);
   document.querySelectorAll('.primary-nav [data-tab]').forEach(node => {
     node.classList.toggle('active', node.dataset.tab === tab);
@@ -79,9 +85,14 @@ async function switchTab(tab, options = {}) {
   const hash = tab === 'docs' ? `docs/${state.guideTopic}` : tab === 'challenge' && state.challengeRef ? `challenge/${encodeURIComponent(state.challengeRef)}` : tab;
   if (location.hash !== `#${hash}`) location.hash = hash;
   if (changed) window.scrollTo({top: 0, behavior: 'instant'});
+  const screen = document.getElementById(tab);
+  screen.setAttribute('aria-busy', 'true');
+  $('#route-progress').hidden = false;
+  const loadingTimer = setTimeout(() => { screen.dataset.loading = 'true'; }, 160);
+  try {
   if (tab === 'docs') {
     await renderDocs();
-    window.AscendMotion?.enter($('#docs'), `docs/${state.guideTopic}`);
+    if (state.tab === tab && version === navigationVersion) window.AscendMotion?.enter($('#docs'), `docs/${state.guideTopic}`);
     renderSessionClock();
     if (!state.account) refreshDocsChrome().catch(() => {});
     return;
@@ -94,7 +105,13 @@ async function switchTab(tab, options = {}) {
   if (tab === 'profile') await renderProfile();
   if (tab === 'challenge') await renderChallenge();
   renderSessionClock();
-  if (state.tab === tab) window.AscendMotion?.enter(document.getElementById(tab), tab);
+  if (state.tab === tab && version === navigationVersion) window.AscendMotion?.enter(document.getElementById(tab), tab);
+  } finally {
+    clearTimeout(loadingTimer);
+    delete screen.dataset.loading;
+    screen.removeAttribute('aria-busy');
+    if (version === navigationVersion) $('#route-progress').hidden = true;
+  }
 }
 const ICONS = {
   menu: ['M4 6h16M4 12h16M4 18h16'],
@@ -168,7 +185,7 @@ async function refresh() {
   if (milestone && milestone.id !== overview.next?.id) {
     const target = el('section', undefined, 'card summit-card');
     const label = el('p', undefined, 'eyebrow'); label.append(icon('flag'), document.createTextNode('YOUR NEXT MILESTONE'));
-    target.append(label, el('h2', milestone.title.replace(/\s*\(milestone\)$/i, '')), el('p', 'Put this level’s skills together in one challenge.', 'muted'));
+    target.append(label, el('h2', milestone.title.replace(/\s*\(milestone\)$/i, '')));
     target.append(progressBar(lv.nodes, `${lv.title} progress`), el('p', progressLabel(progressOf(lv.nodes)), 'small muted'), button('Preview milestone', () => showNode(milestone, lv), 'text-button'));
     aside.append(target);
   }
@@ -179,7 +196,7 @@ async function refresh() {
 async function playChallengeIntro() {
   challengeIntroObserver?.disconnect();
   const card = $('.next-card');
-  if (challengeIntroPlayed || state.tab !== 'today' || !card) return;
+  if (challengeIntroPlayed || state.tab !== 'today' || !card || document.documentElement.dataset.boot === 'loading') return;
   await document.fonts.ready;
   if (challengeIntroPlayed || state.tab !== 'today' || card !== $('.next-card')) return;
   challengeIntroObserver?.disconnect();
@@ -215,7 +232,7 @@ function renderMissionProgress() {
   const nodes = levels.flatMap(lv => lv.nodes), p = progressOf(nodes);
   const banner = el('section', undefined, 'mission-banner');
   const emblem = el('div', undefined, 'mission-emblem'); emblem.append(icon('route'));
-  const info = el('div', undefined, 'mission-info'); info.append(el('p', 'YOUR ACTIVE TRACK', 'eyebrow'), el('h2', state.overview.mission.title), el('p', current ? `Level ${levels.indexOf(current) + 1} of ${levels.length} · ${current.title}` : 'Your mission is ready', 'muted small'));
+  const info = el('div', undefined, 'mission-info'); info.append(el('p', 'YOUR ACTIVE TRACK', 'eyebrow'), el('h2', state.overview.mission.title), el('p', current ? `Level ${levels.indexOf(current) + 1} of ${levels.length}` : 'Ready when you are', 'muted small'));
   const meta = el('div', undefined, 'mission-meta'); meta.append(el('strong', `${p.percent}%`), el('span', progressLabel(p), 'small muted'));
   const milestones = el('div', undefined, 'level-dots');
   for (const [index, lv] of levels.entries()) {
@@ -231,18 +248,28 @@ function nodeCard(node, quick) {
   const label = el('p', undefined, 'eyebrow'); label.append(icon(quick ? 'bolt' : node.milestone ? 'flag' : 'play'), document.createTextNode(quick ? 'A LITTLE SIDE QUEST' : node.milestone ? 'MILESTONE CHALLENGE' : 'YOUR NEXT CHALLENGE'));
   card.append(label);
   const lv = levelFor(node);
-  card.append(el('p', `${lv?.title || state.overview.mission?.title || ''}${state.overview.draft ? ' · Draft track' : ''}`, 'card-context'));
-  card.append(el('h2', node.title), el('p', node.brief || node.done_when, 'description'));
+  card.append(el('h2', compactTitle(node.title)));
   const meta = el('div', undefined, 'challenge-meta'); meta.append(el('span', `~${node.estimate} min`, 'pill'));
-  if (node.steps?.length) meta.append(el('span', `${node.steps.length} steps to try`, 'small'));
+  if (!quick) meta.append(el('span', node.verify?.exercise === 'case' ? 'Knowledge check' : node.verify?.type === 'lab' ? 'Hands-on exercise' : 'Practice', 'small'));
   if (quick) meta.append(el('span', 'Optional', 'small'));
   card.append(meta);
-  if (!quick && state.overview.resume) { const resume = el('p', undefined, 'resume-note'); resume.append(el('strong', 'Where you left off: '), document.createTextNode(state.overview.resume)); card.append(resume); }
+  if (!quick) card.append(challengeIllustration());
   const actions = el('div', undefined, 'card-actions');
   const open = button(quick ? 'Try this challenge' : 'Open challenge', () => showNode(fullNode(node), lv), quick ? 'secondary' : ''); open.append(icon('arrow'));
   open.dataset.challenge = `${node.pack_id}:${node.id}`; open.dataset.defaultLabel = quick ? 'Try this challenge' : 'Open challenge';
   actions.append(open, button('Log progress', () => openLog(node), 'text-button')); card.append(actions);
   return card;
+}
+function compactTitle(title) { return title.replace(/^(Reason it through|Investigate|Practice):\s*/i, '').replace(/\s*\(milestone\)$/i, ''); }
+function challengeIllustration() {
+  const art = svgElement('svg', {viewBox: '0 0 220 180', width: 220, height: 180, class: 'challenge-art', 'aria-hidden': 'true'});
+  const group = svgElement('g', {stroke: 'currentColor', 'stroke-width': 2, 'stroke-linejoin': 'round'});
+  for (const [x, y, color] of [[18, 125, 'var(--mint)'], [80, 88, 'var(--soft)'], [142, 48, 'var(--action)']]) {
+    group.append(svgElement('path', {d: `M${x} ${y}h44v38h-44z`, fill: color, class: 'ascent-step'}));
+  }
+  group.append(svgElement('path', {d: 'M163 47V15m0 0h29l-7 10 7 10h-29', fill: 'var(--peach)', class: 'ascent-flag'}));
+  group.append(svgElement('rect', {x: 33, y: 111, width: 14, height: 14, rx: 2, fill: 'var(--accent)', class: 'ascent-climber'}));
+  art.append(group); return art;
 }
 function openSheet(context = 'Challenge') {
   const dialog = $('#sheet');
@@ -686,7 +713,10 @@ handleForm("#login-form", async () => { try { const result = await api("login", 
 document.addEventListener("keydown", event => { if (event.key.toLowerCase() === "l" && !["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement.tagName) && !$("#sheet").open && state.overview?.next) openLog(state.overview.next); });
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => {});
 const initialRoute = currentRoute();
-switchTab(initialRoute.tab, {topic: initialRoute.topic}).catch(error => notify(error.message, 'error'));
+switchTab(initialRoute.tab, {topic: initialRoute.topic}).catch(error => notify(error.message, 'error')).finally(() => {
+  window.AscendBoot?.finish();
+  playChallengeIntro();
+});
 
 // Timers are scored by the server; this display is only a synchronized preview.
 async function refreshSessions() {
@@ -704,21 +734,27 @@ async function refreshSessions() {
 function renderSessionClock() {
   const root = $('#task-session'); if (!root || !state.sessions) return;
   const current = state.sessions.active;
-  const renderKey = `${state.tab}:${state.challengeRef || ''}:` + (current ? `active-${current.id}` : `paused-${state.sessions.paused.map(r => r.id).join('-')}`);
+  const recent = state.sessions.recent;
+  const renderKey = `${state.tab}:${state.challengeRef || ''}:` + (current ? `active-${current.id}` : `paused-${state.sessions.paused.map(r => r.id).join('-')}:recent-${recent?.id}-${recent?.outcome}`);
   const changed = root.dataset.session !== renderKey;
   if (changed) { root.replaceChildren(); root.dataset.session = renderKey; }
-  root.hidden = !current && !state.sessions.paused.length;
+  root.hidden = !current && !state.sessions.paused.length && !recent;
+  root.dataset.state = current ? 'running' : 'finished';
   if (current) {
     const elapsed = current.elapsed_seconds + Math.floor((performance.now() - state.sessionFetched) / 1000);
     const remaining = Math.max(0, current.budget_seconds - elapsed);
-    const clock = `${Math.floor(remaining / 60)}:${String(remaining % 60).padStart(2, '0')}`;
     if (changed) {
-      root.append(el('strong', current.title), el('span', '', 'session-clock'));
+      const title = el('strong', compactTitle(current.title)); title.title = current.title;
+      const clock = el('span', undefined, 'session-clock');
+      clock.append(el('span', '', 'clock-value'), el('small', 'elapsed / target', 'clock-caption'));
+      root.append(el('span', 'In progress', 'session-label'), title, clock);
       const ref = `${current.pack_id}:${current.node_id}`;
-      if (state.tab !== 'challenge' || state.challengeRef !== ref) root.append(button('Resume challenge', () => switchTab('challenge', {topic: ref}), ''));
-      root.append(button('End session', endTaskSession, 'secondary'));
+      if (state.tab !== 'challenge' || state.challengeRef !== ref) root.append(sessionButton('Resume challenge', 'Resume', () => switchTab('challenge', {topic: ref}), ''));
+      root.append(sessionButton('End session', 'End', endTaskSession, 'secondary'));
     }
-    root.querySelector('.session-clock').textContent = remaining ? `${clock} remaining` : 'Target elapsed — keep going at your pace';
+    const clock = root.querySelector('.session-clock');
+    clock.querySelector('.clock-value').textContent = `${formatTime(elapsed)} / ${formatTime(current.budget_seconds)}`;
+    clock.querySelector('.clock-caption').textContent = remaining ? 'elapsed / target' : 'elapsed / target · overtime';
     const checkpoint = elapsed >= current.budget_seconds ? 2 : elapsed >= current.budget_seconds * .75 ? 1 : 0;
     const key = `ascend-session-notice-${current.id}`;
     if (checkpoint > Number(sessionStorage.getItem(key) || 0)) {
@@ -731,8 +767,19 @@ function renderSessionClock() {
     root.append(el('strong', `Previous session: ${saved.title}`));
     if (state.tab !== 'challenge' || state.challengeRef !== ref) root.append(button('Resume challenge', () => switchTab('challenge', {topic: ref}), ''));
     root.append(button('End session', endTaskSession, 'secondary'));
+  } else if (changed && recent) {
+    const label = recent.outcome === 'completed' ? 'Completed' : recent.outcome === 'incorrect' ? 'Answer recorded' : 'Session ended';
+    root.append(el('strong', label), el('span', `${formatTime(recent.elapsed_seconds)} / ${formatTime(recent.budget_seconds)} used${recent.xp_earned ? ` · +${recent.xp_earned} XP` : ' · No XP earned'}`, 'small muted'));
+    const ref = `${recent.pack_id}:${recent.node_id}`;
+    if (state.tab !== 'challenge' || state.challengeRef !== ref) root.append(button('Review last attempt', () => switchTab('challenge', {topic: ref}), 'text-button'));
   }
 }
+function sessionButton(label, compact, action, className) {
+  const node = button(label, action, className); node.setAttribute('aria-label', label);
+  node.replaceChildren(el('span', label, 'session-action-long'), el('span', compact, 'session-action-short'));
+  return node;
+}
+function formatTime(seconds) { return `${Math.floor(seconds / 60)}:${String(Math.floor(seconds) % 60).padStart(2, '0')}`; }
 async function endTaskSession() {
   await command(['session', 'end']); await refreshSessions();
   if (state.tab === 'challenge') await renderChallenge();
@@ -762,7 +809,7 @@ async function renderChallenge() {
         await command(['lab', 'start', ref]); await refreshSessions(); await renderChallenge();
       }, ''));
     }
-    if (['finished', 'paused'].includes(data.session?.status) && !data.exercise?.passed && data.node.status !== 'done') {
+    if (['finished', 'paused'].includes(data.session?.status) && !data.exercise?.passed && !data.exercise?.terminal) {
       $('#challenge-title').after(el('p', data.session.status === 'paused' ? 'This earlier paused session is available for unscored practice. You can end it from the session bar.' : 'Session ended. You can continue practicing, but this ended attempt will not earn XP.', 'muted'));
     }
     $('#challenge-title').tabIndex = -1;
@@ -771,14 +818,18 @@ async function renderChallenge() {
   }
 }
 function showLab(node, run) {
+  if (run.exercise === 'case') { showCase(node, run); return; }
+  const policy = run.exercise === 'access-policy';
   const content = $('#challenge-content'); content.replaceChildren();
   const heading = el('h1', node.title); heading.id = 'challenge-title'; heading.tabIndex = -1;
-  content.append(el('p', verificationLabel(node), 'eyebrow'), heading, el('p', run.instructions, 'challenge-brief'));
+  const instructions = policy ? run.instructions.replace('Return a boolean decision for every request.', 'Choose Allow or Deny for each request below.') : run.instructions;
+  content.append(el('p', verificationLabel(node), 'eyebrow'), heading, el('p', instructions, 'challenge-brief'));
   if (run.marker) content.append(el('p', `Your exercise marker: ${run.marker}`));
-  const workspace = el('div', undefined, 'exercise-workspace');
+  const workspace = el('div', undefined, `exercise-workspace${policy ? ' policy-workspace' : ''}`);
   const evidence = el('section', undefined, 'exercise-evidence'); evidence.append(el('h2', 'Exercise data'));
   const response = el('section', undefined, 'exercise-response'); response.append(el('h2', 'Your result'));
-  workspace.append(evidence, response); content.append(workspace);
+  if (!policy) workspace.append(evidence);
+  workspace.append(response); content.append(workspace);
   const dataView = el('pre', JSON.stringify(run.data || {}, null, 2), 'lab-data');
   dataView.tabIndex = 0; dataView.setAttribute('aria-label', 'Exercise data');
   if (run.exercise === 'logging' && !run.passed) {
@@ -789,7 +840,10 @@ function showLab(node, run) {
     }));
     evidence.append(actions);
   }
-  if (Object.keys(run.data || {}).length) evidence.append(dataView);
+  if (policy) {
+    const raw = el('details', undefined, 'quiet-details'); raw.append(el('summary', 'View raw request data'), dataView); content.append(raw);
+    response.querySelector('h2').textContent = 'Decide each request';
+  } else if (Object.keys(run.data || {}).length) evidence.append(dataView);
   else evidence.append(el('p', 'Use the scenario above to make your decision.', 'muted'));
   if (run.passed) response.append(el('p', '✓ This instance has passed. Repeating it does not award XP again.', 'success-note'));
   const draftKey = `ascend-answer-${state.account?.username || 'local'}-${run.id}`;
@@ -797,27 +851,45 @@ function showLab(node, run) {
   try { draft = JSON.parse(sessionStorage.getItem(draftKey) || '{}'); } catch { /* Empty draft. */ }
   const form = el('form'); const inputs = {};
   for (const [key, value] of Object.entries(run.answer_template)) {
-    const label = el('label', key.replaceAll('_', ' ')); label.htmlFor = `lab-answer-${key}`;
-    let input;
-    if (run.choices && key === 'choice') {
-      const group = el('fieldset'); group.append(el('legend', 'Choose your decision'));
-      for (const [id, text] of Object.entries(run.choices)) {
-        const option = el('input'); option.type = 'radio'; option.name = 'case-choice'; option.value = id; option.required = true; option.disabled = run.passed;
-        option.checked = draft[key] === id;
-        const card = el('label', undefined, 'case-choice'); card.append(option, el('span', `${id}: ${text}`)); group.append(card);
+    if (typeof value === 'boolean') {
+      const group = el('fieldset', undefined, 'decision-field');
+      group.append(el('legend', policy ? `Request ${key}` : key.replaceAll('_', ' ')));
+      const row = el('div', undefined, 'decision-row');
+      const request = policy && run.data?.requests?.find(item => item.id === key);
+      if (request) {
+        const context = el('div', undefined, 'decision-context');
+        const titleCase = text => text.charAt(0).toUpperCase() + text.slice(1);
+        context.append(el('p', `${titleCase(request.action)} · ${titleCase(request.role)} · ${request.enabled ? 'Enabled' : 'Disabled'}`));
+        context.append(el('p', request.caller === request.owner ? 'Caller owns this object' : 'Caller does not own this object', 'muted small'));
+        row.append(context);
       }
-      inputs[key] = {type: 'choice', input: group}; form.append(group); continue;
-    } else { input = el('input'); input.type = typeof value === 'boolean' ? 'checkbox' : typeof value === 'number' ? 'number' : 'text'; }
-    input.id = `lab-answer-${key}`; input.required = typeof value !== 'boolean'; input.disabled = run.passed;
-    if (typeof value === 'boolean') input.checked = Boolean(draft[key]);
-    else input.value = draft[key] ?? '';
-    inputs[key] = {input, type: typeof value}; form.append(label, input);
+      const choices = el('div', undefined, 'decision-choices');
+      for (const [answer, text] of [[true, policy ? 'Allow' : 'Yes'], [false, policy ? 'Deny' : 'No']]) {
+        const option = el('input'); option.type = 'radio'; option.name = `lab-answer-${key}`; option.value = String(answer); option.required = true; option.disabled = run.passed;
+        option.checked = draft[key] === answer;
+        const label = el('label', undefined, 'decision-choice'); label.append(option, el('span', text)); choices.append(label);
+      }
+      row.append(choices); group.append(row); form.append(group); inputs[key] = {type: 'boolean', input: group}; continue;
+    }
+    const label = el('label', key.replaceAll('_', ' ')); label.htmlFor = `lab-answer-${key}`;
+    const input = el('input'); input.type = typeof value === 'number' ? 'number' : 'text';
+    input.id = `lab-answer-${key}`; input.required = true; input.disabled = run.passed;
+    input.value = draft[key] ?? '';
+    const field = el('div', undefined, 'exercise-field'); field.append(label, input);
+    inputs[key] = {input, type: typeof value}; form.append(field);
   }
   const result = el('p'); result.setAttribute('role', 'status');
   const submit = el('button', 'Verify my result'); submit.type = 'submit'; submit.disabled = run.passed;
-  form.append(submit, result); response.append(form);
+  const actions = el('div', undefined, 'exercise-actions'); actions.append(submit);
+  form.append(actions, result); response.append(form);
   function answers() {
-    return Object.fromEntries(Object.entries(inputs).map(([key, entry]) => [key, entry.type === 'choice' ? entry.input.querySelector(':checked')?.value || '' : entry.type === 'boolean' ? entry.input.checked : entry.type === 'number' ? Number(entry.input.value) : entry.input.value.trim()]));
+    return Object.fromEntries(Object.entries(inputs).flatMap(([key, entry]) => {
+      if (entry.type === 'boolean') {
+        const selected = entry.input.querySelector(':checked');
+        return selected ? [[key, selected.value === 'true']] : [];
+      }
+      return [[key, entry.type === 'number' ? Number(entry.input.value) : entry.input.value.trim()]];
+    }));
   }
   form.addEventListener('input', () => { try { sessionStorage.setItem(draftKey, JSON.stringify(answers())); } catch { /* Server exercise data remains saved. */ } });
   form.addEventListener('submit', async event => {
@@ -830,7 +902,11 @@ function showLab(node, run) {
         result.textContent = `✓ Verified.${gained > 0 ? ` +${gained} XP.` : ''} ${run.exercise === 'case' ? 'Your scenario decision passed; the hands-on assessment remains separate.' : 'The server recorded the demonstrated result.'}`;
         form.querySelectorAll('input, button').forEach(input => input.disabled = true);
         try { sessionStorage.removeItem(draftKey); } catch { /* No stored draft. */ }
-        await refresh(); await refreshSessions(); if (state.tab === 'path') await renderPath();
+        await refresh(); await refreshSessions();
+        if (state.tab === 'challenge') {
+          result.append(document.createElement('br'), button('Continue learning', () => switchTab('today'), ''));
+        }
+        if (state.tab === 'path') await renderPath();
       } else submit.disabled = false;
     } catch (error) { result.textContent = error.message; submit.disabled = false; }
   });
@@ -841,6 +917,64 @@ function showLab(node, run) {
     await refreshSessions(); await renderChallenge();
   }));
   content.append(reset);
+}
+function showCase(node, run) {
+  const content = $('#challenge-content'); content.replaceChildren();
+  const column = el('div', undefined, 'case-workspace'); content.append(column);
+  const terminal = run.terminal || run.passed;
+  const heading = el('h1', run.title && run.title !== 'Make the call' ? run.title : compactTitle(node.title)); heading.id = 'challenge-title'; heading.tabIndex = -1;
+  column.append(el('p', 'KNOWLEDGE CHECK', 'eyebrow'), heading, el('p', run.instructions, 'case-scenario'));
+  const form = el('form'), group = el('fieldset');
+  group.append(el('legend', run.question || 'What should you conclude or do next?'));
+  const draftKey = `ascend-answer-${state.account?.username || 'local'}-${run.id}`;
+  let selected = run.feedback?.selected || (run.passed ? run.feedback?.correct_choice : null);
+  if (!terminal) { try { selected = JSON.parse(sessionStorage.getItem(draftKey) || '{}').choice; } catch { /* Empty draft. */ } }
+  for (const [id, text] of Object.entries(run.choices)) {
+    const option = el('input'); option.type = 'radio'; option.name = 'case-choice'; option.value = id; option.required = true; option.disabled = terminal; option.checked = selected === id;
+    const label = el('label', undefined, 'case-choice');
+    const copy = el('span', text);
+    if (terminal && run.feedback) {
+      const notes = [];
+      if (id === run.feedback.correct_choice) { label.classList.add('answer-correct'); notes.push('Best answer'); }
+      if (id === run.feedback.selected) notes.push('Your answer');
+      if (notes.length) copy.append(el('small', notes.join(' · '), 'answer-note'));
+    }
+    label.append(option, copy); group.append(label);
+  }
+  form.append(group); column.append(form);
+  const status = el('div', undefined, 'case-feedback'); status.setAttribute('role', 'status');
+  if (terminal) {
+    status.append(el('h2', run.passed ? 'Correct. Check complete.' : 'Answer recorded. No XP earned.'));
+    if (run.feedback?.explanation) status.append(el('p', run.feedback.explanation));
+    status.append(button(run.passed ? 'Continue learning' : 'Continue without XP', async () => {
+      if (!run.passed && node.status === 'todo') await api(`nodes/${node.pack_id}:${node.id}/mark`, {status: 'skipped'});
+      await refresh(); await switchTab('today');
+    }, ''));
+    column.append(status);
+  } else {
+    form.append(el('p', 'One submission. Review your choice before sending.', 'field-help'));
+    const submit = el('button', 'Submit answer'); submit.type = 'submit'; form.append(submit, status);
+    form.addEventListener('input', () => { try { sessionStorage.setItem(draftKey, JSON.stringify({choice: group.querySelector(':checked')?.value})); } catch { /* Draft is optional. */ } });
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      runAction(submit, async () => {
+        const checked = await command(['lab', 'submit', run.id, JSON.stringify({choice: group.querySelector(':checked')?.value})]);
+        try { sessionStorage.removeItem(draftKey); } catch { /* No saved draft. */ }
+        await refresh();
+        if (state.tab === 'challenge' && state.challengeRef === `${node.pack_id}:${node.id}`) {
+          await renderChallenge();
+          const feedback = $('.case-feedback');
+          feedback?.scrollIntoView({block: 'nearest', behavior: 'instant'});
+          if (feedback) { feedback.tabIndex = -1; feedback.focus({preventScroll: true}); }
+        }
+        if (!checked.terminal && !checked.completed) status.textContent = checked.summary;
+      });
+    });
+  }
+  const notes = el('details', undefined, 'quiet-details'); notes.append(el('summary', 'Review the lesson'));
+  if (node.brief) notes.append(el('p', node.brief));
+  if (node.resource) { const resource = el('a', 'Open learning resource ↗'); resource.href = node.resource; resource.target = '_blank'; resource.rel = 'noopener noreferrer'; notes.append(resource); }
+  column.append(notes);
 }
 async function browseTracks() {
   const [catalog, installed] = await Promise.all([command(['pack', 'registry']), api('packs')]);

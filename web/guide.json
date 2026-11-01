@@ -135,7 +135,7 @@
             "Choose a session target and start the timed task or verified exercise. The clock keeps running until you complete or end the session.",
             "Work through the task. A hint is help with learning, not an automatic completion.",
             "Use Log progress to save what you tried and what to do next. Leave Mark as done unchecked for partial work.",
-            "For built-in exercises, enter your result and press Verify my result. External CTF tasks use Verify lab completion after the administrator refreshes the proof."
+            "For hands-on exercises, enter your result and press Verify my result. Knowledge checks use Submit answer and allow one submission. External CTF tasks use Verify lab completion after the administrator refreshes the proof."
           ]
         },
         {
@@ -181,6 +181,14 @@
           ]
         },
         {
+          "type": "paragraph",
+          "text": "Knowledge checks (multiple-choice questions) allow one submitted answer per question. Read the scenario, select an option, then press Submit answer. The server saves your first result and explanation; reloading or requesting a fresh instance cannot reset it. An incorrect answer earns no XP and ends the timer. Continue without XP skips that question so you can move on without claiming completion."
+        },
+        {
+          "type": "paragraph",
+          "text": "Permission exercises show the action, role, account status and ownership for each request. Choose Allow or Deny for every row, then press Verify my result. Neither choice is selected for you. Your selections survive a reload in this tab, and View raw request data opens the original fixture."
+        },
+        {
           "type": "heading",
           "text": "Built-in logging example"
         },
@@ -195,7 +203,7 @@
         },
         {
           "type": "paragraph",
-          "text": "Generated instances belong to one account and the current pack content. A fresh instance replaces the old one without resetting your accumulated task time. Unfinished instances expire after 24 hours, and ten unsuccessful submissions require a fresh attempt."
+          "text": "Hands-on instances belong to one account and the current pack content. A fresh instance replaces the old one without resetting your accumulated task time. Unfinished instances expire after 24 hours; hands-on exercises allow ten unsuccessful submissions before requiring a fresh instance."
         },
         {
           "type": "paragraph",
@@ -225,6 +233,10 @@
             "The clock runs continuously, even if you reload or leave the page. Use Resume challenge to return to the same exercise; End session stops timing without completing it or awarding XP.",
             "Complete the verification. Only built-in exercises and signed CTF checks qualify for XP, and an external check needs a started session."
           ]
+        },
+        {
+          "type": "paragraph",
+          "text": "While an attempt is active, the session bar shows elapsed time / target (for example, 2:15 / 10:00) as you scroll. Elapsed time keeps increasing during overtime. Resume challenge returns to the workspace from other pages. After completion, an incorrect knowledge-check answer, or End session, the bar shows the finished time and result. Review last attempt opens that saved result; it does not restart the clock."
         },
         {
           "type": "heading",
@@ -315,8 +327,7 @@
         {
           "type": "list",
           "items": [
-            "Preferences: choose your timezone, System/Light/Dark appearance and Calm/Off motion effects. Appearance choices are saved in this browser. Your device’s reduced motion setting always takes priority.",
-            "The motion control in the top bar stops background and transition effects. It does not stop a challenge timer.",
+            "Preferences: choose your timezone, System/Light/Dark appearance and On/Off motion effects. Appearance choices are saved in this browser. Your device’s reduced motion setting always takes priority.",
             "Reminders: configure notification timing and delivery.",
             "Privacy & account: choose whether to publish a streak badge. Sharing is off unless you enable it.",
             "Log out: available on authenticated servers. A single-user local server has no login session to end."

@@ -154,7 +154,7 @@ main { margin-left: var(--rail); padding: 36px 40px 64px; }
 .time-chips button:hover { background: var(--hover); }
 .time-chips button[aria-pressed='true'] { color: var(--text); background: var(--soft); font-weight: 750; border-color: var(--line); }
 .today-cards { display: block; }
-.node-card.next-card { position: relative; display: flex; flex-direction: column; padding: 32px; margin-bottom: 8px; }
+.node-card.next-card { position: relative; display: flex; flex-direction: column; padding: 32px 270px 32px 32px; margin-bottom: 8px; }
 @property --challenge-glow-angle { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
 .next-card.challenge-intro { animation: challenge-intro-glow 2.4s ease-in-out 1 both; }
 .next-card.challenge-intro::after {
@@ -185,7 +185,7 @@ main { margin-left: var(--rail); padding: 36px 40px 64px; }
 .summit-card > .eyebrow { font-size: .8rem; }
 .summit-card h2 { font-size: .95rem; }
 .summit-card > .muted { font-size: .8rem; }
-.challenge-art { display: none; }
+.challenge-art { position: absolute; display: block; width: 220px; height: 180px; right: 28px; top: calc(50% - 90px); color: var(--line); pointer-events: none; }
 .resume-note { padding: 0; font-size: .85rem; }
 .empty { padding: 48px 24px; text-align: center; grid-column: 1 / -1; }
 .empty .icon { width: 36px; height: 36px; color: var(--accent); margin-bottom: 16px; }
@@ -377,8 +377,8 @@ dialog::backdrop { background: #17191488; }
 .session-result p { color: var(--muted); font-size: .85rem; margin: 0; }
 .session-result > div:nth-child(2) { flex: 1; }
 .task-session { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; padding: 14px 20px; margin: 0 0 24px; border: 2px solid var(--line); border-radius: var(--radius); background: var(--surface); font-size: .85rem; }
-.task-session strong { font-weight: 550; max-width: 100%; overflow-wrap: anywhere; }
-.task-session { max-width: var(--content-width); margin: 0 auto 28px; padding: 0 0 20px; border: 0; border-bottom: 1px solid var(--divider); border-radius: 0; background: transparent; }
+.task-session strong { font-weight: 650; min-width: 0; max-width: 36ch; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.task-session { max-width: var(--content-width); margin: 0 auto 24px; padding: 12px 0; border: 0; border-bottom: 1px solid var(--divider); border-radius: 0; background: transparent; }
 .challenge-back { display: inline-block; padding: 8px 0; margin-bottom: 22px; font-size: .85rem; }
 #challenge-content > h1, #challenge-content > p, #challenge-content > .outcome, #challenge-content > .challenge-steps, #challenge-content > .challenge-hints { max-width: 760px; }
 #challenge-content > h1 { margin-bottom: 18px; }
@@ -387,15 +387,34 @@ dialog::backdrop { background: #17191488; }
 .exercise-workspace > section { min-width: 0; }
 .exercise-evidence .input-row { flex-wrap: wrap; margin-bottom: 16px; }
 .exercise-response { padding-left: 32px; border-left: 1px solid var(--divider); }
-.exercise-response form > button { margin-top: 20px; }
+.exercise-response form { display: flex; flex-direction: column; gap: 18px; }
+.exercise-field { min-width: 0; }
+.exercise-field label { margin-top: 0; }
+.exercise-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
 .exercise-response [role='status'] { margin-top: 16px; }
+.exercise-response [role='status']:empty { display: none; }
+.policy-workspace { display: block; max-width: 900px; }
+.policy-workspace .exercise-response { padding: 0; border: 0; }
+.policy-workspace .exercise-response form { gap: 0; }
+.policy-workspace .exercise-actions { margin-top: 24px; }
+.exercise-response .decision-field { min-width: 0; margin: 0; padding: 16px 0; border-bottom: 1px solid var(--divider); }
+.decision-field legend { float: left; width: 100%; margin-bottom: 6px; font-weight: 750; }
+.decision-row { clear: both; display: flex; align-items: center; justify-content: space-between; gap: 12px 24px; flex-wrap: wrap; }
+.decision-context { min-width: 0; }
+.decision-context p { margin: 0; overflow-wrap: anywhere; }
+.decision-context p + p { margin-top: 4px; }
+.decision-choices { display: flex; gap: 8px; flex-shrink: 0; }
+.decision-choice { display: flex; align-items: center; gap: 8px; min-height: 44px; margin: 0; padding: 10px 14px; border: 2px solid var(--divider); border-radius: var(--radius); cursor: pointer; }
+.decision-choice:has(:checked) { border-color: var(--line); background: var(--soft); }
+.decision-choice:has(:focus-visible) { outline: 2px solid var(--accent); outline-offset: 3px; }
+.decision-choice:has(:disabled) { cursor: default; }
 .exercise-evidence .lab-data { max-height: 480px; margin-bottom: 0; }
 @media (max-width: 1100px) {
   .exercise-workspace { grid-template-columns: minmax(0, 1fr); gap: 28px; }
   .exercise-response { border-left: 0; padding-left: 0; }
   .exercise-evidence .lab-data { max-height: 340px; }
 }
-.session-clock { font-variant-numeric: tabular-nums; margin-left: auto; color: var(--muted); }
+.session-clock { font-variant-numeric: tabular-nums; margin-left: auto; color: var(--text); font-weight: 750; white-space: nowrap; }
 .lab-data { max-height: 320px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; padding: 16px; border: 2px solid var(--line); border-radius: var(--radius); background: var(--hover); font-size: .8rem; }
 #task-target-minutes { max-width: 130px; }
 .case-choice { display: flex; align-items: flex-start; gap: 10px; padding: 16px; margin-block: 10px; border: 2px solid var(--line); border-radius: var(--radius); cursor: pointer; font-weight: 400; }
@@ -463,6 +482,7 @@ legend { font-weight: 550; font-size: .9rem; }
   .topbar { padding-inline: 28px; }
   main { padding: 30px 28px 60px; }
   .card, .node-card.next-card { padding: 22px; }
+  .challenge-art { display: none; }
   .next-card h2 { font-size: 1.4rem; }
   .docs-layout { display: block; }
   .docs-sidebar { display: none; }
@@ -591,3 +611,37 @@ legend { font-weight: 550; font-size: .9rem; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* Keep the running clock available while the exercise scrolls. */
+.task-session[data-state='running'] { position: sticky; top: var(--header); z-index: 12; background: var(--bg); }
+.session-label { color: var(--success); font-size: .75rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; }
+.session-label::before { content: ''; width: 7px; height: 7px; background: currentColor; border-radius: 50%; }
+.case-workspace { max-width: 760px; margin-inline: auto; }
+.case-workspace h1, #challenge-title { font-size: clamp(1.6rem, 2.8vw, 2.3rem); }
+.case-scenario { font-size: 1rem; line-height: 1.75; margin: 22px 0 28px; }
+.case-workspace fieldset { margin: 0; }
+.case-workspace legend { font-size: 1.1rem; font-weight: 750; margin-bottom: 10px; }
+.case-workspace .case-choice { background: var(--surface); align-items: center; }
+.case-workspace .case-choice input { margin-top: 0; }
+.case-workspace .case-choice:has(:checked) { background: var(--soft); }
+.case-workspace .case-choice:has(:disabled) { cursor: default; }
+.case-workspace .case-choice.answer-correct { border-color: var(--success); background: var(--success-bg); }
+.answer-note { display: block; margin: 8px 8px 0 0; font-size: .75rem; font-weight: 750; }
+.case-feedback:not(:empty) { margin-top: 28px; padding-top: 24px; border-top: 2px solid var(--line); }
+.case-feedback p { line-height: 1.75; }
+.case-feedback h2 { font-size: 1.15rem; }
+@media (max-width: 639px) {
+  .task-session[data-state='running'] { gap: 10px; padding: 10px 0; }
+  .task-session .session-label { display: none; }
+  .task-session strong { width: auto; max-width: 100%; flex-basis: 100%; }
+  .task-session[data-state='finished'] { gap: 4px 12px; }
+  .case-workspace .case-choice { padding: 14px; }
+}
+.session-action-short { display: none; }
+@media (max-width: 639px) {
+  .session-action-long { display: none; }
+  .session-action-short { display: inline; }
+}
+
+.session-clock { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.4; }
+.clock-caption { font-size: .7rem; font-weight: 500; color: var(--muted); }

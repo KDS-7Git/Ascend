@@ -410,7 +410,10 @@ def test_browser_timed_task_can_only_end_without_awarding_completion(live_server
         expect(page.get_by_role("heading", name="Your finish line")).to_be_visible()
         page.reload()
         page.get_by_role("button", name="End session", exact=True).click()
-        expect(page.locator("#task-session")).not_to_be_visible()
+        expect(page.locator("#task-session")).to_contain_text("Session ended")
+        expect(
+            page.get_by_role("button", name="End session", exact=True)
+        ).to_have_count(0)
         expect(page.locator("#challenge-content")).to_contain_text("Session ended")
         state = httpx.get(live_server + "/api/challenges/test-pack:one").json()
         assert state["session"]["status"] == "finished"
@@ -420,7 +423,7 @@ def test_browser_timed_task_can_only_end_without_awarding_completion(live_server
         ).json()
         assert session["active"] is None and session["xp"] == 0
         page.reload()
-        expect(page.locator("#task-session")).not_to_be_visible()
+        expect(page.locator("#task-session")).to_contain_text("Session ended")
         expect(page.locator("#challenge-content")).to_contain_text("Session ended")
         browser.close()
 
@@ -714,24 +717,20 @@ def test_motion_controls_persist_and_honor_device_preferences(live_server):
             page.locator(".next-card").evaluate("e => getComputedStyle(e).cursor")
             != "none"
         )
-        page.get_by_role("button", name="Pause motion effects", exact=True).click()
+        expect(page.locator("#motion-toggle")).to_have_count(0)
+        page.get_by_role("button", name="Open profile", exact=True).click()
+        page.get_by_label("Motion effects", exact=True).select_option("off")
         expect(page.locator("html")).to_have_attribute("data-motion", "off")
         assert not page.locator(".ambient-scene").evaluate(
             "e => e.getAnimations({subtree:true}).some(a => a.playState === 'running')"
         )
         page.reload()
-        expect(
-            page.get_by_role("button", name="Resume motion effects", exact=True)
-        ).to_be_visible()
-        page.get_by_role("button", name="Open profile", exact=True).click()
         expect(page.get_by_label("Motion effects", exact=True)).to_have_value("off")
         page.get_by_label("Motion effects", exact=True).select_option("calm")
         expect(page.locator("html")).to_have_attribute("data-motion", "calm")
         page.emulate_media(reduced_motion="reduce")
         expect(page.locator("html")).to_have_attribute("data-motion", "off")
-        expect(
-            page.get_by_role("button", name="Motion reduced by device settings")
-        ).to_be_disabled()
+        expect(page.locator("#motion-toggle")).to_have_count(0)
         page.get_by_role("button", name="Docs", exact=True).click()
         expect(page.locator("#guide-title")).to_be_visible()
         assert not page.locator("#docs").evaluate(
@@ -789,4 +788,191 @@ def test_challenge_glow_plays_once_when_visible_per_load(live_server, width, hei
         card.wait_for()
         card.scroll_into_view_if_needed()
         expect(page.locator("html")).to_have_attribute("data-test-sweeps", "1")
+        browser.close()
+
+
+@pytest.mark.parametrize("width,height", [(390, 844), (1440, 1000)])
+def test_mcq_has_one_submission_clear_result_and_persistent_timer(
+    live_server, pack_data, width, height
+):
+    import httpx
+    from playwright.sync_api import sync_playwright, expect
+
+    pack_data["node"][0]["verify"] = {
+        "type": "lab",
+        "exercise": "case",
+        "case_id": "ethical-hacking-foundations:foundations",
+    }
+    response = httpx.post(
+        live_server + "/api/packs",
+        files={"file": ("test.toml", dump_toml(pack_data), "text/plain")},
+    )
+    assert response.status_code == 200
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page(
+            viewport={"width": width, "height": height}, reduced_motion="reduce"
+        )
+        page.goto(live_server)
+        page.locator(".next-card").get_by_role(
+            "button", name="Open challenge", exact=True
+        ).click()
+        page.get_by_label("Session target (minutes)").fill("5")
+        page.get_by_role("button", name="Start verified exercise", exact=True).click()
+        expect(page.locator("#challenge-title")).to_have_text(
+            "Does setup prove completion?"
+        )
+        expect(page.locator(".session-clock")).to_contain_text("elapsed / target")
+        expect(page.locator(".clock-value")).to_contain_text("/ 5:00")
+        expect(
+            page.get_by_text(
+                "One submission. Review your choice before sending.", exact=True
+            )
+        ).to_be_visible()
+        expect(page.locator(".exercise-evidence")).to_have_count(0)
+        page.get_by_role("button", name="Docs", exact=True).click()
+        expect(page.locator(".session-clock")).to_be_visible()
+        page.get_by_role("button", name="Resume challenge", exact=True).click()
+        wrong = page.get_by_role(
+            "radio", name="Yes. The version command proves", exact=False
+        )
+        wrong.check()
+        page.reload()
+        expect(wrong).to_be_checked()
+        page.get_by_role("button", name="Submit answer", exact=True).click()
+        expect(page.locator(".case-feedback")).to_contain_text("No XP earned")
+        expect(page.locator(".case-feedback")).to_contain_text(
+            "A version command proves only"
+        )
+        expect(
+            page.get_by_role("button", name="Submit answer", exact=True)
+        ).to_have_count(0)
+        expect(page.locator("#task-session")).to_contain_text("Answer recorded")
+        page.reload()
+        expect(wrong).to_be_checked()
+        expect(wrong).to_be_disabled()
+        expect(page.locator(".case-feedback")).to_contain_text("No XP earned")
+        page.get_by_role("button", name="Stats", exact=True).click()
+        page.get_by_role("button", name="Review last attempt", exact=True).click()
+        expect(page.locator(".case-feedback")).to_be_visible()
+        page.get_by_role("button", name="Continue without XP", exact=True).click()
+        expect(page).to_have_url(live_server + "/#today")
+        state = httpx.get(live_server + "/api/challenges/test-pack:one").json()
+        assert state["node"]["status"] == "skipped"
+        assert state["exercise"]["attempts"] == 1 and not state["exercise"]["passed"]
+        assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+        browser.close()
+
+
+@pytest.mark.parametrize("width,height", [(320, 740), (390, 844), (1440, 1000)])
+def test_permission_requests_have_explicit_choices_and_separate_submit(
+    live_server, pack_data, width, height
+):
+    import httpx
+    from playwright.sync_api import sync_playwright, expect
+
+    pack_data["node"][0]["verify"] = {"type": "lab", "exercise": "access-policy"}
+    response = httpx.post(
+        live_server + "/api/packs",
+        files={"file": ("test.toml", dump_toml(pack_data), "text/plain")},
+    )
+    assert response.status_code == 200
+    challenge_url = live_server + "/api/challenges/test-pack:one"
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page(
+            viewport={"width": width, "height": height}, reduced_motion="reduce"
+        )
+        page.goto(live_server)
+        page.locator(".next-card").get_by_role("button", name="Open challenge").click()
+        page.get_by_role("button", name="Start verified exercise").click()
+        expect(page.locator(".decision-field")).to_have_count(6)
+        expect(page.locator(".decision-field :checked")).to_have_count(0)
+        run = httpx.get(challenge_url).json()["exercise"]
+        draft_key = f"ascend-answer-local-{run['id']}"
+        # Old checkbox drafts stored booleans, including explicit false values.
+        page.evaluate(
+            "key => sessionStorage.setItem(key, JSON.stringify({r2: false}))", draft_key
+        )
+        page.reload()
+        expect(
+            page.get_by_role("group", name="Request r2", exact=True).get_by_role(
+                "radio", name="Deny", exact=True
+            )
+        ).to_be_checked()
+        submit = page.get_by_role("button", name="Verify my result", exact=True)
+        submit.click()
+        assert httpx.get(challenge_url).json()["exercise"]["attempts"] == 0
+        page.get_by_role("group", name="Request r1", exact=True).get_by_role(
+            "radio", name="Allow", exact=True
+        ).check()
+        assert page.evaluate(
+            "key => JSON.parse(sessionStorage.getItem(key))", draft_key
+        ) == {"r1": True, "r2": False}
+        page.reload()
+        for request in run["data"]["requests"]:
+            allowed = request["enabled"] and (
+                request["caller"] == request["owner"]
+                or (request["role"] == "admin" and request["action"] == "read")
+            )
+            group = page.get_by_role(
+                "group", name=f"Request {request['id']}", exact=True
+            )
+            group.get_by_role(
+                "radio", name="Allow" if allowed else "Deny", exact=True
+            ).check()
+            choices = group.locator(".decision-choice")
+            left, right = choices.nth(0).bounding_box(), choices.nth(1).bounding_box()
+            assert left["height"] >= 44 and right["height"] >= 44
+            assert abs(left["y"] - right["y"]) < 1
+        # Compare document coordinates, independently of the browser's focus scroll.
+        assert page.evaluate("""() => {
+            const action = document.querySelector('.exercise-actions').getBoundingClientRect();
+            return [...document.querySelectorAll('.decision-field')].every(
+                field => field.getBoundingClientRect().bottom + 16 <= action.top
+            );
+        }""")
+        assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+        submit.click()
+        expect(page.locator(".exercise-response [role='status']")).to_contain_text(
+            "Verified"
+        )
+        result = httpx.get(challenge_url).json()["exercise"]
+        assert result["passed"] and result["attempts"] == 1
+        browser.close()
+
+
+def test_loading_screen_recovers_from_slow_response_and_missing_script(live_server):
+    from playwright.sync_api import sync_playwright, expect
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page(service_workers="block")
+        page.add_init_script("localStorage.setItem('ascend-theme', 'dark')")
+        pending = []
+        page.route("**/api/me", lambda route: pending.append(route))
+        page.goto(live_server, wait_until="domcontentloaded")
+        expect(page.locator("#app-loader")).to_be_visible()
+        assert (
+            page.locator("#app-loader").evaluate(
+                "e => getComputedStyle(e).backgroundColor"
+            )
+            == "rgb(28, 29, 27)"
+        )
+        # The overlay has a bounded lifetime even while the request is still pending.
+        expect(page.locator("#app-loader")).not_to_be_visible(timeout=6500)
+        expect(page.get_by_role("link", name="Reload the workspace")).to_be_visible()
+        pending[0].continue_()
+        expect(page.locator(".next-card")).to_be_visible()
+        expect(
+            page.get_by_role("link", name="Reload the workspace")
+        ).not_to_be_visible()
+        page.unroute("**/api/me")
+        page.reload()
+        expect(page.locator(".next-card")).to_be_visible()
+        expect(page.locator("#app-loader")).not_to_be_visible()
+        page.route("**/app.js", lambda route: route.abort())
+        page.reload()
+        expect(page.locator("#app-loader")).not_to_be_visible(timeout=6500)
+        expect(page.get_by_role("link", name="Reload the workspace")).to_be_visible()
         browser.close()

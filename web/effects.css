@@ -17,20 +17,14 @@ body { isolation: isolate; }
 /* Clip only the decorative layers. The outline, shadow and focus rings stay visible. */
 .next-card { isolation: isolate; background: var(--surface); box-shadow: var(--shadow-lg); }
 .hover-light { position: absolute; inset: 0; z-index: -1; border-radius: 2px; pointer-events: none; overflow: hidden; opacity: 0; transition: opacity 220ms ease; }
-.hover-light::before, .hover-light::after { content: ''; position: absolute; left: var(--pointer-x, 75%); top: var(--pointer-y, 50%); width: 340px; height: 340px; translate: -50% -50%; }
-.hover-light::before { border-radius: 50%; background: conic-gradient(from -35deg, var(--soft), var(--peach), var(--mint), var(--soft)); mask-image: radial-gradient(circle, #000 20%, #000b 45%, transparent 70%); }
-.hover-light::after { background: radial-gradient(var(--accent) 1.2px, transparent 1.6px) 0 0 / 9px 9px; mask-image: radial-gradient(circle, transparent 22%, #0008 40%, transparent 68%); rotate: -12deg; }
+.hover-light::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(color-mix(in srgb, var(--text) 18%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--text) 18%, transparent) 1px, transparent 1px); background-size: 24px 24px; mask-image: radial-gradient(circle 170px at var(--pointer-x, 75%) var(--pointer-y, 50%), #000 10%, #000b 45%, transparent 100%); }
+.hover-light::after { content: ''; position: absolute; left: var(--cell-x, 0); top: var(--cell-y, 0); width: 24px; height: 24px; border: 1px solid color-mix(in srgb, var(--text) 45%, transparent); background: color-mix(in srgb, var(--text) 5%, transparent); transition: left 100ms ease-out, top 100ms ease-out; }
 .next-card:has(.hover-light):hover .hover-light { opacity: 1; }
 :root[data-motion='off'] .hover-light { display: none; }
 .next-card .card-context { color: var(--accent); }
 .next-card > .eyebrow { align-self: flex-start; padding: 5px 10px; border: 2px solid var(--line); background: var(--action); color: var(--on-action); font-weight: 750; letter-spacing: .06em; box-shadow: 2px 2px 0 var(--shadow); }
 .page-header h1, .docs-article h1 { text-wrap: balance; }
 .week rect { transform-box: fill-box; transform-origin: center bottom; rx: 1px; }
-.motion-toggle { display: inline-grid; place-items: center; width: 40px; min-height: 40px; padding: 8px; border-radius: var(--radius); color: var(--muted); background: transparent; }
-.motion-toggle:hover { background: var(--hover); color: var(--accent); }
-.motion-toggle svg { width: 17px; height: 17px; }
-.motion-play, :root[data-motion='off'] .motion-pause { display: none; }
-:root[data-motion='off'] .motion-play { display: block; }
 .motion-preference { max-width: 680px; }
 button, a, summary, .node-shape { transition: color 140ms ease, background 140ms ease, border-color 140ms ease, box-shadow 180ms ease, transform 180ms cubic-bezier(.22, 1, .36, 1); }
 input, select, textarea { transition: border-color 160ms ease, box-shadow 160ms ease; }
@@ -72,3 +66,26 @@ dialog[open]::backdrop { animation: backdrop-arrive 200ms ease-out; }
   .hover-light { display: none; }
 }
 @media (forced-colors: active) { .ambient-scene, .hover-light, .next-card.challenge-intro::after { display: none; } }
+/* Directional entrances, living illustration and a bounded route-loading state. */
+.ascent-climber { transform-box: fill-box; transform-origin: center; animation: ascent-climb 5.4s cubic-bezier(.4, 0, .2, 1) infinite; }
+.ascent-flag { transform-origin: 163px 32px; animation: flag-sway 4s ease-in-out infinite alternate; }
+@keyframes ascent-climb {
+  0%, 10%, 100% { transform: translate(0, 0); opacity: 1; }
+  25% { transform: translate(31px, -68px) rotate(-12deg); opacity: 1; }
+  40%, 50% { transform: translate(62px, -37px); opacity: 1; }
+  64% { transform: translate(93px, -109px) rotate(-12deg); opacity: 1; }
+  78%, 88% { transform: translate(124px, -77px); opacity: 1; }
+  92% { transform: translate(124px, -77px); opacity: 0; }
+  94% { transform: translate(0, 0); opacity: 0; }
+}
+@keyframes flag-sway { to { transform: rotate(5deg); } }
+#route-progress { position: absolute; left: 0; right: 0; bottom: -2px; height: 3px; overflow: hidden; background: var(--soft); }
+#route-progress::after { content: ''; display: block; width: 35%; height: 100%; background: var(--accent); animation: route-loading 1.1s ease-in-out infinite; }
+@keyframes route-loading { from { transform: translateX(-100%); } to { transform: translateX(390%); } }
+.screen[data-loading='true'] { position: relative; min-height: 320px; }
+.screen[data-loading='true'] > :not(.page-header) { visibility: hidden; }
+.screen[data-loading='true']::after { content: ''; position: absolute; top: 150px; left: 0; width: 100%; height: 150px; border: 2px solid var(--divider); border-radius: var(--radius); background: linear-gradient(100deg, transparent 25%, var(--hover) 50%, transparent 75%) 0 0 / 200% 100% var(--surface); animation: skeleton-pass 1.4s ease-in-out infinite; pointer-events: none; }
+@keyframes skeleton-pass { to { background-position: -200% 0; } }
+:root[data-boot='loading'] #route-progress { display: none; }
+
+.page-inactive .challenge-art * { animation-play-state: paused; }
