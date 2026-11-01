@@ -19,9 +19,17 @@ Pi compatibility & ARM64 manifests and dependency artifacts checked; Pi runtime 
 Hardened deployment & Hardened Compose, native grading, persistent XP after restart and read-only signed receipt overlay passed on AMD64. Synthetic temporary data only. \\
 Expanded installation & Public pack updates preserved all entries, missions and task states; database integrity passed. No synthetic learning evidence added. \\
 Public archive & Public v4 archive contains 26 packs, seven PDFs and complete LaTeX sources; export equality and ZIP integrity passed. \\
+Workspace UI & 146 passed in 44.32s \\
+UI visual review & 35 workspace screenshots captured at 320, 390, 768 and 1440 px, including dark mode; no horizontal overflow or JavaScript errors. Temporary learner account only. \\
+UI container delivery & Hardened Compose, bundled UI/docs/font, native grading, persistent XP after restart and read-only signed receipt overlay passed on AMD64. Synthetic temporary data only. \\
+Local UI refresh & Local server refreshed at http://127.0.0.1:8420 with its existing command and environment. SQLite backup created in the private profile. Health, XP/profile markup, ten guide topics and readable pack metadata passed; mission, entry, node, evidence, lab, timer and XP records unchanged. No synthetic progress added. \\
 \end{longtable}
 \subsection*{Recent recorded commits}
 \begin{verbatim}
+71b70fa feat(ui): add persistent XP, profile and integrated guides with
+  reliable dialog feedback
+109c96b docs(release): publish complete LaTeX guides and verified public
+  track archive
 3040900 feat(deploy): validate isolated Docker labs and ARM64 dependency
   support
 58d052f feat(learning): add verified exercises, timed rewards and public
@@ -38,9 +46,5 @@ e9c8e60 fix(verifiers): omit an implicit epoch cutoff for git evidence
 c15c070 refactor: format Python sources and validate style in CI
 9ba231b fix(cli): accept global flags with time budgets and preserve
   existing packs
-f1099ef feat(notifications): add Telegram quick actions, Web Push and opt-in
-  streak badges
-6c846f6 feat(plugins): add explicit plugin trust, community registry and
-  contributor docs
 \end{verbatim}
 \noindent Full transcripts: \texttt{docs/testing/phase-*.txt}. The implementation may have uncommitted work beyond the last validated milestone.

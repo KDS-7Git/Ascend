@@ -1,5 +1,6 @@
 """Validate the shipped hardened tracker Compose and optional receipt mount."""
 
+import argparse
 from datetime import datetime, timezone
 import hashlib
 import hmac
@@ -18,6 +19,9 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--image", default="ascend:verified-labs")
+    options = parser.parse_args()
     with tempfile.TemporaryDirectory(prefix="ascend-compose-test-") as folder:
         root = Path(folder)
         key = initialize(root / "proof")
@@ -34,7 +38,9 @@ def main():
             json.dumps({"payload": payload, "signature": signature})
         )
         override = root / "image.yml"
-        override.write_text("services:\n  ascend:\n    image: ascend:verified-labs\n")
+        override.write_text(
+            "services:\n  ascend:\n    image: " + json.dumps(options.image) + "\n"
+        )
         project = "ascend-compose-test-" + uuid.uuid4().hex[:8]
         env = {
             **os.environ,
@@ -89,6 +95,14 @@ def main():
 
             with urlopen(base) as response:
                 assert response.status == 200
+                markup = response.read().decode()
+                assert 'id="profile-link"' in markup and 'id="xp-balance"' in markup
+            with urlopen(base + "/guide.json") as response:
+                assert len(json.load(response)["topics"]) == 10
+            with urlopen(base + "/fonts/InterVariable.woff2") as response:
+                assert response.read().startswith(b"wOF2")
+            with urlopen(base + "/theme.js") as response:
+                assert response.status == 200
             command(["pack", "install", "verified-security-lab"])
             command(["mission", "start", "verified-security-lab"])
             run = command(["lab", "start", "verified-security-lab:lab-readiness"])
@@ -125,7 +139,7 @@ def main():
             base = "http://" + address
             assert command(["session", "status"])["xp"] == 100
             print(
-                "RESULT: Hardened Compose, native grading, persistent XP after restart and read-only signed receipt overlay passed on AMD64. Synthetic temporary data only.",
+                "RESULT: Hardened Compose, bundled UI/docs/font, native grading, persistent XP after restart and read-only signed receipt overlay passed on AMD64. Synthetic temporary data only.",
                 flush=True,
             )
         finally:

@@ -29,7 +29,12 @@ def main():
         "design-history",
     ]:
         files[name + ".pdf"] = ROOT / "docs" / (name + ".pdf")
-    for pattern in ["**/*.tex", "screenshots/*.png", "curriculum/*.json"]:
+    for pattern in [
+        "**/*.tex",
+        "screenshots/**/*.png",
+        "curriculum/*.json",
+        "design/ui-workspace-sources.json",
+    ]:
         for path in (ROOT / "docs").glob(pattern):
             files["docs/" + str(path.relative_to(ROOT / "docs"))] = path
     files["LICENSE"] = ROOT / "LICENSE"

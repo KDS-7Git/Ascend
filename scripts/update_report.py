@@ -37,6 +37,10 @@ milestones += [
     ("Hardened deployment", "deployment-integration-final.txt"),
     ("Expanded installation", "expanded-install.txt"),
     ("Public archive", "public-archive.txt"),
+    ("Workspace UI", "ui-workspace-tests.txt"),
+    ("UI visual review", "ui-visual-audit.txt"),
+    ("UI container delivery", "ui-deployment-smoke.txt"),
+    ("Local UI refresh", "ui-local-refresh.txt"),
 ]
 for milestone, filename in milestones:
     path = ROOT / "docs/testing" / filename
