@@ -4,6 +4,7 @@ const state = {token: sessionStorage.getItem("ascend-token"), minutes: null, ove
 const TABS = ["today", "path", "stats", "more", "docs", "profile"];
 const TAB_NAMES = {today: "Today", path: "Learning path", stats: "Progress", more: "Tracks", docs: "Documentation", profile: "Profile"};
 let noticeTimer;
+let challengeIntroPlayed = false;
 function el(tag, text, className) { const node = document.createElement(tag); if (text !== undefined) node.textContent = text; if (className) node.className = className; return node; }
 async function runAction(node, action, after) {
   if (node.getAttribute('aria-busy') === 'true') return;
@@ -80,6 +81,7 @@ async function switchTab(tab, options = {}) {
     return;
   }
   if (!state.overview) await refresh();
+  if (tab === 'today') playChallengeIntro();
   if (tab === 'path') await renderPath();
   if (tab === 'stats') await renderStats();
   if (tab === 'more') await renderMore();
@@ -161,7 +163,23 @@ async function refresh() {
     aside.append(target);
   }
   if (aside.childElementCount) cards.append(aside);
+  playChallengeIntro();
   await refreshSessions();
+}
+function playChallengeIntro() {
+  const card = $('.next-card');
+  if (challengeIntroPlayed || state.tab !== 'today' || !card) return;
+  challengeIntroPlayed = true;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const finish = event => {
+    if (event.target !== card || event.animationName !== 'challenge-border-sweep') return;
+    card.removeEventListener('animationend', finish);
+    card.removeEventListener('animationcancel', finish);
+    card.classList.remove('challenge-intro');
+  };
+  card.addEventListener('animationend', finish);
+  card.addEventListener('animationcancel', finish);
+  card.classList.add('challenge-intro');
 }
 function renderMissionProgress() {
   const root = $('#mission-progress'); root.replaceChildren();
