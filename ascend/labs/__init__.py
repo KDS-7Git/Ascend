@@ -13,6 +13,28 @@ from ascend import timing
 EXERCISES = {"logging", "subnet", "access-policy", "integrity", "timeline", "case"}
 
 
+def clarify_legacy_case(challenge):
+    # Preserve option IDs and the answer key while clarifying this old wording.
+    public = challenge["public"]
+    if (
+        public.get("instructions")
+        != "A required training environment is unavailable, but a tool prints its version."
+    ):
+        return
+    case = json.loads((Path(__file__).parent / "cases.json").read_text())[
+        "ethical-hacking-foundations:foundations"
+    ]
+    public.update(
+        instructions=case["prompt"], question=case["question"], title=case["title"]
+    )
+    correct = challenge["expected"]["choice"]
+    public["choices"] = {
+        key: case["correct"] if key == correct else case["incorrect"]
+        for key in public["choices"]
+    }
+    challenge["explanation"] = case["explanation"]
+
+
 def generate(exercise, case_id, now):
     rng = secrets.SystemRandom()
     tag = secrets.token_hex(5)
@@ -27,10 +49,19 @@ def generate(exercise, case_id, now):
         rng.shuffle(options)
         public.update(
             instructions=case["prompt"],
+            question=case.get(
+                "question", "Which response is best supported by this scenario?"
+            ),
+            title=case.get("title", "Make the call"),
+            attempt_limit=1,
             choices={"A": options[0], "B": options[1]},
             answer_template={"choice": ""},
         )
         private["expected"] = {"choice": "A" if options[0] == case["correct"] else "B"}
+        private["explanation"] = case.get(
+            "explanation",
+            f"{case['correct']} The scenario does not support this alternative: {case['incorrect']}",
+        )
     elif exercise == "logging":
         public.update(
             instructions="Emit one successful and one failed request. Find the FAILED request for your exercise marker in the event data. Count ALL failed requests for this marker; ignore other markers.",
@@ -176,14 +207,45 @@ def owned(t, run_id):
 
 
 def view(t, run_id):
+    recorded = t.db.rows("case_attempts", "run_id=?", (run_id,))
+    if recorded:
+        return case_result(t, recorded[0])
     row, _, _ = owned(t, run_id)
-    public = json.loads(row["challenge"])["public"]
+    challenge = json.loads(row["challenge"])
+    clarify_legacy_case(challenge)
+    public = challenge["public"]
     return {
         **public,
         "id": row["id"],
         "node_id": f"{row['pack_id']}:{row['node_id']}",
         "passed": bool(row["passed_at"]),
         "attempts": row["attempts"],
+        "terminal": bool(row["passed_at"]),
+        "timer": timing.summary(t),
+    }
+
+
+def case_result(t, row):
+    """A permanent, account-scoped decision receipt, readable after reload."""
+    challenge = json.loads(row["challenge"])
+    clarify_legacy_case(challenge)
+    public = challenge["public"]
+    selected = json.loads(row["answers"]).get("choice")
+    correct = challenge["expected"].get("choice")
+    return {
+        **public,
+        "id": row["run_id"],
+        "node_id": f"{row['pack_id']}:{row['node_id']}",
+        "passed": bool(row["correct"]),
+        "terminal": True,
+        "attempts": 1,
+        "attempt_limit": 1,
+        "feedback": {
+            "selected": selected,
+            "correct_choice": correct,
+            "explanation": challenge.get("explanation")
+            or f"The supported decision is: {public['choices'][correct]}",
+        },
         "timer": timing.summary(t),
     }
 
@@ -191,6 +253,9 @@ def view(t, run_id):
 def current(t, reference):
     """Read the latest exercise without starting or resuming its timer."""
     pack, node = t.resolve_node(reference)
+    recorded = t.db.rows("case_attempts", "pack_id=? AND node_id=?", (pack.id, node.id))
+    if recorded:
+        return case_result(t, recorded[0])
     rows = t.db.rows(
         "lab_runs", "pack_id=? AND node_id=?", (pack.id, node.id), order="rowid DESC"
     )
@@ -202,6 +267,15 @@ def start(t, reference, fresh=False, minutes=None):
     if node.verify.get("type") != "lab":
         raise ValueError("This task has no bundled exercise")
     with t.db.transaction():
+        recorded = t.db.rows(
+            "case_attempts", "pack_id=? AND node_id=?", (pack.id, node.id)
+        )
+        if recorded:
+            if fresh:
+                raise ValueError(
+                    "This question has already been submitted. Review its explanation; another attempt is not available."
+                )
+            return case_result(t, recorded[0])
         timing.start(t, reference, minutes=minutes)
         digest = fingerprint(t, pack)
         rows = t.db.rows(
@@ -269,12 +343,37 @@ def submit(t, run_id, answers):
     if not isinstance(answers, dict) or len(json.dumps(answers)) > 8192:
         raise ValueError("Answers must be a JSON object of at most 8192 characters")
     with t.db.transaction():
+        recorded = t.db.rows("case_attempts", "run_id=?", (run_id,))
+        if recorded:
+            receipt = case_result(t, recorded[0])
+            return {
+                "ok": receipt["passed"],
+                "completed": receipt["passed"],
+                "terminal": True,
+                "exercise": receipt,
+                "summary": "This question has already been submitted. Your first result is final.",
+                "timer": timing.summary(t),
+            }
         row, pack, node = owned(t, run_id)
+        recorded = t.db.rows(
+            "case_attempts", "pack_id=? AND node_id=?", (pack.id, node.id)
+        )
+        if recorded:
+            raise ValueError(
+                "This question has already been submitted. Review the recorded result."
+            )
         if row["attempts"] >= 10 and not row["passed_at"]:
             raise ValueError(
                 "Attempt limit reached; review the lesson and start a fresh instance"
             )
         challenge = json.loads(row["challenge"])
+        is_case = row["exercise"] == "case"
+        if is_case and (
+            set(answers) != {"choice"}
+            or type(answers["choice"]) is not str
+            or answers["choice"] not in challenge["public"]["choices"]
+        ):
+            raise ValueError("Choose one of the available answers before submitting.")
         expected = challenge["expected"]
         ready = row["exercise"] != "logging" or set(challenge["emitted"]) == {
             "ok",
@@ -297,15 +396,39 @@ def submit(t, run_id, answers):
                 "timer": timing.summary(t),
             }
         t.db.update("lab_runs", "id=?", (run_id,), attempts=row["attempts"] + 1)
+        if is_case:
+            t.db.insert(
+                "case_attempts",
+                pack_id=pack.id,
+                node_id=node.id,
+                run_id=run_id,
+                answers=json.dumps(answers),
+                correct=int(ok),
+                submitted_at=t.now().isoformat(),
+                challenge=json.dumps(challenge),
+            )
         if not ok:
+            if is_case:
+                timing.finish(t, pack, node, "mcq:incorrect")
             return {
                 "ok": False,
                 "completed": False,
-                "summary": "The expected result has not been demonstrated. Check the instructions and data; no completion or XP was awarded.",
+                "terminal": is_case,
+                "summary": "Answer recorded. No XP earned; review the explanation."
+                if is_case
+                else "The expected result has not been demonstrated. Check the instructions and data; no completion or XP was awarded.",
+                "exercise": view(t, run_id) if is_case else None,
+                "timer": timing.summary(t),
             }
         t.db.update("lab_runs", "id=?", (run_id,), passed_at=t.now().isoformat())
         result = t.check(f"{pack.id}:{node.id}", confirm=True)
-    return {**result, "timer": timing.summary(t), "receipt": run_id}
+    return {
+        **result,
+        "timer": timing.summary(t),
+        "receipt": run_id,
+        "terminal": True,
+        "exercise": view(t, run_id),
+    }
 
 
 def verify(t, pack, node):

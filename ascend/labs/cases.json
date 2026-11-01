@@ -1,8 +1,11 @@
 {
   "ethical-hacking-foundations:foundations": {
-    "prompt": "A required training environment is unavailable, but a tool prints its version.",
-    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
-    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+    "prompt": "Your task is to run a test against a local training app. The app will not start. Your testing tool is installed, and its version command works.",
+    "correct": "Not yet. Record that the tool is installed, then get the app running and perform the test.",
+    "incorrect": "Yes. The version command proves that the practical test was completed.",
+    "title": "Does setup prove completion?",
+    "question": "Can you mark the practical task complete?",
+    "explanation": "A version command proves only that the tool is installed. It does not show that the target app runs or that you performed the required test. Save the setup progress, repair the lab, and collect the actual test result."
   },
   "ethical-hacking-foundations:scope": {
     "prompt": "An owned app redirects to a third-party login outside written scope.",
@@ -35,14 +38,20 @@
     "incorrect": "Report the target as secure without qualification."
   },
   "ethical-hacking-foundations:independent-transfer": {
-    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
-    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
-    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+    "prompt": "You reset your lab and solve the same exercise again using the same inputs and steps.",
+    "correct": "You can repeat the solution. Try a changed input or environment to test whether you can adapt it.",
+    "incorrect": "Repeating the same steps proves that you can solve an unfamiliar version of the problem.",
+    "title": "Repeat it, or transfer the skill?",
+    "question": "What does this demonstrate?",
+    "explanation": "A clean reset checks reproducibility. Transfer means adapting the skill when an input, constraint or environment changes. Predict the effect of one change, then test that prediction."
   },
   "red-team-adversary-emulation:foundations": {
-    "prompt": "A required training environment is unavailable, but a tool prints its version.",
-    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
-    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+    "prompt": "Your task is to run a test against a local training app. The app will not start. Your testing tool is installed, and its version command works.",
+    "correct": "Not yet. Record that the tool is installed, then get the app running and perform the test.",
+    "incorrect": "Yes. The version command proves that the practical test was completed.",
+    "title": "Does setup prove completion?",
+    "question": "Can you mark the practical task complete?",
+    "explanation": "A version command proves only that the tool is installed. It does not show that the target app runs or that you performed the required test. Save the setup progress, repair the lab, and collect the actual test result."
   },
   "red-team-adversary-emulation:objectives": {
     "prompt": "A shell was obtained but the agreed business objective was not demonstrated.",
@@ -75,14 +84,20 @@
     "incorrect": "Exceed scope because the end objective was approved."
   },
   "red-team-adversary-emulation:independent-transfer": {
-    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
-    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
-    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+    "prompt": "You reset your lab and solve the same exercise again using the same inputs and steps.",
+    "correct": "You can repeat the solution. Try a changed input or environment to test whether you can adapt it.",
+    "incorrect": "Repeating the same steps proves that you can solve an unfamiliar version of the problem.",
+    "title": "Repeat it, or transfer the skill?",
+    "question": "What does this demonstrate?",
+    "explanation": "A clean reset checks reproducibility. Transfer means adapting the skill when an input, constraint or environment changes. Predict the effect of one change, then test that prediction."
   },
   "soc-analyst:foundations": {
-    "prompt": "A required training environment is unavailable, but a tool prints its version.",
-    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
-    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+    "prompt": "Your task is to run a test against a local training app. The app will not start. Your testing tool is installed, and its version command works.",
+    "correct": "Not yet. Record that the tool is installed, then get the app running and perform the test.",
+    "incorrect": "Yes. The version command proves that the practical test was completed.",
+    "title": "Does setup prove completion?",
+    "question": "Can you mark the practical task complete?",
+    "explanation": "A version command proves only that the tool is installed. It does not show that the target app runs or that you performed the required test. Save the setup progress, repair the lab, and collect the actual test result."
   },
   "soc-analyst:intake": {
     "prompt": "A noisy sandbox alert competes with corroborated access to a critical service.",
@@ -115,14 +130,20 @@
     "incorrect": "Remove the contradictory event to preserve a consistent report."
   },
   "soc-analyst:independent-transfer": {
-    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
-    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
-    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+    "prompt": "You reset your lab and solve the same exercise again using the same inputs and steps.",
+    "correct": "You can repeat the solution. Try a changed input or environment to test whether you can adapt it.",
+    "incorrect": "Repeating the same steps proves that you can solve an unfamiliar version of the problem.",
+    "title": "Repeat it, or transfer the skill?",
+    "question": "What does this demonstrate?",
+    "explanation": "A clean reset checks reproducibility. Transfer means adapting the skill when an input, constraint or environment changes. Predict the effect of one change, then test that prediction."
   },
   "active-directory-security:foundations": {
-    "prompt": "A required training environment is unavailable, but a tool prints its version.",
-    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
-    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+    "prompt": "Your task is to run a test against a local training app. The app will not start. Your testing tool is installed, and its version command works.",
+    "correct": "Not yet. Record that the tool is installed, then get the app running and perform the test.",
+    "incorrect": "Yes. The version command proves that the practical test was completed.",
+    "title": "Does setup prove completion?",
+    "question": "Can you mark the practical task complete?",
+    "explanation": "A version command proves only that the tool is installed. It does not show that the target app runs or that you performed the required test. Save the setup progress, repair the lab, and collect the actual test result."
   },
   "active-directory-security:domain-model": {
     "prompt": "A joined client uses an unrelated DNS resolver.",
@@ -155,14 +176,20 @@
     "incorrect": "Removing all logins is an adequate domain repair."
   },
   "active-directory-security:independent-transfer": {
-    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
-    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
-    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+    "prompt": "You reset your lab and solve the same exercise again using the same inputs and steps.",
+    "correct": "You can repeat the solution. Try a changed input or environment to test whether you can adapt it.",
+    "incorrect": "Repeating the same steps proves that you can solve an unfamiliar version of the problem.",
+    "title": "Repeat it, or transfer the skill?",
+    "question": "What does this demonstrate?",
+    "explanation": "A clean reset checks reproducibility. Transfer means adapting the skill when an input, constraint or environment changes. Predict the effect of one change, then test that prediction."
   },
   "cloud-security:foundations": {
-    "prompt": "A required training environment is unavailable, but a tool prints its version.",
-    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
-    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+    "prompt": "Your task is to run a test against a local training app. The app will not start. Your testing tool is installed, and its version command works.",
+    "correct": "Not yet. Record that the tool is installed, then get the app running and perform the test.",
+    "incorrect": "Yes. The version command proves that the practical test was completed.",
+    "title": "Does setup prove completion?",
+    "question": "Can you mark the practical task complete?",
+    "explanation": "A version command proves only that the tool is installed. It does not show that the target app runs or that you performed the required test. Save the setup progress, repair the lab, and collect the actual test result."
   },
   "cloud-security:shared-responsibility": {
     "prompt": "A workload moves from a VM to a managed database.",
@@ -195,14 +222,20 @@
     "incorrect": "Claim every cloud provider enforces the same policy semantics."
   },
   "cloud-security:independent-transfer": {
-    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
-    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
-    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+    "prompt": "You reset your lab and solve the same exercise again using the same inputs and steps.",
+    "correct": "You can repeat the solution. Try a changed input or environment to test whether you can adapt it.",
+    "incorrect": "Repeating the same steps proves that you can solve an unfamiliar version of the problem.",
+    "title": "Repeat it, or transfer the skill?",
+    "question": "What does this demonstrate?",
+    "explanation": "A clean reset checks reproducibility. Transfer means adapting the skill when an input, constraint or environment changes. Predict the effect of one change, then test that prediction."
   },
   "container-kubernetes-security:foundations": {
-    "prompt": "A required training environment is unavailable, but a tool prints its version.",
-    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
-    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+    "prompt": "Your task is to run a test against a local training app. The app will not start. Your testing tool is installed, and its version command works.",
+    "correct": "Not yet. Record that the tool is installed, then get the app running and perform the test.",
+    "incorrect": "Yes. The version command proves that the practical test was completed.",
+    "title": "Does setup prove completion?",
+    "question": "Can you mark the practical task complete?",
+    "explanation": "A version command proves only that the tool is installed. It does not show that the target app runs or that you performed the required test. Save the setup progress, repair the lab, and collect the actual test result."
   },
   "container-kubernetes-security:container-boundary": {
     "prompt": "A non-root container has the host Docker socket mounted.",
@@ -235,14 +268,20 @@
     "incorrect": "Remove all filesystem restrictions without investigating the path."
   },
   "container-kubernetes-security:independent-transfer": {
-    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
-    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
-    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+    "prompt": "You reset your lab and solve the same exercise again using the same inputs and steps.",
+    "correct": "You can repeat the solution. Try a changed input or environment to test whether you can adapt it.",
+    "incorrect": "Repeating the same steps proves that you can solve an unfamiliar version of the problem.",
+    "title": "Repeat it, or transfer the skill?",
+    "question": "What does this demonstrate?",
+    "explanation": "A clean reset checks reproducibility. Transfer means adapting the skill when an input, constraint or environment changes. Predict the effect of one change, then test that prediction."
   },
   "secure-development-devsecops:foundations": {
-    "prompt": "A required training environment is unavailable, but a tool prints its version.",
-    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
-    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+    "prompt": "Your task is to run a test against a local training app. The app will not start. Your testing tool is installed, and its version command works.",
+    "correct": "Not yet. Record that the tool is installed, then get the app running and perform the test.",
+    "incorrect": "Yes. The version command proves that the practical test was completed.",
+    "title": "Does setup prove completion?",
+    "question": "Can you mark the practical task complete?",
+    "explanation": "A version command proves only that the tool is installed. It does not show that the target app runs or that you performed the required test. Save the setup progress, repair the lab, and collect the actual test result."
   },
   "secure-development-devsecops:threat-model": {
     "prompt": "A background worker introduces a new external data source.",
@@ -275,14 +314,20 @@
     "incorrect": "A newer dependency version needs no regression checks."
   },
   "secure-development-devsecops:independent-transfer": {
-    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
-    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
-    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+    "prompt": "You reset your lab and solve the same exercise again using the same inputs and steps.",
+    "correct": "You can repeat the solution. Try a changed input or environment to test whether you can adapt it.",
+    "incorrect": "Repeating the same steps proves that you can solve an unfamiliar version of the problem.",
+    "title": "Repeat it, or transfer the skill?",
+    "question": "What does this demonstrate?",
+    "explanation": "A clean reset checks reproducibility. Transfer means adapting the skill when an input, constraint or environment changes. Predict the effect of one change, then test that prediction."
   },
   "digital-forensics-incident-response:foundations": {
-    "prompt": "A required training environment is unavailable, but a tool prints its version.",
-    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
-    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+    "prompt": "Your task is to run a test against a local training app. The app will not start. Your testing tool is installed, and its version command works.",
+    "correct": "Not yet. Record that the tool is installed, then get the app running and perform the test.",
+    "incorrect": "Yes. The version command proves that the practical test was completed.",
+    "title": "Does setup prove completion?",
+    "question": "Can you mark the practical task complete?",
+    "explanation": "A version command proves only that the tool is installed. It does not show that the target app runs or that you performed the required test. Save the setup progress, repair the lab, and collect the actual test result."
   },
   "digital-forensics-incident-response:preservation": {
     "prompt": "Two files have identical bytes but different filenames.",
@@ -315,14 +360,20 @@
     "incorrect": "Ignore it because the report is already written."
   },
   "digital-forensics-incident-response:independent-transfer": {
-    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
-    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
-    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+    "prompt": "You reset your lab and solve the same exercise again using the same inputs and steps.",
+    "correct": "You can repeat the solution. Try a changed input or environment to test whether you can adapt it.",
+    "incorrect": "Repeating the same steps proves that you can solve an unfamiliar version of the problem.",
+    "title": "Repeat it, or transfer the skill?",
+    "question": "What does this demonstrate?",
+    "explanation": "A clean reset checks reproducibility. Transfer means adapting the skill when an input, constraint or environment changes. Predict the effect of one change, then test that prediction."
   },
   "threat-hunting-intelligence:foundations": {
-    "prompt": "A required training environment is unavailable, but a tool prints its version.",
-    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
-    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+    "prompt": "Your task is to run a test against a local training app. The app will not start. Your testing tool is installed, and its version command works.",
+    "correct": "Not yet. Record that the tool is installed, then get the app running and perform the test.",
+    "incorrect": "Yes. The version command proves that the practical test was completed.",
+    "title": "Does setup prove completion?",
+    "question": "Can you mark the practical task complete?",
+    "explanation": "A version command proves only that the tool is installed. It does not show that the target app runs or that you performed the required test. Save the setup progress, repair the lab, and collect the actual test result."
   },
   "threat-hunting-intelligence:source-quality": {
     "prompt": "Three articles repeat one uncorroborated original claim.",
@@ -355,14 +406,20 @@
     "incorrect": "Conclude the behavior never occurred."
   },
   "threat-hunting-intelligence:independent-transfer": {
-    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
-    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
-    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+    "prompt": "You reset your lab and solve the same exercise again using the same inputs and steps.",
+    "correct": "You can repeat the solution. Try a changed input or environment to test whether you can adapt it.",
+    "incorrect": "Repeating the same steps proves that you can solve an unfamiliar version of the problem.",
+    "title": "Repeat it, or transfer the skill?",
+    "question": "What does this demonstrate?",
+    "explanation": "A clean reset checks reproducibility. Transfer means adapting the skill when an input, constraint or environment changes. Predict the effect of one change, then test that prediction."
   },
   "malware-analysis:foundations": {
-    "prompt": "A required training environment is unavailable, but a tool prints its version.",
-    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
-    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+    "prompt": "Your task is to run a test against a local training app. The app will not start. Your testing tool is installed, and its version command works.",
+    "correct": "Not yet. Record that the tool is installed, then get the app running and perform the test.",
+    "incorrect": "Yes. The version command proves that the practical test was completed.",
+    "title": "Does setup prove completion?",
+    "question": "Can you mark the practical task complete?",
+    "explanation": "A version command proves only that the tool is installed. It does not show that the target app runs or that you performed the required test. Save the setup progress, repair the lab, and collect the actual test result."
   },
   "malware-analysis:triage": {
     "prompt": "A high-entropy binary is a known benign compressed utility.",
@@ -395,14 +452,20 @@
     "incorrect": "Merge all hints into a single certain execution story."
   },
   "malware-analysis:independent-transfer": {
-    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
-    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
-    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+    "prompt": "You reset your lab and solve the same exercise again using the same inputs and steps.",
+    "correct": "You can repeat the solution. Try a changed input or environment to test whether you can adapt it.",
+    "incorrect": "Repeating the same steps proves that you can solve an unfamiliar version of the problem.",
+    "title": "Repeat it, or transfer the skill?",
+    "question": "What does this demonstrate?",
+    "explanation": "A clean reset checks reproducibility. Transfer means adapting the skill when an input, constraint or environment changes. Predict the effect of one change, then test that prediction."
   },
   "mobile-application-security:foundations": {
-    "prompt": "A required training environment is unavailable, but a tool prints its version.",
-    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
-    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+    "prompt": "Your task is to run a test against a local training app. The app will not start. Your testing tool is installed, and its version command works.",
+    "correct": "Not yet. Record that the tool is installed, then get the app running and perform the test.",
+    "incorrect": "Yes. The version command proves that the practical test was completed.",
+    "title": "Does setup prove completion?",
+    "question": "Can you mark the practical task complete?",
+    "explanation": "A version command proves only that the tool is installed. It does not show that the target app runs or that you performed the required test. Save the setup progress, repair the lab, and collect the actual test result."
   },
   "mobile-application-security:platform-model": {
     "prompt": "A manifest declares a sensitive permission.",
@@ -435,14 +498,20 @@
     "incorrect": "Present it as universally reproducible on stock devices."
   },
   "mobile-application-security:independent-transfer": {
-    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
-    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
-    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+    "prompt": "You reset your lab and solve the same exercise again using the same inputs and steps.",
+    "correct": "You can repeat the solution. Try a changed input or environment to test whether you can adapt it.",
+    "incorrect": "Repeating the same steps proves that you can solve an unfamiliar version of the problem.",
+    "title": "Repeat it, or transfer the skill?",
+    "question": "What does this demonstrate?",
+    "explanation": "A clean reset checks reproducibility. Transfer means adapting the skill when an input, constraint or environment changes. Predict the effect of one change, then test that prediction."
   },
   "api-security:foundations": {
-    "prompt": "A required training environment is unavailable, but a tool prints its version.",
-    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
-    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+    "prompt": "Your task is to run a test against a local training app. The app will not start. Your testing tool is installed, and its version command works.",
+    "correct": "Not yet. Record that the tool is installed, then get the app running and perform the test.",
+    "incorrect": "Yes. The version command proves that the practical test was completed.",
+    "title": "Does setup prove completion?",
+    "question": "Can you mark the practical task complete?",
+    "explanation": "A version command proves only that the tool is installed. It does not show that the target app runs or that you performed the required test. Save the setup progress, repair the lab, and collect the actual test result."
   },
   "api-security:inventory": {
     "prompt": "An intentionally public health route responds without login.",
@@ -475,14 +544,20 @@
     "incorrect": "Individually valid endpoints guarantee a valid workflow."
   },
   "api-security:independent-transfer": {
-    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
-    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
-    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+    "prompt": "You reset your lab and solve the same exercise again using the same inputs and steps.",
+    "correct": "You can repeat the solution. Try a changed input or environment to test whether you can adapt it.",
+    "incorrect": "Repeating the same steps proves that you can solve an unfamiliar version of the problem.",
+    "title": "Repeat it, or transfer the skill?",
+    "question": "What does this demonstrate?",
+    "explanation": "A clean reset checks reproducibility. Transfer means adapting the skill when an input, constraint or environment changes. Predict the effect of one change, then test that prediction."
   },
   "cryptography-protocol-security:foundations": {
-    "prompt": "A required training environment is unavailable, but a tool prints its version.",
-    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
-    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+    "prompt": "Your task is to run a test against a local training app. The app will not start. Your testing tool is installed, and its version command works.",
+    "correct": "Not yet. Record that the tool is installed, then get the app running and perform the test.",
+    "incorrect": "Yes. The version command proves that the practical test was completed.",
+    "title": "Does setup prove completion?",
+    "question": "Can you mark the practical task complete?",
+    "explanation": "A version command proves only that the tool is installed. It does not show that the target app runs or that you performed the required test. Save the setup progress, repair the lab, and collect the actual test result."
   },
   "cryptography-protocol-security:representations": {
     "prompt": "A message is Base64 encoded before transmission.",
@@ -515,14 +590,20 @@
     "incorrect": "Authentication automatically prevents replay."
   },
   "cryptography-protocol-security:independent-transfer": {
-    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
-    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
-    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+    "prompt": "You reset your lab and solve the same exercise again using the same inputs and steps.",
+    "correct": "You can repeat the solution. Try a changed input or environment to test whether you can adapt it.",
+    "incorrect": "Repeating the same steps proves that you can solve an unfamiliar version of the problem.",
+    "title": "Repeat it, or transfer the skill?",
+    "question": "What does this demonstrate?",
+    "explanation": "A clean reset checks reproducibility. Transfer means adapting the skill when an input, constraint or environment changes. Predict the effect of one change, then test that prediction."
   },
   "wireless-iot-security:foundations": {
-    "prompt": "A required training environment is unavailable, but a tool prints its version.",
-    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
-    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+    "prompt": "Your task is to run a test against a local training app. The app will not start. Your testing tool is installed, and its version command works.",
+    "correct": "Not yet. Record that the tool is installed, then get the app running and perform the test.",
+    "incorrect": "Yes. The version command proves that the practical test was completed.",
+    "title": "Does setup prove completion?",
+    "question": "Can you mark the practical task complete?",
+    "explanation": "A version command proves only that the tool is installed. It does not show that the target app runs or that you performed the required test. Save the setup progress, repair the lab, and collect the actual test result."
   },
   "wireless-iot-security:inventory": {
     "prompt": "A nearby device is visible but outside the test permission.",
@@ -555,14 +636,20 @@
     "incorrect": "Total communication failure proves a correct IoT repair."
   },
   "wireless-iot-security:independent-transfer": {
-    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
-    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
-    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+    "prompt": "You reset your lab and solve the same exercise again using the same inputs and steps.",
+    "correct": "You can repeat the solution. Try a changed input or environment to test whether you can adapt it.",
+    "incorrect": "Repeating the same steps proves that you can solve an unfamiliar version of the problem.",
+    "title": "Repeat it, or transfer the skill?",
+    "question": "What does this demonstrate?",
+    "explanation": "A clean reset checks reproducibility. Transfer means adapting the skill when an input, constraint or environment changes. Predict the effect of one change, then test that prediction."
   },
   "ot-ics-security:foundations": {
-    "prompt": "A required training environment is unavailable, but a tool prints its version.",
-    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
-    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+    "prompt": "Your task is to run a test against a local training app. The app will not start. Your testing tool is installed, and its version command works.",
+    "correct": "Not yet. Record that the tool is installed, then get the app running and perform the test.",
+    "incorrect": "Yes. The version command proves that the practical test was completed.",
+    "title": "Does setup prove completion?",
+    "question": "Can you mark the practical task complete?",
+    "explanation": "A version command proves only that the tool is installed. It does not show that the target app runs or that you performed the required test. Save the setup progress, repair the lab, and collect the actual test result."
   },
   "ot-ics-security:process": {
     "prompt": "Disconnecting a controller may violate a stated safety constraint.",
@@ -595,14 +682,20 @@
     "incorrect": "Treat network logs as a complete measurement of physical safety."
   },
   "ot-ics-security:independent-transfer": {
-    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
-    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
-    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+    "prompt": "You reset your lab and solve the same exercise again using the same inputs and steps.",
+    "correct": "You can repeat the solution. Try a changed input or environment to test whether you can adapt it.",
+    "incorrect": "Repeating the same steps proves that you can solve an unfamiliar version of the problem.",
+    "title": "Repeat it, or transfer the skill?",
+    "question": "What does this demonstrate?",
+    "explanation": "A clean reset checks reproducibility. Transfer means adapting the skill when an input, constraint or environment changes. Predict the effect of one change, then test that prediction."
   },
   "security-architecture-grc:foundations": {
-    "prompt": "A required training environment is unavailable, but a tool prints its version.",
-    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
-    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+    "prompt": "Your task is to run a test against a local training app. The app will not start. Your testing tool is installed, and its version command works.",
+    "correct": "Not yet. Record that the tool is installed, then get the app running and perform the test.",
+    "incorrect": "Yes. The version command proves that the practical test was completed.",
+    "title": "Does setup prove completion?",
+    "question": "Can you mark the practical task complete?",
+    "explanation": "A version command proves only that the tool is installed. It does not show that the target app runs or that you performed the required test. Save the setup progress, repair the lab, and collect the actual test result."
   },
   "security-architecture-grc:assets": {
     "prompt": "An outsourced service is outside direct administration but handles critical data.",
@@ -635,14 +728,20 @@
     "incorrect": "Count closed tickets and approve the launch automatically."
   },
   "security-architecture-grc:independent-transfer": {
-    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
-    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
-    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+    "prompt": "You reset your lab and solve the same exercise again using the same inputs and steps.",
+    "correct": "You can repeat the solution. Try a changed input or environment to test whether you can adapt it.",
+    "incorrect": "Repeating the same steps proves that you can solve an unfamiliar version of the problem.",
+    "title": "Repeat it, or transfer the skill?",
+    "question": "What does this demonstrate?",
+    "explanation": "A clean reset checks reproducibility. Transfer means adapting the skill when an input, constraint or environment changes. Predict the effect of one change, then test that prediction."
   },
   "vulnerability-management:foundations": {
-    "prompt": "A required training environment is unavailable, but a tool prints its version.",
-    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
-    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+    "prompt": "Your task is to run a test against a local training app. The app will not start. Your testing tool is installed, and its version command works.",
+    "correct": "Not yet. Record that the tool is installed, then get the app running and perform the test.",
+    "incorrect": "Yes. The version command proves that the practical test was completed.",
+    "title": "Does setup prove completion?",
+    "question": "Can you mark the practical task complete?",
+    "explanation": "A version command proves only that the tool is installed. It does not show that the target app runs or that you performed the required test. Save the setup progress, repair the lab, and collect the actual test result."
   },
   "vulnerability-management:inventory": {
     "prompt": "Two different products expose similar version strings.",
@@ -675,14 +774,20 @@
     "incorrect": "Report an improvement without revisiting the denominator."
   },
   "vulnerability-management:independent-transfer": {
-    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
-    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
-    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+    "prompt": "You reset your lab and solve the same exercise again using the same inputs and steps.",
+    "correct": "You can repeat the solution. Try a changed input or environment to test whether you can adapt it.",
+    "incorrect": "Repeating the same steps proves that you can solve an unfamiliar version of the problem.",
+    "title": "Repeat it, or transfer the skill?",
+    "question": "What does this demonstrate?",
+    "explanation": "A clean reset checks reproducibility. Transfer means adapting the skill when an input, constraint or environment changes. Predict the effect of one change, then test that prediction."
   },
   "vulnerability-research-bug-bounty:foundations": {
-    "prompt": "A required training environment is unavailable, but a tool prints its version.",
-    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
-    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+    "prompt": "Your task is to run a test against a local training app. The app will not start. Your testing tool is installed, and its version command works.",
+    "correct": "Not yet. Record that the tool is installed, then get the app running and perform the test.",
+    "incorrect": "Yes. The version command proves that the practical test was completed.",
+    "title": "Does setup prove completion?",
+    "question": "Can you mark the practical task complete?",
+    "explanation": "A version command proves only that the tool is installed. It does not show that the target app runs or that you performed the required test. Save the setup progress, repair the lab, and collect the actual test result."
   },
   "vulnerability-research-bug-bounty:scope": {
     "prompt": "A program excludes a third-party dependency from scope.",
@@ -715,14 +820,20 @@
     "incorrect": "Claim every similar component is vulnerable."
   },
   "vulnerability-research-bug-bounty:independent-transfer": {
-    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
-    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
-    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+    "prompt": "You reset your lab and solve the same exercise again using the same inputs and steps.",
+    "correct": "You can repeat the solution. Try a changed input or environment to test whether you can adapt it.",
+    "incorrect": "Repeating the same steps proves that you can solve an unfamiliar version of the problem.",
+    "title": "Repeat it, or transfer the skill?",
+    "question": "What does this demonstrate?",
+    "explanation": "A clean reset checks reproducibility. Transfer means adapting the skill when an input, constraint or environment changes. Predict the effect of one change, then test that prediction."
   },
   "ai-application-security:foundations": {
-    "prompt": "A required training environment is unavailable, but a tool prints its version.",
-    "correct": "Record preparation and leave the environment-dependent assessment incomplete.",
-    "incorrect": "Treat the installed tool version as proof of the operational prerequisite."
+    "prompt": "Your task is to run a test against a local training app. The app will not start. Your testing tool is installed, and its version command works.",
+    "correct": "Not yet. Record that the tool is installed, then get the app running and perform the test.",
+    "incorrect": "Yes. The version command proves that the practical test was completed.",
+    "title": "Does setup prove completion?",
+    "question": "Can you mark the practical task complete?",
+    "explanation": "A version command proves only that the tool is installed. It does not show that the target app runs or that you performed the required test. Save the setup progress, repair the lab, and collect the actual test result."
   },
   "ai-application-security:boundaries": {
     "prompt": "A model claims the user approved access to a private resource.",
@@ -755,8 +866,11 @@
     "incorrect": "Claim universal resistance to all prompt injection."
   },
   "ai-application-security:independent-transfer": {
-    "prompt": "The original solution works again after a clean reset, with exactly the same inputs and conditions.",
-    "correct": "This supports reproducibility; a changed condition is still needed to demonstrate transfer.",
-    "incorrect": "The clean reset alone proves transfer to an unfamiliar case."
+    "prompt": "You reset your lab and solve the same exercise again using the same inputs and steps.",
+    "correct": "You can repeat the solution. Try a changed input or environment to test whether you can adapt it.",
+    "incorrect": "Repeating the same steps proves that you can solve an unfamiliar version of the problem.",
+    "title": "Repeat it, or transfer the skill?",
+    "question": "What does this demonstrate?",
+    "explanation": "A clean reset checks reproducibility. Transfer means adapting the skill when an input, constraint or environment changes. Predict the effect of one change, then test that prediction."
   }
 }

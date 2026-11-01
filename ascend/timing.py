@@ -31,8 +31,27 @@ def describe(t, row):
 def summary(t):
     rows = t.db.rows("task_sessions", "status='running'")
     awards = t.db.rows("xp_awards")
+    finished = t.db.rows(
+        "task_sessions", "status='finished'", order="finished_at DESC, id DESC"
+    )
+    recent = describe(t, finished[0]) if finished else None
+    if recent:
+        reference = (recent["pack_id"], recent["node_id"])
+        state = t.db.rows("node_state", "pack_id=? AND node_id=?", reference)
+        decision = t.db.rows("case_attempts", "pack_id=? AND node_id=?", reference)
+        recent["outcome"] = (
+            "completed"
+            if state and state[0]["status"] == "done"
+            else "incorrect"
+            if decision and not decision[0]["correct"]
+            else "ended"
+        )
+        recent["xp_earned"] = sum(
+            r["points"] for r in awards if (r["pack_id"], r["node_id"]) == reference
+        )
     return {
         "active": describe(t, rows[0]) if rows else None,
+        "recent": recent,
         "paused": [
             describe(t, r) for r in t.db.rows("task_sessions", "status='paused'")
         ],

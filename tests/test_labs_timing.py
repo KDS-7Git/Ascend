@@ -206,9 +206,7 @@ def test_reasoning_cases_grade_decisions_but_do_not_expose_the_answer_key(
     tracker.install_pack(dump_toml(pack_data))
     tracker.start_mission("test-pack")
     run = labs.start(tracker, "one")
-    selected = next(
-        k for k, v in run["choices"].items() if v.startswith("Record preparation")
-    )
+    selected = next(k for k, v in run["choices"].items() if v.startswith("Not yet."))
     assert labs.submit(tracker, run["id"], {"choice": selected})["completed"]
 
 
@@ -219,3 +217,105 @@ def test_boolean_cannot_impersonate_numeric_answer(tracker, pack_data):
     candidate = answers(run)
     candidate["errors"] = True
     assert not labs.submit(tracker, run["id"], candidate)["ok"]
+
+
+def start_case(tracker, pack_data):
+    pack_data["node"][0]["verify"] = {
+        "type": "lab",
+        "exercise": "case",
+        "case_id": "ethical-hacking-foundations:foundations",
+    }
+    tracker.install_pack(dump_toml(pack_data))
+    tracker.start_mission("test-pack")
+    run = labs.start(tracker, "test-pack:one")
+    correct = next(k for k, v in run["choices"].items() if v.startswith("Not yet."))
+    return run, correct
+
+
+def test_mcq_one_submission_survives_reload_fresh_instance_and_pack_changes(
+    tracker, pack_data, now
+):
+    run, correct = start_case(tracker, pack_data)
+    assert "feedback" not in run and "explanation" not in run
+    with pytest.raises(ValueError, match="Choose one"):
+        labs.submit(tracker, run["id"], {"choice": "invalid"})
+    assert not tracker.db.rows("case_attempts")
+    wrong = next(k for k in run["choices"] if k != correct)
+    tracker.clock = lambda: now + timedelta(seconds=42)
+    first = labs.submit(tracker, run["id"], {"choice": wrong})
+    assert not first["completed"] and first["terminal"]
+    assert first["exercise"]["feedback"]["selected"] == wrong
+    assert first["exercise"]["feedback"]["correct_choice"] == correct
+    assert "version command" in first["exercise"]["feedback"]["explanation"]
+    assert timing.summary(tracker)["active"] is None
+    assert timing.summary(tracker)["recent"]["outcome"] == "incorrect"
+    assert timing.summary(tracker)["recent"]["elapsed_seconds"] == 42
+    # A second submission returns the recorded result, never regrades another choice.
+    assert not labs.submit(tracker, run["id"], {"choice": correct})["completed"]
+    assert labs.current(tracker, "one")["terminal"]
+    assert labs.start(tracker, "one")["id"] == run["id"]
+    with pytest.raises(ValueError, match="already been submitted"):
+        labs.start(tracker, "one", fresh=True)
+    pack_data["node"][0]["done_when"] = "Reworded completion description"
+    tracker.install_pack(dump_toml(pack_data))
+    assert labs.current(tracker, "one")["feedback"]["selected"] == wrong
+    assert timing.summary(tracker)["xp"] == 0
+    assert not tracker.states("test-pack")
+    assert len(tracker.db.rows("case_attempts")) == 1
+
+
+def test_mcq_correct_receipt_is_idempotent_and_account_scoped(
+    tracker, pack_data, tmp_path
+):
+    run, correct = start_case(tracker, pack_data)
+    first = labs.submit(tracker, run["id"], {"choice": correct})
+    assert first["completed"] and first["exercise"]["terminal"]
+    assert timing.summary(tracker)["recent"]["outcome"] == "completed"
+    assert timing.summary(tracker)["recent"]["xp_earned"] == 100
+    assert labs.submit(tracker, run["id"], {"choice": "ignored"})["completed"]
+    assert len(tracker.entries()) == 1
+    other = Tracker(Database(tmp_path, user_id=2), clock=tracker.clock)
+    other.install_pack(dump_toml(pack_data))
+    with pytest.raises(ValueError, match="not found"):
+        labs.submit(other, run["id"], {"choice": correct})
+    other.db.close()
+
+
+def test_mcq_concurrent_submissions_record_only_the_first_decision(tracker, pack_data):
+    from concurrent.futures import ThreadPoolExecutor
+
+    run, correct = start_case(tracker, pack_data)
+    wrong = next(k for k in run["choices"] if k != correct)
+
+    def submit(choice):
+        client = Tracker(Database(tracker.db.home), clock=tracker.clock)
+        try:
+            return labs.submit(client, run["id"], {"choice": choice})
+        finally:
+            client.db.close()
+
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        results = list(pool.map(submit, [correct, wrong]))
+    assert results[0]["completed"] == results[1]["completed"]
+    assert len(tracker.db.rows("case_attempts")) == 1
+    assert tracker.db.rows("lab_runs")[0]["attempts"] == 1
+    assert timing.summary(tracker)["xp"] == (100 if results[0]["completed"] else 0)
+
+
+def test_legacy_mcq_migration_preserves_progress_and_locks_recorded_result(
+    tracker, pack_data
+):
+    run, correct = start_case(tracker, pack_data)
+    labs.submit(tracker, run["id"], {"choice": correct})
+    protected = {
+        name: tracker.db.rows(name)
+        for name in ["lab_runs", "task_sessions", "xp_awards", "node_state", "entries"]
+    }
+    tracker.db.connection.execute("DROP TABLE case_attempts")
+    tracker.db.connection.execute("UPDATE schema_version SET version=5")
+    tracker.db.migrate()
+    assert all(tracker.db.rows(name) == rows for name, rows in protected.items())
+    restored = labs.current(tracker, "one")
+    assert restored["terminal"] and restored["passed"]
+    assert restored["feedback"]["selected"] is None
+    assert timing.summary(tracker)["xp"] == 100
