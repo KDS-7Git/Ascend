@@ -12,8 +12,10 @@ surfaces, a clear text hierarchy, compact lists, one accent for actions/current
 position, and additional semantic colors only for results, milestones and errors.
 Today keeps one primary next step, an optional shorter task, and a milestone when
 one is relevant. The path is a consistent vertical sequence. Advanced controls
-are disclosed when needed. The design has not been scored by an independent
-professional designer and makes no claim about a measured motivational benefit.
+are disclosed when needed. Subsequent user and reviewer feedback identified
+uneven section edges, excessive boxes and disruptive documentation navigation.
+The revisions below respond to that feedback; no expert score or measured
+motivational benefit is claimed.
 
 \subsection{Reference review and adaptation}
 The review inspected Duolingo's official learning-path redesign article, the HTB
@@ -31,6 +33,24 @@ actions, and help near the point of use. Primer's component states and Material'
 scannable lists inform the controls. WAI guidance informs modal focus and Escape
 behavior. Ascend retains its own content, brand and constraints; third-party
 screenshots and brand assets are not shipped as product assets.
+
+\subsection{Shared alignment and stable documentation}
+USWDS card guidance, Carbon's grid guidance and GOV.UK layout guidance informed
+the follow-up layout review. All six pages and the top bar share a 1080 px maximum
+frame. Today places its optional quick win and milestone below the main challenge
+as open rows. Tracks, Profile and Path use headings, lists and neutral dividers.
+Stats uses a single metric strip, aligned charts and full-width supporting sections.
+Permanent colored stripes on the dashboard were removed; the requested one-time
+challenge border sweep remains.
+
+Vite, React and GitHub Docs were inspected for reading and navigation patterns.
+Documentation now has grouped topics in a persistent desktop rail, with the guide
+title, summary and body aligned in one reading column. At 1100 px and below,
+Guide menu opens a native modal drawer over the page. Opening, closing or searching
+the navigation does not move the article. Escape and the close button return focus
+to the opener; selecting a guide closes the drawer and focuses its title. Resizing
+to desktop closes the drawer and restores navigation to the rail. Search filters
+topics in that navigation; it does not insert a list above the article.
 
 \subsection{Navigation and information hierarchy}
 The persistent top bar shows the verified XP balance, day streak and a profile avatar. The
@@ -57,7 +77,7 @@ Pack preview & Complete title and tasks grouped by level, with the first group o
 Lesson dialog & Fixed close/header and feedback regions surround an independently scrolling body. Initial focus goes to the title for a lesson and to the first field for the short logging form. Escape closes; focus returns to the opener.\\
 Action feedback & The live region moves into the active dialog. Error and in-dialog messages persist until dismissed or replaced. Page-level informational messages last eight seconds. Timer reminders cannot replace an unresolved error.\\
 Buttons & One filled primary action, outlined secondary actions and quiet text actions. Pending actions disable repeat submission and expose an accessible busy state; a small spinner provides feedback. Disabled and selected states remain distinct.\\
-Docs & Ten searchable help topics with stable links, readable prose, working command-copy actions, and related guides. The guide can be read offline after the shell is installed; progress writes still require the server.\\
+Docs & Ten searchable help topics grouped into Start here, Daily practice and Setup \& help. A stable desktop rail and compact-screen overlay preserve the reading position. Stable links, command-copy actions and related guides work offline after the shell is installed; progress writes still require the server.\\
 Profile & Actual account identity and verified totals, editable timezone, locally persisted theme, reminders and opt-in streak sharing. Unsupported username/password editing is not presented.\\
 Path & Uniform vertical task rows, current-level emphasis and distinct ready, locked, done, skipped and milestone states. Color supplements labels and shapes.\\
 Typography & Locally bundled Inter Variable with its SIL Open Font License. A limited hierarchy separates headings, body copy and supporting labels; mobile form text is 16 px to avoid focus zoom.\\
@@ -86,21 +106,23 @@ application shell. Private API responses remain uncached. The standalone wheel
 regression checks the guide, font/license and theme asset and serves them from an
 installed wheel outside the source checkout.
 
-The expanded automated suite records 146 passing tests. Browser regressions cover
+The expanded automated suite records 148 passing tests. Browser regressions cover
 inline pack-row geometry, readable previews, in-dialog failure messages, persistence
 of errors, Escape/focus restoration, XP updates after verification, profile/theme/
-timezone persistence, guide search and direct links, and offline help. The visual
-audit captures the actual browser at 320, 390, 768 and 1440 px, including dark mode.
-Axe-core 4.10.3 checks WCAG 2 A/AA and 2.1 AA tagged rules on thirty screen/viewport
+timezone persistence, guide search and direct links, and offline help. Navigation
+geometry checks cover the guide drawer, filtering and breakpoint changes. The visual
+audit retains 63 captures at 320, 390, 768, 1024, 1440 and 1920 px, including dark mode.
+Axe-core 4.10.3 checks WCAG 2 A/AA and 2.1 AA tagged rules on 56 screen/state/viewport
 combinations. Its results are bounded automated evidence, not a claim of complete
 accessibility conformance or an expert usability score.
 
-After the final typography and documentation-focus adjustments, all fifteen
-browser/integration regressions passed again. The \texttt{ascend:ui-workspace}
+In the earlier typography and feedback milestone, all fifteen
+browser/integration regressions passed. The \texttt{ascend:ui-workspace}
 image built successfully and passed the shipped hardened Compose configuration:
 read-only root filesystem, non-root user, bundled guide/font/theme assets, native
 grading, signed receipt checks, and XP persistence across container restart. This
-runtime check used AMD64 and disposable data; the previous ARM64 compatibility
+runtime check used AMD64 and disposable data and was not repeated for the layout
+revision. The previous ARM64 compatibility
 evidence does not constitute a new physical Raspberry Pi run.
 
 The existing local server was restarted with its original command and environment
@@ -111,7 +133,8 @@ to the real profile.
 
 Retained evidence is in \path{docs/testing/ui-workspace-tests.txt},
 \path{docs/testing/ui-visual-audit.txt}, \path{docs/testing/ui-accessibility.json}
-and \path{docs/screenshots/ui-workspace/}. Final browser, container and local-refresh
+and \path{docs/screenshots/ui-workspace/}. The layout revision is recorded in
+\path{docs/testing/ui-layout-review.txt}. Earlier browser, container and local-refresh
 records are in \path{docs/testing/ui-final-regressions.txt},
 \path{docs/testing/ui-deployment-smoke.txt} and
 \path{docs/testing/ui-local-refresh.txt}. All screenshots and scored examples use

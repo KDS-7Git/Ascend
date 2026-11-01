@@ -71,6 +71,60 @@
       "accessed": "2026-11-01",
       "finding": "Dialogs and popovers use a top layer distinct from ordinary stacking contexts.",
       "limits": "The fix uses an in-dialog feedback region, not a z-index increase or a popover dependency."
+    },
+    {
+      "title": "GOV.UK Design System layout",
+      "url": "https://design-system.service.gov.uk/styles/layout/",
+      "status": 200,
+      "accessed": "2026-11-01",
+      "finding": "Start with a single column on small screens, constrain page width, and limit reading lines. A common page wrapper aligns headings and content.",
+      "application": "One shared 1080px frame for the top bar and all six pages; a narrower, aligned reading column for documentation. Supporting Today content follows the main task.",
+      "limits": "Official rendered guidance inspected. Ascend uses its own widths and visual style; no usability outcome is inferred from the reference."
+    },
+    {
+      "title": "USWDS card usage guidance",
+      "url": "https://designsystem.digital.gov/components/card/",
+      "status": 200,
+      "accessed": "2026-11-01",
+      "finding": "Cards are modular summaries, not generic decorative borders. Sequential content is better presented with lists, body text and headings; simple calls to action need buttons.",
+      "application": "Replace the stacked dashboard sidebar, settings panels, path containers and Stats card grid with sections and rows. Keep the main challenge visually distinct.",
+      "limits": "Official rendered component guidance inspected; this is an adaptation, not a claim that Ascend implements the USWDS card component."
+    },
+    {
+      "title": "Carbon Design System 2x Grid",
+      "url": "https://carbondesignsystem.com/guidelines/2x-grid/overview/",
+      "status": 200,
+      "accessed": "2026-11-01",
+      "finding": "Shared alignment lines and consistent margins, padding and gutters create a visual rhythm. Fluid columns suit dashboards; breakpoint checks preserve layout integrity.",
+      "application": "Use common page edges, 24/32px section spacing, one Stats metric strip and an aligned chart row. Validate every page from 320px to 1920px.",
+      "limits": "Official rendered guidance inspected. Layout checks and screenshots establish geometry, not a measured cognitive-load or learning benefit."
+    },
+    {
+      "title": "Vite documentation navigation",
+      "url": "https://vite.dev/guide/",
+      "status": 200,
+      "accessed": "2026-11-01",
+      "finding": "Desktop documentation uses a persistent topic sidebar and aligned article headings and body; compact screens expose a Menu control.",
+      "application": "Use grouped topics in a stable desktop rail, and a native overlay drawer on compact screens. Search filters within navigation instead of inserting content above the article.",
+      "limits": "Public rendered pages inspected at desktop and compact widths. Patterns are adapted to Ascend’s small in-app guide; no third-party assets or usability scores are copied."
+    },
+    {
+      "title": "React documentation reading layout",
+      "url": "https://react.dev/learn",
+      "status": 200,
+      "accessed": "2026-11-01",
+      "finding": "Grouped navigation sits separately from the title, introduction and article in one reading column.",
+      "application": "Keep the article title and body aligned; use short topic groups with a distinct current guide.",
+      "limits": "Public rendered pages inspected at desktop and compact widths. Patterns are adapted to Ascend’s small in-app guide; no third-party assets or usability scores are copied."
+    },
+    {
+      "title": "GitHub Docs article layout",
+      "url": "https://docs.github.com/en/get-started/start-your-journey/hello-world",
+      "status": 200,
+      "accessed": "2026-11-01",
+      "finding": "The title, description and article sections share a reading column alongside persistent topic navigation.",
+      "application": "Replace the generic Docs page headline with the actual guide title; preserve stable links and independent topic navigation.",
+      "limits": "Public rendered pages inspected at desktop and compact widths. Patterns are adapted to Ascend’s small in-app guide; no third-party assets or usability scores are copied."
     }
   ],
   "font": {

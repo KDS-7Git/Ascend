@@ -28,6 +28,7 @@ def main():
     )
     args = parser.parse_args()
     records = []
+    captures = 0
 
     def audit(page, label, route):
         if args.axe:
@@ -107,6 +108,8 @@ def main():
                 browser = p.chromium.launch()
                 for label, width, height, theme in [
                     ("desktop", 1440, 1000, "light"),
+                    ("wide", 1920, 1080, "light"),
+                    ("laptop", 1024, 900, "light"),
                     ("mobile", 390, 844, "light"),
                     ("mobile-dark", 390, 844, "dark"),
                     ("tablet", 768, 1024, "light"),
@@ -121,16 +124,25 @@ def main():
                     )
                     errors = []
                     page.on("pageerror", lambda error: errors.append(str(error)))
-                    for route in ["today", "path", "more", "profile", "docs/timers"]:
+                    for route in [
+                        "today",
+                        "path",
+                        "stats",
+                        "more",
+                        "profile",
+                        "docs/timers",
+                    ]:
                         page.goto(base + "/#" + route)
                         if route.startswith("docs"):
-                            expect(page.locator("#docs-article h2")).to_have_text(
+                            expect(page.locator("#guide-title")).to_have_text(
                                 "Timers & XP"
                             )
                         elif route == "more":
                             page.locator(".pack-item").first.wait_for()
                         elif route == "profile":
                             page.locator(".profile-metric").first.wait_for()
+                        elif route == "stats":
+                            page.locator(".metric-strip").wait_for()
                         else:
                             page.locator(
                                 ".mission-info h2"
@@ -141,15 +153,71 @@ def main():
                         assert page.evaluate(
                             "document.documentElement.scrollWidth <= innerWidth"
                         ), (label, route)
+                        layout = page.evaluate("""() => {
+                            const screen = document.querySelector('.screen:not([hidden])').getBoundingClientRect();
+                            const header = document.querySelector('.topbar-inner').getBoundingClientRect();
+                            const sections = [...document.querySelectorAll('.screen:not([hidden]) .card, .screen:not([hidden]) .page-section, .screen:not([hidden]) .level-section, .screen:not([hidden]) .docs-article')].filter(e => e.getClientRects().length);
+                            return {
+                                aligned: Math.abs(screen.left - header.left) < 1 && Math.abs(screen.right - header.right) < 1,
+                                contained: sections.every(e => { const r = e.getBoundingClientRect(); return r.left >= screen.left - 1 && r.right <= screen.right + 1; })
+                            };
+                        }""")
+                        assert layout["aligned"] and layout["contained"], (
+                            label,
+                            route,
+                            layout,
+                        )
+                        if route == "today":
+                            primary = page.locator(".next-card").bounding_box()
+                            supporting = page.locator(".today-aside").bounding_box()
+                            assert (
+                                supporting["y"] >= primary["y"] + primary["height"]
+                            ), label
                         audit(page, label, route)
                         page.screenshot(
                             path=TARGET / f"{route.split('/')[0]}-{label}.png",
                             full_page=False,
                         )
+                        captures += 1
+                        if route.startswith("docs"):
+                            article = page.locator("#docs-article")
+                            before = article.bounding_box()
+                            if width <= 1100:
+                                page.get_by_role(
+                                    "button", name="Guide menu", exact=True
+                                ).click()
+                                expect(page.locator("#docs-menu")).to_be_visible()
+                            else:
+                                page.get_by_label("Search documentation").fill(
+                                    "paused time"
+                                )
+                                expect(page.locator("#docs-topics a")).to_have_count(1)
+                            after = article.bounding_box()
+                            for key in ["x", "y", "width"]:
+                                assert abs(before[key] - after[key]) < 1, (
+                                    label,
+                                    key,
+                                    before,
+                                    after,
+                                )
+                            audit(
+                                page,
+                                label,
+                                "docs-menu" if width <= 1100 else "docs-search",
+                            )
+                            page.screenshot(
+                                path=TARGET / f"docs-navigation-{label}.png"
+                            )
+                            captures += 1
+                            if width <= 1100:
+                                page.keyboard.press("Escape")
+                            else:
+                                page.get_by_label("Search documentation").fill("")
                         if route == "more":
                             page.locator(".library").screenshot(
                                 path=TARGET / f"library-{label}.png"
                             )
+                            captures += 1
                     page.goto(base + "/#today")
                     page.locator(".next-card").get_by_role(
                         "button", name="Open challenge"
@@ -161,6 +229,7 @@ def main():
                     expect(page.locator("#sheet .notice")).to_be_visible()
                     audit(page, label, "lesson-feedback")
                     page.screenshot(path=TARGET / f"lesson-feedback-{label}.png")
+                    captures += 1
                     assert not errors, errors
                     page.close()
                 browser.close()
@@ -195,7 +264,7 @@ def main():
             f"Accessibility: {len(records)} screen/viewport checks have no detected violations in the selected rules."
         )
     print(
-        "RESULT: 35 workspace screenshots captured at 320, 390, 768 and 1440 px, including dark mode; no horizontal overflow or JavaScript errors. Temporary learner account only."
+        f"RESULT: {captures} workspace screenshots captured at 320, 390, 768, 1024, 1440 and 1920 px, including dark mode; shared page alignment, contained sections, no horizontal overflow or JavaScript errors. Temporary learner account only."
     )
 
 

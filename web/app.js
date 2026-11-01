@@ -59,6 +59,7 @@ function currentRoute() {
 }
 async function switchTab(tab, options = {}) {
   if (!TABS.includes(tab)) return;
+  if ($('#docs-menu').open) $('#docs-menu').close();
   const changed = state.tab !== tab;
   state.tab = tab;
   document.querySelectorAll('.screen').forEach(screen => screen.hidden = screen.id !== tab);
@@ -88,6 +89,7 @@ async function switchTab(tab, options = {}) {
   if (tab === 'profile') await renderProfile();
 }
 const ICONS = {
+  menu: ['M4 6h16M4 12h16M4 18h16'],
   layers: ['m12 3 10 5-10 5L2 8l10-5Z', 'm2 12 10 5 10-5M2 16l10 5 10-5'],
   plus: ['M12 5v14M5 12h14'],
   info: ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18', 'M12 11v6m0-10v1'],
@@ -152,7 +154,7 @@ async function refresh() {
     empty.append(button(overview.mission ? 'Explore your path' : 'Choose a track', () => switchTab(overview.mission ? 'path' : 'more'), ''));
     cards.append(empty);
   }
-  const aside = el('aside', undefined, 'today-aside');
+  const aside = el('aside', undefined, 'today-aside'); aside.setAttribute('aria-label', 'More ways to keep learning');
   if (overview.quick_win) aside.append(nodeCard(overview.quick_win, true));
   const lv = currentLevel(), milestone = lv?.nodes.find(n => n.milestone && n.status === 'todo');
   if (milestone && milestone.id !== overview.next?.id) {
@@ -362,13 +364,31 @@ async function renderPath() {
 }
 
 async function renderStats() {
-  const [stats, days, levels] = await Promise.all([api("stats"), api("heatmap"), api("levels")]); const root = $("#stats-content"); root.replaceChildren();
+  const [stats, days, levels, session] = await Promise.all([api('stats'), api('heatmap'), api('levels'), command(['session', 'status'])]);
+  const root = $('#stats-content'); root.replaceChildren();
   updateStreak(stats.current_streak);
-  const streak = el("section", undefined, "card"); streak.append(el("h2", "Showing up, one day at a time."), el("span", `${stats.current_streak}`, "streak-number"), el("span", ` days · best ${stats.best_streak}`, "muted"), el("p", `${stats.freeze_available} freeze available this week`, "muted"));
-  const calendar = el("section", undefined, "card"); calendar.append(el("h2", "Your last 12 weeks")); const heat = el("div", undefined, "heatmap");
+  const summary = el('section', undefined, 'stats-summary'); summary.setAttribute('aria-label', 'Progress summary');
+  const metrics = el('dl', undefined, 'metric-strip');
+  for (const [value, label, unit, className] of [
+    [stats.current_streak, 'Current streak', 'days', 'streak-number'],
+    [stats.best_streak, 'Best streak', 'days', ''],
+    [stats.minutes_this_week, 'This week', 'min', ''],
+    [session.xp, 'Verified XP', 'XP', '']
+  ]) {
+    const metric = el('div'), valueNode = el('dd');
+    valueNode.append(el('span', value.toLocaleString(), className), el('span', unit === 'days' && value === 1 ? 'day' : unit, 'metric-unit'));
+    metric.append(el('dt', label), valueNode); metrics.append(metric);
+  }
+  const note = el('p', `${stats.freeze_available} ${stats.freeze_available === 1 ? 'freeze' : 'freezes'} available this week · ${session.verified_awards} verified ${session.verified_awards === 1 ? 'task' : 'tasks'}. `, 'small muted');
+  const xpHelp = el('a', 'How XP works'); xpHelp.href = '#docs/timers'; note.append(xpHelp);
+  summary.append(metrics, note); root.append(summary);
+  const plots = el('div', undefined, 'page-section stats-plots');
+  const calendar = el('section'); calendar.append(el('h2', 'Your last 12 weeks'), el('p', 'Each square is a learning day.', 'muted small'));
+  const calendarArea = el('div', undefined, 'stats-chart-area'), heat = el('div', undefined, 'heatmap');
   for (const day of days) { const cell = el("div", undefined, `heat-day${day.count ? " logged" : ""}`); cell.title = `${day.day}: ${day.count} entries`; cell.setAttribute("aria-label", cell.title); cell.setAttribute("role", "img"); heat.append(cell); }
-  calendar.append(heat);
-  const minutes = el("section", undefined, "card"); minutes.append(el("h2", "Time well spent"), el("p", `${stats.minutes_this_week} minutes this week`, "muted")); const chart = el("div", undefined, "weekly-chart");
+  calendarArea.append(heat); calendar.append(calendarArea);
+  const minutes = el('section'); minutes.append(el('h2', 'Time well spent'), el('p', 'Minutes logged each week.', 'muted small'));
+  const minutesArea = el('div', undefined, 'stats-chart-area'), chart = el('div', undefined, 'weekly-chart');
   const max = Math.max(1, ...stats.weeks.map(week => week.minutes));
   for (const week of stats.weeks) {
     const item = el("div", undefined, "week");
@@ -380,8 +400,8 @@ async function renderStats() {
     rect.setAttribute("x", "4"); rect.setAttribute("width", "32"); rect.setAttribute("y", String(120-height)); rect.setAttribute("height", String(height)); rect.setAttribute("rx", "5"); rect.setAttribute("fill", "currentColor");
     bar.append(rect); item.append(el("span", `${week.minutes}m`), bar, el("span", week.week.slice(5))); chart.append(item);
   }
-  minutes.append(chart); root.append(streak, calendar, minutes);
-  const achievements = el("section", undefined, "card");
+  minutesArea.append(chart); minutes.append(minutesArea); plots.append(calendar, minutes); root.append(plots);
+  const achievements = el("section", undefined, "page-section achievements");
   achievements.append(el("h2", "Milestones you've earned"));
   const earned = levels.flatMap(level => level.nodes).filter(node => node.milestone && node.status === "done");
   const shelf = el("div", undefined, "earned-milestones");
@@ -389,8 +409,6 @@ async function renderStats() {
   if (!earned.length) achievements.append(el("p", "Complete a milestone in your active track to add it here. Each one represents a skill you've put into practice.", "muted"));
   else achievements.append(shelf);
   root.append(achievements);
-  const session = await command(["session", "status"]);
-  const xp = el("section", undefined, "card"); xp.append(el("h2", `${session.xp} verified XP`), el("p", `${session.verified_awards} graded or externally confirmed tasks. Artifact presence and manual marks do not earn these rewards.`)); root.append(xp);
 }
 function updateStreak(days) {
   $('#streak').textContent = days;
@@ -768,7 +786,8 @@ async function renderDocs() {
       state.guides = (await response.json()).topics;
     } catch (error) {
       $('#docs-status').textContent = error.message;
-      $('#docs-article').replaceChildren(el('h2', 'The guide is unavailable'), el('p', 'Reconnect and reload to download the guide for this browser.'));
+      const heading = el('h1', 'The guide is unavailable'); heading.id = 'guide-title';
+      $('#docs-article').replaceChildren(heading, el('p', 'Reconnect and reload to download the guide for this browser.'));
       return;
     }
   }
@@ -776,11 +795,12 @@ async function renderDocs() {
   drawDocsTopics();
   const topic = state.guides.find(topic => topic.id === state.guideTopic);
   const article = $('#docs-article'); article.replaceChildren();
-  const heading = el('h2', topic.title); heading.id = 'guide-title'; heading.tabIndex = -1;
-  article.append(el('p', 'ASCEND GUIDE', 'eyebrow'), heading, el('p', topic.summary, 'guide-summary'));
+  document.title = `${topic.title} · Ascend Docs`;
+  const heading = el('h1', topic.title); heading.id = 'guide-title'; heading.tabIndex = -1;
+  article.append(el('p', topic.section || 'Documentation', 'eyebrow'), heading, el('p', topic.summary, 'guide-summary'));
   for (const block of topic.blocks) {
     if (block.type === 'paragraph') article.append(el('p', block.text));
-    if (block.type === 'heading') article.append(el('h3', block.text));
+    if (block.type === 'heading') article.append(el('h2', block.text));
     if (block.type === 'steps' || block.type === 'list') {
       const list = el(block.type === 'steps' ? 'ol' : 'ul');
       block.items.forEach(item => list.append(el('li', item))); article.append(list);
@@ -794,7 +814,7 @@ async function renderDocs() {
       const pre = el('pre'); pre.append(el('code', block.text)); box.append(toolbar, pre); article.append(box);
     }
   }
-  const related = el('div', undefined, 'guide-next'); related.append(el('h3', 'Keep reading'));
+  const related = el('div', undefined, 'guide-next'); related.append(el('h2', 'Keep reading'));
   const links = el('div', undefined, 'guide-links');
   topic.related.forEach(id => {
     const next = state.guides.find(item => item.id === id);
@@ -806,16 +826,56 @@ function drawDocsTopics() {
   if (!state.guides) return;
   const query = $('#docs-search').value.trim().toLowerCase();
   const matching = state.guides.filter(topic => [topic.title, topic.summary, ...topic.blocks.map(block => block.text || block.items.join(' '))].join(' ').toLowerCase().includes(query));
-  $('#docs-status').textContent = query ? `${matching.length} guides match your search` : `${state.guides.length} short guides · getting started, verification, and setup`;
-  $('#docs-topics').replaceChildren(...matching.map(topic => {
-    const item = button(topic.title, async () => {
-      await switchTab('docs', {topic: topic.id});
-      $('#guide-title').focus({preventScroll: true});
-      $('#docs-article').scrollIntoView({block: 'start', behavior: 'instant'});
-    }, '');
+  $('#docs-status').textContent = query ? `${matching.length} ${matching.length === 1 ? 'guide matches' : 'guides match'}` : '';
+  const groups = new Map();
+  for (const topic of matching) {
+    const name = topic.section || 'Guides';
+    if (!groups.has(name)) {
+      const group = el('div', undefined, 'docs-topic-group');
+      group.append(el('h3', name)); groups.set(name, group);
+    }
+    const item = el('a', topic.title); item.href = `#docs/${topic.id}`;
+    item.addEventListener('click', async event => {
+      if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || event.button !== 0) return;
+      event.preventDefault();
+      try {
+        $('#docs-search').value = '';
+        await switchTab('docs', {topic: topic.id});
+        $('#guide-title').focus({preventScroll: true});
+        window.scrollTo({top: 0, behavior: 'instant'});
+      } catch (error) { notify(error.message, 'error'); }
+    });
     if (topic.id === state.guideTopic) item.setAttribute('aria-current', 'page');
-    return item;
-  }));
+    groups.get(name).append(item);
+  }
+  $('#docs-topics').replaceChildren(...groups.values());
   if (!matching.length) $('#docs-topics').append(el('p', 'No guide matches. Try “XP”, “packs”, or “Docker”.', 'muted small'));
 }
+$('#docs-toggle').addEventListener('click', () => {
+  $('#docs-menu-body').append($('#docs-navigation'));
+  document.documentElement.classList.add('docs-menu-open');
+  $('#docs-menu').showModal();
+  $('#docs-toggle').setAttribute('aria-expanded', 'true');
+  $('#docs-search').focus({preventScroll: true});
+});
+$('#docs-close').addEventListener('click', () => $('#docs-menu').close());
+$('#docs-menu').addEventListener('keydown', event => {
+  if (event.key === 'Escape') {
+    event.preventDefault(); event.stopPropagation(); $('#docs-menu').close();
+  }
+});
+$('#docs-menu').addEventListener('close', () => {
+  $('#docs-sidebar-slot').append($('#docs-navigation'));
+  document.documentElement.classList.remove('docs-menu-open');
+  $('#docs-toggle').setAttribute('aria-expanded', 'false');
+});
+$('#docs-menu').addEventListener('click', event => {
+  if (event.target === event.currentTarget && event.clientX > event.currentTarget.getBoundingClientRect().right) event.currentTarget.close();
+});
+window.matchMedia('(min-width: 1101px)').addEventListener('change', event => {
+  if (event.matches && $('#docs-menu').open) {
+    $('#docs-menu').close();
+    $('#guide-title')?.focus({preventScroll: true});
+  }
+});
 $('#docs-search').addEventListener('input', drawDocsTopics);

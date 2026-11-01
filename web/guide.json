@@ -16,7 +16,7 @@
           "items": [
             "Open Tracks and choose Browse learning tracks. Search for a subject or role, then inspect its entry skills and environment requirements.",
             "Install one pack and use Read in your library to understand what it asks you to do. Installing a pack does not start a mission.",
-            "Choose the pack under Active mission and press Start mission. If another mission is active, pause it first.",
+            "Under Active mission, choose a domain, then choose its track and press Start mission. If another mission is active, pause it first.",
             "Open Today, choose the time you have, and open your next challenge. The optional quick win is an alternative for a shorter session.",
             "Start the exercise or task timer when you begin. Save a learning note or submit the required evidence when you finish."
           ]
@@ -33,7 +33,8 @@
       "related": [
         "missions",
         "verification"
-      ]
+      ],
+      "section": "Start here"
     },
     {
       "id": "missions",
@@ -55,7 +56,7 @@
             "Coming up: the task has a prerequisite or an earlier level to complete. Open it to see what is needed.",
             "Complete: the task was marked complete under its evidence rules.",
             "Skipped: you chose to move past the task. A skip is kept separate from completion and earns no milestone badge or XP.",
-            "Milestone: a task that brings a level\u2019s skills together. Its distinct diamond shape and label identify it."
+            "Milestone: a task that brings a level’s skills together. Its distinct diamond shape and label identify it."
           ]
         },
         {
@@ -70,7 +71,8 @@
       "related": [
         "lessons",
         "timers"
-      ]
+      ],
+      "section": "Start here"
     },
     {
       "id": "packs",
@@ -114,7 +116,8 @@
       "related": [
         "verification",
         "lab-setup"
-      ]
+      ],
+      "section": "Start here"
     },
     {
       "id": "lessons",
@@ -155,7 +158,8 @@
       "related": [
         "verification",
         "timers"
-      ]
+      ],
+      "section": "Daily practice"
     },
     {
       "id": "verification",
@@ -167,7 +171,7 @@
           "items": [
             "Server-verified exercise: Ascend checks the result against your current generated instance. Wrong answers do not complete the task or earn XP.",
             "Server-graded reasoning check: your scenario decision is checked. This does not grade a free-form explanation or prove that you performed a practical assessment.",
-            "Signed external lab evidence: an administrator\u2019s collector confirms named challenge results for your assigned game instance. The browser cannot simply send a solved flag.",
+            "Signed external lab evidence: an administrator’s collector confirms named challenge results for your assigned game instance. The browser cannot simply send a solved flag.",
             "Artifact check: a file exists and meets the configured checks. A person must still review whether its result and reasoning are correct.",
             "Human assessment: some explanations and changed-case demonstrations need review rather than a machine check."
           ]
@@ -197,7 +201,8 @@
       "related": [
         "timers",
         "lab-setup"
-      ]
+      ],
+      "section": "Daily practice"
     },
     {
       "id": "timers",
@@ -232,7 +237,7 @@
         },
         {
           "type": "paragraph",
-          "text": "For a 20-minute target, completing at 20 minutes earns 100 XP, at 30 minutes earns 75 XP, and at 40 minutes earns 50 XP. Paused time is excluded. Finishing or skipping ends that task\u2019s session; later practice is unscored."
+          "text": "For a 20-minute target, completing at 20 minutes earns 100 XP, at 30 minutes earns 75 XP, and at 40 minutes earns 50 XP. Paused time is excluded. Finishing or skipping ends that task’s session; later practice is unscored."
         },
         {
           "type": "paragraph",
@@ -246,7 +251,8 @@
       "related": [
         "reminders",
         "verification"
-      ]
+      ],
+      "section": "Daily practice"
     },
     {
       "id": "reminders",
@@ -264,7 +270,7 @@
         },
         {
           "type": "paragraph",
-          "text": "ntfy is a simple route to Android notifications. Telegram needs administrator-provided bot and chat settings. Desktop sends to the server\u2019s desktop session, which may not be your phone or laptop. Browser push requires a supported browser and a secure origin."
+          "text": "ntfy is a simple route to Android notifications. Telegram needs administrator-provided bot and chat settings. Desktop sends to the server’s desktop session, which may not be your phone or laptop. Browser push requires a supported browser and a secure origin."
         },
         {
           "type": "heading",
@@ -290,7 +296,8 @@
       "related": [
         "profile",
         "timers"
-      ]
+      ],
+      "section": "Setup & help"
     },
     {
       "id": "profile",
@@ -330,7 +337,8 @@
       "related": [
         "reminders",
         "missions"
-      ]
+      ],
+      "section": "Setup & help"
     },
     {
       "id": "lab-setup",
@@ -363,7 +371,7 @@
         },
         {
           "type": "paragraph",
-          "text": "The collector is an administrator tool on the Docker host. It signs a fresh observation for the learner\u2019s numeric account ID. Refresh it after solving, then press Verify lab completion within five minutes. The tracker receives a read-only receipt, not the Docker socket."
+          "text": "The collector is an administrator tool on the Docker host. It signs a fresh observation for the learner’s numeric account ID. Refresh it after solving, then press Verify lab completion within five minutes. The tracker receives a read-only receipt, not the Docker socket."
         },
         {
           "type": "heading",
@@ -389,7 +397,8 @@
       "related": [
         "verification",
         "troubleshooting"
-      ]
+      ],
+      "section": "Setup & help"
     },
     {
       "id": "troubleshooting",
@@ -426,7 +435,7 @@
         },
         {
           "type": "paragraph",
-          "text": "Ask the administrator to collect a new receipt for the correct numeric account and assigned instance. Receipts expire after five minutes. A different learner\u2019s game, an unsigned file, or a missing challenge does not count."
+          "text": "Ask the administrator to collect a new receipt for the correct numeric account and assigned instance. Receipts expire after five minutes. A different learner’s game, an unsigned file, or a missing challenge does not count."
         },
         {
           "type": "heading",
@@ -456,7 +465,8 @@
       "related": [
         "getting-started",
         "reminders"
-      ]
+      ],
+      "section": "Setup & help"
     }
   ]
 }

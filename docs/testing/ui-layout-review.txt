@@ -1,0 +1,11 @@
+Layout and documentation navigation review — 2026-11-01
+
+Full suite: 148 passed in 49.39s.
+Selected Ruff checks, formatting, JavaScript syntax and git diff whitespace checks passed.
+Visual audit: 63 captures across all six routes at 320, 390, 768, 1024, 1440 and 1920 px, including dark mode.
+Geometry checks: shared page/header edges, contained sections, no horizontal overflow, supporting dashboard rows below the challenge.
+Docs regression checks: opening the menu and filtering topics preserve article x/y/width; close, Escape, focus restoration, direct links, empty search and responsive drawer-to-rail behavior.
+Axe-core 4.10.3: 56 screen/state/viewport checks with no detected violations in WCAG 2 A/AA and 2.1 AA tagged rules. This is bounded automated evidence, not a complete accessibility assessment.
+PDFs: handbook, user-guide, developer-handbook and report compiled; no missing glyphs, unresolved references or overflow above 1 pt.
+Tests and screenshots use disposable accounts. No private learner progress is changed.
+Container evidence from the preceding milestone was not rerun for these frontend layout changes.

@@ -435,7 +435,9 @@ def test_library_rows_profile_and_guide_navigation(live_server, width, height):
     assert all("path" not in p and "fingerprint" not in p for p in data)
     with sync_playwright() as p:
         browser = p.chromium.launch()
-        page = browser.new_page(viewport={"width": width, "height": height})
+        page = browser.new_page(
+            viewport={"width": width, "height": height}, reduced_motion="reduce"
+        )
         errors = []
         page.on("pageerror", lambda error: errors.append(str(error)))
         page.goto(live_server + "/#more")
@@ -466,16 +468,70 @@ def test_library_rows_profile_and_guide_navigation(live_server, width, height):
         expect(page.locator("#profile-heading")).to_be_visible()
         expect(page.get_by_label("Timezone", exact=True)).to_have_value("Europe/London")
         page.get_by_role("button", name="Docs", exact=True).click()
+        expect(page.locator("#guide-title")).to_have_text("Getting started")
+        page.evaluate("document.fonts.ready")
+        article = page.locator("#docs-article")
+        before = article.bounding_box()
+        if width <= 1100:
+            expect(page.locator("#docs-topics")).not_to_be_visible()
+            page.get_by_role("button", name="Guide menu", exact=True).click()
+            expect(page.get_by_label("Search documentation")).to_be_focused()
+            page.keyboard.press("Shift+Tab")
+            expect(page.get_by_role("button", name="Close guide menu")).to_be_focused()
+            page.keyboard.press("Escape")
+            expect(page.locator("#docs-menu")).not_to_be_visible()
+            expect(page.locator("#docs-toggle")).to_be_focused()
+            page.get_by_role("button", name="Guide menu", exact=True).click()
+        expect(page.locator("#docs-topics")).to_be_visible()
+        after = article.bounding_box()
+        for key in ["x", "y", "width"]:
+            assert abs(before[key] - after[key]) < 1, (key, before, after)
+        page.locator("#docs-topics").get_by_role(
+            "link", name="Getting started", exact=True
+        ).click()
+        expect(page.locator("#docs-menu")).not_to_be_visible()
+        expect(page.locator("#guide-title")).to_be_focused()
+        if width <= 1100:
+            page.get_by_role("button", name="Guide menu", exact=True).click()
+        before = article.bounding_box()
+        page.get_by_label("Search documentation").fill("unmatched-example-123")
+        expect(page.locator("#docs-topics")).to_contain_text("No guide matches")
         page.get_by_label("Search documentation").fill("paused time")
-        expect(page.locator("#docs-topics button")).to_have_count(1)
-        page.get_by_role("button", name="Timers & XP", exact=True).click()
-        expect(page.locator("#docs-article h2")).to_have_text("Timers & XP")
+        expect(page.locator("#docs-topics a")).to_have_count(1)
+        after = article.bounding_box()
+        for key in ["x", "y", "width"]:
+            assert abs(before[key] - after[key]) < 1, (key, before, after)
+        if width <= 1100:
+            page.keyboard.press("Escape")
+            expect(page.locator("#docs-menu")).not_to_be_visible()
+            expect(page.locator("#docs-toggle")).to_be_focused()
+            page.get_by_role("button", name="Guide menu", exact=True).click()
+        page.locator("#docs-topics").get_by_role(
+            "link", name="Timers & XP", exact=True
+        ).click()
+        expect(page.locator("#docs-menu")).not_to_be_visible()
+        expect(page.locator("#guide-title")).to_have_text("Timers & XP")
         expect(page).to_have_url(live_server + "/#docs/timers")
         expect(page.locator("#docs-article")).to_contain_text("100 XP")
         page.reload()
-        expect(page.locator("#docs-article h2")).to_have_text("Timers & XP")
+        expect(page.locator("#guide-title")).to_have_text("Timers & XP")
         expect(page.locator("#xp-balance")).to_have_text("0 XP")
         expect(page.locator(".topbar #streak")).to_have_text("0")
+        if width <= 1100:
+            page.evaluate("window.scrollTo(0, 160)")
+            before = article.bounding_box()
+            scroll_before = page.evaluate("scrollY")
+            page.locator("#docs-toggle").evaluate("e => e.click()")
+            expect(page.locator("#docs-menu")).to_be_visible()
+            assert page.evaluate("scrollY") == scroll_before
+            assert abs(article.bounding_box()["y"] - before["y"]) < 1
+            page.set_viewport_size({"width": 1440, "height": 1000})
+            expect(page.locator("#docs-menu")).not_to_be_visible()
+            expect(page.locator("#docs-sidebar-slot #docs-topics")).to_be_visible()
+            expect(page.locator("#guide-title")).to_be_focused()
+            page.set_viewport_size({"width": width, "height": height})
+            expect(page.locator("#docs-toggle")).to_be_visible()
+            expect(page.locator("#docs-topics")).not_to_be_visible()
         assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
         assert not errors
         browser.close()
@@ -566,13 +622,13 @@ def test_documentation_is_readable_offline_after_shell_install(live_server):
         context = browser.new_context()
         page = context.new_page()
         page.goto(live_server + "/#docs/verification")
-        expect(page.locator("#docs-article h2")).to_have_text("Evidence & verification")
+        expect(page.locator("#guide-title")).to_have_text("Evidence & verification")
         page.evaluate(
             'navigator.serviceWorker.ready.then(() => new Promise(resolve => navigator.serviceWorker.controller ? resolve() : navigator.serviceWorker.addEventListener("controllerchange", resolve, {once:true})))'
         )
         context.set_offline(True)
         page.reload()
-        expect(page.locator("#docs-article h2")).to_have_text("Evidence & verification")
+        expect(page.locator("#guide-title")).to_have_text("Evidence & verification")
         expect(page.locator("#login-dialog")).not_to_be_visible()
         expect(page.locator("#xp-balance")).to_have_text("— XP")
         expect(page.locator(".topbar #streak")).to_have_text("—")
