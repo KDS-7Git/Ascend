@@ -18,3 +18,4 @@ jobs:
       - run: ruff check --select F401,F841 ascend tests scripts setup.py
       - run: for pack in packs/community/*.toml; do ascend pack lint "$pack"; done
       - run: python scripts/build_registry.py && git diff --exit-code packs/community/registry.json
+      - run: python scripts/build_specialist_tracks.py --check

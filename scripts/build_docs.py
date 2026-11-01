@@ -105,8 +105,11 @@ def generate():
     rows = json.loads((DOCS / "curriculum/assessment-map.json").read_text())[
         "assessments"
     ]
+    rows += json.loads((DOCS / "curriculum/specialist-assessments.json").read_text())[
+        "assessments"
+    ]
     matrix = [
-        "\\subsection{Level-by-level assessment crosswalk}\nEach entry corresponds to the named version-3 milestone. Source IDs refer to the evidence register. The task text and prerequisites remain in the runtime TOML packs.\n"
+        "\\subsection{Level-by-level assessment crosswalk}\nEach entry corresponds to a named milestone in the original five or nineteen specialist tracks. Source IDs refer to the evidence register. The task text and prerequisites remain in the runtime TOML packs.\n"
     ]
     for row in rows:
         matrix.append(
@@ -129,6 +132,22 @@ def generate():
             + "\\par\n"
         )
     (GENERATED / "curriculum-map.tex").write_text("".join(matrix))
+    catalog = ["\\section{Public learning catalog}\\label{public-catalog}\n"]
+    for row in json.loads((ROOT / "packs/community/catalog.json").read_text())[
+        "tracks"
+    ]:
+        catalog.append("\\subsection{" + escape(row["title"]) + "}\n")
+        for label, key in [
+            ("Pack ID", "id"),
+            ("Category", "category"),
+            ("Entry", "entry"),
+            ("Limits", "limits"),
+            ("Verification", "verification"),
+        ]:
+            catalog.append(
+                "\\noindent\\textbf{" + label + ":} " + escape(row[key]) + "\\par\n"
+            )
+    (GENERATED / "catalog.tex").write_text("".join(catalog))
     register = json.loads((DOCS / "curriculum/sources.json").read_text())
     sources = [
         "\\subsection{Research evidence register}\nReviewed 2026-11-01. Titles identify sources; findings below are original paraphrases. Public pages and abstracts are distinguished from full-course or experimental validation.\n"

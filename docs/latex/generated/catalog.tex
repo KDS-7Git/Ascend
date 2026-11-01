@@ -1,0 +1,151 @@
+\section{Public learning catalog}\label{public-catalog}
+\subsection{Ethical Hacking and Offensive Security Foundations}
+\noindent\textbf{Pack ID:} ethical-hacking-foundations\par
+\noindent\textbf{Category:} Foundations\par
+\noindent\textbf{Entry:} Use a terminal, explain an IP address and HTTP request, and create a disposable local target.\par
+\noindent\textbf{Limits:} An entry pathway into web, network and directory testing; not certification equivalence or permission to test third parties.\par
+\noindent\textbf{Verification:} 18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.\par
+\subsection{Red Teaming and Adversary Emulation}
+\noindent\textbf{Pack ID:} red-team-adversary-emulation\par
+\noindent\textbf{Category:} Offensive\par
+\noindent\textbf{Entry:} Demonstrate scoped enumeration, identity/permission reasoning and the ability to inspect defender telemetry.\par
+\noindent\textbf{Limits:} Assumed-breach, controlled emulation with harmless markers. Windows enterprise exercises need an isolated VM lab; no covert implants, live credential theft or production phishing are provisioned.\par
+\noindent\textbf{Verification:} 18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.\par
+\subsection{SOC Analyst: Triage, Investigation and Response}
+\noindent\textbf{Pack ID:} soc-analyst\par
+\noindent\textbf{Category:} Defensive\par
+\noindent\textbf{Entry:} Read timestamps, IP addresses and basic authentication/web logs; distinguish an event from an alert.\par
+\noindent\textbf{Limits:} Use supplied or self-generated telemetry on the Pi; vendor-specific Sentinel/Defender tasks require that service or an appropriate training tenant.\par
+\noindent\textbf{Verification:} 18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.\par
+\subsection{Active Directory and Windows Identity Security}
+\noindent\textbf{Pack ID:} active-directory-security\par
+\noindent\textbf{Category:} Offensive\par
+\noindent\textbf{Entry:} Demonstrate Windows users/groups, basic DNS and TCP/IP, and permission inspection.\par
+\noindent\textbf{Limits:} Real Windows domain, GPO and AD CS exercises require isolated licensed/evaluation Windows VMs or a hosted lab. GOAD orchestrates Windows VMs; its Docker launcher does not make domain controllers Pi containers.\par
+\noindent\textbf{Verification:} 18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.\par
+\subsection{Cloud Security: Identity, Exposure and Detection}
+\noindent\textbf{Pack ID:} cloud-security\par
+\noindent\textbf{Category:} Engineering\par
+\noindent\textbf{Entry:} Explain HTTP, role-based access and basic JSON; distinguish cloud control-plane actions from workload traffic.\par
+\noindent\textbf{Limits:} Local policy fixtures teach reasoning; actual AWS/Azure/GCP enforcement requires a scoped training account. CloudGoat creates real billable resources and is not provisioned automatically.\par
+\noindent\textbf{Verification:} 18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.\par
+\subsection{Container and Kubernetes Security}
+\noindent\textbf{Pack ID:} container-kubernetes-security\par
+\noindent\textbf{Category:} Engineering\par
+\noindent\textbf{Entry:} Run a local container, identify its image and mounts, and explain processes and file permissions.\par
+\noindent\textbf{Limits:} Docker exercises work on the supported Pi profiles. Kubernetes enforcement needs a real disposable cluster and a CNI that implements NetworkPolicy; YAML validation alone is not runtime evidence.\par
+\noindent\textbf{Verification:} 18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.\par
+\subsection{Secure Development and DevSecOps}
+\noindent\textbf{Pack ID:} secure-development-devsecops\par
+\noindent\textbf{Category:} Engineering\par
+\noindent\textbf{Entry:} Write a small program, use Git and run its tests.\par
+\noindent\textbf{Limits:} Exercises use owned toy services and local pipelines; a passing scanner is not a security certification.\par
+\noindent\textbf{Verification:} 18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.\par
+\subsection{Digital Forensics and Incident Response}
+\noindent\textbf{Pack ID:} digital-forensics-incident-response\par
+\noindent\textbf{Category:} Defensive\par
+\noindent\textbf{Entry:} Handle files, compute hashes and interpret timestamps without modifying the original evidence.\par
+\noindent\textbf{Limits:} Use licensed public datasets and synthetic artifacts. Large disk/memory images may exceed Pi storage; Windows memory interpretation needs symbols/tools matching the supplied image.\par
+\noindent\textbf{Verification:} 18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.\par
+\subsection{Threat Hunting and Threat Intelligence}
+\noindent\textbf{Pack ID:} threat-hunting-intelligence\par
+\noindent\textbf{Category:} Defensive\par
+\noindent\textbf{Entry:} Query small log datasets and distinguish source facts from analyst judgments.\par
+\noindent\textbf{Limits:} Use public reports and synthetic telemetry; this track does not authorize investigating private individuals or scanning report indicators.\par
+\noindent\textbf{Verification:} 18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.\par
+\subsection{Malware Analysis with Safe Training Artifacts}
+\noindent\textbf{Pack ID:} malware-analysis\par
+\noindent\textbf{Category:} Specialist\par
+\noindent\textbf{Entry:} Read simple code and binary metadata, understand hashes and distinguish static from dynamic analysis.\par
+\noindent\textbf{Limits:} Start with benign toy programs and published traces. Live malware must not run in these Docker labs; it requires an appropriately isolated VM environment and reviewed sample handling. REMnux now offers ARM64 appliances, but individual tools and Pi deployment remain separate compatibility questions.\par
+\noindent\textbf{Verification:} 18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.\par
+\subsection{Mobile Application Security}
+\noindent\textbf{Pack ID:} mobile-application-security\par
+\noindent\textbf{Category:} Specialist\par
+\noindent\textbf{Entry:} Understand HTTP and application permissions; use an owned test device or appropriate emulator.\par
+\noindent\textbf{Limits:} MASTG practice apps and an Android/iOS test environment are required for operational assessments. A Pi Docker container is not an Android/iOS emulator; fixtures are preparation, not a substitute for device evidence.\par
+\noindent\textbf{Verification:} 18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.\par
+\subsection{API Security and Authorization Engineering}
+\noindent\textbf{Pack ID:} api-security\par
+\noindent\textbf{Category:} Offensive\par
+\noindent\textbf{Entry:} Read HTTP and JSON, use two synthetic accounts and explain authentication versus authorization.\par
+\noindent\textbf{Limits:} Use designated lessons and owned API fixtures. GraphQL introspection or a visible route alone is not a vulnerability.\par
+\noindent\textbf{Verification:} 18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.\par
+\subsection{Applied Cryptography and Protocol Security}
+\noindent\textbf{Pack ID:} cryptography-protocol-security\par
+\noindent\textbf{Category:} Specialist\par
+\noindent\textbf{Entry:} Work with bytes, hexadecimal and small Python programs; distinguish encoding from encryption.\par
+\noindent\textbf{Limits:} Use established libraries and training data. Toy arithmetic explains mechanisms; it is not production cryptographic implementation guidance.\par
+\noindent\textbf{Verification:} 18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.\par
+\subsection{Wireless and IoT Security}
+\noindent\textbf{Pack ID:} wireless-iot-security\par
+\noindent\textbf{Category:} Specialist\par
+\noindent\textbf{Entry:} Understand local networking, device ownership and basic authentication.\par
+\noindent\textbf{Limits:} MQTT exercises run in Docker. Radio capture/injection requires suitable owned hardware and legal scope; firmware emulation is device/architecture-specific.\par
+\noindent\textbf{Verification:} 18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.\par
+\subsection{OT and Industrial Control Security}
+\noindent\textbf{Pack ID:} ot-ics-security\par
+\noindent\textbf{Category:} Specialist\par
+\noindent\textbf{Entry:} Read network diagrams and distinguish operational safety from information confidentiality.\par
+\noindent\textbf{Limits:} Use software simulators and supplied captures only. No real PLC, safety system or industrial network is targeted; a simulator cannot establish physical safety.\par
+\noindent\textbf{Verification:} 18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.\par
+\subsection{Security Architecture, Risk and Governance}
+\noindent\textbf{Pack ID:} security-architecture-grc\par
+\noindent\textbf{Category:} Engineering\par
+\noindent\textbf{Entry:} Understand service users, data and business purpose; distinguish a requirement from evidence.\par
+\noindent\textbf{Limits:} Uses public NIST guidance and fictional organizations. Completion is not an audit attestation or legal/compliance advice.\par
+\noindent\textbf{Verification:} 18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.\par
+\subsection{Vulnerability Management and Exposure Prioritization}
+\noindent\textbf{Pack ID:} vulnerability-management\par
+\noindent\textbf{Category:} Defensive\par
+\noindent\textbf{Entry:} Understand service versions, asset ownership and the difference between an advisory and confirmed exposure.\par
+\noindent\textbf{Limits:} Use synthetic inventories and approved scan exports. EPSS estimates and KEV membership inform decisions but do not prove exploitation on your system.\par
+\noindent\textbf{Verification:} 18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.\par
+\subsection{Vulnerability Research and Bug Bounty Practice}
+\noindent\textbf{Pack ID:} vulnerability-research-bug-bounty\par
+\noindent\textbf{Category:} Offensive\par
+\noindent\textbf{Entry:} Reproduce a lab web/API finding, read simple code and understand scope restrictions.\par
+\noindent\textbf{Limits:} Practice on owned/open training software. Program rules and explicit authorization govern any later real target; no bounty or career result is promised.\par
+\noindent\textbf{Verification:} 18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.\par
+\subsection{AI and LLM Application Security}
+\noindent\textbf{Pack ID:} ai-application-security\par
+\noindent\textbf{Category:} Engineering\par
+\noindent\textbf{Entry:} Understand HTTP, JSON, application authorization and the difference between model output and trusted program state.\par
+\noindent\textbf{Limits:} Use deterministic mock models and synthetic data first. These tests validate application boundaries, not the general resistance of a real language model; real-model testing needs a separately configured model and budget.\par
+\noindent\textbf{Verification:} 18 server-graded concept/micro-exercise checks; 16 hands-on artifact checks requiring evidence review.\par
+\subsection{Networking for Security: how packets actually move}
+\noindent\textbf{Pack ID:} networking-for-security\par
+\noindent\textbf{Category:} Foundations\par
+\noindent\textbf{Entry:} Use the entry demonstration in the track to check your background.\par
+\noindent\textbf{Limits:} Established v3 assessment rubric; file checks do not grade reasoning.\par
+\noindent\textbf{Verification:} See each task: automated evidence, artifact checks and human assessment have different scope.\par
+\subsection{Web Application Security: beyond the OWASP Top 10 basics}
+\noindent\textbf{Pack ID:} web-application-security\par
+\noindent\textbf{Category:} Offensive\par
+\noindent\textbf{Entry:} Use the entry demonstration in the track to check your background.\par
+\noindent\textbf{Limits:} Established v3 assessment rubric; file checks do not grade reasoning.\par
+\noindent\textbf{Verification:} See each task: automated evidence, artifact checks and human assessment have different scope.\par
+\subsection{Network \& System Penetration Testing}
+\noindent\textbf{Pack ID:} network-penetration-testing\par
+\noindent\textbf{Category:} Offensive\par
+\noindent\textbf{Entry:} Use the entry demonstration in the track to check your background.\par
+\noindent\textbf{Limits:} Established v3 assessment rubric; file checks do not grade reasoning.\par
+\noindent\textbf{Verification:} See each task: automated evidence, artifact checks and human assessment have different scope.\par
+\subsection{Reverse Engineering \& Binary Exploitation}
+\noindent\textbf{Pack ID:} reverse-engineering-and-binary-exploitation\par
+\noindent\textbf{Category:} Specialist\par
+\noindent\textbf{Entry:} Use the entry demonstration in the track to check your background.\par
+\noindent\textbf{Limits:} Established v3 assessment rubric; file checks do not grade reasoning.\par
+\noindent\textbf{Verification:} See each task: automated evidence, artifact checks and human assessment have different scope.\par
+\subsection{Defensive Security \& Detection}
+\noindent\textbf{Pack ID:} defensive-security-and-detection\par
+\noindent\textbf{Category:} Defensive\par
+\noindent\textbf{Entry:} Use the entry demonstration in the track to check your background.\par
+\noindent\textbf{Limits:} Established v3 assessment rubric; file checks do not grade reasoning.\par
+\noindent\textbf{Verification:} See each task: automated evidence, artifact checks and human assessment have different scope.\par
+\subsection{Verified security lab: solve and show the result}
+\noindent\textbf{Pack ID:} verified-security-lab\par
+\noindent\textbf{Category:} Practice\par
+\noindent\textbf{Entry:} No prior track completion needed for the built-in exercises.\par
+\noindent\textbf{Limits:} Five built-in graded exercises and three signed Juice Shop checks. External tasks need the proof bridge and an individually assigned instance.\par
+\noindent\textbf{Verification:} All eight tasks require verified results.\par

@@ -141,13 +141,7 @@ def test_specialist_catalog_has_real_assessments_and_reachable_tasks():
 
 
 def test_public_home_lab_includes_bandit_zero_and_preserves_existing_ids():
-    import subprocess
-
-    old = parse_pack(
-        subprocess.check_output(
-            ["git", "show", "3100297:packs/community/home-hack-lab.toml"], text=True
-        )
-    )
+    old = parse_pack((ROOT / "tests/fixtures/home-hack-lab-v3.toml").read_text())
     pack = parse_pack((ROOT / "packs/community/home-hack-lab.toml").read_text())
     nodes = {n.id: n for n in pack.nodes}
     assert {n.id for n in old.nodes} <= nodes.keys()

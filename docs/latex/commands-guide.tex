@@ -58,5 +58,10 @@ backend without copying its database.
 \texttt{ASCEND\_PUBLIC\_URL} & Optional public app link in reminders.\\
 \texttt{VAPID\_PRIVATE\_KEY}, \texttt{VAPID\_SUBJECT} & Persistent Web Push key path and contact identifier.\\
 \texttt{PUSH\_ALLOWED\_HOSTS} & Additional exact push-service host allowlist entries.\\
+\texttt{ASCEND\_PORT} & Compose loopback host port (default 8420).\\
+\texttt{ASCEND\_OFFLINE} & Explicit opt-in to a target-compatible build wheelhouse.\\
+\texttt{ASCEND\_LAB\_STATE\_DIR} & Absolute host collector state directory for the optional overlay.\\
+\texttt{ASCEND\_LAB\_RECEIPTS\_DIR} & Server-side path to administrator-signed observations.\\
+\texttt{ASCEND\_LAB\_SIGNING\_KEY} & Private HMAC key loaded from the proof env file; never publish it.\\
 \end{longtable}
 \input{latex/generated/cli-help.tex}

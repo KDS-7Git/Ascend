@@ -1,45 +1,36 @@
-# Cyber tracks, version 3
+# Public cyber catalog, release 4
 
-Five proficiency tracks, each with eight main levels. The 40 milestones now
-require an experiment, a changed case, a contrasting control, and an explanation.
-There are 40 optional return-later checks, five lab-readiness checks and a Windows
-baseline, alongside the practical challenges and short discoveries from v2.
+24 skill tracks cover foundations, offensive and defensive security, red teaming,
+SOC, Active Directory, cloud, containers, DevSecOps, DFIR, threat hunting, malware,
+mobile, APIs, cryptography, wireless/IoT, OT/ICS, architecture/GRC, vulnerability
+management, bug bounty and AI application security. An eight-task verified practice
+project and the public home lab (including Bandit 0–12) are also included.
+These packs require the current Ascend release with `lab` and `ctf` verifiers;
+copying TOML files does not upgrade an older server.
+Individual pack versions are independent: four original tracks remain v3, defense
+and home lab are v4, and new specialist/practice packs are v1.
 
-These are evidence-informed drafts, not empirically proven courses. File checks
-confirm artifacts; they cannot grade reasoning. The complete assessment rubric,
-source review, prerequisites, hardware constraints, installation instructions and
-learning-outcome limits are in the LaTeX handbook (`handbook.pdf` in the v3 ZIP;
-`docs/handbook.pdf` in the repository). Its sources live under `docs/latex/`.
-
-The five IDs are:
-
-- `networking-for-security`
-- `web-application-security`
-- `network-penetration-testing`
-- `reverse-engineering-and-binary-exploitation`
-- `defensive-security-and-detection`
-
-Networking is a useful starting point if packets and ports are unfamiliar. Choose
-one active mission; pause it to switch tracks. Your progress is retained.
+Use `handbook.pdf` and `deployment-guide.pdf` in the ZIP for the complete LaTeX-authored
+assessment rubric, source register, catalog, installation, timers, lab proof bridge
+and environment requirements. Source files and generated pack definitions live in
+the repository. Every supplied curriculum remains an unreviewed draft. Alignment
+with established courses and frameworks does not prove learner outcomes.
 
 ```sh
-ascend pack install networking-for-security
-ascend mission start networking-for-security
+ascend pack install verified-security-lab
+ascend mission start verified-security-lab
+ascend lab start verified-security-lab:lab-readiness
 ```
 
-For an existing installation, back up private edits and compare before updating:
+On an existing profile, back up private edits and compare before installing:
 
 ```sh
-ascend pack diff packs/community/networking-for-security.toml
-ascend pack install packs/community/networking-for-security.toml
+ascend pack diff packs/community/home-hack-lab.toml
+ascend pack install packs/community/home-hack-lab.toml
 ```
 
-All earlier node IDs remain. Existing completions are preserved but do not
-retroactively certify the stronger v3 assessment. Use the new recall checks or
-reopen a milestone. Changed content resets review and execution trust. All packs
-remain `source = "ai-draft"` and `reviewed = false`.
-
-The repository retains the original and v2 ZIPs for compatibility and comparison.
-`docs/testing/cyber-track-links-v3.json` records current link results, replacements
-and access restrictions. Labs, supported hardware and any paid accounts are
-provided separately; Ascend does not provision hosted training machines.
+Earlier IDs and completions are preserved; they are not retroactively certified.
+Changes reset review and execution trust. Native and CTF tasks need passing evidence;
+file checks require review of the actual reasoning and result. Some environments
+require Windows VMs, hosted tenants or mobile devices and cannot run on the Pi.
+The old archives remain available for compatibility.

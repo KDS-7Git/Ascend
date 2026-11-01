@@ -30,6 +30,13 @@ milestones += [
     ("Installed v3 tracks", "curriculum-install.txt"),
     ("Container restore", "restore-smoke.txt"),
     ("Compose settings", "compose-config.txt"),
+    ("Verified learning", "verified-learning.txt"),
+    ("Lab integration", "docker-labs.txt"),
+    ("Expanded release", "expanded-release.txt"),
+    ("Pi compatibility", "arm64-compatibility.txt"),
+    ("Hardened deployment", "deployment-integration-final.txt"),
+    ("Expanded installation", "expanded-install.txt"),
+    ("Public archive", "public-archive.txt"),
 ]
 for milestone, filename in milestones:
     path = ROOT / "docs/testing" / filename
