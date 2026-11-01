@@ -30,6 +30,9 @@ size = "S"
 minutes = 20
 needs = []
 done_when = "A working example saved with an explanation in my own words"
+brief = "Build a small tool that solves one annoying file-management problem."
+steps = ["Choose a tiny input.", "Run the tool and compare its output with your prediction."]
+hints = ["Start with one file before handling a whole directory."]
 resource = "https://docs.python.org/3/tutorial/"
 verify = {type = "file", path = "{work_dir}/example.py", min_bytes = 20}
 ```
@@ -38,6 +41,14 @@ Required pack fields: kebab-case `id`, `title`, `kind` (`project` or `proficienc
 and positive integer `version`. `source` is `human`, `ai-draft`, or `imported`.
 Every node has an existing `level`, a unique stable `id`, a `title`, S/M/L `size`,
 a `done_when` of at least 15 characters, and an HTTP(S) `resource`.
+
+Optional `brief` text introduces a concrete challenge. Optional `steps` and `hints`
+are lists of nonempty strings, with the same variable and series substitutions as
+other content. The web challenge sheet displays steps in order and keeps hints
+behind individual disclosures. These are learning guidance, not completion
+checks; `done_when` and the verifier still define the finish line. Older packs
+without them continue to work. Prefer a small observable result over a reading
+assignment, and set honest `minutes` estimates so short sessions have useful tasks.
 
 S/M/L conservatively fit 30/120/240-minute budgets. Optional integer `minutes`
 may refine the estimate within that size bound. `needs` is a list of node IDs

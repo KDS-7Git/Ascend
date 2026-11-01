@@ -1,0 +1,466 @@
+# Track 2 of 5: Web Application Security
+# kind = "proficiency": goes well past the Juice Shop intro in the home-hack-lab project pack. That pack gave you
+# one SQLi, one XSS, one broken-access-control win -- this track builds the full OWASP Top 10 picture using
+# PortSwigger's Web Security Academy, the free, industry-standard resource for this exact subject.
+# Suggested prerequisite: networking-for-security (at least the application-layer level), since this track
+# assumes you already know what an HTTP request/response actually looks like.
+#
+# DRAFT written by Claude. NOT reviewed. Run `ascend pack lint`, `ascend pack check-links`, read every
+# done_when, then `ascend pack review web-application-security` before trusting it.
+
+[pack]
+id = "web-application-security"
+title = "Web Application Security: beyond the OWASP Top 10 basics"
+kind = "proficiency"
+version = 2
+source = "ai-draft"
+reviewed = false
+
+[vars]
+lab_dir = "~/cyber/webapp"
+pi_ip = "192.168.1.50"
+
+[[level]]
+id = "injection"
+title = "Injection: SQL, command, and beyond"
+lane = "main"
+
+[[level]]
+id = "auth"
+title = "Broken authentication and session management"
+lane = "main"
+
+[[level]]
+id = "access-control"
+title = "Broken access control, in depth"
+lane = "main"
+
+[[level]]
+id = "xss-and-csrf"
+title = "XSS, CSRF, and client-side trust"
+lane = "main"
+
+[[level]]
+id = "ssrf-and-deserialization"
+title = "SSRF, insecure deserialization, XXE"
+lane = "main"
+
+[[level]]
+id = "logic-flaws"
+title = "Business logic vulnerabilities"
+lane = "main"
+
+[[level]]
+id = "api-security"
+title = "API security: REST, GraphQL, JWTs"
+lane = "main"
+
+[[level]]
+id = "capstone"
+title = "Full assessment on one target"
+lane = "main"
+
+[[level]]
+id = "drills"
+title = "PortSwigger Academy drills"
+lane = "side"
+
+# ---------------------------------------------------------------- 1: injection
+[[node]]
+level = "injection"
+id = "sqli-union"
+title = "Make a lab reveal a hidden row"
+size = "M"
+needs = []
+done_when = "Solved one PortSwigger UNION lab and saved the successful request, solved status, and why the column counts/types match in {lab_dir}/notes/sqli-union.md."
+resource = "https://portswigger.net/web-security/sql-injection/union-attacks"
+verify = { type = "file", path = "{lab_dir}/notes/sqli-union.md", min_bytes = 150 }
+minutes = 45
+brief = "A product page trusts its input. Use one UNION-based Academy lab to discover what else its database can reveal."
+steps = ["Open the resource and choose one apprentice UNION lab on PortSwigger Academy. Use only the provided lab instance.", "Capture a normal request, then change one input at a time until your UNION query returns the lab’s target value.", "Save the solved-lab evidence, your request, and one sentence on column compatibility in {lab_dir}/notes/sqli-union.md. Redact any secrets."]
+hints = ["A UNION query needs the same number of columns, with compatible types. Establish the shape before trying to extract a value."]
+
+[[node]]
+level = "injection"
+id = "sqli-blind"
+title = "Ask a database a question without seeing its answer"
+size = "M"
+needs = ["sqli-union"]
+done_when = "Solved one blind SQLi lab and saved repeated true/false evidence and an explanation of the signal in {lab_dir}/notes/sqli-blind.md."
+resource = "https://portswigger.net/web-security/sql-injection/blind"
+verify = { type = "file", path = "{lab_dir}/notes/sqli-blind.md", min_bytes = 150 }
+minutes = 60
+brief = "The page hides query results. Find a reliable signal that distinguishes true from false."
+steps = ["Choose one blind SQL injection lab from the linked Academy topic.", "Compare a known-true and a known-false condition. Repeat the comparison to rule out noise.", "Solve the lab and save the contrasting requests, observed signal, and root cause in {lab_dir}/notes/sqli-blind.md."]
+hints = ["Look for a content difference, an error, or a repeatable delay. Match the signal to the lab you chose."]
+
+[[node]]
+level = "injection"
+id = "command-injection"
+title = "Make a lab server do one unintended thing"
+size = "M"
+needs = []
+done_when = "completed one OS command injection lab and wrote the exact payload plus why the application's input handling allowed it, at {lab_dir}/notes/command-injection.md"
+resource = "https://portswigger.net/web-security/os-command-injection"
+verify = { type = "file", path = "{lab_dir}/notes/command-injection.md", min_bytes = 150 }
+minutes = 45
+brief = "Find the boundary between harmless user input and a command the server executes."
+steps = ["Launch one command-injection lab on PortSwigger Academy and capture its normal request.", "Use the lab’s intended harmless proof to show that input reaches a shell.", "Save the solved status, request, and the unsafe input boundary in {lab_dir}/notes/command-injection.md."]
+hints = ["Compare a normal input with your test input. Explain why the application should treat both as data."]
+
+[[node]]
+level = "injection"
+id = "injection-milestone"
+title = "Solve an injection lab, then explain the repair"
+size = "L"
+needs = ["sqli-blind", "command-injection"]
+milestone = true
+done_when = "Solved an unfamiliar injection lab, reproduced the result, and saved evidence, the root cause, a concrete fix, and any hints used in {lab_dir}/notes/injection-milestone.md."
+resource = "https://portswigger.net/web-security/sql-injection"
+verify = { type = "file", path = "{lab_dir}/notes/injection-milestone.md", min_bytes = 300 }
+
+# ---------------------------------------------------------------- 2: auth
+minutes = 90
+brief = "Pick an unfamiliar injection lab and earn a complete finding: evidence, cause, and a concrete fix."
+steps = ["Choose one unsolved injection lab. Record your first hypothesis before opening any hints.", "Try it independently; if stuck, take one hint and note it. Reproduce the solution from a fresh request.", "Save the successful request, root cause, fix, and any help used in {lab_dir}/notes/injection-milestone.md."]
+hints = []
+
+[[node]]
+level = "auth"
+id = "auth-bypass"
+title = "Authentication bypass techniques"
+size = "M"
+needs = []
+done_when = "completed one authentication bypass lab and wrote {lab_dir}/notes/auth-bypass.md on exactly what check was missing or bypassable"
+resource = "https://portswigger.net/web-security/authentication"
+verify = { type = "file", path = "{lab_dir}/notes/auth-bypass.md", min_bytes = 150 }
+
+[[node]]
+level = "auth"
+id = "password-reset-flaws"
+title = "Password reset and account recovery flaws"
+size = "M"
+needs = []
+done_when = "completed one password-reset-flow lab and documented the flaw at {lab_dir}/notes/password-reset.md"
+resource = "https://portswigger.net/web-security/authentication/other-mechanisms"
+verify = { type = "file", path = "{lab_dir}/notes/password-reset.md", min_bytes = 150 }
+
+[[node]]
+level = "auth"
+id = "session-management"
+title = "Session tokens: fixation, prediction, hijacking"
+size = "M"
+needs = ["auth-bypass"]
+done_when = "completed one session-management lab and wrote {lab_dir}/notes/session.md on why the token was predictable or reusable"
+resource = "https://portswigger.net/web-security/authentication/other-mechanisms"
+verify = { type = "file", path = "{lab_dir}/notes/session.md", min_bytes = 150 }
+
+[[node]]
+level = "auth"
+id = "auth-milestone"
+title = "Chain an auth flaw into full account takeover (milestone)"
+size = "L"
+needs = ["session-management", "password-reset-flaws"]
+milestone = true
+done_when = "completed a multi-step authentication lab requiring 2+ chained steps, wrote {lab_dir}/notes/auth-milestone.md walking through the full chain and what single fix would break it"
+resource = "https://portswigger.net/web-security/authentication"
+verify = { type = "file", path = "{lab_dir}/notes/auth-milestone.md", min_bytes = 300 }
+
+# ---------------------------------------------------------------- 3: access-control
+[[node]]
+level = "access-control"
+id = "idor"
+title = "Insecure Direct Object References (IDOR)"
+size = "M"
+needs = []
+done_when = "completed one IDOR lab and wrote {lab_dir}/notes/idor.md explaining exactly which authorization check was missing"
+resource = "https://portswigger.net/web-security/access-control/idor"
+verify = { type = "file", path = "{lab_dir}/notes/idor.md", min_bytes = 150 }
+
+[[node]]
+level = "access-control"
+id = "vertical-privesc"
+title = "Vertical privilege escalation (user to admin)"
+size = "M"
+needs = ["idor"]
+done_when = "completed one vertical-privilege-escalation lab and documented the path from low-priv user to admin at {lab_dir}/notes/vertical-privesc.md"
+resource = "https://portswigger.net/web-security/access-control"
+verify = { type = "file", path = "{lab_dir}/notes/vertical-privesc.md", min_bytes = 150 }
+
+[[node]]
+level = "access-control"
+id = "multi-step-process-flaws"
+title = "Access control in multi-step processes"
+size = "M"
+needs = []
+done_when = "completed one multi-step access-control lab and wrote {lab_dir}/notes/multi-step.md on which step the check was missing at"
+resource = "https://portswigger.net/web-security/access-control"
+verify = { type = "file", path = "{lab_dir}/notes/multi-step.md", min_bytes = 150 }
+
+[[node]]
+level = "access-control"
+id = "access-control-milestone"
+title = "Audit your own home-hack-lab Juice Shop for access-control gaps (milestone)"
+size = "L"
+needs = ["vertical-privesc", "multi-step-process-flaws"]
+milestone = true
+done_when = "went back to the Juice Shop instance from the home-hack-lab project and found ONE access-control flaw not already covered in juice-notes.md, wrote it up fully at {lab_dir}/notes/access-control-milestone.md"
+resource = "https://portswigger.net/web-security/access-control"
+verify = { type = "file", path = "{lab_dir}/notes/access-control-milestone.md", min_bytes = 250 }
+
+# ---------------------------------------------------------------- 4: xss-and-csrf
+[[node]]
+level = "xss-and-csrf"
+id = "xss-types"
+title = "Reflected, stored, and DOM-based XSS"
+size = "M"
+needs = []
+done_when = "completed one lab of each XSS type (reflected, stored, DOM-based) and wrote {lab_dir}/notes/xss-types.md comparing how each one executes"
+resource = "https://portswigger.net/web-security/cross-site-scripting"
+verify = { type = "file", path = "{lab_dir}/notes/xss-types.md", min_bytes = 200 }
+
+[[node]]
+level = "xss-and-csrf"
+id = "csp-bypass"
+title = "Content Security Policy and how it's bypassed"
+size = "M"
+needs = ["xss-types"]
+done_when = "completed one CSP-bypass lab and wrote {lab_dir}/notes/csp.md on exactly what the policy allowed that it shouldn't have"
+resource = "https://portswigger.net/web-security/cross-site-scripting/content-security-policy"
+verify = { type = "file", path = "{lab_dir}/notes/csp.md", min_bytes = 150 }
+
+[[node]]
+level = "xss-and-csrf"
+id = "csrf"
+title = "CSRF: when the browser's trust is the vulnerability"
+size = "M"
+needs = []
+done_when = "completed one CSRF lab and wrote {lab_dir}/notes/csrf.md explaining why same-origin cookies alone don't stop it"
+resource = "https://portswigger.net/web-security/csrf"
+verify = { type = "file", path = "{lab_dir}/notes/csrf.md", min_bytes = 150 }
+
+[[node]]
+level = "xss-and-csrf"
+id = "xss-csrf-milestone"
+title = "Write a working XSS payload from scratch, no lab hints (milestone)"
+size = "L"
+needs = ["csp-bypass", "csrf"]
+milestone = true
+done_when = "found an input field in ANY app you're allowed to test (Juice Shop counts) that isn't covered by an existing lab, crafted a working XSS payload for it yourself, documented it at {lab_dir}/notes/xss-csrf-milestone.md"
+resource = "https://portswigger.net/web-security/cross-site-scripting"
+verify = { type = "file", path = "{lab_dir}/notes/xss-csrf-milestone.md", min_bytes = 250 }
+
+# ---------------------------------------------------------------- 5: ssrf-and-deserialization
+[[node]]
+level = "ssrf-and-deserialization"
+id = "ssrf-basics"
+title = "Server-Side Request Forgery basics"
+size = "M"
+needs = []
+done_when = "completed one basic SSRF lab and wrote {lab_dir}/notes/ssrf.md on why the server fetching a URL on your behalf is dangerous"
+resource = "https://portswigger.net/web-security/ssrf"
+verify = { type = "file", path = "{lab_dir}/notes/ssrf.md", min_bytes = 150 }
+
+[[node]]
+level = "ssrf-and-deserialization"
+id = "xxe"
+title = "XML External Entity (XXE) injection"
+size = "M"
+needs = []
+done_when = "completed one XXE lab and wrote {lab_dir}/notes/xxe.md on what the XML parser was allowed to do that it shouldn't"
+resource = "https://portswigger.net/web-security/xxe"
+verify = { type = "file", path = "{lab_dir}/notes/xxe.md", min_bytes = 150 }
+
+[[node]]
+level = "ssrf-and-deserialization"
+id = "insecure-deserialization"
+title = "Insecure deserialization"
+size = "M"
+needs = ["xxe"]
+done_when = "completed one insecure-deserialization lab and wrote {lab_dir}/notes/deserialization.md explaining why deserializing untrusted data is dangerous, in your own words"
+resource = "https://portswigger.net/web-security/deserialization"
+verify = { type = "file", path = "{lab_dir}/notes/deserialization.md", min_bytes = 150 }
+
+[[node]]
+level = "ssrf-and-deserialization"
+id = "ssrf-deser-milestone"
+title = "Chain SSRF into internal network access (milestone)"
+size = "L"
+needs = ["ssrf-basics", "insecure-deserialization"]
+milestone = true
+done_when = "completed an advanced SSRF lab that reaches internal-only resources, wrote {lab_dir}/notes/ssrf-deser-milestone.md on why this specific class of bug is so dangerous in cloud environments (metadata endpoints)"
+resource = "https://portswigger.net/web-security/ssrf"
+verify = { type = "file", path = "{lab_dir}/notes/ssrf-deser-milestone.md", min_bytes = 250 }
+
+# ---------------------------------------------------------------- 6: logic-flaws
+[[node]]
+level = "logic-flaws"
+id = "logic-flaws-intro"
+title = "What makes a flaw 'business logic' instead of technical"
+size = "S"
+needs = []
+done_when = "wrote 5 lines distinguishing a business-logic flaw from an injection/XSS-style flaw, with one example of each, at {lab_dir}/notes/logic-intro.md"
+resource = "https://portswigger.net/web-security/logic-flaws"
+
+[[node]]
+level = "logic-flaws"
+id = "logic-flaws-lab"
+title = "Solve two business-logic-vulnerability labs"
+size = "M"
+needs = ["logic-flaws-intro"]
+done_when = "completed 2 business-logic labs and wrote {lab_dir}/notes/logic-flaws.md on what assumption the developer made that turned out false"
+resource = "https://portswigger.net/web-security/logic-flaws"
+verify = { type = "file", path = "{lab_dir}/notes/logic-flaws.md", min_bytes = 200 }
+
+[[node]]
+level = "logic-flaws"
+id = "race-conditions"
+title = "Race conditions in web applications"
+size = "M"
+needs = []
+done_when = "completed one race-condition lab and wrote {lab_dir}/notes/race-conditions.md on how sending requests in parallel broke an assumption of sequential processing"
+resource = "https://portswigger.net/web-security/race-conditions"
+verify = { type = "file", path = "{lab_dir}/notes/race-conditions.md", min_bytes = 150 }
+
+[[node]]
+level = "logic-flaws"
+id = "logic-milestone"
+title = "Find a logic flaw nobody told you existed (milestone)"
+size = "L"
+needs = ["logic-flaws-lab", "race-conditions"]
+milestone = true
+done_when = "picked an app (Juice Shop or a PortSwigger lab you haven't read the category name of) and found a logic flaw by thinking about the workflow, not by pattern-matching a known vuln class, documented at {lab_dir}/notes/logic-milestone.md"
+resource = "https://portswigger.net/web-security/logic-flaws"
+verify = { type = "file", path = "{lab_dir}/notes/logic-milestone.md", min_bytes = 250 }
+
+# ---------------------------------------------------------------- 7: api-security
+[[node]]
+level = "api-security"
+id = "rest-api-basics"
+title = "Attacking REST APIs: same bugs, different surface"
+size = "M"
+needs = []
+done_when = "used Burp to intercept and modify a REST API call from Juice Shop or a lab, and wrote {lab_dir}/notes/rest-api.md on what the client-side validation didn't actually enforce server-side"
+resource = "https://portswigger.net/web-security/api-testing"
+verify = { type = "file", path = "{lab_dir}/notes/rest-api.md", min_bytes = 150 }
+
+[[node]]
+level = "api-security"
+id = "jwt-attacks"
+title = "JWT attacks: alg confusion, weak secrets, none algorithm"
+size = "M"
+needs = ["rest-api-basics"]
+done_when = "completed one JWT-attack lab and wrote {lab_dir}/notes/jwt.md on exactly how the token was forged or the signature bypassed"
+resource = "https://portswigger.net/web-security/jwt"
+verify = { type = "file", path = "{lab_dir}/notes/jwt.md", min_bytes = 150 }
+
+[[node]]
+level = "api-security"
+id = "graphql-basics"
+title = "GraphQL: introspection and over-fetching"
+size = "M"
+needs = []
+done_when = "found or set up a GraphQL endpoint, ran an introspection query against it, and wrote {lab_dir}/notes/graphql.md on what it revealed that it probably shouldn't"
+resource = "https://portswigger.net/web-security/graphql"
+verify = { type = "file", path = "{lab_dir}/notes/graphql.md", min_bytes = 150 }
+
+[[node]]
+level = "api-security"
+id = "api-milestone"
+title = "Full API attack surface mapping on one target (milestone)"
+size = "L"
+needs = ["jwt-attacks", "graphql-basics"]
+milestone = true
+done_when = "picked one API-driven target (Juice Shop's API counts), enumerated every endpoint you could find, tested auth on each, and wrote a full {lab_dir}/notes/api-milestone.md report"
+resource = "https://portswigger.net/web-security/api-testing"
+verify = { type = "file", path = "{lab_dir}/notes/api-milestone.md", min_bytes = 300 }
+
+# ---------------------------------------------------------------- 8: capstone
+[[node]]
+level = "capstone"
+id = "recon-target"
+title = "Recon a target web app from scratch"
+size = "M"
+needs = []
+done_when = "picked a target (Juice Shop or a fresh PortSwigger lab) and did recon only -- mapped every page, form, and parameter -- before touching any attack, saved at {lab_dir}/notes/recon.md"
+resource = "https://portswigger.net/web-security/information-disclosure"
+verify = { type = "file", path = "{lab_dir}/notes/recon.md", min_bytes = 200 }
+
+[[node]]
+level = "capstone"
+id = "find-three-classes"
+title = "Find vulnerabilities across 3 different classes on the same target"
+size = "L"
+needs = ["recon-target"]
+done_when = "found and documented 3 vulnerabilities from 3 DIFFERENT categories covered in this track (not 3 SQLi), with evidence for each, at {lab_dir}/notes/three-classes.md"
+resource = "https://portswigger.net/web-security/all-topics"
+verify = { type = "file", path = "{lab_dir}/notes/three-classes.md", min_bytes = 300 }
+
+[[node]]
+level = "capstone"
+id = "write-fixes"
+title = "Write the developer-side fix for each finding"
+size = "M"
+needs = ["find-three-classes"]
+done_when = "for each of the 3 findings, wrote the actual code-level or config-level fix, not just 'sanitize input', at {lab_dir}/notes/fixes.md"
+resource = "https://owasp.org/www-project-top-ten/"
+verify = { type = "file", path = "{lab_dir}/notes/fixes.md", min_bytes = 200 }
+
+[[node]]
+level = "capstone"
+id = "capstone-milestone"
+title = "Full written assessment report (milestone)"
+size = "L"
+needs = ["write-fixes"]
+milestone = true
+done_when = "wrote one complete assessment report at {lab_dir}/notes/capstone-report.md: scope, methodology, findings (with severity), evidence, and fixes -- structured like a real pentest report, not a list of CTF flags"
+resource = "https://owasp.org/www-project-web-security-testing-guide/"
+verify = { type = "file", path = "{lab_dir}/notes/capstone-report.md", min_bytes = 500 }
+
+
+[[node]]
+level = "drills"
+id = "first-discovery"
+title = "Find the request behind a button"
+size = "S"
+minutes = 10
+needs = []
+brief = "Open your browser tools and discover what one action actually sends."
+done_when = "On your own app or a training lab, open the Network panel and click one button. Find the request method, path, status, and one input. Record them without tokens or cookies."
+resource = "https://developer.chrome.com/docs/devtools/network/"
+verify = { type = "manual" }
+
+# ---------------------------------------------------------------- side lane: quick drills
+[[node]]
+level = "drills"
+id = "portswigger-apprentice"
+title = "PortSwigger Academy apprentice-level labs, one at a time"
+series = { from = 1, to = 20 }
+size = "S"
+needs = []
+done_when = "completed apprentice lab #{n} from any category on PortSwigger's Web Security Academy and noted the category plus the one-line trick in {lab_dir}/notes/drills.md"
+resource = "https://portswigger.net/web-security/all-labs"
+
+[[node]]
+"level" = "drills"
+"id" = "discovery-2"
+"title" = "Change a client-side field and inspect what reaches the server"
+"size" = "S"
+"minutes" = 15
+"needs" = ["first-discovery"]
+"brief" = "See the difference between a disabled browser control and a server-side rule."
+"done_when" = "In your own app or a training lab, inspect a disabled form field, enable it using developer tools, and observe the request. Record whether the server accepts it; a rejection is a useful result too."
+"resource" = "https://developer.chrome.com/docs/devtools/network/"
+"verify" = { "type" = "manual" }
+
+[[node]]
+"level" = "drills"
+"id" = "discovery-3"
+"title" = "Explain one cookie’s security settings"
+"size" = "S"
+"minutes" = 20
+"needs" = ["discovery-2"]
+"brief" = "Use a real browser session to make cookie flags concrete."
+"done_when" = "Inspect one cookie in your own app or training lab. Record only its name and Secure, HttpOnly, and SameSite attributes, then explain one attack each relevant flag helps limit. Never save its value."
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies"
+"verify" = { "type" = "manual" }

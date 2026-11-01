@@ -1,5 +1,10 @@
 # Ascend: UI/UX design brief for the web client (PWA)
 
+The original brief below is retained as design history. The owner's subsequent
+request for a more motivating interface is implemented and documented in the
+[engagement audit](engagement-audit.md), which supersedes the logging-first flow
+and visual constraints here while retaining the four-screen structure.
+
 This is a precise design brief for whoever builds `web/` (see `spec-v3-public-release.md` §10 Phase 2). Read it
 alongside that file and `hackstreak-spec-v2.md`. It describes exactly what to build and why, not just "make it look
 nice" — follow the structure, states and rules below rather than inventing your own IA.

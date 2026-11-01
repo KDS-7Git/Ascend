@@ -7,6 +7,37 @@ from ascend.engine.packs import PackError, dump_toml, parse_pack
 from ascend.engine.levels import next_nodes, open_levels
 
 
+def test_challenge_guidance_is_optional_and_substitutes_variables(pack_data):
+    original = parse_pack(dump_toml(pack_data)).nodes[0]
+    assert (original.brief, original.steps, original.hints) == ("", (), ())
+    pack_data["vars"] = {"lab": "local lab"}
+    pack_data["node"][0].update(
+        brief="Investigate the {lab}.",
+        steps=["Open the {lab}.", "Compare two results."],
+        hints=["Inspect one input at a time."],
+    )
+    node = parse_pack(dump_toml(pack_data)).nodes[0]
+    assert node.brief == "Investigate the local lab."
+    assert node.steps == ("Open the local lab.", "Compare two results.")
+    assert node.hints == ("Inspect one input at a time.",)
+
+
+@pytest.mark.parametrize(
+    "field,value",
+    [
+        ("brief", 2),
+        ("steps", "not a list"),
+        ("steps", [""]),
+        ("hints", [42]),
+        ("hints", [" "]),
+    ],
+)
+def test_invalid_challenge_guidance_is_rejected(pack_data, field, value):
+    pack_data["node"][0][field] = value
+    with pytest.raises(PackError, match=field):
+        parse_pack(dump_toml(pack_data))
+
+
 @pytest.mark.parametrize(
     "defect",
     [

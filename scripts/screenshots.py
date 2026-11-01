@@ -18,8 +18,12 @@ target.mkdir(exist_ok=True)
 with tempfile.TemporaryDirectory(prefix="ascend-screenshot-") as directory:
     db = Database(directory)
     tracker = Tracker(db)
-    tracker.install_pack((root / "packs/community/python-file-tool.toml").read_text())
-    tracker.start_mission("python-file-tool")
+    tracker.install_pack(
+        (root / "packs/community/networking-for-security.toml").read_text()
+    )
+    tracker.start_mission("networking-for-security")
+    # Illustrative progress belongs only to this disposable screenshot database.
+    tracker.backfill(["osi-vs-tcpip", "mac-and-arp"])
     db.close()
     sock = socket.socket()
     sock.bind(("127.0.0.1", 0))
@@ -52,7 +56,9 @@ with tempfile.TemporaryDirectory(prefix="ascend-screenshot-") as directory:
             browser = playwright.chromium.launch()
             for width, height, label in [(1440, 1000, "desktop"), (390, 844, "mobile")]:
                 page = browser.new_page(
-                    viewport={"width": width, "height": height}, device_scale_factor=1
+                    viewport={"width": width, "height": height},
+                    device_scale_factor=1,
+                    reduced_motion="reduce",
                 )
                 page.goto(url)
                 page.locator(".next-card h2").wait_for()
@@ -60,6 +66,8 @@ with tempfile.TemporaryDirectory(prefix="ascend-screenshot-") as directory:
                 page.get_by_role("button", name="Path", exact=True).click()
                 page.locator(".path-node").first.wait_for()
                 page.screenshot(path=target / f"path-{label}.png", full_page=True)
+                page.locator(".path-node.open").first.click()
+                page.screenshot(path=target / f"challenge-{label}.png", full_page=True)
                 page.close()
             browser.close()
     finally:

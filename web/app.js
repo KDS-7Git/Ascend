@@ -26,107 +26,247 @@ async function switchTab(tab) {
   if (tab === "stats") await renderStats();
   if (tab === "more") await renderMore();
 }
+const ICONS = {
+  sun: ['M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8', 'M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5'],
+  route: ['M5 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4M19 16a2 2 0 1 0 0 4 2 2 0 0 0 0-4', 'M7 6h9a4 4 0 0 1 0 8H8a2 2 0 0 0 0 4h9'],
+  chart: ['M4 4v16h16M8 15v-3m5 3V8m5 7V5'],
+  settings: ['M4 7h16M4 17h16M9 4v6m6 4v6'],
+  mountain: ['m2 20 8-15 5 9 3-5 4 11H2', 'm7 11 3 2 3-2'],
+  flame: ['M12 3c1 6 6 6 6 12a6 6 0 0 1-12 0c0-3 2-5 3-6 0 3 2 3 3 0V3Z'],
+  check: ['m5 12 4 4L19 6'],
+  lock: ['M7 10V7a5 5 0 0 1 10 0v3M5 10h14v11H5V10Zm7 4v3'],
+  flag: ['M5 22V3m0 0c5-4 9 4 15 0v10c-6 4-10-4-15 0'],
+  arrow: ['M4 12h16m-6-6 6 6-6 6'],
+  bolt: ['m13 2-9 12h7l-1 8 10-13h-7l1-7'],
+  play: ['m8 4 12 8-12 8V4Z'],
+  book: ['M3 4c4-1 6 0 9 2 3-2 5-3 9-2v15c-4-1-6 0-9 2-3-2-5-3-9-2V4Zm9 2v15']
+};
+function svgElement(tag, attrs = {}) {
+  const node = document.createElementNS('http://www.w3.org/2000/svg', tag);
+  for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, String(value));
+  return node;
+}
+function icon(name, className = '') {
+  const svg = svgElement('svg', {viewBox: '0 0 24 24', width: 22, height: 22, fill: 'none', stroke: 'currentColor', 'stroke-width': 1.7, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'aria-hidden': 'true', class: `icon ${className}`});
+  for (const d of ICONS[name] || ICONS.flag) svg.append(svgElement('path', {d}));
+  return svg;
+}
+function progressOf(nodes) {
+  const done = nodes.filter(n => n.status === 'done').length;
+  const skipped = nodes.filter(n => n.status === 'skipped').length;
+  return {done, skipped, total: nodes.length, percent: nodes.length ? Math.round(done / nodes.length * 100) : 0, resolved: done + skipped};
+}
+function progressLabel(p) { return `${p.done}/${p.total} complete${p.skipped ? ` · ${p.skipped} skipped` : ''}`; }
+function progressBar(nodes, label) {
+  const p = progressOf(nodes), bar = el('progress', undefined, 'progress');
+  bar.max = p.total || 1; bar.value = p.done; bar.setAttribute('aria-label', label); return bar;
+}
+function currentLevel() {
+  const main = state.levels.filter(lv => lv.lane === 'main');
+  return main.find(lv => lv.id === state.overview?.next?.level) || main.find(lv => lv.open && lv.nodes.some(n => n.status === 'todo')) || main.at(-1);
+}
+function levelFor(node) { return state.levels.find(lv => lv.id === node.level); }
+function fullNode(node) { return levelFor(node)?.nodes.find(n => n.id === node.id) || node; }
+function challengeArt() {
+  const art = svgElement('svg', {viewBox: '0 0 240 150', class: 'challenge-art', 'aria-hidden': 'true'});
+  art.append(svgElement('path', {d:'M10 120C65 150 45 65 106 94S150 25 215 34', fill:'none', stroke:'currentColor', 'stroke-width':2, 'stroke-dasharray':'5 7'}));
+  for (const [cx,cy,r] of [[10,120,5],[70,98,9],[130,94,6],[173,48,10],[215,34,17]]) {
+    art.append(svgElement('circle',{cx,cy,r,fill:'var(--hero-bg)',stroke:'currentColor','stroke-width':2}));
+  }
+  art.append(svgElement('path',{d:'m208 34 5 5 9-10',fill:'none',stroke:'currentColor','stroke-width':3,'stroke-linecap':'round','stroke-linejoin':'round'}));
+  return art;
+}
+let refreshVersion = 0;
 async function refresh() {
-  state.overview = await api("me" + (state.minutes ? `?minutes=${state.minutes}` : ""));
-  $("#streak").textContent = state.overview.current_streak;
-  const cards = $("#today-cards"); cards.replaceChildren();
-  if (state.overview.next) cards.append(nodeCard(state.overview.next, false));
+  const version = ++refreshVersion;
+  const [overview, levels] = await Promise.all([api('me' + (state.minutes ? `?minutes=${state.minutes}` : '')), api('levels')]);
+  if (version !== refreshVersion) return;
+  if (state.overview?.mission?.id !== overview.mission?.id) $('#session-result').hidden = true;
+  state.overview = overview; state.levels = levels;
+  $('#streak').textContent = overview.current_streak;
+  $('#streak-link').setAttribute('aria-label', `View streak stats: ${overview.current_streak} days`);
+  renderMissionProgress();
+  const cards = $('#today-cards'); cards.replaceChildren();
+  if (overview.next) cards.append(nodeCard(overview.next, false));
   else {
-    const empty = el("div", undefined, "empty"); empty.append(el("h2", state.overview.mission ? "A smaller step, perhaps." : "A place to begin."), el("p", state.overview.mission ? "No open step fits this time. Try another time or split a step from its Path details." : "Choose a pack and start your first mission in More."));
-    empty.append(button(state.overview.mission ? "View path" : "Choose a pack", () => switchTab(state.overview.mission ? "path" : "more")));
+    const main = levels.filter(lv => lv.lane === 'main').flatMap(lv => lv.nodes), p = progressOf(main);
+    const finished = main.length && p.resolved === p.total;
+    const empty = el('div', undefined, 'card empty'); empty.append(icon(finished ? 'flag' : 'mountain'));
+    empty.append(el('h2', !overview.mission ? 'Find your first summit.' : finished ? (p.skipped ? 'Your main path is explored.' : 'Your main path is complete!') : 'A smaller step, perhaps.'), el('p', !overview.mission ? 'Choose a track, then turn one small challenge into a real skill.' : finished ? 'Revisit a challenge, try an optional drill, or choose your next mission.' : 'No open challenge fits this time. Choose more time, or split a challenge into smaller steps from its details.'));
+    empty.append(button(overview.mission ? 'Explore your path' : 'Choose a track', () => switchTab(overview.mission ? 'path' : 'more'), ''));
     cards.append(empty);
   }
-  if (state.overview.quick_win) cards.append(nodeCard(state.overview.quick_win, true));
+  const aside = el('aside', undefined, 'today-aside');
+  if (overview.quick_win) aside.append(nodeCard(overview.quick_win, true));
+  const lv = currentLevel(), milestone = lv?.nodes.find(n => n.milestone && n.status === 'todo');
+  if (milestone && milestone.id !== overview.next?.id) {
+    const target = el('section', undefined, 'card summit-card');
+    const label = el('p', undefined, 'eyebrow'); label.append(icon('flag'), document.createTextNode('YOUR NEXT MILESTONE'));
+    target.append(label, el('h2', milestone.title.replace(/\s*\(milestone\)$/i, '')), el('p', 'Put this level’s skills together in one challenge.', 'muted'));
+    target.append(progressBar(lv.nodes, `${lv.title} progress`), el('p', progressLabel(progressOf(lv.nodes)), 'small muted'), button('Preview milestone', () => showNode(milestone, lv), 'text-button'));
+    aside.append(target);
+  }
+  if (aside.childElementCount) cards.append(aside);
+}
+function renderMissionProgress() {
+  const root = $('#mission-progress'); root.replaceChildren();
+  if (!state.overview.mission) return;
+  const levels = state.levels.filter(lv => lv.lane === 'main'), current = currentLevel();
+  const nodes = levels.flatMap(lv => lv.nodes), p = progressOf(nodes);
+  const banner = el('section', undefined, 'mission-banner');
+  const emblem = el('div', undefined, 'mission-emblem'); emblem.append(icon('route'));
+  const info = el('div', undefined, 'mission-info'); info.append(el('p', 'YOUR ACTIVE TRACK', 'eyebrow'), el('h2', state.overview.mission.title), el('p', current ? `Level ${levels.indexOf(current) + 1} of ${levels.length} · ${current.title}` : 'Your mission is ready', 'muted small'));
+  const meta = el('div', undefined, 'mission-meta'); meta.append(el('strong', `${p.percent}%`), el('span', progressLabel(p), 'small muted'));
+  const milestones = el('div', undefined, 'level-dots');
+  for (const [index, lv] of levels.entries()) {
+    const done = lv.nodes.every(n => n.status === 'done');
+    const dot = button(String(index + 1), async () => { await switchTab('path'); jumpToLevel(lv.id); }, `level-dot${done ? ' done' : ''}${lv.id === current?.id ? ' current' : ''}`);
+    dot.setAttribute('aria-label', `Level ${index + 1}: ${lv.title}${done ? ', complete' : ''}`);
+    if (done) dot.replaceChildren(icon('check')); milestones.append(dot);
+  }
+  info.append(milestones); banner.append(emblem, info, meta); root.append(banner);
 }
 function nodeCard(node, quick) {
-  const card = el("article", undefined, `card node-card ${quick ? "quick-card" : "next-card"}${node.milestone ? " milestone-hero" : ""}`);
-  card.append(el("p", quick ? "QUICK WIN · ANYTIME" : "UP NEXT", "eyebrow"));
-  card.append(el("p", `${state.overview.mission?.title || ""}${state.overview.draft ? " · Draft pack" : ""}`, "muted"));
-  if (node.milestone) card.append(el("span", "◇ Milestone", "milestone-label"));
-  card.append(el("h2", node.title), el("p", node.done_when, "description"), el("span", `~${node.estimate} min`, "pill"));
-  card.append(button("Log it", () => openLog(node), "log-button"));
+  const card = el('article', undefined, `card node-card ${quick ? 'quick-card' : 'next-card'}${node.milestone ? ' milestone-hero' : ''}`);
+  const label = el('p', undefined, 'eyebrow'); label.append(icon(quick ? 'bolt' : node.milestone ? 'flag' : 'play'), document.createTextNode(quick ? 'A LITTLE SIDE QUEST' : node.milestone ? 'MILESTONE CHALLENGE' : 'YOUR NEXT CHALLENGE'));
+  card.append(label);
+  const lv = levelFor(node);
+  card.append(el('p', `${lv?.title || state.overview.mission?.title || ''}${state.overview.draft ? ' · Draft track' : ''}`, 'card-context'));
+  card.append(el('h2', node.title), el('p', node.brief || node.done_when, 'description'));
+  const meta = el('div', undefined, 'challenge-meta'); meta.append(el('span', `~${node.estimate} min`, 'pill'));
+  if (node.steps?.length) meta.append(el('span', `${node.steps.length} steps to try`, 'small'));
+  if (quick) meta.append(el('span', 'Optional', 'small'));
+  card.append(meta);
+  if (!quick && state.overview.resume) { const resume = el('p', undefined, 'resume-note'); resume.append(el('strong', 'Where you left off: '), document.createTextNode(state.overview.resume)); card.append(resume); }
+  const actions = el('div', undefined, 'card-actions');
+  const open = button(quick ? 'Try this challenge' : 'Open challenge', () => showNode(fullNode(node), lv), quick ? 'secondary' : ''); open.append(icon('arrow'));
+  actions.append(open, button('Log progress', () => openLog(node), 'text-button')); card.append(actions);
+  if (!quick) card.append(challengeArt());
   return card;
 }
-function openSheet() { const dialog = $("#sheet"); $("#sheet-content").replaceChildren(); if (!dialog.open) dialog.showModal(); return $("#sheet-content"); }
-function field(form, name, label, type = "text", value = "") {
-  const lbl = el("label", label); lbl.htmlFor = name;
-  const input = el(type === "textarea" ? "textarea" : "input"); input.id = name; input.name = name;
-  if (type !== "textarea") input.type = type; input.value = value;
+function openSheet() { const dialog = $('#sheet'); $('#sheet-content').replaceChildren(); if (!dialog.open) dialog.showModal(); return $('#sheet-content'); }
+function field(form, name, label, type = 'text', value = '') {
+  const lbl = el('label', label); lbl.htmlFor = name;
+  const input = el(type === 'textarea' ? 'textarea' : 'input'); input.id = name; input.name = name;
+  if (type !== 'textarea') input.type = type; input.value = value;
   form.append(lbl, input); return input;
 }
+function showSessionResult(node, result, previousLevels) {
+  const root = $('#session-result'); root.replaceChildren(); root.hidden = false; root.className = `session-result${result.completed ? ' completed' : ''}`;
+  const badge = el('div', undefined, 'result-icon'); badge.append(icon(result.completed ? 'check' : 'book'));
+  const copy = el('div'); copy.append(el('h2', result.completed ? (node.milestone ? 'Milestone reached!' : 'Challenge complete!') : 'Progress saved. Keep your place.'));
+  const newlyOpen = state.levels.filter(lv => lv.lane === 'main' && lv.open && previousLevels.some(old => old.id === lv.id && !old.open));
+  copy.append(el('p', result.completed ? `${node.title}${newlyOpen.length ? ` · Unlocked: ${newlyOpen.map(lv => lv.title).join(', ')}` : ' · One more skill put into practice.'}` : result.verification || 'Your work counts, even when the challenge takes another session.'));
+  root.append(badge, copy, button('Dismiss', () => root.hidden = true, 'text-button'));
+}
 function openLog(node) {
-  const content = openSheet(); const title = el("h2", "One small step, recorded."); title.id = "sheet-title";
-  content.append(title, el("p", node.title, "muted"));
-  const form = el("form");
-  const learned = field(form, "learned", "What I did", "textarea"); learned.required = true; learned.minLength = 20;
-  const next = field(form, "next-step", "What's next", "text", state.overview.resume || `Continue with ${node.title}`); next.required = true;
-  const details = el("details"); details.append(el("summary", "Add details"));
-  const minutes = field(details, "minutes", "Minutes spent", "number"); minutes.min = "1"; minutes.max = "1440";
-  const proof = field(details, "proof", "Proof link or file path");
-  const checkLabel = el("label", undefined, "check"); const complete = el("input"); complete.type = "checkbox"; complete.id = "complete";
-  checkLabel.append(complete, document.createTextNode("Mark as done")); details.append(checkLabel);
-  if (node.verify?.type !== "manual") details.append(el("p", "Your verifier will check this when you log.", "muted"));
+  const content = openSheet(); const title = el('h2', 'Make your progress count.'); title.id = 'sheet-title';
+  content.append(el('p', 'SAVE YOUR SESSION', 'eyebrow'), title, el('p', node.title, 'muted'));
+  const form = el('form');
+  const learned = field(form, 'learned', 'What I did', 'textarea'); learned.required = true; learned.minLength = 20; learned.placeholder = 'What did you try, discover, or build?';
+  const next = field(form, 'next-step', "What's next", 'text', state.overview.resume || `Continue with ${node.title}`); next.required = true;
+  const checkLabel = el('label', undefined, 'check completion-choice'); const complete = el('input'); complete.type = 'checkbox'; complete.id = 'complete';
+  checkLabel.append(complete, document.createTextNode('Mark as done')); form.append(checkLabel);
+  form.append(el('p', 'Leave unchecked to save a work-in-progress session.', 'small muted'));
+  const details = el('details'); details.append(el('summary', 'Add details'));
+  const minutes = field(details, 'minutes', 'Minutes spent', 'number'); minutes.min = '1'; minutes.max = '1440';
+  const proof = field(details, 'proof', 'Proof link or file path');
+  if (node.verify?.type && node.verify.type !== 'manual') form.append(el('p', 'Completion checks your evidence. If the check fails, your session is still saved.', 'small muted'));
   form.append(details);
-  const error = el("p", "", "error"); error.setAttribute("role", "alert"); error.hidden = true;
-  const submit = el("button", "Log"); form.append(error, submit); content.append(form);
-  form.addEventListener("submit", async event => {
+  const error = el('p', '', 'error'); error.setAttribute('role', 'alert'); error.hidden = true;
+  const submit = el('button', 'Save progress'); form.append(error, submit); content.append(form);
+  complete.addEventListener('change', () => submit.textContent = complete.checked ? 'Complete challenge' : 'Save progress');
+  form.addEventListener('submit', async event => {
     event.preventDefault(); submit.disabled = true;
+    const previousLevels = state.levels;
+    let saved = false;
     try {
-      const result = await api("entries", {learned: learned.value, next_step: next.value, proof: proof.value || null, minutes: minutes.value ? Number(minutes.value) : null, node_id: `${node.pack_id}:${node.id}`, complete: complete.checked});
-      $("#sheet").close(); await refresh();
-      if (state.tab === "path") await renderPath();
-      notify(result.verification && !result.completed ? `Progress saved. ${result.verification}` : "✓ Your step is saved.");
-    } catch (err) { error.textContent = err.message; error.hidden = false; } finally { submit.disabled = false; }
+      const result = await api('entries', {learned: learned.value, next_step: next.value, proof: proof.value || null, minutes: minutes.value ? Number(minutes.value) : null, node_id: `${node.pack_id}:${node.id}`, complete: complete.checked});
+      saved = true; $('#sheet').close();
+      await refresh(); if (state.tab === 'path') await renderPath();
+      showSessionResult(node, result, previousLevels);
+      notify(result.completed ? '✓ Challenge complete. Your path has moved forward.' : result.verification ? `Session saved. ${result.verification}` : '✓ Your progress is saved.');
+    } catch (err) {
+      if (saved) notify('Your session was saved, but the view could not refresh. Reload to see your progress.');
+      else { error.textContent = err.message; error.hidden = false; }
+    } finally { submit.disabled = false; }
   });
   learned.focus();
 }
-function showNode(node, level) {
-  const content = openSheet(); const title = el("h2", node.title); title.id = "sheet-title";
-  content.append(title, el("p", node.done_when));
-  const link = el("a", "Open learning resource ↗"); link.href = node.resource; link.target = "_blank"; link.rel = "noopener noreferrer"; content.append(link);
-  if (!node.open && node.status === "todo") {
-    const missing = node.needs?.length ? `Complete prerequisites: ${node.needs.join(", ")}.` : "Unlocks after the previous main level's milestone.";
-    content.append(el("p", missing, "muted"));
+function showNode(node, level = levelFor(node)) {
+  const content = openSheet(), status = node.status || 'todo';
+  content.append(el('p', `${node.milestone ? 'MILESTONE' : 'CHALLENGE'} · ~${node.estimate} MIN`, 'eyebrow'));
+  const title = el('h2', node.title); title.id = 'sheet-title'; content.append(title);
+  if (node.brief) content.append(el('p', node.brief, 'challenge-brief'));
+  const outcome = el('section', undefined, 'outcome'); outcome.append(el('h3', 'Your finish line'), el('p', node.done_when)); content.append(outcome);
+  if (node.steps?.length) {
+    const list = el('ol', undefined, 'challenge-steps');
+    for (const step of node.steps) list.append(el('li', step));
+    content.append(el('h3', 'Try it step by step'), list);
   }
-  const actions = el("div", undefined, "dialog-actions");
-  actions.append(button("Log it", () => openLog(node), ""));
-  actions.append(button("Mark done", async () => { await api(`nodes/${node.pack_id}:${node.id}/mark`, {status: "done"}); $("#sheet").close(); await refresh(); await renderPath(); }));
-  actions.append(button("Skip", async () => { await api(`nodes/${node.pack_id}:${node.id}/mark`, {status: "skipped"}); $("#sheet").close(); await refresh(); await renderPath(); }));
-  if (node.verify?.type !== "manual") actions.append(button("Check evidence", async () => { const result = await command(["check", `${node.pack_id}:${node.id}`]); notify(result.summary); }));
-  if (!level.open) actions.append(button("Unlock level", async () => { await command(["unlock", level.id]); $("#sheet").close(); await refresh(); await renderPath(); }));
+  const link = el('a', 'Open learning resource ↗', 'resource-link'); link.href = node.resource; link.target = '_blank'; link.rel = 'noopener noreferrer'; content.append(link);
+  if (node.hints?.length) {
+    const hints = el('section', undefined, 'challenge-hints'); hints.append(el('h3', 'A nudge if you need one'));
+    node.hints.forEach((hint, i) => { const details = el('details'); details.append(el('summary', `Hint ${i + 1}`), el('p', hint)); hints.append(details); }); content.append(hints);
+  }
+  const locked = !node.open && status === 'todo';
+  if (locked) {
+    const all = state.levels.flatMap(lv => lv.nodes), missing = (node.needs || []).map(id => all.find(n => n.id === id)).filter(n => n && n.status === 'todo');
+    content.append(el('p', missing.length ? `First complete: ${missing.map(n => n.title).join(', ')}.` : 'This challenge opens after the previous level’s milestone.', 'lock-note'));
+  }
+  const actions = el('div', undefined, 'dialog-actions');
+  if (!locked) actions.append(button(status === 'todo' ? 'Log progress' : 'Log another practice', () => openLog(node), ''));
+  if (status !== 'todo') content.append(el('p', status === 'done' ? '✓ Completed. Revisit this whenever you want to practice.' : 'Skipped. You can return to this challenge at any time.', 'muted'));
   content.append(actions);
-  if (node.status === "todo") {
-    const details = el("details"); details.append(el("summary", "Split into smaller steps"));
-    const parts = field(details, "split-parts", "One concrete step per line", "textarea");
-    details.append(button("Save smaller steps", async () => { await command(["split", `${node.pack_id}:${node.id}`, ...parts.value.split("\n").filter(Boolean)]); $("#sheet").close(); await refresh(); await renderPath(); })); content.append(details);
-  }
+  const manage = el('details', undefined, 'manage-challenge'); manage.append(el('summary', 'Challenge options'));
+  if (node.verify?.type && node.verify.type !== 'manual') manage.append(button('Check evidence', async () => { const result = await command(['check', `${node.pack_id}:${node.id}`]); notify(result.summary); }));
+  if (status === 'todo') {
+    manage.append(button('Skip challenge', async () => { await api(`nodes/${node.pack_id}:${node.id}/mark`, {status: 'skipped'}); $('#sheet').close(); await refresh(); if (state.tab === 'path') await renderPath(); notify('Challenge skipped. You can return to it from your path.'); }));
+    if (level && !level.open) manage.append(button('Unlock level early', async () => { await command(['unlock', level.id]); $('#sheet').close(); await refresh(); if (state.tab === 'path') await renderPath(); }));
+    const parts = field(manage, 'split-parts', 'Split into smaller steps (one per line)', 'textarea');
+    manage.append(button('Save smaller steps', async () => { await command(['split', `${node.pack_id}:${node.id}`, ...parts.value.split('\n').filter(Boolean)]); $('#sheet').close(); await refresh(); if (state.tab === 'path') await renderPath(); }));
+  } else manage.append(button('Reopen challenge', async () => { await api(`nodes/${node.pack_id}:${node.id}/mark`, {status:'todo'}); $('#sheet').close(); await refresh(); if (state.tab === 'path') await renderPath(); }));
+  content.append(manage);
+}
+function jumpToLevel(id) {
+  const target = document.getElementById(`level-${id}`);
+  if (target) { target.open = true; target.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start'}); target.querySelector('summary').focus({preventScroll:true}); }
 }
 async function renderPath() {
-  state.levels = await api("levels"); const root = $("#path-content"); root.replaceChildren();
-  if (!state.levels.length) { root.append(el("p", "Start a mission in More to see your path.", "muted")); return; }
-  const side = state.levels.filter(level => level.lane === "side");
-  if (side.length) {
-    const anytime = el("section", undefined, "anytime"); anytime.append(el("h2", "Anytime")); const strip = el("div", undefined, "anytime-strip");
-    for (const lv of side) for (const node of lv.nodes) strip.append(button(`${node.status === "done" ? "✓ " : ""}${node.title}`, () => showNode(node, lv)));
+  state.levels = await api('levels'); const root = $('#path-content'); root.replaceChildren();
+  if (!state.levels.length) { const empty = el('div', undefined, 'empty'); empty.append(el('h2', 'Every path starts with a first step.'), el('p', 'Choose a track in More to see your learning path.'), button('Choose a track', () => switchTab('more'), '')); root.append(empty); $('#jump-current').hidden = true; return; }
+  $('#jump-current').hidden = false;
+  const main = state.levels.filter(lv => lv.lane === 'main'), current = currentLevel();
+  const intro = el('div', undefined, 'path-intro'); intro.append(el('h2', state.overview.mission?.title || 'Your learning path'), el('p', `${main.length} levels · ${progressLabel(progressOf(main.flatMap(lv => lv.nodes)))}`, 'muted'));
+  const legend = el('div', undefined, 'path-legend'); for (const [label, cls] of [['Complete','done'],['Ready to try','open'],['Coming up','locked'],['Milestone','milestone']]) legend.append(el('span', label, `legend-item ${cls}`)); intro.append(legend); root.append(intro);
+  for (const [i, level] of main.entries()) {
+    const p = progressOf(level.nodes), isCurrent = level.id === current?.id;
+    const section = el('details', undefined, `level-section${isCurrent ? ' current-level' : ''}${!level.open ? ' locked-level' : ''}`); section.id = `level-${level.id}`; section.open = isCurrent;
+    const header = el('summary', undefined, 'level-header');
+    const number = el('span', String(i + 1).padStart(2, '0'), 'level-number');
+    const text = el('div', undefined, 'level-title'); text.append(el('p', isCurrent ? 'YOU ARE HERE' : p.done === p.total ? 'LEVEL COMPLETE' : level.open ? 'READY TO EXPLORE' : 'COMING UP', 'eyebrow'), el('h2', level.title));
+    const meta = el('span', progressLabel(p), 'level-count'); header.append(number, text, meta); section.append(header, progressBar(level.nodes, `${level.title} progress`));
+    const list = el('div', undefined, 'path-nodes');
+    for (const [index, node] of level.nodes.entries()) {
+      const status = node.status !== 'todo' ? node.status : node.open ? 'open' : 'locked';
+      const isNext = node.id === state.overview.next?.id;
+      const item = button('', () => showNode(node, level), `path-node ${status} bend-${index % 4}${node.milestone ? ' milestone' : ''}${isNext ? ' next-node' : ''}`);
+      const shape = el('span', undefined, 'node-shape'); shape.append(icon(status === 'done' ? 'check' : status === 'skipped' ? 'arrow' : node.milestone ? 'flag' : status === 'locked' ? 'lock' : 'play'));
+      const copy = el('span', undefined, 'node-copy'); copy.append(el('strong', node.title), el('span', `${isNext ? 'Up next · ' : ''}${node.milestone ? 'Milestone · ' : ''}~${node.estimate} min · ${status === 'open' ? 'Ready to try' : status}`, 'small muted'));
+      item.setAttribute('aria-label', `${node.title}, ${status}${node.milestone ? ', milestone' : ''}`); item.append(shape, copy); list.append(item);
+    }
+    section.append(list); root.append(section);
+  }
+  for (const level of state.levels.filter(lv => lv.lane === 'side')) {
+    const anytime = el('details', undefined, 'anytime'); anytime.append(el('summary', `${level.title} · Optional practice`));
+    const strip = el('div', undefined, 'anytime-strip');
+    for (const node of level.nodes) { const status = node.status === 'todo' ? node.open ? 'ready' : 'locked' : node.status; strip.append(button(`${node.title} · ${status}`, () => showNode(node, level))); }
     anytime.append(strip); root.append(anytime);
   }
-  for (const level of state.levels.filter(lv => lv.lane === "main")) {
-    const section = el("section", undefined, "level-section"); const header = el("div", undefined, "level-header");
-    header.append(el("h2", level.title), el("span", `${level.done}/${level.total} steps · ${level.active_days} active days`, "muted"));
-    const progress = el("progress", undefined, "progress"); progress.max = level.total || 1; progress.value = level.done; progress.setAttribute("aria-label", `${level.title} progress`);
-    const list = el("div", undefined, "path-nodes");
-    for (const node of level.nodes) {
-      const status = node.status !== "todo" ? node.status : node.open ? "open" : "locked";
-      const item = button("", () => showNode(node, level), `path-node ${status}${node.milestone ? " milestone" : ""}`);
-      const shape = el("span", undefined, "node-shape"); shape.append(el("span", status === "done" ? "✓" : status === "skipped" ? "–" : node.milestone ? "◇" : status === "locked" ? "·" : ""));
-      shape.setAttribute("aria-hidden", "true"); item.setAttribute("aria-label", `${node.title}, ${status}${node.milestone ? ", milestone" : ""}`);
-      item.append(shape, el("span", node.title)); list.append(item);
-    }
-    section.append(header, progress, list); root.append(section);
-  }
 }
+
 async function renderStats() {
-  const [stats, days] = await Promise.all([api("stats"), api("heatmap")]); const root = $("#stats-content"); root.replaceChildren();
+  const [stats, days, levels] = await Promise.all([api("stats"), api("heatmap"), api("levels")]); const root = $("#stats-content"); root.replaceChildren();
   const streak = el("section", undefined, "card"); streak.append(el("h2", "Showing up, one day at a time."), el("span", `${stats.current_streak}`, "streak-number"), el("span", ` days · best ${stats.best_streak}`, "muted"), el("p", `${stats.freeze_available} freeze available this week`, "muted"));
   const calendar = el("section", undefined, "card"); calendar.append(el("h2", "Your last 12 weeks")); const heat = el("div", undefined, "heatmap");
   for (const day of days) { const cell = el("div", undefined, `heat-day${day.count ? " logged" : ""}`); cell.title = `${day.day}: ${day.count} entries`; cell.setAttribute("aria-label", cell.title); cell.setAttribute("role", "img"); heat.append(cell); }
@@ -144,6 +284,14 @@ async function renderStats() {
     bar.append(rect); item.append(el("span", `${week.minutes}m`), bar, el("span", week.week.slice(5))); chart.append(item);
   }
   minutes.append(chart); root.append(streak, calendar, minutes);
+  const achievements = el("section", undefined, "card");
+  achievements.append(el("h2", "Milestones you've earned"));
+  const earned = levels.flatMap(level => level.nodes).filter(node => node.milestone && node.status === "done");
+  const shelf = el("div", undefined, "earned-milestones");
+  for (const node of earned) { const badge = el("div", undefined, "earned-badge"); badge.append(icon("flag"), el("span", node.title.replace(/\s*\(milestone\)$/i, ""))); shelf.append(badge); }
+  if (!earned.length) achievements.append(el("p", "Complete a milestone in your active track to add it here. Each one represents a skill you've put into practice.", "muted"));
+  else achievements.append(shelf);
+  root.append(achievements);
 }
 async function renderMore() {
   const [packs, parked, account] = await Promise.all([api("packs"), command(["parked"]), api("account")]);
@@ -163,6 +311,9 @@ async function renderMore() {
   $("#public-streak").checked = account.settings.public_streak || false;
   $("#public-link").textContent = account.settings.public_streak ? `${location.origin}/api/public/${encodeURIComponent(account.username)}/badge.svg` : "Your streak is private.";
 }
+document.querySelectorAll("[data-icon]").forEach(node => node.append(icon(node.dataset.icon)));
+window.addEventListener("hashchange", () => { const tab = location.hash.slice(1); if (["today", "path", "stats", "more"].includes(tab) && tab !== state.tab) switchTab(tab).catch(error => notify(error.message)); });
+$("#jump-current").addEventListener("click", () => jumpToLevel(currentLevel()?.id));
 document.querySelectorAll("[data-tab]").forEach(node => node.addEventListener("click", () => switchTab(node.dataset.tab).catch(error => notify(error.message))));
 $("#streak-link").addEventListener("click", () => switchTab("stats").catch(error => notify(error.message)));
 document.querySelectorAll("[data-minutes]").forEach(node => node.addEventListener("click", async () => { state.minutes = node.dataset.minutes || null; document.querySelectorAll("[data-minutes]").forEach(chip => chip.setAttribute("aria-pressed", String(chip === node))); try { await refresh(); } catch (error) { notify(error.message); } }));

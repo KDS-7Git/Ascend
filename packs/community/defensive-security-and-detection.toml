@@ -1,0 +1,465 @@
+# Track 5 of 5: Defensive Security & Detection
+# kind = "proficiency": this is the track closest to your ORIGINAL stated reason for wanting cyber at all --
+# "learn attacking in my own lab so I can shield systems from real attackers." The other 4 tracks taught you
+# to attack; this one teaches you to see an attack happening and stop it. Strongly recommended to do this
+# track in parallel with, not strictly after, network-penetration-testing: attacking something and then
+# immediately checking what it looked like from the defender's side is the fastest way to learn detection.
+#
+# DRAFT written by Claude. NOT reviewed. Run `ascend pack lint`, `ascend pack check-links`, read every
+# done_when, then `ascend pack review defensive-security-and-detection` before trusting it.
+
+[pack]
+id = "defensive-security-and-detection"
+title = "Defensive Security & Detection"
+kind = "proficiency"
+version = 2
+source = "ai-draft"
+reviewed = false
+
+[vars]
+lab_dir = "~/cyber/defense"
+pi_ip = "192.168.1.50"
+
+[[level]]
+id = "logging-fundamentals"
+title = "Logging fundamentals: what gets recorded, and where"
+lane = "main"
+
+[[level]]
+id = "log-analysis"
+title = "Log analysis by hand (before any tooling)"
+lane = "main"
+
+[[level]]
+id = "network-monitoring"
+title = "Network monitoring: Zeek and Suricata"
+lane = "main"
+
+[[level]]
+id = "siem-basics"
+title = "SIEM basics with Security Onion"
+lane = "main"
+
+[[level]]
+id = "detection-engineering"
+title = "Writing your own detection rules"
+lane = "main"
+
+[[level]]
+id = "hardening"
+title = "Hardening baselines, beyond one Pi"
+lane = "main"
+
+[[level]]
+id = "incident-response"
+title = "Incident response fundamentals"
+lane = "main"
+
+[[level]]
+id = "capstone"
+title = "Detect your own earlier attacks"
+lane = "main"
+
+[[level]]
+id = "mitre"
+title = "MITRE ATT&CK technique drills"
+lane = "side"
+
+# ---------------------------------------------------------------- 1: logging-fundamentals
+[[node]]
+level = "logging-fundamentals"
+id = "linux-log-locations"
+title = "Leave a breadcrumb, then find it in the logs"
+size = "S"
+needs = []
+done_when = "Found my generated log marker and saved its timestamp, source, and a map of the available system log sources in {lab_dir}/notes/log-locations.md."
+resource = "https://www.loggly.com/ultimate-guide/linux-logging-basics/"
+verify = { type = "file", path = "{lab_dir}/notes/log-locations.md", min_bytes = 150 }
+minutes = 20
+brief = "Make your first investigation personal: generate a harmless event and prove where Linux recorded it."
+steps = ["On your own Linux machine or Pi, run logger -t ascend-lab \"first breadcrumb\".", "Find the marker with journalctl -t ascend-lab or the system’s configured log files.", "Save the matching event in {lab_dir}/notes/log-locations.md and map the available authentication, service, and kernel log sources. Note missing sources rather than inventing five files."]
+hints = ["Many distributions keep logs in the journal rather than /var/log/auth.log. Try journalctl --since \"5 minutes ago\"."]
+
+[[node]]
+level = "logging-fundamentals"
+id = "auth-log-reading"
+title = "Tell a failed login from a successful one"
+size = "M"
+needs = ["linux-log-locations"]
+done_when = "triggered one successful login, one failed login, and one sudo command on the Pi, found and annotated the exact log lines each produced at {lab_dir}/notes/auth-log.md"
+resource = "https://www.loggly.com/ultimate-guide/linux-logging-basics/"
+verify = { type = "file", path = "{lab_dir}/notes/auth-log.md", min_bytes = 200 }
+minutes = 45
+brief = "Reconstruct three events on your own lab machine using only the evidence they leave behind."
+steps = ["Generate one successful login, one deliberate failed login, and one ordinary sudo command on your own lab host.", "Locate the events in the journal or auth log and compare timestamps, identities, and outcomes.", "Save redacted excerpts with a one-line explanation for each in {lab_dir}/notes/auth-log.md."]
+hints = ["Filter by a short time window first. The SSH service may be called ssh or sshd."]
+
+[[node]]
+level = "logging-fundamentals"
+id = "journald-basics"
+title = "Cut a noisy log down to the one event that matters"
+size = "S"
+needs = []
+done_when = "used journalctl to filter logs by service, by time range, and by priority, saved 3 example commands and their purpose at {lab_dir}/notes/journald.md"
+resource = "https://www.freedesktop.org/software/systemd/man/journalctl.html"
+verify = { type = "file", path = "{lab_dir}/notes/journald.md", min_bytes = 100 }
+minutes = 20
+brief = "Use three filters to turn a wall of logs into a useful answer."
+steps = ["Generate another logger marker and find it by tag.", "Narrow results by time range, then inspect one real service and its priority filter.", "Save three useful commands and their outputs in {lab_dir}/notes/journald.md."]
+hints = ["A filter with no results is still evidence. Check the unfiltered time range before assuming logging is broken."]
+
+[[node]]
+level = "logging-fundamentals"
+id = "logging-milestone"
+title = "Rebuild a mini incident timeline"
+size = "M"
+needs = ["auth-log-reading", "journald-basics"]
+milestone = true
+done_when = "Reconstructed three lab events from their log evidence and saved the source lines, timeline, and an uncertainty in {lab_dir}/notes/logging-milestone.md."
+resource = "https://www.loggly.com/ultimate-guide/linux-logging-basics/"
+verify = { type = "file", path = "{lab_dir}/notes/logging-milestone.md", min_bytes = 250 }
+
+# ---------------------------------------------------------------- 2: log-analysis
+minutes = 60
+brief = "A few log lines can tell a complete story. Show what happened, in what order, and what you cannot prove."
+steps = ["In a disposable lab session, generate a login, a failed login, and a service event. Alternatively use a saved training log containing these events.", "Set aside your command history and reconstruct the order from log timestamps and event fields.", "Save source lines, a three-event timeline, and one uncertainty in {lab_dir}/notes/logging-milestone.md."]
+hints = []
+
+[[node]]
+level = "log-analysis"
+id = "grep-and-awk-for-logs"
+title = "grep/awk/sort/uniq: the real first SIEM"
+size = "M"
+needs = []
+done_when = "wrote and saved 5 one-liners that answer real questions from a log file (top IPs hitting a service, failed logins per user, etc.), at {lab_dir}/notes/log-oneliners.md"
+resource = "https://www.gnu.org/software/gawk/manual/gawk.html"
+verify = { type = "file", path = "{lab_dir}/notes/log-oneliners.md", min_bytes = 200 }
+
+[[node]]
+level = "log-analysis"
+id = "web-log-analysis"
+title = "Analysing web server access logs for an attack"
+size = "M"
+needs = ["grep-and-awk-for-logs"]
+done_when = "ran a scan or directory brute-force from the network-penetration-testing track against Juice Shop, then found the evidence of it in the access logs, wrote {lab_dir}/notes/web-log-analysis.md"
+resource = "https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html"
+verify = { type = "file", path = "{lab_dir}/notes/web-log-analysis.md", min_bytes = 150 }
+
+[[node]]
+level = "log-analysis"
+id = "false-positives"
+title = "Why log analysis is mostly about ruling things OUT"
+size = "S"
+needs = []
+done_when = "wrote {lab_dir}/notes/false-positives.md with 3 real examples of log entries that LOOK suspicious but usually aren't, and how you'd confirm either way"
+resource = "https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html"
+
+[[node]]
+level = "log-analysis"
+id = "log-analysis-milestone"
+title = "Find the needle: one real attack hidden in normal traffic (milestone)"
+size = "L"
+needs = ["web-log-analysis", "false-positives"]
+milestone = true
+done_when = "generated an hour of normal Juice Shop browsing traffic PLUS one hidden attack somewhere in the middle, then found and proved the attack using log analysis alone, documented the process at {lab_dir}/notes/log-milestone.md"
+resource = "https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html"
+verify = { type = "file", path = "{lab_dir}/notes/log-milestone.md", min_bytes = 300 }
+
+# ---------------------------------------------------------------- 3: network-monitoring
+[[node]]
+level = "network-monitoring"
+id = "zeek-setup"
+title = "Zeek: install it and read your first connection log"
+size = "M"
+needs = []
+done_when = "installed Zeek, ran it against a capture or live interface, found and annotated one entry in conn.log, saved at {lab_dir}/notes/zeek-setup.md"
+resource = "https://docs.zeek.org/en/master/quickstart.html"
+verify = { type = "file", path = "{lab_dir}/notes/zeek-setup.md", min_bytes = 150 }
+
+[[node]]
+level = "network-monitoring"
+id = "zeek-attack-trace"
+title = "Trace an earlier attack through Zeek logs"
+size = "M"
+needs = ["zeek-setup"]
+done_when = "ran Zeek against a capture of an earlier exploitation attempt (from network-penetration-testing or home-hack-lab), found the relevant log entries, wrote {lab_dir}/notes/zeek-attack-trace.md"
+resource = "https://docs.zeek.org/en/master/logs/index.html"
+verify = { type = "file", path = "{lab_dir}/notes/zeek-attack-trace.md", min_bytes = 150 }
+
+[[node]]
+level = "network-monitoring"
+id = "suricata-setup"
+title = "Suricata: signature-based detection basics"
+size = "M"
+needs = []
+done_when = "installed Suricata, ran it with a default ruleset against traffic containing a known-bad pattern (e.g. an nmap scan), confirmed an alert fired, saved the alert plus notes at {lab_dir}/notes/suricata-setup.md"
+resource = "https://docs.suricata.io/en/latest/quickstart.html"
+verify = { type = "file", path = "{lab_dir}/notes/suricata-setup.md", min_bytes = 150 }
+
+[[node]]
+level = "network-monitoring"
+id = "network-monitoring-milestone"
+title = "Detect a full attack chain across both tools (milestone)"
+size = "L"
+needs = ["zeek-attack-trace", "suricata-setup"]
+milestone = true
+done_when = "ran a multi-step attack (recon -> exploitation) against the Pi while BOTH Zeek and Suricata were capturing, then wrote {lab_dir}/notes/network-monitoring-milestone.md on what each tool caught that the other didn't"
+resource = "https://docs.zeek.org/en/master/"
+verify = { type = "file", path = "{lab_dir}/notes/network-monitoring-milestone.md", min_bytes = 300 }
+
+# ---------------------------------------------------------------- 4: siem-basics
+[[node]]
+level = "siem-basics"
+id = "security-onion-setup"
+title = "Security Onion: get it running in a VM"
+size = "L"
+needs = []
+done_when = "installed Security Onion in a VM, pointed it at traffic (even just the VM's own interface), confirmed events are flowing into its dashboard, saved a screenshot plus setup notes at {lab_dir}/notes/securityonion-setup.md"
+resource = "https://securityonionsolutions.com/software"
+verify = { type = "file", path = "{lab_dir}/notes/securityonion-setup.md", min_bytes = 100 }
+
+[[node]]
+level = "siem-basics"
+id = "siem-search"
+title = "Searching and pivoting in a SIEM dashboard"
+size = "M"
+needs = ["security-onion-setup"]
+done_when = "used Security Onion's dashboard (Kibana-based) to search for one specific event type and pivot from it to related events, documented the query and findings at {lab_dir}/notes/siem-search.md"
+resource = "https://docs.securityonion.net/en/2.4/kibana.html"
+verify = { type = "file", path = "{lab_dir}/notes/siem-search.md", min_bytes = 150 }
+
+[[node]]
+level = "siem-basics"
+id = "alert-triage"
+title = "Alert triage: true positive, false positive, or needs more info"
+size = "M"
+needs = []
+done_when = "picked 5 real alerts generated by your own lab traffic and triaged each one (true positive / false positive / inconclusive) with reasoning, saved at {lab_dir}/notes/alert-triage.md"
+resource = "https://www.sans.org/white-papers/"
+verify = { type = "file", path = "{lab_dir}/notes/alert-triage.md", min_bytes = 200 }
+
+[[node]]
+level = "siem-basics"
+id = "siem-milestone"
+title = "Full SIEM-based investigation of a simulated incident (milestone)"
+size = "L"
+needs = ["siem-search", "alert-triage"]
+milestone = true
+done_when = "ran an attack from an earlier track against monitored infrastructure, then investigated it from the SIEM alone (not from knowing what you did), wrote {lab_dir}/notes/siem-milestone.md as if briefing someone who doesn't know what happened"
+resource = "https://docs.securityonion.net/"
+verify = { type = "file", path = "{lab_dir}/notes/siem-milestone.md", min_bytes = 300 }
+
+# ---------------------------------------------------------------- 5: detection-engineering
+[[node]]
+level = "detection-engineering"
+id = "suricata-rule-syntax"
+title = "Writing a Suricata rule from scratch"
+size = "M"
+needs = []
+done_when = "wrote one custom Suricata rule that detects a specific pattern from an earlier attack exercise, confirmed it fires and doesn't false-positive on normal traffic, saved the rule plus notes at {lab_dir}/notes/suricata-rule.md"
+resource = "https://docs.suricata.io/en/latest/rules/intro.html"
+verify = { type = "file", path = "{lab_dir}/notes/suricata-rule.md", min_bytes = 150 }
+
+[[node]]
+level = "detection-engineering"
+id = "sigma-rules"
+title = "Sigma: writing detection rules that aren't tool-specific"
+size = "M"
+needs = ["suricata-rule-syntax"]
+done_when = "wrote one Sigma rule for a log-based detection (e.g. multiple failed SSH logins), documented why a vendor-neutral rule format is useful at {lab_dir}/notes/sigma.md"
+resource = "https://github.com/SigmaHQ/sigma"
+verify = { type = "file", path = "{lab_dir}/notes/sigma.md", min_bytes = 150 }
+
+[[node]]
+level = "detection-engineering"
+id = "detection-coverage"
+title = "Mapping your detection rules to MITRE ATT&CK"
+size = "S"
+needs = []
+done_when = "listed every detection rule you've written in this track and mapped each to a MITRE ATT&CK technique ID, saved at {lab_dir}/notes/detection-coverage.md"
+resource = "https://attack.mitre.org/"
+verify = { type = "file", path = "{lab_dir}/notes/detection-coverage.md", min_bytes = 150 }
+
+[[node]]
+level = "detection-engineering"
+id = "detection-milestone"
+title = "Write a detection rule for an attack you haven't tested yet (milestone)"
+size = "L"
+needs = ["sigma-rules", "detection-coverage"]
+milestone = true
+done_when = "picked an attack technique from the network-penetration-testing or reverse-engineering tracks you have NOT yet written a detection for, wrote a rule for it, ran the actual attack to confirm the rule fires, documented at {lab_dir}/notes/detection-milestone.md"
+resource = "https://attack.mitre.org/"
+verify = { type = "file", path = "{lab_dir}/notes/detection-milestone.md", min_bytes = 250 }
+
+# ---------------------------------------------------------------- 6: hardening
+[[node]]
+level = "hardening"
+id = "cis-benchmarks"
+title = "CIS Benchmarks: industry-standard hardening checklists"
+size = "M"
+needs = []
+done_when = "picked one CIS Benchmark relevant to your setup (Ubuntu or Debian), applied 5 of its recommendations to a test VM (not your real Pi), documented before/after at {lab_dir}/notes/cis-benchmarks.md"
+resource = "https://www.cisecurity.org/cis-benchmarks"
+verify = { type = "file", path = "{lab_dir}/notes/cis-benchmarks.md", min_bytes = 150 }
+
+[[node]]
+level = "hardening"
+id = "service-minimization"
+title = "Attack surface reduction: disabling what you don't need"
+size = "M"
+needs = []
+done_when = "audited every listening service on the Pi, disabled anything not actually needed, re-scanned to confirm the reduced attack surface, documented at {lab_dir}/notes/service-minimization.md"
+resource = "https://ubuntu.com/server/docs/security-introduction"
+verify = { type = "file", path = "{lab_dir}/notes/service-minimization.md", min_bytes = 150 }
+
+[[node]]
+level = "hardening"
+id = "patch-management"
+title = "Patch management: why unpatched software is still the #1 way in"
+size = "S"
+needs = []
+done_when = "set up automatic security updates on the Pi (unattended-upgrades or equivalent), documented the config and why it matters at {lab_dir}/notes/patching.md"
+resource = "https://documentation.ubuntu.com/server/how-to/software/automatic-updates/"
+verify = { type = "file", path = "{lab_dir}/notes/patching.md", min_bytes = 100 }
+
+[[node]]
+level = "hardening"
+id = "hardening-milestone"
+title = "Harden a fresh VM, then attack it yourself to validate (milestone)"
+size = "L"
+needs = ["cis-benchmarks", "service-minimization"]
+milestone = true
+done_when = "applied a full hardening pass to a fresh VM using techniques from this level, then attacked it with techniques from network-penetration-testing to confirm what's now blocked and what isn't, wrote {lab_dir}/notes/hardening-milestone.md"
+resource = "https://www.cisecurity.org/cis-benchmarks"
+verify = { type = "file", path = "{lab_dir}/notes/hardening-milestone.md", min_bytes = 300 }
+
+# ---------------------------------------------------------------- 7: incident-response
+[[node]]
+level = "incident-response"
+id = "ir-lifecycle"
+title = "The incident response lifecycle"
+size = "S"
+needs = []
+done_when = "wrote {lab_dir}/notes/ir-lifecycle.md explaining the standard IR phases (preparation, detection, containment, eradication, recovery, lessons learned) in your own words, with one concrete action per phase"
+resource = "https://csrc.nist.gov/pubs/sp/800/61/r3/final"
+verify = { type = "file", path = "{lab_dir}/notes/ir-lifecycle.md", min_bytes = 150 }
+
+[[node]]
+level = "incident-response"
+id = "evidence-preservation"
+title = "Evidence preservation: why you don't just reboot a compromised box"
+size = "S"
+needs = []
+done_when = "wrote {lab_dir}/notes/evidence.md on what's lost if you reboot a compromised machine before capturing memory/logs, and the correct order of what to capture first"
+resource = "https://csrc.nist.gov/pubs/sp/800/61/r3/final"
+
+[[node]]
+level = "incident-response"
+id = "tabletop-exercise"
+title = "Run a tabletop exercise against your own lab"
+size = "M"
+needs = ["ir-lifecycle"]
+done_when = "walked through a simulated incident on paper (not technically) for your own Pi/lab -- what would you check first, who would you tell, what would you preserve -- wrote {lab_dir}/notes/tabletop.md"
+resource = "https://csrc.nist.gov/pubs/sp/800/61/r3/final"
+verify = { type = "file", path = "{lab_dir}/notes/tabletop.md", min_bytes = 200 }
+
+[[node]]
+level = "incident-response"
+id = "ir-milestone"
+title = "Full incident response to a real simulated compromise (milestone)"
+size = "L"
+needs = ["tabletop-exercise", "evidence-preservation"]
+milestone = true
+done_when = "had an earlier attack from this conversation's tracks run against the Pi WITHOUT being told exactly what happened in advance, then ran a full IR process (detect, contain, investigate, document) and wrote {lab_dir}/notes/ir-milestone.md as an incident report"
+resource = "https://csrc.nist.gov/pubs/sp/800/61/r3/final"
+verify = { type = "file", path = "{lab_dir}/notes/ir-milestone.md", min_bytes = 350 }
+
+# ---------------------------------------------------------------- 8: capstone
+[[node]]
+level = "capstone"
+id = "instrument-the-lab"
+title = "Fully instrument the home-hack-lab for monitoring"
+size = "L"
+needs = []
+done_when = "deployed Zeek/Suricata/Security Onion (your choice) to monitor the Pi continuously, confirmed it's capturing real traffic, documented the setup at {lab_dir}/notes/instrument.md"
+resource = "https://docs.zeek.org/en/master/quickstart.html"
+verify = { type = "file", path = "{lab_dir}/notes/instrument.md", min_bytes = 200 }
+
+[[node]]
+level = "capstone"
+id = "replay-an-old-attack"
+title = "Replay one attack from an earlier track, fully monitored"
+size = "L"
+needs = ["instrument-the-lab"]
+done_when = "re-ran one full attack chain from network-penetration-testing or web-application-security against the now-monitored lab, documented what was detected and what wasn't at {lab_dir}/notes/replay.md"
+resource = "https://attack.mitre.org/"
+verify = { type = "file", path = "{lab_dir}/notes/replay.md", min_bytes = 250 }
+
+[[node]]
+level = "capstone"
+id = "close-the-gaps"
+title = "Write detections for whatever wasn't caught"
+size = "M"
+needs = ["replay-an-old-attack"]
+done_when = "for every stage of the replayed attack that wasn't detected, wrote a new detection rule and confirmed it now fires, documented at {lab_dir}/notes/close-gaps.md"
+resource = "https://attack.mitre.org/"
+verify = { type = "file", path = "{lab_dir}/notes/close-gaps.md", min_bytes = 200 }
+
+[[node]]
+level = "capstone"
+id = "capstone-milestone"
+title = "Full defensive posture report (milestone)"
+size = "L"
+needs = ["close-the-gaps"]
+milestone = true
+done_when = "wrote one complete report at {lab_dir}/notes/capstone-report.md: what's monitored, what's hardened, what attack chain you tested end to end, what was caught, what gaps you closed, and what's still unmonitored and why that's an acceptable or unacceptable risk for a home lab"
+resource = "https://attack.mitre.org/"
+verify = { type = "file", path = "{lab_dir}/notes/capstone-report.md", min_bytes = 500 }
+
+
+[[node]]
+level = "mitre"
+id = "first-discovery"
+title = "Find one event from the last five minutes"
+size = "S"
+minutes = 10
+needs = []
+brief = "Start a tiny investigation with one real log entry."
+done_when = "On your own Linux host, create a marker with logger -t ascend-lab \"quick check\". Find it using journalctl -t ascend-lab --since \"5 minutes ago\", then record its time, source, and message."
+resource = "https://www.freedesktop.org/software/systemd/man/latest/journalctl.html"
+verify = { type = "manual" }
+
+# ---------------------------------------------------------------- side lane: quick drills
+[[node]]
+level = "mitre"
+id = "attck-technique-drill"
+title = "Read and summarise ATT&CK technique #{n} from the curated list"
+series = { from = 1, to = 15 }
+size = "S"
+needs = []
+done_when = "picked one MITRE ATT&CK technique you haven't covered yet, read its page, wrote a 3-line summary (what it is, one real detection idea, one real mitigation) in {lab_dir}/notes/attck-drills.md"
+resource = "https://attack.mitre.org/techniques/enterprise/"
+
+[[node]]
+"level" = "mitre"
+"id" = "discovery-2"
+"title" = "Separate two sources in a noisy log"
+"size" = "S"
+"minutes" = 15
+"needs" = ["first-discovery"]
+"brief" = "Give your investigator self a clean signal among harmless noise."
+"done_when" = "Generate two harmless logger messages using different tags, then use journalctl to show only one tag in the last five minutes. Save the filter and matching output, with a sentence on why the other source disappeared."
+"resource" = "https://www.freedesktop.org/software/systemd/man/latest/journalctl.html"
+"verify" = { "type" = "manual" }
+
+[[node]]
+"level" = "mitre"
+"id" = "discovery-3"
+"title" = "Test a tiny detection against a harmless lookalike"
+"size" = "S"
+"minutes" = 20
+"needs" = ["discovery-2"]
+"brief" = "A useful detection needs a match and a non-match."
+"done_when" = "Create a local text fixture with a synthetic failed-login line and a successful-login line. Write a grep or Python filter that returns only the failed event. Save the fixture, command, and result; label the data as synthetic."
+"resource" = "https://www.gnu.org/software/grep/manual/grep.html"
+"verify" = { "type" = "manual" }

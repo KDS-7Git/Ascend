@@ -1,0 +1,467 @@
+# Track 3 of 5: Network & System Penetration Testing
+# kind = "proficiency": this is the "attack a whole machine, not just a web form" track. Builds on
+# networking-for-security (you need nmap/TCP fundamentals first) and on the home-hack-lab's recon-scan node.
+# Covers enumeration, exploitation, privilege escalation, and a first taste of Active Directory.
+#
+# DRAFT written by Claude. NOT reviewed. Run `ascend pack lint`, `ascend pack check-links`, read every
+# done_when, then `ascend pack review network-penetration-testing` before trusting it.
+# Legal note baked into this pack: every target referenced is either your own Pi, a deliberately vulnerable VM
+# you download and run yourself (VulnHub), or a platform built for this purpose (TryHackMe/HTB free tiers).
+# Never point these techniques at anything you don't own or don't have explicit permission to test.
+
+[pack]
+id = "network-penetration-testing"
+title = "Network & System Penetration Testing"
+kind = "proficiency"
+version = 2
+source = "ai-draft"
+reviewed = false
+
+[vars]
+lab_dir = "~/cyber/pentest"
+pi_ip = "192.168.1.50"
+
+[[level]]
+id = "recon"
+title = "Enumeration and reconnaissance"
+lane = "main"
+
+[[level]]
+id = "service-exploitation"
+title = "Exploiting common services"
+lane = "main"
+
+[[level]]
+id = "metasploit"
+title = "The Metasploit Framework"
+lane = "main"
+
+[[level]]
+id = "linux-privesc"
+title = "Linux privilege escalation"
+lane = "main"
+
+[[level]]
+id = "windows-privesc"
+title = "Windows privilege escalation"
+lane = "main"
+
+[[level]]
+id = "active-directory"
+title = "Active Directory basics"
+lane = "main"
+
+[[level]]
+id = "post-exploitation"
+title = "Post-exploitation and persistence (defensive framing)"
+lane = "main"
+
+[[level]]
+id = "capstone"
+title = "Full box, start to root"
+lane = "main"
+
+[[level]]
+id = "boxes"
+title = "Retired boxes, one at a time"
+lane = "side"
+
+# ---------------------------------------------------------------- 1: recon
+[[node]]
+level = "recon"
+id = "nmap-scan-types"
+title = "Discover what your lab is listening for"
+size = "M"
+needs = []
+done_when = "ran 4 different nmap scan types against the Pi, saved all 4 outputs, and wrote {lab_dir}/notes/scan-types.md on what each one actually does differently at the packet level"
+resource = "https://nmap.org/book/man-port-scanning-techniques.html"
+verify = { type = "file", path = "{lab_dir}/notes/scan-types.md", min_bytes = 150 }
+minutes = 45
+brief = "Your own lab machine has a small attack surface. Find it, then see how different scans tell different stories."
+steps = ["Choose your own Pi or an isolated lab VM. Run connect and version-detection scans against a small explicit port list.", "Try SYN and UDP scans against the same owned target where permissions allow. Record any required elevated privileges or ambiguous UDP results.", "Save the four outputs and one packet-level difference for each in {lab_dir}/notes/scan-types.md."]
+hints = ["Open, closed, and filtered are observations, not synonyms. UDP silence may mean open or filtered."]
+
+[[node]]
+level = "recon"
+id = "service-enumeration"
+title = "Turn an open port into a useful lead"
+size = "M"
+needs = ["nmap-scan-types"]
+done_when = "ran nmap -sV -sC against the Pi and documented every service found, its version, and one known-CVE search per service, at {lab_dir}/notes/service-enum.md"
+resource = "https://nmap.org/book/man-version-detection.html"
+verify = { type = "file", path = "{lab_dir}/notes/service-enum.md", min_bytes = 200 }
+minutes = 45
+brief = "A port number is only a clue. Build an evidence-backed picture of what is actually running."
+steps = ["Run version detection and suitable default scripts against the lab target from your first scan.", "Confirm one service using its own client or protocol, then compare the result with the scan.", "Save the service table and one vendor advisory or CVE search per service in {lab_dir}/notes/service-enum.md. Mark uncertain version matches as unconfirmed."]
+hints = ["A banner can be misleading; a matching version string alone does not prove a vulnerability."]
+
+[[node]]
+level = "recon"
+id = "web-enum"
+title = "Find a hidden route without chasing false positives"
+size = "M"
+needs = []
+done_when = "ran a directory brute-force (gobuster or ffuf) against Juice Shop on the Pi, saved the output, wrote 3 lines on what a wordlist actually is at {lab_dir}/notes/web-enum.md"
+resource = "https://github.com/OJ/gobuster"
+verify = { type = "file", path = "{lab_dir}/notes/web-enum.md", min_bytes = 100 }
+minutes = 45
+brief = "A lab web app has more routes than its navigation shows. Separate a real discovery from a catch-all response."
+steps = ["Use an owned lab app or a designated training target, and request one known path and one nonsense path.", "Run a small directory wordlist with gobuster or ffuf, comparing status codes and response lengths with your baseline.", "Confirm one result manually and save the output plus your false-positive check in {lab_dir}/notes/web-enum.md."]
+hints = ["Single-page apps may return the same HTML for nonexistent paths. A 200 status by itself is not a discovery."]
+
+[[node]]
+level = "recon"
+id = "recon-milestone"
+title = "Build an attack-surface map of a fresh lab"
+size = "L"
+needs = ["service-enumeration", "web-enum"]
+milestone = true
+done_when = "Saved a fresh lab target’s service map and scan evidence, plus two ranked, testable hypotheses before exploitation, in {lab_dir}/notes/recon-milestone.md."
+resource = "https://www.vulnhub.com/"
+verify = { type = "file", path = "{lab_dir}/notes/recon-milestone.md", min_bytes = 300 }
+
+# ---------------------------------------------------------------- 2: service-exploitation
+minutes = 90
+brief = "Prove you can choose a useful next move from evidence before attempting an exploit."
+steps = ["Choose an isolated vulnerable VM or a training-platform target in scope.", "Map its reachable ports, services, and web entry points. Keep the raw outputs.", "Save {lab_dir}/notes/recon-milestone.md with the map, two ranked hypotheses, and the next check that would confirm or reject each."]
+hints = []
+
+[[node]]
+level = "service-exploitation"
+id = "ftp-smb-exploitation"
+title = "Exploiting misconfigured FTP and SMB"
+size = "M"
+needs = []
+done_when = "found and exploited an anonymous FTP or SMB share on a VulnHub/TryHackMe box, documented the access gained at {lab_dir}/notes/ftp-smb.md"
+resource = "https://www.rapid7.com/db/modules/auxiliary/scanner/ftp/anonymous/"
+verify = { type = "file", path = "{lab_dir}/notes/ftp-smb.md", min_bytes = 150 }
+
+[[node]]
+level = "service-exploitation"
+id = "ssh-attacks"
+title = "SSH: weak credentials, key reuse, and why brute force is a last resort"
+size = "M"
+needs = []
+done_when = "set up a deliberately weak SSH config on a throwaway VM (NOT your real Pi) and documented a credential-based attack against it at {lab_dir}/notes/ssh-attacks.md, plus why you hardened the real Pi differently in home-hack-lab"
+resource = "https://man.openbsd.org/sshd_config"
+verify = { type = "file", path = "{lab_dir}/notes/ssh-attacks.md", min_bytes = 150 }
+
+[[node]]
+level = "service-exploitation"
+id = "exploit-db-usage"
+title = "Finding and reading a real CVE/exploit writeup"
+size = "S"
+needs = ["ftp-smb-exploitation"]
+done_when = "found one real CVE for a service version you enumerated earlier, read the exploit-db or vendor writeup, and summarised the root cause in your own words at {lab_dir}/notes/cve-reading.md"
+resource = "https://www.exploit-db.com/"
+verify = { type = "file", path = "{lab_dir}/notes/cve-reading.md", min_bytes = 150 }
+
+[[node]]
+level = "service-exploitation"
+id = "service-exploitation-milestone"
+title = "Gain a foothold using a public exploit, understood not just run (milestone)"
+size = "L"
+needs = ["ssh-attacks", "exploit-db-usage"]
+milestone = true
+done_when = "used a public exploit against a vulnerable service on a VulnHub/TryHackMe box and got a shell, documented at {lab_dir}/notes/service-milestone.md not just the command but WHY the exploit works, line by line if it's a script you read"
+resource = "https://www.exploit-db.com/"
+verify = { type = "file", path = "{lab_dir}/notes/service-milestone.md", min_bytes = 300 }
+
+# ---------------------------------------------------------------- 3: metasploit
+[[node]]
+level = "metasploit"
+id = "msf-basics"
+title = "Metasploit Framework: modules, options, payloads"
+size = "M"
+needs = []
+done_when = "ran msfconsole, searched for and configured one exploit module against a VulnHub box, documented the module/options used at {lab_dir}/notes/msf-basics.md"
+resource = "https://docs.metasploit.com/docs/using-metasploit/basics/using-metasploit.html"
+verify = { type = "command", cmd = "msfconsole --version" }
+
+[[node]]
+level = "metasploit"
+id = "meterpreter"
+title = "Meterpreter: what it is and why it's not magic"
+size = "M"
+needs = ["msf-basics"]
+done_when = "got a Meterpreter session on a VulnHub box and ran 5 post-exploitation commands, documented what each actually does under the hood at {lab_dir}/notes/meterpreter.md"
+resource = "https://docs.metasploit.com/docs/using-metasploit/advanced/meterpreter/meterpreter.html"
+verify = { type = "file", path = "{lab_dir}/notes/meterpreter.md", min_bytes = 150 }
+
+[[node]]
+level = "metasploit"
+id = "manual-vs-msf"
+title = "Redo one earlier exploit manually, without the framework"
+size = "M"
+needs = []
+done_when = "picked one exploit you ran through Metasploit and reproduced the SAME result manually with curl/python/netcat, documented the comparison at {lab_dir}/notes/manual-vs-msf.md -- this is the node that proves you understand it, not just operate the tool"
+resource = "https://docs.metasploit.com/"
+verify = { type = "file", path = "{lab_dir}/notes/manual-vs-msf.md", min_bytes = 200 }
+
+[[node]]
+level = "metasploit"
+id = "metasploit-milestone"
+title = "Full exploitation chain, MSF and manual compared (milestone)"
+size = "L"
+needs = ["meterpreter", "manual-vs-msf"]
+milestone = true
+done_when = "compromised a fresh VulnHub box end to end using Metasploit, then wrote {lab_dir}/notes/metasploit-milestone.md explaining the full chain AND which parts you could now do by hand if msfconsole weren't available"
+resource = "https://docs.metasploit.com/"
+verify = { type = "file", path = "{lab_dir}/notes/metasploit-milestone.md", min_bytes = 300 }
+
+# ---------------------------------------------------------------- 4: linux-privesc
+[[node]]
+level = "linux-privesc"
+id = "linpeas-and-manual"
+title = "Automated enumeration (linpeas) vs reading it yourself"
+size = "M"
+needs = []
+done_when = "ran LinPEAS on a VulnHub box, then manually verified 3 of its findings yourself (don't just trust the tool), documented at {lab_dir}/notes/linpeas.md"
+resource = "https://github.com/carlospolop/PEASS-ng"
+verify = { type = "file", path = "{lab_dir}/notes/linpeas.md", min_bytes = 150 }
+
+[[node]]
+level = "linux-privesc"
+id = "suid-sgid"
+title = "SUID/SGID binary abuse"
+size = "M"
+needs = ["linpeas-and-manual"]
+done_when = "found a SUID binary on a target that allows privilege escalation, used GTFOBins to confirm the technique, documented at {lab_dir}/notes/suid.md"
+resource = "https://gtfobins.github.io/"
+verify = { type = "file", path = "{lab_dir}/notes/suid.md", min_bytes = 150 }
+
+[[node]]
+level = "linux-privesc"
+id = "cron-and-paths"
+title = "Cron job and PATH hijacking"
+size = "M"
+needs = []
+done_when = "found or set up a cron job vulnerable to PATH hijacking or script injection, exploited it for privesc, documented at {lab_dir}/notes/cron.md"
+resource = "https://gtfobins.github.io/#+cron"
+verify = { type = "file", path = "{lab_dir}/notes/cron.md", min_bytes = 150 }
+
+[[node]]
+level = "linux-privesc"
+id = "linux-privesc-milestone"
+title = "Root a Linux box using 2 different privesc techniques (milestone)"
+size = "L"
+needs = ["suid-sgid", "cron-and-paths"]
+milestone = true
+done_when = "fully rooted a VulnHub/TryHackMe Linux box using at least 2 different privesc techniques from this level, wrote the complete chain at {lab_dir}/notes/linux-privesc-milestone.md from initial foothold to root"
+resource = "https://gtfobins.github.io/"
+verify = { type = "file", path = "{lab_dir}/notes/linux-privesc-milestone.md", min_bytes = 300 }
+
+# ---------------------------------------------------------------- 5: windows-privesc
+[[node]]
+level = "windows-privesc"
+id = "winpeas-and-manual"
+title = "Windows enumeration (WinPEAS, seatbelt) vs manual checks"
+size = "M"
+needs = []
+done_when = "ran WinPEAS on a Windows TryHackMe box, manually verified 2 findings using native Windows commands (whoami /priv, etc.), documented at {lab_dir}/notes/winpeas.md"
+resource = "https://github.com/carlospolop/PEASS-ng"
+verify = { type = "file", path = "{lab_dir}/notes/winpeas.md", min_bytes = 150 }
+
+[[node]]
+level = "windows-privesc"
+id = "service-misconfig"
+title = "Windows service misconfigurations (unquoted paths, weak permissions)"
+size = "M"
+needs = ["winpeas-and-manual"]
+done_when = "found and exploited one misconfigured Windows service for privesc on a lab box, documented at {lab_dir}/notes/service-misconfig.md"
+resource = "https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation"
+verify = { type = "file", path = "{lab_dir}/notes/service-misconfig.md", min_bytes = 150 }
+
+[[node]]
+level = "windows-privesc"
+id = "token-impersonation"
+title = "Token impersonation (JuicyPotato-family attacks)"
+size = "M"
+needs = []
+done_when = "completed one token-impersonation lab, documented what a Windows access token actually is and why impersonating one grants privileges, at {lab_dir}/notes/token-impersonation.md"
+resource = "https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation/roguepotato-and-printspoofer"
+verify = { type = "file", path = "{lab_dir}/notes/token-impersonation.md", min_bytes = 150 }
+
+[[node]]
+level = "windows-privesc"
+id = "windows-privesc-milestone"
+title = "Full SYSTEM shell on a Windows box, chain documented (milestone)"
+size = "L"
+needs = ["service-misconfig", "token-impersonation"]
+milestone = true
+done_when = "got SYSTEM-level access on a Windows lab box using a technique from this level, wrote the full chain at {lab_dir}/notes/windows-privesc-milestone.md"
+resource = "https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation"
+verify = { type = "file", path = "{lab_dir}/notes/windows-privesc-milestone.md", min_bytes = 300 }
+
+# ---------------------------------------------------------------- 6: active-directory
+[[node]]
+level = "active-directory"
+id = "ad-concepts"
+title = "AD concepts: domains, users, groups, GPOs"
+size = "S"
+needs = []
+done_when = "wrote a one-page explainer of domain/forest/OU/GPO in your own words, at {lab_dir}/notes/ad-concepts.md, after reading one real intro"
+resource = "https://tryhackme.com/room/activedirectorybasics"
+verify = { type = "file", path = "{lab_dir}/notes/ad-concepts.md", min_bytes = 150 }
+
+[[node]]
+level = "active-directory"
+id = "ad-enumeration"
+title = "Enumerating an AD environment (BloodHound)"
+size = "M"
+needs = ["ad-concepts"]
+done_when = "completed a TryHackMe AD enumeration room, ran BloodHound against the lab domain, documented what an attack path graph actually shows at {lab_dir}/notes/ad-enum.md"
+resource = "https://github.com/BloodHoundAD/BloodHound"
+verify = { type = "file", path = "{lab_dir}/notes/ad-enum.md", min_bytes = 150 }
+
+[[node]]
+level = "active-directory"
+id = "kerberoasting"
+title = "Kerberoasting"
+size = "M"
+needs = ["ad-enumeration"]
+done_when = "completed a Kerberoasting lab, documented exactly what a service ticket is and why a weak service-account password makes it crackable offline, at {lab_dir}/notes/kerberoasting.md"
+resource = "https://www.thehacker.recipes/ad/movement/kerberos/kerberoast"
+verify = { type = "file", path = "{lab_dir}/notes/kerberoasting.md", min_bytes = 150 }
+
+[[node]]
+level = "active-directory"
+id = "ad-milestone"
+title = "Full AD attack path, one enumeration to domain admin (milestone)"
+size = "L"
+needs = ["kerberoasting"]
+milestone = true
+done_when = "completed a full beginner AD attack-path TryHackMe/HTB room end to end, wrote {lab_dir}/notes/ad-milestone.md documenting the full path from initial enumeration to domain admin, and what single misconfiguration broke the chain if fixed"
+resource = "https://tryhackme.com/room/attacktivedirectory"
+verify = { type = "file", path = "{lab_dir}/notes/ad-milestone.md", min_bytes = 300 }
+
+# ---------------------------------------------------------------- 7: post-exploitation
+[[node]]
+level = "post-exploitation"
+id = "persistence-concepts"
+title = "Persistence mechanisms (and why you should recognise them, defensively)"
+size = "M"
+needs = []
+done_when = "wrote {lab_dir}/notes/persistence.md on 3 common persistence mechanisms (cron/scheduled tasks, SSH keys, service creation), framed as 'what would I look for as a defender', not as an attack how-to"
+resource = "https://attack.mitre.org/tactics/TA0003/"
+verify = { type = "file", path = "{lab_dir}/notes/persistence.md", min_bytes = 150 }
+
+[[node]]
+level = "post-exploitation"
+id = "log-footprint"
+title = "What your own attacks leave behind in logs"
+size = "M"
+needs = []
+done_when = "after an earlier exploitation exercise, went back and checked the target's auth/system logs for evidence of what you did, documented at {lab_dir}/notes/log-footprint.md -- this is the bridge into the defensive-security-and-detection track"
+resource = "https://attack.mitre.org/matrices/enterprise/"
+verify = { type = "file", path = "{lab_dir}/notes/log-footprint.md", min_bytes = 150 }
+
+[[node]]
+level = "post-exploitation"
+id = "data-exfil-concepts"
+title = "Data exfiltration techniques, conceptually"
+size = "S"
+needs = []
+done_when = "wrote {lab_dir}/notes/exfil-concepts.md on 3 ways data can leave a network undetected and what network monitoring would catch each one"
+resource = "https://attack.mitre.org/tactics/TA0010/"
+
+[[node]]
+level = "post-exploitation"
+id = "post-exploitation-milestone"
+title = "MITRE ATT&CK mapping of your own capstone box (milestone)"
+size = "M"
+needs = ["persistence-concepts", "log-footprint"]
+milestone = true
+done_when = "took any one box you fully compromised in this track and mapped every stage of the attack to a MITRE ATT&CK tactic/technique ID, wrote {lab_dir}/notes/attck-mapping.md"
+resource = "https://attack.mitre.org/"
+verify = { type = "file", path = "{lab_dir}/notes/attck-mapping.md", min_bytes = 250 }
+
+# ---------------------------------------------------------------- 8: capstone
+[[node]]
+level = "capstone"
+id = "capstone-recon"
+title = "Capstone box: full recon, no shortcuts"
+size = "M"
+needs = []
+done_when = "picked a fresh, never-attempted VulnHub/TryHackMe/HTB box and did complete recon before any exploitation attempt, saved at {lab_dir}/notes/capstone-recon.md"
+resource = "https://www.vulnhub.com/"
+verify = { type = "file", path = "{lab_dir}/notes/capstone-recon.md", min_bytes = 200 }
+
+[[node]]
+level = "capstone"
+id = "capstone-foothold"
+title = "Get an initial foothold"
+size = "L"
+needs = ["capstone-recon"]
+done_when = "gained initial access (any shell, any privilege level) on the capstone box, documented the exploitation path at {lab_dir}/notes/capstone-foothold.md"
+resource = "https://www.vulnhub.com/"
+verify = { type = "file", path = "{lab_dir}/notes/capstone-foothold.md", min_bytes = 200 }
+
+[[node]]
+level = "capstone"
+id = "capstone-privesc"
+title = "Escalate to full root/SYSTEM"
+size = "L"
+needs = ["capstone-foothold"]
+done_when = "escalated to root or SYSTEM on the capstone box, documented the privesc path at {lab_dir}/notes/capstone-privesc.md"
+resource = "https://www.vulnhub.com/"
+verify = { type = "file", path = "{lab_dir}/notes/capstone-privesc.md", min_bytes = 200 }
+
+[[node]]
+level = "capstone"
+id = "capstone-milestone"
+title = "Full written report, start to root (milestone)"
+size = "L"
+needs = ["capstone-privesc"]
+milestone = true
+done_when = "wrote one complete report at {lab_dir}/notes/capstone-report.md covering the ENTIRE capstone box: recon, every exploitation step, privesc, and a 'how I'd defend against this' section for each stage"
+resource = "https://www.vulnhub.com/"
+verify = { type = "file", path = "{lab_dir}/notes/capstone-report.md", min_bytes = 500 }
+
+
+[[node]]
+level = "boxes"
+id = "first-discovery"
+title = "Match one local port to its process"
+size = "S"
+minutes = 10
+needs = []
+brief = "Find one service your own machine is running and identify its owner."
+done_when = "Use ss -ltnp (or your operating system’s equivalent) on your own machine. Match one listening port to a process and record whether it binds to loopback or all interfaces."
+resource = "https://man7.org/linux/man-pages/man8/ss.8.html"
+verify = { type = "manual" }
+
+# ---------------------------------------------------------------- side lane: quick drills
+[[node]]
+level = "boxes"
+id = "retired-box"
+title = "Retired HTB/VulnHub box #{n}, start to root"
+series = { from = 1, to = 15 }
+size = "M"
+needs = []
+done_when = "fully rooted retired box #{n} and wrote a 3-line summary of the one technique it taught you, at {lab_dir}/notes/boxes-log.md"
+resource = "https://www.vulnhub.com/"
+
+[[node]]
+"level" = "boxes"
+"id" = "discovery-2"
+"title" = "Prove whether a local service is reachable"
+"size" = "S"
+"minutes" = 15
+"needs" = ["first-discovery"]
+"brief" = "Turn a listening-port observation into a connection test."
+"done_when" = "Choose an owned local HTTP service, identify its binding with ss, connect with curl, then stop it and repeat. Save both results and distinguish a listener from a successful request."
+"resource" = "https://man7.org/linux/man-pages/man8/ss.8.html"
+"verify" = { "type" = "manual" }
+
+[[node]]
+"level" = "boxes"
+"id" = "discovery-3"
+"title" = "Read one service banner without a scanner"
+"size" = "S"
+"minutes" = 20
+"needs" = ["discovery-2"]
+"brief" = "Confirm a version clue using the service’s own protocol."
+"done_when" = "On an owned lab host, connect to one known SSH or HTTP service and inspect the greeting or response headers. Record what the banner claims and one reason that claim alone does not establish vulnerability."
+"resource" = "https://nmap.org/book/man-version-detection.html"
+"verify" = { "type" = "manual" }

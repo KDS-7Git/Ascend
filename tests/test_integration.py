@@ -153,8 +153,15 @@ def test_browser_complete_flow(live_server, width, height, tmp_path):
         assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
         page.get_by_role("button", name="10 min", exact=True).click()
         expect(page.get_by_text("A smaller step, perhaps.")).to_be_visible()
-        page.get_by_role("button", name="Surprise me", exact=True).click()
-        page.locator(".next-card").get_by_role("button", name="Log it").click()
+        page.get_by_role("button", name="Any time", exact=True).click()
+        page.locator(".next-card").get_by_role("button", name="Open challenge").click()
+        expect(page.get_by_role("heading", name="Your finish line")).to_be_visible()
+        expect(
+            page.get_by_role("link", name="Open learning resource")
+        ).to_have_attribute("href", "https://docs.python.org/3/")
+        page.locator("#sheet").get_by_role(
+            "button", name="Log progress", exact=True
+        ).click()
         page.get_by_label("What I did", exact=True).fill(
             "I tested this example and explained why it worked"
         )
@@ -162,8 +169,10 @@ def test_browser_complete_flow(live_server, width, height, tmp_path):
         page.get_by_text("Add details", exact=True).click()
         page.get_by_label("Minutes spent", exact=True).fill("15")
         page.get_by_label("Mark as done", exact=True).check()
-        page.get_by_role("button", name="Log", exact=True).click()
+        page.get_by_role("button", name="Complete challenge", exact=True).click()
         expect(page.locator("#sheet")).not_to_be_visible()
+        expect(page.locator("#session-result")).to_contain_text("Challenge complete!")
+        expect(page.locator("#session-result")).to_contain_text("Unlocked: Second")
         expect(page.locator("#streak")).to_have_text("1")
         page.get_by_role("button", name="Path", exact=True).click()
         expect(page.locator(".path-node.done")).to_have_count(1)
@@ -182,4 +191,111 @@ def test_browser_complete_flow(live_server, width, height, tmp_path):
         page.reload()
         expect(page.locator("html")).to_have_attribute("data-theme", "dark")
         assert not errors
+        browser.close()
+
+
+def test_browser_guidance_partial_work_and_failed_evidence(
+    live_server, pack_data, tmp_path
+):
+    import httpx
+    from playwright.sync_api import sync_playwright, expect
+
+    pack_data["node"][0].update(
+        brief="Find the clue hidden in your own tiny experiment.",
+        steps=["Make a prediction.", "Compare it with the observed output."],
+        hints=["Change one input at a time."],
+        verify={"type": "file", "path": str(tmp_path / "missing-evidence.txt")},
+    )
+    response = httpx.post(
+        live_server + "/api/packs",
+        files={"file": ("test.toml", dump_toml(pack_data), "text/plain")},
+    )
+    assert response.status_code == 200
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch()
+        page = browser.new_page(
+            viewport={"width": 390, "height": 844}, reduced_motion="reduce"
+        )
+        page.goto(live_server)
+        page.get_by_role("button", name="Open challenge", exact=True).click()
+        expect(page.locator(".challenge-steps li")).to_have_count(2)
+        expect(
+            page.get_by_text("Change one input at a time.", exact=True)
+        ).not_to_be_visible()
+        page.get_by_text("Hint 1", exact=True).click()
+        expect(
+            page.get_by_text("Change one input at a time.", exact=True)
+        ).to_be_visible()
+        page.locator("#sheet").get_by_role(
+            "button", name="Log progress", exact=True
+        ).click()
+        page.get_by_label("What I did", exact=True).fill(
+            "I compared a prediction with the first observed result"
+        )
+        page.get_by_role("button", name="Save progress", exact=True).click()
+        expect(page.locator("#session-result")).to_contain_text("Progress saved")
+        expect(page.locator(".next-card h2")).to_have_text("First task")
+        page.locator(".next-card").get_by_role(
+            "button", name="Log progress", exact=True
+        ).click()
+        page.get_by_label("What I did", exact=True).fill(
+            "I tried another input but have not saved the evidence file"
+        )
+        page.get_by_label("Mark as done", exact=True).check()
+        page.get_by_role("button", name="Complete challenge", exact=True).click()
+        expect(page.locator("#session-result")).to_contain_text(
+            "Evidence file does not exist"
+        )
+        expect(page.locator("#session-result")).not_to_have_class(
+            "session-result completed"
+        )
+        expect(page.locator(".next-card h2")).to_have_text("First task")
+        assert len(httpx.get(live_server + "/api/entries").json()) == 2
+        page.get_by_role("button", name="Path", exact=True).click()
+        page.locator("#level-second > summary").click()
+        page.locator(".path-node.locked").click()
+        expect(
+            page.locator("#sheet").get_by_role(
+                "button", name="Log progress", exact=True
+            )
+        ).to_have_count(0)
+        expect(page.locator(".lock-note")).to_contain_text("previous level")
+        browser.close()
+
+
+def test_browser_skips_do_not_earn_milestones(live_server, pack_data):
+    import httpx
+    from playwright.sync_api import sync_playwright, expect
+
+    for node in pack_data["node"][:2]:
+        node["milestone"] = True
+    assert (
+        httpx.post(
+            live_server + "/api/packs",
+            files={"file": ("test.toml", dump_toml(pack_data), "text/plain")},
+        ).status_code
+        == 200
+    )
+    for node, status in [("one", "skipped"), ("two", "done")]:
+        assert (
+            httpx.post(
+                live_server + f"/api/nodes/test-pack:{node}/mark",
+                json={"status": status},
+            ).status_code
+            == 200
+        )
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch()
+        page = browser.new_page(viewport={"width": 390, "height": 844})
+        page.goto(live_server)
+        expect(
+            page.get_by_role("heading", name="Your main path is explored.")
+        ).to_be_visible()
+        expect(page.locator(".mission-meta")).to_contain_text("50%")
+        expect(page.locator(".mission-meta")).to_contain_text(
+            "1/2 complete · 1 skipped"
+        )
+        page.get_by_role("button", name="Stats", exact=True).click()
+        expect(page.locator(".earned-badge")).to_have_count(1)
+        expect(page.locator(".earned-badge")).to_contain_text("Second task")
         browser.close()

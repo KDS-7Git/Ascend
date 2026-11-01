@@ -1,0 +1,633 @@
+{
+  "checked_on": "2026-11-01",
+  "results": [
+    {
+      "url": "https://attack.mitre.org/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://attack.mitre.org/matrices/enterprise/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://attack.mitre.org/tactics/TA0003/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://attack.mitre.org/tactics/TA0010/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://attack.mitre.org/techniques/enterprise/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://beej.us/guide/bgnet/html/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation/roguepotato-and-printspoofer",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://crackmes.one/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://csrc.nist.gov/pubs/sp/800/61/r3/final",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://ctf101.org/binary-exploitation/aslr/",
+      "status": null,
+      "ok": false,
+      "reason": "Unreachable"
+    },
+    {
+      "url": "https://ctf101.org/binary-exploitation/format-string-vulnerabilities/",
+      "status": null,
+      "ok": false,
+      "reason": "Unreachable"
+    },
+    {
+      "url": "https://ctf101.org/binary-exploitation/heap-exploitation/",
+      "status": null,
+      "ok": false,
+      "reason": "Unreachable"
+    },
+    {
+      "url": "https://ctf101.org/binary-exploitation/no-execute/",
+      "status": null,
+      "ok": false,
+      "reason": "Unreachable"
+    },
+    {
+      "url": "https://ctf101.org/binary-exploitation/overview/",
+      "status": null,
+      "ok": false,
+      "reason": "Unreachable"
+    },
+    {
+      "url": "https://ctf101.org/binary-exploitation/return-oriented-programming/",
+      "status": null,
+      "ok": false,
+      "reason": "Unreachable"
+    },
+    {
+      "url": "https://ctf101.org/binary-exploitation/stack-canaries/",
+      "status": null,
+      "ok": false,
+      "reason": "Unreachable"
+    },
+    {
+      "url": "https://ctf101.org/binary-exploitation/what-is-a-buffer-overflow/",
+      "status": null,
+      "ok": false,
+      "reason": "Unreachable"
+    },
+    {
+      "url": "https://developer.chrome.com/docs/devtools/network/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/Performance/How_browsers_work",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://docs.metasploit.com/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://docs.metasploit.com/docs/using-metasploit/advanced/meterpreter/meterpreter.html",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://docs.metasploit.com/docs/using-metasploit/basics/using-metasploit.html",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://docs.securityonion.net/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://docs.securityonion.net/en/2.4/kibana.html",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://docs.suricata.io/en/latest/quickstart.html",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://docs.suricata.io/en/latest/rules/intro.html",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://docs.zeek.org/en/master/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://docs.zeek.org/en/master/logs/index.html",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://docs.zeek.org/en/master/quickstart.html",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://documentation.ubuntu.com/server/how-to/software/automatic-updates/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/X86_calling_conventions",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://exploit.education/phoenix/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://ghidra-sre.org/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://ghidra-sre.org/CheatSheet.html",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://github.com/BloodHoundAD/BloodHound",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://github.com/JonathanSalwan/ROPgadget",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://github.com/OJ/gobuster",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://github.com/SigmaHQ/sigma",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://github.com/carlospolop/PEASS-ng",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://github.com/pwndbg/pwndbg",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://gtfobins.github.io/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://gtfobins.github.io/#+cron",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://help.ubuntu.com/community/UFW",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://man.openbsd.org/sshd_config",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://man7.org/linux/man-pages/man1/strings.1.html",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://man7.org/linux/man-pages/man8/ip-route.8.html",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://man7.org/linux/man-pages/man8/ss.8.html",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://nmap.org/book/man-port-scanning-techniques.html",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://nmap.org/book/man-version-detection.html",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://nmap.org/book/man.html",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://owasp.org/www-community/vulnerabilities/Using_freed_memory",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://owasp.org/www-project-top-ten/",
+      "status": null,
+      "ok": false,
+      "reason": "Unreachable"
+    },
+    {
+      "url": "https://owasp.org/www-project-web-security-testing-guide/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://picoctf.org/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://portswigger.net/web-security/access-control",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://portswigger.net/web-security/access-control/idor",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://portswigger.net/web-security/all-labs",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://portswigger.net/web-security/all-topics",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://portswigger.net/web-security/api-testing",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://portswigger.net/web-security/authentication",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://portswigger.net/web-security/authentication/other-mechanisms",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://portswigger.net/web-security/cross-site-scripting",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://portswigger.net/web-security/cross-site-scripting/content-security-policy",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://portswigger.net/web-security/csrf",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://portswigger.net/web-security/deserialization",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://portswigger.net/web-security/graphql",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://portswigger.net/web-security/information-disclosure",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://portswigger.net/web-security/jwt",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://portswigger.net/web-security/logic-flaws",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://portswigger.net/web-security/os-command-injection",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://portswigger.net/web-security/race-conditions",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://portswigger.net/web-security/sql-injection",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://portswigger.net/web-security/sql-injection/blind",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://portswigger.net/web-security/sql-injection/union-attacks",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://portswigger.net/web-security/ssrf",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://portswigger.net/web-security/xxe",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://ropemporium.com/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://ropemporium.com/challenge/ret2win.html",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://securityonionsolutions.com/software",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://sourceware.org/binutils/docs/binutils/objdump.html",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://sourceware.org/binutils/docs/binutils/strings.html",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://sourceware.org/gdb/current/onlinedocs/gdb.html/Set-Watchpoints.html",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://sourceware.org/gdb/current/onlinedocs/gdb/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://tryhackme.com/room/activedirectorybasics",
+      "status": 429,
+      "ok": false,
+      "reason": "Access restricted"
+    },
+    {
+      "url": "https://tryhackme.com/room/attacktivedirectory",
+      "status": 429,
+      "ok": false,
+      "reason": "Access restricted"
+    },
+    {
+      "url": "https://ubuntu.com/server/docs/security-introduction",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://wiki.wireshark.org/DisplayFilters",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://www.cisecurity.org/cis-benchmarks",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://www.cloudflare.com/learning/ddos/glossary/user-datagram-protocol-udp/",
+      "status": 403,
+      "ok": false,
+      "reason": "Access restricted"
+    },
+    {
+      "url": "https://www.cloudflare.com/learning/dns/what-is-dns/",
+      "status": 403,
+      "ok": false,
+      "reason": "Access restricted"
+    },
+    {
+      "url": "https://www.cloudflare.com/learning/network-layer/what-is-dhcp/",
+      "status": 403,
+      "ok": false,
+      "reason": "Access restricted"
+    },
+    {
+      "url": "https://www.cloudflare.com/learning/network-layer/what-is-mtu/",
+      "status": 403,
+      "ok": false,
+      "reason": "Access restricted"
+    },
+    {
+      "url": "https://www.cloudflare.com/learning/network-layer/what-is-nat/",
+      "status": 403,
+      "ok": false,
+      "reason": "Access restricted"
+    },
+    {
+      "url": "https://www.cs.virginia.edu/~evans/cs216/guides/x86.html",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://www.eff.org/issues/cfaa",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://www.exploit-db.com/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://www.exploit-db.com/shellcodes",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://www.freedesktop.org/software/systemd/man/journalctl.html",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://www.freedesktop.org/software/systemd/man/latest/journalctl.html",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://www.gnu.org/software/gawk/manual/gawk.html",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://www.gnu.org/software/grep/manual/grep.html",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://www.loggly.com/ultimate-guide/linux-logging-basics/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://www.practicalnetworking.net/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://www.practicalnetworking.net/series/packet-traveling/ethernet/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://www.practicalnetworking.net/series/packet-traveling/osi-model/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://www.practicalnetworking.net/stand-alone/subnetting-mastery/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://www.rapid7.com/db/modules/auxiliary/scanner/ftp/anonymous/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc9293.html",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://www.sans.org/white-papers/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://www.thehacker.recipes/ad/movement/kerberos/kerberoast",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://www.vulnhub.com/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://www.wifi-professionals.com/2019/01/4-way-handshake",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://www.wireshark.org/docs/man-pages/tshark.html",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://www.wireshark.org/docs/wsug_html_chunked/",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "url": "https://www.wireshark.org/docs/wsug_html_chunked/ChAdvFollowStreamSection.html",
+      "status": 200,
+      "ok": true
+    }
+  ],
+  "replaced_urls": {
+    "https://www.cloudflare.com/learning/ddos/glossary/open-systems-interconnection-model-osi/": "https://www.practicalnetworking.net/series/packet-traveling/osi-model/",
+    "https://www.practicalnetworking.net/series/packet-traveling/packet-walkthrough/": "https://www.practicalnetworking.net/series/packet-traveling/ethernet/",
+    "https://www.practicalnetworking.net/series/picture-of-the-network/the-routing-table/": "https://man7.org/linux/man-pages/man8/ip-route.8.html",
+    "https://www.practicalnetworking.net/series/subnetting/subnetting-introduction/": "https://www.practicalnetworking.net/stand-alone/subnetting-mastery/",
+    "https://www.practicalnetworking.net/series/tcp-a-deep-dive/tcp-three-way-handshake/": "https://www.rfc-editor.org/rfc/rfc9293.html",
+    "https://www.practicalnetworking.net/series/wireless-nets/introduction/": "https://www.wireshark.org/docs/wsug_html_chunked/",
+    "https://docs.metasploit.com/docs/using-metasploit/getting-started/metasploit-guide.html": "https://docs.metasploit.com/docs/using-metasploit/basics/using-metasploit.html",
+    "https://docs.metasploit.com/docs/using-metasploit/basics/how-to-use-a-metasploit-module-with-meterpreter.html": "https://docs.metasploit.com/docs/using-metasploit/advanced/meterpreter/meterpreter.html",
+    "https://www.hackingarticles.in/comprehensive-guide-on-ftp-penetration-testing/": "https://www.rapid7.com/db/modules/auxiliary/scanner/ftp/anonymous/",
+    "https://www.ssh.com/academy/ssh/attack": "https://man.openbsd.org/sshd_config",
+    "https://owasp.org/www-community/Logging_Cheat_Sheet": "https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html",
+    "https://portswigger.net/web-security/authentication/session": "https://portswigger.net/web-security/authentication/other-mechanisms",
+    "https://ubuntu.com/server/docs/security-updates": "https://documentation.ubuntu.com/server/how-to/software/automatic-updates/",
+    "https://www.eff.org/issues/computer-fraud-and-abuse-act": "https://www.eff.org/issues/cfaa",
+    "https://www.sans.org/white-papers/incident-handlers-handbook/": "https://csrc.nist.gov/pubs/sp/800/61/r3/final"
+  }
+}

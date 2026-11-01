@@ -1,0 +1,89 @@
+# Ascend: making the next challenge worth opening
+
+Audit and implementation: 2026-11-01. This revises the original UI brief in response
+to the owner's experience that the implemented interface and tracks were not
+motivating. The four destinations and shared CLI/server architecture remain useful.
+The earlier restriction to a logging-first hero and extremely restrained feedback
+is superseded by the challenge-first flow described here.
+
+## What the reference platforms actually contribute
+
+The audit used public first-party pages, not authenticated accounts or a usability
+study. These observations describe published product flows; they do not establish
+that the same changes will improve this user's long-term motivation.
+
+| Reference | Observed pattern | Ascend adaptation |
+| --- | --- | --- |
+| [Duolingo's learning-path design](https://blog.duolingo.com/new-duolingo-home-screen-design/) | A guided next step, smaller units, distinctive end-of-unit challenges, optional practice, and a way to return to the current position. The article also explains practice interleaved into the path. | Clearly marked current level, compact overview, numbered connected challenges, distinct milestone nodes, jump-to-current navigation. Optional practice stays separate; no spaced-repetition algorithm is claimed. |
+| [HTB Academy](https://academy.hackthebox.com/) | Skill/job paths built from modules; practical exercises, real-world examples, and assessments. Difficulty and course scope are visible before starting. | A challenge brief, estimated time, concrete finish line, direct resource access, and a preview of the next milestone. Ascend does not provide hosted lab machines or certifications. |
+| [TryHackMe](https://tryhackme.com/) | Beginner-friendly pathways, guides and challenges, real-world scenarios, and exercises in lessons. | Small investigations with a first action, optional progressive hints, and an easy transition from doing the work to recording evidence. |
+| [The Odin Project paths](https://www.theodinproject.com/paths) | A common foundation, ordered courses, and building real working projects. | Retain deliberate prerequisite order while making the output of each challenge concrete. |
+
+The public pages above were readable during the audit. TryHackMe's `/hacktivities`
+endpoint returned 429; an individual help article returned 403. No claim is made
+about having inspected their signed-in dashboards. No platform assets, proprietary
+course text, mascots, or course interfaces were copied.
+
+## Problems in the previous Ascend experience
+
+- Today offered **Log it** before showing a resource or helping the learner begin.
+- The completion control was hidden inside an optional-details disclosure.
+- Path showed a long, visually uniform list; the current level and next milestone
+  were not prominent enough to create a sense of forward movement.
+- Passing structural pack validation was treated as a stronger content-quality
+  signal than it is. The five imported cyber tracks had no explicit minute
+  estimates. Several began with writing definitions, and one purported quick-win
+  lane consisted of whole machines to root.
+- A file existing proves the presence of an artifact, not mastery. An installed
+  tool's version does not prove the corresponding exercise was completed.
+
+## Implemented experience
+
+**Today:** one active-track overview, a clear current position, honest completion
+counts, time choices, and one primary challenge. A smaller optional challenge and
+milestone preview give an alternative and a destination. The purple palette,
+consistent line icons, stronger type hierarchy, connected route motif, and amber
+milestone treatment make progress more legible. Dark mode and phone navigation
+use the same system.
+
+**Challenge:** Open challenge reveals the scenario, finish line, optional concrete
+steps, resource link, and hints behind individual disclosures. Existing packs
+without this metadata still show their original completion criterion and resource.
+Hints never mark a challenge done. There is no fake running lab or automatic timer.
+
+**Save:** partial work and completion are explicit. Completion calls the existing
+verification-backed logging endpoint. A failed check saves the session and explains
+why the challenge is still open. Confirmed completion shows a brief inline success
+panel and any newly opened levels. It does not award invented XP or trigger an
+extra modal. Completed challenges can be practiced again; manual mark-done is no
+longer the prominent route around evidence checks.
+
+**Path:** numbered level headers form a compact overview. The current level opens
+by default; any other level can be expanded. Connected circular challenge nodes
+have distinct ready, complete, skipped, and locked states. Milestones use amber
+diamonds. Jump to current level works with keyboard focus and reduced motion.
+Optional drills are grouped below the main path.
+
+**Stats:** earned milestone badges derive from actual `done` nodes in the active
+track. Skipped nodes do not earn badges or inflate the completed-step percentage.
+The existing streak, heatmap, minutes, and note search remain available.
+
+## Content changes and limits
+
+The five cyber tracks are version 2, retain their existing node IDs, and are now
+included in the bundled community registry. Their opening levels use practical
+experiments and investigations with `brief`, `steps`, and `hints` metadata. Short
+optional discoveries supply an actual small-session alternative. Larger exercises
+remain larger; they are not relabeled as ten-minute tasks.
+
+The first networking capstone can use a staged disposable-lab fault, so completion
+no longer depends on waiting for a real outage. The nmap opening checks the saved
+exercise evidence instead of whether nmap is installed. A directory-as-file check,
+incorrect ROP challenge name, and off-by-one drill descriptions were corrected.
+The later subject coverage is still a draft curriculum, not a complete authored
+course or proof of proficiency. File checks still check files, not understanding.
+
+No XP economy, leaderboard, urgency prompts, external telemetry, automatic trust,
+new accounts, or subscription gates are introduced. The improvement to motivation
+must be judged through actual use. A useful follow-up is whether the owner opens a
+challenge, reaches a concrete result, and returns willingly over a week.

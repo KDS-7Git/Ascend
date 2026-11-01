@@ -1,0 +1,447 @@
+# Track 1 of 5: Networking for Security
+# kind = "proficiency": foundational track. Everything else in the Cyber set leans on this one, so start here
+# unless you can already draw a TCP handshake from memory and explain NAT to someone.
+#
+# DRAFT written by Claude. NOT reviewed. Run `ascend pack lint`, `ascend pack check-links`, read every
+# done_when, then `ascend pack review networking-for-security` before trusting it.
+
+[pack]
+id = "networking-for-security"
+title = "Networking for Security: how packets actually move"
+kind = "proficiency"
+version = 2
+source = "ai-draft"
+reviewed = false
+
+[vars]
+lab_dir = "~/cyber/networking"
+pi_ip = "192.168.1.50"
+
+[[level]]
+id = "models"
+title = "OSI/TCP-IP models and Ethernet"
+lane = "main"
+
+[[level]]
+id = "addressing"
+title = "IP addressing, subnetting, routing"
+lane = "main"
+
+[[level]]
+id = "transport"
+title = "TCP, UDP, and the handshake"
+lane = "main"
+
+[[level]]
+id = "application"
+title = "DNS, HTTP, and application-layer protocols"
+lane = "main"
+
+[[level]]
+id = "capture"
+title = "Packet capture with Wireshark/tshark"
+lane = "main"
+
+[[level]]
+id = "services"
+title = "DHCP, NAT, and firewalls"
+lane = "main"
+
+[[level]]
+id = "wireless"
+title = "Wireless and link-layer security basics"
+lane = "main"
+
+[[level]]
+id = "capstone"
+title = "Diagnose a real problem"
+lane = "main"
+
+# ---------------------------------------------------------------- 1: models
+[[level]]
+id = "packet-snacks"
+title = "Packet snacks"
+lane = "side"
+
+[[node]]
+level = "models"
+id = "osi-vs-tcpip"
+title = "Catch a request in the act"
+size = "S"
+needs = []
+done_when = "Saved {lab_dir}/notes/osi-vs-tcpip.md with an OSI-to-TCP/IP comparison grounded in my own local request, including what I observed and what I could not see."
+resource = "https://www.practicalnetworking.net/series/packet-traveling/osi-model/"
+verify = { type = "file", path = "{lab_dir}/notes/osi-vs-tcpip.md", min_bytes = 150 }
+minutes = 20
+brief = "Your browser hides a whole conversation. Make one local request, then connect the packet layers to something you can actually see."
+steps = ["Start a temporary local HTTP server with python3 -m http.server 8000 --bind 127.0.0.1 in an empty folder.", "In another terminal, run curl -v http://127.0.0.1:8000/ and find the connection, request, and response.", "Save a small OSI-to-TCP/IP comparison in {lab_dir}/notes/osi-vs-tcpip.md. Tie application, transport, and network layers to this request; mark layers you did not observe. Stop the server with Ctrl+C."]
+hints = ["Start with the HTTP request line, the TCP port, and the IP address. You do not need to memorise seven definitions."]
+
+[[node]]
+level = "models"
+id = "mac-and-arp"
+title = "Find the device answering your laptop"
+size = "S"
+needs = []
+done_when = "captured ARP traffic on my own LAN with Wireshark and saved the capture, with 3 lines explaining what ARP resolves"
+resource = "https://www.wireshark.org/docs/wsug_html_chunked/"
+minutes = 20
+brief = "Turn your own LAN into a tiny detective case: which MAC address belongs to your gateway?"
+steps = ["Find the default gateway with ip route (or your operating system’s network settings).", "Capture on your LAN interface with Wireshark while pinging your own gateway once. Look for ARP; if the entry is already cached, inspect ip neigh instead.", "Save the capture or neighbour-table output, and identify the requested IP and answering MAC. Explain the lookup in one sentence."]
+hints = ["An ARP request asks who has an IP address. The reply supplies a link-layer address."]
+
+[[node]]
+level = "models"
+id = "ethernet-framing"
+title = "Read the envelope around a packet"
+size = "S"
+needs = ["mac-and-arp"]
+done_when = "opened one captured frame in Wireshark, identified source/dest MAC, EtherType, and payload boundary, noted in {lab_dir}/notes/ethernet.md"
+resource = "https://www.practicalnetworking.net/series/packet-traveling/ethernet/"
+verify = { type = "file", path = "{lab_dir}/notes/ethernet.md", min_bytes = 100 }
+minutes = 20
+brief = "Find out why a packet can name one machine at the Ethernet layer and another at the IP layer."
+steps = ["Open a frame from your own LAN capture and expand Ethernet and IP.", "Identify the source MAC, destination MAC, EtherType, and the start of the payload.", "Save those fields in {lab_dir}/notes/ethernet.md and explain whether this frame is addressed to the final destination or the next hop."]
+hints = ["For off-LAN traffic, the destination MAC normally belongs to your gateway."]
+
+[[node]]
+level = "models"
+id = "layers-milestone"
+title = "Follow one request from app to wire"
+size = "M"
+needs = ["osi-vs-tcpip", "ethernet-framing"]
+milestone = true
+done_when = "Saved a capture and {lab_dir}/notes/layers-milestone.md mapping a real request to the protocol layers, with frame numbers and clear limits on what the capture shows."
+resource = "https://www.practicalnetworking.net/series/packet-traveling/osi-model/"
+verify = { type = "file", path = "{lab_dir}/notes/layers-milestone.md", min_bytes = 300 }
+
+# ---------------------------------------------------------------- 2: addressing
+minutes = 45
+brief = "Bring the first level together: tell the story of one request using your own capture as evidence."
+steps = ["Capture one HTTP request to a server on a lab device you control. Use loopback if a second device is unavailable.", "Follow the request and response. Identify the addresses, transport ports, and application data.", "Save {lab_dir}/notes/layers-milestone.md with the relevant frame numbers and an OSI/TCP-IP mapping. Explicitly label anything the capture cannot establish."]
+hints = []
+
+[[node]]
+level = "addressing"
+id = "ipv4-basics"
+title = "IPv4 addressing and CIDR notation"
+size = "S"
+needs = []
+done_when = "worked 5 subnetting problems by hand (not a calculator) and saved the worked answers at {lab_dir}/notes/subnetting.md"
+resource = "https://www.practicalnetworking.net/stand-alone/subnetting-mastery/"
+verify = { type = "file", path = "{lab_dir}/notes/subnetting.md", min_bytes = 200 }
+
+[[node]]
+level = "addressing"
+id = "private-vs-public"
+title = "Private ranges, NAT, and why your Pi has a 192.168.x.x address"
+size = "S"
+needs = ["ipv4-basics"]
+done_when = "explained in 5 lines why my laptop and Pi share a private range but can both reach the internet, saved at {lab_dir}/notes/nat-basics.md"
+resource = "https://www.cloudflare.com/learning/network-layer/what-is-nat/"
+
+[[node]]
+level = "addressing"
+id = "routing-basics"
+title = "How a router decides where a packet goes"
+size = "M"
+needs = ["private-vs-public"]
+done_when = "ran `ip route` (or `route print` on Windows) on my own machine and annotated every line of output in {lab_dir}/notes/routing.md"
+resource = "https://man7.org/linux/man-pages/man8/ip-route.8.html"
+verify = { type = "file", path = "{lab_dir}/notes/routing.md", min_bytes = 150 }
+
+[[node]]
+level = "addressing"
+id = "addressing-milestone"
+title = "Design a subnet plan for my own home lab (milestone)"
+size = "M"
+needs = ["routing-basics"]
+milestone = true
+done_when = "wrote a subnet plan at {lab_dir}/notes/lab-subnet-plan.md covering laptop, Pi, and router, with CIDR blocks I chose myself and justified"
+resource = "https://www.practicalnetworking.net/stand-alone/subnetting-mastery/"
+verify = { type = "file", path = "{lab_dir}/notes/lab-subnet-plan.md", min_bytes = 250 }
+
+# ---------------------------------------------------------------- 3: transport
+[[node]]
+level = "transport"
+id = "tcp-handshake"
+title = "The TCP three-way handshake, captured live"
+size = "M"
+needs = []
+done_when = "captured a real TCP handshake (SYN/SYN-ACK/ACK) to {pi_ip} with Wireshark and saved the capture at {lab_dir}/pcaps/handshake.pcapng"
+resource = "https://www.rfc-editor.org/rfc/rfc9293.html"
+verify = { type = "file", path = "{lab_dir}/pcaps/handshake.pcapng", min_bytes = 500 }
+
+[[node]]
+level = "transport"
+id = "tcp-vs-udp"
+title = "TCP vs UDP: when each is actually used"
+size = "S"
+needs = []
+done_when = "listed 5 real protocols/apps and said TCP or UDP for each, with one sentence of reasoning per item, in {lab_dir}/notes/tcp-vs-udp.md"
+resource = "https://www.cloudflare.com/learning/ddos/glossary/user-datagram-protocol-udp/"
+verify = { type = "file", path = "{lab_dir}/notes/tcp-vs-udp.md", min_bytes = 150 }
+
+[[node]]
+level = "transport"
+id = "ports-and-sockets"
+title = "Ports, sockets, and what `nmap` is actually asking"
+size = "S"
+needs = ["tcp-handshake"]
+done_when = "ran a basic nmap scan against the Pi, saved the output, and explained in 3 lines what a socket is"
+resource = "https://nmap.org/book/man.html"
+
+[[node]]
+level = "transport"
+id = "transport-milestone"
+title = "Build a tiny TCP client/server in Python (milestone)"
+size = "L"
+needs = ["ports-and-sockets", "tcp-vs-udp"]
+milestone = true
+done_when = "wrote a working TCP client and server from scratch (no copied code) that exchange one message, saved with the server at {lab_dir}/code/tcp-chat/server.py, and can explain every socket call without notes"
+resource = "https://beej.us/guide/bgnet/html/"
+verify = { type = "file", path = "{lab_dir}/code/tcp-chat/server.py", min_bytes = 50 }
+
+# ---------------------------------------------------------------- 4: application
+[[node]]
+level = "application"
+id = "dns-resolution"
+title = "How DNS resolution actually works"
+size = "M"
+needs = []
+done_when = "ran `dig` or `nslookup` on a real domain, captured the DNS query/response in Wireshark, saved both at {lab_dir}/notes/dns.md"
+resource = "https://www.cloudflare.com/learning/dns/what-is-dns/"
+verify = { type = "file", path = "{lab_dir}/notes/dns.md", min_bytes = 150 }
+
+[[node]]
+level = "application"
+id = "http-anatomy"
+title = "Anatomy of an HTTP request and response"
+size = "S"
+needs = []
+done_when = "captured one real HTTP request/response pair and annotated every header I recognise, saved at {lab_dir}/notes/http.md"
+resource = "https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview"
+verify = { type = "file", path = "{lab_dir}/notes/http.md", min_bytes = 150 }
+
+[[node]]
+level = "application"
+id = "other-app-protocols"
+title = "A quick survey: SMTP, FTP, SSH on the wire"
+size = "S"
+needs = ["http-anatomy"]
+done_when = "captured one SSH connection attempt and noted which parts are visible in plaintext vs encrypted, saved at {lab_dir}/notes/app-protocols.md"
+resource = "https://www.wireshark.org/docs/wsug_html_chunked/"
+
+[[node]]
+level = "application"
+id = "application-milestone"
+title = "Trace a full page load, protocol by protocol (milestone)"
+size = "M"
+needs = ["dns-resolution", "other-app-protocols"]
+milestone = true
+done_when = "captured a full page load (DNS -> TCP -> HTTP) for one site and wrote {lab_dir}/notes/full-trace.md walking through every protocol in order, in my own words"
+resource = "https://developer.mozilla.org/en-US/docs/Web/Performance/How_browsers_work"
+verify = { type = "file", path = "{lab_dir}/notes/full-trace.md", min_bytes = 300 }
+
+# ---------------------------------------------------------------- 5: capture
+[[node]]
+level = "capture"
+id = "wireshark-filters"
+title = "Display filters that actually matter"
+size = "S"
+needs = []
+done_when = "wrote and saved 10 Wireshark display filters I actually use, with a one-line note on what each finds, at {lab_dir}/notes/filters.md"
+resource = "https://wiki.wireshark.org/DisplayFilters"
+verify = { type = "file", path = "{lab_dir}/notes/filters.md", min_bytes = 200 }
+
+[[node]]
+level = "capture"
+id = "tshark-cli"
+title = "tshark: Wireshark from the command line"
+size = "S"
+needs = ["wireshark-filters"]
+done_when = "captured 30 seconds of traffic with tshark on the CLI (no GUI) and saved both the command and output at {lab_dir}/notes/tshark.md"
+resource = "https://www.wireshark.org/docs/man-pages/tshark.html"
+verify = { type = "file", path = "{lab_dir}/notes/tshark.md", min_bytes = 100 }
+
+[[node]]
+level = "capture"
+id = "follow-a-stream"
+title = "Follow a TCP stream to read a full conversation"
+size = "S"
+needs = ["wireshark-filters"]
+done_when = "used Wireshark's 'Follow TCP Stream' on a real capture and saved a screenshot plus a one-line summary of the exchange at {lab_dir}/notes/stream.md"
+resource = "https://www.wireshark.org/docs/wsug_html_chunked/ChAdvFollowStreamSection.html"
+
+[[node]]
+level = "capture"
+id = "capture-milestone"
+title = "Capture and fully decode a mystery protocol (milestone)"
+size = "M"
+needs = ["tshark-cli", "follow-a-stream"]
+milestone = true
+done_when = "captured traffic from an app I've never analysed before (not HTTP/DNS) and wrote {lab_dir}/notes/mystery-protocol.md identifying the protocol and explaining 3 fields in its header, worked out myself, not looked up"
+resource = "https://www.wireshark.org/docs/wsug_html_chunked/"
+verify = { type = "file", path = "{lab_dir}/notes/mystery-protocol.md", min_bytes = 250 }
+
+# ---------------------------------------------------------------- 6: services
+[[node]]
+level = "services"
+id = "dhcp-lease"
+title = "Watch a DHCP lease happen"
+size = "S"
+needs = []
+done_when = "captured a DHCP DORA exchange (release and renew an IP to force it) and saved the capture plus a 3-line explanation at {lab_dir}/notes/dhcp.md"
+resource = "https://www.cloudflare.com/learning/network-layer/what-is-dhcp/"
+verify = { type = "file", path = "{lab_dir}/notes/dhcp.md", min_bytes = 100 }
+
+[[node]]
+level = "services"
+id = "nat-traversal"
+title = "Watch your own NAT translation happen"
+size = "S"
+needs = []
+done_when = "identified my public IP vs private IP and explained in 3 lines how the router rewrites packets, saved at {lab_dir}/notes/nat-live.md"
+resource = "https://www.cloudflare.com/learning/network-layer/what-is-nat/"
+
+[[node]]
+level = "services"
+id = "firewall-basics"
+title = "ufw/iptables: what a firewall rule actually does"
+size = "M"
+needs = ["nat-traversal"]
+done_when = "wrote and tested 3 ufw rules on the Pi (allow/deny specific ports), verified with a scan from the laptop, saved rules and scan output at {lab_dir}/notes/firewall.md"
+resource = "https://help.ubuntu.com/community/UFW"
+verify = { type = "command", cmd = "ssh -o BatchMode=yes -o ConnectTimeout=5 pi@{pi_ip} sudo ufw status" }
+
+[[node]]
+level = "services"
+id = "services-milestone"
+title = "Lock down a service to exactly one source (milestone)"
+size = "M"
+needs = ["firewall-basics", "dhcp-lease"]
+milestone = true
+done_when = "configured a firewall rule so only my laptop's IP can reach one specific port on the Pi, verified it blocks a second device, documented at {lab_dir}/notes/services-milestone.md"
+resource = "https://help.ubuntu.com/community/UFW"
+verify = { type = "file", path = "{lab_dir}/notes/services-milestone.md", min_bytes = 200 }
+
+# ---------------------------------------------------------------- 7: wireless
+[[node]]
+level = "wireless"
+id = "80211-basics"
+title = "802.11 frames vs Ethernet frames"
+size = "S"
+needs = []
+done_when = "wrote 5 lines on what's different about a Wi-Fi frame vs an Ethernet frame, saved at {lab_dir}/notes/wireless-basics.md"
+resource = "https://www.wireshark.org/docs/wsug_html_chunked/"
+
+[[node]]
+level = "wireless"
+id = "wpa-handshake-concept"
+title = "What a WPA2 handshake protects (conceptually, no live capture)"
+size = "S"
+needs = ["80211-basics"]
+done_when = "explained in your own words why a 4-way handshake proves both sides know the password without sending the password, saved at {lab_dir}/notes/wpa-concept.md"
+resource = "https://www.wifi-professionals.com/2019/01/4-way-handshake"
+
+[[node]]
+level = "wireless"
+id = "wireless-legal-note"
+title = "What's legal to test, and what isn't"
+size = "S"
+needs = []
+done_when = "wrote 5 lines on the legal line between testing your own home Wi-Fi and anyone else's, saved at {lab_dir}/notes/wireless-legal.md -- this node has no technical output on purpose"
+resource = "https://www.eff.org/issues/cfaa"
+
+[[node]]
+level = "wireless"
+id = "wireless-milestone"
+title = "Document your own home network's wireless security posture (milestone)"
+size = "M"
+needs = ["wpa-handshake-concept", "wireless-legal-note"]
+milestone = true
+done_when = "wrote a short audit of your own router's Wi-Fi settings (encryption type, whether WPS is on, guest network isolation) at {lab_dir}/notes/wireless-audit.md, with at least one change you actually made"
+resource = "https://www.wifi-professionals.com/2019/01/4-way-handshake"
+verify = { type = "file", path = "{lab_dir}/notes/wireless-audit.md", min_bytes = 200 }
+
+# ---------------------------------------------------------------- 8: capstone
+[[node]]
+level = "capstone"
+id = "break-something"
+title = "Break your own network on purpose"
+size = "M"
+needs = []
+done_when = "deliberately misconfigured something (wrong subnet mask, blocked DNS, wrong gateway) and wrote {lab_dir}/notes/break-1.md describing the symptom before you knew the cause"
+resource = "https://www.practicalnetworking.net/"
+
+[[node]]
+level = "capstone"
+id = "diagnose-it"
+title = "Diagnose it using only the tools from this track"
+size = "M"
+needs = ["break-something"]
+done_when = "used ping/traceroute/dig/Wireshark (not just guessing) to find the cause of the break-something node, documented the diagnostic steps at {lab_dir}/notes/diagnose-1.md"
+resource = "https://www.cloudflare.com/learning/network-layer/what-is-mtu/"
+verify = { type = "file", path = "{lab_dir}/notes/diagnose-1.md", min_bytes = 200 }
+
+[[node]]
+level = "capstone"
+id = "fix-and-verify"
+title = "Fix it and prove it's fixed"
+size = "S"
+needs = ["diagnose-it"]
+done_when = "fixed the break and captured proof (a successful ping/curl/scan) saved at {lab_dir}/notes/fix-1.md"
+resource = "https://www.practicalnetworking.net/"
+
+[[node]]
+level = "capstone"
+id = "capstone-milestone"
+title = "Solve a network mystery and prove the fix"
+size = "L"
+needs = ["fix-and-verify"]
+milestone = true
+done_when = "Diagnosed a real or staged lab fault using evidence, restored connectivity, and saved the before/after checks and root cause at {lab_dir}/notes/capstone-report.md."
+resource = "https://www.practicalnetworking.net/"
+verify = { type = "file", path = "{lab_dir}/notes/capstone-report.md", min_bytes = 400 }
+minutes = 120
+brief = "Use your toolkit on a real fault, or a staged fault in a disposable lab when your network is working well."
+steps = ["Choose a fault in your own lab: a real issue, or a wrong DNS setting, gateway, or firewall rule in a disposable VM. Keep a way to restore its configuration.", "Write a prediction, then use at least two tools to narrow down the cause. Save the evidence before fixing it.", "Restore the setting, repeat the failing check, and save symptom, cause, fix, and before/after evidence in {lab_dir}/notes/capstone-report.md."]
+hints = []
+
+
+[[node]]
+level = "packet-snacks"
+id = "first-discovery"
+title = "Peek at one HTTP response"
+size = "S"
+minutes = 10
+needs = []
+brief = "Make the headers of one harmless request tell you something new."
+done_when = "Run curl -I https://example.com/. Find the status, one content header, and one cache header if present. Save those fields and one observation in your session log."
+resource = "https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview"
+verify = { type = "manual" }
+
+
+[[node]]
+"level" = "packet-snacks"
+"id" = "discovery-2"
+"title" = "Compare a successful connection with a refused one"
+"size" = "S"
+"minutes" = 15
+"needs" = ["first-discovery"]
+"brief" = "Find out what a closed port looks like from the client."
+"done_when" = "Start a local HTTP server on 127.0.0.1:8000, request it with curl -v, then stop the server and repeat. Save the successful response and refused-connection message, and explain which layer failed."
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview"
+"verify" = { "type" = "manual" }
+
+[[node]]
+"level" = "packet-snacks"
+"id" = "discovery-3"
+"title" = "Make one packet filter earn its keep"
+"size" = "S"
+"minutes" = 20
+"needs" = ["discovery-2"]
+"brief" = "Reduce a busy capture to one conversation you recognise."
+"done_when" = "Capture your own local request in Wireshark, write one display filter that isolates it, and save the filtered view with an explanation of what the filter removes."
+"resource" = "https://wiki.wireshark.org/DisplayFilters"
+"verify" = { "type" = "manual" }
