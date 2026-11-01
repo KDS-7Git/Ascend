@@ -138,8 +138,7 @@ async function refresh() {
   if (state.overview?.mission?.id !== overview.mission?.id) $('#session-result').hidden = true;
   state.overview = overview; state.levels = levels; state.account = account;
   updateAccountChrome();
-  $('#streak').textContent = overview.current_streak;
-  $('#streak-link').setAttribute('aria-label', `View streak stats: ${overview.current_streak} days`);
+  updateStreak(overview.current_streak);
   renderMissionProgress();
   const cards = $('#today-cards'); cards.replaceChildren();
   if (overview.next) cards.append(nodeCard(overview.next, false));
@@ -346,6 +345,7 @@ async function renderPath() {
 
 async function renderStats() {
   const [stats, days, levels] = await Promise.all([api("stats"), api("heatmap"), api("levels")]); const root = $("#stats-content"); root.replaceChildren();
+  updateStreak(stats.current_streak);
   const streak = el("section", undefined, "card"); streak.append(el("h2", "Showing up, one day at a time."), el("span", `${stats.current_streak}`, "streak-number"), el("span", ` days · best ${stats.best_streak}`, "muted"), el("p", `${stats.freeze_available} freeze available this week`, "muted"));
   const calendar = el("section", undefined, "card"); calendar.append(el("h2", "Your last 12 weeks")); const heat = el("div", undefined, "heatmap");
   for (const day of days) { const cell = el("div", undefined, `heat-day${day.count ? " logged" : ""}`); cell.title = `${day.day}: ${day.count} entries`; cell.setAttribute("aria-label", cell.title); cell.setAttribute("role", "img"); heat.append(cell); }
@@ -374,6 +374,12 @@ async function renderStats() {
   const session = await command(["session", "status"]);
   const xp = el("section", undefined, "card"); xp.append(el("h2", `${session.xp} verified XP`), el("p", `${session.verified_awards} graded or externally confirmed tasks. Artifact presence and manual marks do not earn these rewards.`)); root.append(xp);
 }
+function updateStreak(days) {
+  $('#streak').textContent = days;
+  const label = `View streak stats: ${days} ${days === 1 ? 'day' : 'days'}`;
+  $('#streak-link').setAttribute('aria-label', label);
+  $('#streak-link').title = label;
+}
 function updateAccountChrome() {
   if (!state.account) return;
   $('#avatar-initial').textContent = state.account.username.slice(0, 1).toUpperCase();
@@ -381,35 +387,73 @@ function updateAccountChrome() {
 }
 async function refreshDocsChrome() {
   // Documentation remains readable when the account is offline or signed out.
-  const [account, sessions] = await Promise.all([
+  const [account, sessions, stats] = await Promise.all([
     api('account', undefined, 'GET', false),
-    api('command', {argv: ['session', 'status']}, 'POST', false)
+    api('command', {argv: ['session', 'status']}, 'POST', false),
+    api('stats', undefined, 'GET', false)
   ]);
   state.account = account;
   updateAccountChrome();
+  updateStreak(stats.current_streak);
   $('#xp-balance').textContent = `${sessions.xp.toLocaleString()} XP`;
   $('#xp-link').setAttribute('aria-label', `${sessions.xp} verified XP. View progress`);
 }
 function bindAction(selector, action, after) { const node = $(selector); node.addEventListener('click', () => runAction(node, action, after)); }
 function syncMissionActions() {
   const active = Boolean(state.overview?.mission);
-  $('#start-mission').disabled = active || !state.installedPacks.length;
+  $('#start-mission').disabled = active || !state.installedPacks.some(pack => pack.id === $('#mission-pack').value);
   $('#pause-mission').disabled = !active;
   $('#finish-mission').disabled = !active;
   $('#save-mission-time').disabled = !active;
 }
 function packTitle(pack) { return pack.title || pack.id.replaceAll('-', ' '); }
-async function renderMore() {
-  const [packs, parked] = await Promise.all([api('packs'), command(['parked'])]);
-  state.installedPacks = packs;
-  $('#mission-name').textContent = state.overview?.mission?.title || 'No active mission';
-  $('#mission-time').value = state.overview?.mission?.nudge_time || '';
-  $('#mission-pack').replaceChildren(...packs.map(pack => {
+const TRACK_DOMAINS = {
+  Foundations: 'Cyber foundations',
+  Offensive: 'Offensive security',
+  Defensive: 'Defensive security',
+  Engineering: 'Security engineering',
+  Specialist: 'Specialist security',
+  Practice: 'Hands-on labs',
+  Projects: 'Projects',
+  Custom: 'Custom tracks'
+};
+function packDomain(pack) { return pack.category || 'Custom'; }
+function drawMissionTracks(selectedId = '') {
+  const domain = $('#mission-domain').value, select = $('#mission-pack');
+  const packs = state.installedPacks.filter(pack => packDomain(pack) === domain).sort((a, b) => packTitle(a).localeCompare(packTitle(b)));
+  const placeholder = el('option', domain ? 'Choose a track…' : 'Choose a domain first'); placeholder.value = '';
+  select.replaceChildren(placeholder, ...packs.map(pack => {
     const option = el('option', packTitle(pack)); option.value = pack.id; return option;
   }));
-  const active = state.overview?.mission;
-  if (active && packs.some(p => p.id === active.pack_id)) $('#mission-pack').value = active.pack_id;
+  select.value = packs.some(pack => pack.id === selectedId) ? selectedId : '';
+  select.disabled = !packs.length;
+  $('#mission-picker-help').textContent = !state.installedPacks.length ? 'No tracks installed yet. Browse learning tracks to get started.' : domain ? `${packs.length} installed ${packs.length === 1 ? 'track' : 'tracks'} in ${TRACK_DOMAINS[domain] || domain}.` : 'Pick a domain to see its tracks.';
   syncMissionActions();
+}
+function drawMissionPicker() {
+  const select = $('#mission-domain'), previousDomain = select.value;
+  const selected = state.installedPacks.find(pack => pack.id === $('#mission-pack').value)
+    || (!previousDomain && state.installedPacks.find(pack => pack.id === state.overview?.mission?.pack_id));
+  const counts = new Map();
+  for (const pack of state.installedPacks) counts.set(packDomain(pack), (counts.get(packDomain(pack)) || 0) + 1);
+  const domains = [...new Set([...Object.keys(TRACK_DOMAINS), ...counts.keys()])].filter(domain => counts.has(domain));
+  const placeholder = el('option', domains.length ? 'Choose a domain…' : 'No installed tracks'); placeholder.value = '';
+  select.replaceChildren(placeholder, ...domains.map(domain => {
+    const option = el('option', `${TRACK_DOMAINS[domain] || domain} (${counts.get(domain)})`); option.value = domain; return option;
+  }));
+  select.value = selected ? packDomain(selected) : domains.includes(previousDomain) ? previousDomain : '';
+  select.disabled = !domains.length;
+  drawMissionTracks(selected?.id);
+}
+async function renderMore() {
+  const [packs, parked, catalog] = await Promise.all([api('packs'), command(['parked']), command(['pack', 'registry'])]);
+  // Older servers omit categories from installed packs. Resolve stable IDs
+  // against the catalog so existing installations get the same domain picker.
+  const domains = new Map(catalog.map(pack => [pack.id, pack.category || 'Projects']));
+  state.installedPacks = packs.map(pack => ({...pack, category: domains.get(pack.id) || pack.category || 'Custom'}));
+  $('#mission-name').textContent = state.overview?.mission?.title || 'No active mission';
+  $('#mission-time').value = state.overview?.mission?.nudge_time || '';
+  drawMissionPicker();
   drawInstalledPacks();
   $('#parked-list').replaceChildren(...parked.map(idea => {
     const item = el('li', idea.note);
@@ -500,6 +544,8 @@ $('#xp-link').addEventListener('click', () => switchTab('stats').catch(error => 
 $('#profile-link').addEventListener('click', () => switchTab('profile').catch(error => notify(error.message, 'error')));
 $('#installed-search').addEventListener('input', drawInstalledPacks);
 $('#show-all-packs').addEventListener('click', () => { state.showAllPacks = !state.showAllPacks; drawInstalledPacks(); });
+$('#mission-domain').addEventListener('change', () => drawMissionTracks());
+$('#mission-pack').addEventListener('change', syncMissionActions);
 $("#sheet").addEventListener("click", event => { if (event.target === $("#sheet")) { const box = event.target.getBoundingClientRect(); if (event.clientY < box.top || event.clientY > box.bottom || event.clientX < box.left || event.clientX > box.right) event.target.close(); } });
 function handleForm(selector, handler) {
   $(selector).addEventListener('submit', event => {

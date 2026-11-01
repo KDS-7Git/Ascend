@@ -42,7 +42,7 @@
       "blocks": [
         {
           "type": "paragraph",
-          "text": "One mission is active at a time. Today recommends the next available task in that mission. Path shows its levels, prerequisites, optional practice, and milestones."
+          "text": "One mission is active at a time. In Tracks, choose a domain, then choose one of its installed tracks and select Start mission. Today recommends the next available task in that mission. Path shows its levels, prerequisites, optional practice, and milestones."
         },
         {
           "type": "heading",
@@ -108,7 +108,7 @@
         },
         {
           "type": "code",
-          "text": "ascend pack diff packs/community/home-hack-lab.toml\nascend pack install packs/community/home-hack-lab.toml"
+          "text": "ascend pack diff packs/community/projects/home-hack-lab.toml\nascend pack install packs/community/projects/home-hack-lab.toml"
         }
       ],
       "related": [
@@ -206,7 +206,7 @@
       "blocks": [
         {
           "type": "paragraph",
-          "text": "Your verified XP balance appears in the top bar on every screen. Select it to open Stats, or open your Profile to see the same balance and verified task count. XP is personal feedback, not a spendable coin balance."
+          "text": "Your verified XP balance and day streak appear in the top bar on every screen. Select either to open Stats, or open your Profile to see your balance, streak, and verified task count. XP is personal feedback, not a spendable coin balance."
         },
         {
           "type": "steps",

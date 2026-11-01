@@ -173,10 +173,10 @@ def test_browser_complete_flow(live_server, width, height, tmp_path):
         expect(page.locator("#sheet")).not_to_be_visible()
         expect(page.locator("#session-result")).to_contain_text("Challenge complete!")
         expect(page.locator("#session-result")).to_contain_text("Unlocked: Second")
-        expect(page.locator("#streak")).to_have_text("1")
+        expect(page.locator(".topbar #streak")).to_have_text("1")
         page.get_by_role("button", name="Path", exact=True).click()
         expect(page.locator(".path-node.done")).to_have_count(1)
-        page.get_by_role("button", name="Stats", exact=True).click()
+        page.get_by_role("button", name="View streak stats: 1 day", exact=True).click()
         page.get_by_label("Search your notes", exact=True).fill("explained")
         page.get_by_role("button", name="Search", exact=True).click()
         expect(page.locator(".search-result")).to_have_count(1)
@@ -475,8 +475,86 @@ def test_library_rows_profile_and_guide_navigation(live_server, width, height):
         page.reload()
         expect(page.locator("#docs-article h2")).to_have_text("Timers & XP")
         expect(page.locator("#xp-balance")).to_have_text("0 XP")
+        expect(page.locator(".topbar #streak")).to_have_text("0")
         assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
         assert not errors
+        browser.close()
+
+
+@pytest.mark.parametrize("installed_category", [None, "Custom"])
+def test_track_picker_groups_existing_packs_from_catalog(
+    live_server, installed_category
+):
+    import httpx
+    from playwright.sync_api import sync_playwright, expect
+
+    from ascend.registry import registry_entries
+
+    catalog = registry_entries()
+    for pack in catalog:
+        response = httpx.post(
+            live_server + "/api/command",
+            json={"argv": ["pack", "install", pack["id"]]},
+        )
+        assert response.status_code == 200, response.text
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page(viewport={"width": 390, "height": 844})
+        errors = []
+        page.on("pageerror", lambda error: errors.append(str(error)))
+
+        def legacy_packs(route):
+            response = route.fetch()
+            packs = response.json()
+            for pack in packs:
+                pack.pop("category", None)
+                if installed_category:
+                    pack["category"] = installed_category
+            route.fulfill(response=response, json=packs)
+
+        page.route("**/api/packs", legacy_packs)
+        page.goto(live_server + "/#more")
+        domain = page.get_by_label("Choose a domain", exact=True)
+        track = page.get_by_label("Choose a track", exact=True)
+        start = page.get_by_role("button", name="Start mission", exact=True)
+        expect(domain).to_be_enabled()
+        expect(domain.locator("option")).to_have_count(9)
+
+        # The custom fixture stays separate; the 28 known IDs use catalog domains.
+        domain.select_option("Custom")
+        expect(track.locator("option")).to_have_count(2)
+        expect(track.locator('option[value="test-pack"]')).to_have_count(1)
+        domain.select_option("Foundations")
+        expect(
+            track.locator('option[value="ethical-hacking-foundations"]')
+        ).to_have_count(1)
+        domain.select_option("Offensive")
+        expect(
+            track.locator('option[value="ethical-hacking-foundations"]')
+        ).to_have_count(0)
+        expect(track.locator('option[value="api-security"]')).to_have_count(1)
+        expect(track.locator("option")).to_have_count(7)
+        track.select_option("api-security")
+        expect(start).to_be_disabled()
+
+        # Pausing preserves the pending selection; starting uses that exact ID.
+        page.get_by_role("button", name="Pause", exact=True).click()
+        expect(start).to_be_enabled()
+        expect(domain).to_have_value("Offensive")
+        expect(track).to_have_value("api-security")
+        domain.select_option("Defensive")
+        expect(track).to_have_value("")
+        expect(start).to_be_disabled()
+        track.select_option("soc-analyst")
+        start.click()
+        expect(page.locator("#notice")).to_contain_text("Mission started.")
+        assert (
+            httpx.get(live_server + "/api/me").json()["mission"]["pack_id"]
+            == "soc-analyst"
+        )
+        assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+        assert not errors, errors
         browser.close()
 
 
@@ -497,4 +575,5 @@ def test_documentation_is_readable_offline_after_shell_install(live_server):
         expect(page.locator("#docs-article h2")).to_have_text("Evidence & verification")
         expect(page.locator("#login-dialog")).not_to_be_visible()
         expect(page.locator("#xp-balance")).to_have_text("— XP")
+        expect(page.locator(".topbar #streak")).to_have_text("—")
         browser.close()

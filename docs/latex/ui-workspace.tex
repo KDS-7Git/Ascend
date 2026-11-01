@@ -33,8 +33,8 @@ behavior. Ascend retains its own content, brand and constraints; third-party
 screenshots and brand assets are not shipped as product assets.
 
 \subsection{Navigation and information hierarchy}
-The persistent top bar shows the verified XP balance and a profile avatar. The
-balance opens Stats; the avatar opens Profile. Actual server totals update after
+The persistent top bar shows the verified XP balance, day streak and a profile avatar. The
+balance and streak open Stats; the avatar opens Profile. Actual server totals update after
 verification and on refresh. No additional coin currency, invented rank or
 spendable balance is introduced. An unavailable balance is shown as a dash rather
 than a fabricated zero. Documentation can load without a successful account fetch.
@@ -49,7 +49,8 @@ and saved ideas. A reader need not scan account settings to find an installed pa
 \subsection{Component and interaction contract}
 \begin{longtable}{P{.22\textwidth}P{.70\textwidth}}
 \textbf{Component} & \textbf{Behavior and rationale}\\\hline
-Top bar & Persistent XP and avatar; clear accessible names and a real server balance. Narrow layouts may shorten the context label, preserving actions.\\
+Top bar & Persistent XP, day streak and avatar; clear accessible names and real server totals. Narrow layouts may shorten or hide the context label, preserving actions.\\
+Track picker & Choose a domain first, then one of its installed tracks. Changing domains clears the track choice; starting requires a selected track and no active mission.\\
 Library row & Human title, supporting counts/review state and a right-aligned Read button. The title and action share one row. A long title truncates visually but retains its accessible text and full preview.\\
 Library controls & Search installed packs; initially show eight rows in a large library, with Show all/Show fewer. Import controls and parked ideas use disclosures.\\
 Pack preview & Complete title and tasks grouped by level, with the first group open. Mark reviewed does not complete tasks or grant execution trust.\\
