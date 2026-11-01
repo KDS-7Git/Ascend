@@ -74,8 +74,22 @@ window.AscendMotion = (() => {
   });
   // Keep the native cursor; reveal a fixed grid and emphasize its nearest cell.
   const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+  const pageGrid = document.createElement('span');
+  pageGrid.className = 'hover-light workspace-hover'; pageGrid.setAttribute('aria-hidden', 'true');
+  document.body.append(pageGrid);
+  function positionGrid(layer, event, container) {
+    const rect = container.getBoundingClientRect();
+    const x = event.clientX - rect.left - container.clientLeft;
+    const y = event.clientY - rect.top - container.clientTop;
+    layer.style.setProperty('--pointer-x', `${x}px`);
+    layer.style.setProperty('--pointer-y', `${y}px`);
+    layer.style.setProperty('--cell-x', `${Math.floor(x / 24) * 24}px`);
+    layer.style.setProperty('--cell-y', `${Math.floor(y / 24) * 24}px`);
+  }
   document.addEventListener('pointermove', event => {
     if (!enabled() || !finePointer.matches) return;
+    positionGrid(pageGrid, event, pageGrid);
+    pageGrid.classList.add('pointer-present');
     const card = event.target.closest('.next-card');
     if (!card) return;
     let light = card.querySelector('.hover-light');
@@ -83,14 +97,9 @@ window.AscendMotion = (() => {
       light = document.createElement('span'); light.className = 'hover-light';
       light.setAttribute('aria-hidden', 'true'); card.append(light);
     }
-    const rect = card.getBoundingClientRect();
-    const x = event.clientX - rect.left - card.clientLeft;
-    const y = event.clientY - rect.top - card.clientTop;
-    light.style.setProperty('--pointer-x', `${x}px`);
-    light.style.setProperty('--pointer-y', `${y}px`);
-    light.style.setProperty('--cell-x', `${Math.floor(x / 24) * 24}px`);
-    light.style.setProperty('--cell-y', `${Math.floor(y / 24) * 24}px`);
+    positionGrid(light, event, card);
   }, {passive: true});
+  document.documentElement.addEventListener('pointerleave', () => pageGrid.classList.remove('pointer-present'));
   sync();
   document.querySelector('.ambient-scene').hidden = false;
   return {enter, leave};

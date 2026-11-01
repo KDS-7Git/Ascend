@@ -519,6 +519,18 @@ def test_library_rows_profile_and_guide_navigation(live_server, width, height):
         expect(page.locator("#profile-summary")).to_contain_text("Verified XP")
         page.get_by_label("Color theme").select_option("dark")
         expect(page.locator("html")).to_have_attribute("data-theme", "dark")
+        expect(
+            page.locator('#timezone-options option[value="Asia/Kolkata"]')
+        ).to_have_count(1)
+        page.get_by_label("Timezone", exact=True).fill("UTC+5:30")
+        page.get_by_role("button", name="Save timezone").click()
+        expect(page.locator("#notice")).to_contain_text("Asia/Kolkata")
+        page.get_by_label("Timezone", exact=True).fill("Asia/Kolkata")
+        page.get_by_role("button", name="Save timezone").click()
+        expect(page.locator("#notice")).to_contain_text("Timezone saved")
+        assert (
+            httpx.get(live_server + "/api/account").json()["timezone"] == "Asia/Kolkata"
+        )
         page.get_by_label("Timezone", exact=True).fill("Europe/London")
         page.get_by_role("button", name="Save timezone").click()
         expect(page.locator("#notice")).to_contain_text("Timezone saved")
@@ -712,7 +724,11 @@ def test_motion_controls_persist_and_honor_device_preferences(live_server):
             "document.querySelector('.ambient-scene').getAnimations({subtree:true}).some(a => a.playState === 'running')"
         )
         page.locator(".next-card").hover(position={"x": 180, "y": 80})
-        expect(page.locator(".hover-light")).to_be_visible()
+        expect(page.locator(".next-card .hover-light")).to_be_visible()
+        page.locator(".page-header h1").first.hover()
+        expect(page.locator(".workspace-hover")).to_have_class(
+            "hover-light workspace-hover pointer-present"
+        )
         assert (
             page.locator(".next-card").evaluate("e => getComputedStyle(e).cursor")
             != "none"
@@ -900,7 +916,7 @@ def test_permission_requests_have_explicit_choices_and_separate_submit(
                 "radio", name="Deny", exact=True
             )
         ).to_be_checked()
-        submit = page.get_by_role("button", name="Verify my result", exact=True)
+        submit = page.get_by_role("button", name="Submit decisions", exact=True)
         submit.click()
         assert httpx.get(challenge_url).json()["exercise"]["attempts"] == 0
         page.get_by_role("group", name="Request r1", exact=True).get_by_role(
@@ -915,6 +931,8 @@ def test_permission_requests_have_explicit_choices_and_separate_submit(
                 request["caller"] == request["owner"]
                 or (request["role"] == "admin" and request["action"] == "read")
             )
+            if request["id"] in {"r1", "r2"}:
+                allowed = not allowed
             group = page.get_by_role(
                 "group", name=f"Request {request['id']}", exact=True
             )
@@ -934,11 +952,19 @@ def test_permission_requests_have_explicit_choices_and_separate_submit(
         }""")
         assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
         submit.click()
-        expect(page.locator(".exercise-response [role='status']")).to_contain_text(
-            "Verified"
-        )
+        expect(page.locator("#policy-result")).to_have_text("4 of 6 correct · +66 XP")
+        expect(page.locator(".decision-explanation")).to_have_count(6)
+        expect(submit).to_have_count(0)
+        page.reload()
+        expect(page.locator("#policy-result")).to_have_text("4 of 6 correct · +66 XP")
+        expect(submit).to_have_count(0)
         result = httpx.get(challenge_url).json()["exercise"]
-        assert result["passed"] and result["attempts"] == 1
+        assert not result["passed"] and result["attempts"] == 1
+        page.get_by_role(
+            "button", name="Continue with partial result", exact=True
+        ).click()
+        expect(page).to_have_url(live_server + "/#today")
+        assert httpx.get(challenge_url).json()["node"]["status"] == "skipped"
         browser.close()
 
 

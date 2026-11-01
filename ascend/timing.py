@@ -17,13 +17,25 @@ def points(seconds, budget):
     return max(25, 100 - math.floor(50 * max(0, seconds - budget) / budget))
 
 
+def scored_points(t, row, seconds):
+    base = points(seconds, row["budget_seconds"])
+    decisions = t.db.rows(
+        "permission_attempts",
+        "pack_id=? AND node_id=?",
+        (row["pack_id"], row["node_id"]),
+    )
+    if decisions:
+        return base * decisions[0]["correct_count"] // decisions[0]["total_count"]
+    return base
+
+
 def describe(t, row):
     value = elapsed(t, row)
     return {
         **row,
         "elapsed_seconds": int(value),
         "remaining_seconds": max(0, math.ceil(row["budget_seconds"] - value)),
-        "potential_xp": points(value, row["budget_seconds"]),
+        "potential_xp": scored_points(t, row, value),
         "server_time": t.now().isoformat(),
     }
 
@@ -39,9 +51,12 @@ def summary(t):
         reference = (recent["pack_id"], recent["node_id"])
         state = t.db.rows("node_state", "pack_id=? AND node_id=?", reference)
         decision = t.db.rows("case_attempts", "pack_id=? AND node_id=?", reference)
+        policy = t.db.rows("permission_attempts", "pack_id=? AND node_id=?", reference)
         recent["outcome"] = (
             "completed"
             if state and state[0]["status"] == "done"
+            else "partial"
+            if policy and policy[0]["correct_count"] < policy[0]["total_count"]
             else "incorrect"
             if decision and not decision[0]["correct"]
             else "ended"
@@ -56,7 +71,9 @@ def summary(t):
             describe(t, r) for r in t.db.rows("task_sessions", "status='paused'")
         ],
         "xp": sum(r["points"] for r in awards),
-        "verified_awards": len(awards),
+        "verified_awards": sum(
+            r["evidence_kind"] != "verifier:permission-partial" for r in awards
+        ),
     }
 
 
@@ -138,14 +155,18 @@ def finish(t, pack, node, how):
         finished_at=t.now().isoformat(),
     )
     # Presence-only file checks and self-marking are not skill rewards.
-    if row["status"] == "running" and how in {"verifier:lab", "verifier:ctf"}:
+    if row["status"] == "running" and how in {
+        "verifier:lab",
+        "verifier:ctf",
+        "verifier:permission-partial",
+    }:
         t.db.connection.execute(
             "INSERT OR IGNORE INTO xp_awards VALUES (?,?,?,?,?,?)",
             (
                 t.db.user_id,
                 pack.id,
                 node.id,
-                points(seconds, row["budget_seconds"]),
+                scored_points(t, row, seconds),
                 t.now().isoformat(),
                 how,
             ),

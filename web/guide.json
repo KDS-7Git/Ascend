@@ -186,7 +186,7 @@
         },
         {
           "type": "paragraph",
-          "text": "Permission exercises show the action, role, account status and ownership for each request. Choose Allow or Deny for every row, then press Verify my result. Neither choice is selected for you. Your selections survive a reload in this tab, and View raw request data opens the original fixture."
+          "text": "Permission puzzles allow one final submission. Choose Allow or Deny for every request, then press Submit decisions. The result explains each rule and gives equal partial credit for correctly classified requests: XP = the time-based reward × correct requests ÷ total requests, rounded down. Four of six correct within the target earns 66 XP. Incorrect decisions earn no credit. Only all-correct results complete the task; Continue with partial result skips it while retaining earned XP. Reloading or requesting a fresh instance cannot reset your submitted result."
         },
         {
           "type": "heading",
@@ -203,7 +203,7 @@
         },
         {
           "type": "paragraph",
-          "text": "Hands-on instances belong to one account and the current pack content. A fresh instance replaces the old one without resetting your accumulated task time. Unfinished instances expire after 24 hours; hands-on exercises allow ten unsuccessful submissions before requiring a fresh instance."
+          "text": "Logging, subnet, integrity and timeline exercises allow ten unsuccessful submissions before requiring a fresh instance. Fresh instances preserve the original timer. Unfinished instances expire after 24 hours. Knowledge checks and permission puzzles have one final submission; their saved results remain available for review."
         },
         {
           "type": "paragraph",
@@ -253,7 +253,7 @@
         },
         {
           "type": "paragraph",
-          "text": "For a 20-minute target, completing at 20 minutes earns 100 XP, at 30 minutes earns 75 XP, and at 40 minutes earns 50 XP. The timer cannot be paused. Completing, skipping or ending stops that task’s session; later practice is unscored. Ending before verification cannot be used to preserve a higher reward."
+          "text": "For a 20-minute target, completing at 20 minutes earns 100 XP, at 30 minutes earns 75 XP, and at 40 minutes earns 50 XP. The timer cannot be paused. Completing, skipping or ending stops that task’s session; later practice is unscored. Ending before verification cannot be used to preserve a higher reward. Permission puzzles multiply this time-based reward by the fraction of correct decisions, so a partial result may earn fewer than 25 XP or zero."
         },
         {
           "type": "paragraph",
@@ -327,6 +327,7 @@
         {
           "type": "list",
           "items": [
+            "Timezone: search for a city timezone, such as Asia/Kolkata for India (UTC+05:30), Europe/London or UTC, then save. A city timezone also handles daylight-saving changes where applicable; a raw UTC offset is not accepted.",
             "Preferences: choose your timezone, System/Light/Dark appearance and On/Off motion effects. Appearance choices are saved in this browser. Your device’s reduced motion setting always takes priority.",
             "Reminders: configure notification timing and delivery.",
             "Privacy & account: choose whether to publish a streak badge. Sharing is off unless you enable it.",

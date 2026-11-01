@@ -693,10 +693,13 @@ class Tracker:
         elif key == "timezone":
             from zoneinfo import ZoneInfo
 
+            value = value.strip()
             try:
                 ZoneInfo(value)
             except (KeyError, ValueError):
-                raise ValueError("Unknown IANA timezone") from None
+                raise ValueError(
+                    "Choose a timezone name, e.g. Asia/Kolkata for India (UTC+05:30), Europe/London, or UTC."
+                ) from None
         elif key in {"auto_counts_for_streak", "nudge_enabled", "public_streak"}:
             if value not in {"true", "false"}:
                 raise ValueError("Use true or false")

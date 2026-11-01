@@ -73,7 +73,11 @@ def answers(run):
 def test_only_correct_observed_results_complete_and_reward(tracker, pack_data, kind):
     run = exercise(tracker, pack_data, kind)
     assert "expected" not in run and "correct" not in json.dumps(run)
-    assert not labs.submit(tracker, run["id"], {})["ok"]
+    if kind == "access-policy":
+        with pytest.raises(ValueError, match="every request"):
+            labs.submit(tracker, run["id"], {})
+    else:
+        assert not labs.submit(tracker, run["id"], {})["ok"]
     assert not tracker.states("test-pack") and timing.summary(tracker)["xp"] == 0
     if kind == "logging":
         labs.emit(tracker, run["id"], "ok")
@@ -312,6 +316,7 @@ def test_legacy_mcq_migration_preserves_progress_and_locks_recorded_result(
         for name in ["lab_runs", "task_sessions", "xp_awards", "node_state", "entries"]
     }
     tracker.db.connection.execute("DROP TABLE case_attempts")
+    tracker.db.connection.execute("DROP TABLE permission_attempts")
     tracker.db.connection.execute("UPDATE schema_version SET version=5")
     tracker.db.migrate()
     assert all(tracker.db.rows(name) == rows for name, rows in protected.items())
@@ -319,3 +324,120 @@ def test_legacy_mcq_migration_preserves_progress_and_locks_recorded_result(
     assert restored["terminal"] and restored["passed"]
     assert restored["feedback"]["selected"] is None
     assert timing.summary(tracker)["xp"] == 100
+
+
+@pytest.mark.parametrize("correct_count", [0, 1, 4, 6])
+def test_permission_final_score_explanations_and_no_retries(
+    tracker, pack_data, now, correct_count
+):
+    run = exercise(tracker, pack_data, "access-policy")
+    expected = answers(run)
+    selected = {
+        key: value if i < correct_count else not value
+        for i, (key, value) in enumerate(expected.items())
+    }
+    assert "feedback" not in run and run["attempt_limit"] == 1
+    result = labs.submit(tracker, run["id"], selected)
+    assert result["terminal"] and result["completed"] == (correct_count == 6)
+    receipt = result["exercise"]
+    assert receipt["score"] == {
+        "correct": correct_count,
+        "total": 6,
+        "xp": 100 * correct_count // 6,
+    }
+    assert timing.summary(tracker)["active"] is None
+    assert timing.summary(tracker)["verified_awards"] == (correct_count == 6)
+    assert all(item["explanation"] for item in receipt["feedback"])
+    assert (
+        labs.submit(tracker, run["id"], expected)["exercise"]["score"]
+        == receipt["score"]
+    )
+    with pytest.raises(ValueError, match="already been submitted"):
+        labs.start(tracker, "one", fresh=True)
+    tracker.clock = lambda: now + timedelta(days=2)
+    pack_data["node"][0]["title"] = "Updated permission task"
+    tracker.install_pack(dump_toml(pack_data))
+    assert labs.current(tracker, "one")["score"] == receipt["score"]
+    assert len(tracker.db.rows("permission_attempts")) == 1
+
+
+def test_permission_disabled_owner_rule_and_late_partial_reward(
+    tracker, pack_data, now
+):
+    for role in ["user", "admin"]:
+        allowed, explanation = labs.access_decision(
+            {
+                "enabled": False,
+                "caller": "owner",
+                "owner": "owner",
+                "role": role,
+                "action": "read",
+            }
+        )
+        assert not allowed and "always denied" in explanation
+    run = exercise(tracker, pack_data, "access-policy")
+    selected = answers(run)
+    selected["r1"] = not selected["r1"]
+    selected["r2"] = not selected["r2"]
+    budget = run["timer"]["active"]["budget_seconds"]
+    tracker.clock = lambda: now + timedelta(seconds=budget * 2)
+    result = labs.submit(tracker, run["id"], selected)
+    assert result["exercise"]["score"] == {"correct": 4, "total": 6, "xp": 33}
+
+
+def test_permission_invalid_choices_and_ended_session_cannot_earn(tracker, pack_data):
+    run = exercise(tracker, pack_data, "access-policy")
+    selected = answers(run)
+    selected["r1"] = 1
+    with pytest.raises(ValueError, match="every request"):
+        labs.submit(tracker, run["id"], selected)
+    assert not tracker.db.rows("permission_attempts")
+    # An unfinished legacy puzzle gets one final submission under the new policy.
+    tracker.db.update("lab_runs", "id=?", (run["id"],), attempts=10)
+    timing.end(tracker)
+    selected = answers(run)
+    selected["r1"] = not selected["r1"]
+    assert labs.submit(tracker, run["id"], selected)["exercise"]["score"]["xp"] == 0
+
+
+def test_permission_concurrency_and_account_boundaries(tracker, pack_data, tmp_path):
+    from concurrent.futures import ThreadPoolExecutor
+
+    run = exercise(tracker, pack_data, "access-policy")
+    selected = answers(run)
+    other = Tracker(Database(tmp_path, user_id=2), clock=tracker.clock)
+    other.install_pack(dump_toml(pack_data))
+    with pytest.raises(ValueError, match="not found"):
+        labs.view(other, run["id"])
+    other.db.close()
+
+    def submit(values):
+        client = Tracker(Database(tracker.db.home), clock=tracker.clock)
+        try:
+            return labs.submit(client, run["id"], values)["exercise"]["score"]
+        finally:
+            client.db.close()
+
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        results = list(
+            pool.map(submit, [selected, {k: not v for k, v in selected.items()}])
+        )
+    assert results[0] == results[1]
+    assert len(tracker.db.rows("permission_attempts")) == 1
+    assert len(tracker.db.rows("xp_awards")) == 1
+
+
+def test_permission_migration_preserves_existing_completion_and_xp(tracker, pack_data):
+    run = exercise(tracker, pack_data, "access-policy")
+    labs.submit(tracker, run["id"], answers(run))
+    protected = {
+        name: tracker.db.rows(name)
+        for name in ["lab_runs", "task_sessions", "xp_awards", "node_state", "entries"]
+    }
+    tracker.db.connection.execute("DROP TABLE permission_attempts")
+    tracker.db.connection.execute("UPDATE schema_version SET version=6")
+    tracker.db.migrate()
+    assert all(tracker.db.rows(name) == rows for name, rows in protected.items())
+    receipt = labs.current(tracker, "one")
+    assert receipt["passed"] and receipt["score"]["xp"] == 100
+    assert all(item["selected"] is None for item in receipt["feedback"])

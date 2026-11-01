@@ -619,6 +619,17 @@ async function renderProfile() {
   summary.append(avatar, identity, metrics);
   $('#account-info').textContent = `${account.username} · ${location.origin}`;
   $('#account-timezone').value = account.timezone;
+  if (!$('#timezone-options').children.length) {
+    const zones = new Set(['UTC', 'Asia/Kolkata', 'Europe/London', 'America/New_York', account.timezone, ...(Intl.supportedValuesOf?.('timeZone') || [])]);
+    for (const zone of [...zones].sort()) {
+      const option = el('option'); option.value = zone;
+      try {
+        const offset = new Intl.DateTimeFormat('en', {timeZone: zone, timeZoneName: 'shortOffset'}).formatToParts().find(part => part.type === 'timeZoneName').value.replace('GMT', 'UTC');
+        option.label = `${zone === 'Asia/Kolkata' ? 'India · ' : ''}${zone.replaceAll('_', ' ')} · ${offset}`;
+      } catch { option.label = zone; }
+      $('#timezone-options').append(option);
+    }
+  }
   $('#nudge-time').value = account.settings.nudge_time || '21:30';
   $('#nudge-channel').value = account.settings.nudge_channel || 'ntfy';
   $('#ntfy-topic').value = account.settings.ntfy_topic || '';
@@ -768,7 +779,7 @@ function renderSessionClock() {
     if (state.tab !== 'challenge' || state.challengeRef !== ref) root.append(button('Resume challenge', () => switchTab('challenge', {topic: ref}), ''));
     root.append(button('End session', endTaskSession, 'secondary'));
   } else if (changed && recent) {
-    const label = recent.outcome === 'completed' ? 'Completed' : recent.outcome === 'incorrect' ? 'Answer recorded' : 'Session ended';
+    const label = recent.outcome === 'completed' ? 'Completed' : recent.outcome === 'partial' ? 'Decisions recorded' : recent.outcome === 'incorrect' ? 'Answer recorded' : 'Session ended';
     root.append(el('strong', label), el('span', `${formatTime(recent.elapsed_seconds)} / ${formatTime(recent.budget_seconds)} used${recent.xp_earned ? ` · +${recent.xp_earned} XP` : ' · No XP earned'}`, 'small muted'));
     const ref = `${recent.pack_id}:${recent.node_id}`;
     if (state.tab !== 'challenge' || state.challengeRef !== ref) root.append(button('Review last attempt', () => switchTab('challenge', {topic: ref}), 'text-button'));
@@ -820,6 +831,7 @@ async function renderChallenge() {
 function showLab(node, run) {
   if (run.exercise === 'case') { showCase(node, run); return; }
   const policy = run.exercise === 'access-policy';
+  const terminal = run.terminal || run.passed;
   const content = $('#challenge-content'); content.replaceChildren();
   const heading = el('h1', node.title); heading.id = 'challenge-title'; heading.tabIndex = -1;
   const instructions = policy ? run.instructions.replace('Return a boolean decision for every request.', 'Choose Allow or Deny for each request below.') : run.instructions;
@@ -843,9 +855,15 @@ function showLab(node, run) {
   if (policy) {
     const raw = el('details', undefined, 'quiet-details'); raw.append(el('summary', 'View raw request data'), dataView); content.append(raw);
     response.querySelector('h2').textContent = 'Decide each request';
+    if (terminal && run.score) {
+      const title = response.querySelector('h2'); title.id = 'policy-result'; title.tabIndex = -1;
+      title.textContent = `${run.score.correct} of ${run.score.total} correct · +${run.score.xp} XP`;
+      response.append(el('p', run.passed ? 'Verified. Every decision is correct.' : 'Your submission is final. Review the rules below; this task is not fully complete.', 'field-help'));
+      response.append(el('p', run.reward_eligible ? 'XP = time-based reward × correct decisions ÷ total, rounded down.' : 'This session ended before scoring, so no XP was awarded.', 'field-help'));
+    } else response.append(el('p', 'One submission. Correct decisions earn equal shares of XP; incorrect decisions earn none.', 'field-help'));
   } else if (Object.keys(run.data || {}).length) evidence.append(dataView);
   else evidence.append(el('p', 'Use the scenario above to make your decision.', 'muted'));
-  if (run.passed) response.append(el('p', '✓ This instance has passed. Repeating it does not award XP again.', 'success-note'));
+  if (run.passed && !policy) response.append(el('p', '✓ This instance has passed. Repeating it does not award XP again.', 'success-note'));
   const draftKey = `ascend-answer-${state.account?.username || 'local'}-${run.id}`;
   let draft = {};
   try { draft = JSON.parse(sessionStorage.getItem(draftKey) || '{}'); } catch { /* Empty draft. */ }
@@ -864,12 +882,21 @@ function showLab(node, run) {
         row.append(context);
       }
       const choices = el('div', undefined, 'decision-choices');
-      for (const [answer, text] of [[true, policy ? 'Allow' : 'Yes'], [false, policy ? 'Deny' : 'No']]) {
-        const option = el('input'); option.type = 'radio'; option.name = `lab-answer-${key}`; option.value = String(answer); option.required = true; option.disabled = run.passed;
+      const feedback = policy && run.feedback?.find(item => item.id === key);
+      if (terminal && feedback) {
+        const outcome = el('div', undefined, 'decision-outcome');
+        const decision = feedback.allowed ? 'Allow' : 'Deny';
+        outcome.append(el('strong', `${feedback.correct === null ? 'Decision' : feedback.correct ? 'Correct' : 'Incorrect'} · ${decision}`));
+        if (feedback.selected !== null) outcome.append(el('span', `You chose ${feedback.selected ? 'Allow' : 'Deny'}`, 'muted small'));
+        choices.append(outcome);
+      } else for (const [answer, text] of [[true, policy ? 'Allow' : 'Yes'], [false, policy ? 'Deny' : 'No']]) {
+        const option = el('input'); option.type = 'radio'; option.name = `lab-answer-${key}`; option.value = String(answer); option.required = true; option.disabled = terminal;
         option.checked = draft[key] === answer;
         const label = el('label', undefined, 'decision-choice'); label.append(option, el('span', text)); choices.append(label);
       }
-      row.append(choices); group.append(row); form.append(group); inputs[key] = {type: 'boolean', input: group}; continue;
+      row.append(choices); group.append(row);
+      if (terminal && feedback) group.append(el('p', feedback.explanation, 'decision-explanation'));
+      form.append(group); inputs[key] = {type: 'boolean', input: group}; continue;
     }
     const label = el('label', key.replaceAll('_', ' ')); label.htmlFor = `lab-answer-${key}`;
     const input = el('input'); input.type = typeof value === 'number' ? 'number' : 'text';
@@ -879,8 +906,13 @@ function showLab(node, run) {
     inputs[key] = {input, type: typeof value}; form.append(field);
   }
   const result = el('p'); result.setAttribute('role', 'status');
-  const submit = el('button', 'Verify my result'); submit.type = 'submit'; submit.disabled = run.passed;
-  const actions = el('div', undefined, 'exercise-actions'); actions.append(submit);
+  const submit = el('button', policy ? 'Submit decisions' : 'Verify my result'); submit.type = 'submit'; submit.disabled = terminal;
+  const actions = el('div', undefined, 'exercise-actions');
+  if (policy && terminal) actions.append(button(run.passed ? 'Continue learning' : 'Continue with partial result', async () => {
+    if (!run.passed && node.status === 'todo') await api(`nodes/${node.pack_id}:${node.id}/mark`, {status: 'skipped'});
+    await refresh(); await switchTab('today');
+  }, ''));
+  else actions.append(submit);
   form.append(actions, result); response.append(form);
   function answers() {
     return Object.fromEntries(Object.entries(inputs).flatMap(([key, entry]) => {
@@ -896,6 +928,14 @@ function showLab(node, run) {
     event.preventDefault(); submit.disabled = true;
     try {
       const checked = await command(['lab', 'submit', run.id, JSON.stringify(answers())]);
+      if (policy && checked.exercise?.terminal) {
+        try { sessionStorage.removeItem(draftKey); } catch { /* No stored draft. */ }
+        await refresh(); await refreshSessions();
+        if (state.tab === 'challenge' && state.challengeRef === `${node.pack_id}:${node.id}`) {
+          showLab(node, checked.exercise); $('#policy-result')?.focus();
+        }
+        return;
+      }
       result.textContent = checked.summary;
       if (checked.completed) {
         const gained = (checked.timer?.xp || 0) - (run.timer?.xp || 0);
@@ -916,7 +956,7 @@ function showLab(node, run) {
     try { sessionStorage.removeItem(draftKey); } catch { /* No stored draft. */ }
     await refreshSessions(); await renderChallenge();
   }));
-  content.append(reset);
+  if (!policy) content.append(reset);
 }
 function showCase(node, run) {
   const content = $('#challenge-content'); content.replaceChildren();

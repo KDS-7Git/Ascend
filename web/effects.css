@@ -20,6 +20,9 @@ body { isolation: isolate; }
 .hover-light::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(color-mix(in srgb, var(--text) 18%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--text) 18%, transparent) 1px, transparent 1px); background-size: 24px 24px; mask-image: radial-gradient(circle 170px at var(--pointer-x, 75%) var(--pointer-y, 50%), #000 10%, #000b 45%, transparent 100%); }
 .hover-light::after { content: ''; position: absolute; left: var(--cell-x, 0); top: var(--cell-y, 0); width: 24px; height: 24px; border: 1px solid color-mix(in srgb, var(--text) 45%, transparent); background: color-mix(in srgb, var(--text) 5%, transparent); transition: left 100ms ease-out, top 100ms ease-out; }
 .next-card:has(.hover-light):hover .hover-light { opacity: 1; }
+.workspace-hover { position: fixed; inset: 0 0 0 var(--rail); border-radius: 0; }
+.workspace-hover.pointer-present { opacity: 1; }
+:root[data-view='docs'] .workspace-hover.pointer-present { opacity: .4; }
 :root[data-motion='off'] .hover-light { display: none; }
 .next-card .card-context { color: var(--accent); }
 .next-card > .eyebrow { align-self: flex-start; padding: 5px 10px; border: 2px solid var(--line); background: var(--action); color: var(--on-action); font-weight: 750; letter-spacing: .06em; box-shadow: 2px 2px 0 var(--shadow); }

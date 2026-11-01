@@ -13,6 +13,30 @@ from ascend import timing
 EXERCISES = {"logging", "subnet", "access-policy", "integrity", "timeline", "case"}
 
 
+def access_decision(request):
+    if not request["enabled"]:
+        return (
+            False,
+            "This identity is disabled. Disabled identities are always denied, even if they own the object or have the admin role.",
+        )
+    if request["caller"] == request["owner"]:
+        return (
+            True,
+            "This identity is enabled and owns the object, so it may read or write.",
+        )
+    if request["role"] == "admin" and request["action"] == "read":
+        return True, "An enabled admin may read an object owned by someone else."
+    if request["role"] == "admin":
+        return (
+            False,
+            "Admins may write only to objects they own. This caller is not the owner.",
+        )
+    return (
+        False,
+        "An enabled user may read or write only their own objects. This caller is not the owner.",
+    )
+
+
 def clarify_legacy_case(challenge):
     # Preserve option IDs and the answer key while clarifying this old wording.
     public = challenge["public"]
@@ -98,7 +122,6 @@ def generate(exercise, case_id, now):
         owner = "owner-" + tag
         other = "other-" + tag
         requests = []
-        expected = {}
         for i in range(6):
             caller = rng.choice([owner, other])
             role = rng.choice(["user", "admin"])
@@ -114,21 +137,16 @@ def generate(exercise, case_id, now):
                     "action": action,
                 }
             )
-            expected[f"r{i + 1}"] = enabled and (
-                caller == owner or (role == "admin" and action == "read")
-            )
         # Always include both a legitimate access and an unrelated denied write.
         requests[0].update(caller=owner, enabled=True, action="read")
-        expected["r1"] = True
         requests[1].update(caller=other, enabled=True, role="user", action="write")
-        expected["r2"] = False
         rng.shuffle(requests)
         public.update(
             instructions="Disabled identities are always denied. An owner may read/write. An enabled admin may read any object, but may write only their own. Return a boolean decision for every request.",
             answer_template={r["id"]: False for r in requests},
             data={"requests": requests},
         )
-        private["expected"] = expected
+        private["expected"] = {r["id"]: access_decision(r)[0] for r in requests}
     elif exercise == "integrity":
         value = f"Training evidence {tag}\nvalue={rng.randrange(10000, 99999)}\n"
         public.update(
@@ -206,10 +224,21 @@ def owned(t, run_id):
     return row, pack, node
 
 
+def recorded_result(t, where, params):
+    for table, render in [
+        ("case_attempts", case_result),
+        ("permission_attempts", permission_result),
+    ]:
+        rows = t.db.rows(table, where, params)
+        if rows:
+            return render(t, rows[0])
+    return None
+
+
 def view(t, run_id):
-    recorded = t.db.rows("case_attempts", "run_id=?", (run_id,))
+    recorded = recorded_result(t, "run_id=?", (run_id,))
     if recorded:
-        return case_result(t, recorded[0])
+        return recorded
     row, _, _ = owned(t, run_id)
     challenge = json.loads(row["challenge"])
     clarify_legacy_case(challenge)
@@ -221,6 +250,45 @@ def view(t, run_id):
         "passed": bool(row["passed_at"]),
         "attempts": row["attempts"],
         "terminal": bool(row["passed_at"]),
+        "timer": timing.summary(t),
+        **({"attempt_limit": 1} if row["exercise"] == "access-policy" else {}),
+    }
+
+
+def permission_result(t, row):
+    challenge = json.loads(row["challenge"])
+    answers = json.loads(row["answers"])
+    feedback = []
+    for request in challenge["public"]["data"]["requests"]:
+        allowed, explanation = access_decision(request)
+        selected = answers.get(request["id"])
+        feedback.append(
+            {
+                "id": request["id"],
+                "selected": selected,
+                "allowed": allowed,
+                "correct": selected == allowed if selected is not None else None,
+                "explanation": explanation,
+            }
+        )
+    awards = t.db.rows(
+        "xp_awards", "pack_id=? AND node_id=?", (row["pack_id"], row["node_id"])
+    )
+    return {
+        **challenge["public"],
+        "id": row["run_id"],
+        "node_id": f"{row['pack_id']}:{row['node_id']}",
+        "passed": row["correct_count"] == row["total_count"],
+        "terminal": True,
+        "attempts": 1,
+        "attempt_limit": 1,
+        "feedback": feedback,
+        "score": {
+            "correct": row["correct_count"],
+            "total": row["total_count"],
+            "xp": awards[0]["points"] if awards else 0,
+        },
+        "reward_eligible": bool(awards),
         "timer": timing.summary(t),
     }
 
@@ -253,9 +321,9 @@ def case_result(t, row):
 def current(t, reference):
     """Read the latest exercise without starting or resuming its timer."""
     pack, node = t.resolve_node(reference)
-    recorded = t.db.rows("case_attempts", "pack_id=? AND node_id=?", (pack.id, node.id))
+    recorded = recorded_result(t, "pack_id=? AND node_id=?", (pack.id, node.id))
     if recorded:
-        return case_result(t, recorded[0])
+        return recorded
     rows = t.db.rows(
         "lab_runs", "pack_id=? AND node_id=?", (pack.id, node.id), order="rowid DESC"
     )
@@ -267,15 +335,13 @@ def start(t, reference, fresh=False, minutes=None):
     if node.verify.get("type") != "lab":
         raise ValueError("This task has no bundled exercise")
     with t.db.transaction():
-        recorded = t.db.rows(
-            "case_attempts", "pack_id=? AND node_id=?", (pack.id, node.id)
-        )
+        recorded = recorded_result(t, "pack_id=? AND node_id=?", (pack.id, node.id))
         if recorded:
             if fresh:
                 raise ValueError(
-                    "This question has already been submitted. Review its explanation; another attempt is not available."
+                    "This challenge has already been submitted. Review its explanation; another attempt is not available."
                 )
-            return case_result(t, recorded[0])
+            return recorded
         timing.start(t, reference, minutes=minutes)
         digest = fingerprint(t, pack)
         rows = t.db.rows(
@@ -343,31 +409,34 @@ def submit(t, run_id, answers):
     if not isinstance(answers, dict) or len(json.dumps(answers)) > 8192:
         raise ValueError("Answers must be a JSON object of at most 8192 characters")
     with t.db.transaction():
-        recorded = t.db.rows("case_attempts", "run_id=?", (run_id,))
+        recorded = recorded_result(t, "run_id=?", (run_id,))
         if recorded:
-            receipt = case_result(t, recorded[0])
+            receipt = recorded
             return {
                 "ok": receipt["passed"],
                 "completed": receipt["passed"],
                 "terminal": True,
                 "exercise": receipt,
-                "summary": "This question has already been submitted. Your first result is final.",
+                "summary": "This challenge has already been submitted. Your first result is final.",
                 "timer": timing.summary(t),
             }
         row, pack, node = owned(t, run_id)
-        recorded = t.db.rows(
-            "case_attempts", "pack_id=? AND node_id=?", (pack.id, node.id)
-        )
+        recorded = recorded_result(t, "pack_id=? AND node_id=?", (pack.id, node.id))
         if recorded:
             raise ValueError(
-                "This question has already been submitted. Review the recorded result."
+                "This challenge has already been submitted. Review the recorded result."
             )
-        if row["attempts"] >= 10 and not row["passed_at"]:
+        if (
+            row["attempts"] >= 10
+            and not row["passed_at"]
+            and row["exercise"] != "access-policy"
+        ):
             raise ValueError(
                 "Attempt limit reached; review the lesson and start a fresh instance"
             )
         challenge = json.loads(row["challenge"])
         is_case = row["exercise"] == "case"
+        is_policy = row["exercise"] == "access-policy"
         if is_case and (
             set(answers) != {"choice"}
             or type(answers["choice"]) is not str
@@ -375,6 +444,13 @@ def submit(t, run_id, answers):
         ):
             raise ValueError("Choose one of the available answers before submitting.")
         expected = challenge["expected"]
+        if is_policy and (
+            set(answers) != set(expected)
+            or any(type(v) is not bool for v in answers.values())
+        ):
+            raise ValueError(
+                "Choose Allow or Deny for every request before submitting."
+            )
         ready = row["exercise"] != "logging" or set(challenge["emitted"]) == {
             "ok",
             "error",
@@ -396,6 +472,18 @@ def submit(t, run_id, answers):
                 "timer": timing.summary(t),
             }
         t.db.update("lab_runs", "id=?", (run_id,), attempts=row["attempts"] + 1)
+        if is_policy:
+            t.db.insert(
+                "permission_attempts",
+                pack_id=pack.id,
+                node_id=node.id,
+                run_id=run_id,
+                answers=json.dumps(answers),
+                challenge=json.dumps(challenge),
+                correct_count=sum(answers[k] == v for k, v in expected.items()),
+                total_count=len(expected),
+                submitted_at=t.now().isoformat(),
+            )
         if is_case:
             t.db.insert(
                 "case_attempts",
@@ -410,14 +498,18 @@ def submit(t, run_id, answers):
         if not ok:
             if is_case:
                 timing.finish(t, pack, node, "mcq:incorrect")
+            elif is_policy:
+                timing.finish(t, pack, node, "verifier:permission-partial")
             return {
                 "ok": False,
                 "completed": False,
-                "terminal": is_case,
+                "terminal": is_case or is_policy,
                 "summary": "Answer recorded. No XP earned; review the explanation."
                 if is_case
+                else "Decisions recorded. Review your partial score and the explanation for each request."
+                if is_policy
                 else "The expected result has not been demonstrated. Check the instructions and data; no completion or XP was awarded.",
-                "exercise": view(t, run_id) if is_case else None,
+                "exercise": view(t, run_id) if is_case or is_policy else None,
                 "timer": timing.summary(t),
             }
         t.db.update("lab_runs", "id=?", (run_id,), passed_at=t.now().isoformat())

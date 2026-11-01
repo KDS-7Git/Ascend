@@ -408,6 +408,8 @@ dialog::backdrop { background: #17191488; }
 .decision-choice:has(:checked) { border-color: var(--line); background: var(--soft); }
 .decision-choice:has(:focus-visible) { outline: 2px solid var(--accent); outline-offset: 3px; }
 .decision-choice:has(:disabled) { cursor: default; }
+.decision-outcome { display: flex; flex-direction: column; gap: 4px; font-size: .85rem; }
+.decision-explanation { margin: 12px 0 0; max-width: 75ch; line-height: 1.6; font-size: .85rem; }
 .exercise-evidence .lab-data { max-height: 480px; margin-bottom: 0; }
 @media (max-width: 1100px) {
   .exercise-workspace { grid-template-columns: minmax(0, 1fr); gap: 28px; }
