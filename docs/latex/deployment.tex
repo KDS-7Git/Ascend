@@ -64,15 +64,17 @@ browser writes.
 If container builds cannot reach PyPI, prepare wheels on the host:
 
 \begin{verbatim}
-python -m pip wheel --no-build-isolation --wheel-dir docker/wheelhouse '.[server]' setuptools wheel
-docker build -f docker/Dockerfile -t ascend:local .
+python3 -m pip wheel --no-build-isolation -c docker/constraints.txt \
+  --wheel-dir docker/wheelhouse '.[server,push]' setuptools wheel
+docker build --build-arg ASCEND_OFFLINE=1 -f docker/Dockerfile -t ascend:local .
 python scripts/container_smoke.py ascend:local
 \end{verbatim}
 
-The Dockerfile detects the ignored wheel cache through a build-only
-mount. Wheels are not copied into the runtime image or committed. Normal
-builds download their dependencies. Actual arm64 execution still needs
-verification on arm64 hardware.
+The ignored wheel cache is used only when explicitly enabled with the build argument
+\texttt{ASCEND\_OFFLINE=1}. Generate that cache for the target Python version and
+architecture; laptop AMD64 wheels must not be reused as Pi ARM64 wheels. Normal
+builds download pinned dependencies. Wheels are not copied into the runtime image
+or committed. Actual arm64 execution still needs verification on arm64 hardware.
 
 \hypertarget{reminders}{%
 \subsubsection{Reminders}\label{reminders}}

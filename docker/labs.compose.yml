@@ -1,0 +1,104 @@
+name: ascend-labs
+x-gateway: &gateway
+  image: haproxy@sha256:5893840576071e6217cd52ebdcc14f454c6f7a631056fa6f4e0f40d3cac4215b
+  user: "99:99"
+  restart: "no"
+  read_only: true
+  cap_drop: [ALL]
+  security_opt: [no-new-privileges:true]
+  mem_limit: 64m
+  cpus: 0.25
+  pids_limit: 32
+  logging: {driver: json-file, options: {max-size: 5m, max-file: "2"}}
+services:
+  juice-shop:
+    profiles: [juice-shop]
+    image: bkimminich/juice-shop@sha256:42843723a7bf4246aa5d63c324978b17ef296ac78434aeddd34c427bfb5853f4
+    restart: "no"
+    networks: [juice]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 768m
+    cpus: 1.0
+    pids_limit: 128
+    logging: {driver: json-file, options: {max-size: 10m, max-file: "2"}}
+    healthcheck:
+      test: [CMD, /nodejs/bin/node, -e, "require('http').get('http://127.0.0.1:3000/',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 8
+      start_period: 60s
+  webgoat:
+    profiles: [webgoat]
+    image: webgoat/webgoat@sha256:95c23e70502d0e0e11a826a73889e2ca93f965171202c17c0c59353ba67be86a
+    restart: "no"
+    volumes:
+      - ./labs/Health.java:/health/Health.java:ro
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xms128m -Xmx768m"
+    networks: [goat]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 1536m
+    cpus: 1.5
+    pids_limit: 256
+    logging: {driver: json-file, options: {max-size: 10m, max-file: "2"}}
+    healthcheck:
+      test: [CMD, java, -Xms8m, -Xmx64m, /health/Health.java]
+      interval: 15s
+      timeout: 10s
+      retries: 12
+      start_period: 120s
+  mqtt:
+    profiles: [mqtt]
+    image: eclipse-mosquitto@sha256:860aeb5d63ce509508f6dcfb2bc8a1c1dd2bc60555b562b45ce90e52d8dabb0f
+    restart: "no"
+    user: "1883:1883"
+    entrypoint: [/usr/sbin/mosquitto]
+    command: [-c, /mosquitto/config/mosquitto.conf]
+    read_only: true
+    volumes:
+      - ./labs/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+    networks: [mqtt]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 128m
+    cpus: 0.5
+    pids_limit: 32
+    logging: {driver: json-file, options: {max-size: 5m, max-file: "2"}}
+    healthcheck:
+      test: [CMD, mosquitto_pub, -h, "127.0.0.1", -t, health, -m, ready]
+      interval: 15s
+      timeout: 3s
+      retries: 4
+  juice-gateway:
+    <<: *gateway
+    profiles: [juice-shop]
+    depends_on:
+      juice-shop: {condition: service_healthy}
+    ports: ["127.0.0.1:${JUICE_PORT:-3000}:3000"]
+    networks: [juice-front, juice]
+    volumes: [./labs/juice-gateway.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro]
+  goat-gateway:
+    <<: *gateway
+    profiles: [webgoat]
+    depends_on:
+      webgoat: {condition: service_healthy}
+    ports: ["127.0.0.1:${WEBGOAT_PORT:-8080}:8080", "127.0.0.1:${WEBWOLF_PORT:-9090}:9090"]
+    networks: [goat-front, goat]
+    volumes: [./labs/goat-gateway.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro]
+  mqtt-gateway:
+    <<: *gateway
+    profiles: [mqtt]
+    depends_on:
+      mqtt: {condition: service_healthy}
+    ports: ["127.0.0.1:${MQTT_PORT:-1883}:1883"]
+    networks: [mqtt-front, mqtt]
+    volumes: [./labs/mqtt-gateway.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro]
+networks:
+  juice-front: {}
+  goat-front: {}
+  mqtt-front: {}
+  juice: {internal: true}
+  goat: {internal: true}
+  mqtt: {internal: true}

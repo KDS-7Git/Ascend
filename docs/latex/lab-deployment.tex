@@ -1,0 +1,152 @@
+\section{Optional isolated Docker labs and Raspberry Pi deployment}
+\subsection{Supported environments and actual validation}
+For the requested Raspberry Pi OS machine with 8 GB RAM, confirm the architecture:
+\begin{verbatim}
+uname -m
+getconf LONG_BIT
+docker version
+docker compose version
+\end{verbatim}
+The intended Pi configuration reports aarch64 and 64. An armv7l/32-bit OS is not a
+validated target; use 64-bit Raspberry Pi OS for these profiles. Install Docker
+Engine and the Compose plugin using the current Debian/Raspberry Pi OS instructions.
+Build directly on the Pi unless you have a working multi-architecture build setup.
+
+The pinned Python, Juice Shop, WebGoat, Mosquitto and HAProxy image indexes publish
+AMD64 and ARM64 variants. The tests recorded here executed on an AMD64 laptop;
+manifest availability does not establish Pi runtime performance. Budget one optional
+lab at a time on the 8 GB Pi, monitor memory, and keep several GB free for the OS,
+Docker builds and other services. The tracker is limited to 512 MB; Juice Shop to
+768 MB; WebGoat to 1536 MB with a 768 MB maximum heap; MQTT to 128 MB; each gateway
+to 64 MB. These are container limits, not measured worst-case RAM requirements.
+
+The default tracker Compose file preserves its existing named volume and project
+behavior. Do not change the project name on an existing installation without migrating
+the volume. \texttt{ASCEND\_PORT} defaults to 8420. Read-only root, a bounded temporary
+filesystem, UID 10001, dropped capabilities, process limits and bounded logs apply.
+The pinned dependency constraints are in \texttt{docker/constraints.txt}.
+
+\subsection{Start one optional lab}
+The lab project is separate from the tracker. Starting it never mounts learner data
+or the Docker socket in the vulnerable service. These commands run from the repo root:
+\begin{verbatim}
+docker compose -f docker/labs.compose.yml --profile juice-shop up -d --wait
+docker compose -f docker/labs.compose.yml ps
+# Stop the lab and remove its disposable state before another learner uses it:
+docker compose -f docker/labs.compose.yml --profile juice-shop down
+# Alternative, heavier Java application:
+docker compose -f docker/labs.compose.yml --profile webgoat up -d --wait
+# Alternative, deliberately anonymous teaching broker:
+docker compose -f docker/labs.compose.yml --profile mqtt up -d --wait
+\end{verbatim}
+Use localhost:3000 for Juice Shop, localhost:8080/WebGoat for WebGoat,
+localhost:9090/WebWolf for WebWolf, or localhost:1883 for MQTT. Profile port overrides
+are \texttt{JUICE\_PORT}, \texttt{WEBGOAT\_PORT}, \texttt{WEBWOLF\_PORT}, and
+\texttt{MQTT\_PORT}. Lab state is deliberately disposable; record notes first.
+Different profiles may coexist, but running them together is not the Pi default.
+
+Targets have separate internal Docker networks. Narrow HAProxy gateways join only
+their assigned target network and a separate front network; they publish loopback
+ports and fixed TCP forwards. Tests found that publishing ports directly from an
+internal-only network on Docker 29.9.2 left them inaccessible; these gateways make
+access explicit while keeping targets without public egress. No shared network
+connects a vulnerable target to Ascend. Docker shares the host kernel; this is
+containment for training, not a VM-grade boundary against kernel exploitation.
+
+For a laptop browser connecting to labs on the Pi, use an SSH tunnel:
+\begin{verbatim}
+ssh -N -L 8420:127.0.0.1:8420 -L 3000:127.0.0.1:3000 YOUR_USER@lab-host.local
+\end{verbatim}
+Then open localhost on the laptop. Keep vulnerable services off public interfaces.
+For phone access to Ascend itself, use the authenticated TLS deployment described in
+the operations chapter. Do not reverse-proxy the vulnerable lab publicly alongside it.
+
+WebGoat's pinned upstream image had a health check that invoked absent curl. The
+replacement uses its included JDK and a mounted, fixed Java HTTP probe. Juice Shop
+uses its included Node runtime for health checks. Some upstream challenges require
+external blockchain/LLM services and cannot work on the isolated network. The bundled
+verified tasks use local challenges only. WebGoat and MQTT are practice environments;
+no automatic WebGoat or MQTT task-completion adapter is claimed in this release.
+
+\subsection{Connect an external game to verified progress}
+Initialize the private collector state on the Docker host before adding the overlay:
+\begin{verbatim}
+python3 scripts/collect_lab_proof.py init
+docker compose -f docker/docker-compose.yml -f docker/lab-proofs.compose.yml up -d --build
+python3 scripts/collect_lab_proof.py juice-shop --owner 1
+\end{verbatim}
+The collector writes \texttt{.ascend-labs/proofs.env} with mode 600 and signed
+observations under its receipts directory. That private state is ignored by Git and
+the build context. Do not print or commit the key. The overlay reads the private env
+file and mounts only receipts read-only into Ascend. Mount creation fails if setup
+was skipped. An absolute \texttt{ASCEND\_LAB\_STATE\_DIR} overrides its host path;
+pass the same directory through the collector's \texttt{--state-dir} option.
+
+For a different lab Compose project, use \texttt{--project PROJECT} on the collector.
+For a different learner, use their numeric account ID (single mode is 1). The
+administrator can list IDs without exposing credentials:
+\begin{verbatim}
+docker compose -f docker/docker-compose.yml exec ascend python -c \
+ 'from ascend.storage import Database; d=Database(); print([tuple(r) for r in d.connection.execute("SELECT id,username FROM users")]); d.close()'
+\end{verbatim}
+Each Juice Shop container must belong to one learner. The collector refuses to
+reassign a running container; remove and recreate it for a new learner, and do not
+share its gateway while a scored session runs. Concurrent collectors are serialized
+on the host. This keeps assignment records coherent; it does not identify the person
+at a shared browser. The game result is a bounded observation, not a proctored exam.
+
+Refresh the collector after solving, then use \textbf{Verify lab completion} within
+five minutes. The observation contains challenge identifiers, never a reusable
+learner-submitted solved flag. Ascend checks its signature, owner, provider and age.
+In public deployments collection is an administrator duty; the web server never
+receives Docker access. The collector can be invoked manually after a solve; automated
+polling is optional administration work and is not installed by this release.
+
+\subsection{Bandit for a public starter pack}
+Home hack lab v4 includes challenges 0--32 and preserves the old bandit-33 ID as an
+endpoint/reflection task. The official level-34 page says it is not available; the
+pack does not invent a further login. The series now starts at zero for new learners.
+Existing completed IDs remain completed after an update and are not retroactively
+certified by the new verifier.
+
+Use the official initial login instructions, verify the official host key in your
+SSH known-hosts file, solve a challenge, then run:
+\begin{verbatim}
+python3 scripts/collect_lab_proof.py bandit --owner 1 --level 0
+ascend check home-hack-lab:bandit-0 --complete
+\end{verbatim}
+The collector authenticates to bandit1 on the fixed official SSH endpoint and checks a private short-lived SSH control connection. No remote command or forwarding
+is requested, so restricted Bandit shells do not invalidate a successful login.
+The collector closes the connection in cleanup. Password entry stays in the SSH terminal; passwords are not captured
+or stored. Repeat with the challenge level just solved. One receipt records the
+current check; verify before collecting the next level. Account access does not prove
+that the puzzle was solved independently. Network availability and the game operator's
+rules still apply. Automated tests stub SSH authentication validation and do not claim a
+live Bandit login. Home lab host checks need actual SSH credentials and trust on the
+machine running the verifier; the unprivileged Ascend container does not silently
+inherit your host's SSH keys.
+
+\subsection{Labs that need another environment}
+GOAD requires Windows virtual machines; its Docker tooling does not make an AD domain
+run as ARM Linux containers. Windows AD/AD CS and enterprise endpoint tasks need a
+suitable VM host or hosted lab. Security Onion requires x86-64. FLARE-VM is a Windows
+analysis environment; REMnux currently offers ARM64 appliances but is not bundled
+here. Mobile tasks require the specified emulator/device; iOS work also has platform
+requirements. CloudGoat uses real AWS resources and may incur charges; nothing here
+creates a cloud tenant or deploys it. The OT/ICS track uses simulators and synthetic
+traffic only. No live malware, radio exploitation or production control equipment
+is launched by the Docker profiles.
+
+\subsection{Reproduce the integration checks}
+\begin{verbatim}
+.venv/bin/python -m scripts.lab_smoke
+.venv/bin/python scripts/container_smoke.py ascend:verified-labs
+.venv/bin/python scripts/restore_smoke.py ascend:verified-labs
+\end{verbatim}
+The lab smoke test uses a disposable project and temporary learner database, validates
+health and loopback routes, performs a real MQTT round trip, checks containment,
+solves the Juice Shop scoreboard through a browser, and exercises the signed receipt
+with correct and wrong accounts. It removes its own project afterward. Docker and
+Playwright Chromium must be installed. Retained transcripts state the actual platform
+and results. The archive/restore test uses disposable volumes; it never restores over
+an existing learning profile.

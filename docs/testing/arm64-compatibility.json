@@ -1,0 +1,98 @@
+{
+  "images": [
+    {
+      "image": "bkimminich/juice-shop@sha256:42843723a7bf4246aa5d63c324978b17ef296ac78434aeddd34c427bfb5853f4",
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64",
+        "unknown/unknown"
+      ]
+    },
+    {
+      "image": "eclipse-mosquitto@sha256:860aeb5d63ce509508f6dcfb2bc8a1c1dd2bc60555b562b45ce90e52d8dabb0f",
+      "platforms": [
+        "linux/386",
+        "linux/amd64",
+        "linux/arm",
+        "linux/arm64",
+        "linux/ppc64le",
+        "linux/s390x",
+        "unknown/unknown"
+      ]
+    },
+    {
+      "image": "haproxy@sha256:5893840576071e6217cd52ebdcc14f454c6f7a631056fa6f4e0f40d3cac4215b",
+      "platforms": [
+        "linux/386",
+        "linux/amd64",
+        "linux/arm",
+        "linux/arm64",
+        "linux/ppc64le",
+        "linux/riscv64",
+        "linux/s390x",
+        "unknown/unknown"
+      ]
+    },
+    {
+      "image": "python:3.12-slim@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159",
+      "platforms": [
+        "linux/386",
+        "linux/amd64",
+        "linux/arm",
+        "linux/arm64",
+        "linux/ppc64le",
+        "linux/riscv64",
+        "linux/s390x",
+        "unknown/unknown"
+      ]
+    },
+    {
+      "image": "webgoat/webgoat@sha256:95c23e70502d0e0e11a826a73889e2ca93f965171202c17c0c59353ba67be86a",
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64",
+        "unknown/unknown"
+      ]
+    }
+  ],
+  "python": "CPython 3.12",
+  "wheels": [
+    "aiohappyeyeballs-2.7.1-py3-none-any.whl",
+    "aiohttp-3.14.5-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl",
+    "aiosignal-1.4.0-py3-none-any.whl",
+    "annotated_doc-0.0.5-py3-none-any.whl",
+    "annotated_types-0.8.0-py3-none-any.whl",
+    "anyio-4.15.1-py3-none-any.whl",
+    "attrs-26.1.0-py3-none-any.whl",
+    "certifi-2026.10.23-py3-none-any.whl",
+    "cffi-2.1.1-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.whl",
+    "charset_normalizer-3.5.2-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl",
+    "click-8.5.0-py3-none-any.whl",
+    "cryptography-50.0.2-cp311-abi3-manylinux_2_28_aarch64.whl",
+    "fastapi-0.162.0-py3-none-any.whl",
+    "frozenlist-1.8.0-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl",
+    "h11-0.16.0-py3-none-any.whl",
+    "http_ece-1.2.1-py2.py3-none-any.whl",
+    "idna-3.20-py3-none-any.whl",
+    "multidict-7.2.1-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl",
+    "opentelemetry_api-1.45.2-py3-none-any.whl",
+    "packaging-26.3-py3-none-any.whl",
+    "propcache-0.5.4-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl",
+    "py_vapid-1.9.6-py2.py3-none-any.whl",
+    "pycparser-3.12-py3-none-any.whl",
+    "pydantic-2.14.2-py3-none-any.whl",
+    "pydantic_core-2.50.2-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.whl",
+    "python_multipart-0.0.32-py3-none-any.whl",
+    "pywebpush-2.5.0-py3-none-any.whl",
+    "requests-2.34.2-py3-none-any.whl",
+    "setuptools-84.2.1-py3-none-any.whl",
+    "starlette-1.10.0-py3-none-any.whl",
+    "typing_extensions-4.16.0-py3-none-any.whl",
+    "typing_inspection-0.4.4-py3-none-any.whl",
+    "urllib3-2.8.0-py3-none-any.whl",
+    "uvicorn-0.54.0-py3-none-any.whl",
+    "wheel-0.48.0-py3-none-any.whl",
+    "yarl-1.25.1-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl"
+  ],
+  "limits": "Manifest and compatible wheel resolution only. No ARM64 runtime or physical Pi test. http-ece built as a pure-Python universal wheel from its pinned source release."
+}

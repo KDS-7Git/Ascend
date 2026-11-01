@@ -10,6 +10,7 @@ import os
 from pathlib import Path
 import secrets
 import subprocess
+import tempfile
 from urllib.request import urlopen
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -99,25 +100,50 @@ def bandit(level, owner, root):
     if not 0 <= level <= 32:
         raise ValueError("Bandit challenge level must be between 0 and 32")
     target = "bandit" + str(level + 1)
-    result = subprocess.run(
-        [
-            "ssh",
-            "-T",
-            "-p",
-            "2220",
-            "-o",
-            "StrictHostKeyChecking=yes",
-            "-o",
-            "ConnectTimeout=10",
-            target + "@bandit.labs.overthewire.org",
-            "id -un",
-        ],
-        stdout=subprocess.PIPE,
-        timeout=90,
-        check=True,
-    )
-    if result.stdout.decode().strip() != target:
-        raise ValueError("The remote identity did not match the required next level")
+    host = target + "@bandit.labs.overthewire.org"
+    # A private, short-lived control socket proves SSH authentication without
+    # assuming the account has an ordinary command shell (some Bandit levels do not).
+    with tempfile.TemporaryDirectory(prefix="ascend-bandit-") as folder:
+        socket = str(Path(folder) / "control")
+        try:
+            subprocess.run(
+                [
+                    "ssh",
+                    "-fNT",
+                    "-M",
+                    "-S",
+                    socket,
+                    "-p",
+                    "2220",
+                    "-o",
+                    "StrictHostKeyChecking=yes",
+                    "-o",
+                    "ConnectTimeout=10",
+                    "-o",
+                    "ControlPersist=no",
+                    "-o",
+                    "ClearAllForwardings=yes",
+                    host,
+                ],
+                stdout=subprocess.DEVNULL,
+                timeout=90,
+                check=True,
+            )
+            subprocess.run(
+                ["ssh", "-S", socket, "-O", "check", host],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+                timeout=5,
+                check=True,
+            )
+        finally:
+            subprocess.run(
+                ["ssh", "-S", socket, "-O", "exit", host],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+                timeout=5,
+                check=False,
+            )
     # Login proves access to this game account, not independent puzzle solving.
     return {
         "provider": "bandit",

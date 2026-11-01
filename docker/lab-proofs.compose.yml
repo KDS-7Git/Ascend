@@ -1,0 +1,15 @@
+# Add to the TRACKER Compose command after initializing scripts/collect_lab_proof.py.
+# The tracker receives read-only signed observations, never the Docker socket.
+services:
+  ascend:
+    env_file:
+      - ${ASCEND_LAB_STATE_DIR:-../.ascend-labs}/proofs.env
+    environment:
+      ASCEND_LAB_RECEIPTS_DIR: /lab-proofs
+    volumes:
+      - type: bind
+        source: ${ASCEND_LAB_STATE_DIR:-../.ascend-labs}/receipts
+        target: /lab-proofs
+        read_only: true
+        bind:
+          create_host_path: false

@@ -1,0 +1,5 @@
+Checked 5 pinned multiarchitecture image indexes; all provide linux/amd64 and linux/arm64.
+Resolved 36 pinned dependency wheels for CPython 3.12 ARM64 (no x86 wheels).
+http-ece 1.2.1 has no published binary wheel; built its pure Python universal wheel from pinned source before resolving. Normal Docker builds also build this package from source.
+No emulation or physical Pi execution was performed.
+RESULT: ARM64 manifests and dependency artifacts checked; Pi runtime validation remains outstanding.

@@ -105,9 +105,17 @@ def test_bandit_collector_uses_fixed_host_and_validates_identity(tmp_path, monke
 
     monkeypatch.setattr(collect_lab_proof.subprocess, "run", run)
     assert collect_lab_proof.bandit(0, 1, tmp_path)["solved"] == ["bandit-0"]
-    assert calls[0][-2:] == ["bandit1@bandit.labs.overthewire.org", "id -un"]
+    assert calls[0][-1] == "bandit1@bandit.labs.overthewire.org"
+    assert "-fNT" in calls[0] and "ClearAllForwardings=yes" in calls[0]
     assert "StrictHostKeyChecking=yes" in calls[0]
-    with pytest.raises(ValueError, match="identity"):
+    assert calls[1][-2] == "check" and calls[2][-2] == "exit"
+
+    def reject(args, **kwargs):
+        if kwargs.get("check"):
+            raise collect_lab_proof.subprocess.CalledProcessError(255, args)
+
+    monkeypatch.setattr(collect_lab_proof.subprocess, "run", reject)
+    with pytest.raises(collect_lab_proof.subprocess.CalledProcessError):
         collect_lab_proof.bandit(1, 1, tmp_path)
     with pytest.raises(ValueError):
         collect_lab_proof.bandit(33, 1, tmp_path)
