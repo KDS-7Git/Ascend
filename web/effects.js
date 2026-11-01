@@ -41,8 +41,8 @@ window.AscendMotion = (() => {
     if (!enabled()) return;
     const title = screen.querySelector('h1');
     animate(title, [
-      {opacity: .2, transform: 'translateY(8px)', filter: 'blur(3px)'},
-      {opacity: 1, transform: 'none', filter: 'blur(0px)'}
+      {opacity: .2, transform: 'translateY(8px)'},
+      {opacity: 1, transform: 'none'}
     ], 460);
     // Only section entrances; prose is never split into animated characters.
     const sections = screen.id === 'docs'
@@ -65,7 +65,7 @@ window.AscendMotion = (() => {
     root.classList.toggle('page-inactive', document.hidden);
     if (document.hidden) cancelEntrances();
   });
-  // Keep the native cursor; a soft highlight follows it only over the next task.
+  // Keep the native cursor; reveal color and halftone around it on the next task.
   const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
   document.addEventListener('pointermove', event => {
     if (!enabled() || !finePointer.matches) return;
@@ -77,7 +77,8 @@ window.AscendMotion = (() => {
       light.setAttribute('aria-hidden', 'true'); card.append(light);
     }
     const rect = card.getBoundingClientRect();
-    light.style.transform = `translate(${event.clientX - rect.left - 130}px, ${event.clientY - rect.top - 130}px)`;
+    light.style.setProperty('--pointer-x', `${event.clientX - rect.left - card.clientLeft}px`);
+    light.style.setProperty('--pointer-y', `${event.clientY - rect.top - card.clientTop}px`);
   }, {passive: true});
   sync();
   return {enter};

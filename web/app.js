@@ -5,6 +5,7 @@ const TABS = ["today", "path", "stats", "more", "docs", "profile", "challenge"];
 const TAB_NAMES = {today: "Today", path: "Learning path", stats: "Progress", more: "Tracks", docs: "Documentation", profile: "Profile", challenge: "Challenge"};
 let noticeTimer;
 let challengeIntroPlayed = false;
+let challengeIntroObserver;
 function el(tag, text, className) { const node = document.createElement(tag); if (text !== undefined) node.textContent = text; if (className) node.className = className; return node; }
 async function runAction(node, action, after) {
   if (node.getAttribute('aria-busy') === 'true') return;
@@ -175,20 +176,37 @@ async function refresh() {
   playChallengeIntro();
   await refreshSessions();
 }
-function playChallengeIntro() {
+async function playChallengeIntro() {
+  challengeIntroObserver?.disconnect();
   const card = $('.next-card');
   if (challengeIntroPlayed || state.tab !== 'today' || !card) return;
-  challengeIntroPlayed = true;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const finish = event => {
-    if (event.target !== card || event.animationName !== 'challenge-border-sweep') return;
-    card.removeEventListener('animationend', finish);
-    card.removeEventListener('animationcancel', finish);
-    card.classList.remove('challenge-intro');
+  await document.fonts.ready;
+  if (challengeIntroPlayed || state.tab !== 'today' || card !== $('.next-card')) return;
+  challengeIntroObserver?.disconnect();
+  if (document.documentElement.dataset.motion === 'off' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    challengeIntroPlayed = true;
+    return;
+  }
+  const start = () => {
+    challengeIntroObserver?.disconnect();
+    challengeIntroPlayed = true;
+    if (document.documentElement.dataset.motion === 'off' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const finish = event => {
+      if (event.target !== card || event.animationName !== 'challenge-border-sweep') return;
+      card.removeEventListener('animationend', finish);
+      card.removeEventListener('animationcancel', finish);
+      card.classList.remove('challenge-intro');
+    };
+    card.addEventListener('animationend', finish);
+    card.addEventListener('animationcancel', finish);
+    card.classList.add('challenge-intro');
   };
-  card.addEventListener('animationend', finish);
-  card.addEventListener('animationcancel', finish);
-  card.classList.add('challenge-intro');
+  // On a phone the card may begin below the fold. Do not spend its one sweep unseen.
+  if (!('IntersectionObserver' in window)) { start(); return; }
+  challengeIntroObserver = new IntersectionObserver(entries => {
+    if (entries.some(entry => entry.isIntersecting && entry.intersectionRatio >= .2) && card.isConnected && state.tab === 'today') start();
+  }, {threshold: .2, rootMargin: '-72px 0px -80px 0px'});
+  challengeIntroObserver.observe(card);
 }
 function renderMissionProgress() {
   const root = $('#mission-progress'); root.replaceChildren();

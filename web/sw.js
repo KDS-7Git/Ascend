@@ -1,5 +1,5 @@
 "use strict";
-const CACHE = "ascend-shell-v6";
+const CACHE = "ascend-shell-v7";
 const SHELL = ["/", "/style.css", "/effects.css", "/app.js", "/effects.js", "/icon.svg", "/manifest.webmanifest", "/theme.js", "/guide.json", "/fonts/InterVariable.woff2"];
 self.addEventListener("install", event => event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL)).then(() => self.skipWaiting())));
 self.addEventListener("activate", event => event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key !== CACHE).map(key => caches.delete(key)))).then(() => self.clients.claim())));

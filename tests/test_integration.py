@@ -740,3 +740,53 @@ def test_motion_controls_persist_and_honor_device_preferences(live_server):
         page.emulate_media(reduced_motion="no-preference")
         expect(page.locator("html")).to_have_attribute("data-motion", "calm")
         browser.close()
+
+
+@pytest.mark.parametrize("width,height", [(320, 480), (1440, 1000)])
+def test_challenge_glow_plays_once_when_visible_per_load(live_server, width, height):
+    from playwright.sync_api import sync_playwright, expect
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page(
+            viewport={"width": width, "height": height}, reduced_motion="no-preference"
+        )
+        page.add_init_script("""
+            window.challengeSweeps = 0;
+            document.addEventListener('animationstart', event => {
+                if (event.animationName === 'challenge-border-sweep') {
+                    document.documentElement.dataset.testSweeps = String(++window.challengeSweeps);
+                }
+            });
+        """)
+        page.goto(live_server)
+        card = page.locator(".next-card")
+        card.wait_for()
+        if width == 320:
+            bounds = card.bounding_box()
+            assert bounds["y"] + bounds["height"] > height
+            assert page.evaluate("window.challengeSweeps") == 0
+        card.scroll_into_view_if_needed()
+        expect(page.locator("html")).to_have_attribute("data-test-sweeps", "1")
+        expect(page.locator(".next-card.challenge-intro")).to_have_count(0)
+        page.get_by_role("button", name="Path", exact=True).click()
+        page.locator(".path-node").first.wait_for()
+        page.get_by_role("button", name="Today", exact=True).click()
+        card.scroll_into_view_if_needed()
+        previous_card = card.element_handle()
+        page.get_by_role("button", name="30 min", exact=True).click()
+        expect(page.get_by_role("button", name="30 min", exact=True)).to_have_attribute(
+            "aria-pressed", "true"
+        )
+        previous_card.wait_for_element_state("hidden")
+        card.scroll_into_view_if_needed()
+        # Flush rendering so a mistakenly replayed CSS animation can emit its event.
+        page.evaluate(
+            "new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)))"
+        )
+        assert page.evaluate("window.challengeSweeps") == 1
+        page.reload()
+        card.wait_for()
+        card.scroll_into_view_if_needed()
+        expect(page.locator("html")).to_have_attribute("data-test-sweeps", "1")
+        browser.close()
