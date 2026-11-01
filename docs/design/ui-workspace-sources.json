@@ -1,0 +1,83 @@
+{
+  "sources": [
+    {
+      "title": "Duolingo learning path",
+      "url": "https://blog.duolingo.com/new-duolingo-home-screen-design/",
+      "status": 200,
+      "accessed": "2026-11-01",
+      "finding": "A guided route reduces the need to choose the next lesson, with practice and explanatory guidebooks close to the learning flow.",
+      "limits": "The inspected official article describes the 2022 redesign; no claim of an authenticated 2026 product audit.",
+      "browser_status": 200,
+      "rendered_characters": 10923
+    },
+    {
+      "title": "Hack The Box Academy SOC path",
+      "url": "https://academy.hackthebox.com/path/preview/soc-analyst",
+      "status": 200,
+      "accessed": "2026-11-01",
+      "finding": "A role-based path presents entry requirements, module counts and a clear course outline.",
+      "limits": "The public SOC landing page was inspected; private lesson screens and learner outcomes were not audited.",
+      "browser_status": 200,
+      "rendered_characters": 1263
+    },
+    {
+      "title": "TryHackMe learning paths",
+      "url": "https://tryhackme.com/paths",
+      "status": "restricted/unavailable",
+      "accessed": "2026-11-01",
+      "finding": "No new UI claims derived from this response.",
+      "limits": "HTTP 429 prevented inspection; no access restriction was bypassed."
+    },
+    {
+      "title": "GitHub Primer button",
+      "url": "https://primer.style/product/components/button/",
+      "status": "restricted/unavailable",
+      "accessed": "2026-11-01",
+      "finding": "Primary, secondary and quiet button variants establish action hierarchy. Loading, inactive, focus and keyboard states are documented.",
+      "limits": "Rendered official component documentation inspected after the initial HTTP client timed out.",
+      "browser_status": 200,
+      "rendered_characters": 9686
+    },
+    {
+      "title": "Material Design lists",
+      "url": "https://m3.material.io/components/lists/overview",
+      "status": 200,
+      "accessed": "2026-11-01",
+      "finding": "Use ordered, scannable lists with consistently positioned text and trailing actions.",
+      "limits": "The initial HTML was a JavaScript shell; the rendered page was inspected separately.",
+      "browser_status": 200,
+      "rendered_characters": 2545
+    },
+    {
+      "title": "WAI modal dialog pattern",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/",
+      "status": 200,
+      "accessed": "2026-11-01",
+      "finding": "Modal content is active while background content is inert. Initial focus, Escape and focus restoration are necessary parts of the pattern.",
+      "limits": "Standards guidance informs behavior; native dialog use alone is not a complete accessibility assessment."
+    },
+    {
+      "title": "Nielsen Norman progressive disclosure",
+      "url": "https://www.nngroup.com/articles/progressive-disclosure/",
+      "status": 200,
+      "accessed": "2026-11-01",
+      "finding": "Progressive disclosure keeps frequent actions visible while deferring infrequent detail.",
+      "limits": "Applied to pack imports, hints, notification setup and grouped pack previews; no measured cognitive-load improvement claimed."
+    },
+    {
+      "title": "MDN popover top layer",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/Popover_API/Using",
+      "status": 200,
+      "accessed": "2026-11-01",
+      "finding": "Dialogs and popovers use a top layer distinct from ordinary stacking contexts.",
+      "limits": "The fix uses an in-dialog feedback region, not a z-index increase or a popover dependency."
+    }
+  ],
+  "font": {
+    "name": "Inter Variable",
+    "source": "https://github.com/rsms/inter",
+    "license": "SIL Open Font License 1.1",
+    "local_license": "web/fonts/OFL.txt",
+    "sha256": "693b77d4f32ee9b8bfc995589b5fad5e99adf2832738661f5402f9978429a8e3"
+  }
+}

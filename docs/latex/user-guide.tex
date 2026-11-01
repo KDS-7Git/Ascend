@@ -29,7 +29,7 @@ concrete steps, or choose a larger time budget.
 
 Open challenge displays the scenario, finish line, any authored steps, a resource
 link, and hints behind individual disclosures. The learning resource opens
-outside Ascend; Ascend does not host lab machines. An older pack without guidance
+outside Ascend. Built-in exercises run inside Ascend; optional external labs use the separate Docker profiles. An older pack without guidance
 fields still shows its original completion condition and resource.
 
 Do the work, then choose Log progress. Record what you tried or learned and the
@@ -49,8 +49,10 @@ Stats shows streaks, active-day history, weekly minutes, searchable notes and
 milestones completed in the active track. Skipped tasks do not earn these badges
 or increase the browser's completed-step percentage. The legacy CLI level count
 includes resolved (done or skipped) tasks, so it can differ from that percentage.
-More contains missions, pack installation/upload, reminders, theme, parked ideas,
-timezone, account and opt-in public streak settings. The keyboard shortcut
+Tracks contains missions, the installed library, pack import and parked ideas.
+The top-bar XP balance opens Stats. The avatar opens Profile for timezone,
+appearance, reminders, account details and opt-in streak sharing. Docs contains
+searchable help with direct topic links. The keyboard shortcut
 \texttt{L} opens logging when focus is outside an input. Escape closes a dialog.
 
 \subsection{Evidence, progress and honest completion}
@@ -73,7 +75,8 @@ ascend check PACK:NODE
 \end{verbatim}
 Replace \texttt{PACK:NODE} with a real node reference. To inspect IDs, use
 \texttt{ascend levels --json}. Explicit manual marking and force overrides remain
-available in the CLI/API; record a reason and do not interpret an override as a
+available for ordinary tasks in the CLI/API; verified lab/CTF nodes still require
+passing evidence. Record a reason and do not interpret an override as a
 successful verifier or assessment.
 
 \subsection{Missions, other tracks and returning after a break}
@@ -88,7 +91,7 @@ ascend mission list
 ascend mission nudge-time 20:30
 ascend mission nudge-time off
 \end{verbatim}
-Save an unrelated idea using \texttt{ascend park "idea"} or More. Resolve it when
+Save an unrelated idea using \texttt{ascend park "idea"} or Tracks under Ideas for later. Resolve it when
 appropriate. Backfill records work completed before using Ascend without adding
 streak days. Return to an old challenge to practice again or use the version-3
 return-later checks after a few days. Their suggested interval is not scheduled

@@ -1,32 +1,95 @@
 "use strict";
 const $ = (selector, root = document) => root.querySelector(selector);
-const state = {token: sessionStorage.getItem("ascend-token"), minutes: null, overview: null, levels: [], tab: "today"};
+const state = {token: sessionStorage.getItem("ascend-token"), minutes: null, overview: null, levels: [], tab: "today", account: null, guides: null, guideTopic: null, installedPacks: [], showAllPacks: false};
+const TABS = ["today", "path", "stats", "more", "docs", "profile"];
+const TAB_NAMES = {today: "Today", path: "Learning path", stats: "Progress", more: "Tracks", docs: "Documentation", profile: "Profile"};
 let noticeTimer;
 function el(tag, text, className) { const node = document.createElement(tag); if (text !== undefined) node.textContent = text; if (className) node.className = className; return node; }
-function button(text, action, className = "secondary") { const node = el("button", text, className); node.type = "button"; node.addEventListener("click", () => Promise.resolve().then(action).catch(error => notify(error.message))); return node; }
-function notify(message) { const node = $("#notice"); node.textContent = message; node.hidden = false; clearTimeout(noticeTimer); noticeTimer = setTimeout(() => node.hidden = true, 4500); }
-async function api(path, body, method = "POST") {
+async function runAction(node, action, after) {
+  if (node.getAttribute('aria-busy') === 'true') return;
+  const disabled = node.disabled;
+  node.disabled = true;
+  node.setAttribute('aria-busy', 'true');
+  try { await action(); } catch (error) { notify(error.message, 'error'); }
+  finally { node.removeAttribute('aria-busy'); if (node.isConnected) node.disabled = disabled; if (after) after(); }
+}
+function button(text, action, className = "secondary") {
+  const node = el("button", text, className);
+  node.type = "button";
+  node.addEventListener("click", () => runAction(node, action));
+  return node;
+}
+function dismissNotice() {
+  const node = $('#notice');
+  clearTimeout(noticeTimer);
+  node.hidden = true;
+}
+function notify(message, kind = 'info') {
+  const node = $('#notice');
+  // A timer reminder must not replace an unresolved action error.
+  if (kind === 'reminder' && !node.hidden && node.dataset.kind === 'error') return;
+  const dialog = [...document.querySelectorAll('dialog[open]')].at(-1);
+  (dialog?.querySelector('.dialog-feedback') || document.body).append(node);
+  node.dataset.kind = kind;
+  node.setAttribute('role', kind === 'error' ? 'alert' : 'status');
+  node.setAttribute('aria-live', kind === 'error' ? 'assertive' : 'polite');
+  $('.notice-message', node).textContent = message || 'The action could not be completed.';
+  $('.notice-symbol', node).replaceChildren(icon(kind === 'success' ? 'check' : kind === 'error' ? 'warning' : 'info'));
+  node.hidden = false;
+  clearTimeout(noticeTimer);
+  // Dialog feedback and errors stay until dismissed or replaced; no reading race.
+  if (!dialog && kind !== 'error') noticeTimer = setTimeout(dismissNotice, 8000);
+}
+async function api(path, body, method = "POST", interactive = true) {
   const headers = {}; if (state.token) headers.Authorization = `Bearer ${state.token}`;
   const options = {headers, cache: "no-store"};
   if (body !== undefined) { options.method = method; if (body instanceof FormData) options.body = body; else { headers["Content-Type"] = "application/json"; options.body = JSON.stringify(body); } }
   let response;
   try { response = await fetch(`/api/${path}`, options); } catch { throw new Error("You're offline. Reconnect to save your progress."); }
-  if (response.status === 401) { if (!$("#login-dialog").open) $("#login-dialog").showModal(); throw new Error("Sign in to continue."); }
+  if (response.status === 401) { if (interactive && !$("#login-dialog").open) $("#login-dialog").showModal(); throw new Error("Sign in to continue."); }
   const data = await response.json();
   if (!response.ok) throw new Error(typeof data.detail === "string" ? data.detail : "Please check the form fields.");
   return data;
 }
 const command = argv => api("command", {argv});
-async function switchTab(tab) {
+function currentRoute() {
+  const [raw, topic] = location.hash.slice(1).split('/');
+  return {tab: TABS.includes(raw) ? raw : 'today', topic: topic || null};
+}
+async function switchTab(tab, options = {}) {
+  if (!TABS.includes(tab)) return;
+  const changed = state.tab !== tab;
   state.tab = tab;
-  document.querySelectorAll(".screen").forEach(screen => screen.hidden = screen.id !== tab);
-  document.querySelectorAll("[data-tab]").forEach(node => { node.classList.toggle("active", node.dataset.tab === tab); if (node.dataset.tab === tab) node.setAttribute("aria-current", "page"); else node.removeAttribute("aria-current"); });
-  location.hash = tab;
-  if (tab === "path") await renderPath();
-  if (tab === "stats") await renderStats();
-  if (tab === "more") await renderMore();
+  document.querySelectorAll('.screen').forEach(screen => screen.hidden = screen.id !== tab);
+  document.querySelectorAll('.primary-nav [data-tab]').forEach(node => {
+    node.classList.toggle('active', node.dataset.tab === tab);
+    if (node.dataset.tab === tab) node.setAttribute('aria-current', 'page');
+    else node.removeAttribute('aria-current');
+  });
+  if (tab === 'profile') $('#profile-link').setAttribute('aria-current', 'page');
+  else $('#profile-link').removeAttribute('aria-current');
+  $('#page-context').textContent = TAB_NAMES[tab];
+  document.title = `${TAB_NAMES[tab]} · Ascend`;
+  if (tab === 'docs') state.guideTopic = options.topic || state.guideTopic || 'getting-started';
+  const hash = tab === 'docs' ? `docs/${state.guideTopic}` : tab;
+  if (location.hash !== `#${hash}`) location.hash = hash;
+  if (changed) window.scrollTo({top: 0, behavior: 'instant'});
+  if (tab === 'docs') {
+    await renderDocs();
+    if (!state.account) refreshDocsChrome().catch(() => {});
+    return;
+  }
+  if (!state.overview) await refresh();
+  if (tab === 'path') await renderPath();
+  if (tab === 'stats') await renderStats();
+  if (tab === 'more') await renderMore();
+  if (tab === 'profile') await renderProfile();
 }
 const ICONS = {
+  layers: ['m12 3 10 5-10 5L2 8l10-5Z', 'm2 12 10 5 10-5M2 16l10 5 10-5'],
+  plus: ['M12 5v14M5 12h14'],
+  info: ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18', 'M12 11v6m0-10v1'],
+  warning: ['m12 3 10 18H2L12 3Z', 'M12 9v5m0 3v1'],
   sun: ['M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8', 'M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5'],
   route: ['M5 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4M19 16a2 2 0 1 0 0 4 2 2 0 0 0 0-4', 'M7 6h9a4 4 0 0 1 0 8H8a2 2 0 0 0 0 4h9'],
   chart: ['M4 4v16h16M8 15v-3m5 3V8m5 7V5'],
@@ -67,22 +130,14 @@ function currentLevel() {
 }
 function levelFor(node) { return state.levels.find(lv => lv.id === node.level); }
 function fullNode(node) { return levelFor(node)?.nodes.find(n => n.id === node.id) || node; }
-function challengeArt() {
-  const art = svgElement('svg', {viewBox: '0 0 240 150', class: 'challenge-art', 'aria-hidden': 'true'});
-  art.append(svgElement('path', {d:'M10 120C65 150 45 65 106 94S150 25 215 34', fill:'none', stroke:'currentColor', 'stroke-width':2, 'stroke-dasharray':'5 7'}));
-  for (const [cx,cy,r] of [[10,120,5],[70,98,9],[130,94,6],[173,48,10],[215,34,17]]) {
-    art.append(svgElement('circle',{cx,cy,r,fill:'var(--hero-bg)',stroke:'currentColor','stroke-width':2}));
-  }
-  art.append(svgElement('path',{d:'m208 34 5 5 9-10',fill:'none',stroke:'currentColor','stroke-width':3,'stroke-linecap':'round','stroke-linejoin':'round'}));
-  return art;
-}
 let refreshVersion = 0;
 async function refresh() {
   const version = ++refreshVersion;
-  const [overview, levels] = await Promise.all([api('me' + (state.minutes ? `?minutes=${state.minutes}` : '')), api('levels')]);
+  const [overview, levels, account] = await Promise.all([api('me' + (state.minutes ? `?minutes=${state.minutes}` : '')), api('levels'), api('account')]);
   if (version !== refreshVersion) return;
   if (state.overview?.mission?.id !== overview.mission?.id) $('#session-result').hidden = true;
-  state.overview = overview; state.levels = levels;
+  state.overview = overview; state.levels = levels; state.account = account;
+  updateAccountChrome();
   $('#streak').textContent = overview.current_streak;
   $('#streak-link').setAttribute('aria-label', `View streak stats: ${overview.current_streak} days`);
   renderMissionProgress();
@@ -142,10 +197,24 @@ function nodeCard(node, quick) {
   const actions = el('div', undefined, 'card-actions');
   const open = button(quick ? 'Try this challenge' : 'Open challenge', () => showNode(fullNode(node), lv), quick ? 'secondary' : ''); open.append(icon('arrow'));
   actions.append(open, button('Log progress', () => openLog(node), 'text-button')); card.append(actions);
-  if (!quick) card.append(challengeArt());
   return card;
 }
-function openSheet() { const dialog = $('#sheet'); $('#sheet-content').replaceChildren(); if (!dialog.open) dialog.showModal(); return $('#sheet-content'); }
+function openSheet(context = 'Challenge') {
+  const dialog = $('#sheet');
+  dismissNotice();
+  $('#dialog-context').textContent = context;
+  $('#sheet-content').replaceChildren();
+  $('#sheet-content').scrollTop = 0;
+  if (!dialog.open) dialog.showModal();
+  // Focus the new heading after the caller fills the dialog. Closing returns
+  // focus to the control that opened it, as prescribed by the native dialog.
+  queueMicrotask(() => {
+    const heading = $('#sheet-title');
+    if (context === 'Log progress' && $('#learned')) $('#learned').focus({preventScroll: true});
+    else if (heading) { heading.tabIndex = -1; heading.focus({preventScroll: true}); }
+  });
+  return $('#sheet-content');
+}
 function field(form, name, label, type = 'text', value = '') {
   const lbl = el('label', label); lbl.htmlFor = name;
   const input = el(type === 'textarea' ? 'textarea' : 'input'); input.id = name; input.name = name;
@@ -161,7 +230,7 @@ function showSessionResult(node, result, previousLevels) {
   root.append(badge, copy, button('Dismiss', () => root.hidden = true, 'text-button'));
 }
 function openLog(node) {
-  const content = openSheet(); const title = el('h2', 'Make your progress count.'); title.id = 'sheet-title';
+  const content = openSheet('Log progress'); const title = el('h2', 'Save your progress.'); title.id = 'sheet-title';
   content.append(el('p', 'SAVE YOUR SESSION', 'eyebrow'), title, el('p', node.title, 'muted'));
   const form = el('form');
   const learned = field(form, 'learned', 'What I did', 'textarea'); learned.required = true; learned.minLength = 20; learned.placeholder = 'What did you try, discover, or build?';
@@ -173,6 +242,7 @@ function openLog(node) {
   const minutes = field(details, 'minutes', 'Minutes spent', 'number'); minutes.min = '1'; minutes.max = '1440';
   const proof = field(details, 'proof', 'Proof link or file path');
   if (node.verify?.type && node.verify.type !== 'manual') form.append(el('p', 'Completion checks your evidence. If the check fails, your session is still saved.', 'small muted'));
+  const help = el('a', 'How completion is verified', 'subtle-link'); help.href = '#docs/verification'; form.append(help);
   form.append(details);
   const error = el('p', '', 'error'); error.setAttribute('role', 'alert'); error.hidden = true;
   const submit = el('button', 'Save progress'); form.append(error, submit); content.append(form);
@@ -195,7 +265,7 @@ function openLog(node) {
   learned.focus();
 }
 function showNode(node, level = levelFor(node)) {
-  const content = openSheet(), status = node.status || 'todo';
+  const content = openSheet(node.milestone ? 'Milestone' : 'Lesson'), status = node.status || 'todo';
   content.append(el('p', `${node.milestone ? 'MILESTONE' : 'CHALLENGE'} · ~${node.estimate} MIN`, 'eyebrow'));
   const title = el('h2', node.title); title.id = 'sheet-title'; content.append(title);
   if (node.brief) content.append(el('p', node.brief, 'challenge-brief'));
@@ -219,14 +289,14 @@ function showNode(node, level = levelFor(node)) {
   if (!locked) {
     const target = field(content, 'task-target-minutes', 'Session target (minutes)', 'input'); target.type = 'number'; target.min = 1; target.max = 1440; target.value = node.estimate;
     content.append(el('p', node.verify?.type === 'lab' || node.verify?.type === 'ctf' ? 'Verified completion earns up to 100 XP within the target; late rewards taper to 25 XP. Paused time is excluded. One reward per task.' : 'The timer records your session. Artifact and self-reviewed tasks do not earn automatic skill XP.', 'muted'));
-    actions.append(button(node.verify?.type === 'lab' ? 'Start verified exercise' : 'Start timed task', async () => { await command(['session', 'start', `${node.pack_id}:${node.id}`, '--minutes', String(Number(target.value))]); await refreshSessions(); if (node.verify?.type === 'lab') await showLab(node); else notify('Task timer started.'); }, ''));
-    if (node.verify?.type === 'ctf') actions.append(button('Verify lab completion', async () => { const result = await command(['check', `${node.pack_id}:${node.id}`, '--complete']); notify(result.summary); await refresh(); await refreshSessions(); if (state.tab === 'path') await renderPath(); }));
+    actions.append(button(node.verify?.type === 'lab' ? 'Start verified exercise' : 'Start timed task', async () => { await command(['session', 'start', `${node.pack_id}:${node.id}`, '--minutes', String(Number(target.value))]); await refreshSessions(); if (node.verify?.type === 'lab') await showLab(node); else notify('Task timer started. You can pause it from Today.', 'success'); }, ''));
+    if (node.verify?.type === 'ctf') actions.append(button('Verify lab completion', async () => { const result = await command(['check', `${node.pack_id}:${node.id}`, '--complete']); notify(result.summary, result.ok ? 'success' : 'error'); await refresh(); await refreshSessions(); if (state.tab === 'path') await renderPath(); }));
     actions.append(button(status === 'todo' ? 'Log progress' : 'Log another practice', () => openLog(node)));
   }
   if (status !== 'todo') content.append(el('p', status === 'done' ? '✓ Completed. Revisit this whenever you want to practice.' : 'Skipped. You can return to this challenge at any time.', 'muted'));
   content.append(actions);
   const manage = el('details', undefined, 'manage-challenge'); manage.append(el('summary', 'Challenge options'));
-  if (node.verify?.type && node.verify.type !== 'manual') manage.append(button('Check evidence', async () => { const result = await command(['check', `${node.pack_id}:${node.id}`]); notify(result.summary); }));
+  if (node.verify?.type && node.verify.type !== 'manual') manage.append(button('Check evidence', async () => { const result = await command(['check', `${node.pack_id}:${node.id}`]); notify(result.summary, result.ok ? 'success' : 'error'); }));
   if (status === 'todo') {
     manage.append(button('Skip challenge', async () => { await api(`nodes/${node.pack_id}:${node.id}/mark`, {status: 'skipped'}); $('#sheet').close(); await refresh(); if (state.tab === 'path') await renderPath(); notify('Challenge skipped. You can return to it from your path.'); }));
     if (level && !level.open) manage.append(button('Unlock level early', async () => { await command(['unlock', level.id]); $('#sheet').close(); await refresh(); if (state.tab === 'path') await renderPath(); }));
@@ -304,48 +374,169 @@ async function renderStats() {
   const session = await command(["session", "status"]);
   const xp = el("section", undefined, "card"); xp.append(el("h2", `${session.xp} verified XP`), el("p", `${session.verified_awards} graded or externally confirmed tasks. Artifact presence and manual marks do not earn these rewards.`)); root.append(xp);
 }
+function updateAccountChrome() {
+  if (!state.account) return;
+  $('#avatar-initial').textContent = state.account.username.slice(0, 1).toUpperCase();
+  $('#profile-link').title = `${state.account.username} · Profile`;
+}
+async function refreshDocsChrome() {
+  // Documentation remains readable when the account is offline or signed out.
+  const [account, sessions] = await Promise.all([
+    api('account', undefined, 'GET', false),
+    api('command', {argv: ['session', 'status']}, 'POST', false)
+  ]);
+  state.account = account;
+  updateAccountChrome();
+  $('#xp-balance').textContent = `${sessions.xp.toLocaleString()} XP`;
+  $('#xp-link').setAttribute('aria-label', `${sessions.xp} verified XP. View progress`);
+}
+function bindAction(selector, action, after) { const node = $(selector); node.addEventListener('click', () => runAction(node, action, after)); }
+function syncMissionActions() {
+  const active = Boolean(state.overview?.mission);
+  $('#start-mission').disabled = active || !state.installedPacks.length;
+  $('#pause-mission').disabled = !active;
+  $('#finish-mission').disabled = !active;
+  $('#save-mission-time').disabled = !active;
+}
+function packTitle(pack) { return pack.title || pack.id.replaceAll('-', ' '); }
 async function renderMore() {
-  const [packs, parked, account] = await Promise.all([api("packs"), command(["parked"]), api("account")]);
-  $("#mission-name").textContent = state.overview?.mission?.title || "No active mission";
-  $("#mission-time").value = state.overview?.mission?.nudge_time || "";
-  $("#mission-pack").replaceChildren(...packs.map(pack => { const option = el("option", pack.id); option.value = pack.id; return option; }));
-  $("#pack-list").replaceChildren();
-  for (const pack of packs) { const row = el("div", undefined, "pack-item"); row.append(el("p", `${pack.id} · ${pack.reviewed ? "reviewed" : "draft / unreviewed"} · ${pack.trusted ? "commands trusted" : "commands untrusted"}`)); row.append(button("Read pack", async () => { const data = await api(`packs/${pack.id}`); const content = openSheet(); const heading = el("h2", data.title); heading.id = "sheet-title"; content.append(heading); for (const node of data.nodes) content.append(el("h3", node.title), el("p", node.done_when)); content.append(button("Mark reviewed", async () => { await command(["pack", "review", pack.id]); $("#sheet").close(); await renderMore(); })); })); $("#pack-list").append(row); }
-  $("#parked-list").replaceChildren(...parked.map(idea => { const item = el("li", idea.note); item.append(button("Resolve", async () => { await command(["resolve", String(idea.id)]); await renderMore(); })); return item; }));
-  $("#account-info").textContent = `${account.username} · ${location.origin}`;
-  $("#account-timezone").value = account.timezone;
-  $("#nudge-time").value = account.settings.nudge_time || "21:30";
-  $("#nudge-channel").value = account.settings.nudge_channel || "ntfy";
-  $("#ntfy-topic").value = account.settings.ntfy_topic || "";
-  $("#nudge-enabled").checked = account.settings.nudge_enabled || false;
-  $("#logout").hidden = account.auth_mode === "single";
-  $("#public-streak").checked = account.settings.public_streak || false;
-  $("#public-link").textContent = account.settings.public_streak ? `${location.origin}/api/public/${encodeURIComponent(account.username)}/badge.svg` : "Your streak is private.";
+  const [packs, parked] = await Promise.all([api('packs'), command(['parked'])]);
+  state.installedPacks = packs;
+  $('#mission-name').textContent = state.overview?.mission?.title || 'No active mission';
+  $('#mission-time').value = state.overview?.mission?.nudge_time || '';
+  $('#mission-pack').replaceChildren(...packs.map(pack => {
+    const option = el('option', packTitle(pack)); option.value = pack.id; return option;
+  }));
+  const active = state.overview?.mission;
+  if (active && packs.some(p => p.id === active.pack_id)) $('#mission-pack').value = active.pack_id;
+  syncMissionActions();
+  drawInstalledPacks();
+  $('#parked-list').replaceChildren(...parked.map(idea => {
+    const item = el('li', idea.note);
+    item.append(button('Resolve', async () => { await command(['resolve', String(idea.id)]); await renderMore(); }));
+    return item;
+  }));
+}
+function drawInstalledPacks() {
+  const query = $('#installed-search').value.toLowerCase().trim();
+  const packs = state.installedPacks.filter(pack => `${packTitle(pack)} ${pack.id}`.toLowerCase().includes(query));
+  const shown = query || state.showAllPacks ? packs : packs.slice(0, 8);
+  $('#pack-count').textContent = String(state.installedPacks.length);
+  $('#pack-list').replaceChildren(...shown.map(pack => {
+    const row = el('div', undefined, 'pack-item'); row.setAttribute('role', 'listitem');
+    const copy = el('div', undefined, 'pack-copy');
+    const title = el('span', packTitle(pack), 'pack-name'); title.title = packTitle(pack);
+    const detail = pack.valid === false ? 'Needs attention · open for details' : `${pack.levels || 'Custom'} levels · ${pack.nodes || 'Custom'} tasks · ${pack.reviewed ? 'Reviewed' : 'Draft'}`;
+    copy.append(title, el('p', detail, 'pack-meta'));
+    const read = button('Read', () => readPack(pack), 'secondary pack-read');
+    read.id = `read-pack-${pack.id}`;
+    read.setAttribute('aria-label', `Read ${packTitle(pack)}`);
+    read.prepend(icon('book'));
+    row.append(copy, read); return row;
+  }));
+  if (!shown.length) $('#pack-list').append(el('p', query ? 'No installed packs match that search.' : 'Your library is empty. Browse tracks to find a starting point.', 'muted'));
+  $('#show-all-packs').hidden = Boolean(query) || packs.length <= 8;
+  $('#show-all-packs').textContent = state.showAllPacks ? 'Show fewer packs' : `Show all ${packs.length} packs`;
+}
+async function readPack(pack) {
+  const data = await api(`packs/${pack.id}`);
+  const content = openSheet('Track overview');
+  const heading = el('h2', data.title); heading.id = 'sheet-title';
+  content.append(heading, el('p', `${data.levels.filter(l => l.lane === 'main').length} levels · ${data.nodes.length} tasks · ${pack.reviewed ? 'Reviewed by you' : 'Draft — read before using'}`, 'muted'));
+  const overview = el('div', undefined, 'pack-overview');
+  data.levels.forEach((level, index) => {
+    const group = el('details', undefined, 'pack-level'); group.open = index === 0;
+    const nodes = data.nodes.filter(node => node.level === level.id);
+    group.append(el('summary', `${level.title} · ${nodes.length} tasks`));
+    const list = el('ul');
+    nodes.forEach(node => { const item = el('li'); item.append(el('h3', node.title), el('p', node.done_when)); list.append(item); });
+    group.append(list); overview.append(group);
+  });
+  content.append(overview, el('p', 'Reviewing a pack means you have read its tasks. It does not complete lessons or enable command execution.', 'muted'));
+  const actions = el('div', undefined, 'dialog-actions');
+  const review = button(pack.reviewed ? 'Already reviewed' : 'Mark reviewed', async () => {
+    await command(['pack', 'review', pack.id]); $('#sheet').close(); await renderMore(); document.getElementById(`read-pack-${pack.id}`)?.focus({preventScroll: true}); notify('Pack marked as reviewed.', 'success');
+  });
+  review.disabled = Boolean(pack.reviewed); actions.append(review); content.append(actions);
+}
+async function renderProfile() {
+  const account = await api('account'); state.account = account; updateAccountChrome();
+  await refreshSessions();
+  const summary = $('#profile-summary'); summary.replaceChildren();
+  const avatar = el('span', account.username.slice(0, 1).toUpperCase(), 'avatar'); avatar.setAttribute('aria-hidden', 'true');
+  const identity = el('div', undefined, 'profile-identity');
+  identity.append(el('h2', account.username), el('p', account.auth_mode === 'single' ? 'Local learning account' : 'Your learning account'));
+  const metrics = el('div', undefined, 'profile-metrics');
+  for (const [value, label] of [[state.sessions.xp, 'Verified XP'], [state.sessions.verified_awards, 'Verified tasks'], [state.overview?.current_streak || 0, 'Day streak']]) {
+    const metric = el('div', undefined, 'profile-metric'); metric.append(el('strong', value.toLocaleString()), el('span', label)); metrics.append(metric);
+  }
+  summary.append(avatar, identity, metrics);
+  $('#account-info').textContent = `${account.username} · ${location.origin}`;
+  $('#account-timezone').value = account.timezone;
+  $('#nudge-time').value = account.settings.nudge_time || '21:30';
+  $('#nudge-channel').value = account.settings.nudge_channel || 'ntfy';
+  $('#ntfy-topic').value = account.settings.ntfy_topic || '';
+  $('#nudge-enabled').checked = account.settings.nudge_enabled || false;
+  $('#logout').hidden = account.auth_mode === 'single';
+  $('#public-streak').checked = account.settings.public_streak || false;
+  $('#public-link').textContent = account.settings.public_streak ? `${location.origin}/api/public/${encodeURIComponent(account.username)}/badge.svg` : 'Your streak is private. Sharing is optional.';
 }
 document.querySelectorAll("[data-icon]").forEach(node => node.append(icon(node.dataset.icon)));
-window.addEventListener("hashchange", () => { const tab = location.hash.slice(1); if (["today", "path", "stats", "more"].includes(tab) && tab !== state.tab) switchTab(tab).catch(error => notify(error.message)); });
+window.addEventListener('hashchange', () => {
+  const {tab, topic} = currentRoute();
+  if ($('#sheet').open) $('#sheet').close();
+  if (tab !== state.tab || (tab === 'docs' && topic && topic !== state.guideTopic)) switchTab(tab, {topic}).catch(error => notify(error.message, 'error'));
+});
 $("#jump-current").addEventListener("click", () => jumpToLevel(currentLevel()?.id));
-document.querySelectorAll("[data-tab]").forEach(node => node.addEventListener("click", () => switchTab(node.dataset.tab).catch(error => notify(error.message))));
-$("#streak-link").addEventListener("click", () => switchTab("stats").catch(error => notify(error.message)));
-document.querySelectorAll("[data-minutes]").forEach(node => node.addEventListener("click", async () => { state.minutes = node.dataset.minutes || null; document.querySelectorAll("[data-minutes]").forEach(chip => chip.setAttribute("aria-pressed", String(chip === node))); try { await refresh(); } catch (error) { notify(error.message); } }));
-$("#sheet .close").addEventListener("click", () => $("#sheet").close());
-$("#sheet").addEventListener("click", event => { if (event.target === $("#sheet")) { const box = event.target.getBoundingClientRect(); if (event.clientY < box.top || event.clientX < box.left || event.clientX > box.right) event.target.close(); } });
-function handleForm(selector, handler) { $(selector).addEventListener("submit", async event => { event.preventDefault(); try { await handler(event); } catch (error) { notify(error.message); } }); }
+document.querySelectorAll("[data-tab]").forEach(node => node.addEventListener("click", () => switchTab(node.dataset.tab).catch(error => notify(error.message, 'error'))));
+$("#streak-link").addEventListener("click", () => switchTab("stats").catch(error => notify(error.message, 'error')));
+document.querySelectorAll("[data-minutes]").forEach(node => node.addEventListener("click", async () => { state.minutes = node.dataset.minutes || null; document.querySelectorAll("[data-minutes]").forEach(chip => chip.setAttribute("aria-pressed", String(chip === node))); try { await refresh(); } catch (error) { notify(error.message, 'error'); } }));
+$('#sheet .close').addEventListener('click', () => $('#sheet').close());
+$('#notice button').addEventListener('click', dismissNotice);
+for (const dialog of document.querySelectorAll('dialog')) dialog.addEventListener('close', () => {
+  if (dialog.contains($('#notice'))) { dismissNotice(); document.body.append($('#notice')); }
+});
+$('#xp-link').addEventListener('click', () => switchTab('stats').catch(error => notify(error.message, 'error')));
+$('#profile-link').addEventListener('click', () => switchTab('profile').catch(error => notify(error.message, 'error')));
+$('#installed-search').addEventListener('input', drawInstalledPacks);
+$('#show-all-packs').addEventListener('click', () => { state.showAllPacks = !state.showAllPacks; drawInstalledPacks(); });
+$("#sheet").addEventListener("click", event => { if (event.target === $("#sheet")) { const box = event.target.getBoundingClientRect(); if (event.clientY < box.top || event.clientY > box.bottom || event.clientX < box.left || event.clientX > box.right) event.target.close(); } });
+function handleForm(selector, handler) {
+  $(selector).addEventListener('submit', event => {
+    event.preventDefault();
+    const submit = event.submitter || $('button[type="submit"], button:not([type])', event.target);
+    runAction(submit, () => handler(event));
+  });
+}
 handleForm("#search-form", async () => { const results = await api(`search?q=${encodeURIComponent($("#search").value)}`); $("#search-results").replaceChildren(...results.map(entry => { const item = el("article", undefined, "search-result"); item.append(el("p", entry.learned), el("p", `${entry.day} · ${entry.node_id || "Personal note"}`, "muted")); return item; })); if (!results.length) $("#search-results").append(el("p", "No matching notes yet.", "muted")); });
 handleForm("#install-form", async () => { await command(["pack", "install", $("#pack-id").value]); await renderMore(); notify("Pack installed. Read it before trusting its checks."); });
-$("#pack-upload").addEventListener("change", async event => { if (!event.target.files[0]) return; const data = new FormData(); data.append("file", event.target.files[0]); try { await api("packs", data); await renderMore(); notify("Pack installed."); } catch (error) { notify(error.message); } });
-$("#start-mission").addEventListener("click", async () => { try { const args = ["mission", "start", $("#mission-pack").value]; if ($("#mission-time").value) args.push("--nudge-time", $("#mission-time").value); await command(args); await refresh(); await renderMore(); notify("Mission started."); } catch (error) { notify(error.message); } });
-for (const action of ["pause", "finish"]) $(`#${action}-mission`).addEventListener("click", async () => { try { await command(["mission", action]); await refresh(); await renderMore(); } catch (error) { notify(error.message); } });
-$("#save-mission-time").addEventListener("click", async () => { try { await command(["mission", "nudge-time", $("#mission-time").value || "off"]); await refresh(); notify("Mission reminder saved."); } catch (error) { notify(error.message); } });
-handleForm("#reminder-form", async () => { await command(["config", "nudge-time", $("#nudge-time").value]); await command(["config", "nudge-channel", $("#nudge-channel").value]); if ($("#ntfy-topic").value) await command(["config", "ntfy-topic", $("#ntfy-topic").value]); await command(["config", "nudge-enabled", String($("#nudge-enabled").checked)]); notify("Reminders saved."); });
-$("#test-nudge").addEventListener("click", async () => { try { const result = await command(["config", "nudge-test"]); notify(result.sent ? "Test reminder sent." : result.reason); } catch (error) { notify(error.message); } });
-handleForm("#park-form", async () => { await command(["park", $("#park-note").value]); $("#park-note").value = ""; await renderMore(); });
-$("#save-timezone").addEventListener("click", async () => { try { await command(["config", "timezone", $("#account-timezone").value]); await refresh(); notify("Timezone saved."); } catch (error) { notify(error.message); } });
+$("#pack-upload").addEventListener("change", async event => { if (!event.target.files[0]) return; const data = new FormData(); data.append("file", event.target.files[0]); try { await api("packs", data); await renderMore(); notify("Pack installed."); } catch (error) { notify(error.message, 'error'); } });
+bindAction('#start-mission', async () => {
+  const args = ['mission', 'start', $('#mission-pack').value];
+  if ($('#mission-time').value) args.push('--nudge-time', $('#mission-time').value);
+  await command(args); await refresh(); await renderMore(); notify('Mission started.', 'success');
+}, syncMissionActions);
+for (const action of ['pause', 'finish']) bindAction(`#${action}-mission`, async () => {
+  await command(['mission', action]); await refresh(); await renderMore(); notify(action === 'pause' ? 'Mission paused. Your progress is saved.' : 'Mission finished.', 'success');
+}, syncMissionActions);
+bindAction('#save-mission-time', async () => {
+  await command(['mission', 'nudge-time', $('#mission-time').value || 'off']); await refresh(); notify('Mission reminder saved.', 'success');
+}, syncMissionActions);
+handleForm('#reminder-form', async () => {
+  await command(['config', 'nudge-time', $('#nudge-time').value]);
+  await command(['config', 'nudge-channel', $('#nudge-channel').value]);
+  await command(['config', 'ntfy-topic', $('#ntfy-topic').value]);
+  await command(['config', 'nudge-enabled', String($('#nudge-enabled').checked)]);
+  notify('Reminders saved.', 'success');
+});
+bindAction('#test-nudge', async () => { const result = await command(['config', 'nudge-test']); notify(result.sent ? 'Test reminder sent.' : result.reason, result.sent ? 'success' : 'error'); });
+handleForm('#park-form', async () => { await command(['park', $('#park-note').value]); $('#park-note').value = ''; await renderMore(); notify('Idea saved for later.', 'success'); });
+bindAction('#save-timezone', async () => { await command(['config', 'timezone', $('#account-timezone').value]); await refresh(); notify('Timezone saved.', 'success'); });
 function setTheme(theme) { if (theme === "system") delete document.documentElement.dataset.theme; else document.documentElement.dataset.theme = theme; localStorage.setItem("ascend-theme", theme); }
 $("#theme").value = localStorage.getItem("ascend-theme") || "system"; setTheme($("#theme").value);
 $("#theme").addEventListener("change", event => setTheme(event.target.value));
-$("#logout").addEventListener("click", async () => { try { await api("logout", {}); sessionStorage.removeItem("ascend-token"); state.token = null; location.reload(); } catch (error) { notify(error.message); } });
-$("#public-streak").addEventListener("change", async event => { try { await command(["config", "public-streak", String(event.target.checked)]); await renderMore(); } catch (error) { notify(error.message); } });
+$("#logout").addEventListener("click", async () => { try { await api("logout", {}); sessionStorage.removeItem("ascend-token"); state.token = null; location.reload(); } catch (error) { notify(error.message, 'error'); } });
+$("#public-streak").addEventListener("change", async event => { try { await command(["config", "public-streak", String(event.target.checked)]); await renderProfile(); } catch (error) { notify(error.message, 'error'); } });
 $("#enable-push").addEventListener("click", async () => {
   try {
     if (!("Notification" in window) || !("PushManager" in window) || !window.isSecureContext) throw new Error("Browser notifications require HTTPS and a supported browser.");
@@ -373,12 +564,15 @@ $("#disable-push").addEventListener("click", async () => {
 handleForm("#login-form", async () => { try { const result = await api("login", {username: $("#username").value, password: $("#password").value}); state.token = result.token; sessionStorage.setItem("ascend-token", result.token); $("#password").value = ""; $("#login-dialog").close(); await refresh(); await switchTab(state.tab); } catch (error) { $("#login-error").textContent = error.message; } });
 document.addEventListener("keydown", event => { if (event.key.toLowerCase() === "l" && !["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement.tagName) && !$("#sheet").open && state.overview?.next) openLog(state.overview.next); });
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => {});
-refresh().then(() => switchTab(["today", "path", "stats", "more"].includes(location.hash.slice(1)) ? location.hash.slice(1) : "today")).catch(error => notify(error.message));
+const initialRoute = currentRoute();
+switchTab(initialRoute.tab, {topic: initialRoute.topic}).catch(error => notify(error.message, 'error'));
 
 // Timers are scored by the server; this display is only a synchronized preview.
 async function refreshSessions() {
   state.sessions = await command(['session', 'status']);
   state.sessionFetched = performance.now();
+  $('#xp-balance').textContent = `${state.sessions.xp.toLocaleString()} XP`;
+  $('#xp-link').setAttribute('aria-label', `${state.sessions.xp} verified XP. View progress`);
   renderSessionClock();
 }
 function renderSessionClock() {
@@ -401,7 +595,7 @@ function renderSessionClock() {
     const key = `ascend-session-notice-${current.id}`;
     if (checkpoint > Number(sessionStorage.getItem(key) || 0)) {
       sessionStorage.setItem(key, String(checkpoint));
-      notify(checkpoint === 2 ? 'Your target time has elapsed. Verified completion still earns XP.' : 'Three quarters of your planned session has elapsed.');
+      notify(checkpoint === 2 ? 'Your target time has elapsed. Verified completion still earns XP.' : 'Three quarters of your planned session has elapsed.', 'reminder');
     }
   } else if (changed && state.sessions.paused.length) {
     const saved = state.sessions.paused[state.sessions.paused.length - 1];
@@ -414,7 +608,7 @@ function verificationLabel(node) {
 async function showLab(node, fresh = false) {
   const ref = `${node.pack_id}:${node.id}`;
   const run = await command(['lab', 'start', ref, ...(fresh ? ['--fresh'] : [])]);
-  const content = openSheet(), heading = el('h2', node.title); heading.id = 'sheet-title';
+  const content = openSheet('Verified exercise'), heading = el('h2', node.title); heading.id = 'sheet-title';
   content.append(el('p', verificationLabel(node), 'eyebrow'), heading, el('p', run.instructions, 'challenge-brief'));
   if (run.marker) content.append(el('p', `Your exercise marker: ${run.marker}`));
   if (run.exercise === 'logging' && !run.passed) {
@@ -463,25 +657,101 @@ async function showLab(node, fresh = false) {
 async function browseTracks() {
   const [catalog, installed] = await Promise.all([command(['pack', 'registry']), api('packs')]);
   const installedIds = new Set(installed.map(p => p.id));
-  const content = openSheet(), title = el('h2', 'Find a track'); title.id = 'sheet-title'; content.append(title);
-  const search = field(content, 'catalog-search', 'Search subjects and roles', 'input'); search.type = 'search'; search.placeholder = 'SOC, red team, cloud, Android…';
+  const content = openSheet('Track catalog'), title = el('h2', 'Find your next track'); title.id = 'sheet-title';
+  content.append(title, el('p', 'Explore a subject or role. Installing a track keeps your current mission in place.', 'muted'));
+  const controls = el('div', undefined, 'catalog-controls');
+  const searchGroup = el('div');
+  const search = field(searchGroup, 'catalog-search', 'Search subjects and roles', 'search'); search.placeholder = 'SOC, red team, cloud…';
   const filter = el('select'); filter.setAttribute('aria-label', 'Track category');
   for (const group of ['All subjects', ...new Set(catalog.map(p => p.category || 'Projects'))]) { const option = el('option', group); option.value = group; filter.append(option); }
-  const count = el('p', '', 'muted'), list = el('div', undefined, 'catalog-results'); content.append(filter, count, list);
+  controls.append(searchGroup, filter);
+  const count = el('p', '', 'muted'), list = el('div', undefined, 'catalog-results'); content.append(controls, count, list);
   function draw() {
     const query = search.value.toLowerCase().trim();
     const matches = catalog.filter(p => (filter.value === 'All subjects' || (p.category || 'Projects') === filter.value) && [p.title, p.id, ...(p.aliases || [])].join(' ').toLowerCase().includes(query));
-    count.textContent = `${matches.length} tracks · all supplied curricula remain drafts`; list.replaceChildren();
+    count.textContent = `${matches.length} tracks · supplied curricula are drafts`; list.replaceChildren();
     for (const pack of matches) {
-      const card = el('article', undefined, 'catalog-card'); card.append(el('p', pack.category || 'Project', 'eyebrow'), el('h3', pack.title));
-      if (pack.entry) card.append(el('p', `Entry skills: ${pack.entry}`));
-      if (pack.limits) { const details = el('details'); details.append(el('summary', 'Environment and assessment limits'), el('p', pack.limits)); card.append(details); }
-      if (pack.main_levels) card.append(el('p', `${pack.main_levels} levels · ${pack.nodes} tasks`, 'muted'));
-      const install = button(installedIds.has(pack.id) ? 'Installed' : 'Install track', async () => { await command(['pack', 'install', pack.id]); installedIds.add(pack.id); await renderMore(); draw(); notify('Track installed. Your active mission is unchanged.'); }); install.disabled = installedIds.has(pack.id); card.append(install); list.append(card);
+      const card = el('article', undefined, 'catalog-card'), row = el('div', undefined, 'catalog-row'), copy = el('div', undefined, 'catalog-copy');
+      copy.append(el('p', pack.category || 'Project', 'eyebrow'), el('h3', pack.title));
+      if (pack.main_levels) copy.append(el('p', `${pack.main_levels} levels · ${pack.nodes} tasks`, 'muted'));
+      const install = button(installedIds.has(pack.id) ? 'Installed' : 'Install', async () => {
+        await command(['pack', 'install', pack.id]); installedIds.add(pack.id); await renderMore(); draw(); notify('Track installed. Your current mission is unchanged.', 'success');
+      });
+      install.setAttribute('aria-label', installedIds.has(pack.id) ? `${pack.title} is installed` : `Install ${pack.title}`);
+      install.disabled = installedIds.has(pack.id); row.append(copy, install); card.append(row);
+      if (pack.entry || pack.limits) {
+        const details = el('details'); details.append(el('summary', 'Entry skills & environment'));
+        if (pack.entry) details.append(el('p', pack.entry));
+        if (pack.limits) details.append(el('p', pack.limits));
+        card.append(details);
+      }
+      list.append(card);
     }
+    if (!matches.length) list.append(el('p', 'No tracks match. Try a broader subject or choose All subjects.', 'muted'));
   }
-  search.addEventListener('input', draw); filter.addEventListener('change', draw); draw(); search.focus();
+  search.addEventListener('input', draw); filter.addEventListener('change', draw); draw();
 }
-$('#browse-tracks').addEventListener('click', browseTracks);
+$('#browse-tracks').addEventListener('click', () => runAction($('#browse-tracks'), browseTracks));
 setInterval(renderSessionClock, 1000);
 setInterval(() => { if (state.overview && !document.hidden && !$('#login-dialog').open) refreshSessions().catch(() => {}); }, 30000);
+
+async function renderDocs() {
+  if (!state.guides) {
+    $('#docs-status').textContent = 'Loading the guide…';
+    try {
+      const response = await fetch('/guide.json');
+      if (!response.ok) throw new Error('The guide could not load. Reload when you are connected.');
+      state.guides = (await response.json()).topics;
+    } catch (error) {
+      $('#docs-status').textContent = error.message;
+      $('#docs-article').replaceChildren(el('h2', 'The guide is unavailable'), el('p', 'Reconnect and reload to download the guide for this browser.'));
+      return;
+    }
+  }
+  if (!state.guides.some(topic => topic.id === state.guideTopic)) state.guideTopic = 'getting-started';
+  drawDocsTopics();
+  const topic = state.guides.find(topic => topic.id === state.guideTopic);
+  const article = $('#docs-article'); article.replaceChildren();
+  const heading = el('h2', topic.title); heading.id = 'guide-title'; heading.tabIndex = -1;
+  article.append(el('p', 'ASCEND GUIDE', 'eyebrow'), heading, el('p', topic.summary, 'guide-summary'));
+  for (const block of topic.blocks) {
+    if (block.type === 'paragraph') article.append(el('p', block.text));
+    if (block.type === 'heading') article.append(el('h3', block.text));
+    if (block.type === 'steps' || block.type === 'list') {
+      const list = el(block.type === 'steps' ? 'ol' : 'ul');
+      block.items.forEach(item => list.append(el('li', item))); article.append(list);
+    }
+    if (block.type === 'code') {
+      const box = el('div', undefined, 'doc-code'), toolbar = el('div', undefined, 'code-toolbar');
+      toolbar.append(el('span', 'COMMAND LINE'), button('Copy', async () => {
+        if (!navigator.clipboard) throw new Error('Copy is unavailable in this browser. Select the command text to copy it.');
+        await navigator.clipboard.writeText(block.text); notify('Command copied.', 'success');
+      }, 'text-button'));
+      const pre = el('pre'); pre.append(el('code', block.text)); box.append(toolbar, pre); article.append(box);
+    }
+  }
+  const related = el('div', undefined, 'guide-next'); related.append(el('h3', 'Keep reading'));
+  const links = el('div', undefined, 'guide-links');
+  topic.related.forEach(id => {
+    const next = state.guides.find(item => item.id === id);
+    if (next) { const link = el('a', next.title); link.href = `#docs/${id}`; links.append(link); }
+  });
+  related.append(links); article.append(related);
+}
+function drawDocsTopics() {
+  if (!state.guides) return;
+  const query = $('#docs-search').value.trim().toLowerCase();
+  const matching = state.guides.filter(topic => [topic.title, topic.summary, ...topic.blocks.map(block => block.text || block.items.join(' '))].join(' ').toLowerCase().includes(query));
+  $('#docs-status').textContent = query ? `${matching.length} guides match your search` : `${state.guides.length} short guides · getting started, verification, and setup`;
+  $('#docs-topics').replaceChildren(...matching.map(topic => {
+    const item = button(topic.title, async () => {
+      await switchTab('docs', {topic: topic.id});
+      $('#guide-title').focus({preventScroll: true});
+      $('#docs-article').scrollIntoView({block: 'start', behavior: 'instant'});
+    }, '');
+    if (topic.id === state.guideTopic) item.setAttribute('aria-current', 'page');
+    return item;
+  }));
+  if (!matching.length) $('#docs-topics').append(el('p', 'No guide matches. Try “XP”, “packs”, or “Docker”.', 'muted small'));
+}
+$('#docs-search').addEventListener('input', drawDocsTopics);

@@ -180,9 +180,12 @@ def test_browser_complete_flow(live_server, width, height, tmp_path):
         page.get_by_label("Search your notes", exact=True).fill("explained")
         page.get_by_role("button", name="Search", exact=True).click()
         expect(page.locator(".search-result")).to_have_count(1)
-        page.get_by_role("button", name="More", exact=True).click()
+        page.get_by_role("button", name="Tracks", exact=True).click()
+        page.get_by_role("button", name="Open profile", exact=True).click()
         page.get_by_label("Color theme", exact=True).select_option("dark")
         expect(page.locator("html")).to_have_attribute("data-theme", "dark")
+        page.get_by_role("button", name="Tracks", exact=True).click()
+        page.get_by_text("Ideas for later", exact=True).click()
         page.get_by_label("An idea for later", exact=True).fill(
             "Try a different topic next month"
         )
@@ -350,13 +353,148 @@ def test_browser_verified_logging_timer_and_catalog(
         page.get_by_role("button", name="Verify my result").click()
         expect(page.get_by_text("✓ Verified. +100 XP.", exact=False)).to_be_visible()
         assert command(["session", "status"])["xp"] == 100
+        expect(page.locator("#xp-balance")).to_have_text("100 XP")
         page.screenshot(path=str(tmp_path / f"verified-{width}.png"), full_page=True)
         assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
         page.keyboard.press("Escape")
-        page.get_by_role("button", name="More", exact=True).click()
+        page.get_by_role("button", name="Tracks", exact=True).click()
         page.get_by_role("button", name="Browse learning tracks").click()
         page.get_by_label("Search subjects and roles").fill("active directory")
         expect(page.locator(".catalog-card")).to_have_count(1)
         expect(page.locator(".catalog-card h3")).to_contain_text("Active Directory")
         assert not errors
+        browser.close()
+
+
+@pytest.mark.parametrize("width,height", [(390, 844), (1440, 1000)])
+def test_dialog_feedback_stays_visible_and_returns_keyboard_focus(
+    live_server, pack_data, tmp_path, width, height
+):
+    import httpx
+    from playwright.sync_api import sync_playwright, expect
+
+    pack_data["node"][0]["verify"] = {
+        "type": "file",
+        "path": str(tmp_path / "missing-proof.txt"),
+    }
+    pack_data["node"][0]["brief"] = (
+        "Inspect an observed result before claiming completion. " * 30
+    )
+    assert (
+        httpx.post(
+            live_server + "/api/packs",
+            files={"file": ("test.toml", dump_toml(pack_data), "text/plain")},
+        ).status_code
+        == 200
+    )
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page(
+            viewport={"width": width, "height": height}, reduced_motion="reduce"
+        )
+        page.goto(live_server)
+        opener = page.locator(".next-card").get_by_role("button", name="Open challenge")
+        opener.click()
+        page.locator(".manage-challenge > summary").click()
+        page.get_by_role("button", name="Check evidence", exact=True).click()
+        feedback = page.locator("#sheet .dialog-feedback #notice")
+        expect(feedback).to_be_visible()
+        expect(feedback).to_have_attribute("role", "alert")
+        expect(feedback).to_contain_text("Evidence file does not exist")
+        assert feedback.evaluate(
+            "e => { const r=e.getBoundingClientRect(); return r.top >= 0 && r.bottom <= innerHeight && e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)); }"
+        )
+        page.clock.install()
+        page.clock.fast_forward(9000)
+        expect(feedback).to_be_visible()
+        close = page.get_by_role("button", name="Close dialog")
+        assert close.bounding_box()["y"] >= 0
+        page.keyboard.press("Escape")
+        expect(page.locator("#sheet")).not_to_be_visible()
+        expect(opener).to_be_focused()
+        expect(page.locator("#notice")).not_to_be_visible()
+        browser.close()
+
+
+@pytest.mark.parametrize("width,height", [(390, 844), (1440, 1000)])
+def test_library_rows_profile_and_guide_navigation(live_server, width, height):
+    import httpx
+    from playwright.sync_api import sync_playwright, expect
+
+    for pack in ["active-directory-security", "verified-security-lab"]:
+        assert (
+            httpx.post(
+                live_server + "/api/command", json={"argv": ["pack", "install", pack]}
+            ).status_code
+            == 200
+        )
+    data = httpx.get(live_server + "/api/packs").json()
+    assert next(p for p in data if p["id"] == "active-directory-security")[
+        "title"
+    ].startswith("Active Directory")
+    assert all("path" not in p and "fingerprint" not in p for p in data)
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page(viewport={"width": width, "height": height})
+        errors = []
+        page.on("pageerror", lambda error: errors.append(str(error)))
+        page.goto(live_server + "/#more")
+        page.get_by_label("Search installed packs").fill("active directory")
+        expect(page.locator(".pack-item")).to_have_count(1)
+        row = page.locator(".pack-item")
+        title = row.locator(".pack-name").bounding_box()
+        read = row.get_by_role("button").bounding_box()
+        assert title["y"] >= read["y"] - 8 and title["y"] < read["y"] + read["height"]
+        assert title["x"] + title["width"] <= read["x"]
+        row.get_by_role("button").click()
+        expect(page.locator("#sheet-title")).to_contain_text("Active Directory")
+        expect(page.locator(".pack-level")).to_have_count(10)
+        page.keyboard.press("Escape")
+        page.get_by_role("button", name="Open profile", exact=True).click()
+        expect(page.locator("#profile-summary")).to_contain_text("local")
+        expect(page.locator("#profile-summary")).to_contain_text("Verified XP")
+        page.get_by_label("Color theme").select_option("dark")
+        expect(page.locator("html")).to_have_attribute("data-theme", "dark")
+        page.get_by_label("Timezone", exact=True).fill("Europe/London")
+        page.get_by_role("button", name="Save timezone").click()
+        expect(page.locator("#notice")).to_contain_text("Timezone saved")
+        assert (
+            httpx.get(live_server + "/api/account").json()["timezone"]
+            == "Europe/London"
+        )
+        page.reload()
+        expect(page.locator("#profile-heading")).to_be_visible()
+        expect(page.get_by_label("Timezone", exact=True)).to_have_value("Europe/London")
+        page.get_by_role("button", name="Docs", exact=True).click()
+        page.get_by_label("Search documentation").fill("paused time")
+        expect(page.locator("#docs-topics button")).to_have_count(1)
+        page.get_by_role("button", name="Timers & XP", exact=True).click()
+        expect(page.locator("#docs-article h2")).to_have_text("Timers & XP")
+        expect(page).to_have_url(live_server + "/#docs/timers")
+        expect(page.locator("#docs-article")).to_contain_text("100 XP")
+        page.reload()
+        expect(page.locator("#docs-article h2")).to_have_text("Timers & XP")
+        expect(page.locator("#xp-balance")).to_have_text("0 XP")
+        assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+        assert not errors
+        browser.close()
+
+
+def test_documentation_is_readable_offline_after_shell_install(live_server):
+    from playwright.sync_api import sync_playwright, expect
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        context = browser.new_context()
+        page = context.new_page()
+        page.goto(live_server + "/#docs/verification")
+        expect(page.locator("#docs-article h2")).to_have_text("Evidence & verification")
+        page.evaluate(
+            'navigator.serviceWorker.ready.then(() => new Promise(resolve => navigator.serviceWorker.controller ? resolve() : navigator.serviceWorker.addEventListener("controllerchange", resolve, {once:true})))'
+        )
+        context.set_offline(True)
+        page.reload()
+        expect(page.locator("#docs-article h2")).to_have_text("Evidence & verification")
+        expect(page.locator("#login-dialog")).not_to_be_visible()
+        expect(page.locator("#xp-balance")).to_have_text("— XP")
         browser.close()

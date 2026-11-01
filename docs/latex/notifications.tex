@@ -3,7 +3,7 @@
 \subsection{Notifications and public
 streaks}\label{notifications-and-public-streaks}}
 
-Reminders are opt-in on the server. Configure them in \textbf{More →
+Reminders are opt-in on the server. Configure them in \textbf{Profile →
 Reminders} or with \texttt{ascend config nudge-enabled true}. First
 test the chosen channel. The server owns the log and schedule; clients
 do not mirror the database.
@@ -83,7 +83,7 @@ Persist the subject and public app URL in the private environment configuration,
 then recreate the service so the new environment takes effect. Do not regenerate
 an existing private key as an ordinary upgrade step.
 
-Serve the PWA over HTTPS. In More, choose \textbf{Enable browser
+Serve the PWA over HTTPS. In Profile, choose \textbf{Enable browser
 notifications}, grant permission, enable reminders, and send a test.
 Subscriptions belong to the logged-in account. The service worker
 displays encrypted push payloads and opens the app when tapped. Disable
@@ -105,7 +105,7 @@ notification permission, and subscribed device.
 \subsubsection{Opt-in public streak and
 badge}\label{opt-in-public-streak-and-badge}}
 
-\texttt{ascend config public-streak true} (or More → Share my streak
+\texttt{ascend config public-streak true} (or Profile → Share my streak
 publicly) exposes:
 
 \begin{itemize}

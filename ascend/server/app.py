@@ -344,14 +344,33 @@ def create_app(home=None, auth_mode=None, scheduler=True):
 
     @app.get("/api/packs")
     def packs(t=Depends(tracker)):
-        return [
-            {
-                k: v
-                for k, v in row.items()
-                if k not in {"path", "fingerprint", "user_id"}
-            }
-            for row in t.db.rows("packs")
-        ]
+        result = []
+        for row in t.db.rows("packs"):
+            try:
+                loaded = t.pack(row["id"])
+                metadata = {
+                    "title": loaded.title,
+                    "kind": loaded.kind,
+                    "levels": sum(level.lane == "main" for level in loaded.levels),
+                    "nodes": len(loaded.nodes),
+                    "valid": True,
+                }
+                # Loading edited content may revoke its old review/trust state.
+                row = t.db.rows("packs", "id=?", (row["id"],))[0]
+            except (ValueError, OSError):
+                metadata = {
+                    "title": row["id"].replace("-", " ").title(),
+                    "valid": False,
+                }
+            result.append(
+                {
+                    k: v
+                    for k, v in row.items()
+                    if k not in {"path", "fingerprint", "user_id"}
+                }
+                | metadata
+            )
+        return result
 
     @app.get("/api/packs/{pack_id}")
     def pack(pack_id: str, t=Depends(tracker)):

@@ -1,0 +1,181 @@
+% Generated from web/guide.json; do not edit.
+\section{In-app documentation reference}
+The following topics match the searchable Docs screen in the application.
+\subsection{Getting started}
+Go from a new workspace to one useful practice session.\par
+Ascend helps you work through a learning track one task at a time. A pack contains levels and tasks; your active mission is the pack you are working on now.\par
+\begin{enumerate}
+\item Open Tracks and choose Browse learning tracks. Search for a subject or role, then inspect its entry skills and environment requirements.
+\item Install one pack and use Read in your library to understand what it asks you to do. Installing a pack does not start a mission.
+\item Choose the pack under Active mission and press Start mission. If another mission is active, pause it first.
+\item Open Today, choose the time you have, and open your next challenge. The optional quick win is an alternative for a shorter session.
+\item Start the exercise or task timer when you begin. Save a learning note or submit the required evidence when you finish.
+\end{enumerate}
+Verified security lab is a practical starting point if you want built-in exercises without setting up a separate lab. Its first five tasks run inside Ascend; its later Juice Shop tasks need the lab setup.\par
+\begin{verbatim}
+ascend pack install verified-security-lab
+ascend mission start verified-security-lab
+ascend lab start verified-security-lab:lab-readiness
+\end{verbatim}
+\noindent\textbf{Related guides:} Missions \& your path, Evidence \& verification\par
+\subsection{Missions \& your path}
+Keep a clear next step without losing your other interests.\par
+One mission is active at a time. Today recommends the next available task in that mission. Path shows its levels, prerequisites, optional practice, and milestones.\par
+\subsubsection{What the path states mean}
+\begin{itemize}
+\item Ready: you can start the task. The current next step is highlighted.
+\item Coming up: the task has a prerequisite or an earlier level to complete. Open it to see what is needed.
+\item Complete: the task was marked complete under its evidence rules.
+\item Skipped: you chose to move past the task. A skip is kept separate from completion and earns no milestone badge or XP.
+\item Milestone: a task that brings a level’s skills together. Its distinct diamond shape and label identify it.
+\end{itemize}
+Pause a mission in Tracks when you want to switch subjects. Its saved work and path progress remain. Finishing a mission records that you are done with that mission; it does not magically verify unfinished lessons.\par
+Time chips on Today filter task estimates. They do not start a timer or change the work required. If no task fits, choose a larger time budget or save partial work on a task.\par
+\noindent\textbf{Related guides:} Working through a lesson, Timers \& XP\par
+\subsection{Installing \& reviewing packs}
+Understand a track before making it part of your routine.\par
+The library shows each installed pack by its readable title, with its level and task counts. Read stays beside the title. Long names are shortened visually; open Read to see the complete title and content.\par
+\begin{enumerate}
+\item Use Browse learning tracks to explore the catalog. Entry skills and environment details are available inside each result.
+\item Use Read to inspect the tasks, grouped by level. Mark reviewed only after you have read and accepted the plan.
+\item Use Search installed packs to find a pack already in your library. Show all packs expands a large library.
+\item For a custom pack, open Import a pack and select a TOML file or enter a community pack ID.
+\end{enumerate}
+Reviewing a pack does not complete its tasks or trust executable checks. Command verifiers require separate explicit trust and may also be disabled by the server administrator.\par
+The supplied curricula are source-backed drafts. An established reference or a successful software test does not prove that every learner will master a subject. Practical explanations and changed-case assessments still need review.\par
+\subsubsection{Updating a pack}
+Back up private edits before updating. Stable task IDs preserve existing progress, but old completion does not retroactively certify a new exercise. Changed content resets review and execution trust.\par
+\begin{verbatim}
+ascend pack diff packs/community/home-hack-lab.toml
+ascend pack install packs/community/home-hack-lab.toml
+\end{verbatim}
+\noindent\textbf{Related guides:} Evidence \& verification, Docker \& external labs\par
+\subsection{Working through a lesson}
+Use the finish line, hints, evidence, and notes together.\par
+A lesson opens in a dialog. Its finish line explains the result to demonstrate. Steps and the learning resource help you begin; hints stay collapsed until you want them.\par
+\begin{enumerate}
+\item Read the finish line and verification label before beginning.
+\item Choose a session target and start the timed task or verified exercise.
+\item Work through the task. A hint is help with learning, not an automatic completion.
+\item Use Log progress to save what you tried and what to do next. Leave Mark as done unchecked for partial work.
+\item For built-in exercises, enter your result and press Verify my result. External CTF tasks use Verify lab completion after the administrator refreshes the proof.
+\end{enumerate}
+Messages from lesson actions appear inside the dialog, below its scrollable content. Errors stay visible until you dismiss them or perform another action. The close button stays at the top; Escape also closes the dialog.\par
+If a regular evidence check fails while logging completion, the learning note can still be saved and the lesson remains open. A verified lab cannot be completed with a manual override or by splitting it into manually checked steps.\par
+\subsubsection{Keep useful notes}
+Record the observation, your explanation, and any help you used. Never paste passwords, private tokens, or CTF flags into your notes. Find past notes in Stats.\par
+\noindent\textbf{Related guides:} Evidence \& verification, Timers \& XP\par
+\subsection{Evidence \& verification}
+Know exactly what a green check establishes.\par
+\begin{itemize}
+\item Server-verified exercise: Ascend checks the result against your current generated instance. Wrong answers do not complete the task or earn XP.
+\item Server-graded reasoning check: your scenario decision is checked. This does not grade a free-form explanation or prove that you performed a practical assessment.
+\item Signed external lab evidence: an administrator’s collector confirms named challenge results for your assigned game instance. The browser cannot simply send a solved flag.
+\item Artifact check: a file exists and meets the configured checks. A person must still review whether its result and reasoning are correct.
+\item Human assessment: some explanations and changed-case demonstrations need review rather than a machine check.
+\end{itemize}
+\subsubsection{Built-in logging example}
+\begin{enumerate}
+\item Start the verified exercise.
+\item Send one successful request and one failed request.
+\item Find the failed event with your exercise marker, ignoring unrelated records.
+\item Enter its request ID and the number of failures for that marker, then verify.
+\end{enumerate}
+Generated instances belong to one account and the current pack content. A fresh instance replaces the old one without resetting your accumulated task time. Unfinished instances expire after 24 hours, and ten unsuccessful submissions require a fresh attempt.\par
+Passing a small exercise is evidence of that result, not a certificate of overall proficiency. Real learning also means explaining the mechanism and handling an unfamiliar variation.\par
+\noindent\textbf{Related guides:} Timers \& XP, Docker \& external labs\par
+\subsection{Timers \& XP}
+A target for your session, with credit for verified work.\par
+Your verified XP balance appears in the top bar on every screen. Select it to open Stats, or open your Profile to see the same balance and verified task count. XP is personal feedback, not a spendable coin balance.\par
+\begin{enumerate}
+\item Set a realistic target before starting. Opening a lesson alone does not start its timer.
+\item Start the task. The server keeps time even if you close the browser.
+\item Use Pause session on Today for a break. Resume preserves the original target and accumulated active time.
+\item Complete the verification. Only built-in exercises and signed CTF checks qualify for XP, and an external check needs a started session.
+\end{enumerate}
+\subsubsection{How the reward changes}
+\begin{itemize}
+\item Within your target: 100 XP.
+\item After the target: the reward declines gradually. At twice the target, it is 50 XP.
+\item Minimum reward: 25 XP. You never lose XP already earned.
+\item One reward per stable task ID and account. Repeating, reopening, or undoing a note does not award it again.
+\end{itemize}
+For a 20-minute target, completing at 20 minutes earns 100 XP, at 30 minutes earns 75 XP, and at 40 minutes earns 50 XP. Paused time is excluded. Finishing or skipping ends that task’s session; later practice is unscored.\par
+The app reminds you at three quarters of the target and at the target. Reminders can also use your configured notification channel. External game observations do not establish the exact original solve time; the timer measures your Ascend session.\par
+\begin{verbatim}
+ascend session start PACK:NODE --minutes 20
+ascend session status
+ascend session pause
+\end{verbatim}
+\noindent\textbf{Related guides:} Setting up reminders, Evidence \& verification\par
+\subsection{Setting up reminders}
+Choose when and where a reminder reaches you.\par
+\begin{enumerate}
+\item Open your avatar in the top bar to go to Profile.
+\item Under Reminders, choose a time and a channel.
+\item For ntfy, choose a long private topic and subscribe to the same topic in the ntfy Android app.
+\item Enable reminders and save. Use Send test to check delivery.
+\end{enumerate}
+ntfy is a simple route to Android notifications. Telegram needs administrator-provided bot and chat settings. Desktop sends to the server’s desktop session, which may not be your phone or laptop. Browser push requires a supported browser and a secure origin.\par
+\subsubsection{Browser notifications}
+Open Browser notifications in Profile, then enable them on this browser and allow the browser permission prompt. Enable reminders too. The server administrator must configure the Web Push keys and public URL; installing the PWA alone does not configure delivery.\par
+\subsubsection{Schedules and timezones}
+Set your IANA timezone in Profile, such as Asia/Kolkata. Your learning day rolls over at 4 AM there. A mission-specific reminder time lives under Active mission in Tracks. Normal habit reminders have daily limits; timed-session checkpoints are separate.\par
+The server checks timed reminders every 30 seconds, so delivery is not a precise alarm. Connectivity, provider settings, and OS notification permissions affect delivery. A browser message is not proof that an Android notification arrived.\par
+\noindent\textbf{Related guides:} Your profile \& privacy, Timers \& XP\par
+\subsection{Your profile \& privacy}
+Manage your account without interrupting your learning path.\par
+The avatar in the top bar opens your Profile. It shows your actual account name, verified XP, verified task count, and current day streak. There is no invented rank or profile completion score.\par
+\begin{itemize}
+\item Preferences: choose your timezone and System, Light, or Dark appearance. The theme is saved in this browser.
+\item Reminders: configure notification timing and delivery.
+\item Privacy \& account: choose whether to publish a streak badge. Sharing is off unless you enable it.
+\item Log out: available on authenticated servers. A single-user local server has no login session to end.
+\end{itemize}
+Account names are provisioned by the server administrator. The app does not offer an unsupported username or password edit. Your progress is account-scoped on the server; a theme preference stays local to the browser.\par
+\subsubsection{About your streak}
+A learning note or eligible dated verification can count toward a learning day. A freeze bridges a missed day; it does not add a day of work. External CTF receipts do not claim a solve timestamp, so write a learning note to record that practice.\par
+For a shared or internet-accessible deployment, the administrator should use authenticated accounts and HTTPS. A loopback-only single-user server is intended for personal local use.\par
+\noindent\textbf{Related guides:} Setting up reminders, Missions \& your path\par
+\subsection{Docker \& external labs}
+What runs inside Ascend, and what needs a separate environment.\par
+The first five tasks in Verified security lab use generated data inside Ascend. They need no extra containers. Later CTF tasks can use an individually assigned, isolated Juice Shop instance.\par
+\subsubsection{Start the tracker and one lab}
+\begin{verbatim}
+docker compose -f docker/docker-compose.yml up -d --build
+docker compose -f docker/labs.compose.yml --profile juice-shop up -d --wait
+\end{verbatim}
+Run these commands from the repository root. Ascend defaults to localhost:8420 and Juice Shop to localhost:3000. WebGoat and MQTT have alternative profiles. Lab targets are disposable and loopback-only; do not publish vulnerable services to the internet.\par
+\subsubsection{Verify external progress}
+\begin{verbatim}
+python3 scripts/collect_lab_proof.py init
+docker compose -f docker/docker-compose.yml -f docker/lab-proofs.compose.yml up -d
+python3 scripts/collect_lab_proof.py juice-shop --owner 1
+\end{verbatim}
+The collector is an administrator tool on the Docker host. It signs a fresh observation for the learner’s numeric account ID. Refresh it after solving, then press Verify lab completion within five minutes. The tracker receives a read-only receipt, not the Docker socket.\par
+\subsubsection{On a Raspberry Pi}
+Use 64-bit Raspberry Pi OS and start one optional lab at a time on an 8 GB Pi. The image manifests and Python dependencies support ARM64; physical Pi execution still needs validation. Windows AD labs, mobile emulators, cloud tenants, and Security Onion have separate requirements.\par
+\subsubsection{Bandit}
+The public home lab includes Bandit from level 0. The collector checks SSH authentication to the next official game account without storing the password. Access to an account is weaker evidence than independent puzzle solving. Follow the official game rules and verify the SSH host key before using the collector.\par
+\begin{verbatim}
+python3 scripts/collect_lab_proof.py bandit --owner 1 --level 0
+ascend check home-hack-lab:bandit-0 --complete
+\end{verbatim}
+\noindent\textbf{Related guides:} Evidence \& verification, When something is stuck\par
+\subsection{When something is stuck}
+Start with the message closest to the action.\par
+\subsubsection{I cannot see an action result}
+Lesson and catalog messages appear inside their dialog below the content. Errors stay there until dismissed or replaced. A page-level message appears near the lower edge when no dialog is open.\par
+\subsubsection{A lesson will not complete}
+Check its verification label and exact finish line. A failed or missing lab receipt cannot be overridden with a manual mark. File presence alone may pass an artifact check but still needs honest review of the work.\par
+\subsubsection{I cannot start another timer}
+Only one task session can run at a time. Return to Today and pause the running session. A finished task can be practiced again but cannot start a new scored attempt.\par
+\subsubsection{My CTF receipt is rejected}
+Ask the administrator to collect a new receipt for the correct numeric account and assigned instance. Receipts expire after five minutes. A different learner’s game, an unsigned file, or a missing challenge does not count.\par
+\subsubsection{The UI is old or the server is unavailable}
+Reload after an update. The app shell and this guide can be available offline after a successful load, but progress writes and account balances still need the server. Reconnect before submitting work; a failed network request is not saved silently.\par
+\subsubsection{No phone notification arrived}
+Send a test from Profile. Check the channel configuration, topic or account, notification permission, server connectivity, and OS settings. A server-side desktop reminder does not push to Android.\par
+\subsubsection{A pack is too advanced}
+Read its entry requirements and choose a foundations track, or save partial work and return later. Installing several tracks is fine; only one mission needs your attention today.\par
+\noindent\textbf{Related guides:} Getting started, Setting up reminders\par

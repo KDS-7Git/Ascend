@@ -3,60 +3,80 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#7050db">
-  <meta name="description" content="One small, real step toward the skills that matter to you.">
+  <meta name="theme-color" content="#5147c7">
+  <meta name="description" content="Focused practice, visible progress, and skills you can demonstrate.">
   <title>Ascend</title>
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <script src="/theme.js"></script>
   <link rel="stylesheet" href="/style.css">
   <script src="/app.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
-  <nav aria-label="Main navigation">
-    <a class="brand" href="#today" aria-label="Ascend home"><img src="/icon.svg" alt="" width="32" height="32">Ascend</a>
-    <p class="nav-label">YOUR WORKSPACE</p>
+  <nav class="primary-nav" aria-label="Main navigation">
+    <a class="brand" href="#today" aria-label="Ascend home"><img src="/icon.svg" alt="" width="30" height="30">Ascend</a>
+    <p class="nav-label">LEARN AT YOUR PACE</p>
     <button class="nav-item active" data-tab="today" aria-current="page"><span data-icon="sun" aria-hidden="true"></span>Today</button>
     <button class="nav-item" data-tab="path"><span data-icon="route" aria-hidden="true"></span>Path</button>
     <button class="nav-item" data-tab="stats"><span data-icon="chart" aria-hidden="true"></span>Stats</button>
-    <button class="nav-item" data-tab="more"><span data-icon="settings" aria-hidden="true"></span>More</button>
-    <div class="rail-note"><span data-icon="mountain" aria-hidden="true"></span><strong>Small steps. Real skills.</strong><p>Your next summit starts here.</p></div>
+    <button class="nav-item" data-tab="more"><span data-icon="layers" aria-hidden="true"></span>Tracks</button>
+    <button class="nav-item" data-tab="docs"><span data-icon="book" aria-hidden="true"></span>Docs</button>
+    <div class="rail-note"><span data-icon="mountain" aria-hidden="true"></span><p>Build understanding,<br>one step at a time.</p></div>
   </nav>
-  <main id="main">
+  <header class="topbar">
+    <a class="mobile-brand" href="#today" aria-label="Ascend home"><img src="/icon.svg" width="28" height="28" alt=""></a>
+    <span id="page-context" class="topbar-context">Today</span>
+    <div class="topbar-actions">
+      <button id="xp-link" class="balance-link" aria-label="View verified XP"><span data-icon="bolt" aria-hidden="true"></span><span id="xp-balance">— XP</span></button>
+      <span class="topbar-divider" aria-hidden="true"></span>
+      <button id="profile-link" class="profile-button" aria-label="Open profile" title="Your profile"><span id="avatar-initial" class="avatar" aria-hidden="true">A</span><span class="profile-link-label">Profile</span></button>
+    </div>
+  </header>
+  <main id="main" tabindex="-1">
     <section id="today" class="screen" aria-labelledby="today-heading">
-      <header class="page-header"><div><p class="eyebrow">LET'S MAKE SOMETHING CLICK</p><h1 id="today-heading">Your next breakthrough.</h1><p class="page-subtitle">A challenge worth doing. A skill worth keeping.</p></div><button id="streak-link" class="streak-chip" aria-label="View streak stats"><span data-icon="flame" aria-hidden="true"></span><span id="streak">0</span><span class="streak-label">day streak</span></button></header>
-      <div id="mission-progress"></div><aside id="task-session" class="task-session" aria-label="Task session" hidden></aside>
+      <header class="page-header"><div><p class="eyebrow">YOUR DAILY PRACTICE</p><h1 id="today-heading">Continue learning.</h1><p class="page-subtitle">One focused challenge. A little more understanding.</p></div><button id="streak-link" class="streak-chip" aria-label="View streak stats"><span data-icon="flame" aria-hidden="true"></span><span id="streak">0</span><span class="streak-label">day streak</span></button></header>
+      <div id="mission-progress"></div>
+      <aside id="task-session" class="task-session" aria-label="Task session" hidden></aside>
       <div id="session-result" role="status" aria-live="polite" hidden></div>
-      <div class="session-picker"><p>Make room for a little progress</p><div class="time-chips" role="group" aria-label="Time available">
-        <button data-minutes="10" aria-pressed="false">10 min</button>
-        <button data-minutes="30" aria-pressed="false">30 min</button>
-        <button data-minutes="120" aria-pressed="false">2 hours</button>
-        <button data-minutes="" aria-pressed="true">Any time</button>
+      <div class="session-picker"><p>How much time do you have?</p><div class="time-chips" role="group" aria-label="Time available">
+        <button data-minutes="10" aria-pressed="false">10 min</button><button data-minutes="30" aria-pressed="false">30 min</button><button data-minutes="120" aria-pressed="false">2 hours</button><button data-minutes="" aria-pressed="true">Any time</button>
       </div></div>
       <div id="today-cards" class="today-cards"></div>
     </section>
     <section id="path" class="screen" aria-labelledby="path-heading" hidden>
-      <header class="page-header"><div><p class="eyebrow">ONE CHALLENGE LEADS TO THE NEXT</p><h1 id="path-heading">See your skills take shape.</h1><p class="page-subtitle">Explore the route. Find your next summit.</p></div><button id="jump-current" class="secondary">Jump to current level</button></header>
+      <header class="page-header"><div><p class="eyebrow">BUILD ON WHAT YOU KNOW</p><h1 id="path-heading">Your learning path.</h1><p class="page-subtitle">See where you are and what comes next.</p></div><button id="jump-current" class="secondary">Jump to current level</button></header>
       <div id="path-content"></div>
     </section>
     <section id="stats" class="screen" aria-labelledby="stats-heading" hidden>
-      <header class="page-header"><div><p class="eyebrow">THE WORK IS ADDING UP</p><h1 id="stats-heading">Look how far you've come.</h1><p class="page-subtitle">Real practice. Earned milestones. Your own pace.</p></div></header>
-      <form id="search-form" role="search"><label for="search">Search your notes</label><div class="input-row"><input id="search" type="search" placeholder="A thought, a topic, an aha moment…"><button>Search</button></div></form>
-      <div id="search-results" aria-live="polite"></div>
-      <div id="stats-content"></div>
+      <header class="page-header"><div><p class="eyebrow">YOUR PRACTICE OVER TIME</p><h1 id="stats-heading">Progress you can see.</h1><p class="page-subtitle">Sessions, verified results, and milestones earned.</p></div></header>
+      <form id="search-form" role="search"><label for="search">Search your notes</label><div class="input-row"><input id="search" type="search" placeholder="A topic, command, or discovery"><button>Search</button></div></form>
+      <div id="search-results" aria-live="polite"></div><div id="stats-content"></div>
     </section>
     <section id="more" class="screen" aria-labelledby="more-heading" hidden>
-      <header class="page-header"><div><p class="eyebrow">MAKE IT YOURS</p><h1 id="more-heading">Your learning, your way.</h1><p class="page-subtitle">Manage your tracks, reminders, and preferences.</p></div></header>
-      <section class="card settings"><h2>Active mission</h2><p id="mission-name">No mission yet.</p><div class="input-row"><select id="mission-pack" aria-label="Mission pack"></select><button id="start-mission">Start mission</button><button id="pause-mission" class="secondary">Pause</button><button id="finish-mission" class="secondary">Finish</button></div><label for="mission-time">Mission reminder override</label><div class="input-row"><input id="mission-time" type="time"><button id="save-mission-time" class="secondary">Save override</button></div></section>
-      <section class="card settings"><h2>Packs</h2><button id="browse-tracks" type="button">Browse learning tracks</button><div id="pack-list"></div><form id="install-form"><label for="pack-id">Install a community pack</label><div class="input-row"><input id="pack-id" placeholder="home-hack-lab" required><button>Install</button></div></form><label for="pack-upload">Or choose a TOML pack</label><input id="pack-upload" type="file" accept=".toml"></section>
-      <section class="card settings"><h2>Reminders</h2><form id="reminder-form"><label for="nudge-time">First reminder</label><input id="nudge-time" type="time" value="21:30" required><label for="nudge-channel">Channel</label><select id="nudge-channel"><option value="ntfy">ntfy</option><option value="desktop">Desktop on server</option><option value="telegram">Telegram</option><option value="webpush">This browser (Web Push)</option></select><label for="ntfy-topic">Private ntfy topic</label><input id="ntfy-topic" autocomplete="off" placeholder="Your hard-to-guess topic"><label class="check"><input id="nudge-enabled" type="checkbox">Enable reminders</label><div class="input-row"><button>Save reminders</button><button id="test-nudge" type="button" class="secondary">Send test</button></div></form><div class="input-row"><button id="enable-push" class="secondary">Enable browser notifications</button><button id="disable-push" class="secondary">Disable on this browser</button></div><p id="push-status" class="muted"></p></section>
-      <section class="card settings"><h2>Appearance</h2><label for="theme">Color theme</label><select id="theme"><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select></section>
-      <section class="card settings"><h2>Parked ideas</h2><p class="muted">Save the thought. Keep your place.</p><form id="park-form"><label for="park-note">An idea for later</label><div class="input-row"><input id="park-note" required><button>Park it</button></div></form><ul id="parked-list"></ul></section>
-      <section class="card settings"><h2>Account / Server</h2><p id="account-info"></p><label for="account-timezone">Timezone</label><div class="input-row"><input id="account-timezone" placeholder="Asia/Kolkata"><button id="save-timezone">Save timezone</button></div><label class="check"><input id="public-streak" type="checkbox">Share my streak publicly</label><p id="public-link" class="muted"></p><button id="logout" class="secondary">Log out</button></section>
+      <header class="page-header"><div><p class="eyebrow">A PLACE FOR EVERY INTEREST</p><h1 id="more-heading">Your tracks.</h1><p class="page-subtitle">Keep one mission active. Explore the rest when you're ready.</p></div><button id="browse-tracks" type="button"><span data-icon="plus" aria-hidden="true"></span>Browse learning tracks</button></header>
+      <section class="card settings mission-settings"><div class="section-heading"><h2>Active mission</h2><a href="#docs/missions" class="subtle-link">How missions work</a></div><p id="mission-name">No mission yet.</p><label for="mission-pack">Choose a track</label><div class="input-row"><select id="mission-pack"></select><button id="start-mission">Start mission</button></div><div class="mission-actions"><p class="muted small">Pause your current mission before starting another. Your progress stays saved.</p><button id="pause-mission" class="secondary">Pause</button><button id="finish-mission" class="text-button">Finish</button></div><details class="quiet-details"><summary>Mission reminder time</summary><label for="mission-time">Mission reminder override</label><div class="input-row"><input id="mission-time" type="time"><button id="save-mission-time" class="secondary">Save override</button></div></details></section>
+      <section class="card settings library"><div class="section-heading"><h2>Installed packs <span id="pack-count" class="count-badge"></span></h2><a href="#docs/packs" class="subtle-link">About packs</a></div><label class="sr-only" for="installed-search">Search installed packs</label><input id="installed-search" type="search" placeholder="Find a pack in your library"><div id="pack-list" role="list" aria-label="Installed packs"></div><button id="show-all-packs" class="text-button" hidden>Show all packs</button><details class="quiet-details"><summary>Import a pack</summary><form id="install-form"><label for="pack-id">Install a community pack by ID</label><div class="input-row"><input id="pack-id" placeholder="home-hack-lab" required><button>Install</button></div></form><label for="pack-upload">Or choose a TOML pack</label><input id="pack-upload" type="file" accept=".toml"></details></section>
+      <details class="card settings ideas"><summary>Ideas for later</summary><p class="muted">Save the thought. Keep your place.</p><form id="park-form"><label for="park-note">An idea for later</label><div class="input-row"><input id="park-note" required><button>Park it</button></div></form><ul id="parked-list"></ul></details>
+    </section>
+    <section id="docs" class="screen" aria-labelledby="docs-heading" hidden>
+      <header class="page-header"><div><p class="eyebrow">A GUIDE TO YOUR WORKSPACE</p><h1 id="docs-heading">How Ascend works.</h1><p class="page-subtitle">Find an answer, then get back to your next step.</p></div></header>
+      <label class="sr-only" for="docs-search">Search documentation</label><input id="docs-search" type="search" placeholder="Search guides: XP, evidence, Docker…" aria-controls="docs-topics">
+      <div id="docs-status" role="status" class="muted small"></div>
+      <div class="docs-layout"><nav id="docs-topics" class="docs-topics" aria-label="Documentation topics"></nav><article id="docs-article" class="docs-article" tabindex="-1" aria-labelledby="guide-title"></article></div>
+    </section>
+    <section id="profile" class="screen" aria-labelledby="profile-heading" hidden>
+      <header class="page-header"><div><p class="eyebrow">MAKE YOURSELF AT HOME</p><h1 id="profile-heading">Your profile.</h1><p class="page-subtitle">Your progress, preferences, and reminders in one place.</p></div></header>
+      <div id="profile-summary" class="profile-summary"></div>
+      <div class="profile-settings">
+        <section class="card settings"><h2>Preferences</h2><label for="account-timezone">Timezone</label><div class="input-row"><input id="account-timezone" placeholder="Asia/Kolkata"><button id="save-timezone" class="secondary">Save timezone</button></div><p class="field-help">Your learning day rolls over at 4 AM in this timezone.</p><label for="theme">Color theme</label><select id="theme"><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select></section>
+        <section class="card settings"><div class="section-heading"><h2>Reminders</h2><a href="#docs/reminders" class="subtle-link">Setup guide</a></div><form id="reminder-form"><div class="form-columns"><div><label for="nudge-time">First reminder</label><input id="nudge-time" type="time" value="21:30" required></div><div><label for="nudge-channel">Channel</label><select id="nudge-channel"><option value="ntfy">ntfy</option><option value="desktop">Desktop on server</option><option value="telegram">Telegram</option><option value="webpush">This browser (Web Push)</option></select></div></div><label for="ntfy-topic">Private ntfy topic</label><input id="ntfy-topic" autocomplete="off" placeholder="Your hard-to-guess topic"><label class="check"><input id="nudge-enabled" type="checkbox">Enable reminders</label><div class="input-row"><button>Save reminders</button><button id="test-nudge" type="button" class="secondary">Send test</button></div></form><details class="quiet-details"><summary>Browser notifications</summary><div class="input-row"><button id="enable-push" class="secondary">Enable browser notifications</button><button id="disable-push" class="text-button">Disable on this browser</button></div><p id="push-status" class="muted" role="status"></p></details></section>
+        <section class="card settings"><h2>Privacy &amp; account</h2><label class="check"><input id="public-streak" type="checkbox">Share my streak publicly</label><p id="public-link" class="muted small"></p><p id="account-info" class="muted small"></p><button id="logout" class="secondary">Log out</button></section>
+      </div>
     </section>
   </main>
-  <dialog id="sheet" aria-labelledby="sheet-title"><button class="close" aria-label="Close dialog">×</button><div id="sheet-content"></div></dialog>
-  <dialog id="login-dialog" aria-labelledby="login-title"><h2 id="login-title">Welcome back.</h2><p>Sign in to your Ascend server.</p><form id="login-form"><label for="username">Username</label><input id="username" autocomplete="username" required><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required><button>Sign in</button><p id="login-error" role="alert"></p></form></dialog>
-  <div id="notice" role="status" aria-live="polite" hidden></div>
+  <dialog id="sheet" aria-labelledby="sheet-title"><header class="dialog-header"><p id="dialog-context">Challenge</p><button class="close icon-button" aria-label="Close dialog">×</button></header><div id="sheet-content" class="dialog-body"></div><div class="dialog-feedback"></div></dialog>
+  <dialog id="login-dialog" aria-labelledby="login-title"><div class="dialog-body"><h2 id="login-title">Welcome back.</h2><p>Sign in to your Ascend server.</p><form id="login-form"><label for="username">Username</label><input id="username" autocomplete="username" required><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required><button>Sign in</button><p id="login-error" role="alert"></p></form></div><div class="dialog-feedback"></div></dialog>
+  <div id="notice" class="notice" role="status" aria-live="polite" hidden><span class="notice-symbol" aria-hidden="true"></span><span class="notice-message"></span><button type="button" class="icon-button" aria-label="Dismiss message">×</button></div>
 </body>
 </html>

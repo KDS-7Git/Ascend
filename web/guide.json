@@ -1,0 +1,462 @@
+{
+  "version": 1,
+  "title": "Ascend in-app guide",
+  "topics": [
+    {
+      "id": "getting-started",
+      "title": "Getting started",
+      "summary": "Go from a new workspace to one useful practice session.",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Ascend helps you work through a learning track one task at a time. A pack contains levels and tasks; your active mission is the pack you are working on now."
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Open Tracks and choose Browse learning tracks. Search for a subject or role, then inspect its entry skills and environment requirements.",
+            "Install one pack and use Read in your library to understand what it asks you to do. Installing a pack does not start a mission.",
+            "Choose the pack under Active mission and press Start mission. If another mission is active, pause it first.",
+            "Open Today, choose the time you have, and open your next challenge. The optional quick win is an alternative for a shorter session.",
+            "Start the exercise or task timer when you begin. Save a learning note or submit the required evidence when you finish."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Verified security lab is a practical starting point if you want built-in exercises without setting up a separate lab. Its first five tasks run inside Ascend; its later Juice Shop tasks need the lab setup."
+        },
+        {
+          "type": "code",
+          "text": "ascend pack install verified-security-lab\nascend mission start verified-security-lab\nascend lab start verified-security-lab:lab-readiness"
+        }
+      ],
+      "related": [
+        "missions",
+        "verification"
+      ]
+    },
+    {
+      "id": "missions",
+      "title": "Missions & your path",
+      "summary": "Keep a clear next step without losing your other interests.",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "One mission is active at a time. Today recommends the next available task in that mission. Path shows its levels, prerequisites, optional practice, and milestones."
+        },
+        {
+          "type": "heading",
+          "text": "What the path states mean"
+        },
+        {
+          "type": "list",
+          "items": [
+            "Ready: you can start the task. The current next step is highlighted.",
+            "Coming up: the task has a prerequisite or an earlier level to complete. Open it to see what is needed.",
+            "Complete: the task was marked complete under its evidence rules.",
+            "Skipped: you chose to move past the task. A skip is kept separate from completion and earns no milestone badge or XP.",
+            "Milestone: a task that brings a level\u2019s skills together. Its distinct diamond shape and label identify it."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Pause a mission in Tracks when you want to switch subjects. Its saved work and path progress remain. Finishing a mission records that you are done with that mission; it does not magically verify unfinished lessons."
+        },
+        {
+          "type": "paragraph",
+          "text": "Time chips on Today filter task estimates. They do not start a timer or change the work required. If no task fits, choose a larger time budget or save partial work on a task."
+        }
+      ],
+      "related": [
+        "lessons",
+        "timers"
+      ]
+    },
+    {
+      "id": "packs",
+      "title": "Installing & reviewing packs",
+      "summary": "Understand a track before making it part of your routine.",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "The library shows each installed pack by its readable title, with its level and task counts. Read stays beside the title. Long names are shortened visually; open Read to see the complete title and content."
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Use Browse learning tracks to explore the catalog. Entry skills and environment details are available inside each result.",
+            "Use Read to inspect the tasks, grouped by level. Mark reviewed only after you have read and accepted the plan.",
+            "Use Search installed packs to find a pack already in your library. Show all packs expands a large library.",
+            "For a custom pack, open Import a pack and select a TOML file or enter a community pack ID."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Reviewing a pack does not complete its tasks or trust executable checks. Command verifiers require separate explicit trust and may also be disabled by the server administrator."
+        },
+        {
+          "type": "paragraph",
+          "text": "The supplied curricula are source-backed drafts. An established reference or a successful software test does not prove that every learner will master a subject. Practical explanations and changed-case assessments still need review."
+        },
+        {
+          "type": "heading",
+          "text": "Updating a pack"
+        },
+        {
+          "type": "paragraph",
+          "text": "Back up private edits before updating. Stable task IDs preserve existing progress, but old completion does not retroactively certify a new exercise. Changed content resets review and execution trust."
+        },
+        {
+          "type": "code",
+          "text": "ascend pack diff packs/community/home-hack-lab.toml\nascend pack install packs/community/home-hack-lab.toml"
+        }
+      ],
+      "related": [
+        "verification",
+        "lab-setup"
+      ]
+    },
+    {
+      "id": "lessons",
+      "title": "Working through a lesson",
+      "summary": "Use the finish line, hints, evidence, and notes together.",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "A lesson opens in a dialog. Its finish line explains the result to demonstrate. Steps and the learning resource help you begin; hints stay collapsed until you want them."
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Read the finish line and verification label before beginning.",
+            "Choose a session target and start the timed task or verified exercise.",
+            "Work through the task. A hint is help with learning, not an automatic completion.",
+            "Use Log progress to save what you tried and what to do next. Leave Mark as done unchecked for partial work.",
+            "For built-in exercises, enter your result and press Verify my result. External CTF tasks use Verify lab completion after the administrator refreshes the proof."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Messages from lesson actions appear inside the dialog, below its scrollable content. Errors stay visible until you dismiss them or perform another action. The close button stays at the top; Escape also closes the dialog."
+        },
+        {
+          "type": "paragraph",
+          "text": "If a regular evidence check fails while logging completion, the learning note can still be saved and the lesson remains open. A verified lab cannot be completed with a manual override or by splitting it into manually checked steps."
+        },
+        {
+          "type": "heading",
+          "text": "Keep useful notes"
+        },
+        {
+          "type": "paragraph",
+          "text": "Record the observation, your explanation, and any help you used. Never paste passwords, private tokens, or CTF flags into your notes. Find past notes in Stats."
+        }
+      ],
+      "related": [
+        "verification",
+        "timers"
+      ]
+    },
+    {
+      "id": "verification",
+      "title": "Evidence & verification",
+      "summary": "Know exactly what a green check establishes.",
+      "blocks": [
+        {
+          "type": "list",
+          "items": [
+            "Server-verified exercise: Ascend checks the result against your current generated instance. Wrong answers do not complete the task or earn XP.",
+            "Server-graded reasoning check: your scenario decision is checked. This does not grade a free-form explanation or prove that you performed a practical assessment.",
+            "Signed external lab evidence: an administrator\u2019s collector confirms named challenge results for your assigned game instance. The browser cannot simply send a solved flag.",
+            "Artifact check: a file exists and meets the configured checks. A person must still review whether its result and reasoning are correct.",
+            "Human assessment: some explanations and changed-case demonstrations need review rather than a machine check."
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Built-in logging example"
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Start the verified exercise.",
+            "Send one successful request and one failed request.",
+            "Find the failed event with your exercise marker, ignoring unrelated records.",
+            "Enter its request ID and the number of failures for that marker, then verify."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Generated instances belong to one account and the current pack content. A fresh instance replaces the old one without resetting your accumulated task time. Unfinished instances expire after 24 hours, and ten unsuccessful submissions require a fresh attempt."
+        },
+        {
+          "type": "paragraph",
+          "text": "Passing a small exercise is evidence of that result, not a certificate of overall proficiency. Real learning also means explaining the mechanism and handling an unfamiliar variation."
+        }
+      ],
+      "related": [
+        "timers",
+        "lab-setup"
+      ]
+    },
+    {
+      "id": "timers",
+      "title": "Timers & XP",
+      "summary": "A target for your session, with credit for verified work.",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Your verified XP balance appears in the top bar on every screen. Select it to open Stats, or open your Profile to see the same balance and verified task count. XP is personal feedback, not a spendable coin balance."
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Set a realistic target before starting. Opening a lesson alone does not start its timer.",
+            "Start the task. The server keeps time even if you close the browser.",
+            "Use Pause session on Today for a break. Resume preserves the original target and accumulated active time.",
+            "Complete the verification. Only built-in exercises and signed CTF checks qualify for XP, and an external check needs a started session."
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "How the reward changes"
+        },
+        {
+          "type": "list",
+          "items": [
+            "Within your target: 100 XP.",
+            "After the target: the reward declines gradually. At twice the target, it is 50 XP.",
+            "Minimum reward: 25 XP. You never lose XP already earned.",
+            "One reward per stable task ID and account. Repeating, reopening, or undoing a note does not award it again."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "For a 20-minute target, completing at 20 minutes earns 100 XP, at 30 minutes earns 75 XP, and at 40 minutes earns 50 XP. Paused time is excluded. Finishing or skipping ends that task\u2019s session; later practice is unscored."
+        },
+        {
+          "type": "paragraph",
+          "text": "The app reminds you at three quarters of the target and at the target. Reminders can also use your configured notification channel. External game observations do not establish the exact original solve time; the timer measures your Ascend session."
+        },
+        {
+          "type": "code",
+          "text": "ascend session start PACK:NODE --minutes 20\nascend session status\nascend session pause"
+        }
+      ],
+      "related": [
+        "reminders",
+        "verification"
+      ]
+    },
+    {
+      "id": "reminders",
+      "title": "Setting up reminders",
+      "summary": "Choose when and where a reminder reaches you.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Open your avatar in the top bar to go to Profile.",
+            "Under Reminders, choose a time and a channel.",
+            "For ntfy, choose a long private topic and subscribe to the same topic in the ntfy Android app.",
+            "Enable reminders and save. Use Send test to check delivery."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "ntfy is a simple route to Android notifications. Telegram needs administrator-provided bot and chat settings. Desktop sends to the server\u2019s desktop session, which may not be your phone or laptop. Browser push requires a supported browser and a secure origin."
+        },
+        {
+          "type": "heading",
+          "text": "Browser notifications"
+        },
+        {
+          "type": "paragraph",
+          "text": "Open Browser notifications in Profile, then enable them on this browser and allow the browser permission prompt. Enable reminders too. The server administrator must configure the Web Push keys and public URL; installing the PWA alone does not configure delivery."
+        },
+        {
+          "type": "heading",
+          "text": "Schedules and timezones"
+        },
+        {
+          "type": "paragraph",
+          "text": "Set your IANA timezone in Profile, such as Asia/Kolkata. Your learning day rolls over at 4 AM there. A mission-specific reminder time lives under Active mission in Tracks. Normal habit reminders have daily limits; timed-session checkpoints are separate."
+        },
+        {
+          "type": "paragraph",
+          "text": "The server checks timed reminders every 30 seconds, so delivery is not a precise alarm. Connectivity, provider settings, and OS notification permissions affect delivery. A browser message is not proof that an Android notification arrived."
+        }
+      ],
+      "related": [
+        "profile",
+        "timers"
+      ]
+    },
+    {
+      "id": "profile",
+      "title": "Your profile & privacy",
+      "summary": "Manage your account without interrupting your learning path.",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "The avatar in the top bar opens your Profile. It shows your actual account name, verified XP, verified task count, and current day streak. There is no invented rank or profile completion score."
+        },
+        {
+          "type": "list",
+          "items": [
+            "Preferences: choose your timezone and System, Light, or Dark appearance. The theme is saved in this browser.",
+            "Reminders: configure notification timing and delivery.",
+            "Privacy & account: choose whether to publish a streak badge. Sharing is off unless you enable it.",
+            "Log out: available on authenticated servers. A single-user local server has no login session to end."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Account names are provisioned by the server administrator. The app does not offer an unsupported username or password edit. Your progress is account-scoped on the server; a theme preference stays local to the browser."
+        },
+        {
+          "type": "heading",
+          "text": "About your streak"
+        },
+        {
+          "type": "paragraph",
+          "text": "A learning note or eligible dated verification can count toward a learning day. A freeze bridges a missed day; it does not add a day of work. External CTF receipts do not claim a solve timestamp, so write a learning note to record that practice."
+        },
+        {
+          "type": "paragraph",
+          "text": "For a shared or internet-accessible deployment, the administrator should use authenticated accounts and HTTPS. A loopback-only single-user server is intended for personal local use."
+        }
+      ],
+      "related": [
+        "reminders",
+        "missions"
+      ]
+    },
+    {
+      "id": "lab-setup",
+      "title": "Docker & external labs",
+      "summary": "What runs inside Ascend, and what needs a separate environment.",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "The first five tasks in Verified security lab use generated data inside Ascend. They need no extra containers. Later CTF tasks can use an individually assigned, isolated Juice Shop instance."
+        },
+        {
+          "type": "heading",
+          "text": "Start the tracker and one lab"
+        },
+        {
+          "type": "code",
+          "text": "docker compose -f docker/docker-compose.yml up -d --build\ndocker compose -f docker/labs.compose.yml --profile juice-shop up -d --wait"
+        },
+        {
+          "type": "paragraph",
+          "text": "Run these commands from the repository root. Ascend defaults to localhost:8420 and Juice Shop to localhost:3000. WebGoat and MQTT have alternative profiles. Lab targets are disposable and loopback-only; do not publish vulnerable services to the internet."
+        },
+        {
+          "type": "heading",
+          "text": "Verify external progress"
+        },
+        {
+          "type": "code",
+          "text": "python3 scripts/collect_lab_proof.py init\ndocker compose -f docker/docker-compose.yml -f docker/lab-proofs.compose.yml up -d\npython3 scripts/collect_lab_proof.py juice-shop --owner 1"
+        },
+        {
+          "type": "paragraph",
+          "text": "The collector is an administrator tool on the Docker host. It signs a fresh observation for the learner\u2019s numeric account ID. Refresh it after solving, then press Verify lab completion within five minutes. The tracker receives a read-only receipt, not the Docker socket."
+        },
+        {
+          "type": "heading",
+          "text": "On a Raspberry Pi"
+        },
+        {
+          "type": "paragraph",
+          "text": "Use 64-bit Raspberry Pi OS and start one optional lab at a time on an 8 GB Pi. The image manifests and Python dependencies support ARM64; physical Pi execution still needs validation. Windows AD labs, mobile emulators, cloud tenants, and Security Onion have separate requirements."
+        },
+        {
+          "type": "heading",
+          "text": "Bandit"
+        },
+        {
+          "type": "paragraph",
+          "text": "The public home lab includes Bandit from level 0. The collector checks SSH authentication to the next official game account without storing the password. Access to an account is weaker evidence than independent puzzle solving. Follow the official game rules and verify the SSH host key before using the collector."
+        },
+        {
+          "type": "code",
+          "text": "python3 scripts/collect_lab_proof.py bandit --owner 1 --level 0\nascend check home-hack-lab:bandit-0 --complete"
+        }
+      ],
+      "related": [
+        "verification",
+        "troubleshooting"
+      ]
+    },
+    {
+      "id": "troubleshooting",
+      "title": "When something is stuck",
+      "summary": "Start with the message closest to the action.",
+      "blocks": [
+        {
+          "type": "heading",
+          "text": "I cannot see an action result"
+        },
+        {
+          "type": "paragraph",
+          "text": "Lesson and catalog messages appear inside their dialog below the content. Errors stay there until dismissed or replaced. A page-level message appears near the lower edge when no dialog is open."
+        },
+        {
+          "type": "heading",
+          "text": "A lesson will not complete"
+        },
+        {
+          "type": "paragraph",
+          "text": "Check its verification label and exact finish line. A failed or missing lab receipt cannot be overridden with a manual mark. File presence alone may pass an artifact check but still needs honest review of the work."
+        },
+        {
+          "type": "heading",
+          "text": "I cannot start another timer"
+        },
+        {
+          "type": "paragraph",
+          "text": "Only one task session can run at a time. Return to Today and pause the running session. A finished task can be practiced again but cannot start a new scored attempt."
+        },
+        {
+          "type": "heading",
+          "text": "My CTF receipt is rejected"
+        },
+        {
+          "type": "paragraph",
+          "text": "Ask the administrator to collect a new receipt for the correct numeric account and assigned instance. Receipts expire after five minutes. A different learner\u2019s game, an unsigned file, or a missing challenge does not count."
+        },
+        {
+          "type": "heading",
+          "text": "The UI is old or the server is unavailable"
+        },
+        {
+          "type": "paragraph",
+          "text": "Reload after an update. The app shell and this guide can be available offline after a successful load, but progress writes and account balances still need the server. Reconnect before submitting work; a failed network request is not saved silently."
+        },
+        {
+          "type": "heading",
+          "text": "No phone notification arrived"
+        },
+        {
+          "type": "paragraph",
+          "text": "Send a test from Profile. Check the channel configuration, topic or account, notification permission, server connectivity, and OS settings. A server-side desktop reminder does not push to Android."
+        },
+        {
+          "type": "heading",
+          "text": "A pack is too advanced"
+        },
+        {
+          "type": "paragraph",
+          "text": "Read its entry requirements and choose a foundations track, or save partial work and return later. Installing several tracks is fine; only one mission needs your attention today."
+        }
+      ],
+      "related": [
+        "getting-started",
+        "reminders"
+      ]
+    }
+  ]
+}

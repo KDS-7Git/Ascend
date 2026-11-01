@@ -56,6 +56,39 @@ def walk(parser):
 
 def generate():
     GENERATED.mkdir(parents=True, exist_ok=True)
+    guide = json.loads((ROOT / "web/guide.json").read_text())
+    titles = {topic["id"]: topic["title"] for topic in guide["topics"]}
+    site_guide = [
+        "% Generated from web/guide.json; do not edit.\n",
+        "\\section{In-app documentation reference}\n",
+        "The following topics match the searchable Docs screen in the application.\n",
+    ]
+    for topic in guide["topics"]:
+        site_guide.append("\\subsection{" + escape(topic["title"]) + "}\n")
+        site_guide.append(escape(topic["summary"]) + "\\par\n")
+        for block in topic["blocks"]:
+            kind = block["type"]
+            if kind == "paragraph":
+                site_guide.append(escape(block["text"]) + "\\par\n")
+            elif kind == "heading":
+                site_guide.append("\\subsubsection{" + escape(block["text"]) + "}\n")
+            elif kind in {"steps", "list"}:
+                environment = "enumerate" if kind == "steps" else "itemize"
+                site_guide.append("\\begin{" + environment + "}\n")
+                site_guide.extend(
+                    "\\item " + escape(item) + "\n" for item in block["items"]
+                )
+                site_guide.append("\\end{" + environment + "}\n")
+            elif kind == "code":
+                site_guide.append(verbatim(block["text"]))
+            else:
+                raise ValueError(f"Unsupported guide block: {kind}")
+        site_guide.append(
+            "\\noindent\\textbf{Related guides:} "
+            + escape(", ".join(titles[key] for key in topic.get("related", [])))
+            + "\\par\n"
+        )
+    (GENERATED / "site-guide.tex").write_text("".join(site_guide))
     help_text = ["% Generated from the actual CLI parsers; do not edit.\n"]
     for parser in walk(cli_parser()):
         help_text.append(

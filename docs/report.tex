@@ -25,6 +25,7 @@ commits at milestones. Original documents are preserved under \texttt{docs/desig
 \section{Current build and verification status}
 \input{report-status.tex}
 \input{latex/expanded-release.tex}
+\input{latex/ui-workspace.tex}
 
 \section{Architecture}
 \begin{longtable}{p{0.23\textwidth}p{0.7\textwidth}}
@@ -36,7 +37,7 @@ Application layer & Shared use cases for logging, completion, missions, pack tru
 \texttt{ascend/cli} & Arguments, plain output, and an optional standard-library HTTP client. Remote mode never opens the local database. \\
 \texttt{ascend/verifiers} & Local file and command adapters, HTTP/Git checks, and explicitly trusted extensions. \\
 \texttt{ascend/server} & Optional FastAPI transport, account authentication, API contracts, static assets, and scheduled reminders. \\
-\texttt{web} & Four-screen PWA: Today, Path, Stats, More. Same API and validation as the CLI. \\
+\texttt{web} & PWA: Today, Path, Stats, Tracks, Docs and a top-bar Profile page. Same API and validation as the CLI. \\
 \texttt{ascend/nudge} & Schedule decisions separated from delivery channels. \\
 \end{longtable}
 
@@ -64,11 +65,9 @@ server migration adds account and token tables without rekeying existing logs.
 
 \section{Clients and interaction design}
 The CLI's default view stays within six lines. It presents a mission, level,
-next step, optional quick win, and streak status. The PWA follows the supplied
-four-screen structure. Today emphasizes a single next action, with a visually
+next step, optional quick win, and streak status. The PWA now includes a dedicated guide and profile alongside its learning views. Today emphasizes a single next action, with a visually
 secondary quick win. Path shows level groups, node states, and a separate side
-lane. Stats exposes a heatmap, minutes, and note search. More contains infrequent
-settings and pack management. Layouts are tested at mobile, tablet, and desktop
+lane. Stats exposes a heatmap, minutes, and note search. Tracks contains pack management; the top-bar avatar opens Profile for personal settings. Layouts are tested at mobile, tablet, and desktop
 sizes. Theme preference is local to the browser.
 
 The service worker caches static application assets only. Private API responses
@@ -79,7 +78,7 @@ audit rows, and completion undo checks the node revision before reverting state.
 \begin{figure}[ht]
 \centering
 \includegraphics[width=\textwidth]{today-desktop.png}
-\caption{Actual Chromium rendering of the Today screen, using a disposable demonstration profile.}
+\caption{Earlier Today design retained for comparison; the current workspace is shown in Section~\ref{workspace-ui}.}
 \end{figure}
 
 \section{Security boundaries}
@@ -231,4 +230,5 @@ local; no registry publication or external deployment has been performed.
 \input{latex/lab-implementation.tex}
 \input{latex/generated/catalog.tex}
 \input{latex/lab-deployment.tex}
+\input{latex/generated/site-guide.tex}
 \end{document}
