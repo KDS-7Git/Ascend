@@ -19,7 +19,9 @@ def verify(spec, vars):
                 "log",
                 "-100",
                 "--format=%cI%x09%s",
-                "--since=" + spec.get("since", "1970-01-01"),
+                # An epoch-date default can parse before epoch in local time.
+                # With no requested cutoff, let Git include all recent commits.
+                *(["--since=" + spec["since"]] if spec.get("since") else []),
                 "--",
             ],
             shell=False,

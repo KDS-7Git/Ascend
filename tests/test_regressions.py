@@ -111,6 +111,7 @@ def test_git_verifier_uses_commit_time(tmp_path):
     )
     result = verify({"path": str(tmp_path), "pattern": "working example"}, {})
     assert result.ok and result.evidence_time.tzinfo is not None
+    assert not verify({"path": str(tmp_path), "since": "2099-01-01T00:00:00Z"}, {}).ok
     assert not verify({"path": str(tmp_path), "pattern": "not in any commit"}, {}).ok
 
 
