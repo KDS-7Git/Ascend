@@ -52,15 +52,16 @@ ascend pack install packs/community/projects/home-hack-lab.toml
 \noindent\textbf{Related guides:} Evidence \& verification, Docker \& external labs\par
 \subsection{Working through a lesson}
 Use the finish line, hints, evidence, and notes together.\par
-A lesson opens in a dialog. Its finish line explains the result to demonstrate. Steps and the learning resource help you begin; hints stay collapsed until you want them.\par
+A challenge preview shows its finish line, steps and learning resource. Hints stay collapsed until you want them. Starting opens a dedicated challenge workspace with room for exercise data and your result.\par
 \begin{enumerate}
 \item Read the finish line and verification label before beginning.
-\item Choose a session target and start the timed task or verified exercise.
+\item Choose a session target and start the timed task or verified exercise. The clock keeps running until you complete or end the session.
 \item Work through the task. A hint is help with learning, not an automatic completion.
 \item Use Log progress to save what you tried and what to do next. Leave Mark as done unchecked for partial work.
 \item For built-in exercises, enter your result and press Verify my result. External CTF tasks use Verify lab completion after the administrator refreshes the proof.
 \end{enumerate}
-Messages from lesson actions appear inside the dialog, below its scrollable content. Errors stay visible until you dismiss them or perform another action. The close button stays at the top; Escape also closes the dialog.\par
+Reloading the workspace restores the same exercise and its event data. Unfinished answers survive a reload in the same browser tab. From another page, use Resume challenge in the session strip. End session stops timing without completing the challenge or awarding XP.\par
+Preview and logging dialogs keep messages below their scrollable content, with Close and Escape controls. Workspace verification results appear beside the answer form. Errors stay visible so you have time to read them.\par
 If a regular evidence check fails while logging completion, the learning note can still be saved and the lesson remains open. A verified lab cannot be completed with a manual override or by splitting it into manually checked steps.\par
 \subsubsection{Keep useful notes}
 Record the observation, your explanation, and any help you used. Never paste passwords, private tokens, or CTF flags into your notes. Find past notes in Stats.\par
@@ -90,7 +91,7 @@ Your verified XP balance and day streak appear in the top bar on every screen. S
 \begin{enumerate}
 \item Set a realistic target before starting. Opening a lesson alone does not start its timer.
 \item Start the task. The server keeps time even if you close the browser.
-\item Use Pause session on Today for a break. Resume preserves the original target and accumulated active time.
+\item The clock runs continuously, even if you reload or leave the page. Use Resume challenge to return to the same exercise; End session stops timing without completing it or awarding XP.
 \item Complete the verification. Only built-in exercises and signed CTF checks qualify for XP, and an external check needs a started session.
 \end{enumerate}
 \subsubsection{How the reward changes}
@@ -100,12 +101,12 @@ Your verified XP balance and day streak appear in the top bar on every screen. S
 \item Minimum reward: 25 XP. You never lose XP already earned.
 \item One reward per stable task ID and account. Repeating, reopening, or undoing a note does not award it again.
 \end{itemize}
-For a 20-minute target, completing at 20 minutes earns 100 XP, at 30 minutes earns 75 XP, and at 40 minutes earns 50 XP. Paused time is excluded. Finishing or skipping ends that task’s session; later practice is unscored.\par
+For a 20-minute target, completing at 20 minutes earns 100 XP, at 30 minutes earns 75 XP, and at 40 minutes earns 50 XP. The timer cannot be paused. Completing, skipping or ending stops that task’s session; later practice is unscored. Ending before verification cannot be used to preserve a higher reward.\par
 The app reminds you at three quarters of the target and at the target. Reminders can also use your configured notification channel. External game observations do not establish the exact original solve time; the timer measures your Ascend session.\par
 \begin{verbatim}
 ascend session start PACK:NODE --minutes 20
 ascend session status
-ascend session pause
+ascend session end
 \end{verbatim}
 \noindent\textbf{Related guides:} Setting up reminders, Evidence \& verification\par
 \subsection{Setting up reminders}
@@ -127,7 +128,8 @@ The server checks timed reminders every 30 seconds, so delivery is not a precise
 Manage your account without interrupting your learning path.\par
 The avatar in the top bar opens your Profile. It shows your actual account name, verified XP, verified task count, and current day streak. There is no invented rank or profile completion score.\par
 \begin{itemize}
-\item Preferences: choose your timezone and System, Light, or Dark appearance. The theme is saved in this browser.
+\item Preferences: choose your timezone, System/Light/Dark appearance and Calm/Off motion effects. Appearance choices are saved in this browser. Your device’s reduced motion setting always takes priority.
+\item The motion control in the top bar stops background and transition effects. It does not stop a challenge timer.
 \item Reminders: configure notification timing and delivery.
 \item Privacy \& account: choose whether to publish a streak badge. Sharing is off unless you enable it.
 \item Log out: available on authenticated servers. A single-user local server has no login session to end.
@@ -169,7 +171,7 @@ Lesson and catalog messages appear inside their dialog below the content. Errors
 \subsubsection{A lesson will not complete}
 Check its verification label and exact finish line. A failed or missing lab receipt cannot be overridden with a manual mark. File presence alone may pass an artifact check but still needs honest review of the work.\par
 \subsubsection{I cannot start another timer}
-Only one task session can run at a time. Return to Today and pause the running session. A finished task can be practiced again but cannot start a new scored attempt.\par
+Only one task session can run at a time. Complete or end the running session before starting another. The session strip is available on every page. A finished task can be practiced again but cannot start a new scored attempt.\par
 \subsubsection{My CTF receipt is rejected}
 Ask the administrator to collect a new receipt for the correct numeric account and assigned instance. Receipts expire after five minutes. A different learner’s game, an unsigned file, or a missing challenge does not count.\par
 \subsubsection{The UI is old or the server is unavailable}

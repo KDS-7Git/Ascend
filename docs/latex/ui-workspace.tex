@@ -36,7 +36,7 @@ screenshots and brand assets are not shipped as product assets.
 
 \subsection{Shared alignment and stable documentation}
 USWDS card guidance, Carbon's grid guidance and GOV.UK layout guidance informed
-the follow-up layout review. All six pages and the top bar share a 1080 px maximum
+the follow-up layout review. The six main pages, challenge workspace and top bar share a 1080 px maximum
 frame. Today places its optional quick win and milestone below the main challenge
 as open rows. Tracks, Profile and Path use headings, lists and neutral dividers.
 Stats uses a single metric strip, aligned charts and full-width supporting sections.
@@ -51,6 +51,28 @@ the navigation does not move the article. Escape and the close button return foc
 to the opener; selecting a guide closes the drawer and focuses its title. Resizing
 to desktop closes the drawer and restores navigation to the rail. Search filters
 topics in that navigation; it does not insert a list above the article.
+
+\subsection{Calm motion and recoverable challenges}
+The subsequent visual pass reviewed React Bits, Aceternity UI, Magic UI and Motion's
+accessibility guidance. Original local CSS and Web Animations API code supply a
+violet/teal ambient field, faint dots, sparse particles, an orbit motif, short heading
+and section entrances, chart transitions and restrained hover feedback. The native
+cursor remains; only the main challenge gets a soft pointer-following highlight.
+The source register distinguishes rendered-page inspection from repository-source
+inspection when the React Bits page returned an empty browser body.
+
+The top-bar motion control and Profile preference stop decorative animation. Device
+reduced motion always takes precedence and hidden pages pause background movement.
+The next challenge's one-time border sweep is retained. Task timers are independent
+of this visual preference and run continuously until completion or End session.
+
+Starting a challenge now leaves the preview dialog for a dedicated workspace with
+a persistent URL. The session strip on every page returns to the current exercise.
+A read-only snapshot restores the existing instance and event data after reload;
+tab-scoped draft answers are restored separately. End session stops timing without
+completion or XP, and an ended attempt cannot gain XP through a later submission.
+The implementation walkthrough in the developer handbook explains these flows,
+transaction boundaries, legacy state and debugging strategies in detail.
 
 \subsection{Navigation and information hierarchy}
 The persistent top bar shows the verified XP balance, day streak and a profile avatar. The
@@ -69,19 +91,20 @@ and saved ideas. A reader need not scan account settings to find an installed pa
 \subsection{Component and interaction contract}
 \begin{longtable}{P{.22\textwidth}P{.70\textwidth}}
 \textbf{Component} & \textbf{Behavior and rationale}\\\hline
-Top bar & Persistent XP, day streak and avatar; clear accessible names and real server totals. Narrow layouts may shorten or hide the context label, preserving actions.\\
+Top bar & Persistent XP, day streak, motion control and avatar; clear accessible names and real server totals. Narrow layouts may shorten or hide the context label, preserving actions.\\
 Track picker & Choose a domain first, then one of its installed tracks. Changing domains clears the track choice; starting requires a selected track and no active mission.\\
 Library row & Human title, supporting counts/review state and a right-aligned Read button. The title and action share one row. A long title truncates visually but retains its accessible text and full preview.\\
 Library controls & Search installed packs; initially show eight rows in a large library, with Show all/Show fewer. Import controls and parked ideas use disclosures.\\
 Pack preview & Complete title and tasks grouped by level, with the first group open. Mark reviewed does not complete tasks or grant execution trust.\\
 Lesson dialog & Fixed close/header and feedback regions surround an independently scrolling body. Initial focus goes to the title for a lesson and to the first field for the short logging form. Escape closes; focus returns to the opener.\\
+Challenge workspace & Starting closes the preview and opens a stable page route. Reload restores the same exercise and answer draft. Resume challenge navigates; End session stops timing without completion or XP.\\
 Action feedback & The live region moves into the active dialog. Error and in-dialog messages persist until dismissed or replaced. Page-level informational messages last eight seconds. Timer reminders cannot replace an unresolved error.\\
 Buttons & One filled primary action, outlined secondary actions and quiet text actions. Pending actions disable repeat submission and expose an accessible busy state; a small spinner provides feedback. Disabled and selected states remain distinct.\\
 Docs & Ten searchable help topics grouped into Start here, Daily practice and Setup \& help. A stable desktop rail and compact-screen overlay preserve the reading position. Stable links, command-copy actions and related guides work offline after the shell is installed; progress writes still require the server.\\
 Profile & Actual account identity and verified totals, editable timezone, locally persisted theme, reminders and opt-in streak sharing. Unsupported username/password editing is not presented.\\
 Path & Uniform vertical task rows, current-level emphasis and distinct ready, locked, done, skipped and milestone states. Color supplements labels and shapes.\\
 Typography & Locally bundled Inter Variable with its SIL Open Font License. A limited hierarchy separates headings, body copy and supporting labels; mobile form text is 16 px to avoid focus zoom.\\
-Motion & Short 140--180 ms transitions and a pending-action spinner. The next challenge has a 1.8-second glowing border sweep on its first visible display after each page load; tab changes and data refreshes do not replay it. Reduced-motion preference disables decorative animation and transitions.\\
+Motion & Brief control transitions, 380--460 ms entrances and 600 ms chart bars, plus slow ambient decoration. A saved stop control and device reduced motion disable effects. The next challenge has a 1.8-second border sweep once per page load; tab changes and data refreshes do not replay it.\\
 \end{longtable}
 
 The palette is defined once using CSS variables for light and dark themes. Light
@@ -106,13 +129,13 @@ application shell. Private API responses remain uncached. The standalone wheel
 regression checks the guide, font/license and theme asset and serves them from an
 installed wheel outside the source checkout.
 
-The expanded automated suite records 148 passing tests. Browser regressions cover
+The expanded automated suite records 153 passing tests. Browser regressions cover
 inline pack-row geometry, readable previews, in-dialog failure messages, persistence
 of errors, Escape/focus restoration, XP updates after verification, profile/theme/
 timezone persistence, guide search and direct links, and offline help. Navigation
 geometry checks cover the guide drawer, filtering and breakpoint changes. The visual
-audit retains 63 captures at 320, 390, 768, 1024, 1440 and 1920 px, including dark mode.
-Axe-core 4.10.3 checks WCAG 2 A/AA and 2.1 AA tagged rules on 56 screen/state/viewport
+audit retains 72 captures at 320, 390, 768, 1024, 1440 and 1920 px, including dark mode,
+plus a short motion preview. Axe-core 4.10.3 checks WCAG 2 A/AA and 2.1 AA tagged rules on 64 screen/state/viewport
 combinations. Its results are bounded automated evidence, not a claim of complete
 accessibility conformance or an expert usability score.
 

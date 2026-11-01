@@ -1,0 +1,328 @@
+\section{Implementation walkthrough and technical discussion}
+\label{implementation-walkthrough}
+This chapter connects the product behavior to the code that implements it.
+The following chapters provide the full pack schema, verifier contracts, API,
+commands, storage migrations and deployment boundaries. Read the walkthrough
+first, then use those references to inspect a specific implementation. Descriptions
+refer to implemented behavior; limitations and possible extensions are identified
+explicitly rather than presented as shipped features.
+
+\subsection{A useful way to explain Ascend}
+Ascend is a self-hosted practice tracker. Authored TOML packs describe a dependency
+graph of tasks and levels. A learner selects a mission, performs an eligible task,
+records work and, where supported, submits evidence. The application keeps learning
+notes, progression, streaks and verified rewards distinct. Reading a resource,
+installing a pack or letting a timer run does not prove completion.
+
+The Python engine expresses rules, SQLite stores account-scoped state, and
+\texttt{Tracker} coordinates use cases. The CLI and FastAPI share those operations.
+The browser is a small vanilla JavaScript client with locally served assets, not
+a separate implementation of scoring or progression. Native exercises compare
+constrained submitted data with server-held expected results. External verifier
+adapters have separate trust and operational boundaries.
+
+\subsection{Code map and responsibilities}
+\begin{longtable}{P{.25\textwidth}P{.67\textwidth}}
+\textbf{Area} & \textbf{Responsibility and where to read}\\\hline
+Content and registry & \path{packs/community/} contains canonical TOML by domain.
+\path{ascend/registry.py} resolves stable IDs to registry paths;
+\path{scripts/build_registry.py} rebuilds registry metadata.\\
+Pure rules & \path{ascend/engine/packs.py}, \path{ascend/engine/levels.py},
+\path{ascend/engine/streak.py} and \path{ascend/engine/validation.py} parse content,
+validate constraints and derive eligibility or streak results.\\
+Application use cases & \path{ascend/application.py} owns installation, missions,
+entries, marks, evidence, undo and derived overview/statistics. Follow
+\texttt{Tracker.log}, \texttt{check}, \texttt{levels} and \texttt{overview}.\\
+Storage & \path{ascend/storage/__init__.py} supplies scoped access and transactions.
+\path{ascend/storage/migrations/} is the ordered schema history.\\
+Sessions and grading & \path{ascend/timing.py} owns server time and XP;
+\path{ascend/labs/__init__.py} generates fixtures, returns public views and grades
+typed answers. \path{ascend/labs/cases.json} supplies reasoning cases.\\
+Transports & \path{ascend/cli/__init__.py} parses and dispatches commands.
+\path{ascend/cli/remote.py} connects the CLI to a server.
+\path{ascend/server/app.py} authenticates and exposes HTTP operations.\\
+Trust and identity & \path{ascend/server/auth.py} owns passwords and bearer tokens.
+\path{ascend/verifiers/} owns file, Git, HTTP, command, plugin and CTF adapters.\\
+Reminders & \path{ascend/nudge/} decides when to notify and supplies channel adapters.
+\path{ascend/server/telegram.py} processes authenticated reminder interactions.\\
+Browser state & \path{web/app.js} owns routing, rendering, forms, feedback and
+server-synchronized session display. \path{web/index.html} provides semantic regions.\\
+Presentation & \path{web/style.css} owns layout and components.
+\path{web/effects.css} and \path{web/effects.js} add optional motion;
+\path{web/theme.js} applies saved appearance before first paint.\\
+Offline help & \path{web/sw.js} caches an explicit application-shell allowlist.
+\path{web/guide.json} is the source for both in-app help and a generated PDF chapter.\\
+Verification & \path{tests/} exercises rules, transports and browser behavior.
+\path{scripts/ui_screenshots.py} captures disposable accounts and optional axe checks;
+\path{scripts/build_docs.py} generates references and checks PDF compilation.\\
+\end{longtable}
+
+\subsection{Follow a pack from repository to recommendation}
+An installed pack has a stable ID independent of its folder or display title.
+Registry entries carry relative paths and checksums. The domain folders make the
+repository navigable without changing the IDs used by learner state. This is why
+moving a file must update registry generation and packaging rather than rename
+task identities. The ethical-hacking foundations curriculum is separate from
+offensive specialization; the introductory track does not stand in for every
+offensive role or skill.
+
+Installation parses and validates TOML before storing a private copy and metadata.
+The pack graph defines prerequisites, levels and milestone gates. The application
+combines those authored rules with account-specific marks and explicit overrides
+to derive candidates. Today selects an eligible next task; its time filter changes
+the recommendation, not the underlying task state. A quick win is an alternative,
+not a second mandatory assignment.
+
+The browser's mission picker first chooses a domain, then an installed track in
+that domain. Known installed IDs are reconciled against the catalog when an older
+server response omits category metadata or reports Custom. Unknown private packs
+remain custom. Changing domains clears the track selection. Installing content,
+starting a mission, starting a timed task and completing a task are four separate
+operations, each with its own visible action.
+
+\subsection{Six records with different responsibilities}
+\begin{longtable}{P{.23\textwidth}P{.69\textwidth}}
+\textbf{Record} & \textbf{Meaning and invariant}\\\hline
+Mission & The selected learning track: active, paused or done. At most one active
+mission per account. Mission pausing does not stop a task timer.\\
+Node state & A task is todo, done or skipped. Eligibility is derived from this state
+and the graph; a running timer alone does not change it.\\
+Task session & One scored timing history per account/pack/node. Current actions
+create a running session or finish it. A unique partial index limits running
+sessions to one per account. Legacy paused rows are retained, not silently rewritten.\\
+Exercise instance & Randomized fixture, private expected answer, attempt count,
+fingerprint and pass timestamp. A fresh instance replaces the current fixture;
+it does not create a new scoring history.\\
+XP award & One immutable reward per account/pack/node, backed by a database primary
+key and an idempotent insert. An award is not a mutable browser counter.\\
+Learning entry & A dated account-scoped note with optional task/proof/minutes and
+completion metadata. Entries drive streak and time summaries; a task mark alone
+does not necessarily create a learning day.\\
+\end{longtable}
+
+\subsection{Trace Start, reload, verify and End}
+The challenge preview is a dialog containing the finish condition, steps, resource,
+hints and session target. Pressing Start moves into a full page with a stable hash
+route, such as \texttt{\#challenge/PACK:NODE}. The colon is URL-encoded when the
+application creates that route. The preview dialog closes; exercise data and answer
+fields use the shared page width rather than a nested modal.
+
+For a bundled exercise, the browser sends \texttt{lab start --minutes N} through
+\texttt{POST /api/command}. \texttt{labs.start} opens a transaction and calls
+\texttt{timing.start} inside it. Nested transactions reuse the same connection's
+transaction. Prerequisites, target bounds and the one-running-session rule are
+checked before the fixture is committed. A failed setup cannot leave a newly
+created timer without its exercise. An ordinary task uses \texttt{session start}.
+
+The browser then reads \path{GET /api/challenges/{reference}}. That endpoint resolves
+the installed pack independently of the currently selected mission and returns:
+\begin{verbatim}
+{
+  "node": {"id": "...", "pack_id": "...", "status": "...", "...": "..."},
+  "level": {"id": "...", "title": "...", "open": true},
+  "session": {"status": "running", "...": "..."},
+  "exercise": {"id": "...", "data": {}, "answer_template": {}, "...": "..."},
+  "exercise_error": null
+}
+\end{verbatim}
+This is a shape illustration; optional session/exercise values can be null and
+the authoritative fields come from the code. Expected answers are never included.
+Reading uses \texttt{labs.current} and \texttt{view}, not \texttt{start}. It therefore
+does not create a fixture or restart a clock. Invalid, expired or changed instances
+produce an exercise error while preserving access to the authored task.
+
+A reload reconstructs the workspace from the route and this read endpoint. The
+session strip on every page offers Resume challenge, which navigates to the same
+reference. Draft answers use session storage keyed by account name and instance ID;
+they survive reloads in that tab, are isolated from another instance, and are removed
+on successful verification or an explicit fresh instance. They are not a cross-device
+draft service. Emitting a logging event updates the displayed data without rebuilding
+the answer form or losing typed values.
+
+Submission sends typed answers and an instance ID, not a score. The server checks
+ownership, latest-instance identity, pack fingerprint, expiry and attempt limits.
+Exact keys and types must match: Python's ordinary equality would otherwise accept
+\texttt{True == 1}. A passing result records verification and invokes the shared
+completion path. Repeated submission of a passed instance is idempotent. Invalid
+answers consume an attempt but grant neither completion nor XP.
+
+End session is an explicit alternative to completion. It stores elapsed time and a
+finished timestamp, without marking the node done or granting XP. A later successful
+verification may demonstrate the task but cannot resurrect the ended attempt's
+reward. The clock cannot be paused. Old paused rows are readable for unscored
+practice and may be ended, but cannot be resumed or used to gain a reward. The
+separate control named Pause motion effects changes decoration only.
+
+\subsection{Why the timer is server authoritative}
+\texttt{running\_since}, the initial budget and accumulated seconds live in SQLite.
+While running, elapsed time is calculated from the server clock. The browser stores
+the last server summary and its local \texttt{performance.now()} reading, then
+interpolates a display each second. Visible clients refresh the summary periodically.
+The local countdown is a convenience; changing JavaScript, suspending the tab or
+editing displayed text cannot change server grading time.
+
+Reopening the same task preserves its original budget and start time. Database
+constraints prevent concurrent duplicate sessions and awards. The transaction
+boundary is necessary in addition to disabled buttons: two tabs or clients can
+submit requests concurrently. \texttt{BEGIN IMMEDIATE}, uniqueness constraints and
+idempotent completion protect persisted invariants; a spinner protects only the
+interaction in one view. There is no claim that learner-selected targets or
+administrator-controlled clocks constitute a proctored exam.
+
+\subsection{Browser navigation, layout and feedback}
+\texttt{currentRoute} parses the hash; \texttt{switchTab} updates the visible section,
+navigation state and document title before rendering the destination. Main screens
+are Today, Path, Stats, Tracks, Docs and Profile; Challenge is a task workspace reached
+from a task or session. A refresh-generation counter prevents an older overview
+response from replacing newer data. Challenge rendering also checks that the user
+is still on the requested reference after awaiting its response. This is targeted
+stale-response protection, not a general request-cancellation framework.
+
+All page frames and the top bar share a maximum width. Dashboard support follows
+the main challenge as open rows, Stats uses aligned metrics and plots, and settings
+use sections and dividers. Cards remain where a discrete summary needs emphasis.
+Grid children use shrinkable columns and minimum-width rules; bounded code/data
+regions scroll internally and are keyboard focusable. Breakpoint tests check
+containment and horizontal overflow rather than merely checking CSS declarations.
+
+Docs separates navigation from reading. The desktop rail groups ten topics; compact
+screens move the same navigation DOM into a native dialog drawer. Search filters
+inside navigation, leaving article geometry unchanged. Native dialog modality,
+explicit initial focus, Escape handling and focus restoration support keyboard use.
+The article title and body share an alignment edge and topic links survive reloads.
+
+\texttt{runAction} prevents duplicate activation while a request is pending and
+restores the button on completion. User-controlled and authored strings become
+DOM text, not injected HTML. Feedback is moved into the active dialog's feedback
+region so it is not hidden behind the browser's top layer. Errors remain visible
+until dismissed or replaced. Timer reminders do not replace unresolved errors.
+
+\subsection{Visual effects without a framework migration}
+The visual research considered React Bits, Aceternity UI, Magic UI and Motion's
+accessibility guidance. Their patterns were adapted in original CSS and browser
+animation code; the app does not import React, GSAP, Motion or a WebGL renderer.
+The source register records which rendered pages or repository sources were read.
+
+The ambient field combines violet/teal radial gradients, a masked dot pattern,
+sparse particles and an SVG orbit. Slow transform animations give depth while
+Docs lowers their visual intensity. \texttt{AscendMotion.enter} performs brief
+heading and section entrances and animates Stats bars; text stays complete in the
+DOM. A route key prevents data refreshes from replaying an entrance. The separately
+guarded next-challenge border sweep plays once per page load.
+
+Hover uses normal pointer and keyboard affordances. A small radial highlight follows
+the native pointer only over the main challenge on devices with a fine pointer.
+It ignores pointer events, stays inside the card and is disabled with motion. There
+is no custom cursor, scroll interception or continuous JavaScript render loop.
+Background animation uses CSS; heading transitions use the Web Animations API.
+These choices bound the work, but do not establish a measured frame-rate guarantee.
+
+A persistent top-bar control pauses decorative effects. Profile exposes the saved
+Calm/Off preference. The system's reduced-motion preference always wins, including
+changes while the page is open; pending entrance animations are cancelled.
+Background animations pause when the document is hidden. Reduced motion retains
+readable static content, semantic status, focus rings and the server timer.
+
+\subsection{Persistence, offline behavior and trust boundaries}
+SQLite runs with WAL, foreign keys and a bounded busy timeout. Request dependencies
+open an account-scoped database handle and close it afterwards. Migration files
+are applied in order inside transactions; the schema version records progress.
+The generated storage chapter reproduces the real SQL, including uniqueness and
+partial-index constraints. File copies, exercise state, node marks, notes and XP
+must be backed up together for a recoverable profile.
+
+The service worker caches only an explicit shell list: local scripts, styles, guide,
+font and icons. It tries the network first and falls back to that cache. API responses
+are no-store and excluded from this handler. Offline help is supported; offline
+progress writes, grading and a cross-device sync queue are not. Adding a shell asset
+requires updating the cache list and cache generation, plus verifying the built wheel.
+
+Password hashing, token storage, account scoping, content fingerprints and executable
+trust solve different problems. Scrypt protects password verification; hashed bearer
+tokens authenticate requests; scoped queries isolate records; fingerprints revoke
+stale trust after content changes. Plugins run with the host user's authority despite
+process isolation. HMAC external observations trust the administrator's collector and
+key. None of these mechanisms establishes who physically solved a shared external lab.
+
+\subsection{Validation and debugging workflow}
+Use a disposable profile to reproduce a report. Identify whether the problem is
+authored content, derived eligibility, persisted state, transport or presentation.
+Inspect the API response before changing a rendered label. A timer-without-exercise
+report requires checking the route and saved instance identity, not merely adding
+another timer display. A layout report requires measuring visible bounding boxes
+at the reported width, then inspecting screenshots and interaction states.
+
+The automated suite combines pure rule tests, storage/transaction tests, CLI and HTTP
+tests, real-browser flows and a wheel installed outside the source checkout. Browser
+regressions cover reload recovery, answer drafts, preserved timing, end-without-XP,
+navigation, keyboard behavior, offline guide assets and reduced motion. The screenshot
+script adds geometry and selected axe rules. Passing these checks does not replace
+human usability review, assistive-technology testing or deployment-specific testing.
+
+For a feature change, update the shared use case first, adapt its transports and UI,
+add a regression that would fail for the original bug, then refresh generated docs.
+Check formatting, selected lint rules, JavaScript syntax, browser behavior and the
+affected PDFs. Deploy using the same profile and environment after a SQLite backup;
+compare protected records across a restart. Never create demonstration progress in
+the owner's account. Keep historical evidence labeled with the build it tested.
+
+\subsection{Interview preparation: explain the implementation honestly}
+\begin{enumerate}
+\item \textbf{Why separate the engine, application and transports?}
+Pure rules are testable without HTTP or a browser; \texttt{Tracker} owns shared use
+cases so local CLI and server requests do not drift into different business rules.
+\item \textbf{How is progression calculated?}
+The pack dependency graph, level gates, account node states and explicit overrides
+produce eligible candidates. The UI displays these results rather than awarding
+unlocks based on its own click history.
+\item \textbf{How do you prevent duplicate XP?}
+The account/pack/node primary key, transactional completion and idempotent inserts
+protect the invariant across retries and concurrent clients. Disabling a button
+is useful feedback but is insufficient as a data-integrity mechanism.
+\item \textbf{Why did reload recovery need a read endpoint?}
+The route needs enough identity to fetch the existing instance. Reusing a start
+operation for a read could create new random data or alter timing; recovery must
+be side-effect free with respect to the exercise and session.
+\item \textbf{What happens if exercise setup fails?}
+Timer creation and fixture creation share a transaction. An exception rolls them
+back together. Errors remain visible and the user can retry without an orphaned
+new timer being mistaken for a successfully opened exercise.
+\item \textbf{Can a user stop the clock and submit later for more XP?}
+No. End finishes timing without reward; only a previously running session can
+receive qualifying XP during completion. A fresh fixture cannot reset that attempt.
+\item \textbf{Why distinguish a mission pause from a task session?}
+A mission expresses the selected track. A task session is a timed attempt. Changing
+the mission does not stop elapsed time, and task pausing is no longer an action.
+\item \textbf{What is actually verified?}
+A native fixture verifies a constrained result; a reasoning case verifies a choice;
+a signed observation verifies a collector's report; a file check verifies limited
+artifact properties. None alone proves broad professional competence.
+\item \textbf{How are accounts isolated?}
+Authentication selects an account-scoped tracker, and storage helpers scope records.
+Exercise reads and submissions check ownership and current-instance identity before
+returning public data or accepting answers.
+\item \textbf{What does the PWA support offline?}
+The installed shell and help can load. Private API data is not cached, and there is
+no offline write queue. State-changing actions still require the server.
+\item \textbf{Why use an overlay menu for compact Docs?}
+It preserves reading position and article width. The same topic list moves into a
+native modal with controlled focus instead of expanding above the article.
+\item \textbf{Why avoid importing an animation framework?}
+The selected effects need only gradients, SVG, transforms and short element
+animations. Existing browser APIs meet that scope without changing the app's stack.
+The choice can be reconsidered if future interaction complexity warrants it.
+\item \textbf{How is accessibility checked?}
+Semantic regions, labels, keyboard/focus behavior and reduced motion are implemented
+directly, then tested with browser regressions and selected axe rules. Do not describe
+an automated clean result as complete accessibility certification.
+\item \textbf{What limits scalability?}
+SQLite serializes writers; exercise and UI operations share one server process's
+services and scheduler. WAL helps readers coexist with writes, but a multi-instance
+scheduler or distributed write workload would need additional coordination. Such a
+distributed redesign is not implemented here.
+\item \textbf{What would you demonstrate live?}
+Install a track in a disposable profile, start a task, reload into the same instance,
+submit a wrong and then correct result, inspect one reward, and show that an ended
+attempt cannot earn XP later. Also demonstrate keyboard Docs navigation and reduced
+motion. Tie each observation to a test and source function.
+\end{enumerate}

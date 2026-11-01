@@ -125,6 +125,47 @@
       "finding": "The title, description and article sections share a reading column alongside persistent topic navigation.",
       "application": "Replace the generic Docs page headline with the actual guide title; preserve stable links and independent topic navigation.",
       "limits": "Public rendered pages inspected at desktop and compact widths. Patterns are adapted to Ascend’s small in-app guide; no third-party assets or usability scores are copied."
+    },
+    {
+      "title": "React Bits Aurora and entrance effects",
+      "url": "https://reactbits.dev/backgrounds/aurora",
+      "status": 200,
+      "source_urls": [
+        "https://github.com/DavidHDev/react-bits/blob/main/src/content/Backgrounds/Aurora/Aurora.jsx",
+        "https://github.com/DavidHDev/react-bits/blob/main/src/content/Animations/FadeContent/FadeContent.jsx",
+        "https://github.com/DavidHDev/react-bits/blob/main/src/content/TextAnimations/BlurText/BlurText.jsx"
+      ],
+      "finding": "Aurora uses a configurable animated light field. FadeContent and BlurText use staggered entrances and reduced-motion handling.",
+      "application": "A restrained local CSS light field and short heading/section entrances, preserving complete accessible text.",
+      "limits": "The public page returned a blank client-rendered body in the audit browser; official repository source was inspected instead. No React Bits code or shaders were copied.",
+      "accessed": "2026-11-01"
+    },
+    {
+      "title": "Aceternity UI Aurora Background",
+      "url": "https://ui.aceternity.com/components/aurora-background",
+      "status": 200,
+      "finding": "A slow aurora and radial gradient mask give the backdrop depth without adding content containers.",
+      "application": "Violet and teal radial lights drift slowly behind the workspace; Docs receives lower background contrast.",
+      "limits": "Rendered public documentation and preview inspected. Ascend uses original CSS without React/Tailwind dependencies or copied components.",
+      "accessed": "2026-11-01"
+    },
+    {
+      "title": "Magic UI Dot Pattern",
+      "url": "https://magicui.design/docs/components/dot-pattern",
+      "status": 200,
+      "finding": "A sparse dot field can be masked and combined with a glow to give otherwise empty background space texture.",
+      "application": "A faint CSS dot field, sparse drifting particles and a thin orbit motif in the outer margin.",
+      "limits": "Rendered public component documentation and examples inspected; no component implementation copied.",
+      "accessed": "2026-11-01"
+    },
+    {
+      "title": "Motion accessibility guidance",
+      "url": "https://motion.dev/docs/react-accessibility",
+      "status": 200,
+      "finding": "Respect reduced-motion settings, avoid large transform/parallax effects, and allow a site-level preference.",
+      "application": "Device reduced motion overrides decoration; a persistent top-bar pause button and saved Profile preference stop effects. Background motion pauses when the document is hidden.",
+      "limits": "Official page text read from HTTP HTML after the rendered browser timed out. Motion’s APIs are reference guidance; the implementation uses CSS and the Web Animations API.",
+      "accessed": "2026-11-01"
     }
   ],
   "font": {

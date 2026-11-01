@@ -1,0 +1,32 @@
+Challenge recovery, continuous timing, calm motion and handbook — 2026-11-01
+
+Full suite: 153 passed in 59.34s.
+Browser suite after the return-to-challenge changes: 19 passed in 51.86s.
+Final focused completion, End session and Docs navigation regressions: 6 passed in 22.29s.
+Formatting, selected Ruff rules (F401/F841), JavaScript syntax and git diff whitespace checks passed.
+
+Behavioral coverage:
+- Starting a bundled exercise and its timer is atomic; failed fixture setup rolls back both.
+- A stable challenge route restores the same server instance, event data and browser-tab answer draft after reload.
+- Reading a challenge does not restart its timer; other pages provide a return action.
+- Timers run continuously. End session grants no completion or XP; later verification cannot reward an ended attempt.
+- Legacy paused rows remain readable, cannot resume, and cannot earn XP. No migration rewrites these rows.
+- Motion controls persist, system reduced motion overrides them, static content remains available, and normal cursor behavior is retained.
+- New effect assets are included in the standalone wheel and offline shell.
+
+Visual audit: 72 screenshots and a short WebM preview, using only disposable learner data.
+Routes: Today, Path, Stats, Tracks, Profile, Docs and Challenge.
+Widths: 320, 390, 768, 1024, 1440 and 1920 px; light/dark and navigation/feedback states.
+Shared edges, contained sections, stable Docs article geometry, no horizontal overflow or JavaScript errors.
+Axe-core 4.10.3: 64 screen/state/viewport checks; zero detected violations in WCAG 2 A/AA and 2.1 AA tagged rules.
+This is bounded automated evidence, not a complete accessibility or usability certification.
+
+Documentation: developer-handbook, handbook, user-guide, command-reference, deployment-guide and report compiled.
+No missing glyphs, unresolved references or overflow above 1 pt. Walkthrough and interview pages also visually inspected.
+The developer handbook includes architecture, code map, persistence, state models, grading, transactions, recovery, UI/motion, offline behavior, trust boundaries and interview discussion.
+
+Live verification: restarted with the original arguments/environment after private SQLite backups.
+Session, exercise, XP, entry and mission records were unchanged across restart.
+Read-only browser checks restored the existing exercise after reload without changing its data or session state.
+No live challenge was started, ended, answered or graded by this audit. No notifications were sent.
+Historical container evidence was not repeated for this milestone.

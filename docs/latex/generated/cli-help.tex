@@ -458,13 +458,14 @@ options:
 \end{verbatim}
 \subsubsection{ascend session}
 \begin{verbatim}
-usage: ascend session [-h] {start,pause,status} ...
+usage: ascend session [-h] {start,end,status} ...
 
 positional arguments:
-  {start,pause,status}
+  {start,end,status}
+    end               Stop timing without completing the task or awarding XP
 
 options:
-  -h, --help            show this help message and exit
+  -h, --help          show this help message and exit
 \end{verbatim}
 \subsubsection{ascend session start}
 \begin{verbatim}
@@ -477,9 +478,9 @@ options:
   -h, --help         show this help message and exit
   --minutes MINUTES
 \end{verbatim}
-\subsubsection{ascend session pause}
+\subsubsection{ascend session end}
 \begin{verbatim}
-usage: ascend session pause [-h]
+usage: ascend session end [-h]
 
 options:
   -h, --help  show this help message and exit
@@ -503,14 +504,15 @@ options:
 \end{verbatim}
 \subsubsection{ascend lab start}
 \begin{verbatim}
-usage: ascend lab start [-h] [--fresh] node
+usage: ascend lab start [-h] [--fresh] [--minutes MINUTES] node
 
 positional arguments:
   node
 
 options:
-  -h, --help  show this help message and exit
+  -h, --help         show this help message and exit
   --fresh
+  --minutes MINUTES
 \end{verbatim}
 \subsubsection{ascend lab show}
 \begin{verbatim}

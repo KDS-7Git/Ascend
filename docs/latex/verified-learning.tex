@@ -23,13 +23,13 @@ radio cards on phones. Wrong answers do not mark completion or award XP.
 
 \subsection{Time and XP contract}
 Time starts on the server when a task session starts. Merely opening a resource does
-not start a timer. One session can run per account; pause it before starting another.
-Pausing excludes that interval. Resuming preserves both the original target and
-accumulated work time; changing an input after starting does not reset either.
-Closing the browser does not pause the server clock. A fresh exercise instance
+not start a timer. One session can run per account; complete or end it before
+starting another. A task cannot be paused. Returning to its workspace preserves
+the original target and running clock; changing an input does not reset either.
+Closing the browser does not stop the server clock. A fresh exercise instance
 changes its data without resetting the task session.
 
-Let $t$ be active elapsed seconds and $b$ the initial target seconds. Verified
+Let $t$ be elapsed seconds and $b$ the initial target seconds. Verified
 completion awards
 \[
  X(t,b)=\max\left(25,100-\left\lfloor50\frac{\max(0,t-b)}{b}\right\rfloor\right).
@@ -39,12 +39,24 @@ Completion within target gives 100 XP; twice the target gives 50 XP; the floor i
 and skipped tasks receive no automatic skill XP. Start a session before an external
 check to qualify. XP measures timed verification in this app, not independent speed
 in an external game: the collector observes current game state, not the moment of
-solving. Targets and pauses are learner-controlled, so XP is personal feedback.
+solving. The initial target is learner-controlled, so XP is personal feedback.
 
 Each stable account/pack/task ID has at most one award. Completion or skipping ends
 its session. Reopening, undoing a log or practicing again does not remove the historical
 award or create another one. A finished session cannot be restarted as a new scored
 attempt. Use fresh instances for unscored practice; never reset real history to farm XP.
+\textbf{End session} stops timing without completing the task or awarding XP.
+Verification after ending can record completion but cannot award this attempt XP.
+Legacy paused rows remain readable for unscored practice and can be ended; current
+clients cannot create or resume a paused task session. Mission pausing is separate:
+it changes the selected learning track and does not pause a running task clock.
+
+Starting opens a dedicated \texttt{\#challenge/PACK:NODE} workspace. The session strip
+on every page has a \textbf{Resume challenge} action to return to the same exercise;
+this action only navigates and does not restart timing. Reloading restores the server
+instance and its event data. Draft answers are kept in this browser tab's session
+storage and restored for that instance. They are cleared after successful submission
+or an explicit fresh instance; they are not synchronized to another browser.
 
 The page shows a synchronized countdown and reminders at 75 percent and the target.
 The server checks every 30 seconds and can deliver the same two checkpoints through
@@ -59,18 +71,18 @@ returned by start and use your actual generated answers:
 \begin{verbatim}
 ascend pack install verified-security-lab
 ascend mission start verified-security-lab
-ascend session start verified-security-lab:lab-readiness --minutes 15
-ascend lab start verified-security-lab:lab-readiness
+ascend lab start verified-security-lab:lab-readiness --minutes 15
 ascend lab show INSTANCE
 ascend lab emit INSTANCE ok
 ascend lab emit INSTANCE error
 ascend lab submit INSTANCE '{"request_id":"YOUR_RESULT","errors":1}'
 ascend session status
-ascend session pause
+ascend session end
 ascend session start PACK:NODE
 ascend check PACK:NODE --complete
 \end{verbatim}
-Pause applies only while a session runs. For an exercise already passed, submission
+Exercise start creates the timer and instance in one database transaction. Ordinary
+tasks use \texttt{session start}. For an exercise already passed, submission
 is idempotent. An unfinished instance expires after 24 hours; after ten failed
 submissions, review the lesson and start a fresh instance. The server never evaluates
 learner-supplied code. Stored expected results are not returned by the exercise API.

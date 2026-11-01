@@ -26,7 +26,7 @@ The existing authenticated \texttt{POST /api/command} accepts the session and la
 arguments. No browser-supplied score, elapsed time or solved boolean is accepted.
 Scheduler checkpoints use the existing account notification settings. The browser's
 countdown is a preview, refreshed from the server every 30 seconds while visible.
-Rendering the clock preserves the pause button so keyboard focus is not lost each
+Rendering the clock preserves its action buttons so keyboard focus is not lost each
 second. Tracks contains the searchable source-derived catalog; assessment metadata
 appears progressively inside challenge details.
 
@@ -34,7 +34,24 @@ appears progressively inside challenge details.
 Exercise tests derive answers from the public generated fixture, not stored expected
 values. They cover positive and negative controls, no reward for wrong answers,
 account boundaries, typed comparisons, stale fingerprints, superseded instances,
-manual bypass attempts, pause/resume, declining rewards and checkpoint deduplication.
+manual bypass attempts, continuous timing, end-without-reward, declining rewards and checkpoint deduplication.
 Receipt tests cover malformed solved lists, signatures, account mismatches, stale
 and future timestamps, multi-challenge requirements and reward idempotency. These
 are bounded correctness tests, not measurements of learning effectiveness.
+
+\subsection{Reading a challenge and ending an attempt}
+\path{GET /api/challenges/{reference}} resolves the caller's installed pack and node,
+returns the node's level/status, its task session and the current public exercise.
+\texttt{labs.current} calls the same ownership, fingerprint and expiry checks as
+\texttt{labs.view}; it never calls \texttt{labs.start} or \texttt{timing.start}.
+An invalid instance is reported through \texttt{exercise\_error} while the task's
+instructions remain available. Reading a workspace must not create random fixtures,
+resume timing or grant completion.
+
+\texttt{timing.end} records elapsed seconds and a finished timestamp without
+calling the completion or reward path. \texttt{timing.finish} awards XP only when
+the prior row was running and the evidence kind is a qualifying verifier. Finished
+and legacy paused attempts cannot preserve a higher reward for later submission.
+The old paused value remains in migration 0005 for compatibility; no new migration
+rewrites learner history. \texttt{lab start --minutes} nests \texttt{timing.start}
+inside the exercise transaction, so a failed setup rolls back the new timer too.

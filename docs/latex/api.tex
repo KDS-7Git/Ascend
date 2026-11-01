@@ -31,6 +31,8 @@ Route & Contract \\
 current level, streak and today state \\
 \path|GET /api/levels?pack=<id>| & Levels with
 node states, active days and minutes \\
+\path|GET /api/challenges/{reference}| & Caller-scoped node, level, session,
+public exercise and optional exercise error. Read-only recovery; does not start timing \\
 \path|POST /api/entries| &
 Required: \texttt{learned}, \texttt{next\_step}. Optional: \texttt{node\_id}, \texttt{proof}, \texttt{minutes}, \texttt{complete}, \texttt{force}, \texttt{mission\_id}.
 → entry ID, logical day and completion result \\
