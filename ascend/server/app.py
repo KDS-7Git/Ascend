@@ -324,6 +324,34 @@ def create_app(home=None, auth_mode=None, scheduler=True):
     def entry(body: Entry, t=Depends(tracker)):
         return t.log(**body.model_dump())
 
+    @app.get("/api/challenges/{reference}")
+    def challenge(reference: str, t=Depends(tracker)):
+        from ascend import labs, timing
+
+        pack, node = t.resolve_node(reference)
+        level = next(lv for lv in t.levels(pack.id) if lv["id"] == node.level)
+        public_node = next(n for n in level["nodes"] if n["id"] == node.id)
+        sessions = t.db.rows(
+            "task_sessions", "pack_id=? AND node_id=?", (pack.id, node.id)
+        )
+        exercise, exercise_error = None, None
+        if node.verify.get("type") == "lab":
+            try:
+                exercise = labs.current(t, reference)
+            except ValueError as error:
+                exercise_error = str(error)
+        return {
+            "node": public_node,
+            "level": {
+                "id": level["id"],
+                "title": level["title"],
+                "open": level["open"],
+            },
+            "session": timing.describe(t, sessions[0]) if sessions else None,
+            "exercise": exercise,
+            "exercise_error": exercise_error,
+        }
+
     @app.get("/api/entries")
     def entries(t=Depends(tracker)):
         return t.entries()

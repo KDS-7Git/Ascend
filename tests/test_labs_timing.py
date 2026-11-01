@@ -126,28 +126,73 @@ def test_changed_pack_and_superseded_instances_cannot_replay(tracker, pack_data)
         labs.submit(tracker, current["id"], answers(current))
 
 
-def test_timer_pause_resume_late_reward_and_reminders(tracker, pack_data, now):
+def test_timer_runs_continuously_with_late_reward_and_reminders(
+    tracker, pack_data, now
+):
     run = exercise(tracker, pack_data, "integrity")
     budget = timing.summary(tracker)["active"]["budget_seconds"]
     tracker.clock = lambda: now + timedelta(seconds=budget * 0.75)
     sent = []
     assert timing.reminders(tracker, lambda m: sent.append(m))["notice"] == 1
     assert not timing.reminders(tracker, lambda m: sent.append(m))["sent"]
-    timing.pause(tracker)
-    tracker.clock = lambda: now + timedelta(days=1)
-    assert timing.summary(tracker)["paused"][0]["elapsed_seconds"] == int(budget * 0.75)
+    tracker.clock = lambda: now + timedelta(seconds=budget)
     timing.start(tracker, "test-pack:one", minutes=1)
     assert timing.summary(tracker)["active"]["budget_seconds"] == budget
-    tracker.clock = lambda: now + timedelta(days=1, seconds=budget * 0.25)
     assert timing.reminders(tracker, lambda m: sent.append(m))["notice"] == 2
     assert len(sent) == 2
     # A fresh instance preserves accumulated session time while replacing expired exercise data.
     run = labs.start(tracker, "test-pack:one", fresh=True)
-    tracker.clock = lambda: now + timedelta(days=1, seconds=budget * 1.25)
+    tracker.clock = lambda: now + timedelta(seconds=budget * 2)
     labs.submit(tracker, run["id"], answers(run))
     assert timing.summary(tracker)["xp"] == 50
     assert not timing.reminders(tracker, lambda m: sent.append(m))["sent"]
     assert timing.points(budget * 100, budget) == 25
+
+
+def test_ending_session_cannot_freeze_time_for_a_later_reward(tracker, pack_data, now):
+    run = exercise(tracker, pack_data, "integrity")
+    tracker.clock = lambda: now + timedelta(seconds=30)
+    assert timing.end(tracker)["active"] is None
+    assert not tracker.states("test-pack")
+    ended = timing.start(tracker, "test-pack:one", minutes=1440)
+    assert ended["status"] == "finished" and ended["elapsed_seconds"] == 30
+    assert labs.current(tracker, "test-pack:one")["id"] == run["id"]
+    tracker.clock = lambda: now + timedelta(hours=1)
+    assert labs.submit(tracker, run["id"], answers(run))["completed"]
+    assert timing.summary(tracker)["xp"] == 0
+
+
+def test_legacy_paused_attempt_is_readable_but_cannot_resume_or_gain_xp(
+    tracker, pack_data
+):
+    run = exercise(tracker, pack_data, "integrity")
+    tracker.db.update(
+        "task_sessions", "node_id=?", ("one",), status="paused", running_since=None
+    )
+    assert labs.current(tracker, "test-pack:one")["id"] == run["id"]
+    with pytest.raises(ValueError, match="legacy session"):
+        timing.start(tracker, "test-pack:one")
+    assert labs.submit(tracker, run["id"], answers(run))["completed"]
+    assert timing.summary(tracker)["xp"] == 0
+
+
+def test_exercise_setup_and_timer_start_are_atomic(tracker, pack_data, monkeypatch):
+    pack_data["node"][0]["verify"] = {"type": "lab", "exercise": "integrity"}
+    tracker.install_pack(dump_toml(pack_data))
+    tracker.start_mission("test-pack")
+    generate = labs.generate
+
+    def failed_setup(*args):
+        raise ValueError("Fixture setup failed")
+
+    monkeypatch.setattr(labs, "generate", failed_setup)
+    with pytest.raises(ValueError, match="Fixture setup failed"):
+        labs.start(tracker, "test-pack:one", minutes=7)
+    assert not tracker.db.rows("task_sessions")
+    assert not tracker.db.rows("lab_runs")
+    monkeypatch.setattr(labs, "generate", generate)
+    run = labs.start(tracker, "test-pack:one", minutes=7)
+    assert run["timer"]["active"]["budget_seconds"] == 420
 
 
 def test_reasoning_cases_grade_decisions_but_do_not_expose_the_answer_key(

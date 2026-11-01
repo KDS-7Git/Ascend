@@ -10,9 +10,16 @@
   <link rel="icon" href="/icon.svg" type="image/svg+xml">
   <script src="/theme.js"></script>
   <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/effects.css">
+  <script src="/effects.js" defer></script>
   <script src="/app.js" defer></script>
 </head>
 <body>
+  <div class="ambient-scene" aria-hidden="true" inert>
+    <div class="ambient-grid"></div><div class="ambient-glow violet"></div><div class="ambient-glow teal"></div>
+    <svg class="ambient-orbit" viewBox="0 0 420 420"><circle cx="210" cy="210" r="154"/><circle cx="210" cy="210" r="196"/><circle class="orbit-point" cx="210" cy="56" r="3"/><circle class="orbit-point" cx="406" cy="210" r="2.5"/></svg>
+    <span class="ambient-particle"></span><span class="ambient-particle"></span><span class="ambient-particle"></span><span class="ambient-particle"></span>
+  </div>
   <a class="skip-link" href="#main">Skip to content</a>
   <nav class="primary-nav" aria-label="Main navigation">
     <a class="brand" href="#today" aria-label="Ascend home"><img src="/icon.svg" alt="" width="30" height="30">Ascend</a>
@@ -31,21 +38,26 @@
       <div class="topbar-actions">
         <button id="xp-link" class="balance-link" aria-label="View verified XP"><span data-icon="bolt" aria-hidden="true"></span><span id="xp-balance">— XP</span></button>
         <button id="streak-link" class="streak-chip" aria-label="View streak stats"><span data-icon="flame" aria-hidden="true"></span><span id="streak">—</span><span class="streak-label">day streak</span></button>
+        <button id="motion-toggle" class="motion-toggle" type="button" aria-label="Pause motion effects" title="Pause motion effects"><svg class="motion-pause" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M7 4v12M13 4v12"/></svg><svg class="motion-play" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m6 4 9 6-9 6Z"/></svg></button>
         <span class="topbar-divider" aria-hidden="true"></span>
         <button id="profile-link" class="profile-button" aria-label="Open profile" title="Your profile"><span id="avatar-initial" class="avatar" aria-hidden="true">A</span><span class="profile-link-label">Profile</span></button>
       </div>
     </div>
   </header>
   <main id="main" tabindex="-1">
+    <aside id="task-session" class="task-session" aria-label="Task session" hidden></aside>
     <section id="today" class="screen" aria-labelledby="today-heading">
       <header class="page-header"><div><p class="eyebrow">YOUR DAILY PRACTICE</p><h1 id="today-heading">Continue learning.</h1><p class="page-subtitle">One focused challenge. A little more understanding.</p></div></header>
       <div id="mission-progress"></div>
-      <aside id="task-session" class="task-session" aria-label="Task session" hidden></aside>
       <div id="session-result" role="status" aria-live="polite" hidden></div>
       <div class="session-picker"><p>How much time do you have?</p><div class="time-chips" role="group" aria-label="Time available">
         <button data-minutes="10" aria-pressed="false">10 min</button><button data-minutes="30" aria-pressed="false">30 min</button><button data-minutes="120" aria-pressed="false">2 hours</button><button data-minutes="" aria-pressed="true">Any time</button>
       </div></div>
       <div id="today-cards" class="today-cards"></div>
+    </section>
+    <section id="challenge" class="screen challenge-workspace" aria-labelledby="challenge-title" hidden>
+      <a href="#today" class="challenge-back">← Back to Today</a>
+      <div id="challenge-content"></div>
     </section>
     <section id="path" class="screen" aria-labelledby="path-heading" hidden>
       <header class="page-header"><div><p class="eyebrow">BUILD ON WHAT YOU KNOW</p><h1 id="path-heading">Your learning path.</h1><p class="page-subtitle">See where you are and what comes next.</p></div><button id="jump-current" class="secondary">Jump to current level</button></header>
@@ -94,7 +106,7 @@
       <header class="page-header"><div><p class="eyebrow">MAKE YOURSELF AT HOME</p><h1 id="profile-heading">Your profile.</h1><p class="page-subtitle">Your progress, preferences, and reminders in one place.</p></div></header>
       <div id="profile-summary" class="profile-summary"></div>
       <div class="profile-settings">
-        <section class="card settings"><h2>Preferences</h2><label for="account-timezone">Timezone</label><div class="input-row"><input id="account-timezone" placeholder="Asia/Kolkata"><button id="save-timezone" class="secondary">Save timezone</button></div><p class="field-help">Your learning day rolls over at 4 AM in this timezone.</p><label for="theme">Color theme</label><select id="theme"><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select></section>
+        <section class="card settings"><h2>Preferences</h2><label for="account-timezone">Timezone</label><div class="input-row"><input id="account-timezone" placeholder="Asia/Kolkata"><button id="save-timezone" class="secondary">Save timezone</button></div><p class="field-help">Your learning day rolls over at 4 AM in this timezone.</p><label for="theme">Color theme</label><select id="theme"><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select><div class="motion-preference"><label for="motion-preference">Motion effects</label><select id="motion-preference"><option value="calm">Calm</option><option value="off">Off</option></select><p class="field-help">Soft background movement and short transitions. Follows your device’s reduced motion setting.</p></div></section>
         <section class="card settings"><div class="section-heading"><h2>Reminders</h2><a href="#docs/reminders" class="subtle-link">Setup guide</a></div><form id="reminder-form"><div class="form-columns"><div><label for="nudge-time">First reminder</label><input id="nudge-time" type="time" value="21:30" required></div><div><label for="nudge-channel">Channel</label><select id="nudge-channel"><option value="ntfy">ntfy</option><option value="desktop">Desktop on server</option><option value="telegram">Telegram</option><option value="webpush">This browser (Web Push)</option></select></div></div><label for="ntfy-topic">Private ntfy topic</label><input id="ntfy-topic" autocomplete="off" placeholder="Your hard-to-guess topic"><label class="check"><input id="nudge-enabled" type="checkbox">Enable reminders</label><div class="input-row"><button>Save reminders</button><button id="test-nudge" type="button" class="secondary">Send test</button></div></form><details class="quiet-details"><summary>Browser notifications</summary><div class="input-row"><button id="enable-push" class="secondary">Enable browser notifications</button><button id="disable-push" class="text-button">Disable on this browser</button></div><p id="push-status" class="muted" role="status"></p></details></section>
         <section class="card settings"><h2>Privacy &amp; account</h2><label class="check"><input id="public-streak" type="checkbox">Share my streak publicly</label><p id="public-link" class="muted small"></p><p id="account-info" class="muted small"></p><button id="logout" class="secondary">Log out</button></section>
       </div>

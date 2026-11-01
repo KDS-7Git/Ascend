@@ -56,21 +56,17 @@ def start(t, reference, minutes=None):
             pack.id,
             node.id,
         ):
-            raise ValueError("Pause the current task session before starting another")
+            raise ValueError("End the current task session before starting another")
         previous = t.db.rows(
             "task_sessions", "pack_id=? AND node_id=?", (pack.id, node.id)
         )
         if previous:
             row = previous[0]
             if row["status"] == "paused":
-                t.db.update(
-                    "task_sessions",
-                    "id=?",
-                    (row["id"],),
-                    status="running",
-                    running_since=t.now().isoformat(),
+                raise ValueError(
+                    "This legacy session is paused. End it before continuing unscored practice."
                 )
-            # Resume preserves the original target and accumulated time.
+            # Reopening never resets the target, clock or once-per-node attempt.
         else:
             t.db.insert(
                 "task_sessions",
@@ -87,19 +83,22 @@ def start(t, reference, minutes=None):
     return describe(t, row)
 
 
-def pause(t):
+def end(t):
     with t.db.transaction():
         rows = t.db.rows("task_sessions", "status='running'")
         if not rows:
-            raise ValueError("No running task session")
-        row = rows[0]
+            rows = t.db.rows("task_sessions", "status='paused'")
+        if not rows:
+            raise ValueError("No task session to end")
+        row = rows[-1]
         t.db.update(
             "task_sessions",
             "id=?",
             (row["id"],),
             elapsed_seconds=elapsed(t, row),
             running_since=None,
-            status="paused",
+            status="finished",
+            finished_at=t.now().isoformat(),
         )
     return summary(t)
 
@@ -120,7 +119,7 @@ def finish(t, pack, node, how):
         finished_at=t.now().isoformat(),
     )
     # Presence-only file checks and self-marking are not skill rewards.
-    if how in {"verifier:lab", "verifier:ctf"}:
+    if row["status"] == "running" and how in {"verifier:lab", "verifier:ctf"}:
         t.db.connection.execute(
             "INSERT OR IGNORE INTO xp_awards VALUES (?,?,?,?,?,?)",
             (

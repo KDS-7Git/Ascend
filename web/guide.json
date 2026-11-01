@@ -126,13 +126,13 @@
       "blocks": [
         {
           "type": "paragraph",
-          "text": "A lesson opens in a dialog. Its finish line explains the result to demonstrate. Steps and the learning resource help you begin; hints stay collapsed until you want them."
+          "text": "A challenge preview shows its finish line, steps and learning resource. Hints stay collapsed until you want them. Starting opens a dedicated challenge workspace with room for exercise data and your result."
         },
         {
           "type": "steps",
           "items": [
             "Read the finish line and verification label before beginning.",
-            "Choose a session target and start the timed task or verified exercise.",
+            "Choose a session target and start the timed task or verified exercise. The clock keeps running until you complete or end the session.",
             "Work through the task. A hint is help with learning, not an automatic completion.",
             "Use Log progress to save what you tried and what to do next. Leave Mark as done unchecked for partial work.",
             "For built-in exercises, enter your result and press Verify my result. External CTF tasks use Verify lab completion after the administrator refreshes the proof."
@@ -140,7 +140,11 @@
         },
         {
           "type": "paragraph",
-          "text": "Messages from lesson actions appear inside the dialog, below its scrollable content. Errors stay visible until you dismiss them or perform another action. The close button stays at the top; Escape also closes the dialog."
+          "text": "Reloading the workspace restores the same exercise and its event data. Unfinished answers survive a reload in the same browser tab. From another page, use Resume challenge in the session strip. End session stops timing without completing the challenge or awarding XP."
+        },
+        {
+          "type": "paragraph",
+          "text": "Preview and logging dialogs keep messages below their scrollable content, with Close and Escape controls. Workspace verification results appear beside the answer form. Errors stay visible so you have time to read them."
         },
         {
           "type": "paragraph",
@@ -218,7 +222,7 @@
           "items": [
             "Set a realistic target before starting. Opening a lesson alone does not start its timer.",
             "Start the task. The server keeps time even if you close the browser.",
-            "Use Pause session on Today for a break. Resume preserves the original target and accumulated active time.",
+            "The clock runs continuously, even if you reload or leave the page. Use Resume challenge to return to the same exercise; End session stops timing without completing it or awarding XP.",
             "Complete the verification. Only built-in exercises and signed CTF checks qualify for XP, and an external check needs a started session."
           ]
         },
@@ -237,7 +241,7 @@
         },
         {
           "type": "paragraph",
-          "text": "For a 20-minute target, completing at 20 minutes earns 100 XP, at 30 minutes earns 75 XP, and at 40 minutes earns 50 XP. Paused time is excluded. Finishing or skipping ends that task’s session; later practice is unscored."
+          "text": "For a 20-minute target, completing at 20 minutes earns 100 XP, at 30 minutes earns 75 XP, and at 40 minutes earns 50 XP. The timer cannot be paused. Completing, skipping or ending stops that task’s session; later practice is unscored. Ending before verification cannot be used to preserve a higher reward."
         },
         {
           "type": "paragraph",
@@ -245,7 +249,7 @@
         },
         {
           "type": "code",
-          "text": "ascend session start PACK:NODE --minutes 20\nascend session status\nascend session pause"
+          "text": "ascend session start PACK:NODE --minutes 20\nascend session status\nascend session end"
         }
       ],
       "related": [
@@ -311,7 +315,8 @@
         {
           "type": "list",
           "items": [
-            "Preferences: choose your timezone and System, Light, or Dark appearance. The theme is saved in this browser.",
+            "Preferences: choose your timezone, System/Light/Dark appearance and Calm/Off motion effects. Appearance choices are saved in this browser. Your device’s reduced motion setting always takes priority.",
+            "The motion control in the top bar stops background and transition effects. It does not stop a challenge timer.",
             "Reminders: configure notification timing and delivery.",
             "Privacy & account: choose whether to publish a streak badge. Sharing is off unless you enable it.",
             "Log out: available on authenticated servers. A single-user local server has no login session to end."
@@ -427,7 +432,7 @@
         },
         {
           "type": "paragraph",
-          "text": "Only one task session can run at a time. Return to Today and pause the running session. A finished task can be practiced again but cannot start a new scored attempt."
+          "text": "Only one task session can run at a time. Complete or end the running session before starting another. The session strip is available on every page. A finished task can be practiced again but cannot start a new scored attempt."
         },
         {
           "type": "heading",

@@ -1,8 +1,8 @@
 "use strict";
 const $ = (selector, root = document) => root.querySelector(selector);
 const state = {token: sessionStorage.getItem("ascend-token"), minutes: null, overview: null, levels: [], tab: "today", account: null, guides: null, guideTopic: null, installedPacks: [], showAllPacks: false};
-const TABS = ["today", "path", "stats", "more", "docs", "profile"];
-const TAB_NAMES = {today: "Today", path: "Learning path", stats: "Progress", more: "Tracks", docs: "Documentation", profile: "Profile"};
+const TABS = ["today", "path", "stats", "more", "docs", "profile", "challenge"];
+const TAB_NAMES = {today: "Today", path: "Learning path", stats: "Progress", more: "Tracks", docs: "Documentation", profile: "Profile", challenge: "Challenge"};
 let noticeTimer;
 let challengeIntroPlayed = false;
 function el(tag, text, className) { const node = document.createElement(tag); if (text !== undefined) node.textContent = text; if (className) node.className = className; return node; }
@@ -60,6 +60,7 @@ function currentRoute() {
 async function switchTab(tab, options = {}) {
   if (!TABS.includes(tab)) return;
   if ($('#docs-menu').open) $('#docs-menu').close();
+  if (tab === 'challenge' && $('#sheet').open) $('#sheet').close();
   const changed = state.tab !== tab;
   state.tab = tab;
   document.querySelectorAll('.screen').forEach(screen => screen.hidden = screen.id !== tab);
@@ -73,11 +74,14 @@ async function switchTab(tab, options = {}) {
   $('#page-context').textContent = TAB_NAMES[tab];
   document.title = `${TAB_NAMES[tab]} · Ascend`;
   if (tab === 'docs') state.guideTopic = options.topic || state.guideTopic || 'getting-started';
-  const hash = tab === 'docs' ? `docs/${state.guideTopic}` : tab;
+  if (tab === 'challenge' && options.topic) state.challengeRef = decodeURIComponent(options.topic);
+  const hash = tab === 'docs' ? `docs/${state.guideTopic}` : tab === 'challenge' && state.challengeRef ? `challenge/${encodeURIComponent(state.challengeRef)}` : tab;
   if (location.hash !== `#${hash}`) location.hash = hash;
   if (changed) window.scrollTo({top: 0, behavior: 'instant'});
   if (tab === 'docs') {
     await renderDocs();
+    window.AscendMotion?.enter($('#docs'), `docs/${state.guideTopic}`);
+    renderSessionClock();
     if (!state.account) refreshDocsChrome().catch(() => {});
     return;
   }
@@ -87,6 +91,9 @@ async function switchTab(tab, options = {}) {
   if (tab === 'stats') await renderStats();
   if (tab === 'more') await renderMore();
   if (tab === 'profile') await renderProfile();
+  if (tab === 'challenge') await renderChallenge();
+  renderSessionClock();
+  if (state.tab === tab) window.AscendMotion?.enter(document.getElementById(tab), tab);
 }
 const ICONS = {
   menu: ['M4 6h16M4 12h16M4 18h16'],
@@ -215,6 +222,7 @@ function nodeCard(node, quick) {
   if (!quick && state.overview.resume) { const resume = el('p', undefined, 'resume-note'); resume.append(el('strong', 'Where you left off: '), document.createTextNode(state.overview.resume)); card.append(resume); }
   const actions = el('div', undefined, 'card-actions');
   const open = button(quick ? 'Try this challenge' : 'Open challenge', () => showNode(fullNode(node), lv), quick ? 'secondary' : ''); open.append(icon('arrow'));
+  open.dataset.challenge = `${node.pack_id}:${node.id}`; open.dataset.defaultLabel = quick ? 'Try this challenge' : 'Open challenge';
   actions.append(open, button('Log progress', () => openLog(node), 'text-button')); card.append(actions);
   return card;
 }
@@ -274,6 +282,7 @@ function openLog(node) {
       const result = await api('entries', {learned: learned.value, next_step: next.value, proof: proof.value || null, minutes: minutes.value ? Number(minutes.value) : null, node_id: `${node.pack_id}:${node.id}`, complete: complete.checked});
       saved = true; $('#sheet').close();
       await refresh(); if (state.tab === 'path') await renderPath();
+      if (state.tab === 'challenge') await renderChallenge();
       showSessionResult(node, result, previousLevels);
       notify(result.completed ? '✓ Challenge complete. Your path has moved forward.' : result.verification ? `Session saved. ${result.verification}` : '✓ Your progress is saved.');
     } catch (err) {
@@ -283,10 +292,13 @@ function openLog(node) {
   });
   learned.focus();
 }
-function showNode(node, level = levelFor(node)) {
-  const content = openSheet(node.milestone ? 'Milestone' : 'Lesson'), status = node.status || 'todo';
+function showNode(node, level = levelFor(node), workspace = false, session = null) {
+  const ref = `${node.pack_id}:${node.id}`;
+  if (!workspace && [state.sessions?.active, ...(state.sessions?.paused || [])].some(item => item && `${item.pack_id}:${item.node_id}` === ref)) return switchTab('challenge', {topic: ref});
+  const content = workspace ? $('#challenge-content') : openSheet(node.milestone ? 'Milestone' : 'Lesson'), status = node.status || 'todo';
+  if (workspace) content.replaceChildren();
   content.append(el('p', `${node.milestone ? 'MILESTONE' : 'CHALLENGE'} · ~${node.estimate} MIN`, 'eyebrow'));
-  const title = el('h2', node.title); title.id = 'sheet-title'; content.append(title);
+  const title = el(workspace ? 'h1' : 'h2', node.title); title.id = workspace ? 'challenge-title' : 'sheet-title'; content.append(title);
   if (node.brief) content.append(el('p', node.brief, 'challenge-brief'));
   const outcome = el('section', undefined, 'outcome'); outcome.append(el('h3', 'Your finish line'), el('p', node.done_when)); content.append(outcome); content.append(el('p', verificationLabel(node), 'verification-label'));
   if (node.steps?.length) {
@@ -306,9 +318,16 @@ function showNode(node, level = levelFor(node)) {
   }
   const actions = el('div', undefined, 'dialog-actions');
   if (!locked) {
-    const target = field(content, 'task-target-minutes', 'Session target (minutes)', 'input'); target.type = 'number'; target.min = 1; target.max = 1440; target.value = node.estimate;
-    content.append(el('p', node.verify?.type === 'lab' || node.verify?.type === 'ctf' ? 'Verified completion earns up to 100 XP within the target; late rewards taper to 25 XP. Paused time is excluded. One reward per task.' : 'The timer records your session. Artifact and self-reviewed tasks do not earn automatic skill XP.', 'muted'));
-    actions.append(button(node.verify?.type === 'lab' ? 'Start verified exercise' : 'Start timed task', async () => { await command(['session', 'start', `${node.pack_id}:${node.id}`, '--minutes', String(Number(target.value))]); await refreshSessions(); if (node.verify?.type === 'lab') await showLab(node); else notify('Task timer started. You can pause it from Today.', 'success'); }, ''));
+    const target = !session ? field(content, 'task-target-minutes', 'Session target (minutes)', 'number', node.estimate) : null;
+    if (target) { target.min = 1; target.max = 1440; }
+    content.append(el('p', node.verify?.type === 'lab' || node.verify?.type === 'ctf' ? 'Verified completion earns up to 100 XP within the target; late rewards taper to 25 XP. Once started, the clock runs continuously. Ending a session stops timing without completion or XP.' : 'Once started, the clock runs continuously until you complete or end the session. Artifact and self-reviewed tasks do not earn automatic skill XP.', 'muted'));
+    if (!workspace || !session) actions.append(button(node.verify?.type === 'lab' ? 'Start verified exercise' : 'Start timed task', async () => {
+      if (!target.reportValidity()) return;
+      const ref = `${node.pack_id}:${node.id}`;
+      await command([node.verify?.type === 'lab' ? 'lab' : 'session', 'start', ref, '--minutes', String(Number(target.value))]);
+      await refreshSessions(); await switchTab('challenge', {topic: ref});
+      $('#challenge-title')?.focus({preventScroll: true});
+    }, ''));
     if (node.verify?.type === 'ctf') actions.append(button('Verify lab completion', async () => { const result = await command(['check', `${node.pack_id}:${node.id}`, '--complete']); notify(result.summary, result.ok ? 'success' : 'error'); await refresh(); await refreshSessions(); if (state.tab === 'path') await renderPath(); }));
     actions.append(button(status === 'todo' ? 'Log progress' : 'Log another practice', () => openLog(node)));
   }
@@ -429,10 +448,12 @@ async function refreshDocsChrome() {
     api('stats', undefined, 'GET', false)
   ]);
   state.account = account;
+  state.sessions = sessions; state.sessionFetched = performance.now();
   updateAccountChrome();
   updateStreak(stats.current_streak);
   $('#xp-balance').textContent = `${sessions.xp.toLocaleString()} XP`;
   $('#xp-link').setAttribute('aria-label', `${sessions.xp} verified XP. View progress`);
+  renderSessionClock();
 }
 function bindAction(selector, action, after) { const node = $(selector); node.addEventListener('click', () => runAction(node, action, after)); }
 function syncMissionActions() {
@@ -565,7 +586,7 @@ document.querySelectorAll("[data-icon]").forEach(node => node.append(icon(node.d
 window.addEventListener('hashchange', () => {
   const {tab, topic} = currentRoute();
   if ($('#sheet').open) $('#sheet').close();
-  if (tab !== state.tab || (tab === 'docs' && topic && topic !== state.guideTopic)) switchTab(tab, {topic}).catch(error => notify(error.message, 'error'));
+  if (tab !== state.tab || (tab === 'docs' && topic && topic !== state.guideTopic) || (tab === 'challenge' && topic && decodeURIComponent(topic) !== state.challengeRef)) switchTab(tab, {topic}).catch(error => notify(error.message, 'error'));
 });
 $("#jump-current").addEventListener("click", () => jumpToLevel(currentLevel()?.id));
 document.querySelectorAll("[data-tab]").forEach(node => node.addEventListener("click", () => switchTab(node.dataset.tab).catch(error => notify(error.message, 'error'))));
@@ -655,12 +676,17 @@ async function refreshSessions() {
   state.sessionFetched = performance.now();
   $('#xp-balance').textContent = `${state.sessions.xp.toLocaleString()} XP`;
   $('#xp-link').setAttribute('aria-label', `${state.sessions.xp} verified XP. View progress`);
+  const current = [state.sessions.active, ...state.sessions.paused].filter(Boolean);
+  document.querySelectorAll('button[data-challenge]').forEach(node => {
+    const label = current.some(item => `${item.pack_id}:${item.node_id}` === node.dataset.challenge) ? 'Resume challenge' : node.dataset.defaultLabel;
+    if (node.textContent !== label) node.replaceChildren(document.createTextNode(label), icon('arrow'));
+  });
   renderSessionClock();
 }
 function renderSessionClock() {
   const root = $('#task-session'); if (!root || !state.sessions) return;
   const current = state.sessions.active;
-  const renderKey = current ? `active-${current.id}` : `paused-${state.sessions.paused.map(r => r.id).join('-')}`;
+  const renderKey = `${state.tab}:${state.challengeRef || ''}:` + (current ? `active-${current.id}` : `paused-${state.sessions.paused.map(r => r.id).join('-')}`);
   const changed = root.dataset.session !== renderKey;
   if (changed) { root.replaceChildren(); root.dataset.session = renderKey; }
   root.hidden = !current && !state.sessions.paused.length;
@@ -670,7 +696,9 @@ function renderSessionClock() {
     const clock = `${Math.floor(remaining / 60)}:${String(remaining % 60).padStart(2, '0')}`;
     if (changed) {
       root.append(el('strong', current.title), el('span', '', 'session-clock'));
-      root.append(button('Pause session', async () => { await command(['session', 'pause']); await refreshSessions(); }));
+      const ref = `${current.pack_id}:${current.node_id}`;
+      if (state.tab !== 'challenge' || state.challengeRef !== ref) root.append(button('Resume challenge', () => switchTab('challenge', {topic: ref}), ''));
+      root.append(button('End session', endTaskSession, 'secondary'));
     }
     root.querySelector('.session-clock').textContent = remaining ? `${clock} remaining` : 'Target elapsed — keep going at your pace';
     const checkpoint = elapsed >= current.budget_seconds ? 2 : elapsed >= current.budget_seconds * .75 ? 1 : 0;
@@ -681,27 +709,74 @@ function renderSessionClock() {
     }
   } else if (changed && state.sessions.paused.length) {
     const saved = state.sessions.paused[state.sessions.paused.length - 1];
-    root.append(el('strong', `Paused: ${saved.title}`), button('Resume session', async () => { await command(['session', 'start', `${saved.pack_id}:${saved.node_id}`]); await refreshSessions(); }));
+    const ref = `${saved.pack_id}:${saved.node_id}`;
+    root.append(el('strong', `Previous session: ${saved.title}`));
+    if (state.tab !== 'challenge' || state.challengeRef !== ref) root.append(button('Resume challenge', () => switchTab('challenge', {topic: ref}), ''));
+    root.append(button('End session', endTaskSession, 'secondary'));
   }
+}
+async function endTaskSession() {
+  await command(['session', 'end']); await refreshSessions();
+  if (state.tab === 'challenge') await renderChallenge();
+  notify('Session ended. The challenge was not completed and no XP was awarded.', 'info');
 }
 function verificationLabel(node) {
   return node.verify?.type === 'lab' ? (node.verify.exercise === 'case' ? 'Server-graded reasoning check' : 'Server-verified exercise') : node.verify?.type === 'ctf' ? 'Signed external lab evidence' : node.verify?.type === 'file' ? 'Artifact check · reasoning needs review' : 'Evidence review required';
 }
-async function showLab(node, fresh = false) {
-  const ref = `${node.pack_id}:${node.id}`;
-  const run = await command(['lab', 'start', ref, ...(fresh ? ['--fresh'] : [])]);
-  const content = openSheet('Verified exercise'), heading = el('h2', node.title); heading.id = 'sheet-title';
+async function renderChallenge() {
+  const saved = state.sessions?.active || state.sessions?.paused.at(-1);
+  const ref = state.challengeRef || (saved ? `${saved.pack_id}:${saved.node_id}` : null);
+  const content = $('#challenge-content');
+  const heading = el('h1', 'Your challenge'); heading.id = 'challenge-title'; heading.tabIndex = -1;
+  content.replaceChildren(heading, el('p', ref ? 'Opening your workspace…' : 'Choose a challenge from Today or your learning path.', 'muted'));
+  if (!ref) return;
+  state.challengeRef = ref;
+  history.replaceState(null, '', `#challenge/${encodeURIComponent(ref)}`);
+  try {
+    const data = await api(`challenges/${encodeURIComponent(ref)}`);
+    if (state.tab !== 'challenge' || state.challengeRef !== ref) return;
+    document.title = `${data.node.title} · Ascend`;
+    if (data.exercise) showLab(data.node, data.exercise);
+    else {
+      showNode(data.node, data.level, true, data.session);
+      if (data.exercise_error) content.append(el('p', data.exercise_error, 'error'));
+      if (data.node.verify?.type === 'lab' && data.session) content.append(button(data.exercise_error ? 'Start a new exercise' : 'Open exercise', async () => {
+        await command(['lab', 'start', ref]); await refreshSessions(); await renderChallenge();
+      }, ''));
+    }
+    if (['finished', 'paused'].includes(data.session?.status) && !data.exercise?.passed && data.node.status !== 'done') {
+      $('#challenge-title').after(el('p', data.session.status === 'paused' ? 'This earlier paused session is available for unscored practice. You can end it from the session bar.' : 'Session ended. You can continue practicing, but this ended attempt will not earn XP.', 'muted'));
+    }
+    $('#challenge-title').tabIndex = -1;
+  } catch (error) {
+    content.replaceChildren(heading, el('p', error.message, 'error'), button('Try again', renderChallenge));
+  }
+}
+function showLab(node, run) {
+  const content = $('#challenge-content'); content.replaceChildren();
+  const heading = el('h1', node.title); heading.id = 'challenge-title'; heading.tabIndex = -1;
   content.append(el('p', verificationLabel(node), 'eyebrow'), heading, el('p', run.instructions, 'challenge-brief'));
   if (run.marker) content.append(el('p', `Your exercise marker: ${run.marker}`));
+  const workspace = el('div', undefined, 'exercise-workspace');
+  const evidence = el('section', undefined, 'exercise-evidence'); evidence.append(el('h2', 'Exercise data'));
+  const response = el('section', undefined, 'exercise-response'); response.append(el('h2', 'Your result'));
+  workspace.append(evidence, response); content.append(workspace);
+  const dataView = el('pre', JSON.stringify(run.data || {}, null, 2), 'lab-data');
+  dataView.tabIndex = 0; dataView.setAttribute('aria-label', 'Exercise data');
   if (run.exercise === 'logging' && !run.passed) {
     const actions = el('div', undefined, 'input-row');
-    for (const kind of ['ok', 'error']) actions.append(button(kind === 'ok' ? 'Send successful request' : 'Send failed request', async () => { await command(['lab', 'emit', run.id, kind]); await showLab(node); }));
-    content.append(actions);
+    for (const kind of ['ok', 'error']) actions.append(button(kind === 'ok' ? 'Send successful request' : 'Send failed request', async () => {
+      Object.assign(run, await command(['lab', 'emit', run.id, kind]));
+      dataView.textContent = JSON.stringify(run.data, null, 2);
+    }));
+    evidence.append(actions);
   }
-  if (Object.keys(run.data || {}).length) {
-    content.append(el('h3', 'Exercise data'), el('pre', JSON.stringify(run.data, null, 2), 'lab-data'));
-  }
-  if (run.passed) content.append(el('p', '✓ This instance has passed. Repeating it does not award XP again.', 'success-note'));
+  if (Object.keys(run.data || {}).length) evidence.append(dataView);
+  else evidence.append(el('p', 'Use the scenario above to make your decision.', 'muted'));
+  if (run.passed) response.append(el('p', '✓ This instance has passed. Repeating it does not award XP again.', 'success-note'));
+  const draftKey = `ascend-answer-${state.account?.username || 'local'}-${run.id}`;
+  let draft = {};
+  try { draft = JSON.parse(sessionStorage.getItem(draftKey) || '{}'); } catch { /* Empty draft. */ }
   const form = el('form'); const inputs = {};
   for (const [key, value] of Object.entries(run.answer_template)) {
     const label = el('label', key.replaceAll('_', ' ')); label.htmlFor = `lab-answer-${key}`;
@@ -710,31 +785,44 @@ async function showLab(node, fresh = false) {
       const group = el('fieldset'); group.append(el('legend', 'Choose your decision'));
       for (const [id, text] of Object.entries(run.choices)) {
         const option = el('input'); option.type = 'radio'; option.name = 'case-choice'; option.value = id; option.required = true; option.disabled = run.passed;
+        option.checked = draft[key] === id;
         const card = el('label', undefined, 'case-choice'); card.append(option, el('span', `${id}: ${text}`)); group.append(card);
       }
       inputs[key] = {type: 'choice', input: group}; form.append(group); continue;
     } else { input = el('input'); input.type = typeof value === 'boolean' ? 'checkbox' : typeof value === 'number' ? 'number' : 'text'; }
     input.id = `lab-answer-${key}`; input.required = typeof value !== 'boolean'; input.disabled = run.passed;
+    if (typeof value === 'boolean') input.checked = Boolean(draft[key]);
+    else input.value = draft[key] ?? '';
     inputs[key] = {input, type: typeof value}; form.append(label, input);
   }
   const result = el('p'); result.setAttribute('role', 'status');
   const submit = el('button', 'Verify my result'); submit.type = 'submit'; submit.disabled = run.passed;
-  form.append(submit, result); content.append(form);
+  form.append(submit, result); response.append(form);
+  function answers() {
+    return Object.fromEntries(Object.entries(inputs).map(([key, entry]) => [key, entry.type === 'choice' ? entry.input.querySelector(':checked')?.value || '' : entry.type === 'boolean' ? entry.input.checked : entry.type === 'number' ? Number(entry.input.value) : entry.input.value.trim()]));
+  }
+  form.addEventListener('input', () => { try { sessionStorage.setItem(draftKey, JSON.stringify(answers())); } catch { /* Server exercise data remains saved. */ } });
   form.addEventListener('submit', async event => {
     event.preventDefault(); submit.disabled = true;
     try {
-      const answers = Object.fromEntries(Object.entries(inputs).map(([key, entry]) => [key, entry.type === 'choice' ? entry.input.querySelector(':checked').value : entry.type === 'boolean' ? entry.input.checked : entry.type === 'number' ? Number(entry.input.value) : entry.input.value.trim()]));
-      const checked = await command(['lab', 'submit', run.id, JSON.stringify(answers)]);
+      const checked = await command(['lab', 'submit', run.id, JSON.stringify(answers())]);
       result.textContent = checked.summary;
       if (checked.completed) {
         const gained = (checked.timer?.xp || 0) - (run.timer?.xp || 0);
         result.textContent = `✓ Verified.${gained > 0 ? ` +${gained} XP.` : ''} ${run.exercise === 'case' ? 'Your scenario decision passed; the hands-on assessment remains separate.' : 'The server recorded the demonstrated result.'}`;
+        form.querySelectorAll('input, button').forEach(input => input.disabled = true);
+        try { sessionStorage.removeItem(draftKey); } catch { /* No stored draft. */ }
         await refresh(); await refreshSessions(); if (state.tab === 'path') await renderPath();
       } else submit.disabled = false;
     } catch (error) { result.textContent = error.message; submit.disabled = false; }
   });
-  content.append(button('Start a fresh exercise instance', () => showLab(node, true)));
-  await refreshSessions();
+  const reset = el('details', undefined, 'quiet-details'); reset.append(el('summary', 'Exercise options'), el('p', 'A fresh instance replaces the exercise data and clears your draft answers. The original timer target is preserved.', 'muted small'));
+  reset.append(button('Start a fresh exercise instance', async () => {
+    await command(['lab', 'start', `${node.pack_id}:${node.id}`, '--fresh']);
+    try { sessionStorage.removeItem(draftKey); } catch { /* No stored draft. */ }
+    await refreshSessions(); await renderChallenge();
+  }));
+  content.append(reset);
 }
 async function browseTracks() {
   const [catalog, installed] = await Promise.all([command(['pack', 'registry']), api('packs')]);

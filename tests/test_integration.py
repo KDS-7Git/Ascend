@@ -331,12 +331,18 @@ def test_browser_verified_logging_timer_and_catalog(
             page.get_by_label("Split into smaller steps (one per line)")
         ).to_have_count(0)
         page.get_by_role("button", name="Start verified exercise").click()
+        challenge_url = (
+            live_server + "/#challenge/verified-security-lab%3Alab-readiness"
+        )
+        expect(page).to_have_url(challenge_url)
+        expect(page.locator("#sheet")).not_to_be_visible()
+        expect(page.locator("#challenge-title")).to_be_visible()
         page.get_by_role("button", name="Send successful request").click()
         page.get_by_role("button", name="Send failed request").click()
         page.wait_for_function("""() => {
             const text = document.querySelector('.lab-data')?.textContent;
             if (!text) return false;
-            const marker = [...document.querySelectorAll('#sheet p')].find(p => p.textContent.startsWith('Your exercise marker:'))?.textContent.split(': ')[1];
+            const marker = [...document.querySelectorAll('#challenge p')].find(p => p.textContent.startsWith('Your exercise marker:'))?.textContent.split(': ')[1];
             return JSON.parse(text).events.some(e => e.marker === marker && e.status >= 400);
         }""")
         import json
@@ -349,6 +355,29 @@ def test_browser_verified_logging_timer_and_catalog(
             e for e in data["events"] if e["marker"] == marker and e["status"] >= 400
         )
         page.get_by_label("request id", exact=True).fill(event["request_id"])
+        endpoint = live_server + "/api/challenges/verified-security-lab:lab-readiness"
+        before = httpx.get(endpoint).json()
+        page.reload()
+        expect(page.locator("#challenge-title")).to_be_visible()
+        expect(page.get_by_label("request id", exact=True)).to_have_value(
+            event["request_id"]
+        )
+        restored = httpx.get(endpoint).json()
+        assert restored["exercise"]["id"] == before["exercise"]["id"]
+        assert restored["exercise"]["data"] == before["exercise"]["data"]
+        assert (
+            restored["session"]["running_since"] == before["session"]["running_since"]
+        )
+        expect(
+            page.get_by_role("button", name="Pause session", exact=True)
+        ).to_have_count(0)
+        page.get_by_role("button", name="Open profile", exact=True).click()
+        page.get_by_role("button", name="Resume challenge", exact=True).click()
+        expect(page).to_have_url(challenge_url)
+        expect(page.get_by_label("request id", exact=True)).to_have_value(
+            event["request_id"]
+        )
+        assert httpx.get(endpoint).json()["exercise"]["id"] == before["exercise"]["id"]
         page.get_by_label("errors", exact=True).fill("1")
         page.get_by_role("button", name="Verify my result").click()
         expect(page.get_by_text("✓ Verified. +100 XP.", exact=False)).to_be_visible()
@@ -363,6 +392,36 @@ def test_browser_verified_logging_timer_and_catalog(
         expect(page.locator(".catalog-card")).to_have_count(1)
         expect(page.locator(".catalog-card h3")).to_contain_text("Active Directory")
         assert not errors
+        browser.close()
+
+
+def test_browser_timed_task_can_only_end_without_awarding_completion(live_server):
+    import httpx
+    from playwright.sync_api import sync_playwright, expect
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page(viewport={"width": 390, "height": 844})
+        page.goto(live_server)
+        page.locator(".next-card").get_by_role("button", name="Open challenge").click()
+        page.get_by_role("button", name="Start timed task", exact=True).click()
+        expect(page).to_have_url(live_server + "/#challenge/test-pack%3Aone")
+        expect(page.locator("#sheet")).not_to_be_visible()
+        expect(page.get_by_role("heading", name="Your finish line")).to_be_visible()
+        page.reload()
+        page.get_by_role("button", name="End session", exact=True).click()
+        expect(page.locator("#task-session")).not_to_be_visible()
+        expect(page.locator("#challenge-content")).to_contain_text("Session ended")
+        state = httpx.get(live_server + "/api/challenges/test-pack:one").json()
+        assert state["session"]["status"] == "finished"
+        assert state["node"]["status"] == "todo"
+        session = httpx.post(
+            live_server + "/api/command", json={"argv": ["session", "status"]}
+        ).json()
+        assert session["active"] is None and session["xp"] == 0
+        page.reload()
+        expect(page.locator("#task-session")).not_to_be_visible()
+        expect(page.locator("#challenge-content")).to_contain_text("Session ended")
         browser.close()
 
 
@@ -496,7 +555,7 @@ def test_library_rows_profile_and_guide_navigation(live_server, width, height):
         before = article.bounding_box()
         page.get_by_label("Search documentation").fill("unmatched-example-123")
         expect(page.locator("#docs-topics")).to_contain_text("No guide matches")
-        page.get_by_label("Search documentation").fill("paused time")
+        page.get_by_label("Search documentation").fill("runs continuously")
         expect(page.locator("#docs-topics a")).to_have_count(1)
         after = article.bounding_box()
         for key in ["x", "y", "width"]:
@@ -632,4 +691,52 @@ def test_documentation_is_readable_offline_after_shell_install(live_server):
         expect(page.locator("#login-dialog")).not_to_be_visible()
         expect(page.locator("#xp-balance")).to_have_text("— XP")
         expect(page.locator(".topbar #streak")).to_have_text("—")
+        assert page.evaluate("Boolean(window.AscendMotion)")
+        browser.close()
+
+
+def test_motion_controls_persist_and_honor_device_preferences(live_server):
+    from playwright.sync_api import sync_playwright, expect
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page(
+            viewport={"width": 1440, "height": 1000}, reduced_motion="no-preference"
+        )
+        page.goto(live_server)
+        page.locator(".next-card").wait_for()
+        page.wait_for_function(
+            "document.querySelector('.ambient-scene').getAnimations({subtree:true}).some(a => a.playState === 'running')"
+        )
+        page.locator(".next-card").hover(position={"x": 180, "y": 80})
+        expect(page.locator(".hover-light")).to_be_visible()
+        assert (
+            page.locator(".next-card").evaluate("e => getComputedStyle(e).cursor")
+            != "none"
+        )
+        page.get_by_role("button", name="Pause motion effects", exact=True).click()
+        expect(page.locator("html")).to_have_attribute("data-motion", "off")
+        assert not page.locator(".ambient-scene").evaluate(
+            "e => e.getAnimations({subtree:true}).some(a => a.playState === 'running')"
+        )
+        page.reload()
+        expect(
+            page.get_by_role("button", name="Resume motion effects", exact=True)
+        ).to_be_visible()
+        page.get_by_role("button", name="Open profile", exact=True).click()
+        expect(page.get_by_label("Motion effects", exact=True)).to_have_value("off")
+        page.get_by_label("Motion effects", exact=True).select_option("calm")
+        expect(page.locator("html")).to_have_attribute("data-motion", "calm")
+        page.emulate_media(reduced_motion="reduce")
+        expect(page.locator("html")).to_have_attribute("data-motion", "off")
+        expect(
+            page.get_by_role("button", name="Motion reduced by device settings")
+        ).to_be_disabled()
+        page.get_by_role("button", name="Docs", exact=True).click()
+        expect(page.locator("#guide-title")).to_be_visible()
+        assert not page.locator("#docs").evaluate(
+            "e => e.getAnimations({subtree:true}).some(a => a.playState === 'running')"
+        )
+        page.emulate_media(reduced_motion="no-preference")
+        expect(page.locator("html")).to_have_attribute("data-motion", "calm")
         browser.close()

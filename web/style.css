@@ -366,6 +366,23 @@ dialog::backdrop { background: #11182766; backdrop-filter: blur(2px); }
 .session-result > div:nth-child(2) { flex: 1; }
 .task-session { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; padding: 14px 20px; margin: 0 0 24px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); font-size: .85rem; }
 .task-session strong { font-weight: 550; max-width: 100%; overflow-wrap: anywhere; }
+.task-session { max-width: var(--content-width); margin: 0 auto 28px; padding: 0 0 20px; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: transparent; }
+.challenge-back { display: inline-block; padding: 8px 0; margin-bottom: 22px; font-size: .85rem; }
+#challenge-content > h1, #challenge-content > p, #challenge-content > .outcome, #challenge-content > .challenge-steps, #challenge-content > .challenge-hints { max-width: 760px; }
+#challenge-content > h1 { margin-bottom: 18px; }
+#challenge-content > input { max-width: 180px; }
+.exercise-workspace { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 36px; margin-top: 32px; padding-top: 28px; border-top: 1px solid var(--line); }
+.exercise-workspace > section { min-width: 0; }
+.exercise-evidence .input-row { flex-wrap: wrap; margin-bottom: 16px; }
+.exercise-response { padding-left: 32px; border-left: 1px solid var(--line); }
+.exercise-response form > button { margin-top: 20px; }
+.exercise-response [role='status'] { margin-top: 16px; }
+.exercise-evidence .lab-data { max-height: 480px; margin-bottom: 0; }
+@media (max-width: 1100px) {
+  .exercise-workspace { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .exercise-response { border-left: 0; padding-left: 0; }
+  .exercise-evidence .lab-data { max-height: 340px; }
+}
 .session-clock { font-variant-numeric: tabular-nums; margin-left: auto; color: var(--muted); }
 .lab-data { max-height: 320px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; padding: 16px; border: 1px solid var(--line); border-radius: 8px; background: var(--hover); font-size: .8rem; }
 #task-target-minutes { max-width: 130px; }

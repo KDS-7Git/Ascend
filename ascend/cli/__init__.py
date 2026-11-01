@@ -105,12 +105,15 @@ def parser():
     begin = sessions.add_parser("start")
     begin.add_argument("node")
     begin.add_argument("--minutes", type=int)
-    sessions.add_parser("pause")
+    sessions.add_parser(
+        "end", help="Stop timing without completing the task or awarding XP"
+    )
     sessions.add_parser("status")
     labs = sub.add_parser("lab").add_subparsers(dest="action", required=True)
     begin = labs.add_parser("start")
     begin.add_argument("node")
     begin.add_argument("--fresh", action="store_true")
+    begin.add_argument("--minutes", type=int)
     show = labs.add_parser("show")
     show.add_argument("instance")
     emit = labs.add_parser("emit")
@@ -147,14 +150,12 @@ def execute(tracker, args):
 
         if args.action == "start":
             return timing.start(tracker, args.node, args.minutes)
-        return (
-            timing.pause(tracker) if args.action == "pause" else timing.summary(tracker)
-        )
+        return timing.end(tracker) if args.action == "end" else timing.summary(tracker)
     if command == "lab":
         from ascend import labs
 
         if args.action == "start":
-            return labs.start(tracker, args.node, args.fresh)
+            return labs.start(tracker, args.node, args.fresh, args.minutes)
         if args.action == "show":
             return labs.view(tracker, args.instance)
         if args.action == "emit":

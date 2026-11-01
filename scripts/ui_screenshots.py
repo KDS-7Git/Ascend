@@ -26,6 +26,11 @@ def main():
         type=Path,
         help="Optional local axe-core JavaScript for the temporary-profile audit",
     )
+    parser.add_argument(
+        "--motion-demo",
+        action="store_true",
+        help="Also record a short motion and hover preview",
+    )
     args = parser.parse_args()
     records = []
     captures = 0
@@ -77,6 +82,16 @@ def main():
         )["completed"]
         tracker.finish_mission("paused")
         tracker.start_mission("defensive-security-and-detection")
+        next_node = tracker.overview()["next"]
+        challenge_ref = f"{next_node['pack_id']}:{next_node['id']}"
+        labs.start(tracker, challenge_ref)
+        feedback_level, feedback_node = next(
+            (level, node)
+            for level in tracker.levels()
+            for node in level["nodes"]
+            if node.get("verify", {}).get("type") == "file"
+            and f"{node['pack_id']}:{node['id']}" != challenge_ref
+        )
         tracker.db.close()
         with socket.socket() as sock:
             sock.bind(("127.0.0.1", 0))
@@ -131,9 +146,12 @@ def main():
                         "more",
                         "profile",
                         "docs/timers",
+                        "challenge/" + challenge_ref,
                     ]:
                         page.goto(base + "/#" + route)
-                        if route.startswith("docs"):
+                        if route.startswith("challenge"):
+                            page.locator(".lab-data").wait_for()
+                        elif route.startswith("docs"):
                             expect(page.locator("#guide-title")).to_have_text(
                                 "Timers & XP"
                             )
@@ -189,7 +207,7 @@ def main():
                                 expect(page.locator("#docs-menu")).to_be_visible()
                             else:
                                 page.get_by_label("Search documentation").fill(
-                                    "paused time"
+                                    "runs continuously"
                                 )
                                 expect(page.locator("#docs-topics a")).to_have_count(1)
                             after = article.bounding_box()
@@ -218,10 +236,12 @@ def main():
                                 path=TARGET / f"library-{label}.png"
                             )
                             captures += 1
-                    page.goto(base + "/#today")
-                    page.locator(".next-card").get_by_role(
-                        "button", name="Open challenge"
-                    ).click()
+                    page.goto(base + "/#path")
+                    level = page.locator("#level-" + feedback_level["id"])
+                    level.evaluate("e => e.open = true")
+                    level.locator(".path-node").filter(
+                        has_text=feedback_node["title"]
+                    ).first.click()
                     page.locator(".manage-challenge > summary").click()
                     page.get_by_role(
                         "button", name="Check evidence", exact=True
@@ -232,6 +252,39 @@ def main():
                     captures += 1
                     assert not errors, errors
                     page.close()
+                if args.motion_demo:
+                    context = browser.new_context(
+                        viewport={"width": 1440, "height": 1000},
+                        reduced_motion="no-preference",
+                        record_video_dir=str(Path(folder) / "video"),
+                        record_video_size={"width": 1008, "height": 700},
+                    )
+                    page = context.new_page()
+                    page.goto(base + "/#today")
+                    page.locator(".next-card").wait_for()
+                    page.wait_for_timeout(2000)
+                    page.locator(".next-card").hover(position={"x": 260, "y": 120})
+                    page.wait_for_timeout(250)
+                    page.screenshot(path=TARGET / "motion-hover-desktop.png")
+                    captures += 1
+                    page.evaluate("localStorage.setItem('ascend-theme', 'dark')")
+                    page.reload()
+                    page.locator(".next-card").wait_for()
+                    page.wait_for_timeout(2000)
+                    page.screenshot(path=TARGET / "motion-dark-desktop.png")
+                    audit(page, "desktop-dark", "today-motion")
+                    captures += 1
+                    page.get_by_role("button", name="Stats", exact=True).click()
+                    page.wait_for_timeout(900)
+                    page.get_by_role("button", name="Docs", exact=True).click()
+                    page.wait_for_timeout(900)
+                    page.get_by_role(
+                        "button", name="Pause motion effects", exact=True
+                    ).click()
+                    video = page.video
+                    video_path = TARGET / "motion-preview.webm"
+                    context.close()
+                    video.save_as(video_path)
                 browser.close()
         finally:
             process.terminate()

@@ -25,6 +25,8 @@ def test_built_wheel_contains_and_serves_bundled_assets(tmp_path):
     with zipfile.ZipFile(wheel) as archive:
         assert "ascend/web/index.html" in archive.namelist()
         assert "ascend/web/guide.json" in archive.namelist()
+        assert "ascend/web/effects.js" in archive.namelist()
+        assert "ascend/web/effects.css" in archive.namelist()
         assert "ascend/web/fonts/InterVariable.woff2" in archive.namelist()
         assert "ascend/web/fonts/OFL.txt" in archive.namelist()
         assert "ascend/community/projects/home-hack-lab.toml" in archive.namelist()
@@ -47,6 +49,8 @@ assert c.get('/app.js').status_code == 200
 assert len(c.get('/guide.json').json()['topics']) == 10
 assert c.get('/fonts/InterVariable.woff2').content.startswith(b'wOF2')
 assert c.get('/theme.js').status_code == 200
+assert c.get('/effects.js').status_code == 200
+assert c.get('/effects.css').status_code == 200
 assert c.post('/api/command', json={'argv': ['pack', 'install', 'api-security']}).status_code == 200
 assert c.get('/api/packs').json()[0]['category'] == 'Offensive'
 """

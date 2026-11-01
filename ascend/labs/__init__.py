@@ -188,12 +188,21 @@ def view(t, run_id):
     }
 
 
-def start(t, reference, fresh=False):
+def current(t, reference):
+    """Read the latest exercise without starting or resuming its timer."""
+    pack, node = t.resolve_node(reference)
+    rows = t.db.rows(
+        "lab_runs", "pack_id=? AND node_id=?", (pack.id, node.id), order="rowid DESC"
+    )
+    return view(t, rows[0]["id"]) if rows else None
+
+
+def start(t, reference, fresh=False, minutes=None):
     pack, node = t.resolve_node(reference)
     if node.verify.get("type") != "lab":
         raise ValueError("This task has no bundled exercise")
     with t.db.transaction():
-        timing.start(t, reference)
+        timing.start(t, reference, minutes=minutes)
         digest = fingerprint(t, pack)
         rows = t.db.rows(
             "lab_runs",

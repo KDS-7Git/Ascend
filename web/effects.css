@@ -1,0 +1,68 @@
+/* Calm cyber: a quiet ambient field, with brief motion at points of interaction. */
+body { isolation: isolate; }
+.ambient-scene { position: fixed; inset: 0 0 0 var(--rail); z-index: -1; overflow: hidden; pointer-events: none; contain: strict; transition: opacity 500ms ease; }
+.ambient-grid { position: absolute; inset: 0; background-image: radial-gradient(color-mix(in srgb, var(--accent) 17%, transparent) .7px, transparent .9px); background-size: 28px 28px; mask-image: linear-gradient(145deg, #0009, transparent 62%, #0005); }
+.ambient-glow { position: absolute; width: min(1000px, 100vw); height: min(760px, 90vh); border-radius: 50%; opacity: .15; animation: aurora-drift 26s ease-in-out infinite alternate; }
+.ambient-glow.violet { top: -280px; right: -240px; background: radial-gradient(ellipse, #8970ef, transparent 68%); }
+.ambient-glow.teal { bottom: -360px; left: -300px; background: radial-gradient(ellipse, #32b4b0, transparent 67%); animation-duration: 32s; animation-delay: -12s; }
+.ambient-orbit { position: absolute; top: 60px; right: -160px; width: 420px; height: 420px; color: var(--accent); opacity: .11; animation: orbit-turn 100s linear infinite; }
+.ambient-orbit circle { fill: none; stroke: currentColor; stroke-width: .65; }
+.ambient-orbit .orbit-point { fill: currentColor; stroke: none; }
+.ambient-particle { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: var(--accent); opacity: .25; animation: particle-drift 22s ease-in-out infinite alternate; }
+.ambient-particle:nth-of-type(1) { top: 16%; left: 4%; }
+.ambient-particle:nth-of-type(2) { top: 40%; right: 5%; animation-delay: -8s; }
+.ambient-particle:nth-of-type(3) { top: 70%; left: 3%; animation-delay: -14s; }
+.ambient-particle:nth-of-type(4) { top: 88%; right: 12%; animation-delay: -5s; width: 4px; height: 4px; }
+:root[data-view='docs'] .ambient-scene { opacity: .45; }
+.topbar, .primary-nav { background: color-mix(in srgb, var(--surface) 94%, transparent); backdrop-filter: blur(12px); }
+.next-card { overflow: hidden; background: linear-gradient(115deg, var(--surface) 45%, color-mix(in srgb, var(--soft) 70%, var(--surface))); box-shadow: 0 12px 36px -28px color-mix(in srgb, var(--accent) 45%, transparent); }
+.hover-light { position: absolute; top: 0; left: 0; width: 260px; height: 260px; pointer-events: none; background: radial-gradient(circle, color-mix(in srgb, var(--accent) 10%, transparent), transparent 65%); opacity: 0; transition: opacity 180ms ease, transform 100ms ease-out; }
+.next-card:hover .hover-light { opacity: 1; }
+:root[data-motion='off'] .hover-light { display: none; }
+.next-card .card-context { color: var(--accent); }
+.page-header h1, .docs-article h1 { text-wrap: balance; }
+.week rect { transform-box: fill-box; transform-origin: center bottom; }
+.motion-toggle { display: inline-grid; place-items: center; width: 40px; min-height: 40px; padding: 8px; border-radius: 50%; color: var(--muted); background: transparent; }
+.motion-toggle:hover { background: var(--hover); color: var(--accent); }
+.motion-toggle svg { width: 17px; height: 17px; }
+.motion-play, :root[data-motion='off'] .motion-pause { display: none; }
+:root[data-motion='off'] .motion-play { display: block; }
+.motion-preference { max-width: 680px; }
+button, a, summary, .node-shape { transition: color 160ms ease, background 160ms ease, border-color 160ms ease, box-shadow 200ms ease, transform 200ms cubic-bezier(.22, 1, .36, 1); }
+input, select, textarea { transition: border-color 160ms ease, box-shadow 160ms ease; }
+.nav-item .icon, .card-actions .icon { transition: transform 200ms ease; }
+.level-header::after { transition: transform 200ms ease; }
+details[open] > .path-nodes, details[open] > .hint-content { animation: section-arrive 240ms ease-out; }
+.screen { animation: none; }
+dialog[open] { animation: dialog-arrive 240ms cubic-bezier(.22, 1, .36, 1); }
+dialog[open]::backdrop { animation: backdrop-arrive 200ms ease-out; }
+#docs-menu[open] { animation-name: drawer-arrive; }
+@media (hover: hover) and (pointer: fine) {
+  button:not(.secondary):not(.text-button):not(.nav-item):not(.path-node):not(.icon-button):not(.motion-toggle):not(.balance-link):not(.streak-chip):not(.profile-button):not(:disabled):hover { transform: translateY(-1px); box-shadow: 0 5px 14px -7px var(--accent); }
+  button:not(:disabled):active { transform: translateY(1px); }
+  .nav-item:hover .icon { transform: translateX(2px); }
+  .card-actions > button:hover .icon { transform: translateX(2px); }
+  .path-node.open:hover .node-shape { box-shadow: 0 0 0 4px var(--soft); }
+}
+@keyframes aurora-drift { to { transform: translate(-5%, 8%) scale(1.09); } }
+@keyframes orbit-turn { to { transform: rotate(360deg); } }
+@keyframes particle-drift { to { transform: translate(10px, -32px); opacity: .1; } }
+@keyframes section-arrive { from { opacity: .35; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@keyframes dialog-arrive { from { opacity: .2; transform: translateY(12px) scale(.99); } to { opacity: 1; transform: none; } }
+@keyframes drawer-arrive { from { opacity: .4; transform: translateX(-20px); } to { opacity: 1; transform: none; } }
+@keyframes backdrop-arrive { from { opacity: 0; } to { opacity: 1; } }
+@media (max-width: 639px) {
+  .topbar-context { display: none; }
+  .topbar-actions { margin-left: auto; }
+  .ambient-glow { width: 620px; height: 620px; }
+  .ambient-glow.violet { top: -250px; right: -300px; }
+  .ambient-glow.teal { left: -360px; }
+  .ambient-orbit { width: 280px; height: 280px; right: -200px; opacity: .08; }
+  .ambient-particle:nth-of-type(n+3) { display: none; }
+}
+.page-inactive .ambient-scene * { animation-play-state: paused; }
+:root[data-motion='off'] *, :root[data-motion='off'] *::before, :root[data-motion='off'] *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+@media (forced-colors: active) { .ambient-scene { display: none; } }
