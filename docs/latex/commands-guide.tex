@@ -1,0 +1,62 @@
+\section{Command reference}
+The generated help appendix below includes every CLI command and subcommand from
+the actual argument parser, plus server administration commands. Examples use
+placeholder pack/node IDs where an installed profile is required. \texttt{--json}
+returns structured output. \texttt{--server URL} overrides the remote server for
+one invocation; numeric shorthand such as \texttt{ascend 20} filters today's tasks.
+
+\subsection{Task, mission and verification semantics}
+\begin{longtable}{p{.31\textwidth}p{.61\textwidth}}
+\textbf{Action} & \textbf{Effect}\\\hline
+\texttt{done} & Logs partial work; \texttt{--complete} additionally checks and completes. \texttt{--force} requires completion and a nonempty override reason.\\
+\texttt{mark}, \texttt{skip}, \texttt{backfill} & Explicit status changes. They do not independently establish learning or create a streak day.\\
+\texttt{check} & Runs a task's configured check; \texttt{--complete} confirms eligible passing evidence.\\
+\texttt{sync}, \texttt{accept} & Propose unlocked passing evidence and recheck before accepting. Hard local checks may have authored auto-completion behavior.\\
+\texttt{split} & Stores at least two smaller concrete steps for an unfinished, unsplit task. Choose parts that together meet the parent's original condition.\\
+\texttt{mission new/start} & Creates one active mission; pause or finish the active mission before starting another.\\
+\texttt{unlock} & Explicitly overrides a level gate; it does not complete its tasks.\\
+\texttt{pack review/trust} & Records independent content-bound review or executable-code trust. Neither command executes the pack.\\
+\texttt{plugin trust} & Trusts the current plugin file fingerprint after review; changes revoke trust.\\
+\texttt{export} & Writes a readable Markdown log to the selected client path, not a full backup.\\
+\texttt{more} & Shows a small set of alternative eligible tasks; it is not the PWA's settings screen.\\
+\texttt{nudge} & Runs the normal scheduler decision; \texttt{config nudge-test} explicitly requests a test send.\\
+\end{longtable}
+
+\subsection{Supported configuration keys}
+\begin{verbatim}
+ascend config timezone Asia/Kolkata
+ascend config nudge-time 21:30
+ascend config nudge-channel ntfy
+ascend config ntfy-topic YOUR_PRIVATE_TOPIC
+ascend config nudge-enabled true
+ascend config auto-counts-for-streak false
+ascend config public-streak false
+ascend config nudge-test
+ascend config server http://127.0.0.1:8420
+ascend config server off
+\end{verbatim}
+Channels are \texttt{desktop}, \texttt{ntfy}, \texttt{telegram}, and
+\texttt{webpush}. Boolean settings accept \texttt{true} or \texttt{false}.
+Times use 24-hour HH:MM. These are the supported public setting keys; internal
+SQLite settings are not a promise of additional CLI configuration APIs.
+\texttt{mission nudge-time off} removes the mission override. Pack variables are
+edited in the private TOML copy; do not invent an unsupported \texttt{config vars}
+command. Remote login is \texttt{ascend login URL}; server-off changes the selected
+backend without copying its database.
+
+\subsection{Environment reference}
+\begin{longtable}{p{.35\textwidth}p{.57\textwidth}}
+\textbf{Name} & \textbf{Purpose}\\\hline
+\texttt{ASCEND\_HOME} & Profile and server data root; defaults to the user's config directory.\\
+\texttt{ASCEND\_SERVER} & Remote CLI URL, overridden by an explicit CLI option.\\
+\texttt{ASCEND\_REGISTRY} & Optional hosted checksum-pinned pack registry.\\
+\texttt{AUTH\_MODE} & \texttt{single} or \texttt{multi}; server flag can override.\\
+\texttt{ASCEND\_ALLOW\_CODE} & Administrator opt-in to otherwise restricted checks for trusted users.\\
+\texttt{NTFY\_SERVER}, \texttt{NTFY\_TOKEN}, \texttt{NTFY\_TOPIC} & ntfy endpoint, environment credential and fallback topic; account topic settings can be separate.\\
+\texttt{TELEGRAM\_BOT\_TOKEN}, \texttt{TELEGRAM\_CHAT\_ID} & Telegram bot and configured private chat. Multi-user mappings use a numeric account-ID suffix.\\
+\texttt{TELEGRAM\_WEBHOOK\_SECRET} & Authenticates Telegram webhook delivery.\\
+\texttt{ASCEND\_PUBLIC\_URL} & Optional public app link in reminders.\\
+\texttt{VAPID\_PRIVATE\_KEY}, \texttt{VAPID\_SUBJECT} & Persistent Web Push key path and contact identifier.\\
+\texttt{PUSH\_ALLOWED\_HOSTS} & Additional exact push-service host allowlist entries.\\
+\end{longtable}
+\input{latex/generated/cli-help.tex}

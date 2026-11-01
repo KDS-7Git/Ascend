@@ -1,12 +1,5 @@
 \documentclass[11pt,a4paper]{article}
-\usepackage[T1]{fontenc}
-\usepackage[margin=25mm]{geometry}
-\usepackage{longtable}
-\usepackage{hyperref}
-\usepackage{xcolor}
-\usepackage{graphicx}
-\graphicspath{{screenshots/}{docs/screenshots/}}
-\hypersetup{colorlinks=true,linkcolor=teal,urlcolor=teal}
+\input{latex/preamble.tex}
 \title{Ascend\\\large Implementation and Verification Report}
 \author{KDS-7Git}
 \date{\today}
@@ -155,6 +148,11 @@ subscriptions are removed. The PWA requests permission only after an explicit
 button click and supports unsubscribing the current browser. Public streak JSON
 and SVG badges require a separate opt-in and expose no learning notes.
 
+\section{Engagement refresh and curriculum assurance}
+The completed engagement checkpoint added challenge briefs, hints, explicit partial/completion feedback, a connected level map, real milestone badges and revised cyber openings. The current curriculum revision strengthens all forty level assessments, adds prerequisites and later retrieval, and preserves existing task IDs. The full reasoning, evidence hierarchy, corrected assumptions, individual assessment rubric and unverified claims appear in the appended curriculum chapter. A file check still does not grade understanding.
+
+The owner now requires LaTeX as the complete documentation reference and feature-sized commits. This report includes the complete operational and developer chapters; focused PDFs are also supplied. Historical Markdown inputs are preserved separately and are not the authoritative current contract.
+
 \section{Reproduction}
 \begin{verbatim}
 python3 -m venv .venv
@@ -162,12 +160,9 @@ python3 -m venv .venv
 .venv/bin/playwright install chromium
 .venv/bin/pytest -v
 .venv/bin/python scripts/update_report.py
-cd docs
-pdflatex -interaction=nonstopmode -halt-on-error report.tex
-pdflatex -interaction=nonstopmode -halt-on-error report.tex
+.venv/bin/python scripts/build_docs.py
 \end{verbatim}
-The generated status section is refreshed after each milestone. Compile twice to
-resolve the table of contents and internal references.
+The generated status section is refreshed after each milestone. The documentation builder compiles each LaTeX document twice and checks missing glyphs and unresolved references. XeLaTeX and the documented TeX packages/fonts are required.
 
 \section{Handoff artifacts}
 The complete CLI demonstration is saved in
@@ -184,4 +179,21 @@ without optional dependencies. Screenshots in \texttt{docs/screenshots/} show
 the actual desktop and mobile layouts. All implementation commits use the
 requested KDS-7Git author identity. The repository and release artifacts remain
 local; no registry publication or external deployment has been performed.
+\clearpage
+\appendix
+\input{latex/user-guide.tex}
+\input{latex/deployment.tex}
+\input{latex/notifications.tex}
+\input{latex/developer-guide.tex}
+\input{latex/contributing.tex}
+\input{latex/pack-format.tex}
+\input{latex/verifiers.tex}
+\input{latex/api.tex}
+\input{latex/generated/api-models.tex}
+\input{latex/commands-guide.tex}
+\input{latex/generated/storage.tex}
+\input{latex/curriculum-method.tex}
+\section{Engagement checkpoint: historical design and verification}
+\input{latex/engagement.tex}
+\input{latex/engagement-verification.tex}
 \end{document}

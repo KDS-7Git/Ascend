@@ -1,0 +1,686 @@
+\hypertarget{hackstreak-spec-v2-hackstreak-v2-streaks--editable-roadmaps-packs--optional-auto-verification}{%
+\subsection{hackstreak v2: streaks + editable roadmaps ("packs") +
+optional
+auto-verification}\label{hackstreak-spec-v2-hackstreak-v2-streaks--editable-roadmaps-packs--optional-auto-verification}}
+
+\textbf{Precedence:} this file supersedes \texttt{hackstreak-spec.md}
+(v1) wherever they conflict. Keep v1 sections 6 (rules), 8 (streak
+algorithm), 10 (security) and the streak tests in 11 exactly as written.
+Replaced by this file: v1 sections 4, 5, 7, 9 and 12.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{hackstreak-spec-v2-1-the-design-in-one-paragraph}{%
+\subsubsection{1. The design in one
+paragraph}\label{hackstreak-spec-v2-1-the-design-in-one-paragraph}}
+
+The app has three layers. The \textbf{engine} (code) knows streaks,
+logging and "what is my next step", and knows nothing about any subject.
+\textbf{Packs} (plain TOML text files the owner can edit) hold the
+roadmap: nodes with prerequisites, size, a real resource link and a
+mandatory "done when" sentence. \textbf{Verifiers} (small plugins) can
+check a node automatically (a file exists, a command succeeds,
+Codeforces shows a new accepted problem). The map is therefore DATA the
+owner controls, not behaviour hardcoded in the program, and auto-fetch
+is an optional bonus on top of honest manual marking.
+
+\hypertarget{hackstreak-spec-v2-2-principles-added-in-v2}{%
+\subsubsection{2. Principles added in
+v2}\label{hackstreak-spec-v2-2-principles-added-in-v2}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Map = data.} Nothing about Bandit, Juice Shop or any platform
+  appears in engine code. Ever.
+\item
+  \textbf{Packs are read-only inputs; progress is separate.} Pack files
+  are never modified by the app. Progress lives in SQLite. Updating a
+  pack never loses progress (nodes are matched by \texttt{id}).
+\item
+  \textbf{Every node has a \texttt{done\_when}.} An ambiguous "did I do
+  it?" is a pack-authoring defect and \texttt{lint} rejects it.
+\item
+  \textbf{Streak day and node completion are different things.} Any real
+  work counts for the streak (partial progress is fine). A node
+  completes only when its \texttt{done\_when} is met. This removes the
+  "I did something but can\textquotesingle t tick anything" feeling.
+\item
+  \textbf{Verifiers propose, humans confirm,} except hard local checks,
+  which may auto-complete if the node allows it.
+\item
+  \textbf{Generated maps are drafts.} A pack drafted by an AI is
+  labelled \texttt{source = "ai-draft"} and
+  \texttt{reviewed = false} and every node it shows is marked
+  \texttt{{[}draft{]}} until the owner runs \texttt{hack review}. AI
+  may order and link; it must not invent lessons or URLs.
+\end{enumerate}
+
+\hypertarget{hackstreak-spec-v2-3-pack-format-toml-readable-with-pythons-standard-tomllib}{%
+\subsubsection{\texorpdfstring{3. Pack format (TOML, readable with
+Python\textquotesingle s standard
+\texttt{tomllib})}{3. Pack format (TOML, readable with Python\textquotesingle s standard tomllib)}}\label{hackstreak-spec-v2-3-pack-format-toml-readable-with-pythons-standard-tomllib}}
+
+\begin{verbatim}
+[pack]
+id = "home-hack-lab"          # unique, kebab-case
+title = "Home hack lab"
+version = 1
+source = "ai-draft"           # human | ai-draft | imported
+reviewed = false
+
+[vars]                        # user-editable values, substituted as {name} inside strings
+pi_user = "pi"
+pi_ip = "192.168.1.50"
+
+# Levels group nodes (like Duolingo units). Order in the file = order of the main path.
+[[level]]
+id = "setup"
+title = "Build the lab"
+lane = "main"                 # main = gated path (default) | side = always-open quick wins
+gate = true                   # main lanes only: level opens when the previous main level is fully done/skipped
+
+[[level]]
+id = "warmup"
+title = "Daily warm-up"
+lane = "side"                 # side lanes never block and never wait; they supply the "quick win" for busy days
+
+[[node]]
+level = "setup"
+id = "pi-reachable"           # unique within the pack, stable forever (progress is keyed on it)
+title = "Pi is reachable from the laptop"
+size = "M"                    # S <= 30 min, M = 1-2 h, L = 3 h+
+needs = []                    # prerequisite node ids (must form a DAG)
+done_when = "ping to the Pi works from the laptop in both directions"
+resource = "https://www.raspberrypi.com/documentation/computers/remote-access.html"
+verify = { type = "command", cmd = "ping -c 1 -W 2 {pi_ip}" }   # optional; default is manual
+auto_complete = false         # true = a passing verifier completes the node without asking
+
+# Series: one definition that expands into many chained nodes (generic, works for any numbered material).
+[[node]]
+id = "bandit"
+title = "OverTheWire Bandit, level {n}"
+series = { from = 13, to = 33 }
+size = "S"
+needs = []
+done_when = "I logged in to level {next} and can explain the command that got me there"
+resource = "https://overthewire.org/wargames/bandit/"
+\end{verbatim}
+
+Rules enforced by
+\path|hack pack lint <file>|:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{id}s unique; \texttt{needs} reference existing ids; graph is
+  acyclic.
+\item
+  every node has a \texttt{level} that exists; levels have \texttt{id},
+  \texttt{title}, \texttt{lane} (\texttt{main} default, or
+  \texttt{side}); at least one \texttt{main} level exists.
+\item
+  a \texttt{series} node lives in exactly one level (use two series
+  nodes if the material spans levels).
+\item
+  every node has \texttt{title}, \texttt{size} (S/M/L),
+  \texttt{done\_when} (min 15 characters) and \texttt{resource} (an
+  http(s) URL).
+\item
+  series expand to ids \texttt{bandit-13} ... \texttt{bandit-33}; each
+  depends on the previous one; the first inherits the
+  series\textquotesingle{} \texttt{needs}. \texttt{\{n\}} = current
+  number, \texttt{\{next\}} = n + 1.
+\item
+  unknown \texttt{verify.type} is an error. A pack containing
+  \texttt{command} verifiers prints the commands and requires
+  \texttt{hack pack trust \textless{}id\textgreater{}} first (see
+  section 7).
+\item
+  \path|hack pack check-links <file>| sends
+  a HEAD/GET to every \texttt{resource} and reports dead links. Run it
+  on every AI-drafted pack.
+\end{itemize}
+
+\hypertarget{hackstreak-spec-v2-4-storage-additions-sqlite}{%
+\subsubsection{4. Storage additions
+(SQLite)}\label{hackstreak-spec-v2-4-storage-additions-sqlite}}
+
+\begin{verbatim}
+CREATE TABLE IF NOT EXISTS packs (
+  id TEXT PRIMARY KEY, path TEXT NOT NULL, version INTEGER, reviewed INTEGER DEFAULT 0, trusted INTEGER DEFAULT 0
+);
+CREATE TABLE IF NOT EXISTS node_state (
+  pack_id TEXT NOT NULL, node_id TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'todo',      -- todo | done | skipped
+  done_at TEXT, evidence TEXT, how TEXT,    -- how: manual | verifier:<type> | forced
+  PRIMARY KEY (pack_id, node_id)
+);
+-- entries (from v1) gain three columns:
+ALTER TABLE entries ADD COLUMN node_id TEXT;       -- "pack:node", nullable
+ALTER TABLE entries ADD COLUMN source TEXT DEFAULT 'manual';   -- manual | verifier:<type>
+ALTER TABLE entries ADD COLUMN complete INTEGER DEFAULT 0;
+-- missions (from v1) gain: pack_id TEXT  (a mission = "work through this pack"); still only ONE active mission.
+\end{verbatim}
+
+\hypertarget{hackstreak-spec-v2-5-choosing-the-next-step-the-zero-decisions-rule}{%
+\subsubsection{5. Choosing the next step (the "zero decisions"
+rule)}\label{hackstreak-spec-v2-5-choosing-the-next-step-the-zero-decisions-rule}}
+
+\begin{verbatim}
+SIZE_MIN = {"S": 30, "M": 120, "L": 240}
+
+def open_levels(levels, nodes, finished):
+    opened, prev_complete = set(), True
+    for lv in levels:                                  # pack order
+        if lv.lane == "side":
+            opened.add(lv.id)                          # side lanes are always open
+            continue
+        if prev_complete or not lv.gate:
+            opened.add(lv.id)
+        prev_complete = all(n.id in finished for n in nodes if n.level == lv.id)
+    return opened
+
+def next_nodes(nodes, levels, state, max_minutes=None):
+    finished = {nid for nid, st in state.items() if st in ("done", "skipped")}
+    opened = open_levels(levels, nodes, finished)
+    out = []
+    for n in nodes:                                    # pack order = tie-breaker
+        if n.id in finished:
+            continue
+        if n.level not in opened:                      # level gate
+            continue
+        if not all(r in finished for r in n.needs):    # locked by prerequisites
+            continue
+        # NOTE: prev_complete in open_levels() checks only the milestone node(s) of a level when any exist,
+        # not every node in it -- gate = "passed the level's real test", not "touched every item".
+        if max_minutes is not None and SIZE_MIN[n.size] > max_minutes:
+            continue
+        out.append(n)
+    return out
+\end{verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{hack} shows the first candidate from a \texttt{main} lane as
+  \textbf{Next}, and the first candidate from a \texttt{side} lane as
+  \textbf{Quick win} (so a busy day always has a 10-minute option). No
+  full list by default; \texttt{hack more} shows two alternatives.
+\item
+  Level display:
+  \path|Level 2/3  Recon & attack  {[}####-----------{]} 3/8 steps  5 active days|.
+  "Active days" = distinct logical days with an entry whose node belongs
+  to that level. This is the per-level, day-wise view; the global daily
+  streak is unchanged.
+\item
+  \texttt{hack levels} lists every level with progress and active days.
+  \texttt{hack unlock \textless{}level\textgreater{}} opens a gated
+  level early (logged), so a gate can never trap the owner.
+  \texttt{hack skip \textless{}node\textgreater{}} is
+  \texttt{mark ... skipped}.
+\item
+  With \texttt{hack \textless{}minutes\textgreater{}}: show the
+  main-lane step if it fits, otherwise the side-lane quick win,
+  otherwise suggest \texttt{hack split}.
+\item
+  \texttt{hack 20} = "I have 20 minutes": only nodes that fit. If none
+  fit it says so and suggests \texttt{hack split}.
+\item
+  On an academic/deadline day the owner types \texttt{hack 10} and gets
+  the smallest valid step. The streak survives.
+\end{itemize}
+
+\hypertarget{hackstreak-spec-v2-6-entry-semantics-partial-vs-complete}{%
+\subsubsection{6. Entry semantics (partial vs
+complete)}\label{hackstreak-spec-v2-6-entry-semantics-partial-vs-complete}}
+
+\begin{itemize}
+\tightlist
+\item
+  \path|hack done "learned..." "next step..."| logs an entry
+  (counts for the streak) against the current node. The node stays open.
+\item
+  \path|hack done ... ---complete| also tries to mark the node
+  done: it runs the node\textquotesingle s verifier first.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    verifier passes (or node is manual): node becomes \texttt{done},
+    \texttt{how} = manual or verifier name.
+  \item
+    verifier fails: print its reason, do NOT complete.
+    \texttt{-\/-force "reason"} overrides and records
+    \texttt{how = forced}.
+  \end{itemize}
+\item
+  \texttt{hack check} runs the current node\textquotesingle s verifier
+  on its own and, if it passes, offers to complete it.
+\item
+  \path!hack mark <node> done|skipped|todo {[}---note ...{]}!
+  is the honest manual route. It is always allowed.
+\item
+  \path|hack backfill <node> {[}<node>...{]}|
+  marks nodes done with \texttt{how = manual},
+  \path|evidence = "completed before hackstreak"|, without
+  creating streak entries. (The owner uses this for Bandit 0-12.)
+\end{itemize}
+
+\hypertarget{hackstreak-spec-v2-7-verifiers-plugins}{%
+\subsubsection{7. Verifiers (plugins)}\label{hackstreak-spec-v2-7-verifiers-plugins}}
+
+Interface, one small file per verifier in
+\path|hackstreak/verifiers/|:
+
+\begin{verbatim}
+class VerifyResult(NamedTuple):
+    ok: bool
+    summary: str            # shown to the user and stored as evidence, e.g. "nmap output 1.2 KB, modified today"
+    evidence_time: datetime | None   # when the real-world thing happened (None = unknown)
+
+def verify(spec: dict, vars: dict) -> VerifyResult: ...
+\end{verbatim}
+
+Built-ins by phase:
+
+\begin{longtable}[]{@{}P{.24\textwidth}P{.35\textwidth}P{.33\textwidth}@{}}
+\toprule\noalign{}
+Type & Checks & Phase \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{manual} & nothing; human confirms & 1 \\
+\texttt{file} & path exists, optional \texttt{min\_bytes}, optional
+\texttt{contains} regex & 1 \\
+\texttt{command} & runs a shell command, exit code 0 = pass, 10 s
+timeout, output truncated & 1 \\
+\texttt{http} & GET url, expected status & 2 \\
+\texttt{git} & repo has a commit matching a regex since a date & 2 \\
+\texttt{codeforces} & public API: accepted problems since node start
+\textgreater= N & 3 \\
+\texttt{praxis} & reads the local Praxis API (\texttt{/api/overview},
+\texttt{/api/submissions}) for solved-count deltas & 3 \\
+\texttt{github} & public API: commits/pushes since a date & 3 \\
+\end{longtable}
+
+\textbf{Trust model.} \texttt{command} verifiers execute shell commands
+from a pack file. A pack from someone else (or from an AI) is code.
+Therefore: \texttt{hack pack install} prints every command, nothing
+runs until \texttt{hack pack trust \textless{}id\textgreater{}} is
+typed, and editing a pack resets trust. Commands run with the
+owner\textquotesingle s permissions, with no \texttt{sudo}, never
+through a shell string built from user input (use \texttt{shlex.split},
+\texttt{shell=False}).
+
+\textbf{Auto evidence counts.} When a verifier passes with a known
+\texttt{evidence\_time}, the app writes an entry for that day with
+\path|source = "verifier:<type>"| and an
+auto-generated \texttt{learned} line (the verifier summary). Proof is
+the verifier, so the 20-character rule applies only to manual entries.
+Setting \path|auto_counts_for_streak| (default true) can turn this
+off.
+
+\texttt{hack sync} runs the verifiers of all UNLOCKED nodes, lists what
+looks done, and either completes (\texttt{auto\_complete = true}) or
+asks \texttt{hack accept}.
+
+\hypertarget{hackstreak-spec-v2-8-what-can-honestly-be-auto-fetched-verify-these-before-building-apis-change}{%
+\subsubsection{8. What can honestly be auto-fetched (verify these before
+building, APIs
+change)}\label{hackstreak-spec-v2-8-what-can-honestly-be-auto-fetched-verify-these-before-building-apis-change}}
+
+\begin{longtable}[]{@{}P{.22\textwidth}P{.18\textwidth}P{.32\textwidth}P{.18\textwidth}@{}}
+\toprule\noalign{}
+Source & Auto-detect? & How & My confidence \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Anything on the owner\textquotesingle s machines (files, scans,
+containers, ssh works, git commits) & Yes & \texttt{file} /
+\texttt{command} / \texttt{git} / \texttt{http} & High, fully under the
+owner\textquotesingle s control \\
+Codeforces & Yes & public API & High \\
+GitHub & Yes & public API & High \\
+Praxis (own app) & Yes & already syncs CF/LC/AtCoder/GfG, reuse its API
+& High \\
+LeetCode, GfG & Partly & unofficial endpoints, may break & Medium \\
+TryHackMe, HackTheBox & Unclear & no stable official progress API that I
+am sure of; check docs first & Low \\
+OverTheWire (Bandit etc.), picoCTF, books, videos & No & no
+account-progress API & Use manual + a concrete \texttt{done\_when} \\
+\end{longtable}
+
+\textbf{Artifact trick for things that cannot be fetched:} make the
+proof something that exists on the owner\textquotesingle s disk (a short
+writeup file, a scan, a script) and verify THAT with the \texttt{file}
+verifier. It also builds the habit of explaining things. \textbf{Never
+store or log wargame passwords or flags} (v1 secrets guard stays).
+
+\hypertarget{hackstreak-spec-v2-8b-pack-scale-project-packs-vs-proficiency-packs}{%
+\subsubsection{8b. Pack scale: "project" packs vs "proficiency"
+packs}\label{hackstreak-spec-v2-8b-pack-scale-project-packs-vs-proficiency-packs}}
+
+A pack that finishes in a week solves nothing; the owner is back to
+"what now" within days. Two kinds of pack, named explicitly so neither
+gets mistaken for the other:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Project pack} (\path|pack.kind = "project"|): a concrete
+  build with a finish line, 3-6 levels, finishes in days-to-weeks.
+  Example: the home hack lab itself.
+\item
+  \textbf{Proficiency pack} (\path|pack.kind = "proficiency"|):
+  meant to make the owner genuinely good at a subject (networking, OS
+  internals, a language, DSA topic, web/mobile dev). \textbf{8-15 main
+  levels}, each a real sub-skill, spanning weeks to a few months at the
+  owner\textquotesingle s real pace. This is the default for "I want to
+  learn X" requests.
+\end{itemize}
+
+Every level in a proficiency pack ends with one \textbf{milestone node}
+(\texttt{milestone = true}, size \texttt{M} or \texttt{L}): a harder,
+integrative task that cannot be passed by rote repetition of the
+level\textquotesingle s small nodes, e.g. "build a tiny TCP chat
+client+server from scratch, no copied code, and explain every socket
+call" rather than "read about sockets." A level\textquotesingle s gate
+(section 5) checks on the milestone node specifically, not merely on
+every node being done, so "proficient in this level" has a real test
+behind it, the same way a Duolingo unit ends with a harder review
+lesson. \texttt{lint} requires at least one \texttt{milestone = true}
+node per main level.
+
+\hypertarget{hackstreak-spec-v2-9-pack-authoring-how-maps-get-made-without-losing-control}{%
+\subsubsection{9. Pack authoring (how maps get made without losing
+control)}\label{hackstreak-spec-v2-9-pack-authoring-how-maps-get-made-without-losing-control}}
+
+Three sources, all ending in the same lint -\textgreater{} review
+-\textgreater{} install pipeline:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{By hand:} \path|hack pack new "Topic"| scaffolds a TOML
+  file with one example node.
+\item
+  \textbf{AI draft:} the owner (or Claude, or a local model) produces
+  TOML from the prompt below, then: \texttt{hack pack lint}
+  -\textgreater{} \path|hack pack check-links| -\textgreater{} read
+  it -\textgreater{}
+  \texttt{hack review \textless{}pack\textgreater{}} (flips
+  \texttt{reviewed}) -\textgreater{} \texttt{hack pack install}.
+\item
+  \textbf{Imported:} converted from a public roadmap by hand. Check that
+  source\textquotesingle s licence before copying its content.
+\end{enumerate}
+
+Prompt for generating a pack draft (paste into any LLM):
+
+\begin{quote}
+Output ONLY a TOML file in the hackstreak pack format (sections
+\texttt{{[}pack{]}}, \texttt{{[}vars{]}}, \texttt{{[}{[}node{]}{]}}).
+Topic: . My level: . Hardware: . Weekly time: . Rules: every node needs
+id, title, size (S\textless=30min, M=1-2h, L=3h+), needs, done\_when
+(one concrete checkable sentence, ideally an artifact on my disk), and
+resource (a real, well-known URL; if you are not sure a URL exists,
+write \texttt{resource = "TODO"} instead of guessing). Do not write
+lesson content. Prefer free official or community resources. Use
+\texttt{series} for numbered material. If this is a PROFICIENCY request
+(learn a subject, not build one project), use
+\path|pack.kind = "proficiency"| and write 8-15
+\texttt{{[}{[}level{]}{]}} blocks on the \texttt{main} lane (like
+Duolingo units), each 4-8 nodes covering one real sub-skill, and end
+each level with one \texttt{milestone = true} node that is a harder
+integrative task (build/explain something from scratch), not a repeat of
+the level\textquotesingle s small steps. If this is a PROJECT request
+(one concrete build with a finish line), use
+\path|pack.kind = "project"| and keep it to 3-6 levels total. Either
+way add at most one \texttt{side} lane level of S-sized quick wins for
+busy days. Every node needs a \texttt{level}. Order so that the first
+node can be started tonight. Prefer done\_when sentences that produce an
+artifact on my disk. Set \texttt{source = "ai-draft"} and
+\texttt{reviewed = false}.
+\end{quote}
+
+\hypertarget{hackstreak-spec-v2-9b-workflow-ask-claude-for-each-new-unit}{%
+\paragraph{9b. Workflow: "ask Claude for each new
+unit"}\label{hackstreak-spec-v2-9b-workflow-ask-claude-for-each-new-unit}}
+
+The engine ships with one starter pack. Every later unit is a new pack
+drafted on request:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Fill in \path|new-unit-request-template.md| (topic, current level,
+  time, hardware, what is already done) and paste it into a chat.
+\item
+  The model replies with ONLY a TOML pack. Save it to
+  \texttt{packs/\textless{}id\textgreater{}.toml}.
+\item
+  \texttt{hack pack lint} -\textgreater{}
+  \path|hack pack check-links| -\textgreater{} read every
+  \texttt{done\_when} -\textgreater{}
+  \texttt{hack review \textless{}id\textgreater{}} -\textgreater{}
+  \path|hack pack install <id>|.
+\item
+  \texttt{hack backfill ...} for anything already done, then
+  \path|hack mission start <id>| (only one
+  active mission at a time). The model has no memory between chats, so
+  the template carries everything it needs; do not rely on it
+  remembering the format.
+\end{enumerate}
+
+\hypertarget{hackstreak-spec-v2-10-cli-summary-v1-commands-plus}{%
+\subsubsection{10. CLI summary (v1 commands
+plus)}\label{hackstreak-spec-v2-10-cli-summary-v1-commands-plus}}
+
+\begin{verbatim}
+hack                         next node, mission, streak, today status (max 6 lines)
+hack 20                      next node that fits in 20 minutes
+hack more                    two alternatives to the current next node
+hack done "..." "..." [--complete] [--force "why"] [--proof X]
+hack check                   run current node's verifier
+hack sync                    run verifiers on all unlocked nodes, propose completions
+hack accept                  confirm proposed completions
+hack mark <node> done|skipped|todo [--note ...]
+hack backfill <node>...      mark old progress without creating streak entries
+hack pack new|lint|check-links|install|trust|list|diff|review
+hack mission start <pack>    make a pack the active mission (one active at a time)
+hack levels                  every level: progress bar, steps done/total, active days
+hack unlock <level>          open a gated level early (always allowed, always logged)
+hack skip <node>             shorthand for: mark <node> skipped
+hack split <node> "a" "b"    (Phase 2) replace a node with owner-defined smaller steps, stored in the DB, pack untouched
+hack park / parked / stats / heatmap / export / remind-check     (unchanged from v1)
+hack config nudge-time HH:MM | nudge-channel telegram|desktop|both | nudge-test
+hack install-nudge            set up the local (Ubuntu) desktop-notification timer
+\end{verbatim}
+
+\hypertarget{hackstreak-spec-v2-11-phases-revised}{%
+\subsubsection{11. Phases (revised)}\label{hackstreak-spec-v2-11-phases-revised}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Phase 1 (one sitting, stdlib only):} v1 Phase 1 + packs
+  (\texttt{tomllib}), \texttt{lint}, \texttt{install}, \texttt{trust},
+  \texttt{mission start}, next-step picking with
+  \texttt{hack \textless{}minutes\textgreater{}}, \texttt{mark},
+  \texttt{backfill}, \texttt{done -\/-complete}, verifiers
+  \texttt{manual} / \texttt{file} / \texttt{command}, milestone-gated
+  levels.
+\item
+  \textbf{Phase 1b (nudging -\/- build right after Phase 1, same week):}
+  see section 11b. This exists now, not later, because a system that
+  never pings the owner relies on willpower, which is the exact thing
+  that has not worked so far.
+\item
+  \textbf{Phase 2:} \texttt{http} and \texttt{git} verifiers,
+  \texttt{sync}/\texttt{accept}, \texttt{split}, \texttt{check-links}.
+\item
+  \textbf{Phase 3:} Codeforces / Praxis / GitHub verifiers, dashboard,
+  shared log across devices.
+\item
+  \textbf{Phase 4 (deliberately later):} pack sharing, optional
+  LeetCode/TryHackMe verifiers if their APIs prove stable.
+\end{itemize}
+
+\hypertarget{hackstreak-spec-v2-11b-nudging-phase-1b}{%
+\subsubsection{11b. Nudging (Phase 1b)}\label{hackstreak-spec-v2-11b-nudging-phase-1b}}
+
+\textbf{Problem specific to this owner:} the laptop dual-boots Windows
+11 and Ubuntu 24.04. A cron job on Ubuntu goes silent on every day spent
+in Windows. The Raspberry Pi 5 is the one machine that is always on
+regardless of what the laptop is doing, so the Pi is the primary nudge
+source. The laptop\textquotesingle s own notifications are a secondary,
+bonus channel.
+
+\textbf{Primary: Telegram from the Pi (reliable across both OSes).}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{hack sync-to-pi} (or a \texttt{cron}/\texttt{rsync}
+  one-liner) mirrors
+  \path|~/.hackstreak/hackstreak.db| (or just the
+  \texttt{entries}/\texttt{node\_state} tables) to the Pi once a day,
+  OR, simpler for Phase 1b: the owner runs \texttt{hack} ad-hoc on the
+  Pi itself over SSH, OR the DB lives on the Pi from the start and the
+  laptop points \texttt{HACKSTREAK\_HOME} at it over the already-working
+  SSH/LAN link from the hack-lab mission. Pick whichever is already true
+  by the time this is built; do not add a new sync mechanism just for
+  this.
+\item
+  On the Pi, a systemd timer (or cron) runs at a configurable time
+  (\path{settings.nudge_time}, default \texttt{21:30}), executing
+  \texttt{hack remind-check}. Exit 1 (not logged today) triggers
+  \path|hackstreak/nudge_telegram.py|, which POSTs to
+  \path|https://api.telegram.org/bot<token>/sendMessage|
+  using \texttt{TELEGRAM\_BOT\_TOKEN}/\texttt{TELEGRAM\_CHAT\_ID} from
+  environment variables (never stored in the DB or committed to git;
+  \texttt{.env} stays in \texttt{.gitignore}).
+\item
+  Message includes the streak, "at risk" framing, and the actual next
+  step text, e.g.
+  \path|"Streak 9 (at risk). Chess done? Next: bandit-14 or recon-scan (20 min)."|
+\item
+  A second, later check (e.g. 23:30) fires only if still unlogged,
+  mirroring Duolingo\textquotesingle s second reminder. No third nudge
+  in one day: more than two starts to feel naggy rather than helpful,
+  and the owner already named notification fatigue as a risk ("sometimes
+  im not able to do this" referred to overload, not forgetting).
+\end{itemize}
+
+\textbf{Secondary: local desktop notification on Ubuntu (bonus, same
+trigger).}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{hack install-nudge} installs a user-level systemd timer
+  calling \texttt{hack remind-check}; on failure it shells out to
+  \path|notify-send "hackstreak" "<message>"|
+  (available by default on Ubuntu/GNOME). This only fires on days the
+  owner is booted into Ubuntu at that hour, which is why it is
+  secondary, not the thing relied on.
+\item
+  No equivalent is built for Windows in Phase 1b. If needed later,
+  Windows Toast via \texttt{win10toast} or a scheduled task is a Phase
+  2+ add-on, not required while the Pi/Telegram path exists.
+\end{itemize}
+
+\textbf{Config:} \path|hack config nudge-time 21:30|,
+\path!hack config nudge-channel telegram|desktop|both!,
+\path|hack config nudge-test| (sends a test message immediately, so
+the owner can confirm it works before trusting it).
+
+\textbf{Tests:} \texttt{remind-check} exit code matches whether today is
+logged; the nudge script does not fire a second message on the same day
+after the owner logs between the two check times; a missing Telegram
+token degrades to "desktop only, warn once" rather than crashing
+silently.
+
+\hypertarget{hackstreak-spec-v2-12-added-acceptance-tests}{%
+\subsubsection{12. Added acceptance
+tests}\label{hackstreak-spec-v2-12-added-acceptance-tests}}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{lint} rejects: duplicate id, missing \texttt{done\_when},
+  \texttt{needs} pointing nowhere, a cycle, size outside S/M/L, non-URL
+  resource.
+\item
+  Series \texttt{\{from=13,to=15\}} expands to \texttt{bandit-13..15},
+  chained in order, with \texttt{\{n\}}/\texttt{\{next\}} substituted.
+\item
+  \texttt{next\_nodes} skips locked nodes, skips done/skipped nodes,
+  respects \texttt{max\_minutes}, and returns \texttt{{[}{]}} when
+  nothing fits.
+\item
+  Updating a pack file (adding a node, reordering) keeps existing
+  \texttt{node\_state} rows intact.
+\item
+  \texttt{done -\/-complete} with a failing \texttt{file} verifier
+  leaves the node \texttt{todo}; with \texttt{-\/-force} it records
+  \texttt{how = forced}.
+\item
+  \texttt{command} verifier: times out after 10 s, never uses
+  \texttt{shell=True}, and a pack with command verifiers cannot run
+  before \texttt{trust}.
+\item
+  \texttt{backfill} creates \texttt{node\_state} rows but zero entries
+  (streak unchanged).
+\item
+  Verifier-sourced entries count for the streak on the day of
+  \texttt{evidence\_time}, not the day of \texttt{sync}.
+\item
+  Levels: nodes in main level 2 are hidden until every node of main
+  level 1 is done/skipped; \texttt{unlock} opens it early;
+  \texttt{gate = false} opens it at once.
+\item
+  Side-lane nodes are always eligible and never block or unlock anything
+  on the main path.
+\item
+  \texttt{hack} with one main and one side candidate prints both (Next +
+  Quick win); \texttt{hack 10} prefers whichever fits.
+\item
+  Active days per level counts distinct logical days, not entries (two
+  entries on one day = 1).
+\item
+  \texttt{lint} rejects a node whose \texttt{level} does not exist and a
+  pack with no main level.
+\item
+  No engine source file contains the strings "bandit", "juice",
+  "overthewire" (grep test).
+\end{itemize}
+
+\hypertarget{hackstreak-spec-v2-13-prompt-for-the-coding-agent}{%
+\subsubsection{13. Prompt for the coding
+agent}\label{hackstreak-spec-v2-13-prompt-for-the-coding-agent}}
+
+\begin{quote}
+Read \path|hackstreak-spec-v2.md| (it supersedes v1 where they
+conflict; also read v1 for the streak rules and algorithm). Build
+\textbf{Phase 1 AND Phase 1b of v2}: Python 3.11, standard library only
+for Phase 1 (Phase 1b\textquotesingle s Telegram call may use
+\texttt{urllib}, still no third-party dependency), one installable CLI
+\texttt{hack}. Write the tests from v1 section 11 and v2 section 12
+FIRST (pytest), then implement until they pass. Install
+\path|packs/home-hack-lab.toml| as the sample pack and run
+\texttt{hack pack lint} on it. Ask me before deviating from the spec.
+When finished show: file tree, \texttt{pytest} output, and a demo of
+\texttt{hack pack install}, \texttt{hack mission start},
+\texttt{hack backfill}, \texttt{hack levels}, \texttt{hack},
+\texttt{hack 20}, \path|hack done ... ---complete|,
+\texttt{hack stats}, \path|hack config nudge-test| (or an
+explanation of what is stubbed if Telegram credentials are not available
+in this environment).
+\end{quote}

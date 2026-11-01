@@ -1,0 +1,159 @@
+\section{Curriculum assurance: what is supported and what is not}
+\label{curriculum-assurance}
+\subsection{Conclusion and evidence standard}
+The cyber tracks are \textbf{evidence-informed draft curricula with explicit
+performance assessments}. They are not empirically proven courses, accredited
+certifications, or a guarantee of career outcomes. Structural validation proves
+that the software can parse and traverse a path; it does not prove that following
+it produces intuition. Real evidence of an individual's learning is the ability
+to explain a mechanism, reproduce a result, handle an unfamiliar variation, and
+repeat the reasoning after a delay. A credible claim about the curriculum's
+average effectiveness would require learner outcome data that do not yet exist.
+
+This audit reviewed public first-party curricula, official exercise specifications,
+research abstracts/publisher summaries, a teaching practice guide, and practitioner
+accounts. It did not purchase courses, inspect private learner records, execute
+every third-party lab, or run a controlled learning study. Source-specific access
+and inference limits appear in the evidence register below. Published curricula
+are useful alignment references, not external endorsements of Ascend.
+
+\subsection{Research-to-design reasoning}
+Roediger and Karpicke's 2006 experiments found an advantage for retrieval over
+restudy on delayed tests of prose; Karpicke and Blunt's 2011 work also examined
+comprehension/inference from science material. These are reasons to include
+closed-notes reconstruction, not evidence that a memory quiz alone teaches
+security operations. The Dunlosky review's publisher summary gives stronger
+support to practice testing and distributed practice than passive rereading.
+The IES guide recommends spacing, alternating worked examples with problem
+solving, connecting concrete and abstract representations, and explanatory
+questions. The resulting design combines explanation with actual lab behavior.
+
+The practical sequence is: prerequisite demonstration; guided experiment;
+prediction and observation; explanation of mechanism; changed-case assessment;
+positive/negative control; later retrieval and correction. References and hints
+are legitimate during learning. A learner who needed a complete walkthrough
+records that help, practices, then attempts a fresh small variation before claiming
+independent transfer. There is no rule that struggling without guidance is better
+than learning from a worked example.
+
+\subsection{Lessons from practitioners and their limits}
+Julia Evans describes identifying the exact question behind vague confusion and
+researching it until her model improves. LiveOverflow describes programming,
+CTF/wargame attempts, and studying unsolved challenge write-ups as parts of his
+own development. The useful adaptation is a cycle of attempt, feedback and a new
+attempt, not his page's unsupported universal 10,000-hour slogan.
+
+Vendor-hosted interviews with Kamil Vavra and Johnny Villarreal give concrete
+accounts of lab practice informing workplace understanding, while also describing
+help from peers and difficulty with unfamiliar mechanisms. These are selected,
+self-reported successes subject to survivorship and marketing bias. They do not
+justify guarantees, all-night work, compulsive platform use, or the claim that one
+person's ordering suits every beginner. James Kettle's published research is a
+technical example of testing a mechanism across implementations, not a curriculum
+outcome study. Ascend uses these accounts as context, below experimental learning
+research in the evidence hierarchy.
+
+\subsection{Scope and prerequisites of each track}
+\begin{longtable}{p{.22\textwidth}p{.32\textwidth}p{.38\textwidth}}
+\textbf{Track} & \textbf{Entry demonstration} & \textbf{Outcome and limits}\\\hline
+Networking & Local service, address/port, client request, capture location. & Packet/route reasoning and bounded troubleshooting. Does not cover all enterprise routing, IPv6 engineering, or wireless exploitation.\\
+Web application security & Capture/replay a training request and explain input, response and identity. & Selected web vulnerability mechanisms, authorization testing, and repair. Not the entire OWASP taxonomy or a replacement for the full Academy.\\
+Network penetration testing & Owned/training host, shell identity, network baseline and reset. A separate Windows baseline precedes Windows escalation. & Scoped enumeration, service hypotheses, lab escalation and reporting. Not the full enterprise/job-role syllabus, stealth training, or authority to test third parties.\\
+Reverse engineering & Compile simple C; explain arrays, pointers, lifetime and ABI. & Small-binary reasoning and introductory memory-corruption/ROP mechanisms. Not a guarantee of kernel/browser exploit expertise. Architecture and lab image must match.\\
+Defensive security & Available telemetry, user permissions, time handling and a harmless recorded event. & Log investigation, bounded detection evaluation, incident evidence and controls. Enterprise Windows DFIR and other SOC specialisms need additional training.\\
+\end{longtable}
+Foundation failures are useful diagnostic results. Use the linked foundation
+material and repeat a small demonstration; do not treat a tool installation as
+proof of the underlying prerequisite. Main milestones depend on the level's
+preparatory tasks, including previously omitted patching and transfer concepts.
+
+\subsection{Technical corrections made by the audit}
+Phoenix Stack Zero overwrites adjacent data; later exercises introduce indirect
+calls or saved-return-address control. ROP Emporium's multi-call assessment now
+names \emph{callme}, rather than implying that every split/ret2win solution shows
+multi-call chaining. Examples record architecture, ABI, allocator and mitigations.
+Undefined behavior need not crash, and a decompiler need not make an error for an
+exercise to be useful.
+
+Security Onion only supports x86-64. A Pi may supply telemetry, but cannot host
+that distribution. Import/Eval/Standalone are different modes. The current
+hardware table says 50 GB for Import while the first-time guide says 200 GB;
+plan conservatively for 200 GB and check the chosen release. A supported hosted
+SIEM lab is an alternative. No subscription or infrastructure cost is silently
+assumed to be zero. Import exercises teach ingestion/search, not continuous
+production monitoring.
+
+A default Suricata ruleset does not guarantee an alert for an arbitrary nmap scan.
+A DHCP renewal need not contain all four DORA messages. An address lookup does not
+by itself show NAT rewriting; a public address comparison is not inside/outside
+packet evidence. GraphQL introspection alone is not an authorization vulnerability.
+Juice Shop is not assumed to provide a standard access log without configuration.
+Sigma event selection is distinguished from backend-dependent correlation.
+No exercise requires a learner to invent an error, vulnerability, real outage,
+or unobservable fact in order to complete it.
+
+The final version-3 resource audit checked 117 unique URLs: 111 responded
+successfully and six returned access restrictions (TryHackMe 429 or Cloudflare
+403). Unreachable CTF101 references and failing Exploit-DB references were replaced
+with relevant official Phoenix, pwn.college, ROP Emporium and Rapid7 resources.
+The replacements were opened and inspected; a reachable index still requires
+selecting the relevant exercise. The machine-readable audit in
+\path{docs/testing/cyber-track-links-v3.json} preserves original failures and
+replacements. HTTP success is neither a full content audit nor a promise that a
+paid or account-gated lab is freely available. Restricted responses are not proof
+that the resource is dead.
+
+\subsection{Assessment rubric and evidence packet}
+For each milestone, retain the lab/dataset version and scope, baseline prediction,
+observed evidence, reproduction steps, a changed case, a control, the explanation,
+limitations and help used. Keep third-party solutions/flags private where required
+and exclude credentials. The following are separate decisions, not a score whose
+high average can hide a missing skill:
+\begin{enumerate}
+\item Can the learner explain the causal mechanism rather than only recite a command?
+\item Can the result be reproduced from a known state using the saved evidence?
+\item Can the learner independently solve or correctly predict a changed case?
+\item Does a contrasting control distinguish the claimed mechanism from noise,
+configuration failure, or a broken legitimate workflow?
+\end{enumerate}
+Claim the assessment only when all four are supported. If help reveals the answer,
+record practice and attempt a fresh variation. A peer or instructor should select
+or inspect the variant when possible; self-selected easy variants are weaker
+evidence. The existing file verifier only checks artifact presence and optional
+size/pattern. It is not an automated grader of these four decisions.
+
+Each level also has an optional return-later node. Attempt it on another day,
+usually 2--7 days later, before opening the original notes; then compare, correct,
+and log what remains uncertain. This interval is an authoring choice, not a
+validated optimal schedule. Ascend currently checks only the prerequisite,
+not elapsed time. Reopening a practice task is possible; there is no automated
+spaced-repetition scheduler or retention certificate.
+
+\subsection{Versioning and existing learners}
+Version 3 preserves all version-2 task IDs and prior progress. It adds five entry
+checks, one Windows baseline and forty return-later tasks. A previously completed
+milestone remains completed for navigation, but its old completion does not
+retroactively meet the new assessment criteria. Existing learners can use the
+new recall task or explicitly reopen a milestone to collect evidence under this
+rubric. Review/trust resets on changed pack content; neither this audit nor a
+successful file check grants human review status. Every pack remains an AI draft.
+
+\subsection{How to evaluate learning in actual use}
+Before a level, attempt a short baseline task without its solution and record
+explanation, result, confidence, time and help. After its guided work, attempt a
+fresh comparable task using the four assessment decisions above. Repeat a small
+changed-case test after about a week. Track which misconceptions disappear, which
+skills transfer, assistance required, and whether gains survive the delay.
+Completion count, confidence, streak length and minutes alone are not learning
+outcome measures. Failure should lead to a smaller experiment or prerequisite
+repair, not invented success evidence.
+
+For a pilot with several learners, collect starting experience, hardware/tool
+constraints, baseline and delayed task results, attrition and time costs. Use a
+predefined rubric and, if feasible, an assessor unaware of whether an answer was
+pre- or post-training. Report missing follow-ups and failed tasks. A before/after
+pilot can support feasibility and individual progress; causal comparisons with
+another curriculum require a stronger study design. No such pilot has been run.
+
+\input{latex/generated/curriculum-map.tex}
+\input{latex/generated/research-sources.tex}

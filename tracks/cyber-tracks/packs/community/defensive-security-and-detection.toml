@@ -12,7 +12,7 @@
 id = "defensive-security-and-detection"
 title = "Defensive Security & Detection"
 kind = "proficiency"
-version = 2
+version = 3
 source = "ai-draft"
 reviewed = false
 
@@ -66,12 +66,29 @@ title = "MITRE ATT&CK technique drills"
 lane = "side"
 
 # ---------------------------------------------------------------- 1: logging-fundamentals
+[[level]]
+id = "retrieval"
+title = "Return later: explain and transfer"
+lane = "side"
+
+[[node]]
+id = "lab-readiness"
+level = "logging-fundamentals"
+title = "Confirm which events your lab can actually record"
+size = "S"
+minutes = 20
+needs = []
+brief = "Establish the prerequisites with a small demonstration. Use a foundations lesson if you cannot yet explain the result."
+done_when = "Identify a Linux training host, current user/permissions, log source and timezone. Generate a harmless logger marker, locate it in the journal or configured log, and document any permission issue plus a usable supplied-log fallback."
+resource = "https://academy.hackthebox.com/path/preview/soc-analyst"
+verify = { type = "manual" }
+
 [[node]]
 level = "logging-fundamentals"
 id = "linux-log-locations"
 title = "Leave a breadcrumb, then find it in the logs"
 size = "S"
-needs = []
+needs = ["lab-readiness"]
 done_when = "Found my generated log marker and saved its timestamp, source, and a map of the available system log sources in {lab_dir}/notes/log-locations.md."
 resource = "https://www.loggly.com/ultimate-guide/linux-logging-basics/"
 verify = { type = "file", path = "{lab_dir}/notes/log-locations.md", min_bytes = 150 }
@@ -99,7 +116,7 @@ level = "logging-fundamentals"
 id = "journald-basics"
 title = "Cut a noisy log down to the one event that matters"
 size = "S"
-needs = []
+needs = ["lab-readiness"]
 done_when = "used journalctl to filter logs by service, by time range, and by priority, saved 3 example commands and their purpose at {lab_dir}/notes/journald.md"
 resource = "https://www.freedesktop.org/software/systemd/man/journalctl.html"
 verify = { type = "file", path = "{lab_dir}/notes/journald.md", min_bytes = 100 }
@@ -113,17 +130,17 @@ level = "logging-fundamentals"
 id = "logging-milestone"
 title = "Rebuild a mini incident timeline"
 size = "M"
-needs = ["auth-log-reading", "journald-basics"]
+needs = ["lab-readiness", "linux-log-locations", "auth-log-reading", "journald-basics"]
 milestone = true
-done_when = "Reconstructed three lab events from their log evidence and saved the source lines, timeline, and an uncertainty in {lab_dir}/notes/logging-milestone.md."
+done_when = "Demonstrated: Reconstruct an event timeline while separating observations from inference. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/logging-milestone.md."
 resource = "https://www.loggly.com/ultimate-guide/linux-logging-basics/"
 verify = { type = "file", path = "{lab_dir}/notes/logging-milestone.md", min_bytes = 250 }
 
 # ---------------------------------------------------------------- 2: log-analysis
 minutes = 60
-brief = "A few log lines can tell a complete story. Show what happened, in what order, and what you cannot prove."
-steps = ["In a disposable lab session, generate a login, a failed login, and a service event. Alternatively use a saved training log containing these events.", "Set aside your command history and reconstruct the order from log timestamps and event fields.", "Save source lines, a three-event timeline, and one uncertainty in {lab_dir}/notes/logging-milestone.md."]
-hints = []
+brief = "Reconstruct an event timeline while separating observations from inference."
+steps = ["Before testing, record your prediction and the observation that would change your mind.", "Use three benign events from your lab or an unused training log. Reconstruct order, identity, action, and outcome from source lines before comparing with ground truth.", "Transfer check: Change the time window or include another source and explain timestamp/timezone handling.", "Control check: Include an unrelated event and one deliberately missing source; distinguish a negative result from missing telemetry.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/logging-milestone.md."]
+hints = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
 
 [[node]]
 level = "log-analysis"
@@ -141,17 +158,17 @@ id = "web-log-analysis"
 title = "Analysing web server access logs for an attack"
 size = "M"
 needs = ["grep-and-awk-for-logs"]
-done_when = "ran a scan or directory brute-force from the network-penetration-testing track against Juice Shop, then found the evidence of it in the access logs, wrote {lab_dir}/notes/web-log-analysis.md"
+done_when = "Configured or used a documented training HTTP access log, generated normal and test requests in an owned lab, and matched paths/statuses/timestamps to source lines in {lab_dir}/notes/web-log-analysis.md. Verified that logging exists instead of assuming Juice Shop writes a standard access log."
 resource = "https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html"
 verify = { type = "file", path = "{lab_dir}/notes/web-log-analysis.md", min_bytes = 150 }
 
 [[node]]
 level = "log-analysis"
 id = "false-positives"
-title = "Why log analysis is mostly about ruling things OUT"
+title = "Challenge your first suspicious-looking result"
 size = "S"
 needs = []
-done_when = "wrote {lab_dir}/notes/false-positives.md with 3 real examples of log entries that LOOK suspicious but usually aren't, and how you'd confirm either way"
+done_when = "Compared three labeled benign/suspicious training examples, tested a contextual discriminator for each, and saved supported verdicts or explicit uncertainty in {lab_dir}/notes/false-positives.md."
 resource = "https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html"
 
 [[node]]
@@ -159,13 +176,17 @@ level = "log-analysis"
 id = "log-analysis-milestone"
 title = "Find the needle: one real attack hidden in normal traffic (milestone)"
 size = "L"
-needs = ["web-log-analysis", "false-positives"]
+needs = ["grep-and-awk-for-logs", "web-log-analysis", "false-positives"]
 milestone = true
-done_when = "generated an hour of normal Juice Shop browsing traffic PLUS one hidden attack somewhere in the middle, then found and proved the attack using log analysis alone, documented the process at {lab_dir}/notes/log-milestone.md"
+done_when = "Demonstrated: Build a detection query and evaluate it against labeled positive and negative data. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/log-milestone.md."
 resource = "https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html"
-verify = { type = "file", path = "{lab_dir}/notes/log-milestone.md", min_bytes = 300 }
+verify = { type = "file", path = "{lab_dir}/notes/log-milestone.md", min_bytes = 250 }
 
 # ---------------------------------------------------------------- 3: network-monitoring
+brief = "Build a detection query and evaluate it against labeled positive and negative data."
+steps = ["Before testing, record your prediction and the observation that would change your mind.", "Use a small labeled training dataset containing suspicious and ordinary requests. Design a query without looking at the answer labels, then compare its results with ground truth.", "Transfer check: Change the source address or request ordering in a synthetic copy; test whether the same behavior is still found.", "Control check: Record true positives, false positives, and false negatives with counts and explain at least one ambiguity.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/log-milestone.md."]
+hints = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
+
 [[node]]
 level = "network-monitoring"
 id = "zeek-setup"
@@ -192,7 +213,7 @@ id = "suricata-setup"
 title = "Suricata: signature-based detection basics"
 size = "M"
 needs = []
-done_when = "installed Suricata, ran it with a default ruleset against traffic containing a known-bad pattern (e.g. an nmap scan), confirmed an alert fired, saved the alert plus notes at {lab_dir}/notes/suricata-setup.md"
+done_when = "Installed or used a supplied Suricata lab, validated configuration, and ran a documented test rule against a matching PCAP and a benign control. Saved the rule identifier and both outcomes in {lab_dir}/notes/suricata-setup.md; did not assume any nmap scan triggers the default ruleset."
 resource = "https://docs.suricata.io/en/latest/quickstart.html"
 verify = { type = "file", path = "{lab_dir}/notes/suricata-setup.md", min_bytes = 150 }
 
@@ -201,22 +222,28 @@ level = "network-monitoring"
 id = "network-monitoring-milestone"
 title = "Detect a full attack chain across both tools (milestone)"
 size = "L"
-needs = ["zeek-attack-trace", "suricata-setup"]
+needs = ["zeek-setup", "zeek-attack-trace", "suricata-setup"]
 milestone = true
-done_when = "ran a multi-step attack (recon -> exploitation) against the Pi while BOTH Zeek and Suricata were capturing, then wrote {lab_dir}/notes/network-monitoring-milestone.md on what each tool caught that the other didn't"
+done_when = "Demonstrated: Explain the differences between connection metadata and signature alerts. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/network-monitoring-milestone.md."
 resource = "https://docs.zeek.org/en/master/"
-verify = { type = "file", path = "{lab_dir}/notes/network-monitoring-milestone.md", min_bytes = 300 }
+verify = { type = "file", path = "{lab_dir}/notes/network-monitoring-milestone.md", min_bytes = 250 }
 
 # ---------------------------------------------------------------- 4: siem-basics
+brief = "Explain the differences between connection metadata and signature alerts."
+steps = ["Before testing, record your prediction and the observation that would change your mind.", "Replay a documented benign-plus-test PCAP through Zeek and Suricata; confirm the relevant parser and rule are enabled before comparing outputs.", "Transfer check: Change a protocol field or replay a different small capture and predict the connection record and alert outcome.", "Control check: Use a benign control capture; a generic nmap scan is not guaranteed to trigger an arbitrary default ruleset.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/network-monitoring-milestone.md."]
+hints = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
+
 [[node]]
 level = "siem-basics"
 id = "security-onion-setup"
-title = "Security Onion: get it running in a VM"
+title = "Ingest a small dataset into a supported SIEM lab"
 size = "L"
 needs = []
-done_when = "installed Security Onion in a VM, pointed it at traffic (even just the VM's own interface), confirmed events are flowing into its dashboard, saved a screenshot plus setup notes at {lab_dir}/notes/securityonion-setup.md"
-resource = "https://securityonionsolutions.com/software"
+done_when = "In a supported Security Onion Import/Eval installation or a supplied hosted SIEM lab, located a known ingested training event and saved mode, hardware/platform, dataset source, event fields, and time handling in {lab_dir}/notes/securityonion-setup.md."
+resource = "https://docs.securityonion.net/en/2.4/hardware.html"
 verify = { type = "file", path = "{lab_dir}/notes/securityonion-setup.md", min_bytes = 100 }
+brief = "Use the lightest supported mode that teaches ingestion and search. Security Onion itself requires x86-64, not the Pi’s ARM processor."
+steps = ["Check the current hardware guide: Import needs x86-64, at least 2 CPU cores and 4 GB RAM. Plan for 200 GB storage: the current first-time guide and hardware table disagree on storage. Check the chosen release; Eval requires more resources.", "Use Import on a suitable x86-64 host, or a supplied hosted SIEM training environment. A Pi can supply logs or captures; do not install Security Onion on it.", "Import a small documented PCAP or event dataset. Confirm a known event, its source, and time handling before trying to investigate."]
 
 [[node]]
 level = "siem-basics"
@@ -224,7 +251,7 @@ id = "siem-search"
 title = "Searching and pivoting in a SIEM dashboard"
 size = "M"
 needs = ["security-onion-setup"]
-done_when = "used Security Onion's dashboard (Kibana-based) to search for one specific event type and pivot from it to related events, documented the query and findings at {lab_dir}/notes/siem-search.md"
+done_when = "Used the selected SIEM’s supported search interface to find one known event and pivot by identity, host, and time; saved queries and evidence in {lab_dir}/notes/siem-search.md. Named the actual product/interface version rather than assuming every dashboard is Kibana."
 resource = "https://docs.securityonion.net/en/2.4/kibana.html"
 verify = { type = "file", path = "{lab_dir}/notes/siem-search.md", min_bytes = 150 }
 
@@ -233,8 +260,8 @@ level = "siem-basics"
 id = "alert-triage"
 title = "Alert triage: true positive, false positive, or needs more info"
 size = "M"
-needs = []
-done_when = "picked 5 real alerts generated by your own lab traffic and triaged each one (true positive / false positive / inconclusive) with reasoning, saved at {lab_dir}/notes/alert-triage.md"
+needs = ["siem-search"]
+done_when = "Triaged five labeled training alerts/events as true positive, false positive, or inconclusive using related source evidence. Compared verdicts with the answer key only after investigating and saved corrections in {lab_dir}/notes/alert-triage.md."
 resource = "https://www.sans.org/white-papers/"
 verify = { type = "file", path = "{lab_dir}/notes/alert-triage.md", min_bytes = 200 }
 
@@ -243,13 +270,17 @@ level = "siem-basics"
 id = "siem-milestone"
 title = "Full SIEM-based investigation of a simulated incident (milestone)"
 size = "L"
-needs = ["siem-search", "alert-triage"]
+needs = ["security-onion-setup", "siem-search", "alert-triage"]
 milestone = true
-done_when = "ran an attack from an earlier track against monitored infrastructure, then investigated it from the SIEM alone (not from knowing what you did), wrote {lab_dir}/notes/siem-milestone.md as if briefing someone who doesn't know what happened"
+done_when = "Demonstrated: Investigate indexed security events using reproducible queries and pivots. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/siem-milestone.md."
 resource = "https://docs.securityonion.net/"
-verify = { type = "file", path = "{lab_dir}/notes/siem-milestone.md", min_bytes = 300 }
+verify = { type = "file", path = "{lab_dir}/notes/siem-milestone.md", min_bytes = 250 }
 
 # ---------------------------------------------------------------- 5: detection-engineering
+brief = "Investigate indexed security events using reproducible queries and pivots."
+steps = ["Before testing, record your prediction and the observation that would change your mind.", "In Security Onion Import/Eval on supported x86-64 hardware, or a supplied hosted SIEM lab, ingest/inspect a small training dataset and investigate an unfamiliar event.", "Transfer check: Pivot from an event to a second host, identity, or time interval without using a prewritten query for that pivot.", "Control check: Confirm a known benign event is also ingested; account for missing sources, time offsets, and query scope before inferring absence.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/siem-milestone.md."]
+hints = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
+
 [[node]]
 level = "detection-engineering"
 id = "suricata-rule-syntax"
@@ -266,7 +297,7 @@ id = "sigma-rules"
 title = "Sigma: writing detection rules that aren't tool-specific"
 size = "M"
 needs = ["suricata-rule-syntax"]
-done_when = "wrote one Sigma rule for a log-based detection (e.g. multiple failed SSH logins), documented why a vendor-neutral rule format is useful at {lab_dir}/notes/sigma.md"
+done_when = "Wrote one Sigma rule for a single observable event pattern and validated it against the chosen backend or training fixture. Saved fields, log source, query translation, positive/negative examples, and limits in {lab_dir}/notes/sigma.md. Used explicit correlation support for time-window counts instead of assuming a simple Sigma selection performs aggregation."
 resource = "https://github.com/SigmaHQ/sigma"
 verify = { type = "file", path = "{lab_dir}/notes/sigma.md", min_bytes = 150 }
 
@@ -275,7 +306,7 @@ level = "detection-engineering"
 id = "detection-coverage"
 title = "Mapping your detection rules to MITRE ATT&CK"
 size = "S"
-needs = []
+needs = ["sigma-rules"]
 done_when = "listed every detection rule you've written in this track and mapped each to a MITRE ATT&CK technique ID, saved at {lab_dir}/notes/detection-coverage.md"
 resource = "https://attack.mitre.org/"
 verify = { type = "file", path = "{lab_dir}/notes/detection-coverage.md", min_bytes = 150 }
@@ -285,13 +316,17 @@ level = "detection-engineering"
 id = "detection-milestone"
 title = "Write a detection rule for an attack you haven't tested yet (milestone)"
 size = "L"
-needs = ["sigma-rules", "detection-coverage"]
+needs = ["suricata-rule-syntax", "sigma-rules", "detection-coverage"]
 milestone = true
-done_when = "picked an attack technique from the network-penetration-testing or reverse-engineering tracks you have NOT yet written a detection for, wrote a rule for it, ran the actual attack to confirm the rule fires, documented at {lab_dir}/notes/detection-milestone.md"
+done_when = "Demonstrated: Evaluate a rule as a hypothesis about observable behavior. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/detection-milestone.md."
 resource = "https://attack.mitre.org/"
 verify = { type = "file", path = "{lab_dir}/notes/detection-milestone.md", min_bytes = 250 }
 
 # ---------------------------------------------------------------- 6: hardening
+brief = "Evaluate a rule as a hypothesis about observable behavior."
+steps = ["Before testing, record your prediction and the observation that would change your mind.", "Write one new rule for a bounded lab behavior; record required telemetry, test data, rule version, and results against labeled positive and negative samples.", "Transfer check: Change a nonessential address, username, or ordering and check whether behavior-based coverage survives.", "Control check: Count false positives and false negatives; explain a known blind spot and test the benign control after tuning.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/detection-milestone.md."]
+hints = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
+
 [[node]]
 level = "hardening"
 id = "cis-benchmarks"
@@ -327,30 +362,34 @@ level = "hardening"
 id = "hardening-milestone"
 title = "Harden a fresh VM, then attack it yourself to validate (milestone)"
 size = "L"
-needs = ["cis-benchmarks", "service-minimization"]
+needs = ["cis-benchmarks", "service-minimization", "patch-management"]
 milestone = true
-done_when = "applied a full hardening pass to a fresh VM using techniques from this level, then attacked it with techniques from network-penetration-testing to confirm what's now blocked and what isn't, wrote {lab_dir}/notes/hardening-milestone.md"
+done_when = "Demonstrated: Demonstrate that a configuration change blocks a chosen path while preserving legitimate use. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/hardening-milestone.md."
 resource = "https://www.cisecurity.org/cis-benchmarks"
-verify = { type = "file", path = "{lab_dir}/notes/hardening-milestone.md", min_bytes = 300 }
+verify = { type = "file", path = "{lab_dir}/notes/hardening-milestone.md", min_bytes = 250 }
 
 # ---------------------------------------------------------------- 7: incident-response
+brief = "Demonstrate that a configuration change blocks a chosen path while preserving legitimate use."
+steps = ["Before testing, record your prediction and the observation that would change your mind.", "On a disposable VM, establish baseline access, apply selected service/permission/update-policy changes, and rerun the relevant lab checks.", "Transfer check: Test from a second role or service endpoint to find an overbroad assumption.", "Control check: Prove legitimate access still works and verify rollback. An empty scan alone does not distinguish hardening from an offline machine.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/hardening-milestone.md."]
+hints = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
+
 [[node]]
 level = "incident-response"
 id = "ir-lifecycle"
-title = "The incident response lifecycle"
+title = "Choose response actions for a small incident"
 size = "S"
 needs = []
-done_when = "wrote {lab_dir}/notes/ir-lifecycle.md explaining the standard IR phases (preparation, detection, containment, eradication, recovery, lessons learned) in your own words, with one concrete action per phase"
+done_when = "Applied an incident-response lifecycle to a short training scenario, recorded a decision and supporting evidence for each stage, and explained one tradeoff between containment and evidence preservation in {lab_dir}/notes/ir-lifecycle.md."
 resource = "https://csrc.nist.gov/pubs/sp/800/61/r3/final"
 verify = { type = "file", path = "{lab_dir}/notes/ir-lifecycle.md", min_bytes = 150 }
 
 [[node]]
 level = "incident-response"
 id = "evidence-preservation"
-title = "Evidence preservation: why you don't just reboot a compromised box"
+title = "Preserve a small evidence bundle"
 size = "S"
 needs = []
-done_when = "wrote {lab_dir}/notes/evidence.md on what's lost if you reboot a compromised machine before capturing memory/logs, and the correct order of what to capture first"
+done_when = "Copied harmless lab logs, recorded collection time/source, calculated hashes, and verified the copies remain unchanged. Saved the manifest and a reasoned collection order in {lab_dir}/notes/evidence.md, including what a reboot could destroy and when urgent containment takes priority."
 resource = "https://csrc.nist.gov/pubs/sp/800/61/r3/final"
 
 [[node]]
@@ -368,13 +407,17 @@ level = "incident-response"
 id = "ir-milestone"
 title = "Full incident response to a real simulated compromise (milestone)"
 size = "L"
-needs = ["tabletop-exercise", "evidence-preservation"]
+needs = ["ir-lifecycle", "evidence-preservation", "tabletop-exercise"]
 milestone = true
-done_when = "had an earlier attack from this conversation's tracks run against the Pi WITHOUT being told exactly what happened in advance, then ran a full IR process (detect, contain, investigate, document) and wrote {lab_dir}/notes/ir-milestone.md as an incident report"
+done_when = "Demonstrated: Make evidence-preserving response decisions under uncertainty. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/ir-milestone.md."
 resource = "https://csrc.nist.gov/pubs/sp/800/61/r3/final"
-verify = { type = "file", path = "{lab_dir}/notes/ir-milestone.md", min_bytes = 350 }
+verify = { type = "file", path = "{lab_dir}/notes/ir-milestone.md", min_bytes = 250 }
 
 # ---------------------------------------------------------------- 8: capstone
+brief = "Make evidence-preserving response decisions under uncertainty."
+steps = ["Before testing, record your prediction and the observation that would change your mind.", "Use an unfamiliar training case or a peer-run benign lab scenario. Document timeline, evidence hashes, containment choices, investigation, and recovery checks before opening the answer key.", "Transfer check: Consider one new piece of evidence that contradicts the initial hypothesis and revise the response.", "Control check: Show that collection copies remain unchanged and that recovery restores intended service; label simulated containment actions as simulated.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/ir-milestone.md."]
+hints = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
+
 [[node]]
 level = "capstone"
 id = "instrument-the-lab"
@@ -401,7 +444,7 @@ id = "close-the-gaps"
 title = "Write detections for whatever wasn't caught"
 size = "M"
 needs = ["replay-an-old-attack"]
-done_when = "for every stage of the replayed attack that wasn't detected, wrote a new detection rule and confirmed it now fires, documented at {lab_dir}/notes/close-gaps.md"
+done_when = "For the replayed lab chain, improved and retested one detectable gap, compared benign traffic after tuning, and documented residual gaps in {lab_dir}/notes/close-gaps.md. Distinguished missing telemetry from a rule problem; did not require every stage to become detectable."
 resource = "https://attack.mitre.org/"
 verify = { type = "file", path = "{lab_dir}/notes/close-gaps.md", min_bytes = 200 }
 
@@ -410,12 +453,14 @@ level = "capstone"
 id = "capstone-milestone"
 title = "Full defensive posture report (milestone)"
 size = "L"
-needs = ["close-the-gaps"]
+needs = ["instrument-the-lab", "replay-an-old-attack", "close-the-gaps"]
 milestone = true
-done_when = "wrote one complete report at {lab_dir}/notes/capstone-report.md: what's monitored, what's hardened, what attack chain you tested end to end, what was caught, what gaps you closed, and what's still unmonitored and why that's an acceptable or unacceptable risk for a home lab"
+done_when = "Demonstrated: Measure monitoring coverage and close a bounded detection gap without claiming complete visibility. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/capstone-report.md."
 resource = "https://attack.mitre.org/"
-verify = { type = "file", path = "{lab_dir}/notes/capstone-report.md", min_bytes = 500 }
-
+verify = { type = "file", path = "{lab_dir}/notes/capstone-report.md", min_bytes = 250 }
+brief = "Measure monitoring coverage and close a bounded detection gap without claiming complete visibility."
+steps = ["Before testing, record your prediction and the observation that would change your mind.", "Observe or replay a small documented lab chain, compare expected and observed telemetry, and deliver a reproducible investigation with coverage and gaps.", "Transfer check: Replay a varied form of one stage and evaluate whether the improved rule still detects it.", "Control check: Retest benign traffic after tuning and record residual gaps that require telemetry changes rather than another rule.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/capstone-report.md."]
+hints = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
 
 [[node]]
 level = "mitre"
@@ -427,6 +472,118 @@ needs = []
 brief = "Start a tiny investigation with one real log entry."
 done_when = "On your own Linux host, create a marker with logger -t ascend-lab \"quick check\". Find it using journalctl -t ascend-lab --since \"5 minutes ago\", then record its time, source, and message."
 resource = "https://www.freedesktop.org/software/systemd/man/latest/journalctl.html"
+verify = { type = "manual" }
+
+
+[[node]]
+id = "recall-logging-fundamentals"
+level = "retrieval"
+title = "Return later: Logging fundamentals: what gets recorded, and where"
+size = "S"
+minutes = 20
+needs = ["logging-milestone"]
+brief = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
+steps = ["Start with closed notes: From memory, explain which fields connect an authentication event to a host and time.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
+done_when = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: From memory, explain which fields connect an authentication event to a host and time. Logged the practice date and help used; did not copy the previous write-up."
+resource = "https://academy.hackthebox.com/path/preview/soc-analyst"
+verify = { type = "manual" }
+
+
+[[node]]
+id = "recall-log-analysis"
+level = "retrieval"
+title = "Return later: Log analysis by hand (before any tooling)"
+size = "S"
+minutes = 20
+needs = ["log-analysis-milestone"]
+brief = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
+steps = ["Start with closed notes: Write the core filter from memory and test it on a small changed dataset.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
+done_when = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Write the core filter from memory and test it on a small changed dataset. Logged the practice date and help used; did not copy the previous write-up."
+resource = "https://academy.hackthebox.com/path/preview/soc-analyst"
+verify = { type = "manual" }
+
+
+[[node]]
+id = "recall-network-monitoring"
+level = "retrieval"
+title = "Return later: Network monitoring: Zeek and Suricata"
+size = "S"
+minutes = 20
+needs = ["network-monitoring-milestone"]
+brief = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
+steps = ["Start with closed notes: Explain why a connection log can exist without an alert, then identify the required visibility and rule.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
+done_when = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Explain why a connection log can exist without an alert, then identify the required visibility and rule. Logged the practice date and help used; did not copy the previous write-up."
+resource = "https://academy.hackthebox.com/path/preview/soc-analyst"
+verify = { type = "manual" }
+
+
+[[node]]
+id = "recall-siem-basics"
+level = "retrieval"
+title = "Return later: SIEM basics with Security Onion"
+size = "S"
+minutes = 20
+needs = ["siem-milestone"]
+brief = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
+steps = ["Start with closed notes: Rebuild the investigation query and explain its fields without using the saved dashboard.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
+done_when = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Rebuild the investigation query and explain its fields without using the saved dashboard. Logged the practice date and help used; did not copy the previous write-up."
+resource = "https://academy.hackthebox.com/path/preview/soc-analyst"
+verify = { type = "manual" }
+
+
+[[node]]
+id = "recall-detection-engineering"
+level = "retrieval"
+title = "Return later: Writing your own detection rules"
+size = "S"
+minutes = 20
+needs = ["detection-milestone"]
+brief = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
+steps = ["Start with closed notes: Explain the rule’s observable assumption from memory and design one counterexample.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
+done_when = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Explain the rule’s observable assumption from memory and design one counterexample. Logged the practice date and help used; did not copy the previous write-up."
+resource = "https://academy.hackthebox.com/path/preview/soc-analyst"
+verify = { type = "manual" }
+
+
+[[node]]
+id = "recall-hardening"
+level = "retrieval"
+title = "Return later: Hardening baselines, beyond one Pi"
+size = "S"
+minutes = 20
+needs = ["hardening-milestone"]
+brief = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
+steps = ["Start with closed notes: Explain one hardening control, its operational tradeoff, and a positive/negative test pair.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
+done_when = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Explain one hardening control, its operational tradeoff, and a positive/negative test pair. Logged the practice date and help used; did not copy the previous write-up."
+resource = "https://academy.hackthebox.com/path/preview/soc-analyst"
+verify = { type = "manual" }
+
+
+[[node]]
+id = "recall-incident-response"
+level = "retrieval"
+title = "Return later: Incident response fundamentals"
+size = "S"
+minutes = 20
+needs = ["ir-milestone"]
+brief = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
+steps = ["Start with closed notes: Explain the first response steps for a new symptom and what could be lost through an immediate reboot.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
+done_when = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Explain the first response steps for a new symptom and what could be lost through an immediate reboot. Logged the practice date and help used; did not copy the previous write-up."
+resource = "https://academy.hackthebox.com/path/preview/soc-analyst"
+verify = { type = "manual" }
+
+
+[[node]]
+id = "recall-capstone"
+level = "retrieval"
+title = "Return later: Detect your own earlier attacks"
+size = "S"
+minutes = 20
+needs = ["capstone-milestone"]
+brief = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
+steps = ["Start with closed notes: Reconstruct the incident and one gap from memory, then explain how a new analyst could reproduce the key query.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
+done_when = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Reconstruct the incident and one gap from memory, then explain how a new analyst could reproduce the key query. Logged the practice date and help used; did not copy the previous write-up."
+resource = "https://academy.hackthebox.com/path/preview/soc-analyst"
 verify = { type = "manual" }
 
 # ---------------------------------------------------------------- side lane: quick drills

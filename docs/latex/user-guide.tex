@@ -1,0 +1,137 @@
+\section{User guide}
+\subsection{Choose a way to use Ascend}
+Use the standalone CLI for a local learning log with Python 3.11 or newer. Use the
+server and browser for access from a laptop or phone. A remote CLI and the browser
+share the server's data. They do not synchronize an independent local database.
+For installation, Docker, HTTPS and account setup, see the deployment chapter.
+
+A first standalone session from the repository root:
+\begin{verbatim}
+python3 -m venv .venv
+.venv/bin/pip install -e .
+source .venv/bin/activate
+ascend pack install networking-for-security
+ascend mission start networking-for-security
+ascend
+\end{verbatim}
+Installed packs are private copies under the profile. The default profile is
+\texttt{\textasciitilde/.config/ascend/}; set \texttt{ASCEND\_HOME} to choose another.
+Bundled examples and cyber tracks are drafts. Read their tasks, set their lab
+variables, and review them before trusting executable checks. Installation,
+review, and trust do not execute lessons or provision a lab.
+
+\subsection{The daily loop in the browser}
+Today shows your active mission, main-path completion, one next challenge, and an
+optional side challenge. Choose 10 minutes, 30 minutes, two hours, or any time.
+Estimates are task estimates, not deadlines. A large task can take several logged
+sessions. If nothing fits, open its Path details and split it into smaller
+concrete steps, or choose a larger time budget.
+
+Open challenge displays the scenario, finish line, any authored steps, a resource
+link, and hints behind individual disclosures. The learning resource opens
+outside Ascend; Ascend does not host lab machines. An older pack without guidance
+fields still shows its original completion condition and resource.
+
+Do the work, then choose Log progress. Record what you tried or learned and the
+next action. Leave Mark as done unchecked for partial work. Check it only when the
+finish line is met; configured evidence checks run on completion. A failed check
+still saves the session and returns a reason, while leaving the challenge open.
+Add details holds time spent and a proof reference. A proof reference does not
+replace a required evidence file. The server must be able to access that file.
+
+Path groups tasks by level, highlights the current position, and distinguishes
+ready, locked, complete, skipped, and milestone nodes. Expand another level to
+browse it; Jump to current level returns to your place. Challenge options expose
+splitting, skipping, early unlocking, evidence checking, and reopening completed
+or skipped work. Skipping is a navigation choice, not evidence of learning.
+
+Stats shows streaks, active-day history, weekly minutes, searchable notes and
+milestones completed in the active track. Skipped tasks do not earn these badges
+or increase the browser's completed-step percentage. The legacy CLI level count
+includes resolved (done or skipped) tasks, so it can differ from that percentage.
+More contains missions, pack installation/upload, reminders, theme, parked ideas,
+timezone, account and opt-in public streak settings. The keyboard shortcut
+\texttt{L} opens logging when focus is outside an input. Escape closes a dialog.
+
+\subsection{Evidence, progress and honest completion}
+A file check confirms a file and optional size/pattern constraints. It does not
+read your reasoning or grade mastery. Manual checks rely on your confirmation.
+Command, HTTP, Git and plugin checks have their documented technical scope;
+none independently certifies professional competence. The curriculum chapter
+specifies stronger human assessment criteria for the cyber milestones.
+
+Keep flags, passwords, tokens and personal information out of notes. The secret
+guard rejects recognizable patterns, but is not a general data-loss-prevention
+system. Keep sanitized evidence locally and log its path or a permitted reference.
+
+\begin{verbatim}
+ascend done "I compared the successful request with a refused connection" \
+  "Check which layer failed" --minutes 20
+ascend done "I reproduced and explained the required result" \
+  "Try the changed case" --node PACK:NODE --complete
+ascend check PACK:NODE
+\end{verbatim}
+Replace \texttt{PACK:NODE} with a real node reference. To inspect IDs, use
+\texttt{ascend levels --json}. Explicit manual marking and force overrides remain
+available in the CLI/API; record a reason and do not interpret an override as a
+successful verifier or assessment.
+
+\subsection{Missions, other tracks and returning after a break}
+Only one mission is active. Pause it before starting another track. Starting a
+pack makes a new mission record; task progress belongs to the pack and survives
+switches. Finish is an explicit mission lifecycle action; it does not certify
+that every node was independently assessed.
+\begin{verbatim}
+ascend mission pause
+ascend mission start defensive-security-and-detection
+ascend mission list
+ascend mission nudge-time 20:30
+ascend mission nudge-time off
+\end{verbatim}
+Save an unrelated idea using \texttt{ascend park "idea"} or More. Resolve it when
+appropriate. Backfill records work completed before using Ascend without adding
+streak days. Return to an old challenge to practice again or use the version-3
+return-later checks after a few days. Their suggested interval is not scheduled
+or enforced by the engine.
+
+\subsection{Corrections, history and exports}
+Use \texttt{ascend edit ID --learned "corrected explanation" --next-step "action"}
+to fix an entry. \texttt{ascend undo} reverses the most recent entry only within
+its ten-minute window; a node revision check protects newer completion changes.
+Use \texttt{ascend search "phrase"}, \texttt{ascend stats}, and
+\texttt{ascend export log.md}. Export is a readable Markdown learning log, not a
+complete account/database backup. The backup procedure is in the deployment guide.
+
+\subsection{Streaks, reminders and phone access}
+A logical day rolls over at 04:00 in the configured IANA timezone. Distinct logged
+days count, including partial work. One isolated gap can be bridged per ISO week;
+a freeze adds no logged day, and two consecutive missing days break the chain.
+Today remains pending until rollover. Backfilled task status does not add a day.
+
+Reminders are opt-in in server mode. Choose a channel, configure it, send an
+explicit test, and enable reminders. The active mission's time overrides the
+global time. The scheduler stops after a log and sends at most two successful
+scheduled reminders per logical day. True device delivery requires a real channel
+and device; a passing transport test does not establish it. The notifications
+chapter covers ntfy, Telegram and Web Push fully.
+
+For Android, open the HTTPS-served app and use the browser's installation option
+when available. API responses are never cached. Reconnect before saving; no
+offline write queue or conflict resolution is implemented.
+
+\subsection{Pack updates and troubleshooting}
+Compare an update with \texttt{ascend pack diff file.toml}, back up local edits,
+and install it. Stable task IDs preserve existing completion and skips. Changed
+content resets review and execution trust. Version-3 assessments do not
+retroactively certify work completed under an older definition. Complete the new
+return-later checks or reassess a milestone if you want evidence under the new rubric.
+
+If no task appears, check the active mission, time filter, prerequisites, level
+gates and whether the main path is resolved. If a resource fails, use its official
+course index and report the link; do not guess a substitute solution. If a file
+check fails, check the expanded path on the machine doing verification. A laptop
+file is not automatically present in a server container. In restricted multi-user
+mode, evidence must lie in the account's allowed artifact directory. If the UI is
+stale after an upgrade, reload it; the service worker updates the shell while
+keeping API data uncached. If a lesson requires unsupported hardware, use a
+supported lab environment instead of weakening the learning objective.

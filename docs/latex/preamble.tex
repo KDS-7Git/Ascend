@@ -1,0 +1,30 @@
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else
+  \usepackage{fontspec}
+  \setmainfont{DejaVu Serif}
+  \setsansfont{DejaVu Sans}
+  \setmonofont{DejaVu Sans Mono}[Scale=0.82]
+\fi
+\usepackage[margin=24mm]{geometry}
+\usepackage{longtable,booktabs,array,calc}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx,xcolor}
+\usepackage{fancyvrb,fvextra}
+\usepackage{hyperref}
+\usepackage{xurl}
+\usepackage{microtype}
+\usepackage{tocloft}
+\setlength{\cftsecnumwidth}{2.6em}
+\setlength{\cftsubsecnumwidth}{3.7em}
+\hypersetup{colorlinks=true,linkcolor=violet,urlcolor=blue,pdftitle={Ascend documentation}}
+\graphicspath{{screenshots/}{docs/screenshots/}}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\providecommand{\passthrough}[1]{#1}
+\DefineVerbatimEnvironment{verbatim}{Verbatim}{breaklines=true,breakanywhere=true,fontsize=\footnotesize}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{4pt}
+\setcounter{tocdepth}{2}

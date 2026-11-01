@@ -1,0 +1,387 @@
+\hypertarget{hackstreak-spec-hackstreak-a-duolingo-style-streak-tracker-for-learning-cyber-and-anything-else}{%
+\subsection{hackstreak: a Duolingo-style streak tracker for learning
+cyber (and anything
+else)}\label{hackstreak-spec-hackstreak-a-duolingo-style-streak-tracker-for-learning-cyber-and-anything-else}}
+
+A local-first tool that makes "one small real step per day" automatic,
+visible and hard to quietly skip. Written to be handed to a coding agent
+(Antigravity) and built in phases. \textbf{Build Phase 1 only first.}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{hackstreak-spec-1-why-this-exists-the-problem-in-the-owners-words}{%
+\subsubsection{1. Why this exists (the problem, in the
+owner\textquotesingle s
+words)}\label{hackstreak-spec-1-why-this-exists-the-problem-in-the-owners-words}}
+
+\begin{itemize}
+\tightlist
+\item
+  Overwhelmed by choice -\textgreater{} reads a few words, learns
+  nothing.
+\item
+  Cannot tell whether something was "done" -\textgreater{} cannot tick
+  anything.
+\item
+  Interruptions (calls, deadlines) destroy the thread -\textgreater{}
+  restarts from zero on a new topic.
+\item
+  Duolingo chess streak works daily. OverTheWire Bandit stalled. The
+  difference:
+\end{itemize}
+
+\begin{longtable}[]{@{}P{.36\textwidth}P{.59\textwidth}@{}}
+\toprule\noalign{}
+Duolingo has & hackstreak must provide \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Tiny fixed minimum & A "valid day" = ONE small, proof-backed step \\
+Zero decisions & \texttt{hack} prints the single next step. No menu. \\
+Cost of skipping & Visible streak + loss warning \\
+A nudge & Telegram message at a chosen time \\
+Low friction & One command to resume, one command to log \\
+\end{longtable}
+
+\hypertarget{hackstreak-spec-2-non-goals}{%
+\subsubsection{2. Non-goals}\label{hackstreak-spec-2-non-goals}}
+
+\begin{itemize}
+\tightlist
+\item
+  Not a course platform, not a planner, not a monthly roadmap. Only the
+  NEXT step.
+\item
+  No AI content generation. Learning material comes from real sources
+  (OverTheWire, TryHackMe, picoCTF, books).
+\item
+  Never store passwords, flags or secrets.
+\end{itemize}
+
+\hypertarget{hackstreak-spec-3-design-principles}{%
+\subsubsection{3. Design principles}\label{hackstreak-spec-3-design-principles}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Derived, not stored.} Streak numbers are always computed from
+  the raw log. No counters to corrupt.
+\item
+  \textbf{Proof over ticks.} A day only counts with a one-line "what I
+  learned" (min 20 characters) plus a "next step".
+\item
+  \textbf{Forgiving but honest.} 1 freeze per ISO week, never miss twice
+  in a row.
+\item
+  \textbf{Late-night aware.} The owner often works past midnight. The
+  day rolls over at \textbf{04:00 local time}, not 00:00.
+\item
+  \textbf{Local-first, plain files.} SQLite + exportable markdown. Works
+  offline on Ubuntu, Windows and a Raspberry Pi 5.
+\item
+  \textbf{Small surface.} Phase 1 is about 200 lines of Python and ZERO
+  dependencies.
+\end{enumerate}
+
+\hypertarget{hackstreak-spec-4-tech-choices}{%
+\subsubsection{4. Tech choices}\label{hackstreak-spec-4-tech-choices}}
+
+\begin{itemize}
+\tightlist
+\item
+  Python 3.11+, standard library only for Phase 1 (\texttt{sqlite3},
+  \texttt{argparse}, \texttt{datetime}).
+\item
+  Data in \path|~/.hackstreak/hackstreak.db| (override
+  with \texttt{HACKSTREAK\_HOME}).
+\item
+  Phase 2: \texttt{urllib} for Telegram (no extra dependency). Phase 3:
+  FastAPI + one static HTML page.
+\end{itemize}
+
+\hypertarget{hackstreak-spec-5-data-model-sqlite}{%
+\subsubsection{5. Data model (SQLite)}\label{hackstreak-spec-5-data-model-sqlite}}
+
+\begin{verbatim}
+CREATE TABLE IF NOT EXISTS missions (
+  id INTEGER PRIMARY KEY,
+  title TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'active',   -- active | done | paused
+  created_at TEXT NOT NULL,
+  finished_at TEXT
+);
+-- Rule: at most ONE mission with status='active' at a time (enforced in code).
+
+CREATE TABLE IF NOT EXISTS entries (
+  id INTEGER PRIMARY KEY,
+  day TEXT NOT NULL,            -- logical date YYYY-MM-DD (after 04:00 rollover)
+  logged_at TEXT NOT NULL,      -- real timestamp, ISO 8601
+  mission_id INTEGER,           -- nullable
+  learned TEXT NOT NULL,        -- >= 20 chars
+  next_step TEXT NOT NULL,      -- what to do next time
+  proof TEXT,                   -- optional: URL, commit hash, level name, file path
+  minutes INTEGER               -- optional
+);
+CREATE INDEX IF NOT EXISTS idx_entries_day ON entries(day);
+
+CREATE TABLE IF NOT EXISTS parked (
+  id INTEGER PRIMARY KEY,
+  created_at TEXT NOT NULL,
+  note TEXT NOT NULL,
+  resolved INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS settings (
+  key TEXT PRIMARY KEY, value TEXT NOT NULL
+);
+-- defaults: rollover_hour=4, freezes_per_week=1, min_learned_chars=20
+\end{verbatim}
+
+\hypertarget{hackstreak-spec-6-rules}{%
+\subsubsection{6. Rules}\label{hackstreak-spec-6-rules}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Logical day:}
+  \path|logical_date(now) = (now - rollover_hour hours).date()|.
+  Logging at 01:00 on 1 Nov counts for 31 Oct.
+\item
+  \textbf{Valid day:} at least one entry whose logical day is that date.
+\item
+  \textbf{One entry is enough.} More entries the same day are allowed
+  (they feed stats, not the streak).
+\item
+  \textbf{Freeze:} a missing day is bridged if (a) the day before AND
+  the day after are both logged, and (b) fewer than
+  \texttt{freezes\_per\_week} freezes were already used in that ISO
+  week. A bridged day adds 0 to the count but does not break the chain.
+  Freezes are computed, not stored.
+\item
+  \textbf{Never miss twice:} two missing days in a row always break the
+  streak.
+\item
+  \textbf{Today pending:} if today is not logged yet, the streak is not
+  broken. It is shown as "at risk".
+\item
+  \textbf{Anti-gaming:} reject \texttt{learned} shorter than 20
+  characters, or identical to the previous entry\textquotesingle s
+  \texttt{learned}.
+\item
+  \textbf{Secrets guard:} warn and refuse if
+  \texttt{learned}/\texttt{proof} looks like a 32-character alphanumeric
+  string (that is a Bandit password) or contains \texttt{flag\{} /
+  \texttt{picoCTF\{} / \texttt{THM\{}.
+\end{itemize}
+
+\hypertarget{hackstreak-spec-7-cli}{%
+\subsubsection{7. CLI}\label{hackstreak-spec-7-cli}}
+
+\begin{verbatim}
+hack                       # prints: active mission, LAST next_step, streak, at-risk warning. Nothing else.
+hack done "learned..." "next step..." [--proof X] [--min N] [--mission ID]
+hack mission new "Title"   # fails if another mission is active (finish or pause it first)
+hack mission finish        # marks done, prints a short summary
+hack mission list
+hack park "one-line idea"  # the rabbit-hole parking lot
+hack parked                # list unresolved parked ideas
+hack stats                 # current streak, best streak, days logged in last 30, freezes used this week
+hack heatmap               # 12-week text heatmap (GitHub style)
+hack export [path]         # writes log.md (one line per entry) for git
+hack remind-check          # exit 0 if today logged, exit 1 if not (used by the nudge script)
+\end{verbatim}
+
+Output style: short and plain. \texttt{hack} must fit in 6 lines.
+Example:
+
+\begin{verbatim}
+Mission : Hack and harden my Pi
+Next    : Bandit level 13 - ssh with a private key
+Streak  : 9 days   (best 9)   freeze available: yes
+Today   : NOT logged yet - log before 04:00
+\end{verbatim}
+
+\hypertarget{hackstreak-spec-8-streak-algorithm-reference-implementation-must-pass-the-tests-in-section-11}{%
+\subsubsection{8. Streak algorithm (reference implementation, must pass
+the tests in section
+11)}\label{hackstreak-spec-8-streak-algorithm-reference-implementation-must-pass-the-tests-in-section-11}}
+
+\begin{verbatim}
+from datetime import date, timedelta
+
+def compute_streak(logged: set[date], today: date, freezes_per_week: int = 1) -> int:
+    count, used = 0, {}
+    d = today if today in logged else today - timedelta(days=1)
+    while True:
+        if d in logged:
+            count += 1
+        else:
+            wk = d.isocalendar()[:2]
+            isolated = (d - timedelta(days=1)) in logged and (d + timedelta(days=1)) in logged
+            if isolated and used.get(wk, 0) < freezes_per_week:
+                used[wk] = used.get(wk, 0) + 1     # bridge the gap, add 0
+            else:
+                break
+        d -= timedelta(days=1)
+    return count
+\end{verbatim}
+
+\texttt{best\_streak} = run the same logic from every logged day and
+take the max (fine for personal-scale data).
+
+\hypertarget{hackstreak-spec-9-phases}{%
+\subsubsection{9. Phases}\label{hackstreak-spec-9-phases}}
+
+\textbf{Phase 1: CLI core (build this first, one sitting).}
+\texttt{hack}, \texttt{hack done}, \texttt{mission},
+\texttt{park/parked}, \texttt{stats}, \texttt{export},
+\texttt{remind-check}, tests. Install as a single file \texttt{hack} on
+PATH (Linux) or \texttt{hack.bat}/\texttt{pipx} shim (Windows).
+
+\textbf{Phase 2: Nudges.}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{nudge.py}: if \texttt{hack remind-check} fails, send a
+  Telegram message through the Bot API using
+  \texttt{TELEGRAM\_BOT\_TOKEN} and \texttt{TELEGRAM\_CHAT\_ID} from
+  environment variables. The message includes the streak and the next
+  step: "Streak 9. Chess done? Next: Bandit 13 - ssh key login."
+\item
+  Run it from cron (Linux) or a systemd timer on the Raspberry Pi at
+  e.g. 21:30 and again at 23:30 (second one only if still unlogged).
+\item
+  Optional: auto \texttt{git add/commit/push} of \texttt{log.md} on
+  every \texttt{hack done} (green squares on GitHub).
+\end{itemize}
+
+\textbf{Phase 3: Dashboard (optional, only after a 14-day streak).}
+
+\begin{itemize}
+\tightlist
+\item
+  FastAPI on the Pi: \texttt{GET /api/streak},
+  \texttt{GET /api/entries}, \texttt{POST /api/entries}. One static
+  HTML page with a heatmap and the next step.
+\item
+  \texttt{hack} can talk to the Pi instead of local SQLite when
+  \texttt{HACKSTREAK\_SERVER} is set (so laptop and phone share one
+  log).
+\item
+  Read-only \texttt{GET /api/streak} so the Praxis dashboard can show
+  "hack streak" next to the other platforms.
+\end{itemize}
+
+\textbf{Phase 4: Ideas, deliberately NOT now.} Per-mission streaks,
+weekly review prompt, TryHackMe API import (their streak API is
+unofficial, so check the terms of use first), an Android widget.
+
+\hypertarget{hackstreak-spec-10-security-and-safety}{%
+\subsubsection{10. Security and safety}\label{hackstreak-spec-10-security-and-safety}}
+
+\begin{itemize}
+\tightlist
+\item
+  Local files only in Phase 1. No network code at all.
+\item
+  Telegram token only from environment variables, never written to the
+  DB or the repo. Add \texttt{.env} to \texttt{.gitignore}.
+\item
+  Phase 3 server: bind to LAN only, require a bearer token from env,
+  never expose to the internet.
+\item
+  Never log credentials. The secrets guard in section 6 is mandatory,
+  not optional.
+\end{itemize}
+
+\hypertarget{hackstreak-spec-11-acceptance-tests-write-these-first}{%
+\subsubsection{11. Acceptance tests (write these
+first)}\label{hackstreak-spec-11-acceptance-tests-write-these-first}}
+
+\path|compute_streak(logged, today)| with
+\texttt{freezes\_per\_week=1}, \texttt{today = 2026-11-05} (Thursday):
+
+\begin{longtable}[]{@{}P{.24\textwidth}P{.35\textwidth}P{.33\textwidth}@{}}
+\toprule\noalign{}
+Case & Logged days & Expected \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+empty & none & 0 \\
+only today & 11-05 & 1 \\
+3 consecutive ending yesterday, today pending & 11-02, 11-03, 11-04 &
+3 \\
+gap of 1 inside one week & 11-02, 11-04, 11-05 & 3 (11-03 frozen) \\
+two gaps in the same ISO week & 11-02, 11-04, 11-06 with today 11-06 &
+breaks at the second gap \\
+gap of 2 & 11-01, 11-04, 11-05 & 2 \\
+yesterday missed, today pending & 11-03 & 0 (breaks until today is
+logged) \\
+yesterday missed, then today logged & 11-03, 11-05 & 3 (yesterday
+frozen) \\
+gap crossing a week boundary & one freeze per week each & each
+week\textquotesingle s freeze is counted separately \\
+\end{longtable}
+
+Other tests:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{logical\_date} at 2026-11-01 01:00 -\textgreater{} 2026-10-31;
+  at 2026-11-01 04:00 -\textgreater{} 2026-11-01.
+\item
+  \texttt{hack done} rejects \texttt{learned} shorter than 20
+  characters and rejects a repeat of the previous \texttt{learned}.
+\item
+  \texttt{hack done} rejects a 32-character alphanumeric string and
+  \texttt{flag\{...\}}-style content.
+\item
+  \texttt{hack mission new} fails while another mission is active.
+\item
+  DB file is created on first run with the schema above and survives
+  repeated runs (idempotent).
+\end{itemize}
+
+\hypertarget{hackstreak-spec-12-prompt-to-paste-into-the-antigravity-agent}{%
+\subsubsection{12. Prompt to paste into the Antigravity
+agent}\label{hackstreak-spec-12-prompt-to-paste-into-the-antigravity-agent}}
+
+\begin{quote}
+Build \textbf{Phase 1 only} of the project described in
+\texttt{hackstreak-spec.md}. Python 3.11, standard library only, a
+single installable CLI called \texttt{hack}. Write the tests from
+section 11 FIRST (pytest), then implement until they pass. Do not add
+features that are not in Phase 1. Do not add a web UI, network code or
+any dependency. When done, show me: the file tree, the output of
+\texttt{pytest}, and a demo of \texttt{hack mission new},
+\texttt{hack done}, \texttt{hack}, \texttt{hack stats}. Ask me before
+deviating from the spec.
+\end{quote}
+
+\hypertarget{hackstreak-spec-13-owners-usage-rules-the-human-part}{%
+\subsubsection{13. Owner\textquotesingle s usage rules (the human
+part)}\label{hackstreak-spec-13-owners-usage-rules-the-human-part}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Sequence: chess lesson -\textgreater{} one cyber step -\textgreater{}
+  \texttt{hack done}.
+\item
+  Finish each session by writing the NEXT step. That is the whole
+  re-entry system.
+\item
+  New idea or link? \texttt{hack park "..."} and go back. Review the
+  parked list only when a mission finishes.
+\item
+  A deadline day counts. Ten minutes and one Bandit level is a valid
+  day.
+\item
+  Missed a day? Fine. Never miss two.
+\end{enumerate}

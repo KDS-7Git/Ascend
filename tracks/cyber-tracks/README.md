@@ -1,61 +1,45 @@
-# Cyber tracks, version 2
+# Cyber tracks, version 3
 
-Five proficiency tracks, each with eight main levels and a milestone per level.
-Version 2 makes the opening levels into hands-on investigations with concrete
-steps, optional hints, and realistic time estimates. Each track also has three
-optional discoveries lasting 10, 15, and 20 minutes. The later curricula remain
-editable drafts, not full hosted courses.
+Five proficiency tracks, each with eight main levels. The 40 milestones now
+require an experiment, a changed case, a contrasting control, and an explanation.
+There are 40 optional return-later checks, five lab-readiness checks and a Windows
+baseline, alongside the practical challenges and short discoveries from v2.
 
-| Track | First challenge | Useful background |
-| --- | --- | --- |
-| `networking-for-security` | Catch a request in the act | None; start here if packets and ports are unfamiliar |
-| `web-application-security` | Make a lab reveal a hidden row | HTTP requests and responses |
-| `network-penetration-testing` | Discover what your lab is listening for | TCP/IP and an owned lab target |
-| `reverse-engineering-and-binary-exploitation` | Catch a function changing a register | Comfortable reading a little C |
-| `defensive-security-and-detection` | Leave a breadcrumb, then find it in the logs | A Linux host you control |
+These are evidence-informed drafts, not empirically proven courses. File checks
+confirm artifacts; they cannot grade reasoning. The complete assessment rubric,
+source review, prerequisites, hardware constraints, installation instructions and
+learning-outcome limits are in the LaTeX handbook (`handbook.pdf` in the v3 ZIP;
+`docs/handbook.pdf` in the repository). Its sources live under `docs/latex/`.
 
-Choose the subject that makes you curious. Networking is a useful foundation,
-not a requirement to finish an entire track before touching anything else.
-Ascend keeps one mission active at a time; pause it to switch tracks. Progress is
-retained. Offensive and defensive exercises can use the same isolated lab so
-an action can become the next investigation.
+The five IDs are:
 
-## Using the revised tracks
+- `networking-for-security`
+- `web-application-security`
+- `network-penetration-testing`
+- `reverse-engineering-and-binary-exploitation`
+- `defensive-security-and-detection`
 
-These packs are also included in the repository's `packs/community/` registry.
-Install by ID with the updated app, or upload a TOML file in More → Packs.
+Networking is a useful starting point if packets and ports are unfamiliar. Choose
+one active mission; pause it to switch tracks. Your progress is retained.
 
 ```sh
-ascend pack install defensive-security-and-detection
-ascend mission start defensive-security-and-detection
+ascend pack install networking-for-security
+ascend mission start networking-for-security
 ```
 
-To update an existing installation, review the new file and compare it first:
+For an existing installation, back up private edits and compare before updating:
 
 ```sh
-ascend pack diff packs/community/defensive-security-and-detection.toml
-ascend pack install packs/community/defensive-security-and-detection.toml
+ascend pack diff packs/community/networking-for-security.toml
+ascend pack install packs/community/networking-for-security.toml
 ```
 
-Every pre-existing node ID is retained. Completed and skipped tasks keep their
-status. Installation replaces the private pack file, so keep any local edits
-before updating; per-user variable settings remain separate. Changed pack content
-resets review and executable-check trust. All files deliberately retain
-`source = "ai-draft"` and `reviewed = false`.
+All earlier node IDs remain. Existing completions are preserved but do not
+retroactively certify the stronger v3 assessment. Use the new recall checks or
+reopen a milestone. Changed content resets review and execution trust. All packs
+remain `source = "ai-draft"` and `reviewed = false`.
 
-## A useful session
-
-1. Open a challenge and look at its finish line.
-2. Try the first step. Open a hint only when it helps.
-3. Save the result: a capture, working program, comparison, or short evidence note.
-4. Log what happened. Check **Mark as done** only when the finish line is met;
-   otherwise save partial progress and a useful next step.
-
-File checks establish that an artifact exists; they do not independently grade
-understanding. The updated nmap opening checks exercise evidence rather than the
-tool's version. No task is automatically trusted or executed by installation.
-
-The original archive `../cyber-tracks.zip` is retained for comparison. The revised
-archive is `../cyber-tracks-v2.zip`. The repository's
-`docs/design/engagement-audit.md` explains the design decisions, and
-`docs/testing/cyber-track-links.json` records link-check results and access limits.
+The repository retains the original and v2 ZIPs for compatibility and comparison.
+`docs/testing/cyber-track-links-v3.json` records current link results, replacements
+and access restrictions. Labs, supported hardware and any paid accounts are
+provided separately; Ascend does not provision hosted training machines.

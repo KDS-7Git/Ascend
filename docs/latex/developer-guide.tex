@@ -1,0 +1,107 @@
+\section{Developer handbook}
+\subsection{Architecture and boundaries}
+The engine owns pure rules: TOML parsing, dependency/level eligibility, streaks,
+and validation. Storage owns SQLite migrations and user-scoped access. The
+\texttt{Tracker} application layer implements shared use cases. CLI and FastAPI
+are transports over those use cases; the vanilla JavaScript PWA consumes the API.
+Subject content belongs in packs, not engine conditionals. Verifier adapters own
+external effects and return bounded, sanitized evidence results.
+
+Key files: \texttt{ascend/engine/packs.py} defines immutable Pack, Level and Node
+models; \texttt{levels.py} computes candidates; \texttt{streak.py} derives streaks;
+\texttt{ascend/application.py} coordinates use cases;
+\texttt{ascend/storage/\_\_init\_\_.py} scopes storage;
+\texttt{ascend/server/app.py} declares HTTP routes and security headers;
+\texttt{ascend/cli/remote.py} implements standard-library remote access;
+\texttt{web/app.js} and \texttt{web/style.css} own interaction and presentation.
+
+\subsection{State and data flow}
+A pack install parses and validates before replacing the private text file and
+recording its content fingerprint. Stable IDs join task state to pack data.
+Loading a changed file revokes stale review/trust. User variable settings are
+applied separately from authored placeholders. A task split creates application
+nodes while keeping the pack file unchanged. Prerequisites and main-level gates
+control recommendations; explicit overrides are logged as overrides.
+
+Logging resolves an account/mission/node, validates learning text, optionally runs
+a verifier, then records the session in a transaction. Failed completion still
+records partial work. Successful completion records its prior state and revision
+so undo can avoid clobbering a later change. Streaks and time statistics are derived
+from entries, not independent mutable counters. File/Git evidence timestamps can
+be backdated to actual work time and are deduplicated by the existing evidence flow.
+
+\subsection{Security and operational assumptions}
+Every business query is user-scoped. Passwords use scrypt and server bearer tokens
+are hashed. CLI token storage uses restrictive permissions; browser tokens are
+session-scoped. The PWA uses DOM text construction for authored content. The server
+sets a self-only content security policy, same-origin write checks and no-store
+headers for private responses. No anonymous signup or public production hardening
+beyond the documented boundaries is claimed.
+
+Command templates are split before substitution and run without a shell. Plugins
+run in a separate process with a timeout, but retain the host user's permissions.
+Multi-user executable/network checks are restricted unless the administrator opts
+in. Do not infer sandboxing from process isolation or from pack validation. The
+verifier chapter gives the exact extension contract.
+
+\subsection{Build, test and contribution loop}
+Install Python 3.11 or newer and its virtual-environment support. Documentation
+builds use XeLaTeX, the extra LaTeX packages and DejaVu fonts. On Debian/Ubuntu,
+the documentation prerequisites can be installed with:
+\begin{verbatim}
+sudo apt-get install texlive-xetex texlive-latex-extra fonts-dejavu
+\end{verbatim}
+Pandoc was used for the one-time migration of historical Markdown; it is not
+needed for routine builds or edits to the canonical LaTeX chapters.
+\begin{verbatim}
+python3 -m venv .venv
+.venv/bin/pip install -e '.[server,dev,push]' setuptools wheel
+.venv/bin/playwright install chromium
+.venv/bin/pytest -v
+.venv/bin/ruff format --check ascend tests scripts setup.py
+.venv/bin/ruff check --select F401,F841 ascend tests scripts setup.py
+.venv/bin/python scripts/build_registry.py
+.venv/bin/python scripts/build_docs.py
+\end{verbatim}
+Tests use temporary profiles and local test servers. They cover pure rules,
+application semantics, CLI/remote behavior, account isolation, migrations,
+notifications, browser flows and built-wheel assets. Add meaningful regression
+coverage for a behavioral change; do not run external lab attacks in the test
+suite. Resource link checks are explicit network operations, separate from offline
+unit tests. The CI matrix covers Python 3.11--3.13.
+
+The \texttt{setup.py} build hook copies canonical \texttt{web/} and
+\texttt{packs/community/} assets into wheels. Verify installed artifacts as well
+as editable installs. \texttt{scripts/screenshots.py} uses disposable illustrative
+data, not the owner's profile. Never commit databases, credentials, environment
+files, personal logs, or real deployment addresses. Make feature-sized commits
+and update the implementation report at each milestone.
+
+\subsection{Maintaining the curriculum and documentation}
+Canonical runtime learning content is TOML under \texttt{packs/community/}.
+The exported cyber pack files must match it. Preserve IDs, increment pack version,
+regenerate registry checksums, validate the dependency graph, and document revised
+completion requirements. The assessment map in
+\texttt{docs/curriculum/assessment-map.json} records one explicit mechanism,
+experiment, transfer case, control and delayed-retrieval prompt for each main
+level. Source evidence, access dates and limits are in
+\texttt{docs/curriculum/sources.json}. Keep both synchronized with the authored
+milestones; the curriculum regression suite checks their structural contract.
+
+The canonical narrative documentation is LaTeX under \texttt{docs/latex/}.
+\path{scripts/build_docs.py} refreshes generated command/schema/curriculum
+appendices and compiles the report, complete handbook and focused guides.
+Generated sections are marked as such. Edit narrative chapters directly; do not
+regenerate them from legacy Markdown. The remaining Markdown documents are
+convenience copies or historical inputs. Command documentation may be duplicated
+there, but the LaTeX reference is complete. Historical designs are separately
+compiled and explicitly labeled as superseded, never mixed with current guidance.
+
+\subsection{Schema and extension contracts}
+The pack-format and verifier chapters specify all authored fields and extension
+boundaries. The API chapter combines a human-readable endpoint reference with
+request-model information extracted from OpenAPI. The generated storage appendix
+reproduces the numbered migration sources used by the running code. Migrations
+are sequential transactions over a WAL-backed database; do not open a newer
+schema with an older binary. Change shared semantics in the application layer and
+check both standalone and remote callers before release.

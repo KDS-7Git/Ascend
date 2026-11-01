@@ -20,16 +20,26 @@ def escape(value):
 
 
 rows = []
-for phase in ("1", "1b", "2", "3", "4"):
-    path = ROOT / f"docs/testing/phase-{phase}.txt"
+milestones = [
+    (f"Phase {phase}", f"phase-{phase}.txt") for phase in ("1", "1b", "2", "3", "4")
+]
+milestones += [
+    ("Engagement refresh", "engagement-refresh.txt"),
+    ("Curriculum assurance", "curriculum-assurance.txt"),
+    ("LaTeX handbooks", "docs-build.txt"),
+]
+for milestone, filename in milestones:
+    path = ROOT / "docs/testing" / filename
     status = "Not yet validated"
     if path.exists():
         matches = re.findall(
-            r"=+\s+([^\n]*\b(?:passed|failed|error)[^\n]*)\s+=+", path.read_text()
+            r"^(?:RESULT: )?([^\n]*(?:\d+ passed|compiled successfully)[^\n]*)$",
+            path.read_text(),
+            re.MULTILINE,
         )
         if matches:
             status = matches[-1].strip(" =")
-    rows.append(f"Phase {phase} & {escape(status)} \\\\")
+    rows.append(f"{escape(milestone)} & {escape(status)} \\\\")
 history = subprocess.check_output(
     ["git", "log", "--format=%h %s", "-12"], cwd=ROOT, text=True
 )

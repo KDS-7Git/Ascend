@@ -1,0 +1,214 @@
+% Canonical LaTeX chapter; migrated from docs/deployment.md.
+\hypertarget{deployment}{%
+\section{Deployment and operations}\label{deployment}}
+
+Start locally with
+\texttt{pip install \textquotesingle{}.{[}server{]}\textquotesingle{}}
+and \texttt{ascend-server}. The default bind is \texttt{127.0.0.1:8420}.
+To serve your LAN, bind the machine\textquotesingle s specific LAN
+address. \texttt{-\/-host 0.0.0.0} is explicit and prints a reminder to
+use a TLS reverse proxy beyond your trusted LAN. Multi-user deployments
+are for administrator-provisioned accounts, not anonymous public signup.
+
+\begin{verbatim}
+ascend-server user-add alice --timezone Asia/Kolkata
+AUTH_MODE=multi ascend-server
+\end{verbatim}
+
+Every account needs an IANA timezone. Existing standalone data remains
+with the implicit \texttt{local} account (ID 1). In multi-user mode that
+account has no password and cannot log in. Create real accounts for
+separate users; switching auth mode does not transfer the local
+profile\textquotesingle s data into a newly created account.
+
+\hypertarget{docker-linux-pc-vps-or-raspberry-pi}{%
+\subsubsection{Docker: Linux PC, VPS, or Raspberry
+Pi}\label{docker-linux-pc-vps-or-raspberry-pi}}
+
+\begin{verbatim}
+docker compose -f docker/docker-compose.yml up -d --build
+\end{verbatim}
+
+The Python slim base supports amd64 and arm64. The image uses UID 10001
+and a named persistent \texttt{/data} volume. Compose maps the service
+to loopback; put Caddy or another TLS reverse proxy in front of it. A
+minimal Caddy configuration is:
+
+\begin{verbatim}
+ascend.example.com {
+    reverse_proxy 127.0.0.1:8420
+}
+\end{verbatim}
+
+Replace the domain and configure DNS before deployment. Android PWA
+installation and Web Push require a secure origin. Proxy requests
+preserve their original host so the server can validate same-origin
+browser writes.
+
+If container builds cannot reach PyPI, prepare wheels on the host:
+
+\begin{verbatim}
+python -m pip wheel --no-build-isolation --wheel-dir docker/wheelhouse '.[server]' setuptools wheel
+docker build -f docker/Dockerfile -t ascend:local .
+python scripts/container_smoke.py ascend:local
+\end{verbatim}
+
+The Dockerfile detects the ignored wheel cache through a build-only
+mount. Wheels are not copied into the runtime image or committed. Normal
+builds download their dependencies. Actual arm64 execution still needs
+verification on arm64 hardware.
+
+\hypertarget{reminders}{%
+\subsubsection{Reminders}\label{reminders}}
+
+Set ntfy as the channel, choose a long private topic, subscribe in the
+Android ntfy app, send a test, and enable reminders. Environment
+\texttt{NTFY\_SERVER} defaults to \texttt{https://ntfy.sh}; optional
+\texttt{NTFY\_TOKEN} stays in the environment. Each account can store a
+separate topic. Server scheduling checks every thirty seconds and uses
+the user\textquotesingle s logical day and mission override. It sends at
+most two successful scheduled reminders per day and stops after logging.
+Test sends are explicit and do not consume daily schedule slots. A
+second reminder occurs two hours after the first; schedules close to
+rollover may have only one reminder that day.
+
+\hypertarget{trust-and-backups}{%
+\subsubsection{Trust and backups}\label{trust-and-backups}}
+
+Multi-user deployments restrict command, plugin, Git, and HTTP verifiers
+by default. \texttt{ASCEND\_ALLOW\_CODE=1} is an administrator opt-in to
+host-code execution after each user\textquotesingle s explicit trust;
+enable it only for users you trust with host permissions. Restricted
+file checks use
+\texttt{/data/artifacts/\textless{}user-id\textgreater{}/}.
+
+Back up SQLite using its backup API rather than copying a live WAL
+database:
+
+\begin{verbatim}
+python -c "import sqlite3; s=sqlite3.connect('/data/ascend.db'); d=sqlite3.connect('/backup/ascend.db'); s.backup(d); d.close(); s.close()"
+\end{verbatim}
+
+Also back up private packs and plugin files. Installed pack records contain
+absolute paths: a container restore should retain the internal \texttt{/data}
+path; a local restore needs the same profile path or an explicit path migration.
+Migrations run on startup in numbered
+transactions. Newer schemas should not be opened with an older
+application release.
+
+\subsection{Container accounts, upgrades and a recoverable backup}
+Use the same Compose file for administration so the command targets the existing
+named volume. Provision a multi-user account before switching authentication mode:
+\begin{verbatim}
+docker compose -f docker/docker-compose.yml exec ascend \
+  ascend-server user-add alice --timezone Asia/Kolkata
+AUTH_MODE=multi docker compose -f docker/docker-compose.yml up -d
+\end{verbatim}
+A mode switch does not copy the implicit local account into Alice. Do not use
+\texttt{down -v} for an ordinary upgrade; it removes the persistent volume.
+
+For a simple consistent container backup, stop the service, copy the complete
+profile volume through a temporary container into a protected host directory,
+then restart. A named backup directory avoids accidental overwrite:
+\begin{verbatim}
+umask 077
+mkdir -m 700 backup-YYYYMMDD
+docker compose -f docker/docker-compose.yml stop ascend
+docker compose -f docker/docker-compose.yml run --rm --no-deps -T \
+  --entrypoint tar ascend -C /data -czf - . > backup-YYYYMMDD/profile.tar.gz
+docker compose -f docker/docker-compose.yml start ascend
+\end{verbatim}
+The shell creates the archive as the current host user; restrict its permissions
+and store it outside the repository. Stopping avoids copying an inconsistent
+live WAL database. The SQLite backup API shown earlier is appropriate for an
+online database snapshot, but packs, plugins and persistent keys need coordinated
+backup too. Never print secrets to verify a backup.
+
+Test restoration into a \emph{new}, isolated volume. Keep the original
+untouched until health checks, login, entry counts, a known pack and its progress
+are verified. Restore the complete profile, including keys needed for existing
+subscriptions, and preserve ownership for container UID 10001. Run the matching
+application version first. Only promote the restored profile after validation.
+There is no automatic rollback to an older database schema.
+
+\subsection{An isolated container restore drill}
+Run these commands from the repository root, replacing the backup directory with
+the one just created. Save the exact image before upgrading; its immutable image
+ID selects the application version for the drill. These examples require Docker
+Compose v2. Keep a protected copy of external environment credentials separately;
+they are not included in the profile archive.
+\begin{verbatim}
+export ASCEND_RESTORE_IMAGE="$(docker compose -f docker/docker-compose.yml images -q ascend)"
+test -n "$ASCEND_RESTORE_IMAGE"
+docker image save "$ASCEND_RESTORE_IMAGE" > backup-YYYYMMDD/image.tar
+cat > backup-YYYYMMDD/restore.compose.yml <<'YAML'
+services:
+  ascend:
+    image: ${ASCEND_RESTORE_IMAGE:?set the backed-up image ID}
+    ports:
+      - "127.0.0.1:8421:8420"
+    volumes:
+      - restored-data:/data
+    environment:
+      AUTH_MODE: ${ASCEND_RESTORE_AUTH:-single}
+volumes:
+  restored-data:
+YAML
+docker compose -p ascend-restore -f backup-YYYYMMDD/restore.compose.yml \
+  run --rm --no-deps -T --entrypoint tar ascend \
+  -C /data -xzf - < backup-YYYYMMDD/profile.tar.gz
+\end{verbatim}
+Use a previously unused project name if \texttt{ascend-restore} already exists.
+Do not overlay an old restore volume. On another host, load \texttt{image.tar}
+with \texttt{docker image load} and select the loaded image. The new volume has
+the same internal path and UID as production but a different Compose identity.
+
+Before starting the restored server, disable scheduled notifications in every
+restored account. This changes only the copy and prevents duplicated reminders:
+\begin{verbatim}
+docker compose -p ascend-restore -f backup-YYYYMMDD/restore.compose.yml \
+  run --rm --no-deps -T --entrypoint python ascend - <<'PY'
+from ascend.storage import Database
+db = Database()
+ids = {1} | {r[0] for r in db.connection.execute("SELECT id FROM users")}
+assert db.connection.execute("PRAGMA integrity_check").fetchone()[0] == "ok"
+for user_id in ids:
+    db.user_id = user_id
+    db.set_setting("nudge_enabled", False)
+for table in ("entries", "missions", "packs", "node_state"):
+    print(table, db.connection.execute("SELECT count(*) FROM " + table).fetchone()[0])
+db.close()
+PY
+# Use multi for a production profile that used provisioned accounts.
+export ASCEND_RESTORE_AUTH=single
+docker compose -p ascend-restore -f backup-YYYYMMDD/restore.compose.yml up -d
+curl -fsS http://127.0.0.1:8421/api/health
+\end{verbatim}
+Compare these table counts with a read-only query on the backup database. Open
+port 8421, verify the matching authentication mode, a known mission, evidence path
+and completed node, and check the container logs. Do not make practice entries in
+the production profile. Health and integrity checks alone do not establish that
+all application data and external integrations were restored correctly.
+
+After validation, stop the drill with the same \texttt{-p ascend-restore} and
+\texttt{-f} options followed by \texttt{down}. Keep its volume until satisfied;
+volume deletion is an explicit cleanup step, never part of a normal upgrade.
+For real recovery, stop the damaged deployment first, restore into a fresh
+production volume at \texttt{/data}, verify it in isolation, then change the
+proxy/port to it. Re-enable reminders only on the promoted instance and restore
+its external credentials. A rollback requires the matching pre-upgrade database
+and image; merely changing an image tag does not undo a migration.
+
+\subsection{Routine upgrade and readiness checks}
+
+\begin{verbatim}
+docker compose -f docker/docker-compose.yml up -d --build
+curl -fsS http://127.0.0.1:8420/api/health
+docker compose -f docker/docker-compose.yml logs --tail=100 ascend
+\end{verbatim}
+A successful health response establishes process/API readiness, not working
+external notifications or lab connectivity. Build on the target architecture for
+a simple Pi deployment. The base image supports arm64; this is distinct from a
+claim that every optional external training tool supports it. The local server
+can be restarted after Python changes; static asset changes are picked up on
+reload, and new pack text still has to be installed into private copies.

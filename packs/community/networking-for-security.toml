@@ -9,7 +9,7 @@
 id = "networking-for-security"
 title = "Networking for Security: how packets actually move"
 kind = "proficiency"
-version = 2
+version = 3
 source = "ai-draft"
 reviewed = false
 
@@ -63,12 +63,29 @@ id = "packet-snacks"
 title = "Packet snacks"
 lane = "side"
 
+[[level]]
+id = "retrieval"
+title = "Return later: explain and transfer"
+lane = "side"
+
+[[node]]
+id = "lab-readiness"
+level = "models"
+title = "Use a tiny local service as your network lab"
+size = "S"
+minutes = 20
+needs = []
+brief = "Establish the prerequisites with a small demonstration. Use a foundations lesson if you cannot yet explain the result."
+done_when = "Start and stop a loopback-only HTTP server; make a client request, identify the address and port, and locate where you will store captures. If a command is unfamiliar, use the foundations resource before advancing."
+resource = "https://academy.hackthebox.com/path/preview/information-security-foundations"
+verify = { type = "manual" }
+
 [[node]]
 level = "models"
 id = "osi-vs-tcpip"
 title = "Catch a request in the act"
 size = "S"
-needs = []
+needs = ["lab-readiness"]
 done_when = "Saved {lab_dir}/notes/osi-vs-tcpip.md with an OSI-to-TCP/IP comparison grounded in my own local request, including what I observed and what I could not see."
 resource = "https://www.practicalnetworking.net/series/packet-traveling/osi-model/"
 verify = { type = "file", path = "{lab_dir}/notes/osi-vs-tcpip.md", min_bytes = 150 }
@@ -82,8 +99,8 @@ level = "models"
 id = "mac-and-arp"
 title = "Find the device answering your laptop"
 size = "S"
-needs = []
-done_when = "captured ARP traffic on my own LAN with Wireshark and saved the capture, with 3 lines explaining what ARP resolves"
+needs = ["lab-readiness"]
+done_when = "Saved an owned LAN ARP capture or neighbour-table output, identified IP-to-MAC resolution, and explained why a cached entry may prevent a fresh ARP request."
 resource = "https://www.wireshark.org/docs/wsug_html_chunked/"
 minutes = 20
 brief = "Turn your own LAN into a tiny detective case: which MAC address belongs to your gateway?"
@@ -109,17 +126,17 @@ level = "models"
 id = "layers-milestone"
 title = "Follow one request from app to wire"
 size = "M"
-needs = ["osi-vs-tcpip", "ethernet-framing"]
+needs = ["lab-readiness", "osi-vs-tcpip", "mac-and-arp", "ethernet-framing"]
 milestone = true
-done_when = "Saved a capture and {lab_dir}/notes/layers-milestone.md mapping a real request to the protocol layers, with frame numbers and clear limits on what the capture shows."
+done_when = "Demonstrated: Distinguish link, network, transport, and application evidence. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/layers-milestone.md."
 resource = "https://www.practicalnetworking.net/series/packet-traveling/osi-model/"
-verify = { type = "file", path = "{lab_dir}/notes/layers-milestone.md", min_bytes = 300 }
+verify = { type = "file", path = "{lab_dir}/notes/layers-milestone.md", min_bytes = 250 }
 
 # ---------------------------------------------------------------- 2: addressing
 minutes = 45
-brief = "Bring the first level together: tell the story of one request using your own capture as evidence."
-steps = ["Capture one HTTP request to a server on a lab device you control. Use loopback if a second device is unavailable.", "Follow the request and response. Identify the addresses, transport ports, and application data.", "Save {lab_dir}/notes/layers-milestone.md with the relevant frame numbers and an OSI/TCP-IP mapping. Explicitly label anything the capture cannot establish."]
-hints = []
+brief = "Distinguish link, network, transport, and application evidence."
+steps = ["Before testing, record your prediction and the observation that would change your mind.", "Capture an owned HTTP exchange; identify addresses, ports, request and response by frame number. State what the capture does not reveal.", "Transfer check: Repeat with a different destination or port and predict which fields change.", "Control check: Compare a loopback capture with a LAN frame; do not invent Ethernet or physical-layer evidence on loopback.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/layers-milestone.md."]
+hints = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
 
 [[node]]
 level = "addressing"
@@ -134,10 +151,10 @@ verify = { type = "file", path = "{lab_dir}/notes/subnetting.md", min_bytes = 20
 [[node]]
 level = "addressing"
 id = "private-vs-public"
-title = "Private ranges, NAT, and why your Pi has a 192.168.x.x address"
+title = "Predict which destination needs your gateway"
 size = "S"
 needs = ["ipv4-basics"]
-done_when = "explained in 5 lines why my laptop and Pi share a private range but can both reach the internet, saved at {lab_dir}/notes/nat-basics.md"
+done_when = "Compared a local-subnet and off-subnet destination using ip route get or an equivalent route lookup; predicted the next hop and saved the results and NAT limitations in {lab_dir}/notes/nat-basics.md."
 resource = "https://www.cloudflare.com/learning/network-layer/what-is-nat/"
 
 [[node]]
@@ -155,13 +172,17 @@ level = "addressing"
 id = "addressing-milestone"
 title = "Design a subnet plan for my own home lab (milestone)"
 size = "M"
-needs = ["routing-basics"]
+needs = ["ipv4-basics", "private-vs-public", "routing-basics"]
 milestone = true
-done_when = "wrote a subnet plan at {lab_dir}/notes/lab-subnet-plan.md covering laptop, Pi, and router, with CIDR blocks I chose myself and justified"
+done_when = "Demonstrated: Predict subnet membership and next-hop selection. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/lab-subnet-plan.md."
 resource = "https://www.practicalnetworking.net/stand-alone/subnetting-mastery/"
 verify = { type = "file", path = "{lab_dir}/notes/lab-subnet-plan.md", min_bytes = 250 }
 
 # ---------------------------------------------------------------- 3: transport
+brief = "Predict subnet membership and next-hop selection."
+steps = ["Before testing, record your prediction and the observation that would change your mind.", "Design two small lab subnets and calculate network, host range, broadcast, and gateway; validate the arithmetic with Python ipaddress and inspect a matching routing table.", "Transfer check: Change the prefix or destination; predict whether delivery is local or via a gateway before checking.", "Control check: Include one off-subnet destination and one overlapping-subnet plan that must be rejected.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/lab-subnet-plan.md."]
+hints = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
+
 [[node]]
 level = "transport"
 id = "tcp-handshake"
@@ -175,10 +196,10 @@ verify = { type = "file", path = "{lab_dir}/pcaps/handshake.pcapng", min_bytes =
 [[node]]
 level = "transport"
 id = "tcp-vs-udp"
-title = "TCP vs UDP: when each is actually used"
+title = "Compare a stream with a datagram"
 size = "S"
 needs = []
-done_when = "listed 5 real protocols/apps and said TCP or UDP for each, with one sentence of reasoning per item, in {lab_dir}/notes/tcp-vs-udp.md"
+done_when = "Sent short messages between two local TCP sockets and two local UDP sockets, compared message boundaries and failure behavior, and saved a protocol comparison in {lab_dir}/notes/tcp-vs-udp.md. Explained why one successful UDP test does not establish delivery guarantees."
 resource = "https://www.cloudflare.com/learning/ddos/glossary/user-datagram-protocol-udp/"
 verify = { type = "file", path = "{lab_dir}/notes/tcp-vs-udp.md", min_bytes = 150 }
 
@@ -196,13 +217,17 @@ level = "transport"
 id = "transport-milestone"
 title = "Build a tiny TCP client/server in Python (milestone)"
 size = "L"
-needs = ["ports-and-sockets", "tcp-vs-udp"]
+needs = ["tcp-handshake", "tcp-vs-udp", "ports-and-sockets"]
 milestone = true
-done_when = "wrote a working TCP client and server from scratch (no copied code) that exchange one message, saved with the server at {lab_dir}/code/tcp-chat/server.py, and can explain every socket call without notes"
+done_when = "Demonstrated: Build a TCP exchange and reason about stream boundaries and connection failure. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/transport-milestone.md."
 resource = "https://beej.us/guide/bgnet/html/"
-verify = { type = "file", path = "{lab_dir}/code/tcp-chat/server.py", min_bytes = 50 }
+verify = { type = "file", path = "{lab_dir}/notes/transport-milestone.md", min_bytes = 250 }
 
 # ---------------------------------------------------------------- 4: application
+brief = "Build a TCP exchange and reason about stream boundaries and connection failure."
+steps = ["Before testing, record your prediction and the observation that would change your mind.", "Build a local TCP client/server that exchanges a framed message. Demonstrate a successful exchange and a clean shutdown.", "Transfer check: Send the same message in several chunks and handle a response longer than one recv call.", "Control check: Stop the server and distinguish connection refusal from a server accepting but not replying; apply a timeout.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/transport-milestone.md."]
+hints = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
+
 [[node]]
 level = "application"
 id = "dns-resolution"
@@ -237,13 +262,17 @@ level = "application"
 id = "application-milestone"
 title = "Trace a full page load, protocol by protocol (milestone)"
 size = "M"
-needs = ["dns-resolution", "other-app-protocols"]
+needs = ["dns-resolution", "http-anatomy", "other-app-protocols"]
 milestone = true
-done_when = "captured a full page load (DNS -> TCP -> HTTP) for one site and wrote {lab_dir}/notes/full-trace.md walking through every protocol in order, in my own words"
+done_when = "Demonstrated: Trace name resolution, connection establishment, and HTTP without assuming every page load is identical. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/full-trace.md."
 resource = "https://developer.mozilla.org/en-US/docs/Web/Performance/How_browsers_work"
-verify = { type = "file", path = "{lab_dir}/notes/full-trace.md", min_bytes = 300 }
+verify = { type = "file", path = "{lab_dir}/notes/full-trace.md", min_bytes = 250 }
 
 # ---------------------------------------------------------------- 5: capture
+brief = "Trace name resolution, connection establishment, and HTTP without assuming every page load is identical."
+steps = ["Before testing, record your prediction and the observation that would change your mind.", "Capture or correlate a controlled DNS lookup and an HTTP request to an owned lab service; identify each observed protocol.", "Transfer check: Compare a cached lookup or reused connection with the first request and predict which exchange may disappear.", "Control check: Compare an unresolvable name with a reachable host returning HTTP 404; separate DNS failure from application failure.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/full-trace.md."]
+hints = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
+
 [[node]]
 level = "capture"
 id = "wireshark-filters"
@@ -278,30 +307,34 @@ level = "capture"
 id = "capture-milestone"
 title = "Capture and fully decode a mystery protocol (milestone)"
 size = "M"
-needs = ["tshark-cli", "follow-a-stream"]
+needs = ["wireshark-filters", "tshark-cli", "follow-a-stream"]
 milestone = true
-done_when = "captured traffic from an app I've never analysed before (not HTTP/DNS) and wrote {lab_dir}/notes/mystery-protocol.md identifying the protocol and explaining 3 fields in its header, worked out myself, not looked up"
+done_when = "Demonstrated: Recover a conversation using packet filters and protocol documentation. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/mystery-protocol.md."
 resource = "https://www.wireshark.org/docs/wsug_html_chunked/"
 verify = { type = "file", path = "{lab_dir}/notes/mystery-protocol.md", min_bytes = 250 }
 
 # ---------------------------------------------------------------- 6: services
+brief = "Recover a conversation using packet filters and protocol documentation."
+steps = ["Before testing, record your prediction and the observation that would change your mind.", "Analyze a previously unused training capture or owned app exchange; identify a protocol and three fields with frame numbers. Standards and field references are allowed.", "Transfer check: Answer a new question from the same capture using a different filter or tshark extraction.", "Control check: Show a broad filter that includes unrelated traffic and explain how you excluded it.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/mystery-protocol.md."]
+hints = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
+
 [[node]]
 level = "services"
 id = "dhcp-lease"
 title = "Watch a DHCP lease happen"
 size = "S"
 needs = []
-done_when = "captured a DHCP DORA exchange (release and renew an IP to force it) and saved the capture plus a 3-line explanation at {lab_dir}/notes/dhcp.md"
+done_when = "Analyzed a DHCP training capture or a disposable VM lease exchange and identified DORA messages and lease fields in {lab_dir}/notes/dhcp.md. Explained why an ordinary renewal may show only request/ack; did not release the connection used to administer the lab."
 resource = "https://www.cloudflare.com/learning/network-layer/what-is-dhcp/"
 verify = { type = "file", path = "{lab_dir}/notes/dhcp.md", min_bytes = 100 }
 
 [[node]]
 level = "services"
 id = "nat-traversal"
-title = "Watch your own NAT translation happen"
+title = "Test a NAT explanation against the available evidence"
 size = "S"
 needs = []
-done_when = "identified my public IP vs private IP and explained in 3 lines how the router rewrites packets, saved at {lab_dir}/notes/nat-live.md"
+done_when = "Compared interface addresses, route selection, and an external address observation or training NAT diagram. Saved the mapping hypothesis and limits in {lab_dir}/notes/nat-live.md; did not claim to observe router translation without inside/outside evidence."
 resource = "https://www.cloudflare.com/learning/network-layer/what-is-nat/"
 
 [[node]]
@@ -319,20 +352,24 @@ level = "services"
 id = "services-milestone"
 title = "Lock down a service to exactly one source (milestone)"
 size = "M"
-needs = ["firewall-basics", "dhcp-lease"]
+needs = ["dhcp-lease", "nat-traversal", "firewall-basics"]
 milestone = true
-done_when = "configured a firewall rule so only my laptop's IP can reach one specific port on the Pi, verified it blocks a second device, documented at {lab_dir}/notes/services-milestone.md"
+done_when = "Demonstrated: Enforce and verify a source-specific network policy without confusing it with an application outage. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/services-milestone.md."
 resource = "https://help.ubuntu.com/community/UFW"
-verify = { type = "file", path = "{lab_dir}/notes/services-milestone.md", min_bytes = 200 }
+verify = { type = "file", path = "{lab_dir}/notes/services-milestone.md", min_bytes = 250 }
 
 # ---------------------------------------------------------------- 7: wireless
+brief = "Enforce and verify a source-specific network policy without confusing it with an application outage."
+steps = ["Before testing, record your prediction and the observation that would change your mind.", "In a disposable lab with console access, allow one source to a test service and deny a second source. Save rules and both connection results.", "Transfer check: Move the test service to another port and predict the required rule change.", "Control check: Verify the service remains healthy from the allowed source and that restoring the original rules restores the baseline.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/services-milestone.md."]
+hints = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
+
 [[node]]
 level = "wireless"
 id = "80211-basics"
 title = "802.11 frames vs Ethernet frames"
 size = "S"
 needs = []
-done_when = "wrote 5 lines on what's different about a Wi-Fi frame vs an Ethernet frame, saved at {lab_dir}/notes/wireless-basics.md"
+done_when = "Compared an Ethernet frame and an 802.11 training capture in Wireshark, identified different address/control fields, and saved frame references in {lab_dir}/notes/wireless-basics.md. Used a supplied capture if my adapter cannot expose 802.11 headers."
 resource = "https://www.wireshark.org/docs/wsug_html_chunked/"
 
 [[node]]
@@ -341,16 +378,16 @@ id = "wpa-handshake-concept"
 title = "What a WPA2 handshake protects (conceptually, no live capture)"
 size = "S"
 needs = ["80211-basics"]
-done_when = "explained in your own words why a 4-way handshake proves both sides know the password without sending the password, saved at {lab_dir}/notes/wpa-concept.md"
+done_when = "Annotated a published WPA2-Personal handshake diagram or training capture and explained possession of key material, nonce freshness, and why a weak passphrase remains vulnerable to offline guessing in {lab_dir}/notes/wpa-concept.md. Did not confuse authentication with hiding all traffic metadata."
 resource = "https://www.wifi-professionals.com/2019/01/4-way-handshake"
 
 [[node]]
 level = "wireless"
 id = "wireless-legal-note"
-title = "What's legal to test, and what isn't"
+title = "Define the boundaries of your wireless lab"
 size = "S"
 needs = []
-done_when = "wrote 5 lines on the legal line between testing your own home Wi-Fi and anyone else's, saved at {lab_dir}/notes/wireless-legal.md -- this node has no technical output on purpose"
+done_when = "Saved the owned access point or supplied training capture, allowed tests, excluded devices, and restoration steps in {lab_dir}/notes/wireless-legal.md; distinguished authorization from a claim that law is identical everywhere."
 resource = "https://www.eff.org/issues/cfaa"
 
 [[node]]
@@ -358,20 +395,24 @@ level = "wireless"
 id = "wireless-milestone"
 title = "Document your own home network's wireless security posture (milestone)"
 size = "M"
-needs = ["wpa-handshake-concept", "wireless-legal-note"]
+needs = ["80211-basics", "wpa-handshake-concept", "wireless-legal-note"]
 milestone = true
-done_when = "wrote a short audit of your own router's Wi-Fi settings (encryption type, whether WPS is on, guest network isolation) at {lab_dir}/notes/wireless-audit.md, with at least one change you actually made"
+done_when = "Demonstrated: Assess Wi-Fi authentication and guest isolation using observed configuration and connectivity. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/wireless-audit.md."
 resource = "https://www.wifi-professionals.com/2019/01/4-way-handshake"
-verify = { type = "file", path = "{lab_dir}/notes/wireless-audit.md", min_bytes = 200 }
+verify = { type = "file", path = "{lab_dir}/notes/wireless-audit.md", min_bytes = 250 }
 
 # ---------------------------------------------------------------- 8: capstone
+brief = "Assess Wi-Fi authentication and guest isolation using observed configuration and connectivity."
+steps = ["Before testing, record your prediction and the observation that would change your mind.", "Audit your owned access point or a provided lab configuration: authentication mode, WPS, guest isolation, and administrative exposure. Test guest-to-LAN access where supported.", "Transfer check: Compare two configurations and predict which permits guest access to a chosen LAN service.", "Control check: Check that an isolated guest can still reach an allowed destination; a broken guest connection does not prove isolation.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/wireless-audit.md."]
+hints = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
+
 [[node]]
 level = "capstone"
 id = "break-something"
 title = "Break your own network on purpose"
 size = "M"
 needs = []
-done_when = "deliberately misconfigured something (wrong subnet mask, blocked DNS, wrong gateway) and wrote {lab_dir}/notes/break-1.md describing the symptom before you knew the cause"
+done_when = "Changed one setting only in a disposable VM or isolated test network with console access and a saved baseline. Recorded the predicted and observed symptom in {lab_dir}/notes/break-1.md before diagnosis; left the management connection usable."
 resource = "https://www.practicalnetworking.net/"
 
 [[node]]
@@ -398,15 +439,15 @@ level = "capstone"
 id = "capstone-milestone"
 title = "Solve a network mystery and prove the fix"
 size = "L"
-needs = ["fix-and-verify"]
+needs = ["break-something", "diagnose-it", "fix-and-verify"]
 milestone = true
-done_when = "Diagnosed a real or staged lab fault using evidence, restored connectivity, and saved the before/after checks and root cause at {lab_dir}/notes/capstone-report.md."
+done_when = "Demonstrated: Diagnose an unfamiliar network fault by testing competing explanations. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/capstone-report.md."
 resource = "https://www.practicalnetworking.net/"
-verify = { type = "file", path = "{lab_dir}/notes/capstone-report.md", min_bytes = 400 }
+verify = { type = "file", path = "{lab_dir}/notes/capstone-report.md", min_bytes = 250 }
 minutes = 120
-brief = "Use your toolkit on a real fault, or a staged fault in a disposable lab when your network is working well."
-steps = ["Choose a fault in your own lab: a real issue, or a wrong DNS setting, gateway, or firewall rule in a disposable VM. Keep a way to restore its configuration.", "Write a prediction, then use at least two tools to narrow down the cause. Save the evidence before fixing it.", "Restore the setting, repeat the failing check, and save symptom, cause, fix, and before/after evidence in {lab_dir}/notes/capstone-report.md."]
-hints = []
+brief = "Diagnose an unfamiliar network fault by testing competing explanations."
+steps = ["Before testing, record your prediction and the observation that would change your mind.", "Use a fresh fault in a disposable lab or an unsolved training scenario. Record symptoms, at least two hypotheses, discriminating checks, root cause, and verified repair.", "Transfer check: Introduce or select a different fault with a similar symptom and distinguish it using evidence.", "Control check: Repeat both a formerly failing check and an unrelated healthy check after repair.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/capstone-report.md."]
+hints = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
 
 
 [[node]]
@@ -445,3 +486,115 @@ verify = { type = "manual" }
 "done_when" = "Capture your own local request in Wireshark, write one display filter that isolates it, and save the filtered view with an explanation of what the filter removes."
 "resource" = "https://wiki.wireshark.org/DisplayFilters"
 "verify" = { "type" = "manual" }
+
+
+[[node]]
+id = "recall-models"
+level = "retrieval"
+title = "Return later: OSI/TCP-IP models and Ethernet"
+size = "S"
+minutes = 20
+needs = ["layers-milestone"]
+brief = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
+steps = ["Start with closed notes: Sketch the layers from memory, then label a different frame.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
+done_when = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Sketch the layers from memory, then label a different frame. Logged the practice date and help used; did not copy the previous write-up."
+resource = "https://academy.hackthebox.com/path/preview/information-security-foundations"
+verify = { type = "manual" }
+
+
+[[node]]
+id = "recall-addressing"
+level = "retrieval"
+title = "Return later: IP addressing, subnetting, routing"
+size = "S"
+minutes = 20
+needs = ["addressing-milestone"]
+brief = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
+steps = ["Start with closed notes: Solve a fresh CIDR example and explain longest-prefix matching.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
+done_when = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Solve a fresh CIDR example and explain longest-prefix matching. Logged the practice date and help used; did not copy the previous write-up."
+resource = "https://academy.hackthebox.com/path/preview/information-security-foundations"
+verify = { type = "manual" }
+
+
+[[node]]
+id = "recall-transport"
+level = "retrieval"
+title = "Return later: TCP, UDP, and the handshake"
+size = "S"
+minutes = 20
+needs = ["transport-milestone"]
+brief = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
+steps = ["Start with closed notes: Explain why TCP does not preserve application message boundaries, then repair one receive-loop error.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
+done_when = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Explain why TCP does not preserve application message boundaries, then repair one receive-loop error. Logged the practice date and help used; did not copy the previous write-up."
+resource = "https://academy.hackthebox.com/path/preview/information-security-foundations"
+verify = { type = "manual" }
+
+
+[[node]]
+id = "recall-application"
+level = "retrieval"
+title = "Return later: DNS, HTTP, and application-layer protocols"
+size = "S"
+minutes = 20
+needs = ["application-milestone"]
+brief = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
+steps = ["Start with closed notes: Explain what HTTPS hides and what can remain visible; check a fresh request.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
+done_when = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Explain what HTTPS hides and what can remain visible; check a fresh request. Logged the practice date and help used; did not copy the previous write-up."
+resource = "https://academy.hackthebox.com/path/preview/information-security-foundations"
+verify = { type = "manual" }
+
+
+[[node]]
+id = "recall-capture"
+level = "retrieval"
+title = "Return later: Packet capture with Wireshark/tshark"
+size = "S"
+minutes = 20
+needs = ["capture-milestone"]
+brief = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
+steps = ["Start with closed notes: Write a filter from memory, then verify it on a different conversation.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
+done_when = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Write a filter from memory, then verify it on a different conversation. Logged the practice date and help used; did not copy the previous write-up."
+resource = "https://academy.hackthebox.com/path/preview/information-security-foundations"
+verify = { type = "manual" }
+
+
+[[node]]
+id = "recall-services"
+level = "retrieval"
+title = "Return later: DHCP, NAT, and firewalls"
+size = "S"
+minutes = 20
+needs = ["services-milestone"]
+brief = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
+steps = ["Start with closed notes: Explain rule order and default policy, then predict the result of a small rule set.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
+done_when = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Explain rule order and default policy, then predict the result of a small rule set. Logged the practice date and help used; did not copy the previous write-up."
+resource = "https://academy.hackthebox.com/path/preview/information-security-foundations"
+verify = { type = "manual" }
+
+
+[[node]]
+id = "recall-wireless"
+level = "retrieval"
+title = "Return later: Wireless and link-layer security basics"
+size = "S"
+minutes = 20
+needs = ["wireless-milestone"]
+brief = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
+steps = ["Start with closed notes: Explain what a WPA2-Personal handshake demonstrates and what it does not hide.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
+done_when = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Explain what a WPA2-Personal handshake demonstrates and what it does not hide. Logged the practice date and help used; did not copy the previous write-up."
+resource = "https://academy.hackthebox.com/path/preview/information-security-foundations"
+verify = { type = "manual" }
+
+
+[[node]]
+id = "recall-capstone"
+level = "retrieval"
+title = "Return later: Diagnose a real problem"
+size = "S"
+minutes = 20
+needs = ["capstone-milestone"]
+brief = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
+steps = ["Start with closed notes: From a new symptom, name the first two tests and what each possible result would rule out.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
+done_when = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: From a new symptom, name the first two tests and what each possible result would rule out. Logged the practice date and help used; did not copy the previous write-up."
+resource = "https://academy.hackthebox.com/path/preview/information-security-foundations"
+verify = { type = "manual" }

@@ -1,0 +1,322 @@
+\subsection{Level-by-level assessment crosswalk}
+Each entry corresponds to the named version-3 milestone. Source IDs refer to the evidence register. The task text and prerequisites remain in the runtime TOML packs.
+\subsubsection{networking-for-security: models}
+\noindent\textbf{Milestone:} layers-milestone\par
+\noindent\textbf{Skill:} Distinguish link, network, transport, and application evidence.\par
+\noindent\textbf{Experiment:} Capture an owned HTTP exchange; identify addresses, ports, request and response by frame number. State what the capture does not reveal.\par
+\noindent\textbf{Transfer:} Repeat with a different destination or port and predict which fields change.\par
+\noindent\textbf{Control:} Compare a loopback capture with a LAN frame; do not invent Ethernet or physical-layer evidence on loopback.\par
+\noindent\textbf{Later retrieval:} Sketch the layers from memory, then label a different frame.\par
+\noindent\textbf{Alignment references:} htb-foundations, ies-practice\par
+\subsubsection{networking-for-security: addressing}
+\noindent\textbf{Milestone:} addressing-milestone\par
+\noindent\textbf{Skill:} Predict subnet membership and next-hop selection.\par
+\noindent\textbf{Experiment:} Design two small lab subnets and calculate network, host range, broadcast, and gateway; validate the arithmetic with Python ipaddress and inspect a matching routing table.\par
+\noindent\textbf{Transfer:} Change the prefix or destination; predict whether delivery is local or via a gateway before checking.\par
+\noindent\textbf{Control:} Include one off-subnet destination and one overlapping-subnet plan that must be rejected.\par
+\noindent\textbf{Later retrieval:} Solve a fresh CIDR example and explain longest-prefix matching.\par
+\noindent\textbf{Alignment references:} htb-foundations, ies-practice\par
+\subsubsection{networking-for-security: transport}
+\noindent\textbf{Milestone:} transport-milestone\par
+\noindent\textbf{Skill:} Build a TCP exchange and reason about stream boundaries and connection failure.\par
+\noindent\textbf{Experiment:} Build a local TCP client/server that exchanges a framed message. Demonstrate a successful exchange and a clean shutdown.\par
+\noindent\textbf{Transfer:} Send the same message in several chunks and handle a response longer than one recv call.\par
+\noindent\textbf{Control:} Stop the server and distinguish connection refusal from a server accepting but not replying; apply a timeout.\par
+\noindent\textbf{Later retrieval:} Explain why TCP does not preserve application message boundaries, then repair one receive-loop error.\par
+\noindent\textbf{Alignment references:} htb-foundations, ies-practice\par
+\subsubsection{networking-for-security: application}
+\noindent\textbf{Milestone:} application-milestone\par
+\noindent\textbf{Skill:} Trace name resolution, connection establishment, and HTTP without assuming every page load is identical.\par
+\noindent\textbf{Experiment:} Capture or correlate a controlled DNS lookup and an HTTP request to an owned lab service; identify each observed protocol.\par
+\noindent\textbf{Transfer:} Compare a cached lookup or reused connection with the first request and predict which exchange may disappear.\par
+\noindent\textbf{Control:} Compare an unresolvable name with a reachable host returning HTTP 404; separate DNS failure from application failure.\par
+\noindent\textbf{Later retrieval:} Explain what HTTPS hides and what can remain visible; check a fresh request.\par
+\noindent\textbf{Alignment references:} htb-foundations, ies-practice\par
+\subsubsection{networking-for-security: capture}
+\noindent\textbf{Milestone:} capture-milestone\par
+\noindent\textbf{Skill:} Recover a conversation using packet filters and protocol documentation.\par
+\noindent\textbf{Experiment:} Analyze a previously unused training capture or owned app exchange; identify a protocol and three fields with frame numbers. Standards and field references are allowed.\par
+\noindent\textbf{Transfer:} Answer a new question from the same capture using a different filter or tshark extraction.\par
+\noindent\textbf{Control:} Show a broad filter that includes unrelated traffic and explain how you excluded it.\par
+\noindent\textbf{Later retrieval:} Write a filter from memory, then verify it on a different conversation.\par
+\noindent\textbf{Alignment references:} htb-foundations, ies-practice\par
+\subsubsection{networking-for-security: services}
+\noindent\textbf{Milestone:} services-milestone\par
+\noindent\textbf{Skill:} Enforce and verify a source-specific network policy without confusing it with an application outage.\par
+\noindent\textbf{Experiment:} In a disposable lab with console access, allow one source to a test service and deny a second source. Save rules and both connection results.\par
+\noindent\textbf{Transfer:} Move the test service to another port and predict the required rule change.\par
+\noindent\textbf{Control:} Verify the service remains healthy from the allowed source and that restoring the original rules restores the baseline.\par
+\noindent\textbf{Later retrieval:} Explain rule order and default policy, then predict the result of a small rule set.\par
+\noindent\textbf{Alignment references:} htb-foundations, ies-practice\par
+\subsubsection{networking-for-security: wireless}
+\noindent\textbf{Milestone:} wireless-milestone\par
+\noindent\textbf{Skill:} Assess Wi-Fi authentication and guest isolation using observed configuration and connectivity.\par
+\noindent\textbf{Experiment:} Audit your owned access point or a provided lab configuration: authentication mode, WPS, guest isolation, and administrative exposure. Test guest-to-LAN access where supported.\par
+\noindent\textbf{Transfer:} Compare two configurations and predict which permits guest access to a chosen LAN service.\par
+\noindent\textbf{Control:} Check that an isolated guest can still reach an allowed destination; a broken guest connection does not prove isolation.\par
+\noindent\textbf{Later retrieval:} Explain what a WPA2-Personal handshake demonstrates and what it does not hide.\par
+\noindent\textbf{Alignment references:} htb-foundations, ies-practice\par
+\subsubsection{networking-for-security: capstone}
+\noindent\textbf{Milestone:} capstone-milestone\par
+\noindent\textbf{Skill:} Diagnose an unfamiliar network fault by testing competing explanations.\par
+\noindent\textbf{Experiment:} Use a fresh fault in a disposable lab or an unsolved training scenario. Record symptoms, at least two hypotheses, discriminating checks, root cause, and verified repair.\par
+\noindent\textbf{Transfer:} Introduce or select a different fault with a similar symptom and distinguish it using evidence.\par
+\noindent\textbf{Control:} Repeat both a formerly failing check and an unrelated healthy check after repair.\par
+\noindent\textbf{Later retrieval:} From a new symptom, name the first two tests and what each possible result would rule out.\par
+\noindent\textbf{Alignment references:} htb-foundations, ies-practice\par
+\subsubsection{web-application-security: injection}
+\noindent\textbf{Milestone:} injection-milestone\par
+\noindent\textbf{Skill:} Infer an injection mechanism from request/response evidence and distinguish a real signal from noise.\par
+\noindent\textbf{Experiment:} Solve an unfamiliar scoped Academy injection lab; save redacted baseline and successful requests, observations, root cause, and a specific repair.\par
+\noindent\textbf{Transfer:} Solve a second small variation of the same mechanism with a different input location, data shape, or response signal.\par
+\noindent\textbf{Control:} Include a negative request and explain why a status change or delay alone is insufficient evidence.\par
+\noindent\textbf{Later retrieval:} Reconstruct the data-to-query or data-to-command boundary from memory and predict a new input.\par
+\noindent\textbf{Alignment references:} portswigger-paths, portswigger-mystery, htb-foundations\par
+\subsubsection{web-application-security: auth}
+\noindent\textbf{Milestone:} auth-milestone\par
+\noindent\textbf{Skill:} Track authentication state and identify the missing validation in an account-recovery or session flow.\par
+\noindent\textbf{Experiment:} Solve a scoped multi-step authentication lab; record the state transition that incorrectly grants access and the intended authentication boundary.\par
+\noindent\textbf{Transfer:} Repeat with a fresh lab session or different lab account so saved cookies cannot explain success.\par
+\noindent\textbf{Control:} Show a legitimate login and a denied unauthenticated request; specify which server-side check breaks the attack chain.\par
+\noindent\textbf{Later retrieval:} Draw the relevant session or recovery state transitions without notes and identify the vulnerable transition.\par
+\noindent\textbf{Alignment references:} portswigger-paths, portswigger-mystery, htb-foundations\par
+\subsubsection{web-application-security: access-control}
+\noindent\textbf{Milestone:} access-control-milestone\par
+\noindent\textbf{Skill:} Test authorization separately from authentication.\par
+\noindent\textbf{Experiment:} Using two lab users and an administrator role where available, build an owner/other-user/anonymous access matrix for one resource and demonstrate a missing check.\par
+\noindent\textbf{Transfer:} Change the object identifier or request method and repeat the authorization test without following a walkthrough.\par
+\noindent\textbf{Control:} Include the legitimate owner request and a correctly denied cross-user request or a repaired local endpoint.\par
+\noindent\textbf{Later retrieval:} Explain why knowing an object ID does not grant authority, then design a fresh access test.\par
+\noindent\textbf{Alignment references:} portswigger-paths, portswigger-mystery, htb-foundations\par
+\subsubsection{web-application-security: xss-and-csrf}
+\noindent\textbf{Milestone:} xss-csrf-milestone\par
+\noindent\textbf{Skill:} Separate script execution caused by unsafe output handling from an unwanted authenticated cross-site action.\par
+\noindent\textbf{Experiment:} Complete a scoped XSS exercise and a scoped CSRF exercise; trace source, browser context, and effect for each. Use harmless lab proofs.\par
+\noindent\textbf{Transfer:} Change the XSS rendering context or the CSRF request conditions and predict whether the previous proof still works.\par
+\noindent\textbf{Control:} Compare correctly encoded output or a rejected anti-CSRF token; explain why an XSS fix is not automatically a CSRF fix.\par
+\noindent\textbf{Later retrieval:} From two request traces, distinguish XSS from CSRF and name the relevant trust boundary.\par
+\noindent\textbf{Alignment references:} portswigger-paths, portswigger-mystery, htb-foundations\par
+\subsubsection{web-application-security: ssrf-and-deserialization}
+\noindent\textbf{Milestone:} ssrf-deser-milestone\par
+\noindent\textbf{Skill:} Distinguish server-side fetching, external-entity expansion, and unsafe object reconstruction.\par
+\noindent\textbf{Experiment:} Use scoped lab evidence from SSRF, XXE, and deserialization exercises to explain each input-to-action chain; independently reproduce one on an unfamiliar lab.\par
+\noindent\textbf{Transfer:} Change the SSRF destination, XML entity setting, or serialized property and predict the result before testing in the lab.\par
+\noindent\textbf{Control:} Include a rejected or inert input and identify the specific allowlist, parser, or data-format boundary that prevents the action.\par
+\noindent\textbf{Later retrieval:} Classify three short scenarios by mechanism and explain why cloud metadata access is not implied by every SSRF.\par
+\noindent\textbf{Alignment references:} portswigger-paths, portswigger-mystery, htb-foundations\par
+\subsubsection{web-application-security: logic-flaws}
+\noindent\textbf{Milestone:} logic-milestone\par
+\noindent\textbf{Skill:} Express a business invariant and produce a sequence that violates it.\par
+\noindent\textbf{Experiment:} Choose a lab workflow, write its expected invariant, and test reordered, repeated, or concurrent operations to find a violation.\par
+\noindent\textbf{Transfer:} Change the operation order or concurrency and predict whether the invariant still fails.\par
+\noindent\textbf{Control:} Show the ordinary sequence preserving the invariant and propose a server-side transaction or state check.\par
+\noindent\textbf{Later retrieval:} State an invariant for a different workflow and propose a discriminating test.\par
+\noindent\textbf{Alignment references:} portswigger-paths, portswigger-mystery, htb-foundations\par
+\subsubsection{web-application-security: api-security}
+\noindent\textbf{Milestone:} api-milestone\par
+\noindent\textbf{Skill:} Test API authorization and token handling using a bounded endpoint inventory.\par
+\noindent\textbf{Experiment:} Map a small lab API and test anonymous, owner, and other-user access for the selected operations. Explain one JWT or GraphQL finding with a reproducible request.\par
+\noindent\textbf{Transfer:} Change an object ID, field, role, or token property and test whether the proposed boundary holds.\par
+\noindent\textbf{Control:} Show a correctly rejected request; do not label introspection alone a vulnerability without sensitive exposure or unauthorized access.\par
+\noindent\textbf{Later retrieval:} Design an owner/other-user API test from memory and explain the difference between token decoding and signature validation.\par
+\noindent\textbf{Alignment references:} portswigger-paths, portswigger-mystery, htb-foundations\par
+\subsubsection{web-application-security: capstone}
+\noindent\textbf{Milestone:} capstone-milestone\par
+\noindent\textbf{Skill:} Produce an assessment another learner can reproduce and critically review.\par
+\noindent\textbf{Experiment:} On a fresh scoped target, reproduce three findings from distinct covered mechanisms. Report scope, evidence, impact, root cause, and a specific fix for each.\par
+\noindent\textbf{Transfer:} Retest one finding from a fresh session and independently reproduce one chosen finding without the original step-by-step notes.\par
+\noindent\textbf{Control:} Implement and retest at least one fix in an owned local reproduction, keeping legitimate behavior working; label other fixes as proposed.\par
+\noindent\textbf{Later retrieval:} Explain one finding and its fix from memory, then test a changed request.\par
+\noindent\textbf{Alignment references:} portswigger-paths, portswigger-mystery, htb-foundations\par
+\subsubsection{network-penetration-testing: recon}
+\noindent\textbf{Milestone:} recon-milestone\par
+\noindent\textbf{Skill:} Turn reconnaissance observations into falsifiable service hypotheses.\par
+\noindent\textbf{Experiment:} Map a fresh owned/training host: ports, services, reachable web entries, scan limitations, and two ranked hypotheses before exploitation.\par
+\noindent\textbf{Transfer:} Confirm one service using its native protocol or a second tool, rather than a version string alone.\par
+\noindent\textbf{Control:} Test a closed or filtered port and an intentionally nonexistent web route; distinguish them from positive findings.\par
+\noindent\textbf{Later retrieval:} Explain the next check for a new banner, including what would falsify the suspected weakness.\par
+\noindent\textbf{Alignment references:} htb-pentest, htb-foundations\par
+\subsubsection{network-penetration-testing: service-exploitation}
+\noindent\textbf{Milestone:} service-exploitation-milestone\par
+\noindent\textbf{Skill:} Verify exploit prerequisites and explain the boundary crossed.\par
+\noindent\textbf{Experiment:} On a designated vulnerable lab, establish a foothold using a documented service weakness after verifying its required conditions. Save sanitized evidence.\par
+\noindent\textbf{Transfer:} Repeat from a clean snapshot or use a comparable training service with a changed configuration.\par
+\noindent\textbf{Control:} Remove one prerequisite in an owned reproduction and show that the exploit fails while legitimate access remains.\par
+\noindent\textbf{Later retrieval:} Explain why a matching CVE or version is a hypothesis, then enumerate the required conditions.\par
+\noindent\textbf{Alignment references:} htb-pentest, htb-foundations\par
+\subsubsection{network-penetration-testing: metasploit}
+\noindent\textbf{Milestone:} metasploit-milestone\par
+\noindent\textbf{Skill:} Separate framework orchestration from the underlying exploit mechanism.\par
+\noindent\textbf{Experiment:} Complete one bounded training exploit with Metasploit, recording target assumptions, module options, payload role, and proof of the resulting context.\par
+\noindent\textbf{Transfer:} Reproduce the essential request or underlying mechanism manually in the same lab, using earlier exercises as preparation.\par
+\noindent\textbf{Control:} Use an incompatible target setting or a patched local reproduction and explain the failure rather than changing options blindly.\par
+\noindent\textbf{Later retrieval:} Describe the exploit/payload distinction and reconstruct the required options without a saved session.\par
+\noindent\textbf{Alignment references:} htb-pentest, htb-foundations\par
+\subsubsection{network-penetration-testing: linux-privesc}
+\noindent\textbf{Milestone:} linux-privesc-milestone\par
+\noindent\textbf{Skill:} Find and validate Linux privilege boundaries through native permissions and process context.\par
+\noindent\textbf{Experiment:} From a provided low-privilege lab foothold, demonstrate one escalation path and manually verify a second distinct candidate; use a second lab if necessary.\par
+\noindent\textbf{Transfer:} Repeat the successful mechanism with a different lab file, executable, or scheduled task and predict the permission change.\par
+\noindent\textbf{Control:} Correct the writable path, ownership, or privilege setting in a disposable reproduction and retest.\par
+\noindent\textbf{Later retrieval:} Explain real/effective identity and one trust boundary from memory, then inspect a new permission example.\par
+\noindent\textbf{Alignment references:} htb-pentest, htb-foundations\par
+\subsubsection{network-penetration-testing: windows-privesc}
+\noindent\textbf{Milestone:} windows-privesc-milestone\par
+\noindent\textbf{Skill:} Reason about Windows identity, service permissions, and token privileges.\par
+\noindent\textbf{Experiment:} Establish a baseline with native Windows commands, then complete one service or token-based lab escalation and explain the exact enabling permissions.\par
+\noindent\textbf{Transfer:} Change the lab user or service configuration and predict whether the same path remains available.\par
+\noindent\textbf{Control:} Show a denied operation or corrected service ACL; record actual identity and privileges rather than assuming every shell is SYSTEM.\par
+\noindent\textbf{Later retrieval:} Explain the difference between group membership, an enabled privilege, and a service access-control entry.\par
+\noindent\textbf{Alignment references:} htb-pentest, htb-foundations\par
+\subsubsection{network-penetration-testing: active-directory}
+\noindent\textbf{Milestone:} ad-milestone\par
+\noindent\textbf{Skill:} Validate an AD attack-path edge using identity, permissions, and authentication evidence.\par
+\noindent\textbf{Experiment:} In an isolated beginner AD lab with supplied credentials, enumerate the domain and validate a bounded path to the designated objective. Record each required edge.\par
+\noindent\textbf{Transfer:} Re-evaluate one graph edge with another lab account or changed permission; verify the graph claim using native evidence.\par
+\noindent\textbf{Control:} Remove or identify a specific permission or weak credential condition that breaks the path; do not claim all AD attacks require Kerberoasting.\par
+\noindent\textbf{Later retrieval:} Draw a small domain trust/permission path from memory and explain a service ticket without equating it to a plaintext password.\par
+\noindent\textbf{Alignment references:} htb-pentest, htb-foundations\par
+\subsubsection{network-penetration-testing: post-exploitation}
+\noindent\textbf{Milestone:} post-exploitation-milestone\par
+\noindent\textbf{Skill:} Map observed actions to telemetry and distinguish visibility gaps from evidence of absence.\par
+\noindent\textbf{Experiment:} Map the stages of a completed lab exercise to ATT\&CK techniques and actual log or network evidence, including a harmless scheduled-task persistence fixture and synthetic file transfer.\par
+\noindent\textbf{Transfer:} Change the task name or transfer channel and predict how the evidence changes.\par
+\noindent\textbf{Control:} Remove the lab artifact and confirm its absence; label an unlogged action as a visibility gap instead of claiming it did not happen.\par
+\noindent\textbf{Later retrieval:} Explain which logs would confirm a new persistence or transfer hypothesis and what they cannot prove.\par
+\noindent\textbf{Alignment references:} htb-pentest, htb-foundations\par
+\subsubsection{network-penetration-testing: capstone}
+\noindent\textbf{Milestone:} capstone-milestone\par
+\noindent\textbf{Skill:} Complete and report a scoped assessment without following a target walkthrough.\par
+\noindent\textbf{Experiment:} On an unfamiliar training box, progress from reconnaissance to the designated foothold and privilege objective, recording dead ends, evidence, and help used.\par
+\noindent\textbf{Transfer:} Reproduce one key step from a clean state, independently of the original walkthrough or saved session.\par
+\noindent\textbf{Control:} Apply one hardening change in an owned reproduction and show it blocks that step without breaking intended use; clearly label untested fixes.\par
+\noindent\textbf{Later retrieval:} Explain the assessment chain and one alternative hypothesis from memory, then rerun the discriminating check.\par
+\noindent\textbf{Alignment references:} htb-pentest, htb-foundations\par
+\subsubsection{reverse-engineering-and-binary-exploitation: asm-foundations}
+\noindent\textbf{Milestone:} asm-milestone\par
+\noindent\textbf{Skill:} Predict a function’s behavior from registers, stack, branches, and the target ABI.\par
+\noindent\textbf{Experiment:} Trace a small compiled function for two inputs before running it, then verify the predicted return value and key state changes in a debugger.\par
+\noindent\textbf{Transfer:} Change one argument or compile option and predict which instruction or state observation changes.\par
+\noindent\textbf{Control:} Include an input taking the other branch; record ABI and architecture so register names are not treated as universal.\par
+\noindent\textbf{Later retrieval:} Sketch the call/return state and argument locations for the chosen ABI without notes.\par
+\noindent\textbf{Alignment references:} pwn-college, rop-guide, phoenix-stack0\par
+\subsubsection{reverse-engineering-and-binary-exploitation: static-analysis}
+\noindent\textbf{Milestone:} static-milestone\par
+\noindent\textbf{Skill:} Recover a small program’s input condition from static evidence and verify it dynamically.\par
+\noindent\textbf{Experiment:} Analyze an unfamiliar educational crackme without source; document the candidate input predicate and its assembly/decompiler evidence.\par
+\noindent\textbf{Transfer:} Predict an accepted and a rejected input not both supplied by a walkthrough, then run them.\par
+\noindent\textbf{Control:} Cross-check the decompiler against instructions; an unclear type or optimized-away function is uncertainty, not proof the decompiler is wrong.\par
+\noindent\textbf{Later retrieval:} Explain the recovered predicate and locate its key comparison in a fresh small function.\par
+\noindent\textbf{Alignment references:} pwn-college, rop-guide, phoenix-stack0\par
+\subsubsection{reverse-engineering-and-binary-exploitation: dynamic-analysis}
+\noindent\textbf{Milestone:} dynamic-milestone\par
+\noindent\textbf{Skill:} Use controlled execution to explain an input-dependent state change.\par
+\noindent\textbf{Experiment:} Solve a small educational crackme using breakpoints, register/memory inspection, and a trace of the deciding branch.\par
+\noindent\textbf{Transfer:} Change the input and predict the next branch or watched value before continuing.\par
+\noindent\textbf{Control:} Demonstrate a rejected input and distinguish your own debugger modifications from an input that works in an unmodified run.\par
+\noindent\textbf{Later retrieval:} Choose a breakpoint/watchpoint for a new toy function and predict what it will reveal.\par
+\noindent\textbf{Alignment references:} pwn-college, rop-guide, phoenix-stack0\par
+\subsubsection{reverse-engineering-and-binary-exploitation: stack-overflows}
+\noindent\textbf{Milestone:} stack-milestone\par
+\noindent\textbf{Skill:} Explain how an out-of-bounds write progresses from data corruption to control-flow corruption.\par
+\noindent\textbf{Experiment:} Use the Phoenix progression or an equivalent deliberately vulnerable local binary to demonstrate adjacent-data corruption and a later controlled redirection. Explain offset, ABI, and each payload region.\par
+\noindent\textbf{Transfer:} Change padding or a small source buffer size in your own toy reproduction and recalculate the relevant boundary.\par
+\noindent\textbf{Control:} Run a bounded-input version or a short input and show that the control target is not overwritten.\par
+\noindent\textbf{Later retrieval:} Draw the relevant stack layout and distinguish Phoenix Stack Zero’s data overwrite from overwriting a saved return address.\par
+\noindent\textbf{Alignment references:} pwn-college, rop-guide, phoenix-stack0\par
+\subsubsection{reverse-engineering-and-binary-exploitation: protections}
+\noindent\textbf{Milestone:} protections-milestone\par
+\noindent\textbf{Skill:} Distinguish mitigation mechanisms instead of treating checksec as a proof of safety.\par
+\noindent\textbf{Experiment:} Compile one owned toy program in four protection configurations and compare flags with actual addresses or failure behavior.\par
+\noindent\textbf{Transfer:} Change one protection at a time and predict which earlier technique is affected.\par
+\noindent\textbf{Control:} Include a bounds-corrected build: mitigations and fixing the memory bug are different interventions.\par
+\noindent\textbf{Later retrieval:} Explain ASLR, PIE, canaries, and NX from memory and name a limitation of each.\par
+\noindent\textbf{Alignment references:} pwn-college, rop-guide, phoenix-stack0\par
+\subsubsection{reverse-engineering-and-binary-exploitation: rop}
+\noindent\textbf{Milestone:} rop-milestone\par
+\noindent\textbf{Skill:} Construct and explain a chain of existing instructions under a specific calling convention.\par
+\noindent\textbf{Experiment:} Complete the ROP Emporium callme challenge, or an equivalent challenge requiring several function calls; annotate arguments, gadgets, stack effects, and alignment.\par
+\noindent\textbf{Transfer:} Change one argument or gadget choice and predict whether the calls still satisfy the challenge.\par
+\noindent\textbf{Control:} Show one incorrect chain and explain its precise failure; ret2win alone is not evidence of multi-call chaining.\par
+\noindent\textbf{Later retrieval:} Reconstruct a short gadget chain and register setup from memory for the chosen architecture.\par
+\noindent\textbf{Alignment references:} pwn-college, rop-guide, phoenix-stack0\par
+\subsubsection{reverse-engineering-and-binary-exploitation: heap-and-format}
+\noindent\textbf{Milestone:} heap-format-milestone\par
+\noindent\textbf{Skill:} Distinguish allocation lifetime errors from format-string interpretation bugs.\par
+\noindent\textbf{Experiment:} Use prior local exercises to show a heap lifetime error and a format-string information leak, then independently solve one introductory lab in either class.\par
+\noindent\textbf{Transfer:} Change an allocation/use order or format input and predict the observable result.\par
+\noindent\textbf{Control:} Compare a lifetime-correct or fixed-format version; allocator behavior depends on version and undefined behavior need not crash.\par
+\noindent\textbf{Later retrieval:} Classify a new short example and explain the relevant object lifetime or variadic format boundary.\par
+\noindent\textbf{Alignment references:} pwn-college, rop-guide, phoenix-stack0\par
+\subsubsection{reverse-engineering-and-binary-exploitation: capstone}
+\noindent\textbf{Milestone:} capstone-milestone\par
+\noindent\textbf{Skill:} Move from a defensible vulnerability hypothesis to a reproducible lab exploit and repair.\par
+\noindent\textbf{Experiment:} Choose a fresh educational binary matched to your architecture and level. Record static/dynamic evidence, vulnerability mechanism, exploit, and the actual enabled protections.\par
+\noindent\textbf{Transfer:} Reproduce the result in a fresh process and explain any address assumptions or failure conditions.\par
+\noindent\textbf{Control:} Patch an equivalent owned source reproduction and verify both rejection of the bad input and preservation of intended behavior.\par
+\noindent\textbf{Later retrieval:} Explain the vulnerability-to-effect chain without the exploit script, then predict a changed input.\par
+\noindent\textbf{Alignment references:} pwn-college, rop-guide, phoenix-stack0\par
+\subsubsection{defensive-security-and-detection: logging-fundamentals}
+\noindent\textbf{Milestone:} logging-milestone\par
+\noindent\textbf{Skill:} Reconstruct an event timeline while separating observations from inference.\par
+\noindent\textbf{Experiment:} Use three benign events from your lab or an unused training log. Reconstruct order, identity, action, and outcome from source lines before comparing with ground truth.\par
+\noindent\textbf{Transfer:} Change the time window or include another source and explain timestamp/timezone handling.\par
+\noindent\textbf{Control:} Include an unrelated event and one deliberately missing source; distinguish a negative result from missing telemetry.\par
+\noindent\textbf{Later retrieval:} From memory, explain which fields connect an authentication event to a host and time.\par
+\noindent\textbf{Alignment references:} htb-soc, security-onion-hardware, ies-practice\par
+\subsubsection{defensive-security-and-detection: log-analysis}
+\noindent\textbf{Milestone:} log-analysis-milestone\par
+\noindent\textbf{Skill:} Build a detection query and evaluate it against labeled positive and negative data.\par
+\noindent\textbf{Experiment:} Use a small labeled training dataset containing suspicious and ordinary requests. Design a query without looking at the answer labels, then compare its results with ground truth.\par
+\noindent\textbf{Transfer:} Change the source address or request ordering in a synthetic copy; test whether the same behavior is still found.\par
+\noindent\textbf{Control:} Record true positives, false positives, and false negatives with counts and explain at least one ambiguity.\par
+\noindent\textbf{Later retrieval:} Write the core filter from memory and test it on a small changed dataset.\par
+\noindent\textbf{Alignment references:} htb-soc, security-onion-hardware, ies-practice\par
+\subsubsection{defensive-security-and-detection: network-monitoring}
+\noindent\textbf{Milestone:} network-monitoring-milestone\par
+\noindent\textbf{Skill:} Explain the differences between connection metadata and signature alerts.\par
+\noindent\textbf{Experiment:} Replay a documented benign-plus-test PCAP through Zeek and Suricata; confirm the relevant parser and rule are enabled before comparing outputs.\par
+\noindent\textbf{Transfer:} Change a protocol field or replay a different small capture and predict the connection record and alert outcome.\par
+\noindent\textbf{Control:} Use a benign control capture; a generic nmap scan is not guaranteed to trigger an arbitrary default ruleset.\par
+\noindent\textbf{Later retrieval:} Explain why a connection log can exist without an alert, then identify the required visibility and rule.\par
+\noindent\textbf{Alignment references:} htb-soc, security-onion-hardware, ies-practice\par
+\subsubsection{defensive-security-and-detection: siem-basics}
+\noindent\textbf{Milestone:} siem-milestone\par
+\noindent\textbf{Skill:} Investigate indexed security events using reproducible queries and pivots.\par
+\noindent\textbf{Experiment:} In Security Onion Import/Eval on supported x86-64 hardware, or a supplied hosted SIEM lab, ingest/inspect a small training dataset and investigate an unfamiliar event.\par
+\noindent\textbf{Transfer:} Pivot from an event to a second host, identity, or time interval without using a prewritten query for that pivot.\par
+\noindent\textbf{Control:} Confirm a known benign event is also ingested; account for missing sources, time offsets, and query scope before inferring absence.\par
+\noindent\textbf{Later retrieval:} Rebuild the investigation query and explain its fields without using the saved dashboard.\par
+\noindent\textbf{Alignment references:} htb-soc, security-onion-hardware, ies-practice\par
+\subsubsection{defensive-security-and-detection: detection-engineering}
+\noindent\textbf{Milestone:} detection-milestone\par
+\noindent\textbf{Skill:} Evaluate a rule as a hypothesis about observable behavior.\par
+\noindent\textbf{Experiment:} Write one new rule for a bounded lab behavior; record required telemetry, test data, rule version, and results against labeled positive and negative samples.\par
+\noindent\textbf{Transfer:} Change a nonessential address, username, or ordering and check whether behavior-based coverage survives.\par
+\noindent\textbf{Control:} Count false positives and false negatives; explain a known blind spot and test the benign control after tuning.\par
+\noindent\textbf{Later retrieval:} Explain the rule’s observable assumption from memory and design one counterexample.\par
+\noindent\textbf{Alignment references:} htb-soc, security-onion-hardware, ies-practice\par
+\subsubsection{defensive-security-and-detection: hardening}
+\noindent\textbf{Milestone:} hardening-milestone\par
+\noindent\textbf{Skill:} Demonstrate that a configuration change blocks a chosen path while preserving legitimate use.\par
+\noindent\textbf{Experiment:} On a disposable VM, establish baseline access, apply selected service/permission/update-policy changes, and rerun the relevant lab checks.\par
+\noindent\textbf{Transfer:} Test from a second role or service endpoint to find an overbroad assumption.\par
+\noindent\textbf{Control:} Prove legitimate access still works and verify rollback. An empty scan alone does not distinguish hardening from an offline machine.\par
+\noindent\textbf{Later retrieval:} Explain one hardening control, its operational tradeoff, and a positive/negative test pair.\par
+\noindent\textbf{Alignment references:} htb-soc, security-onion-hardware, ies-practice\par
+\subsubsection{defensive-security-and-detection: incident-response}
+\noindent\textbf{Milestone:} ir-milestone\par
+\noindent\textbf{Skill:} Make evidence-preserving response decisions under uncertainty.\par
+\noindent\textbf{Experiment:} Use an unfamiliar training case or a peer-run benign lab scenario. Document timeline, evidence hashes, containment choices, investigation, and recovery checks before opening the answer key.\par
+\noindent\textbf{Transfer:} Consider one new piece of evidence that contradicts the initial hypothesis and revise the response.\par
+\noindent\textbf{Control:} Show that collection copies remain unchanged and that recovery restores intended service; label simulated containment actions as simulated.\par
+\noindent\textbf{Later retrieval:} Explain the first response steps for a new symptom and what could be lost through an immediate reboot.\par
+\noindent\textbf{Alignment references:} htb-soc, security-onion-hardware, ies-practice\par
+\subsubsection{defensive-security-and-detection: capstone}
+\noindent\textbf{Milestone:} capstone-milestone\par
+\noindent\textbf{Skill:} Measure monitoring coverage and close a bounded detection gap without claiming complete visibility.\par
+\noindent\textbf{Experiment:} Observe or replay a small documented lab chain, compare expected and observed telemetry, and deliver a reproducible investigation with coverage and gaps.\par
+\noindent\textbf{Transfer:} Replay a varied form of one stage and evaluate whether the improved rule still detects it.\par
+\noindent\textbf{Control:} Retest benign traffic after tuning and record residual gaps that require telemetry changes rather than another rule.\par
+\noindent\textbf{Later retrieval:} Reconstruct the incident and one gap from memory, then explain how a new analyst could reproduce the key query.\par
+\noindent\textbf{Alignment references:} htb-soc, security-onion-hardware, ies-practice\par

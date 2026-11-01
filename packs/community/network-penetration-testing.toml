@@ -13,7 +13,7 @@
 id = "network-penetration-testing"
 title = "Network & System Penetration Testing"
 kind = "proficiency"
-version = 2
+version = 3
 source = "ai-draft"
 reviewed = false
 
@@ -67,12 +67,29 @@ title = "Retired boxes, one at a time"
 lane = "side"
 
 # ---------------------------------------------------------------- 1: recon
+[[level]]
+id = "retrieval"
+title = "Return later: explain and transfer"
+lane = "side"
+
+[[node]]
+id = "lab-readiness"
+level = "recon"
+title = "Establish a lab foothold and a clean baseline"
+size = "S"
+minutes = 30
+needs = []
+brief = "Establish the prerequisites with a small demonstration. Use a foundations lesson if you cannot yet explain the result."
+done_when = "Boot an isolated training VM or use a designated hosted lab. Identify your assigned user, host, interface, route, one listening service, and snapshot/reset procedure using native commands. Stop here for Linux/network foundations if those observations are unfamiliar."
+resource = "https://academy.hackthebox.com/path/preview/information-security-foundations"
+verify = { type = "manual" }
+
 [[node]]
 level = "recon"
 id = "nmap-scan-types"
 title = "Discover what your lab is listening for"
 size = "M"
-needs = []
+needs = ["lab-readiness"]
 done_when = "ran 4 different nmap scan types against the Pi, saved all 4 outputs, and wrote {lab_dir}/notes/scan-types.md on what each one actually does differently at the packet level"
 resource = "https://nmap.org/book/man-port-scanning-techniques.html"
 verify = { type = "file", path = "{lab_dir}/notes/scan-types.md", min_bytes = 150 }
@@ -100,7 +117,7 @@ level = "recon"
 id = "web-enum"
 title = "Find a hidden route without chasing false positives"
 size = "M"
-needs = []
+needs = ["lab-readiness"]
 done_when = "ran a directory brute-force (gobuster or ffuf) against Juice Shop on the Pi, saved the output, wrote 3 lines on what a wordlist actually is at {lab_dir}/notes/web-enum.md"
 resource = "https://github.com/OJ/gobuster"
 verify = { type = "file", path = "{lab_dir}/notes/web-enum.md", min_bytes = 100 }
@@ -114,17 +131,17 @@ level = "recon"
 id = "recon-milestone"
 title = "Build an attack-surface map of a fresh lab"
 size = "L"
-needs = ["service-enumeration", "web-enum"]
+needs = ["lab-readiness", "nmap-scan-types", "service-enumeration", "web-enum"]
 milestone = true
-done_when = "Saved a fresh lab target’s service map and scan evidence, plus two ranked, testable hypotheses before exploitation, in {lab_dir}/notes/recon-milestone.md."
+done_when = "Demonstrated: Turn reconnaissance observations into falsifiable service hypotheses. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/recon-milestone.md."
 resource = "https://www.vulnhub.com/"
-verify = { type = "file", path = "{lab_dir}/notes/recon-milestone.md", min_bytes = 300 }
+verify = { type = "file", path = "{lab_dir}/notes/recon-milestone.md", min_bytes = 250 }
 
 # ---------------------------------------------------------------- 2: service-exploitation
 minutes = 90
-brief = "Prove you can choose a useful next move from evidence before attempting an exploit."
-steps = ["Choose an isolated vulnerable VM or a training-platform target in scope.", "Map its reachable ports, services, and web entry points. Keep the raw outputs.", "Save {lab_dir}/notes/recon-milestone.md with the map, two ranked hypotheses, and the next check that would confirm or reject each."]
-hints = []
+brief = "Turn reconnaissance observations into falsifiable service hypotheses."
+steps = ["Before testing, record your prediction and the observation that would change your mind.", "Map a fresh owned/training host: ports, services, reachable web entries, scan limitations, and two ranked hypotheses before exploitation.", "Transfer check: Confirm one service using its native protocol or a second tool, rather than a version string alone.", "Control check: Test a closed or filtered port and an intentionally nonexistent web route; distinguish them from positive findings.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/recon-milestone.md."]
+hints = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
 
 [[node]]
 level = "service-exploitation"
@@ -153,7 +170,7 @@ title = "Finding and reading a real CVE/exploit writeup"
 size = "S"
 needs = ["ftp-smb-exploitation"]
 done_when = "found one real CVE for a service version you enumerated earlier, read the exploit-db or vendor writeup, and summarised the root cause in your own words at {lab_dir}/notes/cve-reading.md"
-resource = "https://www.exploit-db.com/"
+resource = "https://www.rapid7.com/db/"
 verify = { type = "file", path = "{lab_dir}/notes/cve-reading.md", min_bytes = 150 }
 
 [[node]]
@@ -161,13 +178,17 @@ level = "service-exploitation"
 id = "service-exploitation-milestone"
 title = "Gain a foothold using a public exploit, understood not just run (milestone)"
 size = "L"
-needs = ["ssh-attacks", "exploit-db-usage"]
+needs = ["ftp-smb-exploitation", "ssh-attacks", "exploit-db-usage"]
 milestone = true
-done_when = "used a public exploit against a vulnerable service on a VulnHub/TryHackMe box and got a shell, documented at {lab_dir}/notes/service-milestone.md not just the command but WHY the exploit works, line by line if it's a script you read"
-resource = "https://www.exploit-db.com/"
-verify = { type = "file", path = "{lab_dir}/notes/service-milestone.md", min_bytes = 300 }
+done_when = "Demonstrated: Verify exploit prerequisites and explain the boundary crossed. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/service-milestone.md."
+resource = "https://www.rapid7.com/db/"
+verify = { type = "file", path = "{lab_dir}/notes/service-milestone.md", min_bytes = 250 }
 
 # ---------------------------------------------------------------- 3: metasploit
+brief = "Verify exploit prerequisites and explain the boundary crossed."
+steps = ["Before testing, record your prediction and the observation that would change your mind.", "On a designated vulnerable lab, establish a foothold using a documented service weakness after verifying its required conditions. Save sanitized evidence.", "Transfer check: Repeat from a clean snapshot or use a comparable training service with a changed configuration.", "Control check: Remove one prerequisite in an owned reproduction and show that the exploit fails while legitimate access remains.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/service-milestone.md."]
+hints = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
+
 [[node]]
 level = "metasploit"
 id = "msf-basics"
@@ -176,7 +197,7 @@ size = "M"
 needs = []
 done_when = "ran msfconsole, searched for and configured one exploit module against a VulnHub box, documented the module/options used at {lab_dir}/notes/msf-basics.md"
 resource = "https://docs.metasploit.com/docs/using-metasploit/basics/using-metasploit.html"
-verify = { type = "command", cmd = "msfconsole --version" }
+verify = { type = "file", path = "{lab_dir}/notes/msf-basics.md", min_bytes = 150 }
 
 [[node]]
 level = "metasploit"
@@ -193,7 +214,7 @@ level = "metasploit"
 id = "manual-vs-msf"
 title = "Redo one earlier exploit manually, without the framework"
 size = "M"
-needs = []
+needs = ["meterpreter"]
 done_when = "picked one exploit you ran through Metasploit and reproduced the SAME result manually with curl/python/netcat, documented the comparison at {lab_dir}/notes/manual-vs-msf.md -- this is the node that proves you understand it, not just operate the tool"
 resource = "https://docs.metasploit.com/"
 verify = { type = "file", path = "{lab_dir}/notes/manual-vs-msf.md", min_bytes = 200 }
@@ -203,13 +224,17 @@ level = "metasploit"
 id = "metasploit-milestone"
 title = "Full exploitation chain, MSF and manual compared (milestone)"
 size = "L"
-needs = ["meterpreter", "manual-vs-msf"]
+needs = ["msf-basics", "meterpreter", "manual-vs-msf"]
 milestone = true
-done_when = "compromised a fresh VulnHub box end to end using Metasploit, then wrote {lab_dir}/notes/metasploit-milestone.md explaining the full chain AND which parts you could now do by hand if msfconsole weren't available"
+done_when = "Demonstrated: Separate framework orchestration from the underlying exploit mechanism. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/metasploit-milestone.md."
 resource = "https://docs.metasploit.com/"
-verify = { type = "file", path = "{lab_dir}/notes/metasploit-milestone.md", min_bytes = 300 }
+verify = { type = "file", path = "{lab_dir}/notes/metasploit-milestone.md", min_bytes = 250 }
 
 # ---------------------------------------------------------------- 4: linux-privesc
+brief = "Separate framework orchestration from the underlying exploit mechanism."
+steps = ["Before testing, record your prediction and the observation that would change your mind.", "Complete one bounded training exploit with Metasploit, recording target assumptions, module options, payload role, and proof of the resulting context.", "Transfer check: Reproduce the essential request or underlying mechanism manually in the same lab, using earlier exercises as preparation.", "Control check: Use an incompatible target setting or a patched local reproduction and explain the failure rather than changing options blindly.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/metasploit-milestone.md."]
+hints = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
+
 [[node]]
 level = "linux-privesc"
 id = "linpeas-and-manual"
@@ -235,8 +260,8 @@ level = "linux-privesc"
 id = "cron-and-paths"
 title = "Cron job and PATH hijacking"
 size = "M"
-needs = []
-done_when = "found or set up a cron job vulnerable to PATH hijacking or script injection, exploited it for privesc, documented at {lab_dir}/notes/cron.md"
+needs = ["linpeas-and-manual"]
+done_when = "In a disposable privilege-escalation lab, inspected a scheduled job and its file/PATH permissions, demonstrated the lab’s intended weakness, corrected that permission in an owned reproduction, and saved both outcomes in {lab_dir}/notes/cron.md."
 resource = "https://gtfobins.github.io/#+cron"
 verify = { type = "file", path = "{lab_dir}/notes/cron.md", min_bytes = 150 }
 
@@ -245,19 +270,36 @@ level = "linux-privesc"
 id = "linux-privesc-milestone"
 title = "Root a Linux box using 2 different privesc techniques (milestone)"
 size = "L"
-needs = ["suid-sgid", "cron-and-paths"]
+needs = ["linpeas-and-manual", "suid-sgid", "cron-and-paths"]
 milestone = true
-done_when = "fully rooted a VulnHub/TryHackMe Linux box using at least 2 different privesc techniques from this level, wrote the complete chain at {lab_dir}/notes/linux-privesc-milestone.md from initial foothold to root"
+done_when = "Demonstrated: Find and validate Linux privilege boundaries through native permissions and process context. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/linux-privesc-milestone.md."
 resource = "https://gtfobins.github.io/"
-verify = { type = "file", path = "{lab_dir}/notes/linux-privesc-milestone.md", min_bytes = 300 }
+verify = { type = "file", path = "{lab_dir}/notes/linux-privesc-milestone.md", min_bytes = 250 }
 
 # ---------------------------------------------------------------- 5: windows-privesc
+brief = "Find and validate Linux privilege boundaries through native permissions and process context."
+steps = ["Before testing, record your prediction and the observation that would change your mind.", "From a provided low-privilege lab foothold, demonstrate one escalation path and manually verify a second distinct candidate; use a second lab if necessary.", "Transfer check: Repeat the successful mechanism with a different lab file, executable, or scheduled task and predict the permission change.", "Control check: Correct the writable path, ownership, or privilege setting in a disposable reproduction and retest.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/linux-privesc-milestone.md."]
+hints = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
+
+
+[[node]]
+id = "windows-baseline"
+level = "windows-privesc"
+title = "Establish a Windows identity and permissions baseline"
+size = "S"
+minutes = 30
+needs = []
+brief = "A Linux shell does not teach the Windows security model. Start with a small native inspection."
+done_when = "Used a provided Windows lab account to inspect whoami /all, a service, and an ACL with native tools. Explained identity, group membership, enabled privileges, and the permitted lab reset procedure."
+resource = "https://academy.hackthebox.com/path/preview/information-security-foundations"
+verify = { type = "manual" }
+
 [[node]]
 level = "windows-privesc"
 id = "winpeas-and-manual"
 title = "Windows enumeration (WinPEAS, seatbelt) vs manual checks"
 size = "M"
-needs = []
+needs = ["windows-baseline"]
 done_when = "ran WinPEAS on a Windows TryHackMe box, manually verified 2 findings using native Windows commands (whoami /priv, etc.), documented at {lab_dir}/notes/winpeas.md"
 resource = "https://github.com/carlospolop/PEASS-ng"
 verify = { type = "file", path = "{lab_dir}/notes/winpeas.md", min_bytes = 150 }
@@ -277,7 +319,7 @@ level = "windows-privesc"
 id = "token-impersonation"
 title = "Token impersonation (JuicyPotato-family attacks)"
 size = "M"
-needs = []
+needs = ["winpeas-and-manual"]
 done_when = "completed one token-impersonation lab, documented what a Windows access token actually is and why impersonating one grants privileges, at {lab_dir}/notes/token-impersonation.md"
 resource = "https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation/roguepotato-and-printspoofer"
 verify = { type = "file", path = "{lab_dir}/notes/token-impersonation.md", min_bytes = 150 }
@@ -287,20 +329,24 @@ level = "windows-privesc"
 id = "windows-privesc-milestone"
 title = "Full SYSTEM shell on a Windows box, chain documented (milestone)"
 size = "L"
-needs = ["service-misconfig", "token-impersonation"]
+needs = ["winpeas-and-manual", "service-misconfig", "token-impersonation", "windows-baseline"]
 milestone = true
-done_when = "got SYSTEM-level access on a Windows lab box using a technique from this level, wrote the full chain at {lab_dir}/notes/windows-privesc-milestone.md"
+done_when = "Demonstrated: Reason about Windows identity, service permissions, and token privileges. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/windows-privesc-milestone.md."
 resource = "https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation"
-verify = { type = "file", path = "{lab_dir}/notes/windows-privesc-milestone.md", min_bytes = 300 }
+verify = { type = "file", path = "{lab_dir}/notes/windows-privesc-milestone.md", min_bytes = 250 }
 
 # ---------------------------------------------------------------- 6: active-directory
+brief = "Reason about Windows identity, service permissions, and token privileges."
+steps = ["Before testing, record your prediction and the observation that would change your mind.", "Establish a baseline with native Windows commands, then complete one service or token-based lab escalation and explain the exact enabling permissions.", "Transfer check: Change the lab user or service configuration and predict whether the same path remains available.", "Control check: Show a denied operation or corrected service ACL; record actual identity and privileges rather than assuming every shell is SYSTEM.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/windows-privesc-milestone.md."]
+hints = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
+
 [[node]]
 level = "active-directory"
 id = "ad-concepts"
-title = "AD concepts: domains, users, groups, GPOs"
+title = "Find the identities and permissions in a small domain"
 size = "S"
 needs = []
-done_when = "wrote a one-page explainer of domain/forest/OU/GPO in your own words, at {lab_dir}/notes/ad-concepts.md, after reading one real intro"
+done_when = "In a supplied beginner AD lab, identified the current user/domain, one organizational unit, and one applied policy using native commands or the lab’s management view. Drew a domain/forest/OU/GPO map tied to those observations in {lab_dir}/notes/ad-concepts.md."
 resource = "https://tryhackme.com/room/activedirectorybasics"
 verify = { type = "file", path = "{lab_dir}/notes/ad-concepts.md", min_bytes = 150 }
 
@@ -329,20 +375,24 @@ level = "active-directory"
 id = "ad-milestone"
 title = "Full AD attack path, one enumeration to domain admin (milestone)"
 size = "L"
-needs = ["kerberoasting"]
+needs = ["ad-concepts", "ad-enumeration", "kerberoasting"]
 milestone = true
-done_when = "completed a full beginner AD attack-path TryHackMe/HTB room end to end, wrote {lab_dir}/notes/ad-milestone.md documenting the full path from initial enumeration to domain admin, and what single misconfiguration broke the chain if fixed"
+done_when = "Demonstrated: Validate an AD attack-path edge using identity, permissions, and authentication evidence. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/ad-milestone.md."
 resource = "https://tryhackme.com/room/attacktivedirectory"
-verify = { type = "file", path = "{lab_dir}/notes/ad-milestone.md", min_bytes = 300 }
+verify = { type = "file", path = "{lab_dir}/notes/ad-milestone.md", min_bytes = 250 }
 
 # ---------------------------------------------------------------- 7: post-exploitation
+brief = "Validate an AD attack-path edge using identity, permissions, and authentication evidence."
+steps = ["Before testing, record your prediction and the observation that would change your mind.", "In an isolated beginner AD lab with supplied credentials, enumerate the domain and validate a bounded path to the designated objective. Record each required edge.", "Transfer check: Re-evaluate one graph edge with another lab account or changed permission; verify the graph claim using native evidence.", "Control check: Remove or identify a specific permission or weak credential condition that breaks the path; do not claim all AD attacks require Kerberoasting.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/ad-milestone.md."]
+hints = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
+
 [[node]]
 level = "post-exploitation"
 id = "persistence-concepts"
-title = "Persistence mechanisms (and why you should recognise them, defensively)"
+title = "Find and remove a harmless persistence fixture"
 size = "M"
 needs = []
-done_when = "wrote {lab_dir}/notes/persistence.md on 3 common persistence mechanisms (cron/scheduled tasks, SSH keys, service creation), framed as 'what would I look for as a defender', not as an attack how-to"
+done_when = "In an owned disposable VM, created a scheduled task that writes a harmless marker, located its configuration and execution evidence, then removed it and verified cleanup in {lab_dir}/notes/persistence.md. Compared the fields a defender would inspect for a task, authorized key, and service."
 resource = "https://attack.mitre.org/tactics/TA0003/"
 verify = { type = "file", path = "{lab_dir}/notes/persistence.md", min_bytes = 150 }
 
@@ -359,10 +409,10 @@ verify = { type = "file", path = "{lab_dir}/notes/log-footprint.md", min_bytes =
 [[node]]
 level = "post-exploitation"
 id = "data-exfil-concepts"
-title = "Data exfiltration techniques, conceptually"
+title = "Trace a synthetic file transfer"
 size = "S"
 needs = []
-done_when = "wrote {lab_dir}/notes/exfil-concepts.md on 3 ways data can leave a network undetected and what network monitoring would catch each one"
+done_when = "Transferred a file containing only synthetic text between owned lab endpoints over an ordinary allowed protocol; matched the transfer to available network or application logs and explained one visibility limit in {lab_dir}/notes/exfil-concepts.md."
 resource = "https://attack.mitre.org/tactics/TA0010/"
 
 [[node]]
@@ -370,13 +420,17 @@ level = "post-exploitation"
 id = "post-exploitation-milestone"
 title = "MITRE ATT&CK mapping of your own capstone box (milestone)"
 size = "M"
-needs = ["persistence-concepts", "log-footprint"]
+needs = ["persistence-concepts", "log-footprint", "data-exfil-concepts"]
 milestone = true
-done_when = "took any one box you fully compromised in this track and mapped every stage of the attack to a MITRE ATT&CK tactic/technique ID, wrote {lab_dir}/notes/attck-mapping.md"
+done_when = "Demonstrated: Map observed actions to telemetry and distinguish visibility gaps from evidence of absence. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/attck-mapping.md."
 resource = "https://attack.mitre.org/"
 verify = { type = "file", path = "{lab_dir}/notes/attck-mapping.md", min_bytes = 250 }
 
 # ---------------------------------------------------------------- 8: capstone
+brief = "Map observed actions to telemetry and distinguish visibility gaps from evidence of absence."
+steps = ["Before testing, record your prediction and the observation that would change your mind.", "Map the stages of a completed lab exercise to ATT&CK techniques and actual log or network evidence, including a harmless scheduled-task persistence fixture and synthetic file transfer.", "Transfer check: Change the task name or transfer channel and predict how the evidence changes.", "Control check: Remove the lab artifact and confirm its absence; label an unlogged action as a visibility gap instead of claiming it did not happen.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/attck-mapping.md."]
+hints = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
+
 [[node]]
 level = "capstone"
 id = "capstone-recon"
@@ -412,12 +466,14 @@ level = "capstone"
 id = "capstone-milestone"
 title = "Full written report, start to root (milestone)"
 size = "L"
-needs = ["capstone-privesc"]
+needs = ["capstone-recon", "capstone-foothold", "capstone-privesc"]
 milestone = true
-done_when = "wrote one complete report at {lab_dir}/notes/capstone-report.md covering the ENTIRE capstone box: recon, every exploitation step, privesc, and a 'how I'd defend against this' section for each stage"
+done_when = "Demonstrated: Complete and report a scoped assessment without following a target walkthrough. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/capstone-report.md."
 resource = "https://www.vulnhub.com/"
-verify = { type = "file", path = "{lab_dir}/notes/capstone-report.md", min_bytes = 500 }
-
+verify = { type = "file", path = "{lab_dir}/notes/capstone-report.md", min_bytes = 250 }
+brief = "Complete and report a scoped assessment without following a target walkthrough."
+steps = ["Before testing, record your prediction and the observation that would change your mind.", "On an unfamiliar training box, progress from reconnaissance to the designated foothold and privilege objective, recording dead ends, evidence, and help used.", "Transfer check: Reproduce one key step from a clean state, independently of the original walkthrough or saved session.", "Control check: Apply one hardening change in an owned reproduction and show it blocks that step without breaking intended use; clearly label untested fixes.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/capstone-report.md."]
+hints = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
 
 [[node]]
 level = "boxes"
@@ -429,6 +485,118 @@ needs = []
 brief = "Find one service your own machine is running and identify its owner."
 done_when = "Use ss -ltnp (or your operating system’s equivalent) on your own machine. Match one listening port to a process and record whether it binds to loopback or all interfaces."
 resource = "https://man7.org/linux/man-pages/man8/ss.8.html"
+verify = { type = "manual" }
+
+
+[[node]]
+id = "recall-recon"
+level = "retrieval"
+title = "Return later: Enumeration and reconnaissance"
+size = "S"
+minutes = 20
+needs = ["recon-milestone"]
+brief = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
+steps = ["Start with closed notes: Explain the next check for a new banner, including what would falsify the suspected weakness.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
+done_when = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Explain the next check for a new banner, including what would falsify the suspected weakness. Logged the practice date and help used; did not copy the previous write-up."
+resource = "https://academy.hackthebox.com/path/preview/information-security-foundations"
+verify = { type = "manual" }
+
+
+[[node]]
+id = "recall-service-exploitation"
+level = "retrieval"
+title = "Return later: Exploiting common services"
+size = "S"
+minutes = 20
+needs = ["service-exploitation-milestone"]
+brief = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
+steps = ["Start with closed notes: Explain why a matching CVE or version is a hypothesis, then enumerate the required conditions.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
+done_when = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Explain why a matching CVE or version is a hypothesis, then enumerate the required conditions. Logged the practice date and help used; did not copy the previous write-up."
+resource = "https://academy.hackthebox.com/path/preview/information-security-foundations"
+verify = { type = "manual" }
+
+
+[[node]]
+id = "recall-metasploit"
+level = "retrieval"
+title = "Return later: The Metasploit Framework"
+size = "S"
+minutes = 20
+needs = ["metasploit-milestone"]
+brief = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
+steps = ["Start with closed notes: Describe the exploit/payload distinction and reconstruct the required options without a saved session.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
+done_when = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Describe the exploit/payload distinction and reconstruct the required options without a saved session. Logged the practice date and help used; did not copy the previous write-up."
+resource = "https://academy.hackthebox.com/path/preview/information-security-foundations"
+verify = { type = "manual" }
+
+
+[[node]]
+id = "recall-linux-privesc"
+level = "retrieval"
+title = "Return later: Linux privilege escalation"
+size = "S"
+minutes = 20
+needs = ["linux-privesc-milestone"]
+brief = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
+steps = ["Start with closed notes: Explain real/effective identity and one trust boundary from memory, then inspect a new permission example.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
+done_when = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Explain real/effective identity and one trust boundary from memory, then inspect a new permission example. Logged the practice date and help used; did not copy the previous write-up."
+resource = "https://academy.hackthebox.com/path/preview/information-security-foundations"
+verify = { type = "manual" }
+
+
+[[node]]
+id = "recall-windows-privesc"
+level = "retrieval"
+title = "Return later: Windows privilege escalation"
+size = "S"
+minutes = 20
+needs = ["windows-privesc-milestone"]
+brief = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
+steps = ["Start with closed notes: Explain the difference between group membership, an enabled privilege, and a service access-control entry.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
+done_when = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Explain the difference between group membership, an enabled privilege, and a service access-control entry. Logged the practice date and help used; did not copy the previous write-up."
+resource = "https://academy.hackthebox.com/path/preview/information-security-foundations"
+verify = { type = "manual" }
+
+
+[[node]]
+id = "recall-active-directory"
+level = "retrieval"
+title = "Return later: Active Directory basics"
+size = "S"
+minutes = 20
+needs = ["ad-milestone"]
+brief = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
+steps = ["Start with closed notes: Draw a small domain trust/permission path from memory and explain a service ticket without equating it to a plaintext password.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
+done_when = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Draw a small domain trust/permission path from memory and explain a service ticket without equating it to a plaintext password. Logged the practice date and help used; did not copy the previous write-up."
+resource = "https://academy.hackthebox.com/path/preview/information-security-foundations"
+verify = { type = "manual" }
+
+
+[[node]]
+id = "recall-post-exploitation"
+level = "retrieval"
+title = "Return later: Post-exploitation and persistence (defensive framing)"
+size = "S"
+minutes = 20
+needs = ["post-exploitation-milestone"]
+brief = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
+steps = ["Start with closed notes: Explain which logs would confirm a new persistence or transfer hypothesis and what they cannot prove.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
+done_when = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Explain which logs would confirm a new persistence or transfer hypothesis and what they cannot prove. Logged the practice date and help used; did not copy the previous write-up."
+resource = "https://academy.hackthebox.com/path/preview/information-security-foundations"
+verify = { type = "manual" }
+
+
+[[node]]
+id = "recall-capstone"
+level = "retrieval"
+title = "Return later: Full box, start to root"
+size = "S"
+minutes = 20
+needs = ["capstone-milestone"]
+brief = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
+steps = ["Start with closed notes: Explain the assessment chain and one alternative hypothesis from memory, then rerun the discriminating check.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
+done_when = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Explain the assessment chain and one alternative hypothesis from memory, then rerun the discriminating check. Logged the practice date and help used; did not copy the previous write-up."
+resource = "https://academy.hackthebox.com/path/preview/information-security-foundations"
 verify = { type = "manual" }
 
 # ---------------------------------------------------------------- side lane: quick drills

@@ -1,0 +1,493 @@
+% Generated from the actual CLI parsers; do not edit.
+\subsubsection{ascend}
+\begin{verbatim}
+usage: ascend [-h] [--json] [--server SERVER]
+              {today,done,mission,pack,plugin,review,mark,skip,backfill,unlock,check,levels,stats,heatmap,more,parked,remind-check,park,resolve,export,config,login,edit,undo,search,split,sync,accept,nudge,install-nudge}
+              ...
+
+One small, proof-backed step at a time
+
+positional arguments:
+  {today,done,mission,pack,plugin,review,mark,skip,backfill,unlock,check,levels,stats,heatmap,more,parked,remind-check,park,resolve,export,config,login,edit,undo,search,split,sync,accept,nudge,install-nudge}
+
+options:
+  -h, --help            show this help message and exit
+  --json
+  --server SERVER
+\end{verbatim}
+\subsubsection{ascend today}
+\begin{verbatim}
+usage: ascend today [-h] [minutes]
+
+positional arguments:
+  minutes
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend done}
+\begin{verbatim}
+usage: ascend done [-h] [--complete] [--force FORCE] [--proof PROOF]
+                   [--minutes MINUTES] [--node NODE_ID] [--mission MISSION_ID]
+                   learned next_step
+
+positional arguments:
+  learned
+  next_step
+
+options:
+  -h, --help            show this help message and exit
+  --complete
+  --force FORCE
+  --proof PROOF
+  --minutes MINUTES, --min MINUTES
+  --node NODE_ID
+  --mission MISSION_ID
+\end{verbatim}
+\subsubsection{ascend mission}
+\begin{verbatim}
+usage: ascend mission [-h] {new,start,nudge-time,finish,pause,list} ...
+
+positional arguments:
+  {new,start,nudge-time,finish,pause,list}
+
+options:
+  -h, --help            show this help message and exit
+\end{verbatim}
+\subsubsection{ascend mission new}
+\begin{verbatim}
+usage: ascend mission new [-h] title
+
+positional arguments:
+  title
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend mission start}
+\begin{verbatim}
+usage: ascend mission start [-h] [--nudge-time NUDGE_TIME] pack
+
+positional arguments:
+  pack
+
+options:
+  -h, --help            show this help message and exit
+  --nudge-time NUDGE_TIME
+\end{verbatim}
+\subsubsection{ascend mission nudge-time}
+\begin{verbatim}
+usage: ascend mission nudge-time [-h] time
+
+positional arguments:
+  time
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend mission finish}
+\begin{verbatim}
+usage: ascend mission finish [-h]
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend mission pause}
+\begin{verbatim}
+usage: ascend mission pause [-h]
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend mission list}
+\begin{verbatim}
+usage: ascend mission list [-h]
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend pack}
+\begin{verbatim}
+usage: ascend pack [-h]
+                   {install,lint,trust,review,diff,check-links,list,registry,new}
+                   ...
+
+positional arguments:
+  {install,lint,trust,review,diff,check-links,list,registry,new}
+
+options:
+  -h, --help            show this help message and exit
+\end{verbatim}
+\subsubsection{ascend pack install}
+\begin{verbatim}
+usage: ascend pack install [-h] target
+
+positional arguments:
+  target
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend pack lint}
+\begin{verbatim}
+usage: ascend pack lint [-h] target
+
+positional arguments:
+  target
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend pack trust}
+\begin{verbatim}
+usage: ascend pack trust [-h] target
+
+positional arguments:
+  target
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend pack review}
+\begin{verbatim}
+usage: ascend pack review [-h] target
+
+positional arguments:
+  target
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend pack diff}
+\begin{verbatim}
+usage: ascend pack diff [-h] target
+
+positional arguments:
+  target
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend pack check-links}
+\begin{verbatim}
+usage: ascend pack check-links [-h] target
+
+positional arguments:
+  target
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend pack list}
+\begin{verbatim}
+usage: ascend pack list [-h]
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend pack registry}
+\begin{verbatim}
+usage: ascend pack registry [-h] [url]
+
+positional arguments:
+  url
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend pack new}
+\begin{verbatim}
+usage: ascend pack new [-h] [--path PATH] title
+
+positional arguments:
+  title
+
+options:
+  -h, --help   show this help message and exit
+  --path PATH
+\end{verbatim}
+\subsubsection{ascend plugin}
+\begin{verbatim}
+usage: ascend plugin [-h] {trust} ...
+
+positional arguments:
+  {trust}
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend plugin trust}
+\begin{verbatim}
+usage: ascend plugin trust [-h] name
+
+positional arguments:
+  name
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend review}
+\begin{verbatim}
+usage: ascend review [-h] target
+
+positional arguments:
+  target
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend mark}
+\begin{verbatim}
+usage: ascend mark [-h] [--note NOTE] node {done,skipped,todo}
+
+positional arguments:
+  node
+  {done,skipped,todo}
+
+options:
+  -h, --help           show this help message and exit
+  --note NOTE
+\end{verbatim}
+\subsubsection{ascend skip}
+\begin{verbatim}
+usage: ascend skip [-h] [--note NOTE] node
+
+positional arguments:
+  node
+
+options:
+  -h, --help   show this help message and exit
+  --note NOTE
+\end{verbatim}
+\subsubsection{ascend backfill}
+\begin{verbatim}
+usage: ascend backfill [-h] nodes [nodes ...]
+
+positional arguments:
+  nodes
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend unlock}
+\begin{verbatim}
+usage: ascend unlock [-h] level
+
+positional arguments:
+  level
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend check}
+\begin{verbatim}
+usage: ascend check [-h] [--complete] [node]
+
+positional arguments:
+  node
+
+options:
+  -h, --help  show this help message and exit
+  --complete
+\end{verbatim}
+\subsubsection{ascend levels}
+\begin{verbatim}
+usage: ascend levels [-h] [--pack PACK]
+
+options:
+  -h, --help   show this help message and exit
+  --pack PACK
+\end{verbatim}
+\subsubsection{ascend stats}
+\begin{verbatim}
+usage: ascend stats [-h]
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend heatmap}
+\begin{verbatim}
+usage: ascend heatmap [-h]
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend more}
+\begin{verbatim}
+usage: ascend more [-h]
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend parked}
+\begin{verbatim}
+usage: ascend parked [-h]
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend remind-check}
+\begin{verbatim}
+usage: ascend remind-check [-h]
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend park}
+\begin{verbatim}
+usage: ascend park [-h] note
+
+positional arguments:
+  note
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend resolve}
+\begin{verbatim}
+usage: ascend resolve [-h] idea_id
+
+positional arguments:
+  idea_id
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend export}
+\begin{verbatim}
+usage: ascend export [-h] [path]
+
+positional arguments:
+  path
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend config}
+\begin{verbatim}
+usage: ascend config [-h] key [value]
+
+positional arguments:
+  key
+  value
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend login}
+\begin{verbatim}
+usage: ascend login [-h] [url]
+
+positional arguments:
+  url
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend edit}
+\begin{verbatim}
+usage: ascend edit [-h] [--learned LEARNED] [--next-step NEXT_STEP] entry_id
+
+positional arguments:
+  entry_id
+
+options:
+  -h, --help            show this help message and exit
+  --learned LEARNED
+  --next-step NEXT_STEP
+\end{verbatim}
+\subsubsection{ascend undo}
+\begin{verbatim}
+usage: ascend undo [-h]
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend search}
+\begin{verbatim}
+usage: ascend search [-h] query
+
+positional arguments:
+  query
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend split}
+\begin{verbatim}
+usage: ascend split [-h] node steps [steps ...]
+
+positional arguments:
+  node
+  steps
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend sync}
+\begin{verbatim}
+usage: ascend sync [-h]
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend accept}
+\begin{verbatim}
+usage: ascend accept [-h]
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend nudge}
+\begin{verbatim}
+usage: ascend nudge [-h]
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend install-nudge}
+\begin{verbatim}
+usage: ascend install-nudge [-h] [--dry-run] [--directory DIRECTORY]
+                            [--no-enable]
+
+options:
+  -h, --help            show this help message and exit
+  --dry-run
+  --directory DIRECTORY
+  --no-enable
+\end{verbatim}
+\subsubsection{ascend-server }
+\begin{verbatim}
+usage: ascend-server [-h] [--host HOST] [--port PORT] [--home HOME]
+                     [--auth-mode {single,multi}]
+                     {user-add,push-keys} ...
+
+positional arguments:
+  {user-add,push-keys}
+
+options:
+  -h, --help            show this help message and exit
+  --host HOST
+  --port PORT
+  --home HOME
+  --auth-mode {single,multi}
+\end{verbatim}
+\subsubsection{ascend-server user-add}
+\begin{verbatim}
+usage: ascend-server user-add [-h] --timezone TIMEZONE username
+
+positional arguments:
+  username
+
+options:
+  -h, --help           show this help message and exit
+  --timezone TIMEZONE
+\end{verbatim}
+\subsubsection{ascend-server push-keys}
+\begin{verbatim}
+usage: ascend-server push-keys [-h] --out OUT
+
+options:
+  -h, --help  show this help message and exit
+  --out OUT
+\end{verbatim}

@@ -1,0 +1,109 @@
+% Canonical LaTeX chapter; migrated from docs/pack-format.md.
+\hypertarget{pack-format}{%
+\subsection{Pack format}\label{pack-format}}
+
+Packs are UTF-8 TOML parsed by Python 3.11+ \texttt{tomllib}. See
+\href{../packs/community/}{\texttt{packs/community/}} for complete
+examples in cyber, Python, and 3D art. The examples are drafts for human
+review, not generated lesson content.
+
+\begin{verbatim}
+[pack]
+id = "tiny-tool"
+title = "Build a tiny file tool"
+kind = "project"
+version = 1
+source = "human"
+reviewed = false
+
+[vars]
+work_dir = "~/learning"
+
+[[level]]
+id = "first"
+title = "A working example"
+lane = "main"
+gate = true
+
+[[node]]
+id = "example"
+level = "first"
+title = "Save a working example"
+size = "S"
+minutes = 20
+needs = []
+done_when = "A working example saved with an explanation in my own words"
+brief = "Build a small tool that solves one annoying file-management problem."
+steps = ["Choose a tiny input.", "Run the tool and compare its output with your prediction."]
+hints = ["Start with one file before handling a whole directory."]
+resource = "https://docs.python.org/3/tutorial/"
+verify = {type = "file", path = "{work_dir}/example.py", min_bytes = 20}
+\end{verbatim}
+
+Required pack fields: kebab-case \texttt{id}, \texttt{title},
+\texttt{kind} (\texttt{project} or \texttt{proficiency}), and positive
+integer \texttt{version}. \texttt{source} is \texttt{human},
+\texttt{ai-draft}, or \texttt{imported}. Every node has an existing
+\texttt{level}, a unique stable \texttt{id}, a \texttt{title}, S/M/L
+\texttt{size}, a \texttt{done\_when} of at least 15 characters, and an
+HTTP(S) \texttt{resource}.
+
+Optional \texttt{brief} text introduces a concrete challenge. Optional
+\texttt{steps} and \texttt{hints} are lists of nonempty strings, with
+the same variable and series substitutions as other content. The web
+challenge sheet displays steps in order and keeps hints behind
+individual disclosures. These are learning guidance, not completion
+checks; \texttt{done\_when} and the verifier still define the finish
+line. Older packs without them continue to work. Prefer a small
+observable result over a reading assignment, and set honest
+\texttt{minutes} estimates so short sessions have useful tasks.
+
+S/M/L conservatively fit 30/120/240-minute budgets. Optional integer
+\texttt{minutes} may refine the estimate within that size bound.
+\texttt{needs} is a list of node IDs forming a directed acyclic graph.
+\texttt{series = \{from = 13, to = 15\}} expands an ID
+\texttt{exercise} to \texttt{exercise-13}, \texttt{exercise-14},
+\texttt{exercise-15}, chained in order. \texttt{\{n\}} and
+\texttt{\{next\}} are substituted. The first expanded node inherits the
+original needs.
+
+Main levels gate on the previous main level. Milestones
+(\texttt{milestone = true}) replace the all-node gate when present.
+Proficiency packs require 8--15 main levels and at least one M/L
+milestone per main level. Side levels are always open but individual
+prerequisites still apply. \texttt{gate = false} bypasses a level
+gate. \texttt{ascend unlock \textless{}level\textgreater{}} records an
+explicit early unlock.
+
+\texttt{{[}vars{]}} values substitute \texttt{\{name\}} placeholders;
+local verifier paths expand \texttt{\textasciitilde{}}. For commands,
+the template is split into arguments \textbf{before} substitution. Shell
+operators are not interpreted. A command containing pipelines or
+redirects must be rewritten as an executable script and trusted
+deliberately.
+
+Install with
+\texttt{ascend pack install \textless{}file-or-bundled-id\textgreater{}}.
+Private copies live under
+\texttt{ASCEND\_HOME/packs/\textless{}user-id\textgreater{}/}. Editing a
+copy resets trust and review state.
+\texttt{ascend pack diff \textless{}updated-file\textgreater{}}
+reports added/removed IDs; progress is retained for stable IDs.
+\texttt{ascend pack review \textless{}id\textgreater{}} records
+review without editing the file.
+
+Available checks: \texttt{manual}, \texttt{file}, \texttt{command},
+\texttt{http}, \texttt{git}, and
+\texttt{plugin:\textless{}name\textgreater{}}.
+\texttt{auto\_complete = true} permits passing hard local file/command
+checks to complete without a separate confirmation.
+\texttt{ascend sync} proposes other unlocked results;
+\texttt{ascend accept} reruns the checks before accepting. Known
+evidence timestamps produce deduplicated entries on their actual logical
+day, unless \texttt{ascend config auto-counts-for-streak false} is
+set.
+
+\texttt{ascend split \textless{}node\textgreater{} "first small result" "second small result"}
+stores a local 10-minute-step breakdown in SQLite; the TOML input stays
+untouched. Choose parts that together satisfy the
+parent\textquotesingle s original completion condition.

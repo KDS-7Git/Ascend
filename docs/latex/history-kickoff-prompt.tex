@@ -1,0 +1,191 @@
+\hypertarget{kickoff-prompt-what-to-paste-into-antigravity-to-start}{%
+\subsection{What to paste into Antigravity to
+start}\label{kickoff-prompt-what-to-paste-into-antigravity-to-start}}
+
+\hypertarget{kickoff-prompt-first-the-thing-to-understand-before-you-paste-anything}{%
+\subsubsection{First, the thing to understand before you paste
+anything}\label{kickoff-prompt-first-the-thing-to-understand-before-you-paste-anything}}
+
+\texttt{hackstreak-spec.md}, \path|hackstreak-spec-v2.md|, and
+\path|spec-v3-public-release.md| are not three products.
+They\textquotesingle re one design, revised three times --- each file
+says explicitly what it keeps and what it overrides from the one before
+it. Do not have the agent build v1 completely, then rebuild as v2, then
+rebuild as v3. That throws away work for no reason, since the end
+architecture was already decided before the first line of code gets
+written.
+
+What\textquotesingle s actually sequenced is the \textbf{build phases}
+described inside v2 §11 and v3 §10 (Phase 1 → 1b → 2 → 3 → 4), not the
+spec file numbers. Give the agent the full picture now, so it never
+makes a Phase 1 choice that conflicts with where this is headed (a bad
+schema shortcut that breaks the migration story later, say) --- but
+scope the actual work it does tonight to Phase 1 + 1b only, and go no
+further until that\textquotesingle s living in your daily routine for
+real.
+
+\hypertarget{kickoff-prompt-step-1--tonight-phase-1--1b-only}{%
+\subsubsection{Step 1 --- tonight: Phase 1 + 1b
+only}\label{kickoff-prompt-step-1--tonight-phase-1--1b-only}}
+
+Open Antigravity in a fresh project folder with these five files present
+(or pasted into context): \texttt{hackstreak-spec.md},
+\path|hackstreak-spec-v2.md|, \path|spec-v3-public-release.md|,
+\texttt{ui-ux-spec.md}, \path|packs/home-hack-lab.toml|. Then paste
+this:
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\begin{quote}
+Read \texttt{hackstreak-spec.md}, \path|hackstreak-spec-v2.md|, and
+\path|spec-v3-public-release.md| in that order. Together they describe
+one evolving design, not three separate products --- each later file
+supersedes the one before it wherever they conflict, exactly as each
+file states at its top. Build according to the PHASES defined inside
+\path|spec-v3-public-release.md| section 10, not according to which
+spec file a detail came from.
+
+Right now, build \textbf{only Phase 1 and Phase 1b}: the standalone
+engine, CLI, pack system, levels/milestones, and local desktop nudging
+--- nothing from Phase 2 onward (no server, no web client;
+\texttt{ui-ux-spec.md} is for later and you can ignore it for this
+step). Structure the code as a clean \texttt{engine/} +
+\texttt{storage/} + \texttt{cli/} package, separated so a server can
+wrap the same engine later without a rewrite, per
+\path|spec-v3-public-release.md| §2. Python 3.11+, standard library
+only (Phase 1b\textquotesingle s notification call may use
+\texttt{urllib}, still no third-party dependency). Name the CLI binary
+\texttt{ascend}.
+
+Write the tests from \texttt{hackstreak-spec.md} section 11 and
+\path|hackstreak-spec-v2.md| section 12 FIRST, then implement until
+they pass. Install \path|packs/home-hack-lab.toml| as the sample pack
+at \path|packs/community/home-hack-lab.toml| with its placeholder
+\texttt{{[}vars{]}} left as placeholders, not my real Pi IP or folder
+paths.
+
+When finished, show me: the file tree, full \texttt{pytest} output, and
+a demo of \texttt{ascend pack install},
+\texttt{ascend mission start}, \texttt{ascend backfill},
+\texttt{ascend levels}, \texttt{ascend}, \texttt{ascend 20},
+\path|ascend done ... ---complete|, \texttt{ascend stats}, and
+the nudge config/test command (or a clear note on what\textquotesingle s
+stubbed if desktop notifications aren\textquotesingle t testable in this
+environment). Ask me before building anything beyond Phase 1b.
+\end{quote}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{kickoff-prompt-implementation-clarifications-from-final-review}{%
+\subsubsection{Implementation clarifications from final
+review}\label{kickoff-prompt-implementation-clarifications-from-final-review}}
+
+These fix real inconsistencies found by re-reading all three specs
+together. They override anything in \texttt{hackstreak-spec.md} or
+\path|hackstreak-spec-v2.md| that conflicts, exactly as the
+files\textquotesingle{} own precedence rules say --- these are just
+spelled out explicitly because they were easy to miss otherwise.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Naming, everywhere.} v1 and v2 say \texttt{hack},
+  \texttt{\textasciitilde{}/.hackstreak/}, \texttt{HACKSTREAK\_HOME},
+  and \path|hackstreak/verifiers/| throughout --- including inside
+  their own embedded "prompt for the agent" sections (v1 §12, v2 §13).
+  All of that is superseded. The binary is \texttt{ascend}. Data lives
+  at \texttt{\textasciitilde{}/.config/ascend/} (an
+  \texttt{ASCEND\_HOME} environment variable overrides this, matching
+  what the Dockerfile already uses for server mode). The database file
+  is \path|$ASCEND_HOME/ascend.db| --- in standalone mode
+  that\textquotesingle s
+  \path|~/.config/ascend/ascend.db|; in the Docker
+  image, \texttt{ASCEND\_HOME=/data}, so it\textquotesingle s
+  \texttt{/data/ascend.db}. The verifier plugin folder is
+  \path|~/.config/ascend/verifiers/|.
+\item
+  \textbf{Phase 1b is desktop notification ONLY, tonight.} v2 §11b
+  describes a full Telegram-from-the-Pi system (a \texttt{sync-to-pi}
+  command, a \texttt{nudge\_telegram.py} file, systemd timers on the Pi)
+  and calls it "Phase 1b." That is superseded by
+  \path|spec-v3-public-release.md| §7, which correctly narrows Phase
+  1b to the local desktop notification only and moves Telegram to Phase
+  2, sent by the server once one exists. Build only the desktop
+  notification path tonight --- do not implement \texttt{sync-to-pi},
+  Telegram, or anything cross-machine yet, even though v2 §11b describes
+  it in more detail than the thing that actually supersedes it.
+\item
+  \textbf{Verifier paths must resolve \texttt{\textasciitilde{}}.} The
+  starter pack\textquotesingle s \texttt{{[}vars{]}} includes
+  \texttt{hack\_dir = "\textasciitilde{}/hack"}, substituted directly
+  into \texttt{file} and \texttt{command} verifier paths (e.g.
+  \texttt{\{hack\_dir\}/report.md}). A plain string substitution does
+  NOT expand \texttt{\textasciitilde{}} to the home directory ---
+  \path|Path("~/hack/report.md").exists()| checks a
+  literal folder named \texttt{\textasciitilde{}}, not the home
+  directory. The \texttt{file} and \texttt{command} verifiers must call
+  \texttt{expanduser()} (or equivalent) on any path before using it, or
+  the sample pack\textquotesingle s own verifiers will fail on night
+  one. Add this as an explicit test case.
+\item
+  \textbf{\texttt{lint} must check \texttt{pack.kind}.}
+  \path|hackstreak-spec-v2.md| §8b says every pack needs
+  \texttt{kind = "project"} or \texttt{kind = "proficiency"}, but
+  §3\textquotesingle s lint checklist never actually lists this as
+  something \texttt{lint} validates. Add it: \texttt{lint} rejects a
+  pack missing \texttt{kind} or with any other value.
+\item
+  \textbf{\texttt{GET /api/health}} (used by the Docker healthcheck in
+  \texttt{docker/Dockerfile}) should be added to the route list in
+  \path|spec-v3-public-release.md| §6 when Phase 2 is built --- a
+  trivial 200-OK endpoint, not used tonight, just noted so it
+  isn\textquotesingle t forgotten when the server is written.
+\end{enumerate}
+
+\hypertarget{kickoff-prompt-step-2--actually-verify-it-dont-just-accept-the-demo}{%
+\subsubsection{Step 2 --- actually verify it, don\textquotesingle t just
+accept the
+demo}\label{kickoff-prompt-step-2--actually-verify-it-dont-just-accept-the-demo}}
+
+Before trusting any of this:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Skim the code it produces. You don\textquotesingle t need to review
+  every line, but check the streak logic against the test table in
+  \texttt{hackstreak-spec.md} §11 yourself --- run \texttt{pytest -v}
+  and read what passed.
+\item
+  Run \texttt{ascend pack lint} and \path|ascend pack check-links|
+  on \texttt{home-hack-lab.toml} yourself, read every
+  \texttt{done\_when}, then \texttt{ascend review} it before trusting
+  it as your real roadmap.
+\item
+  \textbf{Use it for real, daily, for at least a week or two} --- chess
+  lesson, then \texttt{ascend}, then one step, then
+  \texttt{ascend done}. This is the actual test. A demo that runs once
+  in a chat is not the same as a tool that survives a deadline week.
+\end{enumerate}
+
+\hypertarget{kickoff-prompt-step-3--only-once-phase-1-is-genuinely-part-of-your-routine}{%
+\subsubsection{Step 3 --- only once Phase 1 is genuinely part of your
+routine}\label{kickoff-prompt-step-3--only-once-phase-1-is-genuinely-part-of-your-routine}}
+
+Come back and hand the agent \path|spec-v3-public-release.md|
+(architecture, already given) plus \texttt{ui-ux-spec.md} (the web
+client design) together, and tell it to build Phase 2: the server, the
+HTTP API, and the web PWA, per \path|spec-v3-public-release.md|
+§10\textquotesingle s Phase 2 scope. Not before. A server and a phone
+app for a habit you haven\textquotesingle t actually kept yet is
+building the sequel before the first movie was any good.
+
+\hypertarget{kickoff-prompt-step-4-and-beyond}{%
+\subsubsection{Step 4 and beyond}\label{kickoff-prompt-step-4-and-beyond}}
+
+Phase 3 (plugin verifiers, community pack CI, docs, publish) and Phase 4
+(Telegram, real Web Push, public extras) follow the same rule:
+don\textquotesingle t start the next one until the current one is
+proven, not just built.

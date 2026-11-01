@@ -1,0 +1,79 @@
+% Canonical LaTeX chapter; migrated from docs/api.md.
+\hypertarget{http-api}{%
+\subsection{HTTP API}\label{http-api}}
+
+The server publishes its precise OpenAPI schema at
+\texttt{/openapi.json} and interactive reference at \texttt{/docs}. JSON
+business-validation failures return \textbf{400} with a \texttt{detail}
+string; malformed request schemas return \textbf{422}; missing
+authentication returns \textbf{401}; missing pack resources return
+\textbf{404}; write conflicts return \textbf{409}. Private API responses
+have \texttt{Cache-Control: no-store}.
+
+In \texttt{AUTH\_MODE=multi}, use
+\texttt{Authorization: Bearer \textless{}token\textgreater{}}. The
+health endpoint and login are unauthenticated. Accounts are provisioned
+using \texttt{ascend-server user-add}. There is no public registration
+endpoint. Passwords use scrypt; tokens are hashed at rest. Browser
+tokens are session-scoped, and CLI tokens are stored with mode 0600.
+
+\begin{longtable}[]{@{}P{.45\textwidth}P{.50\textwidth}@{}}
+\toprule\noalign{}
+Route & Contract \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\path|GET /api/health| & \texttt{\{status, auth\_mode\}} \\
+\path|POST /api/login| & \texttt{\{username,password\}} →
+\texttt{\{token\}} \\
+\path|GET /api/me?minutes=30| & Mission, next/quick-win node data,
+current level, streak and today state \\
+\path|GET /api/levels?pack=<id>| & Levels with
+node states, active days and minutes \\
+\path|POST /api/entries| &
+Required: \texttt{learned}, \texttt{next\_step}. Optional: \texttt{node\_id}, \texttt{proof}, \texttt{minutes}, \texttt{complete}, \texttt{force}, \texttt{mission\_id}.
+→ entry ID, logical day and completion result \\
+\path|GET /api/entries| & Caller-scoped learning entries \\
+\path|POST /api/nodes/{pack:node}/mark| &
+\texttt{\{status,note?\}}; status is done/skipped/todo \\
+\path|POST /api/packs| & Multipart \texttt{file}: UTF-8 TOML, maximum
+2 MB; lint and install \\
+\path|GET /api/packs| & Installed pack IDs and review/trust
+metadata \\
+\path|GET /api/packs/{id}| & Parsed pack data \\
+\path|GET /api/stats| & Derived streaks, days, freeze allowance and
+eight weekly minute totals \\
+\path|GET /api/heatmap| & Day/count values for the last 12 calendar
+weeks \\
+\path|GET /api/search?q=text| & Reverse chronological substring
+matches \\
+\path|GET /api/account| & Current account and reminder preferences \\
+\path|POST /api/command| &
+\texttt{\{argv:{[}...{]},pack\_text?:"..."\}}; same application commands
+as the CLI \\
+\path|POST /api/logout| & Revoke the current token \\
+\path|GET /api/push/key| & Configured public VAPID key \\
+\path|POST /api/push/subscriptions| & Browser PushSubscription JSON;
+user-scoped upsert \\
+\path|DELETE /api/push/subscriptions| & \texttt{\{endpoint\}}; remove
+caller\textquotesingle s subscription \\
+\path|POST /api/telegram/webhook| & Telegram Update; requires the
+Telegram webhook secret header \\
+\path|GET /api/public/{username}/streak| & Minimal opt-in streak
+data; 404 otherwise \\
+\path|GET /api/public/{username}/badge.svg| & Opt-in SVG badge \\
+\end{longtable}
+
+\texttt{/api/command} supports mission lifecycle, config, edit/undo,
+backfill, split, verification, and parking. It rejects client-only timer
+installation and pack scaffolding. Pack paths sent by a client must
+include \texttt{pack\_text}; the server does not interpret them as
+arbitrary host file paths. An export returns Markdown to the client,
+which chooses where to save it locally.
+
+The node reference is \texttt{pack-id:node-id}. Omitting it uses the
+active mission\textquotesingle s next eligible main node, falling back
+to its side lane. Manual completion routes remain explicit, even when a
+verifier would fail. \texttt{done -\/-complete} logs partial work on
+verification failure, returning \texttt{completed: false} and a reason.

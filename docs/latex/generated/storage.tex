@@ -1,0 +1,54 @@
+\section{Storage migration reference}
+Generated from the numbered SQL migrations. These are schema sources, not commands to rerun manually against an initialized profile.
+\subsection{0001\_init.sql}
+\begin{verbatim}
+CREATE TABLE missions (
+ id INTEGER PRIMARY KEY, user_id INTEGER NOT NULL DEFAULT 1,
+ title TEXT NOT NULL, status TEXT NOT NULL DEFAULT 'active' CHECK(status IN ('active','done','paused')),
+ created_at TEXT NOT NULL, finished_at TEXT, nudge_time TEXT
+);
+CREATE UNIQUE INDEX one_active_mission ON missions(user_id) WHERE status='active';
+CREATE TABLE entries (
+ id INTEGER PRIMARY KEY, user_id INTEGER NOT NULL DEFAULT 1, day TEXT NOT NULL,
+ logged_at TEXT NOT NULL, mission_id INTEGER REFERENCES missions(id), learned TEXT NOT NULL,
+ next_step TEXT NOT NULL, proof TEXT, minutes INTEGER CHECK(minutes > 0)
+);
+CREATE INDEX idx_entries_day ON entries(user_id, day);
+CREATE TABLE parked (id INTEGER PRIMARY KEY, user_id INTEGER NOT NULL DEFAULT 1, created_at TEXT NOT NULL, note TEXT NOT NULL, resolved INTEGER NOT NULL DEFAULT 0);
+CREATE TABLE settings (user_id INTEGER NOT NULL DEFAULT 1, key TEXT NOT NULL, value TEXT NOT NULL, PRIMARY KEY(user_id, key));
+CREATE TABLE audit (id INTEGER PRIMARY KEY, user_id INTEGER NOT NULL DEFAULT 1, created_at TEXT NOT NULL, action TEXT NOT NULL, detail TEXT NOT NULL);
+\end{verbatim}
+\subsection{0002\_packs.sql}
+\begin{verbatim}
+CREATE TABLE packs (
+ user_id INTEGER NOT NULL DEFAULT 1, id TEXT NOT NULL, path TEXT NOT NULL, version INTEGER,
+ reviewed INTEGER NOT NULL DEFAULT 0, trusted INTEGER NOT NULL DEFAULT 0,
+ fingerprint TEXT NOT NULL, PRIMARY KEY(user_id, id)
+);
+CREATE TABLE node_state (
+ user_id INTEGER NOT NULL DEFAULT 1, pack_id TEXT NOT NULL, node_id TEXT NOT NULL,
+ status TEXT NOT NULL DEFAULT 'todo' CHECK(status IN ('todo','done','skipped')),
+ done_at TEXT, evidence TEXT, how TEXT, PRIMARY KEY(user_id, pack_id, node_id)
+);
+ALTER TABLE entries ADD COLUMN node_id TEXT;
+ALTER TABLE entries ADD COLUMN source TEXT NOT NULL DEFAULT 'manual';
+ALTER TABLE entries ADD COLUMN complete INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE missions ADD COLUMN pack_id TEXT;
+CREATE TABLE level_unlocks (user_id INTEGER NOT NULL DEFAULT 1, pack_id TEXT NOT NULL, level_id TEXT NOT NULL, PRIMARY KEY(user_id, pack_id, level_id));
+CREATE TABLE evidence_log (user_id INTEGER NOT NULL DEFAULT 1, pack_id TEXT NOT NULL, node_id TEXT NOT NULL, evidence_time TEXT NOT NULL, PRIMARY KEY(user_id, pack_id, node_id, evidence_time));
+\end{verbatim}
+\subsection{0003\_multiuser.sql}
+\begin{verbatim}
+CREATE TABLE users (id INTEGER PRIMARY KEY, username TEXT UNIQUE NOT NULL, password_hash TEXT NOT NULL, timezone TEXT NOT NULL DEFAULT 'UTC', created_at TEXT NOT NULL);
+INSERT INTO users (id,username,password_hash,timezone,created_at) VALUES (1,'local','!disabled','UTC',strftime('%Y-%m-%dT%H:%M:%SZ','now'));
+CREATE TABLE api_tokens (token TEXT PRIMARY KEY, user_id INTEGER NOT NULL REFERENCES users(id), created_at TEXT NOT NULL, label TEXT);
+CREATE TABLE node_splits (user_id INTEGER NOT NULL, pack_id TEXT NOT NULL, node_id TEXT NOT NULL, steps TEXT NOT NULL, PRIMARY KEY(user_id,pack_id,node_id));
+ALTER TABLE node_state ADD COLUMN revision INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE entries ADD COLUMN completion_before TEXT;
+ALTER TABLE entries ADD COLUMN completion_revision INTEGER;
+\end{verbatim}
+\subsection{0004\_notifications.sql}
+\begin{verbatim}
+CREATE TABLE push_subscriptions (user_id INTEGER NOT NULL, endpoint TEXT NOT NULL, subscription TEXT NOT NULL, created_at TEXT NOT NULL, PRIMARY KEY(user_id,endpoint));
+CREATE TABLE telegram_updates (user_id INTEGER NOT NULL, update_id INTEGER NOT NULL, PRIMARY KEY(user_id,update_id));
+\end{verbatim}

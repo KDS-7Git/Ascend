@@ -1,0 +1,68 @@
+% Canonical LaTeX chapter; migrated from CONTRIBUTING.md.
+\hypertarget{contributing-to-ascend}{%
+\subsection{Contributing to Ascend}\label{contributing-to-ascend}}
+
+Keep the daily loop small: one next step, honest evidence, an easy
+return tomorrow. The engine is subject-independent. Put learning content
+in TOML packs, external checks in verifier adapters, and shared behavior
+in the application layer.
+
+\hypertarget{development-checks}{%
+\subsubsection{Development checks}\label{development-checks}}
+
+\begin{verbatim}
+python3 -m venv .venv
+.venv/bin/pip install -e '.[server,dev]'
+.venv/bin/playwright install chromium
+.venv/bin/pytest -v
+.venv/bin/python scripts/build_registry.py
+\end{verbatim}
+
+Write regression tests for behavioral changes. Check both local and
+remote paths when changing application semantics. Use descriptive
+commits with a focused scope. Do not commit profiles, database files,
+actual network addresses, tokens, or \texttt{.env} files. Regenerate and
+compile \texttt{docs/report.tex} at release milestones.
+
+\hypertarget{community-packs}{%
+\subsubsection{Community packs}\label{community-packs}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Add a generic pack to \texttt{packs/community/}, using
+  \href{handbook.pdf}{the format reference}.
+\item
+  Every \texttt{done\_when} must name a concrete result the learner can
+  demonstrate, preferably an artifact. A reading assignment alone is not
+  a completion test.
+\item
+  Use real, relevant resource URLs. Check licenses before adapting
+  others\textquotesingle{} maps. AI-generated material must retain
+  \texttt{source = "ai-draft"} and \texttt{reviewed = false} until a
+  human reviewer has read the complete pack.
+\item
+  Run \texttt{ascend pack lint \textless{}file\textgreater{}} and
+  \texttt{ascend pack check-links \textless{}file\textgreater{}}.
+  Resolve dead links; describe access restrictions such as 403/429
+  instead of inventing URLs.
+\item
+  Keep IDs stable across updates. Bump \texttt{pack.version} and
+  document removed nodes.
+\item
+  Run \texttt{python scripts/build\_registry.py} and submit the pack
+  plus registry diff.
+\end{enumerate}
+
+CI validates every pack and checksum without executing pack commands.
+Link checks are explicit network operations and do not run on every
+offline test invocation.
+
+\hypertarget{verifiers}{%
+\subsubsection{Verifiers}\label{verifiers}}
+
+See \href{handbook.pdf}{Writing a verifier}. Never bypass
+the explicit trust step or emit secrets as evidence. Include tests for
+failure, timeout, and evidence timestamps. Plugins execute as the user;
+they are not sandboxed.

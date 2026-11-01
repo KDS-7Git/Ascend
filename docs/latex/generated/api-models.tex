@@ -1,0 +1,248 @@
+\subsection{Generated HTTP request and validation schemas}
+These schemas come from the current OpenAPI model definitions. Business rules and additional status codes are documented in the endpoint reference.
+\subsubsection{Body\_upload\_api\_packs\_post}
+\begin{verbatim}
+{
+  "properties": {
+    "file": {
+      "type": "string",
+      "contentMediaType": "application/octet-stream",
+      "title": "File"
+    }
+  },
+  "type": "object",
+  "required": [
+    "file"
+  ],
+  "title": "Body_upload_api_packs_post"
+}
+\end{verbatim}
+\subsubsection{Command}
+\begin{verbatim}
+{
+  "properties": {
+    "argv": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "maxItems": 100,
+      "title": "Argv"
+    },
+    "pack_text": {
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 2000000
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Pack Text"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object",
+  "required": [
+    "argv"
+  ],
+  "title": "Command"
+}
+\end{verbatim}
+\subsubsection{Entry}
+\begin{verbatim}
+{
+  "properties": {
+    "learned": {
+      "type": "string",
+      "maxLength": 10000,
+      "title": "Learned"
+    },
+    "next_step": {
+      "type": "string",
+      "maxLength": 10000,
+      "title": "Next Step"
+    },
+    "node_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Node Id"
+    },
+    "proof": {
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 4000
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Proof"
+    },
+    "minutes": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Minutes"
+    },
+    "complete": {
+      "type": "boolean",
+      "title": "Complete",
+      "default": false
+    },
+    "force": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Force"
+    },
+    "mission_id": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Mission Id"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object",
+  "required": [
+    "learned",
+    "next_step"
+  ],
+  "title": "Entry"
+}
+\end{verbatim}
+\subsubsection{HTTPValidationError}
+\begin{verbatim}
+{
+  "properties": {
+    "detail": {
+      "items": {
+        "$ref": "#/components/schemas/ValidationError"
+      },
+      "type": "array",
+      "title": "Detail"
+    }
+  },
+  "type": "object",
+  "title": "HTTPValidationError"
+}
+\end{verbatim}
+\subsubsection{Login}
+\begin{verbatim}
+{
+  "properties": {
+    "username": {
+      "type": "string",
+      "maxLength": 100,
+      "title": "Username"
+    },
+    "password": {
+      "type": "string",
+      "maxLength": 1024,
+      "title": "Password"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object",
+  "required": [
+    "username",
+    "password"
+  ],
+  "title": "Login"
+}
+\end{verbatim}
+\subsubsection{Mark}
+\begin{verbatim}
+{
+  "properties": {
+    "status": {
+      "type": "string",
+      "title": "Status"
+    },
+    "note": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Note"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object",
+  "required": [
+    "status"
+  ],
+  "title": "Mark"
+}
+\end{verbatim}
+\subsubsection{ValidationError}
+\begin{verbatim}
+{
+  "properties": {
+    "loc": {
+      "items": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "integer"
+          }
+        ]
+      },
+      "type": "array",
+      "title": "Location"
+    },
+    "msg": {
+      "type": "string",
+      "title": "Message"
+    },
+    "type": {
+      "type": "string",
+      "title": "Error Type"
+    },
+    "input": {
+      "title": "Input"
+    },
+    "ctx": {
+      "type": "object",
+      "title": "Context"
+    }
+  },
+  "type": "object",
+  "required": [
+    "loc",
+    "msg",
+    "type"
+  ],
+  "title": "ValidationError"
+}
+\end{verbatim}

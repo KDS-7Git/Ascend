@@ -1,0 +1,589 @@
+{
+  "version": 3,
+  "assessments": [
+    {
+      "pack": "networking-for-security",
+      "level": "models",
+      "milestone": "layers-milestone",
+      "skill": "Distinguish link, network, transport, and application evidence.",
+      "experiment": "Capture an owned HTTP exchange; identify addresses, ports, request and response by frame number. State what the capture does not reveal.",
+      "variant": "Repeat with a different destination or port and predict which fields change.",
+      "control": "Compare a loopback capture with a LAN frame; do not invent Ethernet or physical-layer evidence on loopback.",
+      "recall": "Sketch the layers from memory, then label a different frame.",
+      "sources": [
+        "htb-foundations",
+        "ies-practice"
+      ]
+    },
+    {
+      "pack": "networking-for-security",
+      "level": "addressing",
+      "milestone": "addressing-milestone",
+      "skill": "Predict subnet membership and next-hop selection.",
+      "experiment": "Design two small lab subnets and calculate network, host range, broadcast, and gateway; validate the arithmetic with Python ipaddress and inspect a matching routing table.",
+      "variant": "Change the prefix or destination; predict whether delivery is local or via a gateway before checking.",
+      "control": "Include one off-subnet destination and one overlapping-subnet plan that must be rejected.",
+      "recall": "Solve a fresh CIDR example and explain longest-prefix matching.",
+      "sources": [
+        "htb-foundations",
+        "ies-practice"
+      ]
+    },
+    {
+      "pack": "networking-for-security",
+      "level": "transport",
+      "milestone": "transport-milestone",
+      "skill": "Build a TCP exchange and reason about stream boundaries and connection failure.",
+      "experiment": "Build a local TCP client/server that exchanges a framed message. Demonstrate a successful exchange and a clean shutdown.",
+      "variant": "Send the same message in several chunks and handle a response longer than one recv call.",
+      "control": "Stop the server and distinguish connection refusal from a server accepting but not replying; apply a timeout.",
+      "recall": "Explain why TCP does not preserve application message boundaries, then repair one receive-loop error.",
+      "sources": [
+        "htb-foundations",
+        "ies-practice"
+      ]
+    },
+    {
+      "pack": "networking-for-security",
+      "level": "application",
+      "milestone": "application-milestone",
+      "skill": "Trace name resolution, connection establishment, and HTTP without assuming every page load is identical.",
+      "experiment": "Capture or correlate a controlled DNS lookup and an HTTP request to an owned lab service; identify each observed protocol.",
+      "variant": "Compare a cached lookup or reused connection with the first request and predict which exchange may disappear.",
+      "control": "Compare an unresolvable name with a reachable host returning HTTP 404; separate DNS failure from application failure.",
+      "recall": "Explain what HTTPS hides and what can remain visible; check a fresh request.",
+      "sources": [
+        "htb-foundations",
+        "ies-practice"
+      ]
+    },
+    {
+      "pack": "networking-for-security",
+      "level": "capture",
+      "milestone": "capture-milestone",
+      "skill": "Recover a conversation using packet filters and protocol documentation.",
+      "experiment": "Analyze a previously unused training capture or owned app exchange; identify a protocol and three fields with frame numbers. Standards and field references are allowed.",
+      "variant": "Answer a new question from the same capture using a different filter or tshark extraction.",
+      "control": "Show a broad filter that includes unrelated traffic and explain how you excluded it.",
+      "recall": "Write a filter from memory, then verify it on a different conversation.",
+      "sources": [
+        "htb-foundations",
+        "ies-practice"
+      ]
+    },
+    {
+      "pack": "networking-for-security",
+      "level": "services",
+      "milestone": "services-milestone",
+      "skill": "Enforce and verify a source-specific network policy without confusing it with an application outage.",
+      "experiment": "In a disposable lab with console access, allow one source to a test service and deny a second source. Save rules and both connection results.",
+      "variant": "Move the test service to another port and predict the required rule change.",
+      "control": "Verify the service remains healthy from the allowed source and that restoring the original rules restores the baseline.",
+      "recall": "Explain rule order and default policy, then predict the result of a small rule set.",
+      "sources": [
+        "htb-foundations",
+        "ies-practice"
+      ]
+    },
+    {
+      "pack": "networking-for-security",
+      "level": "wireless",
+      "milestone": "wireless-milestone",
+      "skill": "Assess Wi-Fi authentication and guest isolation using observed configuration and connectivity.",
+      "experiment": "Audit your owned access point or a provided lab configuration: authentication mode, WPS, guest isolation, and administrative exposure. Test guest-to-LAN access where supported.",
+      "variant": "Compare two configurations and predict which permits guest access to a chosen LAN service.",
+      "control": "Check that an isolated guest can still reach an allowed destination; a broken guest connection does not prove isolation.",
+      "recall": "Explain what a WPA2-Personal handshake demonstrates and what it does not hide.",
+      "sources": [
+        "htb-foundations",
+        "ies-practice"
+      ]
+    },
+    {
+      "pack": "networking-for-security",
+      "level": "capstone",
+      "milestone": "capstone-milestone",
+      "skill": "Diagnose an unfamiliar network fault by testing competing explanations.",
+      "experiment": "Use a fresh fault in a disposable lab or an unsolved training scenario. Record symptoms, at least two hypotheses, discriminating checks, root cause, and verified repair.",
+      "variant": "Introduce or select a different fault with a similar symptom and distinguish it using evidence.",
+      "control": "Repeat both a formerly failing check and an unrelated healthy check after repair.",
+      "recall": "From a new symptom, name the first two tests and what each possible result would rule out.",
+      "sources": [
+        "htb-foundations",
+        "ies-practice"
+      ]
+    },
+    {
+      "pack": "web-application-security",
+      "level": "injection",
+      "milestone": "injection-milestone",
+      "skill": "Infer an injection mechanism from request/response evidence and distinguish a real signal from noise.",
+      "experiment": "Solve an unfamiliar scoped Academy injection lab; save redacted baseline and successful requests, observations, root cause, and a specific repair.",
+      "variant": "Solve a second small variation of the same mechanism with a different input location, data shape, or response signal.",
+      "control": "Include a negative request and explain why a status change or delay alone is insufficient evidence.",
+      "recall": "Reconstruct the data-to-query or data-to-command boundary from memory and predict a new input.",
+      "sources": [
+        "portswigger-paths",
+        "portswigger-mystery",
+        "htb-foundations"
+      ]
+    },
+    {
+      "pack": "web-application-security",
+      "level": "auth",
+      "milestone": "auth-milestone",
+      "skill": "Track authentication state and identify the missing validation in an account-recovery or session flow.",
+      "experiment": "Solve a scoped multi-step authentication lab; record the state transition that incorrectly grants access and the intended authentication boundary.",
+      "variant": "Repeat with a fresh lab session or different lab account so saved cookies cannot explain success.",
+      "control": "Show a legitimate login and a denied unauthenticated request; specify which server-side check breaks the attack chain.",
+      "recall": "Draw the relevant session or recovery state transitions without notes and identify the vulnerable transition.",
+      "sources": [
+        "portswigger-paths",
+        "portswigger-mystery",
+        "htb-foundations"
+      ]
+    },
+    {
+      "pack": "web-application-security",
+      "level": "access-control",
+      "milestone": "access-control-milestone",
+      "skill": "Test authorization separately from authentication.",
+      "experiment": "Using two lab users and an administrator role where available, build an owner/other-user/anonymous access matrix for one resource and demonstrate a missing check.",
+      "variant": "Change the object identifier or request method and repeat the authorization test without following a walkthrough.",
+      "control": "Include the legitimate owner request and a correctly denied cross-user request or a repaired local endpoint.",
+      "recall": "Explain why knowing an object ID does not grant authority, then design a fresh access test.",
+      "sources": [
+        "portswigger-paths",
+        "portswigger-mystery",
+        "htb-foundations"
+      ]
+    },
+    {
+      "pack": "web-application-security",
+      "level": "xss-and-csrf",
+      "milestone": "xss-csrf-milestone",
+      "skill": "Separate script execution caused by unsafe output handling from an unwanted authenticated cross-site action.",
+      "experiment": "Complete a scoped XSS exercise and a scoped CSRF exercise; trace source, browser context, and effect for each. Use harmless lab proofs.",
+      "variant": "Change the XSS rendering context or the CSRF request conditions and predict whether the previous proof still works.",
+      "control": "Compare correctly encoded output or a rejected anti-CSRF token; explain why an XSS fix is not automatically a CSRF fix.",
+      "recall": "From two request traces, distinguish XSS from CSRF and name the relevant trust boundary.",
+      "sources": [
+        "portswigger-paths",
+        "portswigger-mystery",
+        "htb-foundations"
+      ]
+    },
+    {
+      "pack": "web-application-security",
+      "level": "ssrf-and-deserialization",
+      "milestone": "ssrf-deser-milestone",
+      "skill": "Distinguish server-side fetching, external-entity expansion, and unsafe object reconstruction.",
+      "experiment": "Use scoped lab evidence from SSRF, XXE, and deserialization exercises to explain each input-to-action chain; independently reproduce one on an unfamiliar lab.",
+      "variant": "Change the SSRF destination, XML entity setting, or serialized property and predict the result before testing in the lab.",
+      "control": "Include a rejected or inert input and identify the specific allowlist, parser, or data-format boundary that prevents the action.",
+      "recall": "Classify three short scenarios by mechanism and explain why cloud metadata access is not implied by every SSRF.",
+      "sources": [
+        "portswigger-paths",
+        "portswigger-mystery",
+        "htb-foundations"
+      ]
+    },
+    {
+      "pack": "web-application-security",
+      "level": "logic-flaws",
+      "milestone": "logic-milestone",
+      "skill": "Express a business invariant and produce a sequence that violates it.",
+      "experiment": "Choose a lab workflow, write its expected invariant, and test reordered, repeated, or concurrent operations to find a violation.",
+      "variant": "Change the operation order or concurrency and predict whether the invariant still fails.",
+      "control": "Show the ordinary sequence preserving the invariant and propose a server-side transaction or state check.",
+      "recall": "State an invariant for a different workflow and propose a discriminating test.",
+      "sources": [
+        "portswigger-paths",
+        "portswigger-mystery",
+        "htb-foundations"
+      ]
+    },
+    {
+      "pack": "web-application-security",
+      "level": "api-security",
+      "milestone": "api-milestone",
+      "skill": "Test API authorization and token handling using a bounded endpoint inventory.",
+      "experiment": "Map a small lab API and test anonymous, owner, and other-user access for the selected operations. Explain one JWT or GraphQL finding with a reproducible request.",
+      "variant": "Change an object ID, field, role, or token property and test whether the proposed boundary holds.",
+      "control": "Show a correctly rejected request; do not label introspection alone a vulnerability without sensitive exposure or unauthorized access.",
+      "recall": "Design an owner/other-user API test from memory and explain the difference between token decoding and signature validation.",
+      "sources": [
+        "portswigger-paths",
+        "portswigger-mystery",
+        "htb-foundations"
+      ]
+    },
+    {
+      "pack": "web-application-security",
+      "level": "capstone",
+      "milestone": "capstone-milestone",
+      "skill": "Produce an assessment another learner can reproduce and critically review.",
+      "experiment": "On a fresh scoped target, reproduce three findings from distinct covered mechanisms. Report scope, evidence, impact, root cause, and a specific fix for each.",
+      "variant": "Retest one finding from a fresh session and independently reproduce one chosen finding without the original step-by-step notes.",
+      "control": "Implement and retest at least one fix in an owned local reproduction, keeping legitimate behavior working; label other fixes as proposed.",
+      "recall": "Explain one finding and its fix from memory, then test a changed request.",
+      "sources": [
+        "portswigger-paths",
+        "portswigger-mystery",
+        "htb-foundations"
+      ]
+    },
+    {
+      "pack": "network-penetration-testing",
+      "level": "recon",
+      "milestone": "recon-milestone",
+      "skill": "Turn reconnaissance observations into falsifiable service hypotheses.",
+      "experiment": "Map a fresh owned/training host: ports, services, reachable web entries, scan limitations, and two ranked hypotheses before exploitation.",
+      "variant": "Confirm one service using its native protocol or a second tool, rather than a version string alone.",
+      "control": "Test a closed or filtered port and an intentionally nonexistent web route; distinguish them from positive findings.",
+      "recall": "Explain the next check for a new banner, including what would falsify the suspected weakness.",
+      "sources": [
+        "htb-pentest",
+        "htb-foundations"
+      ]
+    },
+    {
+      "pack": "network-penetration-testing",
+      "level": "service-exploitation",
+      "milestone": "service-exploitation-milestone",
+      "skill": "Verify exploit prerequisites and explain the boundary crossed.",
+      "experiment": "On a designated vulnerable lab, establish a foothold using a documented service weakness after verifying its required conditions. Save sanitized evidence.",
+      "variant": "Repeat from a clean snapshot or use a comparable training service with a changed configuration.",
+      "control": "Remove one prerequisite in an owned reproduction and show that the exploit fails while legitimate access remains.",
+      "recall": "Explain why a matching CVE or version is a hypothesis, then enumerate the required conditions.",
+      "sources": [
+        "htb-pentest",
+        "htb-foundations"
+      ]
+    },
+    {
+      "pack": "network-penetration-testing",
+      "level": "metasploit",
+      "milestone": "metasploit-milestone",
+      "skill": "Separate framework orchestration from the underlying exploit mechanism.",
+      "experiment": "Complete one bounded training exploit with Metasploit, recording target assumptions, module options, payload role, and proof of the resulting context.",
+      "variant": "Reproduce the essential request or underlying mechanism manually in the same lab, using earlier exercises as preparation.",
+      "control": "Use an incompatible target setting or a patched local reproduction and explain the failure rather than changing options blindly.",
+      "recall": "Describe the exploit/payload distinction and reconstruct the required options without a saved session.",
+      "sources": [
+        "htb-pentest",
+        "htb-foundations"
+      ]
+    },
+    {
+      "pack": "network-penetration-testing",
+      "level": "linux-privesc",
+      "milestone": "linux-privesc-milestone",
+      "skill": "Find and validate Linux privilege boundaries through native permissions and process context.",
+      "experiment": "From a provided low-privilege lab foothold, demonstrate one escalation path and manually verify a second distinct candidate; use a second lab if necessary.",
+      "variant": "Repeat the successful mechanism with a different lab file, executable, or scheduled task and predict the permission change.",
+      "control": "Correct the writable path, ownership, or privilege setting in a disposable reproduction and retest.",
+      "recall": "Explain real/effective identity and one trust boundary from memory, then inspect a new permission example.",
+      "sources": [
+        "htb-pentest",
+        "htb-foundations"
+      ]
+    },
+    {
+      "pack": "network-penetration-testing",
+      "level": "windows-privesc",
+      "milestone": "windows-privesc-milestone",
+      "skill": "Reason about Windows identity, service permissions, and token privileges.",
+      "experiment": "Establish a baseline with native Windows commands, then complete one service or token-based lab escalation and explain the exact enabling permissions.",
+      "variant": "Change the lab user or service configuration and predict whether the same path remains available.",
+      "control": "Show a denied operation or corrected service ACL; record actual identity and privileges rather than assuming every shell is SYSTEM.",
+      "recall": "Explain the difference between group membership, an enabled privilege, and a service access-control entry.",
+      "sources": [
+        "htb-pentest",
+        "htb-foundations"
+      ]
+    },
+    {
+      "pack": "network-penetration-testing",
+      "level": "active-directory",
+      "milestone": "ad-milestone",
+      "skill": "Validate an AD attack-path edge using identity, permissions, and authentication evidence.",
+      "experiment": "In an isolated beginner AD lab with supplied credentials, enumerate the domain and validate a bounded path to the designated objective. Record each required edge.",
+      "variant": "Re-evaluate one graph edge with another lab account or changed permission; verify the graph claim using native evidence.",
+      "control": "Remove or identify a specific permission or weak credential condition that breaks the path; do not claim all AD attacks require Kerberoasting.",
+      "recall": "Draw a small domain trust/permission path from memory and explain a service ticket without equating it to a plaintext password.",
+      "sources": [
+        "htb-pentest",
+        "htb-foundations"
+      ]
+    },
+    {
+      "pack": "network-penetration-testing",
+      "level": "post-exploitation",
+      "milestone": "post-exploitation-milestone",
+      "skill": "Map observed actions to telemetry and distinguish visibility gaps from evidence of absence.",
+      "experiment": "Map the stages of a completed lab exercise to ATT&CK techniques and actual log or network evidence, including a harmless scheduled-task persistence fixture and synthetic file transfer.",
+      "variant": "Change the task name or transfer channel and predict how the evidence changes.",
+      "control": "Remove the lab artifact and confirm its absence; label an unlogged action as a visibility gap instead of claiming it did not happen.",
+      "recall": "Explain which logs would confirm a new persistence or transfer hypothesis and what they cannot prove.",
+      "sources": [
+        "htb-pentest",
+        "htb-foundations"
+      ]
+    },
+    {
+      "pack": "network-penetration-testing",
+      "level": "capstone",
+      "milestone": "capstone-milestone",
+      "skill": "Complete and report a scoped assessment without following a target walkthrough.",
+      "experiment": "On an unfamiliar training box, progress from reconnaissance to the designated foothold and privilege objective, recording dead ends, evidence, and help used.",
+      "variant": "Reproduce one key step from a clean state, independently of the original walkthrough or saved session.",
+      "control": "Apply one hardening change in an owned reproduction and show it blocks that step without breaking intended use; clearly label untested fixes.",
+      "recall": "Explain the assessment chain and one alternative hypothesis from memory, then rerun the discriminating check.",
+      "sources": [
+        "htb-pentest",
+        "htb-foundations"
+      ]
+    },
+    {
+      "pack": "reverse-engineering-and-binary-exploitation",
+      "level": "asm-foundations",
+      "milestone": "asm-milestone",
+      "skill": "Predict a function’s behavior from registers, stack, branches, and the target ABI.",
+      "experiment": "Trace a small compiled function for two inputs before running it, then verify the predicted return value and key state changes in a debugger.",
+      "variant": "Change one argument or compile option and predict which instruction or state observation changes.",
+      "control": "Include an input taking the other branch; record ABI and architecture so register names are not treated as universal.",
+      "recall": "Sketch the call/return state and argument locations for the chosen ABI without notes.",
+      "sources": [
+        "pwn-college",
+        "rop-guide",
+        "phoenix-stack0"
+      ]
+    },
+    {
+      "pack": "reverse-engineering-and-binary-exploitation",
+      "level": "static-analysis",
+      "milestone": "static-milestone",
+      "skill": "Recover a small program’s input condition from static evidence and verify it dynamically.",
+      "experiment": "Analyze an unfamiliar educational crackme without source; document the candidate input predicate and its assembly/decompiler evidence.",
+      "variant": "Predict an accepted and a rejected input not both supplied by a walkthrough, then run them.",
+      "control": "Cross-check the decompiler against instructions; an unclear type or optimized-away function is uncertainty, not proof the decompiler is wrong.",
+      "recall": "Explain the recovered predicate and locate its key comparison in a fresh small function.",
+      "sources": [
+        "pwn-college",
+        "rop-guide",
+        "phoenix-stack0"
+      ]
+    },
+    {
+      "pack": "reverse-engineering-and-binary-exploitation",
+      "level": "dynamic-analysis",
+      "milestone": "dynamic-milestone",
+      "skill": "Use controlled execution to explain an input-dependent state change.",
+      "experiment": "Solve a small educational crackme using breakpoints, register/memory inspection, and a trace of the deciding branch.",
+      "variant": "Change the input and predict the next branch or watched value before continuing.",
+      "control": "Demonstrate a rejected input and distinguish your own debugger modifications from an input that works in an unmodified run.",
+      "recall": "Choose a breakpoint/watchpoint for a new toy function and predict what it will reveal.",
+      "sources": [
+        "pwn-college",
+        "rop-guide",
+        "phoenix-stack0"
+      ]
+    },
+    {
+      "pack": "reverse-engineering-and-binary-exploitation",
+      "level": "stack-overflows",
+      "milestone": "stack-milestone",
+      "skill": "Explain how an out-of-bounds write progresses from data corruption to control-flow corruption.",
+      "experiment": "Use the Phoenix progression or an equivalent deliberately vulnerable local binary to demonstrate adjacent-data corruption and a later controlled redirection. Explain offset, ABI, and each payload region.",
+      "variant": "Change padding or a small source buffer size in your own toy reproduction and recalculate the relevant boundary.",
+      "control": "Run a bounded-input version or a short input and show that the control target is not overwritten.",
+      "recall": "Draw the relevant stack layout and distinguish Phoenix Stack Zero’s data overwrite from overwriting a saved return address.",
+      "sources": [
+        "pwn-college",
+        "rop-guide",
+        "phoenix-stack0"
+      ]
+    },
+    {
+      "pack": "reverse-engineering-and-binary-exploitation",
+      "level": "protections",
+      "milestone": "protections-milestone",
+      "skill": "Distinguish mitigation mechanisms instead of treating checksec as a proof of safety.",
+      "experiment": "Compile one owned toy program in four protection configurations and compare flags with actual addresses or failure behavior.",
+      "variant": "Change one protection at a time and predict which earlier technique is affected.",
+      "control": "Include a bounds-corrected build: mitigations and fixing the memory bug are different interventions.",
+      "recall": "Explain ASLR, PIE, canaries, and NX from memory and name a limitation of each.",
+      "sources": [
+        "pwn-college",
+        "rop-guide",
+        "phoenix-stack0"
+      ]
+    },
+    {
+      "pack": "reverse-engineering-and-binary-exploitation",
+      "level": "rop",
+      "milestone": "rop-milestone",
+      "skill": "Construct and explain a chain of existing instructions under a specific calling convention.",
+      "experiment": "Complete the ROP Emporium callme challenge, or an equivalent challenge requiring several function calls; annotate arguments, gadgets, stack effects, and alignment.",
+      "variant": "Change one argument or gadget choice and predict whether the calls still satisfy the challenge.",
+      "control": "Show one incorrect chain and explain its precise failure; ret2win alone is not evidence of multi-call chaining.",
+      "recall": "Reconstruct a short gadget chain and register setup from memory for the chosen architecture.",
+      "sources": [
+        "pwn-college",
+        "rop-guide",
+        "phoenix-stack0"
+      ]
+    },
+    {
+      "pack": "reverse-engineering-and-binary-exploitation",
+      "level": "heap-and-format",
+      "milestone": "heap-format-milestone",
+      "skill": "Distinguish allocation lifetime errors from format-string interpretation bugs.",
+      "experiment": "Use prior local exercises to show a heap lifetime error and a format-string information leak, then independently solve one introductory lab in either class.",
+      "variant": "Change an allocation/use order or format input and predict the observable result.",
+      "control": "Compare a lifetime-correct or fixed-format version; allocator behavior depends on version and undefined behavior need not crash.",
+      "recall": "Classify a new short example and explain the relevant object lifetime or variadic format boundary.",
+      "sources": [
+        "pwn-college",
+        "rop-guide",
+        "phoenix-stack0"
+      ]
+    },
+    {
+      "pack": "reverse-engineering-and-binary-exploitation",
+      "level": "capstone",
+      "milestone": "capstone-milestone",
+      "skill": "Move from a defensible vulnerability hypothesis to a reproducible lab exploit and repair.",
+      "experiment": "Choose a fresh educational binary matched to your architecture and level. Record static/dynamic evidence, vulnerability mechanism, exploit, and the actual enabled protections.",
+      "variant": "Reproduce the result in a fresh process and explain any address assumptions or failure conditions.",
+      "control": "Patch an equivalent owned source reproduction and verify both rejection of the bad input and preservation of intended behavior.",
+      "recall": "Explain the vulnerability-to-effect chain without the exploit script, then predict a changed input.",
+      "sources": [
+        "pwn-college",
+        "rop-guide",
+        "phoenix-stack0"
+      ]
+    },
+    {
+      "pack": "defensive-security-and-detection",
+      "level": "logging-fundamentals",
+      "milestone": "logging-milestone",
+      "skill": "Reconstruct an event timeline while separating observations from inference.",
+      "experiment": "Use three benign events from your lab or an unused training log. Reconstruct order, identity, action, and outcome from source lines before comparing with ground truth.",
+      "variant": "Change the time window or include another source and explain timestamp/timezone handling.",
+      "control": "Include an unrelated event and one deliberately missing source; distinguish a negative result from missing telemetry.",
+      "recall": "From memory, explain which fields connect an authentication event to a host and time.",
+      "sources": [
+        "htb-soc",
+        "security-onion-hardware",
+        "ies-practice"
+      ]
+    },
+    {
+      "pack": "defensive-security-and-detection",
+      "level": "log-analysis",
+      "milestone": "log-analysis-milestone",
+      "skill": "Build a detection query and evaluate it against labeled positive and negative data.",
+      "experiment": "Use a small labeled training dataset containing suspicious and ordinary requests. Design a query without looking at the answer labels, then compare its results with ground truth.",
+      "variant": "Change the source address or request ordering in a synthetic copy; test whether the same behavior is still found.",
+      "control": "Record true positives, false positives, and false negatives with counts and explain at least one ambiguity.",
+      "recall": "Write the core filter from memory and test it on a small changed dataset.",
+      "sources": [
+        "htb-soc",
+        "security-onion-hardware",
+        "ies-practice"
+      ]
+    },
+    {
+      "pack": "defensive-security-and-detection",
+      "level": "network-monitoring",
+      "milestone": "network-monitoring-milestone",
+      "skill": "Explain the differences between connection metadata and signature alerts.",
+      "experiment": "Replay a documented benign-plus-test PCAP through Zeek and Suricata; confirm the relevant parser and rule are enabled before comparing outputs.",
+      "variant": "Change a protocol field or replay a different small capture and predict the connection record and alert outcome.",
+      "control": "Use a benign control capture; a generic nmap scan is not guaranteed to trigger an arbitrary default ruleset.",
+      "recall": "Explain why a connection log can exist without an alert, then identify the required visibility and rule.",
+      "sources": [
+        "htb-soc",
+        "security-onion-hardware",
+        "ies-practice"
+      ]
+    },
+    {
+      "pack": "defensive-security-and-detection",
+      "level": "siem-basics",
+      "milestone": "siem-milestone",
+      "skill": "Investigate indexed security events using reproducible queries and pivots.",
+      "experiment": "In Security Onion Import/Eval on supported x86-64 hardware, or a supplied hosted SIEM lab, ingest/inspect a small training dataset and investigate an unfamiliar event.",
+      "variant": "Pivot from an event to a second host, identity, or time interval without using a prewritten query for that pivot.",
+      "control": "Confirm a known benign event is also ingested; account for missing sources, time offsets, and query scope before inferring absence.",
+      "recall": "Rebuild the investigation query and explain its fields without using the saved dashboard.",
+      "sources": [
+        "htb-soc",
+        "security-onion-hardware",
+        "ies-practice"
+      ]
+    },
+    {
+      "pack": "defensive-security-and-detection",
+      "level": "detection-engineering",
+      "milestone": "detection-milestone",
+      "skill": "Evaluate a rule as a hypothesis about observable behavior.",
+      "experiment": "Write one new rule for a bounded lab behavior; record required telemetry, test data, rule version, and results against labeled positive and negative samples.",
+      "variant": "Change a nonessential address, username, or ordering and check whether behavior-based coverage survives.",
+      "control": "Count false positives and false negatives; explain a known blind spot and test the benign control after tuning.",
+      "recall": "Explain the rule’s observable assumption from memory and design one counterexample.",
+      "sources": [
+        "htb-soc",
+        "security-onion-hardware",
+        "ies-practice"
+      ]
+    },
+    {
+      "pack": "defensive-security-and-detection",
+      "level": "hardening",
+      "milestone": "hardening-milestone",
+      "skill": "Demonstrate that a configuration change blocks a chosen path while preserving legitimate use.",
+      "experiment": "On a disposable VM, establish baseline access, apply selected service/permission/update-policy changes, and rerun the relevant lab checks.",
+      "variant": "Test from a second role or service endpoint to find an overbroad assumption.",
+      "control": "Prove legitimate access still works and verify rollback. An empty scan alone does not distinguish hardening from an offline machine.",
+      "recall": "Explain one hardening control, its operational tradeoff, and a positive/negative test pair.",
+      "sources": [
+        "htb-soc",
+        "security-onion-hardware",
+        "ies-practice"
+      ]
+    },
+    {
+      "pack": "defensive-security-and-detection",
+      "level": "incident-response",
+      "milestone": "ir-milestone",
+      "skill": "Make evidence-preserving response decisions under uncertainty.",
+      "experiment": "Use an unfamiliar training case or a peer-run benign lab scenario. Document timeline, evidence hashes, containment choices, investigation, and recovery checks before opening the answer key.",
+      "variant": "Consider one new piece of evidence that contradicts the initial hypothesis and revise the response.",
+      "control": "Show that collection copies remain unchanged and that recovery restores intended service; label simulated containment actions as simulated.",
+      "recall": "Explain the first response steps for a new symptom and what could be lost through an immediate reboot.",
+      "sources": [
+        "htb-soc",
+        "security-onion-hardware",
+        "ies-practice"
+      ]
+    },
+    {
+      "pack": "defensive-security-and-detection",
+      "level": "capstone",
+      "milestone": "capstone-milestone",
+      "skill": "Measure monitoring coverage and close a bounded detection gap without claiming complete visibility.",
+      "experiment": "Observe or replay a small documented lab chain, compare expected and observed telemetry, and deliver a reproducible investigation with coverage and gaps.",
+      "variant": "Replay a varied form of one stage and evaluate whether the improved rule still detects it.",
+      "control": "Retest benign traffic after tuning and record residual gaps that require telemetry changes rather than another rule.",
+      "recall": "Reconstruct the incident and one gap from memory, then explain how a new analyst could reproduce the key query.",
+      "sources": [
+        "htb-soc",
+        "security-onion-hardware",
+        "ies-practice"
+      ]
+    }
+  ]
+}

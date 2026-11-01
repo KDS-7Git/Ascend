@@ -1,0 +1,157 @@
+\hypertarget{new-unit-request-template-request-template-draft-a-new-hackstreak-pack}{%
+\subsection{Request template: draft a new hackstreak
+pack}\label{new-unit-request-template-request-template-draft-a-new-hackstreak-pack}}
+
+Copy everything below the line into a NEW chat with Claude (it does not
+remember earlier chats, so this carries everything). Fill in the five
+fields marked \textless\textless...\textgreater\textgreater. Keep the
+rest as it is.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+Draft a hackstreak pack (a learning roadmap) for me. Reply with ONLY the
+TOML file, nothing else.
+
+\hypertarget{new-unit-request-template-my-request}{%
+\subsubsection{My request}\label{new-unit-request-template-my-request}}
+
+\begin{itemize}
+\tightlist
+\item
+  Topic / unit: \textless\textless e.g. "Networking: how packets really
+  move, with Beej\textquotesingle s guide and
+  Wireshark"\textgreater\textgreater{}
+\item
+  Kind: \textless\textless"proficiency" (I want to get genuinely good at
+  this subject, give me 8-15 levels) OR "project" (one concrete build
+  with a finish line, 3-6 levels) -\/- pick
+  one\textgreater\textgreater{}
+\item
+  What I already know or have finished: \textless\textless e.g. "Bandit
+  0-12, basic C, Python, ssh"\textgreater\textgreater{}
+\item
+  Time reality: \textless\textless e.g. "10-30 min on deadline days, 1-2
+  h on lab nights, 4+ h on free half-days"\textgreater\textgreater{}
+\item
+  Hardware / tools: \textless\textless e.g. "Ubuntu 24.04 + Windows 11
+  dual boot, RTX 4060 8 GB, 16 GB RAM, Raspberry Pi 5 8 GB, LAN
+  cable"\textgreater\textgreater{}
+\item
+  What real proficiency/finished should look like:
+  \textless\textless e.g. "I can capture and explain a TCP handshake,
+  write a raw-socket tool, and debug a real connectivity issue without
+  googling the basics"\textgreater\textgreater{}
+\end{itemize}
+
+\hypertarget{new-unit-request-template-about-me-stable-keep-as-is}{%
+\subsubsection{About me (stable, keep as
+is)}\label{new-unit-request-template-about-me-stable-keep-as-is}}
+
+Wide interests (software dev, web, mobile, game dev, OS, networks,
+low-level, cybersecurity) and I get overwhelmed and lose the thread when
+a plan is open-ended. I distrust AI-generated learning content. I only
+want real, free, well-known resources, and I learn best from small
+puzzles with a real check. I am a CSE student at an IIT with heavy
+academic load. I only attack machines I own.
+
+\hypertarget{new-unit-request-template-format-rules-the-hackstreak-pack-format}{%
+\subsubsection{Format rules (the hackstreak pack
+format)}\label{new-unit-request-template-format-rules-the-hackstreak-pack-format}}
+
+\begin{itemize}
+\tightlist
+\item
+  Sections: \texttt{{[}pack{]}} (id, title, kind = "proficiency" or
+  "project", version = 1, source = "ai-draft", reviewed = false),
+  \texttt{{[}vars{]}}, \texttt{{[}{[}level{]}{]}},
+  \texttt{{[}{[}node{]}{]}}.
+\item
+  Levels, \texttt{kind = "proficiency"}: 8-15 on the \texttt{main}
+  lane, each a real sub-skill with 4-8 nodes (like a Duolingo unit), and
+  each level ends with one node marked \texttt{milestone = true} (size
+  M or L) that is a harder, integrative task -\/- something built or
+  explained from scratch, not a repeat of the level\textquotesingle s
+  small steps. That milestone is the actual proficiency check; do not
+  skip it.
+\item
+  Levels, \texttt{kind = "project"}: 3-6 on the \texttt{main} lane
+  total, same milestone rule, smaller overall.
+\item
+  Either kind: optionally ONE \texttt{side} lane level of S-sized quick
+  wins for busy days. Each \texttt{{[}{[}level{]}{]}} has id, title,
+  lane ("main" or "side").
+\item
+  Each \texttt{{[}{[}node{]}{]}} has: level, id (kebab-case, unique,
+  never changes), title, size, needs (list of node ids, may be empty),
+  done\_when, resource, optionally \texttt{milestone = true}, and
+  optionally verify.
+\item
+  size: "S" = up to 30 min, "M" = 1-2 h, "L" = 3 h or more. Mix sizes so
+  busy days have an S option.
+\item
+  done\_when: ONE concrete, checkable sentence. Prefer an artifact on my
+  disk (a file, a scan, a script, a short writeup). Never "understand X"
+  or "read chapter Y" alone; pair reading with something I produce.
+\item
+  resource: a real, well-known URL. If you are not sure a URL exists,
+  write \texttt{resource = "TODO"} instead of guessing. Do NOT write
+  lesson content or explanations, only the plan.
+\item
+  verify (optional): \texttt{\{ type = "manual" \}} (default),
+  \path|{ type = "file", path = "...", min_bytes = N }|,
+  or \path|{ type = "command", cmd = "..." }| (exit code 0 =
+  pass; harmless read-only commands only, no sudo).
+\item
+  Use \path|series = { from = A, to = B }| for numbered
+  material, with \texttt{\{n\}} and \texttt{\{next\}} in
+  title/done\_when.
+\item
+  Use \texttt{{[}vars{]}} for values I will edit (IPs, usernames,
+  folders) and refer to them as \texttt{\{name\}}.
+\item
+  Never ask me to store passwords, flags, or tokens.
+\item
+  The first node of the first level must be startable tonight in 30
+  minutes or less.
+\end{itemize}
+
+\hypertarget{new-unit-request-template-tiny-example-of-the-style}{%
+\subsubsection{Tiny example of the
+style}\label{new-unit-request-template-tiny-example-of-the-style}}
+
+\begin{verbatim}
+[pack]
+id = "example"
+title = "Example"
+version = 1
+source = "ai-draft"
+reviewed = false
+
+[[level]]
+id = "basics"
+title = "Basics"
+lane = "main"
+
+[[node]]
+level = "basics"
+id = "first-capture"
+title = "Capture my first packets"
+size = "S"
+needs = []
+done_when = "a 30-second capture saved at ~/hack/pcaps/first.pcapng that contains at least one DNS query"
+resource = "https://www.wireshark.org/docs/"
+verify = { type = "file", path = "~/hack/pcaps/first.pcapng", min_bytes = 1000 }
+\end{verbatim}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+After you get the reply: save it as
+\texttt{packs/\textless{}id\textgreater{}.toml}, then run
+\path|ascend pack lint packs/<id>.toml|,
+\path|ascend pack check-links packs/<id>.toml|,
+read every \texttt{done\_when}, then
+\texttt{ascend review \textless{}id\textgreater{}} and
+\path|ascend pack install <id>|. (The CLI
+binary is \texttt{ascend}, not \texttt{hack} --- the earlier drafts of
+this project used \texttt{hack} before the public rename; use
+\texttt{ascend} for every command.)
