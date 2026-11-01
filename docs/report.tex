@@ -154,6 +154,36 @@ The completed engagement checkpoint added challenge briefs, hints, explicit part
 The owner now requires LaTeX as the complete documentation reference and feature-sized commits. This report includes the complete operational and developer chapters; focused PDFs are also supplied. Historical Markdown inputs are preserved separately and are not the authoritative current contract.
 
 \section{Reproduction}
+\subsection{Final curriculum and operations handoff}
+All five private installed tracks were checked against the version-2 baseline,
+backed up using SQLite's backup API plus pack-file copies, and upgraded through
+the application to version 3. Entries, node states, missions, settings, split
+tasks, level overrides and evidence history were compared before and after and
+were unchanged. Review and executable trust remain unset. The running server
+required no restart for this content update. Desktop and mobile browser checks
+confirmed the new prerequisite, challenge dialog and Path without saving progress,
+JavaScript errors or horizontal overflow. The sanitized record is
+\path{docs/testing/curriculum-install.txt}; the actual backup stays outside Git.
+
+The deployment guide's restore procedure was exercised with two disposable Docker
+projects and synthetic data using the retained \texttt{ascend:phase4} image.
+Binary tar streaming, volume ownership, SQLite integrity, progress records,
+absolute pack paths, disabling both accounts' reminders, and the restored HTTP
+health endpoint passed. This validates the restore procedure on the recorded
+local image; it is not a new container-build, arm64 or external-notification test.
+The image digest and result are in \path{docs/testing/restore-smoke.txt}.
+
+The environment template and Compose mapping now document persistent auth mode
+and notification settings. Host-code execution still defaults to disabled.
+Compose rendering was checked with the example defaults and explicit auth,
+host-code and push-provider overrides, without modifying any running service;
+see \path{docs/testing/compose-config.txt}.
+All seven LaTeX documents compile with generated CLI, schema and curriculum
+references, with no missing glyphs, unresolved references or overflows above
+one point. Representative rendered pages were inspected after fixing clipped
+tables. Earlier Markdown design documents remain as historical source material.
+
+\subsection{Build commands}
 \begin{verbatim}
 python3 -m venv .venv
 .venv/bin/pip install -e '.[server,dev,push]'

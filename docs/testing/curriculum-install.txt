@@ -1,0 +1,9 @@
+2026-11-01: local v3 pack upgrade
+All five installed private packs matched the known v2 baseline before replacement.
+Created a protected SQLite backup and copies of the five private pack files outside the repository.
+Installed version 3 through Tracker.install_pack.
+Compared entries, node states, missions, settings, splits, unlocks and evidence history before/after: unchanged.
+All five installed versions: 3. Review/trust: unset. No lesson/verifier execution or learning entries were performed.
+Live browser checks at 1440x1000 and 390x844: v3 prerequisite shown, challenge dialog opens, Path renders, no horizontal overflow or JavaScript errors. No progress saved.
+RESULT: Five tracks upgraded; history preserved; desktop/mobile checks passed.
+Final v3 authoring refinement: six transfer prompts now require changed conditions, not only rerunning the same case. Reinstalled the three affected packs after matching private copies; all history/state comparisons still passed.

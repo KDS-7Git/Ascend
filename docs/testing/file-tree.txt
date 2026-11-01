@@ -1,143 +1,189 @@
-ascend/
-├── .github/
-│   └── workflows/
-│       └── ci.yml
-├── ascend/
-│   ├── cli/
-│   │   ├── __init__.py
-│   │   └── remote.py
-│   ├── engine/
-│   │   ├── __init__.py
-│   │   ├── levels.py
-│   │   ├── packs.py
-│   │   ├── streak.py
-│   │   ├── validation.py
-│   │   └── verifiers.py
-│   ├── nudge/
-│   │   ├── channels/
-│   │   │   ├── __init__.py
-│   │   │   ├── desktop.py
-│   │   │   ├── ntfy.py
-│   │   │   ├── telegram.py
-│   │   │   └── webpush.py
-│   │   └── __init__.py
-│   ├── server/
-│   │   ├── __init__.py
-│   │   ├── __main__.py
-│   │   ├── app.py
-│   │   ├── auth.py
-│   │   └── telegram.py
-│   ├── storage/
-│   │   ├── migrations/
-│   │   │   ├── 0001_init.sql
-│   │   │   ├── 0002_packs.sql
-│   │   │   ├── 0003_multiuser.sql
-│   │   │   └── 0004_notifications.sql
-│   │   └── __init__.py
-│   ├── verifiers/
-│   │   ├── __init__.py
-│   │   ├── command.py
-│   │   ├── file.py
-│   │   ├── git.py
-│   │   ├── http.py
-│   │   ├── manual.py
-│   │   ├── plugin.py
-│   │   └── plugin_worker.py
-│   ├── __init__.py
-│   ├── __main__.py
-│   ├── application.py
-│   └── registry.py
-├── docker/
-│   ├── .dockerignore
-│   ├── Dockerfile
-│   └── docker-compose.yml
-├── docs/
-│   ├── design/
-│   │   ├── hackstreak-spec-v2.md
-│   │   ├── hackstreak-spec.md
-│   │   ├── kickoff-prompt.md
-│   │   ├── new-unit-request-template.md
-│   │   ├── original-readme.md
-│   │   ├── spec-v3-public-release.md
-│   │   └── ui-ux-spec.md
-│   ├── screenshots/
-│   │   ├── path-desktop.png
-│   │   ├── path-mobile.png
-│   │   ├── today-desktop.png
-│   │   └── today-mobile.png
-│   ├── testing/
-│   │   ├── README.md
-│   │   ├── cli-demo.md
-│   │   ├── community-links.txt
-│   │   ├── distribution-build.txt
-│   │   ├── file-tree.txt
-│   │   ├── phase-1-red.txt
-│   │   ├── phase-1.txt
-│   │   ├── phase-1b-red.txt
-│   │   ├── phase-1b.txt
-│   │   ├── phase-2-container.txt
-│   │   ├── phase-2-docker.txt
-│   │   ├── phase-2-packaging-red.txt
-│   │   ├── phase-2-red.txt
-│   │   ├── phase-2.txt
-│   │   ├── phase-3-red.txt
-│   │   ├── phase-3.txt
-│   │   ├── phase-4-container.txt
-│   │   ├── phase-4-docker.txt
-│   │   ├── phase-4-red.txt
-│   │   ├── phase-4.txt
-│   │   ├── spec-decisions.md
-│   │   └── standalone-wheel.txt
-│   ├── api.md
-│   ├── deployment.md
-│   ├── notifications.md
-│   ├── pack-format.md
-│   ├── report-status.tex
-│   ├── report.pdf
-│   ├── report.tex
-│   └── writing-a-verifier.md
-├── examples/
-│   └── README.md
-├── packs/
-│   └── community/
-│       ├── blender-first-scene.toml
-│       ├── home-hack-lab.toml
-│       ├── python-file-tool.toml
-│       └── registry.json
-├── scripts/
-│   ├── build_registry.py
-│   ├── container_smoke.py
-│   ├── demo.py
-│   ├── file_tree.py
-│   ├── screenshots.py
-│   ├── standalone_smoke.py
-│   └── update_report.py
-├── tests/
-│   ├── conftest.py
-│   ├── test_cli.py
-│   ├── test_core.py
-│   ├── test_distribution.py
-│   ├── test_integration.py
-│   ├── test_nudge.py
-│   ├── test_packs.py
-│   ├── test_phase2.py
-│   ├── test_phase3.py
-│   ├── test_phase4.py
-│   ├── test_regressions.py
-│   ├── test_streak.py
-│   └── test_verifiers.py
-├── web/
-│   ├── app.js
-│   ├── icon.svg
-│   ├── index.html
-│   ├── manifest.webmanifest
-│   ├── style.css
-│   └── sw.js
-├── .dockerignore
-├── .gitignore
-├── CONTRIBUTING.md
-├── LICENSE
-├── MANIFEST.in
-├── README.md
-├── pyproject.toml
-└── setup.py
+.dockerignore
+.env.example
+.github/workflows/ci.yml
+.gitignore
+CONTRIBUTING.md
+LICENSE
+MANIFEST.in
+README.md
+ascend/__init__.py
+ascend/__main__.py
+ascend/application.py
+ascend/cli/__init__.py
+ascend/cli/remote.py
+ascend/engine/__init__.py
+ascend/engine/levels.py
+ascend/engine/packs.py
+ascend/engine/streak.py
+ascend/engine/validation.py
+ascend/engine/verifiers.py
+ascend/nudge/__init__.py
+ascend/nudge/channels/__init__.py
+ascend/nudge/channels/desktop.py
+ascend/nudge/channels/ntfy.py
+ascend/nudge/channels/telegram.py
+ascend/nudge/channels/webpush.py
+ascend/registry.py
+ascend/server/__init__.py
+ascend/server/__main__.py
+ascend/server/app.py
+ascend/server/auth.py
+ascend/server/telegram.py
+ascend/storage/__init__.py
+ascend/storage/migrations/0001_init.sql
+ascend/storage/migrations/0002_packs.sql
+ascend/storage/migrations/0003_multiuser.sql
+ascend/storage/migrations/0004_notifications.sql
+ascend/verifiers/__init__.py
+ascend/verifiers/command.py
+ascend/verifiers/file.py
+ascend/verifiers/git.py
+ascend/verifiers/http.py
+ascend/verifiers/manual.py
+ascend/verifiers/plugin.py
+ascend/verifiers/plugin_worker.py
+docker/.dockerignore
+docker/Dockerfile
+docker/docker-compose.yml
+docs/api.md
+docs/command-reference.pdf
+docs/command-reference.tex
+docs/curriculum/assessment-map.json
+docs/curriculum/sources.json
+docs/deployment-guide.pdf
+docs/deployment-guide.tex
+docs/deployment.md
+docs/design-history.pdf
+docs/design-history.tex
+docs/design/engagement-audit.md
+docs/design/hackstreak-spec-v2.md
+docs/design/hackstreak-spec.md
+docs/design/kickoff-prompt.md
+docs/design/new-unit-request-template.md
+docs/design/original-readme.md
+docs/design/spec-v3-public-release.md
+docs/design/ui-ux-spec.md
+docs/developer-handbook.pdf
+docs/developer-handbook.tex
+docs/handbook.pdf
+docs/handbook.tex
+docs/latex/api.tex
+docs/latex/commands-guide.tex
+docs/latex/contributing.tex
+docs/latex/curriculum-method.tex
+docs/latex/deployment.tex
+docs/latex/developer-guide.tex
+docs/latex/engagement-verification.tex
+docs/latex/engagement.tex
+docs/latex/generated/api-models.tex
+docs/latex/generated/cli-help.tex
+docs/latex/generated/curriculum-map.tex
+docs/latex/generated/research-sources.tex
+docs/latex/generated/storage.tex
+docs/latex/history-hackstreak-spec-v2.tex
+docs/latex/history-hackstreak-spec.tex
+docs/latex/history-kickoff-prompt.tex
+docs/latex/history-new-unit-request-template.tex
+docs/latex/history-original-readme.tex
+docs/latex/history-spec-v3-public-release.tex
+docs/latex/history-ui-ux-spec.tex
+docs/latex/notifications.tex
+docs/latex/pack-format.tex
+docs/latex/preamble.tex
+docs/latex/user-guide.tex
+docs/latex/verifiers.tex
+docs/notifications.md
+docs/pack-format.md
+docs/report-status.tex
+docs/report.pdf
+docs/report.tex
+docs/screenshots/challenge-desktop.png
+docs/screenshots/challenge-mobile.png
+docs/screenshots/path-desktop.png
+docs/screenshots/path-mobile.png
+docs/screenshots/today-desktop.png
+docs/screenshots/today-mobile.png
+docs/testing/README.md
+docs/testing/cli-demo.md
+docs/testing/community-links.txt
+docs/testing/compose-config.txt
+docs/testing/curriculum-assurance.txt
+docs/testing/curriculum-install.txt
+docs/testing/cyber-track-links-v3.json
+docs/testing/cyber-track-links.json
+docs/testing/distribution-build.txt
+docs/testing/docs-build.txt
+docs/testing/engagement-refresh.md
+docs/testing/engagement-refresh.txt
+docs/testing/file-tree.txt
+docs/testing/phase-1-red.txt
+docs/testing/phase-1.txt
+docs/testing/phase-1b-red.txt
+docs/testing/phase-1b.txt
+docs/testing/phase-2-container.txt
+docs/testing/phase-2-docker.txt
+docs/testing/phase-2-packaging-red.txt
+docs/testing/phase-2-red.txt
+docs/testing/phase-2.txt
+docs/testing/phase-3-red.txt
+docs/testing/phase-3.txt
+docs/testing/phase-4-container.txt
+docs/testing/phase-4-docker.txt
+docs/testing/phase-4-red.txt
+docs/testing/phase-4.txt
+docs/testing/restore-smoke.txt
+docs/testing/spec-decisions.md
+docs/testing/standalone-wheel.txt
+docs/user-guide.pdf
+docs/user-guide.tex
+docs/writing-a-verifier.md
+examples/README.md
+packs/community/blender-first-scene.toml
+packs/community/defensive-security-and-detection.toml
+packs/community/home-hack-lab.toml
+packs/community/network-penetration-testing.toml
+packs/community/networking-for-security.toml
+packs/community/python-file-tool.toml
+packs/community/registry.json
+packs/community/reverse-engineering-and-binary-exploitation.toml
+packs/community/web-application-security.toml
+pyproject.toml
+scripts/build_docs.py
+scripts/build_registry.py
+scripts/container_smoke.py
+scripts/demo.py
+scripts/file_tree.py
+scripts/restore_smoke.py
+scripts/screenshots.py
+scripts/standalone_smoke.py
+scripts/update_report.py
+setup.py
+tests/conftest.py
+tests/test_cli.py
+tests/test_core.py
+tests/test_curriculum.py
+tests/test_distribution.py
+tests/test_integration.py
+tests/test_nudge.py
+tests/test_packs.py
+tests/test_phase2.py
+tests/test_phase3.py
+tests/test_phase4.py
+tests/test_regressions.py
+tests/test_streak.py
+tests/test_verifiers.py
+tracks/cyber-tracks-v2.zip
+tracks/cyber-tracks-v3.zip
+tracks/cyber-tracks.zip
+tracks/cyber-tracks/README.md
+tracks/cyber-tracks/packs/community/defensive-security-and-detection.toml
+tracks/cyber-tracks/packs/community/network-penetration-testing.toml
+tracks/cyber-tracks/packs/community/networking-for-security.toml
+tracks/cyber-tracks/packs/community/reverse-engineering-and-binary-exploitation.toml
+tracks/cyber-tracks/packs/community/web-application-security.toml
+web/app.js
+web/icon.svg
+web/index.html
+web/manifest.webmanifest
+web/style.css
+web/sw.js

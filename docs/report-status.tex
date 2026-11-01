@@ -1,5 +1,5 @@
 \begin{longtable}{p{0.18\textwidth}p{0.75\textwidth}}
-\textbf{Milestone} & \textbf{Cumulative test result} \\
+\textbf{Milestone} & \textbf{Recorded validation} \\
 \hline
 Phase 1 & 53 passed in 1.38s \\
 Phase 1b & 59 passed in 1.25s \\
@@ -7,11 +7,16 @@ Phase 2 & 75 passed, 1 warning in 10.87s \\
 Phase 3 & 82 passed, 1 warning in 11.13s \\
 Phase 4 & 101 passed in 11.24s \\
 Engagement refresh & 109 passed in 16.79s \\
-Curriculum assurance & 120 passed in 17.31s \\
+Curriculum assurance & 120 passed in 21.99s \\
 LaTeX handbooks & 7 LaTeX documents compiled successfully; no missing glyphs, unresolved references or overflow above 1 pt. \\
+Installed v3 tracks & Five tracks upgraded; history preserved; desktop/mobile checks passed. \\
+Container restore & Restore smoke passed. \\
+Compose settings & Compose configuration checks passed. \\
 \end{longtable}
 \subsection*{Recent recorded commits}
 \begin{verbatim}
+b94fcb7 feat(curriculum): ground cyber assessments in research and publish
+  LaTeX handbooks
 fc8bfee feat(learning): add challenge briefs, progress paths and engaging
   cyber track openings
 e9c8e60 fix(verifiers): omit an implicit epoch cutoff for git evidence
@@ -30,7 +35,5 @@ f1099ef feat(notifications): add Telegram quick actions, Web Push and opt-in
 8afcf57 feat(server): add isolated accounts, remote CLI and responsive PWA
 ccf4aa5 feat(nudge): add desktop reminders with per-mission schedules and
   daily limits
-a85c85f feat(core): implement standalone tracker, packs, levels and trusted
-  verifiers
 \end{verbatim}
 \noindent Full transcripts: \texttt{docs/testing/phase-*.txt}. The implementation may have uncommitted work beyond the last validated milestone.

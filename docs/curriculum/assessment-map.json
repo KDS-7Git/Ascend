@@ -134,7 +134,7 @@
       "milestone": "auth-milestone",
       "skill": "Track authentication state and identify the missing validation in an account-recovery or session flow.",
       "experiment": "Solve a scoped multi-step authentication lab; record the state transition that incorrectly grants access and the intended authentication boundary.",
-      "variant": "Repeat with a fresh lab session or different lab account so saved cookies cannot explain success.",
+      "variant": "Change the account relationship or order of recovery/session operations in a comparable training case. Predict which state transition permits or denies access, then test without a walkthrough.",
       "control": "Show a legitimate login and a denied unauthenticated request; specify which server-side check breaks the attack chain.",
       "recall": "Draw the relevant session or recovery state transitions without notes and identify the vulnerable transition.",
       "sources": [
@@ -224,7 +224,7 @@
       "milestone": "capstone-milestone",
       "skill": "Produce an assessment another learner can reproduce and critically review.",
       "experiment": "On a fresh scoped target, reproduce three findings from distinct covered mechanisms. Report scope, evidence, impact, root cause, and a specific fix for each.",
-      "variant": "Retest one finding from a fresh session and independently reproduce one chosen finding without the original step-by-step notes.",
+      "variant": "Change a relevant request input, role, or workflow in an owned reproduction of one finding. Predict whether the same weakness applies and independently test the prediction.",
       "control": "Implement and retest at least one fix in an owned local reproduction, keeping legitimate behavior working; label other fixes as proposed.",
       "recall": "Explain one finding and its fix from memory, then test a changed request.",
       "sources": [
@@ -239,7 +239,7 @@
       "milestone": "recon-milestone",
       "skill": "Turn reconnaissance observations into falsifiable service hypotheses.",
       "experiment": "Map a fresh owned/training host: ports, services, reachable web entries, scan limitations, and two ranked hypotheses before exploitation.",
-      "variant": "Confirm one service using its native protocol or a second tool, rather than a version string alone.",
+      "variant": "Move a lab service to a nondefault port or change its banner. Infer its actual protocol from new observations and confirm it with a native client or second tool.",
       "control": "Test a closed or filtered port and an intentionally nonexistent web route; distinguish them from positive findings.",
       "recall": "Explain the next check for a new banner, including what would falsify the suspected weakness.",
       "sources": [
@@ -253,7 +253,7 @@
       "milestone": "service-exploitation-milestone",
       "skill": "Verify exploit prerequisites and explain the boundary crossed.",
       "experiment": "On a designated vulnerable lab, establish a foothold using a documented service weakness after verifying its required conditions. Save sanitized evidence.",
-      "variant": "Repeat from a clean snapshot or use a comparable training service with a changed configuration.",
+      "variant": "Use a comparable training service with one changed configuration or prerequisite. Predict whether the technique still applies, adapt the test, and explain success or failure.",
       "control": "Remove one prerequisite in an owned reproduction and show that the exploit fails while legitimate access remains.",
       "recall": "Explain why a matching CVE or version is a hypothesis, then enumerate the required conditions.",
       "sources": [
@@ -337,7 +337,7 @@
       "milestone": "capstone-milestone",
       "skill": "Complete and report a scoped assessment without following a target walkthrough.",
       "experiment": "On an unfamiliar training box, progress from reconnaissance to the designated foothold and privilege objective, recording dead ends, evidence, and help used.",
-      "variant": "Reproduce one key step from a clean state, independently of the original walkthrough or saved session.",
+      "variant": "In an owned reproduction, change one account permission, service setting, or route relevant to a key step. Predict the effect on the assessment chain and independently retest.",
       "control": "Apply one hardening change in an owned reproduction and show it blocks that step without breaking intended use; clearly label untested fixes.",
       "recall": "Explain the assessment chain and one alternative hypothesis from memory, then rerun the discriminating check.",
       "sources": [
@@ -349,7 +349,7 @@
       "pack": "reverse-engineering-and-binary-exploitation",
       "level": "asm-foundations",
       "milestone": "asm-milestone",
-      "skill": "Predict a function’s behavior from registers, stack, branches, and the target ABI.",
+      "skill": "Predict a function\u2019s behavior from registers, stack, branches, and the target ABI.",
       "experiment": "Trace a small compiled function for two inputs before running it, then verify the predicted return value and key state changes in a debugger.",
       "variant": "Change one argument or compile option and predict which instruction or state observation changes.",
       "control": "Include an input taking the other branch; record ABI and architecture so register names are not treated as universal.",
@@ -364,7 +364,7 @@
       "pack": "reverse-engineering-and-binary-exploitation",
       "level": "static-analysis",
       "milestone": "static-milestone",
-      "skill": "Recover a small program’s input condition from static evidence and verify it dynamically.",
+      "skill": "Recover a small program\u2019s input condition from static evidence and verify it dynamically.",
       "experiment": "Analyze an unfamiliar educational crackme without source; document the candidate input predicate and its assembly/decompiler evidence.",
       "variant": "Predict an accepted and a rejected input not both supplied by a walkthrough, then run them.",
       "control": "Cross-check the decompiler against instructions; an unclear type or optimized-away function is uncertainty, not proof the decompiler is wrong.",
@@ -398,7 +398,7 @@
       "experiment": "Use the Phoenix progression or an equivalent deliberately vulnerable local binary to demonstrate adjacent-data corruption and a later controlled redirection. Explain offset, ABI, and each payload region.",
       "variant": "Change padding or a small source buffer size in your own toy reproduction and recalculate the relevant boundary.",
       "control": "Run a bounded-input version or a short input and show that the control target is not overwritten.",
-      "recall": "Draw the relevant stack layout and distinguish Phoenix Stack Zero’s data overwrite from overwriting a saved return address.",
+      "recall": "Draw the relevant stack layout and distinguish Phoenix Stack Zero\u2019s data overwrite from overwriting a saved return address.",
       "sources": [
         "pwn-college",
         "rop-guide",
@@ -456,7 +456,7 @@
       "milestone": "capstone-milestone",
       "skill": "Move from a defensible vulnerability hypothesis to a reproducible lab exploit and repair.",
       "experiment": "Choose a fresh educational binary matched to your architecture and level. Record static/dynamic evidence, vulnerability mechanism, exploit, and the actual enabled protections.",
-      "variant": "Reproduce the result in a fresh process and explain any address assumptions or failure conditions.",
+      "variant": "Change one relevant input, source buffer size, or mitigation in an owned equivalent reproduction. Predict whether the exploit still applies, then test and explain the changed assumptions.",
       "control": "Patch an equivalent owned source reproduction and verify both rejection of the bad input and preservation of intended behavior.",
       "recall": "Explain the vulnerability-to-effect chain without the exploit script, then predict a changed input.",
       "sources": [
@@ -533,7 +533,7 @@
       "experiment": "Write one new rule for a bounded lab behavior; record required telemetry, test data, rule version, and results against labeled positive and negative samples.",
       "variant": "Change a nonessential address, username, or ordering and check whether behavior-based coverage survives.",
       "control": "Count false positives and false negatives; explain a known blind spot and test the benign control after tuning.",
-      "recall": "Explain the rule’s observable assumption from memory and design one counterexample.",
+      "recall": "Explain the rule\u2019s observable assumption from memory and design one counterexample.",
       "sources": [
         "htb-soc",
         "security-onion-hardware",

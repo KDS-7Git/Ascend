@@ -76,7 +76,7 @@ Each entry corresponds to the named version-3 milestone. Source IDs refer to the
 \noindent\textbf{Milestone:} auth-milestone\par
 \noindent\textbf{Skill:} Track authentication state and identify the missing validation in an account-recovery or session flow.\par
 \noindent\textbf{Experiment:} Solve a scoped multi-step authentication lab; record the state transition that incorrectly grants access and the intended authentication boundary.\par
-\noindent\textbf{Transfer:} Repeat with a fresh lab session or different lab account so saved cookies cannot explain success.\par
+\noindent\textbf{Transfer:} Change the account relationship or order of recovery/session operations in a comparable training case. Predict which state transition permits or denies access, then test without a walkthrough.\par
 \noindent\textbf{Control:} Show a legitimate login and a denied unauthenticated request; specify which server-side check breaks the attack chain.\par
 \noindent\textbf{Later retrieval:} Draw the relevant session or recovery state transitions without notes and identify the vulnerable transition.\par
 \noindent\textbf{Alignment references:} portswigger-paths, portswigger-mystery, htb-foundations\par
@@ -124,7 +124,7 @@ Each entry corresponds to the named version-3 milestone. Source IDs refer to the
 \noindent\textbf{Milestone:} capstone-milestone\par
 \noindent\textbf{Skill:} Produce an assessment another learner can reproduce and critically review.\par
 \noindent\textbf{Experiment:} On a fresh scoped target, reproduce three findings from distinct covered mechanisms. Report scope, evidence, impact, root cause, and a specific fix for each.\par
-\noindent\textbf{Transfer:} Retest one finding from a fresh session and independently reproduce one chosen finding without the original step-by-step notes.\par
+\noindent\textbf{Transfer:} Change a relevant request input, role, or workflow in an owned reproduction of one finding. Predict whether the same weakness applies and independently test the prediction.\par
 \noindent\textbf{Control:} Implement and retest at least one fix in an owned local reproduction, keeping legitimate behavior working; label other fixes as proposed.\par
 \noindent\textbf{Later retrieval:} Explain one finding and its fix from memory, then test a changed request.\par
 \noindent\textbf{Alignment references:} portswigger-paths, portswigger-mystery, htb-foundations\par
@@ -132,7 +132,7 @@ Each entry corresponds to the named version-3 milestone. Source IDs refer to the
 \noindent\textbf{Milestone:} recon-milestone\par
 \noindent\textbf{Skill:} Turn reconnaissance observations into falsifiable service hypotheses.\par
 \noindent\textbf{Experiment:} Map a fresh owned/training host: ports, services, reachable web entries, scan limitations, and two ranked hypotheses before exploitation.\par
-\noindent\textbf{Transfer:} Confirm one service using its native protocol or a second tool, rather than a version string alone.\par
+\noindent\textbf{Transfer:} Move a lab service to a nondefault port or change its banner. Infer its actual protocol from new observations and confirm it with a native client or second tool.\par
 \noindent\textbf{Control:} Test a closed or filtered port and an intentionally nonexistent web route; distinguish them from positive findings.\par
 \noindent\textbf{Later retrieval:} Explain the next check for a new banner, including what would falsify the suspected weakness.\par
 \noindent\textbf{Alignment references:} htb-pentest, htb-foundations\par
@@ -140,7 +140,7 @@ Each entry corresponds to the named version-3 milestone. Source IDs refer to the
 \noindent\textbf{Milestone:} service-exploitation-milestone\par
 \noindent\textbf{Skill:} Verify exploit prerequisites and explain the boundary crossed.\par
 \noindent\textbf{Experiment:} On a designated vulnerable lab, establish a foothold using a documented service weakness after verifying its required conditions. Save sanitized evidence.\par
-\noindent\textbf{Transfer:} Repeat from a clean snapshot or use a comparable training service with a changed configuration.\par
+\noindent\textbf{Transfer:} Use a comparable training service with one changed configuration or prerequisite. Predict whether the technique still applies, adapt the test, and explain success or failure.\par
 \noindent\textbf{Control:} Remove one prerequisite in an owned reproduction and show that the exploit fails while legitimate access remains.\par
 \noindent\textbf{Later retrieval:} Explain why a matching CVE or version is a hypothesis, then enumerate the required conditions.\par
 \noindent\textbf{Alignment references:} htb-pentest, htb-foundations\par
@@ -188,7 +188,7 @@ Each entry corresponds to the named version-3 milestone. Source IDs refer to the
 \noindent\textbf{Milestone:} capstone-milestone\par
 \noindent\textbf{Skill:} Complete and report a scoped assessment without following a target walkthrough.\par
 \noindent\textbf{Experiment:} On an unfamiliar training box, progress from reconnaissance to the designated foothold and privilege objective, recording dead ends, evidence, and help used.\par
-\noindent\textbf{Transfer:} Reproduce one key step from a clean state, independently of the original walkthrough or saved session.\par
+\noindent\textbf{Transfer:} In an owned reproduction, change one account permission, service setting, or route relevant to a key step. Predict the effect on the assessment chain and independently retest.\par
 \noindent\textbf{Control:} Apply one hardening change in an owned reproduction and show it blocks that step without breaking intended use; clearly label untested fixes.\par
 \noindent\textbf{Later retrieval:} Explain the assessment chain and one alternative hypothesis from memory, then rerun the discriminating check.\par
 \noindent\textbf{Alignment references:} htb-pentest, htb-foundations\par
@@ -252,7 +252,7 @@ Each entry corresponds to the named version-3 milestone. Source IDs refer to the
 \noindent\textbf{Milestone:} capstone-milestone\par
 \noindent\textbf{Skill:} Move from a defensible vulnerability hypothesis to a reproducible lab exploit and repair.\par
 \noindent\textbf{Experiment:} Choose a fresh educational binary matched to your architecture and level. Record static/dynamic evidence, vulnerability mechanism, exploit, and the actual enabled protections.\par
-\noindent\textbf{Transfer:} Reproduce the result in a fresh process and explain any address assumptions or failure conditions.\par
+\noindent\textbf{Transfer:} Change one relevant input, source buffer size, or mitigation in an owned equivalent reproduction. Predict whether the exploit still applies, then test and explain the changed assumptions.\par
 \noindent\textbf{Control:} Patch an equivalent owned source reproduction and verify both rejection of the bad input and preservation of intended behavior.\par
 \noindent\textbf{Later retrieval:} Explain the vulnerability-to-effect chain without the exploit script, then predict a changed input.\par
 \noindent\textbf{Alignment references:} pwn-college, rop-guide, phoenix-stack0\par

@@ -1,0 +1,3 @@
+Compose rendered with .env.example: single auth, host-code opt-in disabled, no additional push hosts.
+Explicit AUTH_MODE, ASCEND_ALLOW_CODE and PUSH_ALLOWED_HOSTS settings rendered correctly. No service was started or existing configuration changed.
+RESULT: Compose configuration checks passed.

@@ -27,18 +27,21 @@ milestones += [
     ("Engagement refresh", "engagement-refresh.txt"),
     ("Curriculum assurance", "curriculum-assurance.txt"),
     ("LaTeX handbooks", "docs-build.txt"),
+    ("Installed v3 tracks", "curriculum-install.txt"),
+    ("Container restore", "restore-smoke.txt"),
+    ("Compose settings", "compose-config.txt"),
 ]
 for milestone, filename in milestones:
     path = ROOT / "docs/testing" / filename
     status = "Not yet validated"
     if path.exists():
         matches = re.findall(
-            r"^(?:RESULT: )?([^\n]*(?:\d+ passed|compiled successfully)[^\n]*)$",
+            r"^(?:RESULT: ([^\n]+)|([^\n]*\d+ passed[^\n]*))$",
             path.read_text(),
             re.MULTILINE,
         )
         if matches:
-            status = matches[-1].strip(" =")
+            status = next(value for value in matches[-1] if value).strip(" =")
     rows.append(f"{escape(milestone)} & {escape(status)} \\\\")
 history = subprocess.check_output(
     ["git", "log", "--format=%h %s", "-12"], cwd=ROOT, text=True
@@ -50,7 +53,7 @@ history = (
     )
     + "\n"
 )
-content = "\\begin{longtable}{p{0.18\\textwidth}p{0.75\\textwidth}}\n\\textbf{Milestone} & \\textbf{Cumulative test result} \\\\\n\\hline\n"
+content = "\\begin{longtable}{p{0.18\\textwidth}p{0.75\\textwidth}}\n\\textbf{Milestone} & \\textbf{Recorded validation} \\\\\n\\hline\n"
 content += "\n".join(rows) + "\n\\end{longtable}\n"
 content += (
     "\\subsection*{Recent recorded commits}\n\\begin{verbatim}\n"

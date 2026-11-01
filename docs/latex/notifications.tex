@@ -31,6 +31,10 @@ stored in SQLite. For multi-user servers, the administrator maps each
 account using
 \texttt{TELEGRAM\_CHAT\_ID\_\textless{}numeric-user-id\textgreater{}}.
 Only configured private chats are accepted.
+For Compose, add each per-user mapping explicitly under the service's environment
+section, for example \texttt{TELEGRAM\_CHAT\_ID\_2: \$\{TELEGRAM\_CHAT\_ID\_2\}},
+and define its value in the private environment file. Unlisted keys in that file
+are not automatically forwarded to the container.
 
 Reminders include \textbf{Log a step} and \textbf{Log quick win}
 buttons. Tapping a button starts a twenty-minute conversation: what you
@@ -70,6 +74,14 @@ file\textquotesingle s path and \texttt{VAPID\_SUBJECT} to a
 Docker image includes the Push extra; generate the key as the container
 user under \texttt{/data/} so it persists in the volume. Key generation
 refuses to overwrite an existing file.
+For the default Compose volume, generate it with:
+\begin{verbatim}
+docker compose -f docker/docker-compose.yml exec ascend \
+  ascend-server push-keys --out /data/vapid.pem
+\end{verbatim}
+Persist the subject and public app URL in the private environment configuration,
+then recreate the service so the new environment takes effect. Do not regenerate
+an existing private key as an ordinary upgrade step.
 
 Serve the PWA over HTTPS. In More, choose \textbf{Enable browser
 notifications}, grant permission, enable reminders, and send a test.

@@ -2,13 +2,20 @@
 \hypertarget{deployment}{%
 \section{Deployment and operations}\label{deployment}}
 
-Start locally with
-\texttt{pip install \textquotesingle{}.{[}server{]}\textquotesingle{}}
-and \texttt{ascend-server}. The default bind is \texttt{127.0.0.1:8420}.
+From an existing repository checkout, prepare the local server environment:
+\begin{verbatim}
+python3 -m venv .venv
+.venv/bin/pip install -e '.[server,push]'
+source .venv/bin/activate
+ascend-server
+\end{verbatim}
+The default bind is \texttt{127.0.0.1:8420}.
 To serve your LAN, bind the machine\textquotesingle s specific LAN
 address. \texttt{-\/-host 0.0.0.0} is explicit and prints a reminder to
 use a TLS reverse proxy beyond your trusted LAN. Multi-user deployments
 are for administrator-provisioned accounts, not anonymous public signup.
+Single mode has no login. Use multi mode even for one person when the service
+is reachable by people who should not have access to the learning profile.
 
 \begin{verbatim}
 ascend-server user-add alice --timezone Asia/Kolkata
@@ -26,8 +33,17 @@ profile\textquotesingle s data into a newly created account.
 Pi}\label{docker-linux-pc-vps-or-raspberry-pi}}
 
 \begin{verbatim}
+cp -n .env.example .env
+chmod 600 .env
 docker compose -f docker/docker-compose.yml up -d --build
 \end{verbatim}
+Run Compose commands from the repository root so they load the same \texttt{.env}.
+From another directory, supply \texttt{--env-file /absolute/path/to/.env} as well
+as the Compose file. Edit that private file to persist auth mode and notification
+credentials across restarts; do not rely on a one-command environment override
+for a lasting deployment setting. \texttt{cp -n} preserves an existing file.
+Compose forwards the variables listed in its environment mapping; an arbitrary
+new variable in \texttt{.env} is not automatically passed into the container.
 
 The Python slim base supports amd64 and arm64. The image uses UID 10001
 and a named persistent \texttt{/data} volume. Compose maps the service
@@ -104,6 +120,8 @@ docker compose -f docker/docker-compose.yml exec ascend \
   ascend-server user-add alice --timezone Asia/Kolkata
 AUTH_MODE=multi docker compose -f docker/docker-compose.yml up -d
 \end{verbatim}
+Also set \texttt{AUTH\_MODE=multi} in the private \texttt{.env} before future
+recreation, or the default could switch the server back to single mode.
 A mode switch does not copy the implicit local account into Alice. Do not use
 \texttt{down -v} for an ordinary upgrade; it removes the persistent volume.
 

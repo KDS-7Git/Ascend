@@ -10,6 +10,7 @@ services:
       - ascend-data:/data
     environment:
       AUTH_MODE: ${AUTH_MODE:-single}
+      ASCEND_ALLOW_CODE: ${ASCEND_ALLOW_CODE:-0}
       NTFY_TOPIC: ${NTFY_TOPIC:-}
       NTFY_SERVER: ${NTFY_SERVER:-https://ntfy.sh}
       NTFY_TOKEN: ${NTFY_TOKEN:-}
@@ -19,5 +20,6 @@ services:
       ASCEND_PUBLIC_URL: ${ASCEND_PUBLIC_URL:-}
       VAPID_PRIVATE_KEY: ${VAPID_PRIVATE_KEY:-/data/vapid.pem}
       VAPID_SUBJECT: ${VAPID_SUBJECT:-}
+      PUSH_ALLOWED_HOSTS: ${PUSH_ALLOWED_HOSTS:-}
 volumes:
   ascend-data:

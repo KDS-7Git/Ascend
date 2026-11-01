@@ -70,6 +70,16 @@ coverage for a behavioral change; do not run external lab attacks in the test
 suite. Resource link checks are explicit network operations, separate from offline
 unit tests. The CI matrix covers Python 3.11--3.13.
 
+With an already built local image, run the optional operations drill:
+\begin{verbatim}
+.venv/bin/python scripts/restore_smoke.py ascend:local
+\end{verbatim}
+It creates two disposable Compose projects, backs up a synthetic profile, restores
+it at the same internal path, runs the guide's exact reminder-disable program,
+checks data and HTTP health, then removes only its own test volumes. It does not
+send notifications or touch the production profile. The retained result names
+the exact image tested; it is not an arm64 or external delivery check.
+
 The \texttt{setup.py} build hook copies canonical \texttt{web/} and
 \texttt{packs/community/} assets into wheels. Verify installed artifacts as well
 as editable installs. \texttt{scripts/screenshots.py} uses disposable illustrative
