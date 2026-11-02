@@ -68,8 +68,9 @@ data; 404 otherwise \\
 \end{longtable}
 
 Overview, level and pack listings return preview nodes. They omit full task
-instructions, materials, hints, references, completion criteria and verifier
-internals. The challenge endpoint sets \texttt{details\_available} and returns
+instructions, materials, hints, completion criteria and verifier internals.
+Resource links, labels and notes remain available before Start.
+The challenge endpoint sets \texttt{details\_available} and returns
 full guidance only for an existing caller-owned session or historical completion.
 An ended attempt retains review access. \texttt{has\_attempt} lets the interface
 offer Review attempt without starting another timer. The \texttt{today} and

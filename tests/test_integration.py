@@ -156,6 +156,9 @@ def test_browser_complete_flow(live_server, width, height, tmp_path):
         page.get_by_role("button", name="Any time", exact=True).click()
         page.locator(".next-card").get_by_role("button", name="Open challenge").click()
         expect(page.get_by_role("heading", name="Your finish line")).to_have_count(0)
+        expect(page.get_by_role("link", name="Learning reference")).to_have_attribute(
+            "href", "https://docs.python.org/3/"
+        )
         page.get_by_role("button", name="Start timed task", exact=True).click()
         expect(page.get_by_role("heading", name="Your finish line")).to_be_visible()
         expect(page.get_by_role("link", name="Learning reference")).to_have_attribute(
@@ -1061,6 +1064,28 @@ def test_guided_challenge_has_copyable_commands_and_free_reference(
         expect(page.locator("#sheet-title")).to_have_text(guide.title)
         expect(page.get_by_role("heading", name="Required setup")).to_be_visible()
         expect(page.get_by_text(guide.preview, exact=True)).to_be_visible()
+        reference = page.get_by_role(
+            "link", name="Free HTTP server reference (optional)"
+        )
+        expect(reference).to_be_visible()
+        expect(reference).to_have_attribute("href", guide.resource)
+        expect(reference).to_have_attribute("rel", "noopener noreferrer")
+        expect(page.get_by_text(guide.resource_note, exact=True)).to_be_visible()
+        # Opening a learning reference must not start the challenge timer.
+        page.context.route(
+            guide.resource.split("#")[0],
+            lambda route: route.fulfill(
+                body="Learning reference", content_type="text/plain"
+            ),
+        )
+        with page.expect_popup() as popup:
+            reference.click()
+        expect(popup.value).to_have_url(guide.resource)
+        popup.value.close()
+        assert (
+            httpx.get(live_server + "/api/challenges/test-pack:one").json()["session"]
+            is None
+        )
         expect(page.locator("#sheet .challenge-steps")).to_have_count(0)
         expect(page.get_by_role("button", name="Copy terminal block")).to_have_count(0)
         expect(
@@ -1070,6 +1095,7 @@ def test_guided_challenge_has_copyable_commands_and_free_reference(
         page.locator("#sheet").get_by_role("button", name="Close dialog").click()
         page.goto(live_server + "/#challenge/test-pack%3Aone")
         expect(page.locator("#challenge-content .challenge-steps")).to_have_count(0)
+        expect(reference).to_be_visible()
         page.get_by_role("button", name="Start timed task", exact=True).click()
         expect(page.get_by_role("heading", name="Workspace setup")).to_be_visible()
         material = page.get_by_role(

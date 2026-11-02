@@ -81,7 +81,8 @@ class before exposing it to learners.
 
 ## Start, reconnect, save and teardown
 
-1. Preview only the short objective, duration and required setup. No task files,
+1. Preview the short objective, duration, required setup and labeled learning
+   resources that learners can consult without starting the timer. No task files,
    detailed commands, hints or solution criteria appear in the preview.
 2. Start reserves an attempt idempotently and shows provisioning progress. Enforce
    one active attempt and bounded capacity on the server, including concurrent

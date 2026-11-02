@@ -57,7 +57,9 @@ only prerequisite tools, access, hardware and costs. Keep task files, commands,
 answers and detailed completion criteria out of these fields. Older packs without
 them use the title as the preview. Optional `setup` contains workspace preparation
 instructions shown **after** Start, along with the full task. `resource_label` and `resource_note` describe the role of the
-reference (for example, optional free documentation). `materials` is a list of
+reference (for example, optional free documentation). The resource link, label and
+note are visible before Start and remain available in the workspace. Opening a
+resource does not start the timer. `materials` is a list of
 `{label, url}` objects for actual inputs. URLs accept HTTP(S) or bundled
 `/training/<name>.zip` (also JSON/CSV/TXT) paths, never arbitrary local files.
 Fenced code blocks in `steps` render as copyable text; copying does not execute

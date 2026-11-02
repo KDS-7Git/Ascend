@@ -359,6 +359,12 @@ function codeBlock(text, label = 'COMMAND LINE') {
   const pre = el('pre'); pre.tabIndex = 0; pre.setAttribute('aria-label', `${label.toLowerCase()} block`); pre.append(el('code', text));
   box.append(toolbar, pre); return box;
 }
+function appendLearningResource(content, node) {
+  if (!node.resource) return;
+  const link = el('a', `${node.resource_label || 'Learning reference'} ↗`, 'resource-link');
+  link.href = node.resource; link.target = '_blank'; link.rel = 'noopener noreferrer'; content.append(link);
+  if (node.resource_note) content.append(el('p', node.resource_note, 'field-help'));
+}
 function showNode(node, level = levelFor(node), workspace = false, session = null) {
   const ref = `${node.pack_id}:${node.id}`;
   if (!workspace && [state.sessions?.active, ...(state.sessions?.paused || [])].some(item => item && `${item.pack_id}:${item.node_id}` === ref)) return switchTab('challenge', {topic: ref});
@@ -373,6 +379,7 @@ function showNode(node, level = levelFor(node), workspace = false, session = nul
       const setup = el('section', undefined, 'challenge-setup');
       setup.append(el('h3', 'Required setup'), el('p', node.requirements)); content.append(setup);
     }
+    appendLearningResource(content, node);
     content.append(el('p', node.has_attempt ? 'Open your attempt to review its instructions and saved progress.' : 'Start to open the task, files and instructions.', 'field-help'));
   } else {
     if (node.brief && !node.done_when.startsWith(node.brief)) content.append(el('p', node.brief, 'challenge-brief'));
@@ -392,8 +399,7 @@ function showNode(node, level = levelFor(node), workspace = false, session = nul
       for (const step of node.steps) { const item = el('li'); item.append(instructionBlocks(step)); list.append(item); }
       content.append(el('h3', 'What to do'), list);
     }
-    const link = el('a', `${node.resource_label || 'Learning reference'} ↗`, 'resource-link'); link.href = node.resource; link.target = '_blank'; link.rel = 'noopener noreferrer'; content.append(link);
-    if (node.resource_note) content.append(el('p', node.resource_note, 'field-help'));
+    appendLearningResource(content, node);
     if (node.hints?.length) {
       const hints = el('section', undefined, 'challenge-hints'); hints.append(el('h3', 'A nudge if you need one'));
       node.hints.forEach((hint, i) => { const details = el('details'); details.append(el('summary', `Hint ${i + 1}`), el('p', hint)); hints.append(details); }); content.append(hints);

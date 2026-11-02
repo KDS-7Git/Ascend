@@ -1,0 +1,12 @@
+2026-11-02: resources before Start
+Command: .venv/bin/pytest tests/test_phase2.py tests/test_integration.py -q -k 'task_details or guided_challenge or browser_complete_flow'
+......                                                                   [100%]
+6 passed, 33 deselected in 27.09s
+
+API checks preserve resource URL/label/note across overview, nested levels, pack,
+challenge and command previews. Detailed task fields remain hidden. Browser
+checks cover the fallback label for older packs, labeled references at 390 and
+1440 px, a new-tab reference without starting the timer, direct workspace previews,
+and resource access after Start. External reference requests are intercepted with
+a disposable response; these are interface checks, not source availability tests.
+RESULT: 6 focused tests passed; learning resources available before Start without starting timers.

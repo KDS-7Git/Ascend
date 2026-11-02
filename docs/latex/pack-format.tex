@@ -65,7 +65,9 @@ Optional \texttt{preview} states a short objective before Start.
 exclude task files, commands, answers and detailed completion criteria. An older
 pack without these fields uses its title as the preview. Optional \texttt{setup}
 contains workspace preparation instructions displayed after Start. \texttt{resource\_label} and \texttt{resource\_note} describe a
-reference's role. \texttt{materials} contains label/URL objects for actual inputs;
+reference's role. The resource link, label and note appear before Start and remain
+available in the workspace; opening a resource does not start timing.
+\texttt{materials} contains label/URL objects for actual inputs;
 HTTP(S) and bounded \path{/training/} ZIP/JSON/CSV/TXT paths are accepted. Fenced
 code in steps is copyable text, never an automatically executed command. Older
 packs omit these fields. See the challenge-guidance implementation chapter for

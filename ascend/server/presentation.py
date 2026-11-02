@@ -11,9 +11,6 @@ DETAIL_FIELDS = {
     "hints",
     "materials",
     "done_when",
-    "resource",
-    "resource_label",
-    "resource_note",
     "auto_complete",
 }
 

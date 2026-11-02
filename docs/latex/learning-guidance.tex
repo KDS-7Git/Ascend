@@ -41,9 +41,11 @@ traversal are rejected. Older packs default to empty guidance fields.
 
 The web presentation layer returns previews from overview/list endpoints and full
 guidance only from a started or historically completed challenge's workspace.
-\texttt{showNode} presents the objective and prerequisite requirements before
+\texttt{showNode} presents the objective, prerequisite requirements and labeled
+learning resource before
 Start; the started workspace reveals detailed setup, download links, an ordered
-``What to do'' sequence and an explicitly labeled optional reference.
+``What to do'' sequence and the same learning reference. Opening a resource does
+not start the timer.
 \texttt{instructionBlocks} recognizes fenced code in steps and constructs DOM
 text nodes. It does not insert command text as HTML or execute it. The reusable
 \texttt{codeBlock} component supplies keyboard-accessible code and a clipboard

@@ -21,8 +21,10 @@ A challenge must tell the learner:
    presence/size only. An offline model cannot demonstrate operational AD, cloud,
    mobile, memory-analysis, radio or Kubernetes behavior.
 
-Before Start, show only `preview` (a short objective), duration and `requirements`
-(prerequisite tools/access/hardware/costs). Do not put file names, task commands,
+Before Start, show `preview` (a short objective), duration, `requirements`
+(prerequisite tools/access/hardware/costs) and the learning `resource` with its
+label and note. Learners can use that reference without starting the timer.
+Do not put file names, task commands,
 solutions, hints or full success criteria in the preview. Starting opens the full
 workspace: put instructions in `steps`, copyable fenced commands inside those
 steps, workspace preparation in `setup`, and downloads in `materials`. Ended

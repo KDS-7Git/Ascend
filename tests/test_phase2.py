@@ -70,6 +70,8 @@ def test_task_details_only_open_after_start_and_survive_end(client, pack_data):
         steps=["Inspect the private-to-the-attempt input."],
         hints=["A detailed hint."],
         materials=[{"label": "Input", "url": "/training/example.zip"}],
+        resource_label="Free learning reference (optional)",
+        resource_note="Review the reference before starting if you need background.",
     )
     client.post(
         "/api/packs", files={"file": ("pack.toml", dump_toml(pack_data))}
@@ -89,10 +91,11 @@ def test_task_details_only_open_after_start_and_survive_end(client, pack_data):
     for node in nodes:
         assert node["preview"] == "Compare two local observations."
         assert node["requirements"] == "Python 3 and a browser."
+        for key in ("resource", "resource_label", "resource_note"):
+            assert node[key] == pack_data["node"][0][key]
         assert not node["details_available"]
         assert not (
-            {"steps", "hints", "materials", "done_when", "brief", "setup", "resource"}
-            & node.keys()
+            {"steps", "hints", "materials", "done_when", "brief", "setup"} & node.keys()
         )
     client.post(
         "/api/command", json={"argv": ["session", "start", "test-pack:one"]}

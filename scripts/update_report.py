@@ -46,6 +46,7 @@ milestones += [
     ("Permission scoring", "ui-permission-verification.txt"),
     ("Challenge guidance", "challenge-guidance.txt"),
     ("Challenge preview flow", "challenge-preview.txt"),
+    ("Pre-start resources", "learning-reference-preview.txt"),
 ]
 for milestone, filename in milestones:
     path = ROOT / "docs/testing" / filename

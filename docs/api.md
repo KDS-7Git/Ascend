@@ -48,7 +48,8 @@ remain explicit, even when a verifier would fail. `done --complete` logs partial
 work on verification failure, returning `completed: false` and a reason.
 
 Web overview, level and pack listings return preview nodes. Full instructions,
-downloads, hints, references, finish lines and verifier internals are omitted.
+downloads, hints, finish lines and verifier internals are omitted. Learning
+resource links, labels and notes remain available before Start.
 `GET /api/challenges/{pack-id:node-id}` returns `details_available: true` only
 for an existing caller-owned session or historical completion. Ended attempts
 retain review access; `has_attempt` lets the UI offer Review attempt without
