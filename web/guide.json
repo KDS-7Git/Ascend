@@ -56,7 +56,7 @@
             "Coming up: the task has a prerequisite or an earlier level to complete. Open it to see what is needed.",
             "Complete: the task was marked complete under its evidence rules.",
             "Skipped: you chose to move past the task. A skip is kept separate from completion and earns no milestone badge or XP.",
-            "Milestone: a task that brings a level’s skills together. Its distinct diamond shape and label identify it."
+            "Milestone: a task that brings a level\u2019s skills together. Its distinct diamond shape and label identify it."
           ]
         },
         {
@@ -126,7 +126,15 @@
       "blocks": [
         {
           "type": "paragraph",
-          "text": "A challenge preview shows its finish line, steps and learning resource. Hints stay collapsed until you want them. Starting opens a dedicated challenge workspace with room for exercise data and your result."
+          "text": "A challenge preview shows its finish line, setup requirements and concrete steps. Named lab files are available as downloads where needed. References explain the topic and are labeled separately from the task; buying a linked course is not required for the bundled specialist exercises. Starting opens a dedicated challenge workspace."
+        },
+        {
+          "type": "paragraph",
+          "text": "Read Before you start before starting the clock. Copyable terminal blocks are commands for you to inspect and run; Ascend does not execute them. Keep the lab\u2019s actual observations and follow its stated comparison. A model or tabletop does not demonstrate a live system\u2019s behavior."
+        },
+        {
+          "type": "paragraph",
+          "text": "For JSON evidence tasks, the included report.py asks for your own observations and preserves existing reports. Run it from the extracted lab folder using the path shown in the challenge. The file checker sees the Ascend server\u2019s filesystem: a laptop-only file is not visible to a hosted or container server. There is no report upload in this workflow; place the evidence at the configured server lab path, then check it and log progress."
         },
         {
           "type": "steps",
@@ -175,7 +183,7 @@
           "items": [
             "Server-verified exercise: Ascend checks the result against your current generated instance. Wrong answers do not complete the task or earn XP.",
             "Server-graded reasoning check: your scenario decision is checked. This does not grade a free-form explanation or prove that you performed a practical assessment.",
-            "Signed external lab evidence: an administrator’s collector confirms named challenge results for your assigned game instance. The browser cannot simply send a solved flag.",
+            "Signed external lab evidence: an administrator\u2019s collector confirms named challenge results for your assigned game instance. The browser cannot simply send a solved flag.",
             "Artifact check: a file exists and meets the configured checks. A person must still review whether its result and reasoning are correct.",
             "Human assessment: some explanations and changed-case demonstrations need review rather than a machine check."
           ]
@@ -186,7 +194,7 @@
         },
         {
           "type": "paragraph",
-          "text": "Permission puzzles allow one final submission. Choose Allow or Deny for every request, then press Submit decisions. The result explains each rule and gives equal partial credit for correctly classified requests: XP = the time-based reward × correct requests ÷ total requests, rounded down. Four of six correct within the target earns 66 XP. Incorrect decisions earn no credit. Only all-correct results complete the task; Continue with partial result skips it while retaining earned XP. Reloading or requesting a fresh instance cannot reset your submitted result."
+          "text": "Permission puzzles allow one final submission. Choose Allow or Deny for every request, then press Submit decisions. The result explains each rule and gives equal partial credit for correctly classified requests: XP = the time-based reward \u00d7 correct requests \u00f7 total requests, rounded down. Four of six correct within the target earns 66 XP. Incorrect decisions earn no credit. Only all-correct results complete the task; Continue with partial result skips it while retaining earned XP. Reloading or requesting a fresh instance cannot reset your submitted result."
         },
         {
           "type": "heading",
@@ -253,7 +261,7 @@
         },
         {
           "type": "paragraph",
-          "text": "For a 20-minute target, completing at 20 minutes earns 100 XP, at 30 minutes earns 75 XP, and at 40 minutes earns 50 XP. The timer cannot be paused. Completing, skipping or ending stops that task’s session; later practice is unscored. Ending before verification cannot be used to preserve a higher reward. Permission puzzles multiply this time-based reward by the fraction of correct decisions, so a partial result may earn fewer than 25 XP or zero."
+          "text": "For a 20-minute target, completing at 20 minutes earns 100 XP, at 30 minutes earns 75 XP, and at 40 minutes earns 50 XP. The timer cannot be paused. Completing, skipping or ending stops that task\u2019s session; later practice is unscored. Ending before verification cannot be used to preserve a higher reward. Permission puzzles multiply this time-based reward by the fraction of correct decisions, so a partial result may earn fewer than 25 XP or zero."
         },
         {
           "type": "paragraph",
@@ -286,7 +294,7 @@
         },
         {
           "type": "paragraph",
-          "text": "ntfy is a simple route to Android notifications. Telegram needs administrator-provided bot and chat settings. Desktop sends to the server’s desktop session, which may not be your phone or laptop. Browser push requires a supported browser and a secure origin."
+          "text": "ntfy is a simple route to Android notifications. Telegram needs administrator-provided bot and chat settings. Desktop sends to the server\u2019s desktop session, which may not be your phone or laptop. Browser push requires a supported browser and a secure origin."
         },
         {
           "type": "heading",
@@ -328,7 +336,7 @@
           "type": "list",
           "items": [
             "Timezone: search for a city timezone, such as Asia/Kolkata for India (UTC+05:30), Europe/London or UTC, then save. A city timezone also handles daylight-saving changes where applicable; a raw UTC offset is not accepted.",
-            "Preferences: choose your timezone, System/Light/Dark appearance and On/Off motion effects. Appearance choices are saved in this browser. Your device’s reduced motion setting always takes priority.",
+            "Preferences: choose your timezone, System/Light/Dark appearance and On/Off motion effects. Appearance choices are saved in this browser. Your device\u2019s reduced motion setting always takes priority.",
             "Reminders: configure notification timing and delivery.",
             "Privacy & account: choose whether to publish a streak badge. Sharing is off unless you enable it.",
             "Log out: available on authenticated servers. A single-user local server has no login session to end."
@@ -388,7 +396,7 @@
         },
         {
           "type": "paragraph",
-          "text": "The collector is an administrator tool on the Docker host. It signs a fresh observation for the learner’s numeric account ID. Refresh it after solving, then press Verify lab completion within five minutes. The tracker receives a read-only receipt, not the Docker socket."
+          "text": "The collector is an administrator tool on the Docker host. It signs a fresh observation for the learner\u2019s numeric account ID. Refresh it after solving, then press Verify lab completion within five minutes. The tracker receives a read-only receipt, not the Docker socket."
         },
         {
           "type": "heading",
@@ -452,7 +460,7 @@
         },
         {
           "type": "paragraph",
-          "text": "Ask the administrator to collect a new receipt for the correct numeric account and assigned instance. Receipts expire after five minutes. A different learner’s game, an unsigned file, or a missing challenge does not count."
+          "text": "Ask the administrator to collect a new receipt for the correct numeric account and assigned instance. Receipts expire after five minutes. A different learner\u2019s game, an unsigned file, or a missing challenge does not count."
         },
         {
           "type": "heading",

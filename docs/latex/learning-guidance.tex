@@ -1,0 +1,92 @@
+\section{Challenge guidance and downloadable practice inputs}
+\label{learning-guidance}
+
+The November 2026 usability repair addresses a generator defect: broad curriculum
+goals had been presented as executable lab instructions, often with the same
+course link and no identified dataset. The repair supplies per-track setup,
+concrete starter/topic recipes, named downloads, specified changed cases and a
+way to save the learner's own observations. Short overview summaries remain
+separate from the detailed challenge workspace.
+
+\subsection{Authoring, generation and delivery}
+\path{docs/curriculum/specialist-paths.json} owns stable IDs, prerequisites,
+concept scenarios and assessment objectives. The companion
+\path{docs/curriculum/lab-guides.json} contains authored setup and recipes for
+nineteen specialist tracks. Each has a starter, six topic recipes and a specified
+independent variation. These files are static authoring data; the application
+does not ask a language model to invent a lab when the learner opens it.
+
+\path{scripts/build_specialist_tracks.py} merges these sources into runtime TOML,
+matching public exports and catalog/scenario/assessment indexes. Task-specific
+guidance overrides may change learner-facing text and duration, but cannot change
+IDs, dependencies or verifiers. The Python HTTP walkthrough remains an explicitly
+authored override. Existing IDs preserve navigation history, although an old
+completion does not retroactively demonstrate a newly clarified skill.
+
+Original synthetic input files live in
+\path{tracks/cyber-tracks/materials/}, separated by track. The shared report helper
+is included in each ZIP by \path{scripts/package_learning_materials.py}. Archives
+use deterministic names, timestamps and permissions and are served from
+\path{web/training/}. They contain readable source and training data; downloading
+does not execute them. The existing recursive web packaging includes these assets
+in distributable installations. The intentionally incomplete notes API listens
+only on loopback and uses synthetic identities rather than real authentication.
+
+\subsection{Model and interface contract}
+Optional node fields \texttt{setup}, \texttt{resource\_label} and
+\texttt{resource\_note} are validated strings. \texttt{materials} is a list of
+objects containing a nonempty label and URL. URLs must use HTTP(S) or the bounded
+\path{/training/} asset namespace; arbitrary local paths, script URLs and path
+traversal are rejected. Older packs default to empty guidance fields.
+
+Dataclass serialization exposes the fields through the existing node APIs.
+\texttt{showNode} presents setup before starting, download links, an ordered
+``What to do'' sequence and an explicitly labeled optional reference.
+\texttt{instructionBlocks} recognizes fenced code in steps and constructs DOM
+text nodes. It does not insert command text as HTML or execute it. The reusable
+\texttt{codeBlock} component supplies keyboard-accessible code and a clipboard
+button. Long code is constrained within the responsive workspace.
+
+\subsection{Evidence is not an answer key}
+The downloaded \path{report.py} prompts for scope, setup, prediction, exact
+actions, observations, comparison, explanation, limitations and assistance. It
+creates UTF-8 JSON using exclusive file creation. Existing reports are preserved;
+empty answers or cancellation produce no report. The learner must execute the
+helper and supply their own observations. No generated answer or automatic
+completion is included.
+
+The file verifier still checks the server filesystem and optional size/pattern,
+not the quality of reasoning. A file saved solely on a learner laptop is invisible
+to a hosted/container server until placed at that server's configured lab path.
+There is no evidence-upload endpoint in this repair. Artifact/self-reviewed tasks
+retain their existing no-automatic-skill-XP behavior. Continuous timers and final
+submission rules for native exercises are unchanged.
+
+\subsection{Verification and limits}
+\path{scripts/audit_learning_content.py} scans all 28 community packs and 1,002
+expanded nodes for known vague placeholders, unnamed materials, misleading
+resource roles, repeated introductions and unexplained JSON evidence. It also
+checks that bundled download targets exist. A clean diagnostic is not a score for
+pedagogy, a learner-outcome study or proof that every external environment works.
+CI checks the saved audit, generated packs and deterministic archives.
+
+Regression tests execute the first HTTP recipe and local notes API; inspect
+marker cleanup, the permission model, timestamp controls, benign source and mock
+assistant; and verify report creation without overwrite. Synthetic PCAPs are
+generated without network traffic and decoded with Wireshark when available.
+Browser checks cover setup, ZIP downloads, copying, narrow/wide layout and session
+reload using disposable profiles.
+
+Windows AD/AD CS, Android, provider IAM, Kubernetes, Security Onion, Volatility and
+physical-device environments were not all executed in this repair. Their tasks
+state prerequisites and distinguish simulation, preparation and operational
+results. In particular, a directory graph is not a Windows effective-access test,
+a beacon is not a captured handshake, and a mock assistant is not a real-model
+security evaluation. The full authoring checklist and execution limits are in
+\path{docs/curriculum/challenge-authoring.md}.
+
+Installed private pack copies require an explicit content update. Before a live
+update, back up the database and copies, inspect active attempts and compare
+protected learner state afterward. Changed fingerprints reset review/trust and
+can invalidate unfinished generated exercises. Saved progress must not be
+silently reset as part of a wording repair.

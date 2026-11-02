@@ -1,0 +1,30 @@
+{
+  "date": "2026-11-02",
+  "updated_packs": 24,
+  "deferred_packs": [],
+  "protected_tables_unchanged": {
+    "schema_version": true,
+    "missions": true,
+    "entries": true,
+    "parked": true,
+    "settings": true,
+    "node_state": true,
+    "level_unlocks": true,
+    "evidence_log": true,
+    "users": true,
+    "api_tokens": true,
+    "node_splits": true,
+    "push_subscriptions": true,
+    "telegram_updates": true,
+    "lab_runs": true,
+    "task_sessions": true,
+    "case_attempts": true,
+    "permission_attempts": true,
+    "xp_awards": true
+  },
+  "health": "ok",
+  "guided_challenge_fields": "present",
+  "material_download": "served",
+  "backup_created": true,
+  "learner_tasks_started_or_graded": false
+}

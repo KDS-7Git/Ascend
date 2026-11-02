@@ -58,6 +58,14 @@ line. Older packs without them continue to work. Prefer a small
 observable result over a reading assignment, and set honest
 \texttt{minutes} estimates so short sessions have useful tasks.
 
+Optional \texttt{setup} states tools, environment and access/cost requirements
+before timing. \texttt{resource\_label} and \texttt{resource\_note} describe a
+reference's role. \texttt{materials} contains label/URL objects for actual inputs;
+HTTP(S) and bounded \path{/training/} ZIP/JSON/CSV/TXT paths are accepted. Fenced
+code in steps is copyable text, never an automatically executed command. Older
+packs omit these fields. See the challenge-guidance implementation chapter for
+the generator, downloads and evidence workflow.
+
 S/M/L conservatively fit 30/120/240-minute budgets. Optional integer
 \texttt{minutes} may refine the estimate within that size bound.
 \texttt{needs} is a list of node IDs forming a directed acyclic graph.

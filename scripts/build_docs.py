@@ -46,6 +46,22 @@ def verbatim(value):
     return "\\begin{verbatim}\n" + value.rstrip() + "\n\\end{verbatim}\n"
 
 
+def curriculum_prose(value):
+    """Allow long reference URLs and underscored training literals to wrap."""
+    result, cursor = [], 0
+    for match in re.finditer(
+        r"https?://[^\s{}]+|\b[A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)+\b", str(value)
+    ):
+        result.append(escape(value[cursor : match.start()]))
+        token = match[0].rstrip(".,;")
+        command = "url" if token.startswith(("http://", "https://")) else "path"
+        result.append("\\" + command + "{" + token + "}")
+        result.append(escape(match[0][len(token) :]))
+        cursor = match.end()
+    result.append(escape(value[cursor:]))
+    return "".join(result)
+
+
 def walk(parser):
     yield parser
     for action in parser._actions:
@@ -157,7 +173,11 @@ def generate():
             ("Later retrieval", "recall"),
         ]:
             matrix.append(
-                "\\noindent\\textbf{" + label + ":} " + escape(row[key]) + "\\par\n"
+                "\\noindent\\textbf{"
+                + label
+                + ":} "
+                + curriculum_prose(row[key])
+                + "\\par\n"
             )
         matrix.append(
             "\\noindent\\textbf{Alignment references:} "

@@ -50,6 +50,14 @@ checks; `done_when` and the verifier still define the finish line. Older packs
 without them continue to work. Prefer a small observable result over a reading
 assignment, and set honest `minutes` estimates so short sessions have useful tasks.
 
+Optional `setup` explains tools, environment and access/cost requirements before
+the timer starts. `resource_label` and `resource_note` describe the role of the
+reference (for example, optional free documentation). `materials` is a list of
+`{label, url}` objects for actual inputs. URLs accept HTTP(S) or bundled
+`/training/<name>.zip` (also JSON/CSV/TXT) paths, never arbitrary local files.
+Fenced code blocks in `steps` render as copyable text; copying does not execute
+commands. See [the authoring checklist](curriculum/challenge-authoring.md).
+
 S/M/L conservatively fit 30/120/240-minute budgets. Optional integer `minutes`
 may refine the estimate within that size bound. `needs` is a list of node IDs
 forming a directed acyclic graph. `series = {from = 13, to = 15}` expands an ID

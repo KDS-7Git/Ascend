@@ -8,7 +8,7 @@ Phase 3 & 82 passed, 1 warning in 11.13s \\
 Phase 4 & 101 passed in 11.24s \\
 Engagement refresh & 109 passed in 16.79s \\
 Curriculum assurance & 120 passed in 21.99s \\
-LaTeX handbooks & 6 LaTeX documents compiled successfully; no missing glyphs, unresolved references or overflow above 1 pt. \\
+LaTeX handbooks & 4 LaTeX documents compiled successfully; no missing glyphs, unresolved references or overflow above 1 pt. \\
 Installed v3 tracks & Five tracks upgraded; history preserved; desktop/mobile checks passed. \\
 Container restore & Restore smoke passed. \\
 Compose settings & Compose configuration checks passed. \\
@@ -18,7 +18,7 @@ Expanded release & 141 passed in 23.91s \\
 Pi compatibility & ARM64 manifests and dependency artifacts checked; Pi runtime validation remains outstanding. \\
 Hardened deployment & Hardened Compose, native grading, persistent XP after restart and read-only signed receipt overlay passed on AMD64. Synthetic temporary data only. \\
 Expanded installation & Public pack updates preserved all entries, missions and task states; database integrity passed. No synthetic learning evidence added. \\
-Public archive & Public v4 archive contains 26 packs, seven PDFs and complete LaTeX sources; export equality and ZIP integrity passed. \\
+Public archive & Public v4 archive contains 26 packs, 21 practice ZIPs, seven PDFs and LaTeX sources; export equality and ZIP integrity passed. \\
 Workspace UI & 146 passed in 44.32s \\
 UI visual review & 35 workspace screenshots captured at 320, 390, 768 and 1440 px, including dark mode; no horizontal overflow or JavaScript errors. Temporary learner account only. \\
 UI container delivery & Hardened Compose, bundled UI/docs/font, native grading, persistent XP after restart and read-only signed receipt overlay passed on AMD64. Synthetic temporary data only. \\
@@ -26,9 +26,16 @@ Local UI refresh & Local server refreshed at http://127.0.0.1:8420 with its exis
 Neobrutalism UI & 155 tests passed; 74 captures; 66 axe checks with no detected violations. \\
 Challenge UX refinement & 165 tests passed; 89 captures; 76 axe checks with no detected violations. \\
 Permission scoring & 173 tests passed; 95 captures; 82 axe checks with no detected violations. \\
+Challenge guidance & 191 tests passed; local recipes, downloads and state-preserving content update verified. \\
 \end{longtable}
 \subsection*{Recent recorded commits}
 \begin{verbatim}
+fc9141e fix(curriculum): replace shared placeholders with scoped labs and
+  real inputs
+a4a9748 fix(curriculum): make the first HTTP lab actionable and copyable
+9c901b0 fix(ui): keep text actions transparent over the cursor grid
+8b96869 docs(practice): document partial scoring and verify responsive
+  results
 bda3d13 feat(practice): explain final permission decisions and award partial
   credit
 9415c5b docs(ui): explain challenge lifecycle and retain responsive
@@ -43,9 +50,5 @@ bda3d13 feat(practice): explain final permission decisions and award partial
 78950d6 docs: explain architecture, challenge lifecycle and UI
   implementation
 729e4f2 feat(workspace): restore challenges and add calm motion
-462b2f0 feat(ui): align page layouts and keep docs navigation stable
-265cb90 feat(ui): sweep the next challenge border once per page load
-44a1983 feat(ui): group existing tracks by domain and show persistent streak
-d598ca1 refactor(tracks): organize bundled curricula by security domain
 \end{verbatim}
 \noindent Full transcripts: \texttt{docs/testing/phase-*.txt}. The implementation may have uncommitted work beyond the last validated milestone.

@@ -322,16 +322,16 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \noindent\textbf{Alignment references:} htb-soc, security-onion-hardware, ies-practice\par
 \subsubsection{ethical-hacking-foundations: foundations}
 \noindent\textbf{Milestone:} foundations-milestone\par
-\noindent\textbf{Skill:} Prove the entry skills in a small lab\par
-\noindent\textbf{Experiment:} Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.\par
-\noindent\textbf{Transfer:} Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.\par
-\noindent\textbf{Control:} Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.\par
-\noindent\textbf{Later retrieval:} Reconstruct the environment and entry assumptions without following the setup notes.\par
+\noindent\textbf{Skill:} Your first local HTTP lab\par
+\noindent\textbf{Experiment:} Serve one page on your own computer, request it with curl, then compare its successful response with a request for a page that does not exist.\par
+\noindent\textbf{Transfer:} Repeat the local page request on port 8766. Predict which part of the URL must change, then record the actual response.\par
+\noindent\textbf{Control:} Stop your local server and repeat the same request. Explain why a connection failure differs from an HTTP 404 returned by a running server.\par
+\noindent\textbf{Later retrieval:} Without opening the walkthrough, explain 127.0.0.1, a port, a GET request, HTTP 200, HTTP 404 and a connection failure.\par
 \noindent\textbf{Alignment references:} offsec-pen, htb-foundations, portswigger-paths\par
 \subsubsection{ethical-hacking-foundations: scope}
 \noindent\textbf{Milestone:} scope-milestone\par
 \noindent\textbf{Skill:} What authorizes this test?\par
-\noindent\textbf{Experiment:} Write rules of engagement for a loopback training app, including allowed actions, rate limits, stop conditions, contacts and evidence handling.\par
+\noindent\textbf{Experiment:} Read scenario.json. Write scope.md naming Harbor Notes, 127.0.0.1:8765, the two synthetic users alice and bob, and the permitted GET requests. Mira is the fictional service owner and Dev is the stop/escalation contact.\par
 \noindent\textbf{Transfer:} Add a third-party login dependency and decide which requests must remain excluded until permission changes.\par
 \noindent\textbf{Control:} Show a technically reachable endpoint that the written scope forbids, and leave it untouched.\par
 \noindent\textbf{Later retrieval:} Reconstruct the difference between technical access, ownership and authorization.\par
@@ -339,7 +339,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{ethical-hacking-foundations: method}
 \noindent\textbf{Milestone:} method-milestone\par
 \noindent\textbf{Skill:} Follow a hypothesis, not a tool list\par
-\noindent\textbf{Experiment:} Inventory the disposable app, rank two vulnerability hypotheses, and run a small non-destructive check for each with sanitized request/response evidence.\par
+\noindent\textbf{Experiment:} Start service.py in Terminal A. In Terminal B, inventory its response and read its three endpoint handlers in the source.\par
 \noindent\textbf{Transfer:} Move the app to a new port or change a visible header and revise the hypotheses using actual behavior.\par
 \noindent\textbf{Control:} Compare a real route with an intentionally nonexistent route so a generic error page is not counted as a finding.\par
 \noindent\textbf{Later retrieval:} Given a new banner, name the next observation that could disprove your hypothesis.\par
@@ -347,23 +347,23 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{ethical-hacking-foundations: web-boundaries}
 \noindent\textbf{Milestone:} web-boundaries-milestone\par
 \noindent\textbf{Skill:} Two accounts, one boundary\par
-\noindent\textbf{Experiment:} In an explicitly designated authorization lesson, test an owner and a second account against the same synthetic object and explain the server-side boundary.\par
+\noindent\textbf{Experiment:} Use the local service.py fixture. Note 1 belongs to alice; note 2 belongs to bob. Read \path{do_GET} and predict owner and cross-user results.\par
 \noindent\textbf{Transfer:} Change the object or HTTP method and predict whether the authorization decision should change.\par
 \noindent\textbf{Control:} Demonstrate legitimate owner access and a denied unauthorized request on a corrected local equivalent.\par
 \noindent\textbf{Later retrieval:} Explain why hiding a button is different from enforcing authorization.\par
 \noindent\textbf{Alignment references:} offsec-pen, htb-foundations, portswigger-paths\par
 \subsubsection{ethical-hacking-foundations: permissions}
 \noindent\textbf{Milestone:} permissions-milestone\par
-\noindent\textbf{Skill:} Who is this process allowed to be?\par
-\noindent\textbf{Experiment:} Create two local test roles or use a supplied permissions fixture, identify an overbroad grant, and repair it while recording before/after effective access.\par
-\noindent\textbf{Transfer:} Change group membership or parent-directory permissions and predict the new access result.\par
-\noindent\textbf{Control:} Keep the intended reader working and demonstrate that the unrelated role remains denied.\par
+\noindent\textbf{Skill:} Inspect and narrow permissions on a local file\par
+\noindent\textbf{Experiment:} Use Linux, macOS or WSL for this filesystem exercise. Work only on the extracted permissions.txt file. Inspect your identity and its mode.\par
+\noindent\textbf{Transfer:} Change the training file to 640 and compare owner/group/other bits with 600. Record what a second-identity test would be needed to verify.\par
+\noindent\textbf{Control:} Owner reading must still work; do not claim a runtime test as another user if you only inspected mode bits.\par
 \noindent\textbf{Later retrieval:} Explain the difference between authentication, authorization and process privilege.\par
 \noindent\textbf{Alignment references:} offsec-pen, htb-foundations, portswigger-paths\par
 \subsubsection{ethical-hacking-foundations: evidence}
 \noindent\textbf{Milestone:} evidence-milestone\par
 \noindent\textbf{Skill:} Make a finding another person can verify\par
-\noindent\textbf{Experiment:} Write one lab finding with exact target/version, minimal steps, sanitized evidence, severity rationale and a tested local repair.\par
+\noindent\textbf{Experiment:} Use your saved owner/cross-user test from web-boundaries. Name the fixture version ascend-notes-v1 and the exact note/user relationship.\par
 \noindent\textbf{Transfer:} Give a peer a changed input or repeat on a second clean fixture and identify assumptions missing from the report.\par
 \noindent\textbf{Control:} Show that the fix rejects the bad case without breaking an ordinary valid request.\par
 \noindent\textbf{Later retrieval:} Reconstruct a finding from its root cause without copying the original prose.\par
@@ -371,31 +371,31 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{ethical-hacking-foundations: assessment}
 \noindent\textbf{Milestone:} assessment-milestone\par
 \noindent\textbf{Skill:} Run a small authorized assessment\par
-\noindent\textbf{Experiment:} Perform scope confirmation, inventory, two hypothesis tests and one reproducible finding or justified negative result; deliver an executive summary and technical evidence.\par
+\noindent\textbf{Experiment:} Extract a fresh copy of service.py and scenario.json. Independently use note 2 (owner bob) and alice as the unrelated user. State the scope before starting.\par
 \noindent\textbf{Transfer:} Change an account role or route and independently reassess whether the suspected weakness remains.\par
 \noindent\textbf{Control:} Include an out-of-scope action you deliberately excluded and a benign workflow that survives the repair.\par
 \noindent\textbf{Later retrieval:} Explain the assessment chain, one false lead and what evidence changed your mind.\par
 \noindent\textbf{Alignment references:} offsec-pen, htb-foundations, portswigger-paths\par
 \subsubsection{ethical-hacking-foundations: independent-transfer}
 \noindent\textbf{Milestone:} independent-transfer-milestone\par
-\noindent\textbf{Skill:} Revisit the skill on a fresh problem\par
-\noindent\textbf{Experiment:} After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.\par
-\noindent\textbf{Transfer:} Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.\par
-\noindent\textbf{Control:} Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.\par
-\noindent\textbf{Later retrieval:} Explain what transferred, what required help and which prerequisite needs another small experiment.\par
+\noindent\textbf{Skill:} Recheck the boundary with a specified change\par
+\noindent\textbf{Experiment:} Use note 2 and replace its owner with carol in a fresh service.py copy. Update only the list of recognized synthetic users needed for that identity, then independently test and repair ownership.\par
+\noindent\textbf{Transfer:} Add a second case by reversing the changed condition above, predict its result and compare actual behavior.\par
+\noindent\textbf{Control:} Bob must still read his own remaining test note; alice must not gain access to carol’s note.\par
+\noindent\textbf{Later retrieval:} Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested.\par
 \noindent\textbf{Alignment references:} offsec-pen, htb-foundations, portswigger-paths\par
 \subsubsection{red-team-adversary-emulation: foundations}
 \noindent\textbf{Milestone:} foundations-milestone\par
-\noindent\textbf{Skill:} Prove the entry skills in a small lab\par
-\noindent\textbf{Experiment:} Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.\par
-\noindent\textbf{Transfer:} Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.\par
-\noindent\textbf{Control:} Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.\par
-\noindent\textbf{Later retrieval:} Reconstruct the environment and entry assumptions without following the setup notes.\par
+\noindent\textbf{Skill:} Create a harmless marker and verify cleanup\par
+\noindent\textbf{Experiment:} Observe the difference between performing an action and collecting evidence of it.\par
+\noindent\textbf{Transfer:} In a new copy, change the marker filename to training-marker-2.txt and predict which event fields should change. Run and compare.\par
+\noindent\textbf{Control:} Delete the remove step only in a disposable COPY. Verify that a remaining marker is a cleanup failure, not evidence of successful cleanup.\par
+\noindent\textbf{Later retrieval:} Without opening your report, reconstruct the inputs, observed result and main limitation of create a harmless marker and verify cleanup.\par
 \noindent\textbf{Alignment references:} mitre-emulation, atomic-red, htb-pentest\par
 \subsubsection{red-team-adversary-emulation: objectives}
 \noindent\textbf{Milestone:} objectives-milestone\par
 \noindent\textbf{Skill:} Measure an objective, not a shell\par
-\noindent\textbf{Experiment:} Author an engagement plan with rules of engagement, white-cell contacts, allowed assets, deconfliction, stop conditions and a defender measurement plan.\par
+\noindent\textbf{Experiment:} Read context.json and marker.py. Write an engagement plan limited to creation and deletion of this local marker; use Mira and Dev as the fictional owner/defender contacts.\par
 \noindent\textbf{Transfer:} Add an operational constraint such as unavailable endpoint logging and redesign the objective or telemetry plan honestly.\par
 \noindent\textbf{Control:} Show a scenario that appears successful technically but fails the stated business objective.\par
 \noindent\textbf{Later retrieval:} State the difference between a penetration-test finding and an adversary-emulation objective.\par
@@ -403,7 +403,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{red-team-adversary-emulation: threat-model}
 \noindent\textbf{Milestone:} threat-model-milestone\par
 \noindent\textbf{Skill:} Choose techniques from evidence\par
-\noindent\textbf{Experiment:} Build a small ATT\&CK-aligned hypothesis from a cited threat report, specifying prerequisites, observable effects and a harmless substitute for each risky action.\par
+\noindent\textbf{Experiment:} Read the linked ATT\&CK T1074.001 description (local data staging). Define a hypothesis that creating a named harmless local file could produce observable file events.\par
 \noindent\textbf{Transfer:} Replace the assumed identity or endpoint type and remove techniques whose prerequisites no longer hold.\par
 \noindent\textbf{Control:} Include one plausible but unsupported technique and explain why it was excluded.\par
 \noindent\textbf{Later retrieval:} Rebuild the evidence-to-technique chain and name its uncertainty.\par
@@ -411,7 +411,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{red-team-adversary-emulation: telemetry}
 \noindent\textbf{Milestone:} telemetry-milestone\par
 \noindent\textbf{Skill:} Know what the defender can see\par
-\noindent\textbf{Experiment:} Build a timeline joining the marker, account, process and network observations; label each missing source rather than inventing coverage.\par
+\noindent\textbf{Experiment:} Run marker.py once in a fresh extracted folder and open marker-events.jsonl alongside events.csv.\par
 \noindent\textbf{Transfer:} Change the marker path or process argument and predict which detection features remain stable.\par
 \noindent\textbf{Control:} Repeat an ordinary administration action and distinguish its evidence from the staged behavior.\par
 \noindent\textbf{Later retrieval:} Explain which sensor would be needed to resolve a missing observation.\par
@@ -419,7 +419,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{red-team-adversary-emulation: emulation}
 \noindent\textbf{Milestone:} emulation-milestone\par
 \noindent\textbf{Skill:} Make a small emulation reversible\par
-\noindent\textbf{Experiment:} In a disposable authorized lab, run a reviewed marker-only micro-emulation, record setup and exact effects, then perform and verify cleanup.\par
+\noindent\textbf{Experiment:} Use the marker-only plan from objectives. Read the exact marker.py copy you intend to run and record its hash with python3 -m hashlib only if available; otherwise use sha256sum marker.py on Linux.\par
 \noindent\textbf{Transfer:} Change a nonessential filename or account context and predict whether the intended behavior is still observable.\par
 \noindent\textbf{Control:} Verify the artifact did not exist before, appears during the test, and is absent after cleanup; preserve unrelated files.\par
 \noindent\textbf{Later retrieval:} Reconstruct the prerequisites and rollback steps without running a script blindly.\par
@@ -427,7 +427,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{red-team-adversary-emulation: purple-team}
 \noindent\textbf{Milestone:} purple-team-milestone\par
 \noindent\textbf{Skill:} Test detection with a partner\par
-\noindent\textbf{Experiment:} Have a defender or second review pass classify shuffled benign and emulated events; record misses, false positives and one revised analytic.\par
+\noindent\textbf{Experiment:} Combine a COPY of events.csv with the two marker events into a table whose columns include source, time, action and evidence ID. Keep source differences visible.\par
 \noindent\textbf{Transfer:} Change a superficial indicator while preserving behavior and retest the revised analytic.\par
 \noindent\textbf{Control:} Include an administration lookalike that should remain unalerted or receive a documented lower-confidence classification.\par
 \noindent\textbf{Later retrieval:} Explain why a detection that matches only the demonstration filename is fragile.\par
@@ -435,31 +435,31 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{red-team-adversary-emulation: campaign}
 \noindent\textbf{Milestone:} campaign-milestone\par
 \noindent\textbf{Skill:} Deliver a defensible exercise report\par
-\noindent\textbf{Experiment:} Run the scoped sequence in a resettable lab, measure defender visibility and response, and deliver an objective-based report with technical evidence and remediation retests.\par
+\noindent\textbf{Experiment:} Use a new folder and your approved marker plan. Predict creation, logging and cleanup for training-marker-2.txt.\par
 \noindent\textbf{Transfer:} Withhold one assumed permission or telemetry source and adapt the plan without exceeding scope.\par
 \noindent\textbf{Control:} Demonstrate reset to baseline and distinguish untested coverage from a demonstrated miss.\par
 \noindent\textbf{Later retrieval:} Explain what the exercise supports about defensive readiness and what it cannot establish.\par
 \noindent\textbf{Alignment references:} mitre-emulation, atomic-red, htb-pentest\par
 \subsubsection{red-team-adversary-emulation: independent-transfer}
 \noindent\textbf{Milestone:} independent-transfer-milestone\par
-\noindent\textbf{Skill:} Revisit the skill on a fresh problem\par
-\noindent\textbf{Experiment:} After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.\par
-\noindent\textbf{Transfer:} Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.\par
-\noindent\textbf{Control:} Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.\par
-\noindent\textbf{Later retrieval:} Explain what transferred, what required help and which prerequisite needs another small experiment.\par
+\noindent\textbf{Skill:} Recheck the boundary with a specified change\par
+\noindent\textbf{Experiment:} In a fresh marker.py copy, omit the deletion log while retaining deletion itself. Determine whether you can establish cleanup from filesystem inspection and which telemetry is missing.\par
+\noindent\textbf{Transfer:} Add a second case by reversing the changed condition above, predict its result and compare actual behavior.\par
+\noindent\textbf{Control:} Retain the creation event and confirm that missing telemetry is not evidence that the action never happened.\par
+\noindent\textbf{Later retrieval:} Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested.\par
 \noindent\textbf{Alignment references:} mitre-emulation, atomic-red, htb-pentest\par
 \subsubsection{soc-analyst: foundations}
 \noindent\textbf{Milestone:} foundations-milestone\par
-\noindent\textbf{Skill:} Prove the entry skills in a small lab\par
-\noindent\textbf{Experiment:} Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.\par
-\noindent\textbf{Transfer:} Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.\par
-\noindent\textbf{Control:} Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.\par
-\noindent\textbf{Later retrieval:} Reconstruct the environment and entry assumptions without following the setup notes.\par
+\noindent\textbf{Skill:} Read a login timeline in two time zones\par
+\noindent\textbf{Experiment:} Find the same user’s events without confusing local time with UTC.\par
+\noindent\textbf{Transfer:} Change only e3 to the equivalent UTC timestamp in a copy; the normalized timeline should be unchanged.\par
+\noindent\textbf{Control:} Use alice-test and e7 as exclusions; a substring match or an unbounded time query must not include them.\par
+\noindent\textbf{Later retrieval:} Without opening your report, reconstruct the inputs, observed result and main limitation of read a login timeline in two time zones.\par
 \noindent\textbf{Alignment references:} microsoft-soc, htb-soc, cisa-kev\par
 \subsubsection{soc-analyst: intake}
 \noindent\textbf{Milestone:} intake-milestone\par
 \noindent\textbf{Skill:} Turn an alert into a question\par
-\noindent\textbf{Experiment:} Triage a synthetic queue containing a login anomaly, a web alert and a harmless maintenance event; assign urgency using evidence and business context.\par
+\noindent\textbf{Experiment:} Use events.csv, context.json and message.eml. Create three queue items: Alice’s failures followed by role change; Bob’s blocked web link; the backup maintenance login.\par
 \noindent\textbf{Transfer:} Change an asset from a sandbox to a critical service and justify whether prioritization changes.\par
 \noindent\textbf{Control:} Keep a noisy but low-impact event from outranking a corroborated compromise solely because of event volume.\par
 \noindent\textbf{Later retrieval:} Explain event, alert, incident, severity and confidence using one example.\par
@@ -467,7 +467,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{soc-analyst: queries}
 \noindent\textbf{Milestone:} queries-milestone\par
 \noindent\textbf{Skill:} Follow the entity across logs\par
-\noindent\textbf{Experiment:} Build reproducible queries over a supplied dataset to trace an identity, host and source address through a bounded time window, recording missing fields.\par
+\noindent\textbf{Experiment:} Use the foundations timestamp-normalization command as a starting point. Filter exact user alice and the inclusive 09:00–09:10 UTC window; print id, time, host and \path{source_ip}.\par
 \noindent\textbf{Transfer:} Change the time zone or host identifier in a synthetic copy and adjust the query without losing the same activity.\par
 \noindent\textbf{Control:} Include a similarly named account and an event outside the window that must not be joined.\par
 \noindent\textbf{Later retrieval:} Recreate the query logic from the investigation question rather than memorizing syntax.\par
@@ -475,7 +475,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{soc-analyst: authentication}
 \noindent\textbf{Milestone:} authentication-milestone\par
 \noindent\textbf{Skill:} Investigate a suspicious sign-in\par
-\noindent\textbf{Experiment:} Investigate a provided authentication timeline, rank account misuse against benign alternatives, and identify the next discriminating evidence.\par
+\noindent\textbf{Experiment:} Review e1–e4 and e11 in events.csv with context.json. Distinguish failed login, successful login, allowed role change and denied administrator grant.\par
 \noindent\textbf{Transfer:} Add a service-account explanation or a contradictory device event and update the conclusion.\par
 \noindent\textbf{Control:} Include known maintenance logins and avoid treating location or failure count alone as compromise.\par
 \noindent\textbf{Later retrieval:} Explain which evidence would raise or lower confidence in account misuse.\par
@@ -483,7 +483,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{soc-analyst: web-and-mail}
 \noindent\textbf{Milestone:} web-and-mail-milestone\par
 \noindent\textbf{Skill:} Preserve evidence before following a lure\par
-\noindent\textbf{Experiment:} Correlate an inert phishing-style message fixture with proxy/DNS and application logs, recording user exposure separately from demonstrated execution.\par
+\noindent\textbf{Experiment:} Read message.eml as TEXT. The .invalid URL is inert; there is no attachment to run. Correlate its Date and recipient with events e9 and e10.\par
 \noindent\textbf{Transfer:} Change a redirect or add a blocked request and reassess how far the activity progressed.\par
 \noindent\textbf{Control:} Include a legitimate message with similar wording and a blocked attempt with no evidence of execution.\par
 \noindent\textbf{Later retrieval:} Explain why receipt, click, execution and compromise are separate claims.\par
@@ -491,7 +491,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{soc-analyst: response}
 \noindent\textbf{Milestone:} response-milestone\par
 \noindent\textbf{Skill:} Make containment proportionate\par
-\noindent\textbf{Experiment:} Write and rehearse a lab incident runbook that preserves evidence, escalates uncertainty, contains a synthetic account or endpoint, and verifies intended access afterward.\par
+\noindent\textbf{Experiment:} Write response.md for the fictional Alice case. Before containment, preserve a copy of events.csv and its SHA-256 hash; no real account should be changed.\par
 \noindent\textbf{Transfer:} Make the affected system unavailable to the responder and choose an alternative action with explicit residual risk.\par
 \noindent\textbf{Control:} Show that an unrelated account or service still works after containment.\par
 \noindent\textbf{Later retrieval:} State the evidence needed before choosing a disruptive action.\par
@@ -499,31 +499,31 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{soc-analyst: shift-handoff}
 \noindent\textbf{Milestone:} shift-handoff-milestone\par
 \noindent\textbf{Skill:} Close the case so someone can reopen it\par
-\noindent\textbf{Experiment:} Investigate an unfamiliar small log bundle and deliver a timeline, evidence references, confidence, response decision and shift handoff with unresolved questions.\par
+\noindent\textbf{Experiment:} Use a fresh copy of events.csv. Ask a peer to change one identity/time field, or move e4 outside the window yourself and record that assistance.\par
 \noindent\textbf{Transfer:} Add a late contradictory event and revise the disposition while retaining the earlier reasoning.\par
 \noindent\textbf{Control:} Document one rejected hypothesis and a known-benign comparison; do not turn missing logs into a clean bill of health.\par
 \noindent\textbf{Later retrieval:} Reconstruct the case and next action from the handoff alone after a delay.\par
 \noindent\textbf{Alignment references:} microsoft-soc, htb-soc, cisa-kev\par
 \subsubsection{soc-analyst: independent-transfer}
 \noindent\textbf{Milestone:} independent-transfer-milestone\par
-\noindent\textbf{Skill:} Revisit the skill on a fresh problem\par
-\noindent\textbf{Experiment:} After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.\par
-\noindent\textbf{Transfer:} Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.\par
-\noindent\textbf{Control:} Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.\par
-\noindent\textbf{Later retrieval:} Explain what transferred, what required help and which prerequisite needs another small experiment.\par
+\noindent\textbf{Skill:} Recheck the boundary with a specified change\par
+\noindent\textbf{Experiment:} Add a synthetic approval for e4 to context.json, then move e4 outside the original investigation window in events.csv. Reevaluate the Alice case using your saved query.\par
+\noindent\textbf{Transfer:} Add a second case by reversing the changed condition above, predict its result and compare actual behavior.\par
+\noindent\textbf{Control:} Keep alice-test excluded and preserve the denied status of e11.\par
+\noindent\textbf{Later retrieval:} Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested.\par
 \noindent\textbf{Alignment references:} microsoft-soc, htb-soc, cisa-kev\par
 \subsubsection{active-directory-security: foundations}
 \noindent\textbf{Milestone:} foundations-milestone\par
-\noindent\textbf{Skill:} Prove the entry skills in a small lab\par
-\noindent\textbf{Experiment:} Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.\par
-\noindent\textbf{Transfer:} Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.\par
-\noindent\textbf{Control:} Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.\par
-\noindent\textbf{Later retrieval:} Reconstruct the environment and entry assumptions without following the setup notes.\par
+\noindent\textbf{Skill:} Trace group membership in a small directory model\par
+\noindent\textbf{Experiment:} Predict a permission path before inspecting a real directory.\par
+\noindent\textbf{Transfer:} Remove LabReaders from LabOperators in a copy and redraw the reachable group path.\par
+\noindent\textbf{Control:} Keep LabOperator in LabOperators. Explain why that unrelated membership should remain intact.\par
+\noindent\textbf{Later retrieval:} Without opening your report, reconstruct the inputs, observed result and main limitation of trace group membership in a small directory model.\par
 \noindent\textbf{Alignment references:} microsoft-ad, microsoft-adcs, goad, htb-pentest\par
 \subsubsection{active-directory-security: domain-model}
 \noindent\textbf{Milestone:} domain-model-milestone\par
 \noindent\textbf{Skill:} Draw the domain before testing it\par
-\noindent\textbf{Experiment:} On a training domain, document DNS discovery, one domain join and a normal domain sign-in; preserve an architecture diagram and baseline event evidence.\par
+\noindent\textbf{Experiment:} Prepare an isolated training.example.test forest using the linked Microsoft AD DS installation guide on a fresh evaluation VM. Point a separate training client’s DNS at the DC. Record the VM network, OS build and reset snapshot.\par
 \noindent\textbf{Transfer:} Change the client DNS server in the disposable lab and predict which discovery or authentication step fails.\par
 \noindent\textbf{Control:} Compare a local login with a domain login and explain which identity authority answered.\par
 \noindent\textbf{Later retrieval:} Recreate the domain discovery and trust boundaries from memory.\par
@@ -531,7 +531,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{active-directory-security: auth-protocols}
 \noindent\textbf{Milestone:} auth-protocols-milestone\par
 \noindent\textbf{Skill:} A ticket is not a password\par
-\noindent\textbf{Experiment:} Capture permitted authentication telemetry in a training domain and correlate ticket issuance or fallback with a controlled client action, without collecting real credentials.\par
+\noindent\textbf{Experiment:} Use your joined training client and DC from domain-model. Record their clock/DNS settings. On the client run klist before and after accessing a share you created on the training DC.\par
 \noindent\textbf{Transfer:} Change a service name or introduce documented clock skew in the disposable lab and predict the failure or fallback.\par
 \noindent\textbf{Control:} Include a normal successful service access and a deliberately invalid service reference.\par
 \noindent\textbf{Later retrieval:} Explain why DNS, SPNs and time synchronization matter to Kerberos.\par
@@ -539,7 +539,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{active-directory-security: permissions}
 \noindent\textbf{Milestone:} permissions-milestone\par
 \noindent\textbf{Skill:} Prove an identity graph edge\par
-\noindent\textbf{Experiment:} Trace a least-privilege violation in a supplied or owned directory graph and verify the claimed edge against native permissions before proposing a fix.\par
+\noindent\textbf{Experiment:} Create LabReaders and LabOperators groups in your isolated domain and place them under the Training OU. Recreate the nested membership in directory-model.json.\par
 \noindent\textbf{Transfer:} Remove one group membership or inherited permission and predict whether the path still exists.\par
 \noindent\textbf{Control:} Include a graph edge that appears plausible but is denied by the effective permissions.\par
 \noindent\textbf{Later retrieval:} Explain the distinction between a graph hypothesis and a verified authorization path.\par
@@ -547,7 +547,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{active-directory-security: gpo-delegation}
 \noindent\textbf{Milestone:} gpo-delegation-milestone\par
 \noindent\textbf{Skill:} Separate management power from service identity\par
-\noindent\textbf{Experiment:} Inspect a training GPO and a documented delegation configuration, explain their intended function and identify an overbroad grant using effective access and normal service behavior.\par
+\noindent\textbf{Experiment:} In Group Policy Management on your training DC, create an otherwise empty TrainingNotes GPO linked only to the Training OU. Record its scope and delegation tab.\par
 \noindent\textbf{Transfer:} Restrict the policy link or delegated target and predict which administrative or service action stops working.\par
 \noindent\textbf{Control:} Keep an intended management action functioning after the proposed least-privilege change.\par
 \noindent\textbf{Later retrieval:} Explain why controlling a policy object and applying that policy are separate conditions.\par
@@ -555,7 +555,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{active-directory-security: certificate-services}
 \noindent\textbf{Milestone:} certificate-services-milestone\par
 \noindent\textbf{Skill:} Follow the certificate enrollment decision\par
-\noindent\textbf{Experiment:} In an isolated AD CS lab or supplied configuration exercise, map template enrollment permissions and identity settings to a concrete authentication risk; test a corrected configuration in a real lab before claiming operational completion.\par
+\noindent\textbf{Experiment:} This task additionally needs an isolated AD CS evaluation lab. Follow Microsoft AD CS installation documentation; take a reset snapshot before adding the role. Keep issued certificates in the training domain.\par
 \noindent\textbf{Transfer:} Change enrollment rights or an identity-related template setting and predict which request is permitted or rejected.\par
 \noindent\textbf{Control:} Show a legitimate enrollment still works and an unauthorized identity request is rejected after the repair.\par
 \noindent\textbf{Later retrieval:} Explain why possessing a valid certificate is not sufficient proof of an authorized identity.\par
@@ -563,31 +563,31 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{active-directory-security: assessment}
 \noindent\textbf{Milestone:} assessment-milestone\par
 \noindent\textbf{Skill:} Harden a small domain and retest it\par
-\noindent\textbf{Experiment:} Audit the training domain's discovery, authentication, permissions and one certificate or policy boundary; deliver native evidence, impact and a verified least-privilege repair.\par
+\noindent\textbf{Experiment:} Use your existing training domain and a fresh test OU. Audit DNS discovery, one domain sign-in and one inherited permission or GPO delegation edge.\par
 \noindent\textbf{Transfer:} Change one account's memberships or a policy scope and independently re-evaluate the affected path.\par
 \noindent\textbf{Control:} Retest normal user/service sign-in and document which enterprise controls were not present in the lab.\par
 \noindent\textbf{Later retrieval:} Reconstruct one privilege path and the exact permission change that removed it.\par
 \noindent\textbf{Alignment references:} microsoft-ad, microsoft-adcs, goad, htb-pentest\par
 \subsubsection{active-directory-security: independent-transfer}
 \noindent\textbf{Milestone:} independent-transfer-milestone\par
-\noindent\textbf{Skill:} Revisit the skill on a fresh problem\par
-\noindent\textbf{Experiment:} After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.\par
-\noindent\textbf{Transfer:} Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.\par
-\noindent\textbf{Control:} Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.\par
-\noindent\textbf{Later retrieval:} Explain what transferred, what required help and which prerequisite needs another small experiment.\par
+\noindent\textbf{Skill:} Recheck the boundary with a specified change\par
+\noindent\textbf{Experiment:} In your isolated domain, move the TrainingNotes GPO link from the Training OU to a new TrainingReview OU containing only LabOperator. Predict and measure which test user is affected.\par
+\noindent\textbf{Transfer:} Add a second case by reversing the changed condition above, predict its result and compare actual behavior.\par
+\noindent\textbf{Control:} Normal LabReader sign-in must still work; leave other OUs untouched.\par
+\noindent\textbf{Later retrieval:} Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested.\par
 \noindent\textbf{Alignment references:} microsoft-ad, microsoft-adcs, goad, htb-pentest\par
 \subsubsection{cloud-security: foundations}
 \noindent\textbf{Milestone:} foundations-milestone\par
-\noindent\textbf{Skill:} Prove the entry skills in a small lab\par
-\noindent\textbf{Experiment:} Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.\par
-\noindent\textbf{Transfer:} Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.\par
-\noindent\textbf{Control:} Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.\par
-\noindent\textbf{Later retrieval:} Reconstruct the environment and entry assumptions without following the setup notes.\par
+\noindent\textbf{Skill:} Compare two roles in a local permission model\par
+\noindent\textbf{Experiment:} Read a concrete access matrix without needing a cloud subscription.\par
+\noindent\textbf{Transfer:} Remove write from editor in a copy; predict and rerun the matrix.\par
+\noindent\textbf{Control:} Reader read must remain allowed, and unknown write must remain denied.\par
+\noindent\textbf{Later retrieval:} Without opening your report, reconstruct the inputs, observed result and main limitation of compare two roles in a local permission model.\par
 \noindent\textbf{Alignment references:} owasp-cloud, cloudgoat, microsoft-soc\par
 \subsubsection{cloud-security: shared-responsibility}
 \noindent\textbf{Milestone:} shared-responsibility-milestone\par
 \noindent\textbf{Skill:} Identify who owns each control\par
-\noindent\textbf{Experiment:} Build an asset and responsibility inventory covering account ownership, regions, exposed endpoints, audit sources and recovery responsibilities.\par
+\noindent\textbf{Experiment:} Use cloud.json as the fictional asset inventory. Name the notes resource, local region, application owner and provider/team responsibility split.\par
 \noindent\textbf{Transfer:} Move one component from a VM to a managed service and revise the shared-responsibility assumptions.\par
 \noindent\textbf{Control:} Include a provider-managed control that a workload operator cannot fix by changing application code.\par
 \noindent\textbf{Later retrieval:} Explain the difference between provider security and secure use of the provider.\par
@@ -595,7 +595,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{cloud-security: iam}
 \noindent\textbf{Milestone:} iam-milestone\par
 \noindent\textbf{Skill:} Predict the authorization decision\par
-\noindent\textbf{Experiment:} Build an access matrix for two synthetic roles and one resource, test it in a provider policy simulator or scoped training account, and record where the simulator lacks runtime context.\par
+\noindent\textbf{Experiment:} Run policy.py and write the reader/editor read/write matrix before changing it. Record the public flag separately from role permissions; this model does not apply the flag in its evaluator.\par
 \noindent\textbf{Transfer:} Add a condition or a resource policy and predict how the effective decision changes.\par
 \noindent\textbf{Control:} Demonstrate a denied unrelated principal and an intended allowed operation.\par
 \noindent\textbf{Later retrieval:} Explain why an identity policy alone may not determine effective access.\par
@@ -603,7 +603,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{cloud-security: exposure}
 \noindent\textbf{Milestone:} exposure-milestone\par
 \noindent\textbf{Skill:} Public does not always mean intended\par
-\noindent\textbf{Experiment:} Trace a fictional application's exposure through load balancer, workload and data storage; validate selected rules using a local model or training account and propose a minimal repair.\par
+\noindent\textbf{Experiment:} Read cloud.json exposure and public fields. Define intended access: internet reaches the load-balancer only; notes is not publicly readable.\par
 \noindent\textbf{Transfer:} Change a resource from private to shared-with-one-role and verify that the intended boundary survives.\par
 \noindent\textbf{Control:} Preserve legitimate client access and demonstrate that an unrelated identity cannot read the object.\par
 \noindent\textbf{Later retrieval:} Reconstruct the layers required to explain one exposure finding.\par
@@ -611,7 +611,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{cloud-security: secrets}
 \noindent\textbf{Milestone:} secrets-milestone\par
 \noindent\textbf{Skill:} Separate workload identity from static keys\par
-\noindent\textbf{Experiment:} Replace a toy long-lived credential with a bounded local token or a training-provider workload identity, test expiration/revocation and document remaining trust assumptions.\par
+\noindent\textbf{Experiment:} Implement a local token record with fields \path{token_id}, \path{allowed_action}, \path{expires_at} and revoked. Use fixed synthetic times so tests are reproducible; no real credentials.\par
 \noindent\textbf{Transfer:} Change the audience, role or expiry and predict whether the request should still authenticate.\par
 \noindent\textbf{Control:} Verify a valid authorized request succeeds and a stale token is rejected without logging its contents.\par
 \noindent\textbf{Later retrieval:} Explain rotation, revocation and short-lived identity as different mechanisms.\par
@@ -619,7 +619,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{cloud-security: logging}
 \noindent\textbf{Milestone:} logging-milestone\par
 \noindent\textbf{Skill:} Follow a control-plane change\par
-\noindent\textbf{Experiment:} Investigate supplied cloud audit events around a permission change and later resource access; construct a timeline and a detection query with explicit missing sources.\par
+\noindent\textbf{Experiment:} Use cloud.json audit, where every event has a stable c-ID. Sort the grant/access sequence by event time and distinguish success from denied.\par
 \noindent\textbf{Transfer:} Change a resource name or actor and test whether the behavioral analytic still finds the sequence.\par
 \noindent\textbf{Control:} Include a denied change and a known maintenance change that must not be labeled successful compromise.\par
 \noindent\textbf{Later retrieval:} Explain what the audit source can and cannot establish about data access.\par
@@ -627,31 +627,31 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{cloud-security: assessment}
 \noindent\textbf{Milestone:} assessment-milestone\par
 \noindent\textbf{Skill:} Deliver a bounded cloud review\par
-\noindent\textbf{Experiment:} Review a fresh configuration and audit bundle, verify one identity or exposure defect in a scoped lab, apply a repair and record cleanup; use only owned training resources.\par
+\noindent\textbf{Experiment:} Make a fresh copy of cloud.json with resource id changed to project-notes and actor alice changed to trainee. Add a direct internet → project-notes edge.\par
 \noindent\textbf{Transfer:} Change one trust policy or network boundary and independently reassess the affected access path.\par
 \noindent\textbf{Control:} Verify legitimate workload behavior and prove temporary lab resources were removed where a real account was used.\par
 \noindent\textbf{Later retrieval:} Reconstruct the finding, provider-specific limits and remaining assurance gaps.\par
 \noindent\textbf{Alignment references:} owasp-cloud, cloudgoat, microsoft-soc\par
 \subsubsection{cloud-security: independent-transfer}
 \noindent\textbf{Milestone:} independent-transfer-milestone\par
-\noindent\textbf{Skill:} Revisit the skill on a fresh problem\par
-\noindent\textbf{Experiment:} After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.\par
-\noindent\textbf{Transfer:} Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.\par
-\noindent\textbf{Control:} Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.\par
-\noindent\textbf{Later retrieval:} Explain what transferred, what required help and which prerequisite needs another small experiment.\par
+\noindent\textbf{Skill:} Recheck the boundary with a specified change\par
+\noindent\textbf{Experiment:} In cloud.json rename notes to archive and remove editor write. Update the local policy/exposure tests to use the changed resource and intended read-only workflow.\par
+\noindent\textbf{Transfer:} Add a second case by reversing the changed condition above, predict its result and compare actual behavior.\par
+\noindent\textbf{Control:} Reader read remains allowed and unknown write remains denied. State provider-specific behavior left untested.\par
+\noindent\textbf{Later retrieval:} Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested.\par
 \noindent\textbf{Alignment references:} owasp-cloud, cloudgoat, microsoft-soc\par
 \subsubsection{container-kubernetes-security: foundations}
 \noindent\textbf{Milestone:} foundations-milestone\par
-\noindent\textbf{Skill:} Prove the entry skills in a small lab\par
-\noindent\textbf{Experiment:} Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.\par
-\noindent\textbf{Transfer:} Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.\par
-\noindent\textbf{Control:} Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.\par
-\noindent\textbf{Later retrieval:} Reconstruct the environment and entry assumptions without following the setup notes.\par
+\noindent\textbf{Skill:} Inspect the process inside your first training container\par
+\noindent\textbf{Experiment:} Build a minimal local image and verify its runtime user.\par
+\noindent\textbf{Transfer:} Override the training container user with --user 10002:10002 and compare id output.\par
+\noindent\textbf{Control:} Run with --network none and confirm identity inspection still works; network access is unnecessary for this check.\par
+\noindent\textbf{Later retrieval:} Without opening your report, reconstruct the inputs, observed result and main limitation of inspect the process inside your first training container.\par
 \noindent\textbf{Alignment references:} kubernetes-checklist, owasp-cloud\par
 \subsubsection{container-kubernetes-security: container-boundary}
 \noindent\textbf{Milestone:} container-boundary-milestone\par
 \noindent\textbf{Skill:} A container still shares a kernel\par
-\noindent\textbf{Experiment:} Run a toy service with a non-root user, dropped capabilities, no-new-privileges and a read-only root plus a bounded writable directory; explain observed failures.\par
+\noindent\textbf{Experiment:} Use the downloaded Dockerfile and build ascend-notes:training. Run id with --cap-drop ALL --security-opt no-new-privileges --read-only --tmpfs /tmp:rw,size=16m --network none.\par
 \noindent\textbf{Transfer:} Remove one required write path or change its owner and predict which operation fails.\par
 \noindent\textbf{Control:} Preserve the service's intended request while showing it cannot write to an unrelated path.\par
 \noindent\textbf{Later retrieval:} Explain which risks these controls reduce and which require stronger isolation.\par
@@ -659,7 +659,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{container-kubernetes-security: image-supply-chain}
 \noindent\textbf{Milestone:} image-supply-chain-milestone\par
 \noindent\textbf{Skill:} Know exactly which image ran\par
-\noindent\textbf{Experiment:} Generate an image inventory/SBOM for a toy service, pin the source image digest and record provenance, vulnerability findings and applicability limits.\par
+\noindent\textbf{Experiment:} Build the Dockerfile and record docker image inspect output, including base image identity. Install a locally supported Syft release from its official documentation if using an SBOM generator.\par
 \noindent\textbf{Transfer:} Resolve an updated tag and identify the changed digest and dependencies before accepting it.\par
 \noindent\textbf{Control:} Include a scanner finding for an unused or unreachable component and separate presence from demonstrated exploitability.\par
 \noindent\textbf{Later retrieval:} Explain why a matching digest gives identity but not a guarantee of safety.\par
@@ -667,7 +667,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{container-kubernetes-security: network-separation}
 \noindent\textbf{Milestone:} network-separation-milestone\par
 \noindent\textbf{Skill:} Test an isolation claim\par
-\noindent\textbf{Experiment:} In a disposable project, verify loopback-only access, separate lab networks, resource bounds and the absence of tracker-volume or Docker-socket mounts.\par
+\noindent\textbf{Experiment:} Pull nginx:alpine for this network task; unlike service.py it listens on the container interface. Run a named disposable container with --memory 128m --cpus 0.5 --pids-limit 64 and -p 127.0.0.1:8765:80.\par
 \noindent\textbf{Transfer:} Move the client to another lab network and predict which target it should fail to reach.\par
 \noindent\textbf{Control:} Confirm a permitted same-network request works while cross-network and outbound probes fail within bounded timeouts.\par
 \noindent\textbf{Later retrieval:} Explain what an internal bridge blocks and why the host kernel is still shared.\par
@@ -675,7 +675,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{container-kubernetes-security: cluster-identity}
 \noindent\textbf{Milestone:} cluster-identity-milestone\par
 \noindent\textbf{Skill:} Give the workload only its job\par
-\noindent\textbf{Experiment:} In a disposable Kubernetes cluster, bind a limited service account to one namespace and verify allowed and denied operations with the API authorization checks.\par
+\noindent\textbf{Experiment:} Create a disposable kind/minikube cluster using the linked setup guide; verify kubectl config current-context identifies that lab. Read pod.yaml, then apply it only there.\par
 \noindent\textbf{Transfer:} Change the namespace or requested verb and predict the decision before checking.\par
 \noindent\textbf{Control:} Keep the intended read working and deny writes to unrelated secrets or namespaces.\par
 \noindent\textbf{Later retrieval:} Reconstruct the subject, role and binding needed for one API permission.\par
@@ -683,7 +683,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{container-kubernetes-security: cluster-network}
 \noindent\textbf{Milestone:} cluster-network-milestone\par
 \noindent\textbf{Skill:} Observe enforcement, not just YAML\par
-\noindent\textbf{Experiment:} Deploy a tiny client/server pair on an isolated test cluster, apply default-deny plus a specific allow rule, and test actual connectivity.\par
+\noindent\textbf{Experiment:} Use a disposable cluster whose CNI supports NetworkPolicy. Create an ascend-lab namespace, an nginx server pod/service and a curl client; record the image versions.\par
 \noindent\textbf{Transfer:} Change one pod label or allowed port and predict which connection changes.\par
 \noindent\textbf{Control:} Include a matching permitted client and an unmatched client that must be denied; report an unsupported CNI as an unmet prerequisite.\par
 \noindent\textbf{Later retrieval:} Explain why a valid NetworkPolicy object can coexist with unrestricted traffic.\par
@@ -691,31 +691,31 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{container-kubernetes-security: review}
 \noindent\textbf{Milestone:} review-milestone\par
 \noindent\textbf{Skill:} Review and repair a workload deployment\par
-\noindent\textbf{Experiment:} Review a fresh toy deployment, demonstrate one excessive permission or exposure, apply a minimal fix and retest the intended workload plus resource limits.\par
+\noindent\textbf{Experiment:} Use a copy of pod.yaml. Add an excessive pods/delete verb to its role as the deliberate configuration defect, then apply only in your disposable cluster.\par
 \noindent\textbf{Transfer:} Change a namespace, image version or writable path and revise the controls instead of copying the old manifest.\par
 \noindent\textbf{Control:} Show an unrelated workload and legitimate client remain functional after the fix.\par
 \noindent\textbf{Later retrieval:} Explain one runtime observation that would invalidate your review conclusion.\par
 \noindent\textbf{Alignment references:} kubernetes-checklist, owasp-cloud\par
 \subsubsection{container-kubernetes-security: independent-transfer}
 \noindent\textbf{Milestone:} independent-transfer-milestone\par
-\noindent\textbf{Skill:} Revisit the skill on a fresh problem\par
-\noindent\textbf{Experiment:} After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.\par
-\noindent\textbf{Transfer:} Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.\par
-\noindent\textbf{Control:} Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.\par
-\noindent\textbf{Later retrieval:} Explain what transferred, what required help and which prerequisite needs another small experiment.\par
+\noindent\textbf{Skill:} Recheck the boundary with a specified change\par
+\noindent\textbf{Experiment:} In a disposable cluster, change the downloaded Role/RoleBinding namespace from ascend-lab to ascend-review and test the same service-account get/list/delete matrix there.\par
+\noindent\textbf{Transfer:} Add a second case by reversing the changed condition above, predict its result and compare actual behavior.\par
+\noindent\textbf{Control:} The training service account must not gain privileges in default; delete only the new training namespace afterward.\par
+\noindent\textbf{Later retrieval:} Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested.\par
 \noindent\textbf{Alignment references:} kubernetes-checklist, owasp-cloud\par
 \subsubsection{secure-development-devsecops: foundations}
 \noindent\textbf{Milestone:} foundations-milestone\par
-\noindent\textbf{Skill:} Prove the entry skills in a small lab\par
-\noindent\textbf{Experiment:} Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.\par
-\noindent\textbf{Transfer:} Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.\par
-\noindent\textbf{Control:} Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.\par
-\noindent\textbf{Later retrieval:} Reconstruct the environment and entry assumptions without following the setup notes.\par
+\noindent\textbf{Skill:} Run and inspect a tiny notes service\par
+\noindent\textbf{Experiment:} Make one real HTTP request and find its handler in source.\par
+\noindent\textbf{Transfer:} Request /notes/2 as bob and trace that record in NOTES.\par
+\noindent\textbf{Control:} Request an unknown note; observe a 404 without treating it as an application crash.\par
+\noindent\textbf{Later retrieval:} Without opening your report, reconstruct the inputs, observed result and main limitation of run and inspect a tiny notes service.\par
 \noindent\textbf{Alignment references:} owasp-asvs, owasp-cloud, kubernetes-checklist\par
 \subsubsection{secure-development-devsecops: threat-model}
 \noindent\textbf{Milestone:} threat-model-milestone\par
 \noindent\textbf{Skill:} Draw the trust boundary before coding\par
-\noindent\textbf{Experiment:} Build a threat model with three concrete abuse cases and map each to an ASVS-style testable requirement.\par
+\noindent\textbf{Experiment:} Use scenario.json and service.py. Draw browser → handler → in-memory notes and label X-Lab-User as a fake identity boundary.\par
 \noindent\textbf{Transfer:} Add a background worker or third-party integration and revise the boundaries and threats.\par
 \noindent\textbf{Control:} Include a failure outside the service's responsibility and document the dependency instead of claiming to fix it.\par
 \noindent\textbf{Later retrieval:} Reconstruct one threat from asset through entry point to consequence.\par
@@ -723,7 +723,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{secure-development-devsecops: input-and-output}
 \noindent\textbf{Milestone:} input-and-output-milestone\par
 \noindent\textbf{Skill:} Follow untrusted data to its sink\par
-\noindent\textbf{Experiment:} Repair one input or output handling defect in your own code and write tests that reproduce the defect and preserve intended behavior.\par
+\noindent\textbf{Experiment:} Use PATCH /notes/1 with X-Lab-User: alice and a small JSON body. Compare an intended text update with an attempted owner or internal-field update in the disposable fixture.\par
 \noindent\textbf{Transfer:} Change the input encoding or rendering context and update the defense rather than reusing an unrelated escaping rule.\par
 \noindent\textbf{Control:} Include valid punctuation and an invalid structured input; reject the dangerous case without silently corrupting legitimate data.\par
 \noindent\textbf{Later retrieval:} Explain why validation and output encoding address different boundaries.\par
@@ -731,7 +731,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{secure-development-devsecops: authz}
 \noindent\textbf{Milestone:} authz-milestone\par
 \noindent\textbf{Skill:} Put authorization beside the resource\par
-\noindent\textbf{Experiment:} Implement server-side authorization tests for owner access, cross-user access and the privileged operation; demonstrate the bug before the repair.\par
+\noindent\textbf{Experiment:} Reproduce GET /notes/1 as bob, then add the missing owner check in \path{do_GET}.\par
 \noindent\textbf{Transfer:} Add a new HTTP method or background operation and check that it enforces the same resource policy.\par
 \noindent\textbf{Control:} Keep owner access working and deny an authenticated but unauthorized user.\par
 \noindent\textbf{Later retrieval:} State the policy independently of route names or UI controls.\par
@@ -739,7 +739,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{secure-development-devsecops: supply-chain}
 \noindent\textbf{Milestone:} supply-chain-milestone\par
 \noindent\textbf{Skill:} Make a dependency decision you can defend\par
-\noindent\textbf{Experiment:} Produce an SBOM and pinned dependency manifest, investigate one advisory's applicability, and test an update or documented mitigation.\par
+\noindent\textbf{Experiment:} Inventory this standard-library-only service: Python interpreter version, base OS if containerized, and no third-party runtime packages. Record those facts rather than inventing pip dependencies.\par
 \noindent\textbf{Transfer:} Introduce a version change in a branch and assess both security and compatibility effects before merging.\par
 \noindent\textbf{Control:} Include an advisory that does not apply to the used component/version and explain the evidence.\par
 \noindent\textbf{Later retrieval:} Explain why dependency presence, reachability and exploitability are separate claims.\par
@@ -747,7 +747,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{secure-development-devsecops: pipeline}
 \noindent\textbf{Milestone:} pipeline-milestone\par
 \noindent\textbf{Skill:} Make the pipeline stop for a real defect\par
-\noindent\textbf{Experiment:} Add security regression tests, a synthetic-secret check and artifact identity recording; demonstrate that each relevant bad fixture fails the gate.\par
+\noindent\textbf{Experiment:} Use unittest discovery for your authorization/property tests and a local script checking for a synthetic literal named \path{TRAINING_SECRET_DO_NOT_COMMIT}. Keep real credentials out.\par
 \noindent\textbf{Transfer:} Change a fixture's filename or encoding and test whether the intended check still applies.\par
 \noindent\textbf{Control:} Confirm clean code builds successfully and no test prints secret-like fixture values into published logs.\par
 \noindent\textbf{Later retrieval:} Explain the failure mode each gate detects and one it misses.\par
@@ -755,31 +755,31 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{secure-development-devsecops: release}
 \noindent\textbf{Milestone:} release-milestone\par
 \noindent\textbf{Skill:} Ship a small service with an assurance record\par
-\noindent\textbf{Experiment:} Deliver the toy service with passing regression tests, reproducible build inputs, deployment permissions, rollback instructions and a documented residual risk.\par
+\noindent\textbf{Experiment:} Commit the fixed local service, tests and version manifest in your training Git repo. Run the complete local test suite from a fresh copy.\par
 \noindent\textbf{Transfer:} Change a dependency or deployment setting and rerun only the checks whose assumptions changed, explaining the choice.\par
 \noindent\textbf{Control:} Reproduce a known security regression on the old version and show the release rejects it while valid use works.\par
 \noindent\textbf{Later retrieval:} Reconstruct the assurance argument and the strongest remaining limitation.\par
 \noindent\textbf{Alignment references:} owasp-asvs, owasp-cloud, kubernetes-checklist\par
 \subsubsection{secure-development-devsecops: independent-transfer}
 \noindent\textbf{Milestone:} independent-transfer-milestone\par
-\noindent\textbf{Skill:} Revisit the skill on a fresh problem\par
-\noindent\textbf{Experiment:} After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.\par
-\noindent\textbf{Transfer:} Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.\par
-\noindent\textbf{Control:} Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.\par
-\noindent\textbf{Later retrieval:} Explain what transferred, what required help and which prerequisite needs another small experiment.\par
+\noindent\textbf{Skill:} Recheck the boundary with a specified change\par
+\noindent\textbf{Experiment:} Add a maximum text length of 80 to your fixed service. Test boundary lengths 79, 80 and 81 together with the cross-user and property-injection cases.\par
+\noindent\textbf{Transfer:} Add a second case by reversing the changed condition above, predict its result and compare actual behavior.\par
+\noindent\textbf{Control:} A valid owner update remains usable; length validation must not replace ownership checks.\par
+\noindent\textbf{Later retrieval:} Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested.\par
 \noindent\textbf{Alignment references:} owasp-asvs, owasp-cloud, kubernetes-checklist\par
 \subsubsection{digital-forensics-incident-response: foundations}
 \noindent\textbf{Milestone:} foundations-milestone\par
-\noindent\textbf{Skill:} Prove the entry skills in a small lab\par
-\noindent\textbf{Experiment:} Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.\par
-\noindent\textbf{Transfer:} Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.\par
-\noindent\textbf{Control:} Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.\par
-\noindent\textbf{Later retrieval:} Reconstruct the environment and entry assumptions without following the setup notes.\par
+\noindent\textbf{Skill:} Hash an evidence copy without changing the original\par
+\noindent\textbf{Experiment:} Preserve an authored file and distinguish content integrity from provenance.\par
+\noindent\textbf{Transfer:} Edit only analysis-copy/note.txt and recalculate both hashes.\par
+\noindent\textbf{Control:} Verify the original hash stayed unchanged; differing copy bytes must not be described as an untouched original.\par
+\noindent\textbf{Later retrieval:} Without opening your report, reconstruct the inputs, observed result and main limitation of hash an evidence copy without changing the original.\par
 \noindent\textbf{Alignment references:} digitalcorpora, security-onion-import, htb-soc\par
 \subsubsection{digital-forensics-incident-response: preservation}
 \noindent\textbf{Milestone:} preservation-milestone\par
 \noindent\textbf{Skill:} Keep the original evidence original\par
-\noindent\textbf{Experiment:} Create an evidence manifest with acquisition time, source, hashes, handling history and analysis-copy paths; verify the original remains unchanged after analysis.\par
+\noindent\textbf{Experiment:} Use original/ and the analysis-copy made in foundations. Record source description, acquisition field, hashes and your copy operation in a manifest.\par
 \noindent\textbf{Transfer:} Change the copy or filename and determine which identity assertions still hold.\par
 \noindent\textbf{Control:} Include a corrupted copy that must fail integrity verification and a byte-identical renamed copy that must pass content verification.\par
 \noindent\textbf{Later retrieval:} Explain integrity, provenance and chain of custody as different properties.\par
@@ -787,7 +787,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{digital-forensics-incident-response: filesystem}
 \noindent\textbf{Milestone:} filesystem-milestone\par
 \noindent\textbf{Skill:} Recover a story from file metadata\par
-\noindent\textbf{Experiment:} Build a bounded account of file creation/modification using an analysis copy, recording filesystem semantics and tool/version assumptions.\par
+\noindent\textbf{Experiment:} Use an analysis copy of original/note.txt. Inspect Path.stat() values for size, mtime and ctime; record your OS/filesystem semantics.\par
 \noindent\textbf{Transfer:} Change the timezone display or introduce a copied file whose timestamps differ from its real acquisition time.\par
 \noindent\textbf{Control:} Include metadata that cannot prove who created a file and explicitly withhold that conclusion.\par
 \noindent\textbf{Later retrieval:} Explain why one timestamp does not prove an event happened at that exact time.\par
@@ -795,7 +795,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{digital-forensics-incident-response: timeline}
 \noindent\textbf{Milestone:} timeline-milestone\par
 \noindent\textbf{Skill:} Reconcile clocks before drawing conclusions\par
-\noindent\textbf{Experiment:} Correlate a small authentication, process and network evidence bundle into a timeline with confidence and source references.\par
+\noindent\textbf{Experiment:} Use events.csv and context.json. Normalize every timestamp to UTC and sort by event time, retaining row IDs and source filename.\par
 \noindent\textbf{Transfer:} Add a clock-skew correction or delayed event and revise the ordering where justified.\par
 \noindent\textbf{Control:} Keep an unrelated similarly named process out of the incident chain.\par
 \noindent\textbf{Later retrieval:} Reconstruct which event ordering is certain and which depends on clock assumptions.\par
@@ -803,7 +803,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{digital-forensics-incident-response: memory}
 \noindent\textbf{Milestone:} memory-milestone\par
 \noindent\textbf{Skill:} Separate a process artifact from a verdict\par
-\noindent\textbf{Experiment:} On a suitable analysis host, inspect process and connection artifacts from a public training image, compare them with the provided ground truth where available, and record unsupported interpretations.\par
+\noindent\textbf{Experiment:} Download the named cridex.vmem training image via the Volatility Foundation Memory Samples page: \url{https://github.com/volatilityfoundation/volatility/wiki/Memory-Samples} . It is a memory image from a historical Windows malware investigation, not an executable to run. Check source terms, compressed/uncompressed size and hash before downloading.\par
 \noindent\textbf{Transfer:} Change the filter or investigate a second process and independently test the same hypothesis.\par
 \noindent\textbf{Control:} Include a benign process with a suspicious-looking name and avoid treating its name alone as malware proof.\par
 \noindent\textbf{Later retrieval:} Explain how an incompatible symbol profile can invalidate an apparently plausible result.\par
@@ -811,7 +811,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{digital-forensics-incident-response: containment}
 \noindent\textbf{Milestone:} containment-milestone\par
 \noindent\textbf{Skill:} Preserve the question while containing the risk\par
-\noindent\textbf{Experiment:} Rehearse a synthetic incident using a disposable service: preserve relevant logs, disable only the affected test identity and verify intended service behavior.\par
+\noindent\textbf{Experiment:} Use copies of events.csv and context.json for a tabletop response. Hash and preserve original logs before making a decision about fictional alice.\par
 \noindent\textbf{Transfer:} Remove access to one evidence source and revise the plan without inventing missing facts.\par
 \noindent\textbf{Control:} Preserve a legitimate user's access and document evidence lost because of the chosen intervention.\par
 \noindent\textbf{Later retrieval:} Explain one containment tradeoff and how it changes later interpretation.\par
@@ -819,31 +819,31 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{digital-forensics-incident-response: case}
 \noindent\textbf{Milestone:} case-milestone\par
 \noindent\textbf{Skill:} Deliver an evidence-led incident report\par
-\noindent\textbf{Experiment:} Produce an evidence-indexed timeline, affected scope, alternative hypotheses, response decision and remaining uncertainty from an unfamiliar dataset.\par
+\noindent\textbf{Experiment:} Create a variation of events.csv by moving e4 after the investigation window and changing one host. Preserve the changed input and disclose whether you or a peer selected it.\par
 \noindent\textbf{Transfer:} Introduce one contradictory artifact and revise the explanation while retaining an audit of the earlier hypothesis.\par
 \noindent\textbf{Control:} Identify one tempting conclusion that the available evidence does not support.\par
 \noindent\textbf{Later retrieval:} Reconstruct the case from the evidence index and independently recheck one claim.\par
 \noindent\textbf{Alignment references:} digitalcorpora, security-onion-import, htb-soc\par
 \subsubsection{digital-forensics-incident-response: independent-transfer}
 \noindent\textbf{Milestone:} independent-transfer-milestone\par
-\noindent\textbf{Skill:} Revisit the skill on a fresh problem\par
-\noindent\textbf{Experiment:} After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.\par
-\noindent\textbf{Transfer:} Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.\par
-\noindent\textbf{Control:} Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.\par
-\noindent\textbf{Later retrieval:} Explain what transferred, what required help and which prerequisite needs another small experiment.\par
+\noindent\textbf{Skill:} Recheck the boundary with a specified change\par
+\noindent\textbf{Experiment:} Add a synthetic device record contradicting the host attributed to e4 in your copied evidence bundle. Rebuild the timeline and state whether the join remains justified.\par
+\noindent\textbf{Transfer:} Add a second case by reversing the changed condition above, predict its result and compare actual behavior.\par
+\noindent\textbf{Control:} Keep original evidence unchanged and retain its hashes; a conflicting record does not license deleting the earlier evidence.\par
+\noindent\textbf{Later retrieval:} Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested.\par
 \noindent\textbf{Alignment references:} digitalcorpora, security-onion-import, htb-soc\par
 \subsubsection{threat-hunting-intelligence: foundations}
 \noindent\textbf{Milestone:} foundations-milestone\par
-\noindent\textbf{Skill:} Prove the entry skills in a small lab\par
-\noindent\textbf{Experiment:} Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.\par
-\noindent\textbf{Transfer:} Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.\par
-\noindent\textbf{Control:} Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.\par
-\noindent\textbf{Later retrieval:} Reconstruct the environment and entry assumptions without following the setup notes.\par
+\noindent\textbf{Skill:} Separate event facts from a hunt hypothesis\par
+\noindent\textbf{Experiment:} Use a small log bundle to write a testable question.\par
+\noindent\textbf{Transfer:} Add an approval note for e4 in a COPY of context.json and revise confidence.\par
+\noindent\textbf{Control:} Keep the denied e11 event as denied; do not count it as a successful administrator grant.\par
+\noindent\textbf{Later retrieval:} Without opening your report, reconstruct the inputs, observed result and main limitation of separate event facts from a hunt hypothesis.\par
 \noindent\textbf{Alignment references:} mitre-emulation, stix, microsoft-soc\par
 \subsubsection{threat-hunting-intelligence: source-quality}
 \noindent\textbf{Milestone:} source-quality-milestone\par
 \noindent\textbf{Skill:} Put confidence beside the claim\par
-\noindent\textbf{Experiment:} Produce a short intelligence note with source dates, collection limits, confidence and the concrete defender decision it informs.\par
+\noindent\textbf{Experiment:} Use the ATT\&CK Valid Accounts page as a public behavior reference and context.json as the synthetic local source. Record authorship, date accessed and collection limits separately.\par
 \noindent\textbf{Transfer:} Add a conflicting source or newer report and explain which claims change.\par
 \noindent\textbf{Control:} Include a widely repeated claim without primary evidence and keep it below corroborated facts.\par
 \noindent\textbf{Later retrieval:} Explain how source reliability differs from confidence in an individual claim.\par
@@ -851,7 +851,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{threat-hunting-intelligence: behavior}
 \noindent\textbf{Milestone:} behavior-milestone\par
 \noindent\textbf{Skill:} Turn a report into a huntable hypothesis\par
-\noindent\textbf{Experiment:} Write an ATT\&CK-aligned hunt hypothesis, list needed fields and expected benign lookalikes, and define evidence that would falsify it.\par
+\noindent\textbf{Experiment:} Define a hypothesis over events.csv: a successful role change followed by same-user resource access within five minutes deserves review.\par
 \noindent\textbf{Transfer:} Change the assumed platform or available sensor and revise or reject the hypothesis.\par
 \noindent\textbf{Control:} Show a technique mapping that is too broad to justify the proposed query.\par
 \noindent\textbf{Later retrieval:} Reconstruct the hypothesis without using an indicator list.\par
@@ -859,7 +859,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{threat-hunting-intelligence: queries}
 \noindent\textbf{Milestone:} queries-milestone\par
 \noindent\textbf{Skill:} Search for behavior through the noise\par
-\noindent\textbf{Experiment:} Implement a reproducible hunt over synthetic telemetry and measure matches against labeled positive and benign events.\par
+\noindent\textbf{Experiment:} Write a Python csv/datetime query implementing your hypothesis with exact identity, bounded time and successful result. Use the foundations timeline normalization method.\par
 \noindent\textbf{Transfer:} Change filenames, addresses or usernames while preserving behavior and evaluate coverage.\par
 \noindent\textbf{Control:} Include an ordinary administration sequence with similar individual events.\par
 \noindent\textbf{Later retrieval:} Explain the false-positive mechanism of the original query.\par
@@ -867,7 +867,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{threat-hunting-intelligence: context}
 \noindent\textbf{Milestone:} context-milestone\par
 \noindent\textbf{Skill:} Enrich without inventing attribution\par
-\noindent\textbf{Experiment:} Build a small evidence graph from supplied indicators and public context, assigning dates, confidence and alternative explanations to each edge.\par
+\noindent\textbf{Experiment:} Use events.csv addresses and context.json to build a graph of user → host → synthetic source IP. Every edge needs a row ID, timestamp and confidence.\par
 \noindent\textbf{Transfer:} Introduce a shared hosting address or recycled domain and remove unjustified relationships.\par
 \noindent\textbf{Control:} Demonstrate that shared infrastructure alone does not establish a common operator.\par
 \noindent\textbf{Later retrieval:} Explain one edge that is useful operationally but insufficient for attribution.\par
@@ -875,7 +875,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{threat-hunting-intelligence: intelligence-format}
 \noindent\textbf{Milestone:} intelligence-format-milestone\par
 \noindent\textbf{Skill:} Exchange the meaning, not just the fields\par
-\noindent\textbf{Experiment:} Create and validate a minimal STIX bundle for a fictional incident using synthetic indicators, confidence and source references.\par
+\noindent\textbf{Experiment:} Create a STIX 2.1 bundle for a fictional observed sequence using \url{https://oasis-open.github.io/cti-documentation/} . Include a valid bundle UUID and an indicator with reserved-domain/IP data only.\par
 \noindent\textbf{Transfer:} Update an observation or revoke an indicator and express the change without silently erasing its history.\par
 \noindent\textbf{Control:} Include a malformed relationship or unsupported claim that validation/review must reject.\par
 \noindent\textbf{Later retrieval:} Reconstruct the difference between an observable, an indicator and an incident claim.\par
@@ -883,39 +883,39 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{threat-hunting-intelligence: hunt-report}
 \noindent\textbf{Milestone:} hunt-report-milestone\par
 \noindent\textbf{Skill:} Turn a hunt into an operational decision\par
-\noindent\textbf{Experiment:} Conduct the hunt, document query versions, investigated matches, negative results and coverage limits, then propose a detection or data-collection improvement.\par
+\noindent\textbf{Experiment:} Use a changed copy of events.csv with an additional approved maintenance role change. Keep expected labels separate.\par
 \noindent\textbf{Transfer:} Add a changed positive sequence or remove a source and revise the result transparently.\par
 \noindent\textbf{Control:} Keep absence of evidence separate from proof that the behavior never occurred.\par
 \noindent\textbf{Later retrieval:} Explain what action the hunt supports and what further collection is needed.\par
 \noindent\textbf{Alignment references:} mitre-emulation, stix, microsoft-soc\par
 \subsubsection{threat-hunting-intelligence: independent-transfer}
 \noindent\textbf{Milestone:} independent-transfer-milestone\par
-\noindent\textbf{Skill:} Revisit the skill on a fresh problem\par
-\noindent\textbf{Experiment:} After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.\par
-\noindent\textbf{Transfer:} Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.\par
-\noindent\textbf{Control:} Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.\par
-\noindent\textbf{Later retrieval:} Explain what transferred, what required help and which prerequisite needs another small experiment.\par
+\noindent\textbf{Skill:} Recheck the boundary with a specified change\par
+\noindent\textbf{Experiment:} Remove the role-change source rows from a COPY of events.csv. Rerun your successful-grant-followed-by-access hunt and revise the coverage statement.\par
+\noindent\textbf{Transfer:} Add a second case by reversing the changed condition above, predict its result and compare actual behavior.\par
+\noindent\textbf{Control:} Do not report no matches as proof that no role change occurred; preserve the known benign maintenance context.\par
+\noindent\textbf{Later retrieval:} Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested.\par
 \noindent\textbf{Alignment references:} mitre-emulation, stix, microsoft-soc\par
 \subsubsection{malware-analysis: foundations}
 \noindent\textbf{Milestone:} foundations-milestone\par
-\noindent\textbf{Skill:} Prove the entry skills in a small lab\par
-\noindent\textbf{Experiment:} Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.\par
-\noindent\textbf{Transfer:} Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.\par
-\noindent\textbf{Control:} Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.\par
-\noindent\textbf{Later retrieval:} Reconstruct the environment and entry assumptions without following the setup notes.\par
+\noindent\textbf{Skill:} Inspect a benign program before running it\par
+\noindent\textbf{Experiment:} Separate source capability, file identity and actual output.\par
+\noindent\textbf{Transfer:} Change only the branch string in a new copy and predict the two outputs.\par
+\noindent\textbf{Control:} Use an unmatched input to verify that the marker branch is not always taken.\par
+\noindent\textbf{Later retrieval:} Without opening your report, reconstruct the inputs, observed result and main limitation of inspect a benign program before running it.\par
 \noindent\textbf{Alignment references:} flare-vm, remnux, pwn-college\par
 \subsubsection{malware-analysis: triage}
 \noindent\textbf{Milestone:} triage-milestone\par
 \noindent\textbf{Skill:} Describe the file before naming a family\par
-\noindent\textbf{Experiment:} Produce a static triage sheet separating measured properties from inferred behavior and identify one next question for deeper analysis.\par
+\noindent\textbf{Experiment:} Use sample.py and its SHA-256. Record file type as Python text, byte length, imports and embedded CONFIG string.\par
 \noindent\textbf{Transfer:} Change compiler options or append harmless data and determine which identifiers and structural properties change.\par
 \noindent\textbf{Control:} Include a packed-looking or high-entropy benign file and avoid classifying it as malicious solely from entropy.\par
 \noindent\textbf{Later retrieval:} Explain what a hash, import and string can each establish.\par
 \noindent\textbf{Alignment references:} flare-vm, remnux, pwn-college\par
 \subsubsection{malware-analysis: static-flow}
 \noindent\textbf{Milestone:} static-flow-milestone\par
-\noindent\textbf{Skill:} Follow the branch that causes the effect\par
-\noindent\textbf{Experiment:} Trace the condition, data flow and effect in source and disassembly; predict two inputs before running the benign program.\par
+\noindent\textbf{Skill:} Trace a benign Python branch in bytecode\par
+\noindent\textbf{Experiment:} Disassemble the choose function using python3 -c "import sample, dis; dis.dis(sample.choose)". Record Python version since bytecode changes by release.\par
 \noindent\textbf{Transfer:} Change the input or compile optimization and re-identify the controlling condition.\par
 \noindent\textbf{Control:} Include an unreachable suspicious-looking string that does not prove execution.\par
 \noindent\textbf{Later retrieval:} Reconstruct the condition-to-effect chain without searching for keywords.\par
@@ -923,7 +923,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{malware-analysis: behavior}
 \noindent\textbf{Milestone:} behavior-milestone\par
 \noindent\textbf{Skill:} Investigate a trace without executing a sample\par
-\noindent\textbf{Experiment:} Build a behavior timeline from published or synthetic telemetry and distinguish observed effects from capabilities only suggested by static analysis.\par
+\noindent\textbf{Experiment:} Open trace.json, which is explicitly synthetic telemetry. Build a timeline retaining b-IDs and distinguish sample stdout from the analyst shell’s file redirection.\par
 \noindent\textbf{Transfer:} Add a failed operation or contradictory timestamp and revise the behavior claims.\par
 \noindent\textbf{Control:} Include an attempted connection that never succeeded and avoid calling it confirmed data transfer.\par
 \noindent\textbf{Later retrieval:} Explain one gap that would require a different sensor or controlled VM analysis.\par
@@ -931,7 +931,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{malware-analysis: configuration}
 \noindent\textbf{Milestone:} configuration-milestone\par
 \noindent\textbf{Skill:} Decode only what the evidence supports\par
-\noindent\textbf{Experiment:} Write a bounded parser for a self-authored encoded configuration, validate recovered fields and preserve the original byte offsets and assumptions.\par
+\noindent\textbf{Experiment:} Locate CONFIG in sample.py and decode it with base64 into bytes, then json.loads. Preserve the original encoded string and its byte offset in the file.\par
 \noindent\textbf{Transfer:} Change key order, length or encoding and make the parser fail clearly or support the documented variation.\par
 \noindent\textbf{Control:} Include a malformed/truncated fixture that must not yield a fabricated valid configuration.\par
 \noindent\textbf{Later retrieval:} Explain why successful decoding is not equivalent to execution or attribution.\par
@@ -939,7 +939,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{malware-analysis: signatures}
 \noindent\textbf{Milestone:} signatures-milestone\par
 \noindent\textbf{Skill:} Write a rule that survives a renamed file\par
-\noindent\textbf{Experiment:} Write a YARA or equivalent declarative rule for the training family and measure true/false matches on a documented sample set.\par
+\noindent\textbf{Experiment:} Create three source copies: unchanged sample.py, a copy with a harmless whitespace edit, and a benign unrelated hello-world file. Record hashes as the sample set.\par
 \noindent\textbf{Transfer:} Rename or recompile the toy sample and evaluate which features survive.\par
 \noindent\textbf{Control:} Include unrelated binaries sharing a common string so an overbroad signature fails the assessment.\par
 \noindent\textbf{Later retrieval:} Explain one expected false positive and how to investigate it.\par
@@ -947,31 +947,31 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{malware-analysis: report}
 \noindent\textbf{Milestone:} report-milestone\par
 \noindent\textbf{Skill:} Present a defensible analysis, not a label\par
-\noindent\textbf{Experiment:} Produce a report with static evidence, trace evidence, configuration interpretation, a bounded detection rule and explicit uncertainty; do not execute unknown malware.\par
+\noindent\textbf{Experiment:} Use a fresh sample.py copy with changed CONFIG topic and branch string. Keep source, disassembly, run output and the synthetic trace separately identified.\par
 \noindent\textbf{Transfer:} Change one fixture property or trace event and independently revise the affected conclusion.\par
 \noindent\textbf{Control:} Demonstrate a claim you deliberately withheld because the artifact or trace was insufficient.\par
 \noindent\textbf{Later retrieval:} Reconstruct the strongest finding and the observation that could disprove it.\par
 \noindent\textbf{Alignment references:} flare-vm, remnux, pwn-college\par
 \subsubsection{malware-analysis: independent-transfer}
 \noindent\textbf{Milestone:} independent-transfer-milestone\par
-\noindent\textbf{Skill:} Revisit the skill on a fresh problem\par
-\noindent\textbf{Experiment:} After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.\par
-\noindent\textbf{Transfer:} Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.\par
-\noindent\textbf{Control:} Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.\par
-\noindent\textbf{Later retrieval:} Explain what transferred, what required help and which prerequisite needs another small experiment.\par
+\noindent\textbf{Skill:} Recheck the boundary with a specified change\par
+\noindent\textbf{Experiment:} Change sample.py CONFIG topic and branch literal in a fresh copy without consulting the prior report. Recover fields, predict both branches and retest your signature.\par
+\noindent\textbf{Transfer:} Add a second case by reversing the changed condition above, predict its result and compare actual behavior.\par
+\noindent\textbf{Control:} A hello-world file must remain a non-match. State that native binaries and unknown malware were not analyzed.\par
+\noindent\textbf{Later retrieval:} Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested.\par
 \noindent\textbf{Alignment references:} flare-vm, remnux, pwn-college\par
 \subsubsection{mobile-application-security: foundations}
 \noindent\textbf{Milestone:} foundations-milestone\par
-\noindent\textbf{Skill:} Prove the entry skills in a small lab\par
-\noindent\textbf{Experiment:} Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.\par
-\noindent\textbf{Transfer:} Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.\par
-\noindent\textbf{Control:} Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.\par
-\noindent\textbf{Later retrieval:} Reconstruct the environment and entry assumptions without following the setup notes.\par
+\noindent\textbf{Skill:} Read an Android manifest and state its limits\par
+\noindent\textbf{Experiment:} Identify exposed components in a synthetic app declaration.\par
+\noindent\textbf{Transfer:} In a copy, add a caller permission to the provider and predict what external callers would need.\par
+\noindent\textbf{Control:} Keep the main activity launchable in your design; blanket removal of every component is not a useful repair.\par
+\noindent\textbf{Later retrieval:} Without opening your report, reconstruct the inputs, observed result and main limitation of read an android manifest and state its limits.\par
 \noindent\textbf{Alignment references:} mastg, owasp-asvs\par
 \subsubsection{mobile-application-security: platform-model}
 \noindent\textbf{Milestone:} platform-model-milestone\par
 \noindent\textbf{Skill:} Locate the mobile trust boundary\par
-\noindent\textbf{Experiment:} Inventory an owned practice app's manifest/entitlements, components and data flows and map two questions to MASTG tests.\par
+\noindent\textbf{Experiment:} Choose the OWASP MASTG Hacking Playground Android app from the linked test-app index; follow that app’s README to build/install it on your own emulator. Record APK hash, OS/API level and package name.\par
 \noindent\textbf{Transfer:} Add an exported component or a new permission in a toy build and reassess exposure.\par
 \noindent\textbf{Control:} Include a permission declaration that does not establish actual sensitive behavior by itself.\par
 \noindent\textbf{Later retrieval:} Explain how platform permissions and backend authorization differ.\par
@@ -979,7 +979,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{mobile-application-security: local-storage}
 \noindent\textbf{Milestone:} local-storage-milestone\par
 \noindent\textbf{Skill:} Find where the app leaves data\par
-\noindent\textbf{Experiment:} Using an owned device/emulator and a sanctioned practice app, locate a synthetic sensitive value, document its storage/access assumptions and test a safer toy implementation.\par
+\noindent\textbf{Experiment:} On your practice app/emulator, choose a documented storage lesson and create a unique synthetic value such as \path{ASCEND_TRAINING_NOTE}. Record the exact lesson and app build.\par
 \noindent\textbf{Transfer:} Change device state or storage location and predict whether the same extraction method applies.\par
 \noindent\textbf{Control:} Keep intended app persistence working and show that unrelated sandboxed apps do not gain access through the proposed fix.\par
 \noindent\textbf{Later retrieval:} Explain encryption-at-rest limits when the app itself can access the key.\par
@@ -987,7 +987,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{mobile-application-security: transport}
 \noindent\textbf{Milestone:} transport-milestone\par
 \noindent\textbf{Skill:} Inspect a request without weakening the conclusion\par
-\noindent\textbf{Experiment:} Capture permitted training-app traffic on your own device/emulator, identify transmitted synthetic data and evaluate server identity validation under documented test settings.\par
+\noindent\textbf{Experiment:} Use only a documented network lesson in the OWASP practice app. Configure a debugging proxy on your emulator following the app’s instructions; use synthetic values only.\par
 \noindent\textbf{Transfer:} Change the server certificate or hostname and predict acceptance or rejection.\par
 \noindent\textbf{Control:} Verify a valid connection succeeds and an invalid identity is rejected by the corrected toy app.\par
 \noindent\textbf{Later retrieval:} Explain why disabling pinning for analysis does not prove a production bypass.\par
@@ -995,7 +995,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{mobile-application-security: components}
 \noindent\textbf{Milestone:} components-milestone\par
 \noindent\textbf{Skill:} Test the component's actual caller\par
-\noindent\textbf{Experiment:} Test a documented component boundary with benign input and record the caller identity, required permissions and resulting app behavior.\par
+\noindent\textbf{Experiment:} Select one documented exported-component lesson in the practice app. Record component name, calling test app/adb identity and required permission.\par
 \noindent\textbf{Transfer:} Change a deep-link parameter or invoking app identity and predict whether access should be permitted.\par
 \noindent\textbf{Control:} Keep the intended navigation working while rejecting an unauthorized or malformed invocation.\par
 \noindent\textbf{Later retrieval:} Explain why an exported component is a review target rather than automatically a vulnerability.\par
@@ -1003,7 +1003,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{mobile-application-security: backend}
 \noindent\textbf{Milestone:} backend-milestone\par
 \noindent\textbf{Skill:} The phone is not the authorization boundary\par
-\noindent\textbf{Experiment:} Exercise a training app's API with two roles and verify server-side ownership checks independently of the mobile interface.\par
+\noindent\textbf{Experiment:} Use local service.py independently of the Android UI. Compare alice and bob requesting /notes/1 with curl; the fake header simulates identity for the boundary exercise.\par
 \noindent\textbf{Transfer:} Change object ID or request method and repeat the authorization decision with fresh evidence.\par
 \noindent\textbf{Control:} Preserve authorized access and deny an authenticated user who does not own the resource.\par
 \noindent\textbf{Later retrieval:} Explain which finding belongs to the mobile client and which belongs to the backend.\par
@@ -1011,31 +1011,31 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{mobile-application-security: assessment}
 \noindent\textbf{Milestone:} assessment-milestone\par
 \noindent\textbf{Skill:} Deliver a platform-aware mobile review\par
-\noindent\textbf{Experiment:} Review a fresh practice app against selected MASTG objectives, produce reproducible findings and retest one correction in an owned build.\par
+\noindent\textbf{Experiment:} Choose a second documented lesson in the same practice APK, different from your previous one. Record its MASTG objective, APK version and emulator state.\par
 \noindent\textbf{Transfer:} Change an OS/app version or component permission and independently re-evaluate the affected finding.\par
 \noindent\textbf{Control:} Record a test whose result depends on debug/rooted-device conditions and limit the production claim accordingly.\par
 \noindent\textbf{Later retrieval:} Reconstruct one finding including the exact platform assumptions required to reproduce it.\par
 \noindent\textbf{Alignment references:} mastg, owasp-asvs\par
 \subsubsection{mobile-application-security: independent-transfer}
 \noindent\textbf{Milestone:} independent-transfer-milestone\par
-\noindent\textbf{Skill:} Revisit the skill on a fresh problem\par
-\noindent\textbf{Experiment:} After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.\par
-\noindent\textbf{Transfer:} Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.\par
-\noindent\textbf{Control:} Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.\par
-\noindent\textbf{Later retrieval:} Explain what transferred, what required help and which prerequisite needs another small experiment.\par
+\noindent\textbf{Skill:} Recheck the boundary with a specified change\par
+\noindent\textbf{Experiment:} In an owned build of your selected OWASP practice-app component lesson, add a caller permission to the test component. Compare before/after behavior from authorized and unrelated test callers.\par
+\noindent\textbf{Transfer:} Add a second case by reversing the changed condition above, predict its result and compare actual behavior.\par
+\noindent\textbf{Control:} The intended app workflow must still work. Without an owned build/emulator, leave the runtime task incomplete.\par
+\noindent\textbf{Later retrieval:} Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested.\par
 \noindent\textbf{Alignment references:} mastg, owasp-asvs\par
 \subsubsection{api-security: foundations}
 \noindent\textbf{Milestone:} foundations-milestone\par
-\noindent\textbf{Skill:} Prove the entry skills in a small lab\par
-\noindent\textbf{Experiment:} Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.\par
-\noindent\textbf{Transfer:} Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.\par
-\noindent\textbf{Control:} Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.\par
-\noindent\textbf{Later retrieval:} Reconstruct the environment and entry assumptions without following the setup notes.\par
+\noindent\textbf{Skill:} Compare authentication and ownership in a local API\par
+\noindent\textbf{Experiment:} Use two synthetic identities against one concrete note.\par
+\noindent\textbf{Transfer:} Use note 2 with its owner bob and unrelated alice.\par
+\noindent\textbf{Control:} A request without X-Lab-User should not return note contents.\par
+\noindent\textbf{Later retrieval:} Without opening your report, reconstruct the inputs, observed result and main limitation of compare authentication and ownership in a local api.\par
 \noindent\textbf{Alignment references:} owasp-api, portswigger-paths, owasp-asvs\par
 \subsubsection{api-security: inventory}
 \noindent\textbf{Milestone:} inventory-milestone\par
 \noindent\textbf{Skill:} Find the contract the client assumes\par
-\noindent\textbf{Experiment:} Inventory an owned training API, compare its documented and observed behavior, and identify two testable boundary hypotheses.\par
+\noindent\textbf{Experiment:} Read service.py and inventory GET /health, GET /notes/\{id\} and PATCH /notes/\{id\}; list inputs, outputs and fake identity handling.\par
 \noindent\textbf{Transfer:} Add a deprecated route or alternate version and update the inventory and risk assumptions.\par
 \noindent\textbf{Control:} Distinguish an intentionally public endpoint from an unintentionally unprotected operation.\par
 \noindent\textbf{Later retrieval:} Reconstruct one API trust boundary from method, identity and object.\par
@@ -1043,7 +1043,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{api-security: object-authorization}
 \noindent\textbf{Milestone:} object-authorization-milestone\par
 \noindent\textbf{Skill:} Change the object, keep the identity\par
-\noindent\textbf{Experiment:} In a designated API lesson, test owner and cross-user access using recorded requests, explain the missing check and demonstrate a corrected local equivalent.\par
+\noindent\textbf{Experiment:} Use GET /notes/1 as alice and bob; save baseline status/body. Find where \path{do_GET} recognizes a user but omits ownership.\par
 \noindent\textbf{Transfer:} Change the object type or HTTP verb and test whether the same boundary is enforced.\par
 \noindent\textbf{Control:} Show legitimate owner access and rejection of an unrelated authenticated user.\par
 \noindent\textbf{Later retrieval:} Explain why unpredictable IDs cannot replace authorization.\par
@@ -1051,7 +1051,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{api-security: property-authorization}
 \noindent\textbf{Milestone:} property-authorization-milestone\par
 \noindent\textbf{Skill:} Who may write this field?\par
-\noindent\textbf{Experiment:} Test a local API's property allowlist with a harmless administrative-flag fixture and patch overbroad binding or response exposure.\par
+\noindent\textbf{Experiment:} As alice, PATCH note 1 with text only and then owner set to bob in the resettable fixture. Record whether the source allows both; restart afterward.\par
 \noindent\textbf{Transfer:} Nest the property or switch update methods and predict whether the policy should change.\par
 \noindent\textbf{Control:} Keep ordinary editable fields working while rejecting privileged field writes and suppressing private response fields.\par
 \noindent\textbf{Later retrieval:} Explain the relationship between mass assignment and field-level authorization.\par
@@ -1059,7 +1059,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{api-security: tokens}
 \noindent\textbf{Milestone:} tokens-milestone\par
 \noindent\textbf{Skill:} Validate the whole token contract\par
-\noindent\textbf{Experiment:} Write or execute tests against an owned API for valid and invalid token contexts, separating signature validity from authorization.\par
+\noindent\textbf{Experiment:} This fixture has no real bearer-token authentication. Implement a separate token-context checker using synthetic claims: subject, issuer, audience, expiry and allowed action.\par
 \noindent\textbf{Transfer:} Change audience, scope or expiry and predict which validation layer rejects the request.\par
 \noindent\textbf{Control:} Include a correctly signed but wrong-audience token and an authorized valid token.\par
 \noindent\textbf{Later retrieval:} Explain why a valid signature does not make every action authorized.\par
@@ -1067,7 +1067,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{api-security: resource-limits}
 \noindent\textbf{Milestone:} resource-limits-milestone\par
 \noindent\textbf{Skill:} Make expensive work bounded\par
-\noindent\textbf{Experiment:} Apply explicit request-size and work limits to an owned small service, then test bounded valid and over-limit inputs without load-testing third parties.\par
+\noindent\textbf{Experiment:} Inspect the existing 2048-byte PATCH bound. Test one short valid text body and one 2049-byte body with a single request each; no traffic flood is needed.\par
 \noindent\textbf{Transfer:} Change nesting depth or batch composition and predict the work budget decision.\par
 \noindent\textbf{Control:} Preserve a legitimate paginated request and reject an inexpensive-looking input that exceeds the actual work budget.\par
 \noindent\textbf{Later retrieval:} Explain why request count alone may not bound resource consumption.\par
@@ -1075,31 +1075,31 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{api-security: review}
 \noindent\textbf{Milestone:} review-milestone\par
 \noindent\textbf{Skill:} Test a workflow across its endpoints\par
-\noindent\textbf{Experiment:} Assess an unfamiliar owned API fixture for object, property, token and workflow boundaries; deliver evidence and a tested minimal repair.\par
+\noindent\textbf{Experiment:} Extract a new service.py copy and use note 2/bob for the owned case. Independently assess object access, mutable fields and response properties.\par
 \noindent\textbf{Transfer:} Change operation order or user role and independently test whether the business invariant still holds.\par
 \noindent\textbf{Control:} Verify normal workflow completion and a rejected unauthorized transition after the fix.\par
 \noindent\textbf{Later retrieval:} Reconstruct the finding from the business invariant rather than the endpoint name.\par
 \noindent\textbf{Alignment references:} owasp-api, portswigger-paths, owasp-asvs\par
 \subsubsection{api-security: independent-transfer}
 \noindent\textbf{Milestone:} independent-transfer-milestone\par
-\noindent\textbf{Skill:} Revisit the skill on a fresh problem\par
-\noindent\textbf{Experiment:} After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.\par
-\noindent\textbf{Transfer:} Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.\par
-\noindent\textbf{Control:} Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.\par
-\noindent\textbf{Later retrieval:} Explain what transferred, what required help and which prerequisite needs another small experiment.\par
+\noindent\textbf{Skill:} Recheck the boundary with a specified change\par
+\noindent\textbf{Experiment:} In your repaired service, add note 3 owned by alice. Test text update then read, cross-user PATCH, and an attempt to change owner before a read.\par
+\noindent\textbf{Transfer:} Add a second case by reversing the changed condition above, predict its result and compare actual behavior.\par
+\noindent\textbf{Control:} Bob must retain access to note 2, and changing operation order must not expose note 3.\par
+\noindent\textbf{Later retrieval:} Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested.\par
 \noindent\textbf{Alignment references:} owasp-api, portswigger-paths, owasp-asvs\par
 \subsubsection{cryptography-protocol-security: foundations}
 \noindent\textbf{Milestone:} foundations-milestone\par
-\noindent\textbf{Skill:} Prove the entry skills in a small lab\par
-\noindent\textbf{Experiment:} Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.\par
-\noindent\textbf{Transfer:} Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.\par
-\noindent\textbf{Control:} Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.\par
-\noindent\textbf{Later retrieval:} Reconstruct the environment and entry assumptions without following the setup notes.\par
+\noindent\textbf{Skill:} Round-trip bytes through two encodings\par
+\noindent\textbf{Experiment:} See which transformations are reversible without a secret.\par
+\noindent\textbf{Transfer:} Add a zero byte to the message in a copy and predict how length and encoded output change.\par
+\noindent\textbf{Control:} Ensure your decode preserves the zero byte; text trimming is not a valid bytes round trip.\par
+\noindent\textbf{Later retrieval:} Without opening your report, reconstruct the inputs, observed result and main limitation of round-trip bytes through two encodings.\par
 \noindent\textbf{Alignment references:} cryptohack, owasp-asvs\par
 \subsubsection{cryptography-protocol-security: representations}
 \noindent\textbf{Milestone:} representations-milestone\par
 \noindent\textbf{Skill:} Bytes are not the text displaying them\par
-\noindent\textbf{Experiment:} Implement round-trip tests for a bounded binary message and diagnose one encoding mismatch without losing bytes.\par
+\noindent\textbf{Experiment:} Use message from \path{bytes_lab}.py. Write round-trip assertions for hex and base64, then include bytes 0 and 255 in a new message.\par
 \noindent\textbf{Transfer:} Introduce a zero byte or non-ASCII character and predict the representation change.\par
 \noindent\textbf{Control:} Reject malformed encoded input and preserve a valid binary message exactly.\par
 \noindent\textbf{Later retrieval:} Explain why encoding provides no confidentiality.\par
@@ -1107,7 +1107,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{cryptography-protocol-security: integrity}
 \noindent\textbf{Milestone:} integrity-milestone\par
 \noindent\textbf{Skill:} A checksum does not authenticate its author\par
-\noindent\textbf{Experiment:} Use a standard library to authenticate a message, test verification and record what the key ownership assumption means.\par
+\noindent\textbf{Experiment:} Using hmac from the standard library and the public training key, compute an HMAC-SHA256 tag for message. Verify with hmac.\path{compare_digest}.\par
 \noindent\textbf{Transfer:} Change one message byte or use a different key and predict verification.\par
 \noindent\textbf{Control:} Accept the valid message and reject both tampering and a MAC made with the wrong key.\par
 \noindent\textbf{Later retrieval:} Explain integrity versus origin authentication.\par
@@ -1115,7 +1115,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{cryptography-protocol-security: symmetric}
 \noindent\textbf{Milestone:} symmetric-milestone\par
 \noindent\textbf{Skill:} Make misuse visible in a toy experiment\par
-\noindent\textbf{Experiment:} Encrypt and decrypt synthetic data with an established authenticated-encryption library and test tamper rejection.\par
+\noindent\textbf{Experiment:} Create a separate virtual environment and install cryptography using its official installation instructions. Record version. Use AESGCM with a generated key and a fresh 12-byte random nonce.\par
 \noindent\textbf{Transfer:} Change associated data or the nonce and predict which operation should fail.\par
 \noindent\textbf{Control:} Keep the valid round trip working and reject a changed tag without releasing plaintext.\par
 \noindent\textbf{Later retrieval:} Explain the nonce-use rule of the selected algorithm.\par
@@ -1123,7 +1123,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{cryptography-protocol-security: public-key}
 \noindent\textbf{Milestone:} public-key-milestone\par
 \noindent\textbf{Skill:} State exactly what a signature proves\par
-\noindent\textbf{Experiment:} Sign and verify a synthetic document with an established library and connect the verified key to an explicit identity assumption.\par
+\noindent\textbf{Experiment:} Use cryptography Ed25519PrivateKey.generate, sign and the corresponding \path{public_key}().verify on a synthetic note.\par
 \noindent\textbf{Transfer:} Change the message or trusted public key and predict the result.\par
 \noindent\textbf{Control:} Reject a valid signature from an untrusted key while accepting the intended signer's document.\par
 \noindent\textbf{Later retrieval:} Explain why a signature alone does not establish a real-world identity.\par
@@ -1131,7 +1131,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{cryptography-protocol-security: tls}
 \noindent\textbf{Milestone:} tls-milestone\par
 \noindent\textbf{Skill:} Test the certificate decision\par
-\noindent\textbf{Experiment:} Run a local TLS test service with training certificates and verify hostname, trust-chain and expiry failures without disabling validation.\par
+\noindent\textbf{Experiment:} Use openssl to create a one-day self-signed RSA training certificate with subject CN=localhost and subjectAltName=DNS:localhost; keep key/cert in this new lab folder. Start openssl \path{s_server} on 127.0.0.1:8443 with -www.\par
 \noindent\textbf{Transfer:} Change the hostname or CA trust set and predict acceptance.\par
 \noindent\textbf{Control:} Demonstrate a valid connection and rejection of an unrelated trusted-but-wrong-host certificate.\par
 \noindent\textbf{Later retrieval:} Reconstruct the checks needed for server identity validation.\par
@@ -1139,31 +1139,31 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{cryptography-protocol-security: review}
 \noindent\textbf{Milestone:} review-milestone\par
 \noindent\textbf{Skill:} Find a protocol assumption that can be tested\par
-\noindent\textbf{Experiment:} Review a toy protocol for replay, identity and integrity mistakes, repair one defect and provide executable regression tests.\par
+\noindent\textbf{Experiment:} Create a toy message envelope with payload, sender key identity, nonce and sequence number. Authenticate it with the standard-library HMAC exercise or the signature library.\par
 \noindent\textbf{Transfer:} Reorder or replay a message and predict the corrected protocol's response.\par
 \noindent\textbf{Control:} Preserve a legitimate fresh exchange while rejecting a stale authenticated message.\par
 \noindent\textbf{Later retrieval:} Explain which property the repair establishes and which it does not.\par
 \noindent\textbf{Alignment references:} cryptohack, owasp-asvs\par
 \subsubsection{cryptography-protocol-security: independent-transfer}
 \noindent\textbf{Milestone:} independent-transfer-milestone\par
-\noindent\textbf{Skill:} Revisit the skill on a fresh problem\par
-\noindent\textbf{Experiment:} After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.\par
-\noindent\textbf{Transfer:} Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.\par
-\noindent\textbf{Control:} Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.\par
-\noindent\textbf{Later retrieval:} Explain what transferred, what required help and which prerequisite needs another small experiment.\par
+\noindent\textbf{Skill:} Recheck the boundary with a specified change\par
+\noindent\textbf{Experiment:} Use your authenticated message envelope to send sequence 2 before sequence 1, then replay sequence 2. Define the intended ordering policy first and test it.\par
+\noindent\textbf{Transfer:} Add a second case by reversing the changed condition above, predict its result and compare actual behavior.\par
+\noindent\textbf{Control:} A fresh permitted sequence must still be accepted; reject a stale authenticated replay for the stated reason.\par
+\noindent\textbf{Later retrieval:} Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested.\par
 \noindent\textbf{Alignment references:} cryptohack, owasp-asvs\par
 \subsubsection{wireless-iot-security: foundations}
 \noindent\textbf{Milestone:} foundations-milestone\par
-\noindent\textbf{Skill:} Prove the entry skills in a small lab\par
-\noindent\textbf{Experiment:} Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.\par
-\noindent\textbf{Transfer:} Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.\par
-\noindent\textbf{Control:} Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.\par
-\noindent\textbf{Later retrieval:} Reconstruct the environment and entry assumptions without following the setup notes.\par
+\noindent\textbf{Skill:} Identify a sensor’s data flow and trust boundary\par
+\noindent\textbf{Experiment:} Read one concrete IoT scenario before starting a broker.\par
+\noindent\textbf{Transfer:} Change the desired topic to ascend/sensor/humidity and revise the access matrix.\par
+\noindent\textbf{Control:} A subscriber for temperature should not automatically get write permission to every sensor topic.\par
+\noindent\textbf{Later retrieval:} Without opening your report, reconstruct the inputs, observed result and main limitation of identify a sensor’s data flow and trust boundary.\par
 \noindent\textbf{Alignment references:} owasp-iot, mosquitto\par
 \subsubsection{wireless-iot-security: inventory}
 \noindent\textbf{Milestone:} inventory-milestone\par
 \noindent\textbf{Skill:} Know which device and boundary you are testing\par
-\noindent\textbf{Experiment:} Build a device threat model and an isolated test plan using an owned device or documented simulation.\par
+\noindent\textbf{Experiment:} Use device.json as the documented simulation. Draw owner, device, broker, consumer and update source; mark every unauthenticated boundary.\par
 \noindent\textbf{Transfer:} Add a companion cloud service and revise the data and trust boundaries.\par
 \noindent\textbf{Control:} Exclude unrelated nearby devices even when technically visible.\par
 \noindent\textbf{Later retrieval:} Explain which observations require physical hardware.\par
@@ -1171,7 +1171,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{wireless-iot-security: mqtt}
 \noindent\textbf{Milestone:} mqtt-milestone\par
 \noindent\textbf{Skill:} Follow a message through the broker\par
-\noindent\textbf{Experiment:} Publish and receive a unique harmless marker in the isolated MQTT profile and record exact topic/payload evidence.\par
+\noindent\textbf{Experiment:} Start mosquitto -c broker.conf -v in Terminal A. In Terminal B subscribe with \path{mosquitto_sub} -h 127.0.0.1 -p 18883 -t ascend/sensor/temperature -C 1.\par
 \noindent\textbf{Transfer:} Change the subscription wildcard and predict which messages are delivered.\par
 \noindent\textbf{Control:} Include an unmatched topic that must not reach the subscriber.\par
 \noindent\textbf{Later retrieval:} Explain retained delivery versus a new live publication.\par
@@ -1179,55 +1179,55 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{wireless-iot-security: access}
 \noindent\textbf{Milestone:} access-milestone\par
 \noindent\textbf{Skill:} Give each device only its topics\par
-\noindent\textbf{Experiment:} Configure a separate owned broker with authentication and topic ACLs; verify each identity's allowed and denied operations.\par
+\noindent\textbf{Experiment:} Copy broker.conf to a new local lab folder. Use \path{mosquitto_passwd} interactively to create publisher/subscriber TEST users and configure \path{password_file} with \path{allow_anonymous} false.\par
 \noindent\textbf{Transfer:} Change a wildcard or identity and predict effective topic access.\par
 \noindent\textbf{Control:} Preserve a device's intended telemetry while denying another device's private topic.\par
 \noindent\textbf{Later retrieval:} Reconstruct the difference between broker authentication and topic authorization.\par
 \noindent\textbf{Alignment references:} owasp-iot, mosquitto\par
 \subsubsection{wireless-iot-security: wireless}
 \noindent\textbf{Milestone:} wireless-milestone\par
-\noindent\textbf{Skill:} Interpret the capture you are actually able to make\par
-\noindent\textbf{Experiment:} Analyze an owned or licensed training capture and explain association/security properties supported by visible frames.\par
-\noindent\textbf{Transfer:} Change the selected channel or capture source and reassess missing observations.\par
-\noindent\textbf{Control:} Avoid claiming to see encrypted application content without the required decryption context.\par
+\noindent\textbf{Skill:} Inspect a synthetic Wi-Fi beacon\par
+\noindent\textbf{Experiment:} Open wifi-beacon.pcap from this track’s downloaded ZIP in Wireshark. This is an authored synthetic IEEE 802.11 beacon, not captured radio traffic; no adapter or account is needed.\par
+\noindent\textbf{Transfer:} Compare wifi-beacon.pcap with http-training.pcap in the same ZIP. Name which address/control fields belong to each link type.\par
+\noindent\textbf{Control:} Identify a claim the one beacon cannot support, such as completed association or a captured handshake.\par
 \noindent\textbf{Later retrieval:} Explain why a monitor-capable adapter is a prerequisite for some tests.\par
 \noindent\textbf{Alignment references:} owasp-iot, mosquitto\par
 \subsubsection{wireless-iot-security: firmware}
 \noindent\textbf{Milestone:} firmware-milestone\par
-\noindent\textbf{Skill:} Examine a firmware image as evidence\par
-\noindent\textbf{Experiment:} Inspect static configuration and update metadata from a supplied image, identify one concrete trust assumption and propose a testable improvement.\par
-\noindent\textbf{Transfer:} Change a signed metadata field or use a mismatched device model in a toy updater test.\par
-\noindent\textbf{Control:} Accept valid matching metadata and reject tampering or a wrong-model update.\par
+\noindent\textbf{Skill:} Review update metadata in a device model\par
+\noindent\textbf{Experiment:} Use device.json firmware as a static metadata exercise. It explicitly contains no bootable image and no measured binary architecture. List version, signature state and provenance gaps.\par
+\noindent\textbf{Transfer:} Change the model or version field and compare the toy predicate result. Keep the signature-verification stub clearly labeled.\par
+\noindent\textbf{Control:} Accept a matching newer update with a successful stub result; reject wrong-model, old-version and failed-signature inputs.\par
 \noindent\textbf{Later retrieval:} Explain what static image analysis cannot prove about a running device.\par
 \noindent\textbf{Alignment references:} owasp-iot, mosquitto\par
 \subsubsection{wireless-iot-security: assessment}
 \noindent\textbf{Milestone:} assessment-milestone\par
 \noindent\textbf{Skill:} Review an end-to-end device workflow\par
-\noindent\textbf{Experiment:} Assess a small owned MQTT workflow, repair one access defect and report remaining hardware/firmware assumptions.\par
+\noindent\textbf{Experiment:} Use your authenticated local broker configuration. In a new copy, introduce an overbroad subscriber write ACL, predict its effect and test with a harmless marker.\par
 \noindent\textbf{Transfer:} Introduce another device identity or a changed topic layout and retest separation.\par
 \noindent\textbf{Control:} Keep legitimate telemetry working and deny the unrelated device.\par
 \noindent\textbf{Later retrieval:} Reconstruct the finding through the complete device-to-service path.\par
 \noindent\textbf{Alignment references:} owasp-iot, mosquitto\par
 \subsubsection{wireless-iot-security: independent-transfer}
 \noindent\textbf{Milestone:} independent-transfer-milestone\par
-\noindent\textbf{Skill:} Revisit the skill on a fresh problem\par
-\noindent\textbf{Experiment:} After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.\par
-\noindent\textbf{Transfer:} Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.\par
-\noindent\textbf{Control:} Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.\par
-\noindent\textbf{Later retrieval:} Explain what transferred, what required help and which prerequisite needs another small experiment.\par
+\noindent\textbf{Skill:} Recheck the boundary with a specified change\par
+\noindent\textbf{Experiment:} Add a second synthetic device identity and an ascend/sensor/humidity topic to your owned loopback broker. Independently write and test separate ACLs.\par
+\noindent\textbf{Transfer:} Add a second case by reversing the changed condition above, predict its result and compare actual behavior.\par
+\noindent\textbf{Control:} The original temperature subscriber must retain its read and must not publish or access the humidity topic without a grant.\par
+\noindent\textbf{Later retrieval:} Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested.\par
 \noindent\textbf{Alignment references:} owasp-iot, mosquitto\par
 \subsubsection{ot-ics-security: foundations}
 \noindent\textbf{Milestone:} foundations-milestone\par
-\noindent\textbf{Skill:} Prove the entry skills in a small lab\par
-\noindent\textbf{Experiment:} Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.\par
-\noindent\textbf{Transfer:} Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.\par
-\noindent\textbf{Control:} Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.\par
-\noindent\textbf{Later retrieval:} Reconstruct the environment and entry assumptions without following the setup notes.\par
+\noindent\textbf{Skill:} Read a simulated tank register and state a safety constraint\par
+\noindent\textbf{Experiment:} Separate a numeric observation from an operational conclusion.\par
+\noindent\textbf{Transfer:} Change register 10 to 65 in a copy and predict whether it falls outside the written range.\par
+\noindent\textbf{Control:} Read an unknown register in a small Python call and preserve the error; do not interpret missing data as a tank reading of zero.\par
+\noindent\textbf{Later retrieval:} Without opening your report, reconstruct the inputs, observed result and main limitation of read a simulated tank register and state a safety constraint.\par
 \noindent\textbf{Alignment references:} cisa-ics, pymodbus, nist-csf\par
 \subsubsection{ot-ics-security: process}
 \noindent\textbf{Milestone:} process-milestone\par
 \noindent\textbf{Skill:} Start with the process consequence\par
-\noindent\textbf{Experiment:} Build an asset/zone diagram and identify how loss of view, control or availability affects the simulated process.\par
+\noindent\textbf{Experiment:} Use process.json to draw sensor, controller, operator display and historian as a fictional process. Mark the baseline peer and expected register read.\par
 \noindent\textbf{Transfer:} Change a process dependency and revise the priority of affected controls.\par
 \noindent\textbf{Control:} Distinguish a confidentiality issue from a change that could affect safe operation.\par
 \noindent\textbf{Later retrieval:} Explain why enterprise IT priorities cannot be copied blindly into OT.\par
@@ -1235,7 +1235,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{ot-ics-security: protocol}
 \noindent\textbf{Milestone:} protocol-milestone\par
 \noindent\textbf{Skill:} Read the register with its context\par
-\noindent\textbf{Experiment:} Use an isolated software simulator or capture to trace a benign register read and document address and data-type assumptions.\par
+\noindent\textbf{Experiment:} Use registers.py and traffic.csv. Map function 3 rows to the read-register concept and the function 6 row to a single-register write in the synthetic trace.\par
 \noindent\textbf{Transfer:} Change register address or byte order in a fixture and predict the interpretation.\par
 \noindent\textbf{Control:} Reject an out-of-range or mismatched response instead of inventing a process value.\par
 \noindent\textbf{Later retrieval:} Explain why a register number alone does not identify a physical measurement.\par
@@ -1243,7 +1243,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{ot-ics-security: segmentation}
 \noindent\textbf{Milestone:} segmentation-milestone\par
 \noindent\textbf{Skill:} Prove the permitted path\par
-\noindent\textbf{Experiment:} Model and test a small allowlist of communication paths using local fixtures or a disposable network.\par
+\noindent\textbf{Experiment:} Define an offline allowlist using process.json baseline peer, function 3 and register 10. Implement a predicate over traffic.csv rows.\par
 \noindent\textbf{Transfer:} Change a client role or destination port and predict whether access should remain.\par
 \noindent\textbf{Control:} Preserve required monitoring while denying an unrelated management path.\par
 \noindent\textbf{Later retrieval:} Reconstruct one zone boundary and its operational justification.\par
@@ -1251,7 +1251,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{ot-ics-security: monitoring}
 \noindent\textbf{Milestone:} monitoring-milestone\par
 \noindent\textbf{Skill:} Distinguish a maintenance action from an anomaly\par
-\noindent\textbf{Experiment:} Create a detection hypothesis for an unexpected write or new peer and evaluate it against labeled simulator traffic.\par
+\noindent\textbf{Experiment:} Use traffic.csv and process.json; keep the label column hidden while constructing a rule for unexpected peer or write function.\par
 \noindent\textbf{Transfer:} Change a nonessential address or schedule and reassess the rule.\par
 \noindent\textbf{Control:} Include approved maintenance and record the context needed to avoid a false incident.\par
 \noindent\textbf{Later retrieval:} Explain what the network sensor cannot establish about physical state.\par
@@ -1259,7 +1259,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{ot-ics-security: change-control}
 \noindent\textbf{Milestone:} change-control-milestone\par
 \noindent\textbf{Skill:} Rehearse a reversible change\par
-\noindent\textbf{Experiment:} Apply one non-disruptive simulator hardening change, preserve the baseline and verify expected readings afterward.\par
+\noindent\textbf{Experiment:} Copy the register/traffic model before editing. Add a rule limiting reads to the baseline peer and preserve valid register 10 reads.\par
 \noindent\textbf{Transfer:} Remove an assumed maintenance window and decide whether to defer or redesign the change.\par
 \noindent\textbf{Control:} Demonstrate that a failed validation leads to rollback rather than an unsupported success claim.\par
 \noindent\textbf{Later retrieval:} Explain the evidence required before a change could be considered in a real plant.\par
@@ -1267,31 +1267,31 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{ot-ics-security: exercise}
 \noindent\textbf{Milestone:} exercise-milestone\par
 \noindent\textbf{Skill:} Run an incident tabletop with technical evidence\par
-\noindent\textbf{Experiment:} Investigate a supplied OT trace and conduct a tabletop containment decision with a technical timeline and explicit safety uncertainty.\par
+\noindent\textbf{Experiment:} Use traffic.csv and process.json as the tabletop incident pack. Build a timeline for o1–o5 and identify the unexpected write/new peer.\par
 \noindent\textbf{Transfer:} Add contradictory process evidence and revise the decision.\par
 \noindent\textbf{Control:} Reject an IT-style containment action that would violate the stated process constraint.\par
 \noindent\textbf{Later retrieval:} Reconstruct the decision and the unresolved question requiring a process engineer.\par
 \noindent\textbf{Alignment references:} cisa-ics, pymodbus, nist-csf\par
 \subsubsection{ot-ics-security: independent-transfer}
 \noindent\textbf{Milestone:} independent-transfer-milestone\par
-\noindent\textbf{Skill:} Revisit the skill on a fresh problem\par
-\noindent\textbf{Experiment:} After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.\par
-\noindent\textbf{Transfer:} Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.\par
-\noindent\textbf{Control:} Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.\par
-\noindent\textbf{Later retrieval:} Explain what transferred, what required help and which prerequisite needs another small experiment.\par
+\noindent\textbf{Skill:} Recheck the boundary with a specified change\par
+\noindent\textbf{Experiment:} Add a second synthetic tank-level row at the same time as o4 with value 49 from a separate source. Revise your tabletop account and next evidence request.\par
+\noindent\textbf{Transfer:} Add a second case by reversing the changed condition above, predict its result and compare actual behavior.\par
+\noindent\textbf{Control:} Do not disconnect the fictional operator network merely to make an IT containment checklist pass.\par
+\noindent\textbf{Later retrieval:} Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested.\par
 \noindent\textbf{Alignment references:} cisa-ics, pymodbus, nist-csf\par
 \subsubsection{security-architecture-grc: foundations}
 \noindent\textbf{Milestone:} foundations-milestone\par
-\noindent\textbf{Skill:} Prove the entry skills in a small lab\par
-\noindent\textbf{Experiment:} Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.\par
-\noindent\textbf{Transfer:} Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.\par
-\noindent\textbf{Control:} Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.\par
-\noindent\textbf{Later retrieval:} Reconstruct the environment and entry assumptions without following the setup notes.\par
+\noindent\textbf{Skill:} Turn a service description into a bounded review\par
+\noindent\textbf{Experiment:} Identify what the service must protect and who makes its decisions.\par
+\noindent\textbf{Transfer:} Reduce the restore target to two hours in a copy and reevaluate whether E1 meets it.\par
+\noindent\textbf{Control:} Do not reject the current service just because an unrelated design costs more; compare both against the same requirements.\par
+\noindent\textbf{Later retrieval:} Without opening your report, reconstruct the inputs, observed result and main limitation of turn a service description into a bounded review.\par
 \noindent\textbf{Alignment references:} nist-csf, owasp-asvs, cisa-ssvc\par
 \subsubsection{security-architecture-grc: assets}
 \noindent\textbf{Milestone:} assets-milestone\par
 \noindent\textbf{Skill:} Define the system someone is responsible for\par
-\noindent\textbf{Experiment:} Write a system boundary and data-flow diagram that includes outsourced services and critical business assumptions.\par
+\noindent\textbf{Experiment:} Use scenario.json components, owner and data. Draw a boundary around the service and identify any proposed outsourced component explicitly as a proposal.\par
 \noindent\textbf{Transfer:} Add a new data recipient and revise ownership and control responsibilities.\par
 \noindent\textbf{Control:} Identify an asset outside the boundary that still creates a dependency risk.\par
 \noindent\textbf{Later retrieval:} Explain why an incomplete boundary undermines an assessment.\par
@@ -1299,7 +1299,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{security-architecture-grc: threats}
 \noindent\textbf{Milestone:} threats-milestone\par
 \noindent\textbf{Skill:} Connect the threat to a business consequence\par
-\noindent\textbf{Experiment:} Create a small risk register with evidence, uncertainty, existing controls and a named decision owner.\par
+\noindent\textbf{Experiment:} Build risk-register.csv with three scenarios: cross-user reading, unauthorized note changes and loss of in-memory notes. Use E1/E2/source facts as evidence.\par
 \noindent\textbf{Transfer:} Change exposure or business criticality and justify the resulting priority.\par
 \noindent\textbf{Control:} Avoid turning an unsupported numeric guess into a precise probability claim.\par
 \noindent\textbf{Later retrieval:} Reconstruct one risk from cause to consequence.\par
@@ -1307,7 +1307,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{security-architecture-grc: controls}
 \noindent\textbf{Milestone:} controls-milestone\par
 \noindent\textbf{Skill:} Make the control testable\par
-\noindent\textbf{Experiment:} Map selected NIST CSF outcomes to concrete controls and evidence collection for a fictional service.\par
+\noindent\textbf{Experiment:} Select NIST CSF outcomes relevant to access, detection and recovery. Record the exact outcome IDs from the current framework document.\par
 \noindent\textbf{Transfer:} Change the hosting model and identify controls whose evidence must change.\par
 \noindent\textbf{Control:} Include a policy document that does not prove the operational control is running.\par
 \noindent\textbf{Later retrieval:} Explain control design versus control operating effectiveness.\par
@@ -1315,7 +1315,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{security-architecture-grc: architecture}
 \noindent\textbf{Milestone:} architecture-milestone\par
 \noindent\textbf{Skill:} Compare designs against explicit assumptions\par
-\noindent\textbf{Experiment:} Evaluate the designs against the same threat model, operational needs and recovery requirements, then justify a bounded choice.\par
+\noindent\textbf{Experiment:} Compare designs A and B in scenario.json against the same restore target, budget constraint and authorization threat model.\par
 \noindent\textbf{Transfer:} Remove one assumed trusted component and revise the recommendation.\par
 \noindent\textbf{Control:} Document one risk accepted by the chosen design instead of claiming universal superiority.\par
 \noindent\textbf{Later retrieval:} Reconstruct the tradeoff that drove the decision.\par
@@ -1323,7 +1323,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{security-architecture-grc: assurance}
 \noindent\textbf{Milestone:} assurance-milestone\par
 \noindent\textbf{Skill:} Trace a requirement to its evidence\par
-\noindent\textbf{Experiment:} Review a small evidence pack, identify stale or missing evidence and produce a remediation plan with owners and retest criteria.\par
+\noindent\textbf{Experiment:} Review evidence E1 and E2 against today’s service requirements. Identify staleness, missing test coverage and scope mismatches.\par
 \noindent\textbf{Transfer:} Change a requirement version or evidence date and reassess adequacy.\par
 \noindent\textbf{Control:} Reject a screenshot or scanner summary that cannot substantiate the actual claim.\par
 \noindent\textbf{Later retrieval:} Explain the difference between a failed control and insufficient evidence.\par
@@ -1331,31 +1331,31 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{security-architecture-grc: review}
 \noindent\textbf{Milestone:} review-milestone\par
 \noindent\textbf{Skill:} Deliver a decision-ready security review\par
-\noindent\textbf{Experiment:} Deliver a concise architecture/risk review with prioritized actions, residual risks, evidence references and an accountable acceptance decision.\par
+\noindent\textbf{Experiment:} Use a changed scenario with a two-hour restoration target and a missing owner for one component.\par
 \noindent\textbf{Transfer:} Introduce a new dependency or material finding and update the decision transparently.\par
 \noindent\textbf{Control:} Keep a low-impact observation from obscuring an unresolved launch-critical control.\par
 \noindent\textbf{Later retrieval:} Reconstruct the strongest assurance claim and its limits.\par
 \noindent\textbf{Alignment references:} nist-csf, owasp-asvs, cisa-ssvc\par
 \subsubsection{security-architecture-grc: independent-transfer}
 \noindent\textbf{Milestone:} independent-transfer-milestone\par
-\noindent\textbf{Skill:} Revisit the skill on a fresh problem\par
-\noindent\textbf{Experiment:} After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.\par
-\noindent\textbf{Transfer:} Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.\par
-\noindent\textbf{Control:} Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.\par
-\noindent\textbf{Later retrieval:} Explain what transferred, what required help and which prerequisite needs another small experiment.\par
+\noindent\textbf{Skill:} Recheck the boundary with a specified change\par
+\noindent\textbf{Experiment:} Change the scenario restore target to two hours and add a dependency whose recovery time is six hours. Reevaluate designs A/B and the acceptance decision.\par
+\noindent\textbf{Transfer:} Add a second case by reversing the changed condition above, predict its result and compare actual behavior.\par
+\noindent\textbf{Control:} Do not let a low-impact documentation improvement hide the unresolved recovery requirement.\par
+\noindent\textbf{Later retrieval:} Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested.\par
 \noindent\textbf{Alignment references:} nist-csf, owasp-asvs, cisa-ssvc\par
 \subsubsection{vulnerability-management: foundations}
 \noindent\textbf{Milestone:} foundations-milestone\par
-\noindent\textbf{Skill:} Prove the entry skills in a small lab\par
-\noindent\textbf{Experiment:} Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.\par
-\noindent\textbf{Transfer:} Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.\par
-\noindent\textbf{Control:} Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.\par
-\noindent\textbf{Later retrieval:} Reconstruct the environment and entry assumptions without following the setup notes.\par
+\noindent\textbf{Skill:} Check a finding against a deployed version\par
+\noindent\textbf{Experiment:} Separate a scan claim from evidence that the condition applies.\par
+\noindent\textbf{Transfer:} Turn sharing off for asset A in a copy and rerun the checker.\par
+\noindent\textbf{Control:} Asset B on fixed version 1.1 must not be classified affected merely because a scan row names LAB-001.\par
+\noindent\textbf{Later retrieval:} Without opening your report, reconstruct the inputs, observed result and main limitation of check a finding against a deployed version.\par
 \noindent\textbf{Alignment references:} cisa-kev, epss, cisa-ssvc\par
 \subsubsection{vulnerability-management: inventory}
 \noindent\textbf{Milestone:} inventory-milestone\par
 \noindent\textbf{Skill:} Find the asset behind the finding\par
-\noindent\textbf{Experiment:} Reconcile a synthetic scan inventory with deployed components and identify unknown ownership or stale records.\par
+\noindent\textbf{Experiment:} Join scan rows to assets by exact asset ID in inventory.json. Record component, version, owner, exposure and missing values.\par
 \noindent\textbf{Transfer:} Rename a host or move a service and preserve its identity without merging unrelated assets.\par
 \noindent\textbf{Control:} Include two similar version strings that refer to different products.\par
 \noindent\textbf{Later retrieval:} Explain why asset identity must precede prioritization.\par
@@ -1363,7 +1363,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{vulnerability-management: validation}
 \noindent\textbf{Milestone:} validation-milestone\par
 \noindent\textbf{Skill:} Is the advisory actually applicable?\par
-\noindent\textbf{Experiment:} Validate a supplied finding against exact component/configuration evidence and classify confirmed, not applicable or insufficient evidence.\par
+\noindent\textbf{Experiment:} Use the explicit LAB-001 condition: notes below 1.1 with sharing enabled. Evaluate A and B, then compare affected.py output.\par
 \noindent\textbf{Transfer:} Change a required feature or version and revise applicability.\par
 \noindent\textbf{Control:} Include a matching product name with a nonaffected version.\par
 \noindent\textbf{Later retrieval:} Reconstruct the conditions required before calling the finding applicable.\par
@@ -1371,7 +1371,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{vulnerability-management: prioritization}
 \noindent\textbf{Milestone:} prioritization-milestone\par
 \noindent\textbf{Skill:} Prioritize action using context\par
-\noindent\textbf{Experiment:} Prioritize a synthetic queue using exposure, business impact, exploitation evidence and an explicit SSVC-style decision path.\par
+\noindent\textbf{Experiment:} Use inventory.json exposure, criticality and fictional exploitation evidence. Apply a written SSVC-style decision path to each item.\par
 \noindent\textbf{Transfer:} Change exposure or exploitation evidence and justify the revised action.\par
 \noindent\textbf{Control:} Include a high-score isolated lab finding and a lower-score exposed critical asset.\par
 \noindent\textbf{Later retrieval:} Explain which new evidence would change the highest priority.\par
@@ -1379,7 +1379,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{vulnerability-management: remediation}
 \noindent\textbf{Milestone:} remediation-milestone\par
 \noindent\textbf{Skill:} Verify the repair rather than the ticket\par
-\noindent\textbf{Experiment:} Apply a patch or configuration mitigation in an owned test service and verify both the vulnerable condition and normal functionality.\par
+\noindent\textbf{Experiment:} In a COPY of inventory.json, model upgrading A to 1.1 or disabling sharing. Run affected.py before and after.\par
 \noindent\textbf{Transfer:} Change the deployment variant and reassess whether the same mitigation applies.\par
 \noindent\textbf{Control:} Keep a ticket marked resolved from passing when the affected instance still has the old configuration.\par
 \noindent\textbf{Later retrieval:} Explain patch presence versus effective remediation.\par
@@ -1387,7 +1387,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{vulnerability-management: exceptions}
 \noindent\textbf{Milestone:} exceptions-milestone\par
 \noindent\textbf{Skill:} Put an expiry date on accepted risk\par
-\noindent\textbf{Experiment:} Write a bounded exception for a fictional unpatchable service, with measurable compensating controls and a retest trigger.\par
+\noindent\textbf{Experiment:} Use fictional asset C as temporarily unpatchable because its owner/version is unresolved. Write an exception request with current uncertainty, decision owner and expiry.\par
 \noindent\textbf{Transfer:} Remove a compensating control or change external exposure and reevaluate the exception.\par
 \noindent\textbf{Control:} Reject an indefinite exception without an accountable owner.\par
 \noindent\textbf{Later retrieval:} Reconstruct when the exception must return to the remediation queue.\par
@@ -1395,31 +1395,31 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{vulnerability-management: program}
 \noindent\textbf{Milestone:} program-milestone\par
 \noindent\textbf{Skill:} Measure reduction in exposure\par
-\noindent\textbf{Experiment:} Produce a vulnerability-management report from a synthetic inventory, separating verified fixes, accepted risk, missing data and recurring causes.\par
+\noindent\textbf{Experiment:} Use a new inventory copy where A is fixed and C now has an owner but still lacks a version.\par
 \noindent\textbf{Transfer:} Add previously unknown assets and revise the metrics without hiding the changed denominator.\par
 \noindent\textbf{Control:} Distinguish a fall in scan coverage from a real reduction in exposure.\par
 \noindent\textbf{Later retrieval:} Explain one metric that could look better while security became worse.\par
 \noindent\textbf{Alignment references:} cisa-kev, epss, cisa-ssvc\par
 \subsubsection{vulnerability-management: independent-transfer}
 \noindent\textbf{Milestone:} independent-transfer-milestone\par
-\noindent\textbf{Skill:} Revisit the skill on a fresh problem\par
-\noindent\textbf{Experiment:} After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.\par
-\noindent\textbf{Transfer:} Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.\par
-\noindent\textbf{Control:} Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.\par
-\noindent\textbf{Later retrieval:} Explain what transferred, what required help and which prerequisite needs another small experiment.\par
+\noindent\textbf{Skill:} Recheck the boundary with a specified change\par
+\noindent\textbf{Experiment:} Add a new exposed notes 1.0 asset D with sharing enabled to inventory.json but omit it from scan. Recompute known exposure and scan coverage.\par
+\noindent\textbf{Transfer:} Add a second case by reversing the changed condition above, predict its result and compare actual behavior.\par
+\noindent\textbf{Control:} A smaller number of scan findings must not be reported as reduced exposure when coverage fell.\par
+\noindent\textbf{Later retrieval:} Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested.\par
 \noindent\textbf{Alignment references:} cisa-kev, epss, cisa-ssvc\par
 \subsubsection{vulnerability-research-bug-bounty: foundations}
 \noindent\textbf{Milestone:} foundations-milestone\par
-\noindent\textbf{Skill:} Prove the entry skills in a small lab\par
-\noindent\textbf{Experiment:} Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.\par
-\noindent\textbf{Transfer:} Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.\par
-\noindent\textbf{Control:} Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.\par
-\noindent\textbf{Later retrieval:} Reconstruct the environment and entry assumptions without following the setup notes.\par
+\noindent\textbf{Skill:} Reproduce one boundary defect in an owned fixture\par
+\noindent\textbf{Experiment:} Find the smallest request pair that distinguishes intended from unintended access.\par
+\noindent\textbf{Transfer:} Use note 2/bob as owner and alice as the unrelated identity.\par
+\noindent\textbf{Control:} A nonexistent object should give 404, not be counted as a successful unauthorized read.\par
+\noindent\textbf{Later retrieval:} Without opening your report, reconstruct the inputs, observed result and main limitation of reproduce one boundary defect in an owned fixture.\par
 \noindent\textbf{Alignment references:} portswigger-mystery, kettle-research, owasp-asvs\par
 \subsubsection{vulnerability-research-bug-bounty: scope}
 \noindent\textbf{Milestone:} scope-milestone\par
 \noindent\textbf{Skill:} Treat program rules as part of the target\par
-\noindent\textbf{Experiment:} Build a research plan using only an owned training target and a clearly testable vulnerability hypothesis.\par
+\noindent\textbf{Experiment:} Use scenario.json scope and rate limit. Write a local-only research question about \path{do_GET} ownership or \path{do_PATCH} properties.\par
 \noindent\textbf{Transfer:} Add an excluded third-party integration and revise the plan.\par
 \noindent\textbf{Control:} Identify a technically possible test that the scope disallows.\par
 \noindent\textbf{Later retrieval:} Explain why a public bug-bounty page does not authorize every asset or technique.\par
@@ -1427,7 +1427,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{vulnerability-research-bug-bounty: model}
 \noindent\textbf{Milestone:} model-milestone\par
 \noindent\textbf{Skill:} Find the invariant the software should preserve\par
-\noindent\textbf{Experiment:} Form a root-cause hypothesis from the code and design a minimal experiment that could disprove it.\par
+\noindent\textbf{Experiment:} Trace user input through the selected handler to the note read/update. Mark the exact missing or insufficient check.\par
 \noindent\textbf{Transfer:} Change input encoding or operation order and predict the effect on the invariant.\par
 \noindent\textbf{Control:} Include a normal edge case that looks unusual but preserves the intended rule.\par
 \noindent\textbf{Later retrieval:} Reconstruct the vulnerability hypothesis without relying on a scanner label.\par
@@ -1435,7 +1435,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{vulnerability-research-bug-bounty: fuzzing}
 \noindent\textbf{Milestone:} fuzzing-milestone\par
 \noindent\textbf{Skill:} Make a small test generator teach you something\par
-\noindent\textbf{Experiment:} Write a bounded local input generator or property-based test, reproduce one failure and minimize the triggering fixture.\par
+\noindent\textbf{Experiment:} Use a bounded generator of at most 20 local cases over note IDs, missing identity and small JSON property names. One request per second; no arbitrary external URL input.\par
 \noindent\textbf{Transfer:} Change the parser or seed corpus and verify the failure still tests the same property.\par
 \noindent\textbf{Control:} Include malformed input that is correctly rejected and must not count as a vulnerability.\par
 \noindent\textbf{Later retrieval:} Explain crash, bug, security impact and exploitability as separate claims.\par
@@ -1443,7 +1443,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{vulnerability-research-bug-bounty: impact}
 \noindent\textbf{Milestone:} impact-milestone\par
 \noindent\textbf{Skill:} Prove only the minimum necessary effect\par
-\noindent\textbf{Experiment:} Demonstrate a harmless synthetic impact in an owned reproduction and document exactly which privileges and data were involved.\par
+\noindent\textbf{Experiment:} Use only the synthetic note data. Show what one unrelated identity can read or alter and the prerequisites needed.\par
 \noindent\textbf{Transfer:} Change the user role or object class and test whether the impact generalizes.\par
 \noindent\textbf{Control:} Include a failed unauthorized action and avoid claiming access merely from a different response size.\par
 \noindent\textbf{Later retrieval:} Explain one stronger impact claim the evidence does not support.\par
@@ -1451,7 +1451,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{vulnerability-research-bug-bounty: disclosure}
 \noindent\textbf{Milestone:} disclosure-milestone\par
 \noindent\textbf{Skill:} Write a report that survives first triage\par
-\noindent\textbf{Experiment:} Produce a private training report with minimal reproducer, sanitized evidence and a proposed tested fix; do not submit to third parties as part of this exercise.\par
+\noindent\textbf{Experiment:} Write a PRIVATE training report with title, affected local fixture/version, scope, minimal requests, actual output, impact limits and tested patch.\par
 \noindent\textbf{Transfer:} Have a peer or fresh environment follow the report with a changed fixture and repair any missing assumption.\par
 \noindent\textbf{Control:} Keep credentials and live user data out of the evidence packet.\par
 \noindent\textbf{Later retrieval:} Reconstruct the report's root cause in two precise sentences.\par
@@ -1459,31 +1459,31 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{vulnerability-research-bug-bounty: research}
 \noindent\textbf{Milestone:} research-milestone\par
 \noindent\textbf{Skill:} Generalize the mechanism carefully\par
-\noindent\textbf{Experiment:} Test the hypothesis on the new component, report positive or negative evidence, and produce a regression test and bounded generalization.\par
+\noindent\textbf{Experiment:} Switch from the GET ownership case to PATCH mutable properties in a fresh service.py copy. Define the boundary before reusing previous assumptions.\par
 \noindent\textbf{Transfer:} Change one relevant implementation detail and explain why the mechanism applies or fails.\par
 \noindent\textbf{Control:} Include a superficially similar implementation where the required condition is absent.\par
 \noindent\textbf{Later retrieval:} Explain which properties transfer and which were accidents of the first target.\par
 \noindent\textbf{Alignment references:} portswigger-mystery, kettle-research, owasp-asvs\par
 \subsubsection{vulnerability-research-bug-bounty: independent-transfer}
 \noindent\textbf{Milestone:} independent-transfer-milestone\par
-\noindent\textbf{Skill:} Revisit the skill on a fresh problem\par
-\noindent\textbf{Experiment:} After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.\par
-\noindent\textbf{Transfer:} Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.\par
-\noindent\textbf{Control:} Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.\par
-\noindent\textbf{Later retrieval:} Explain what transferred, what required help and which prerequisite needs another small experiment.\par
+\noindent\textbf{Skill:} Recheck the boundary with a specified change\par
+\noindent\textbf{Experiment:} In a copy of service.py, repair GET ownership but leave PATCH unrestricted property binding. Test whether the previous root-cause explanation still describes the remaining defect.\par
+\noindent\textbf{Transfer:} Add a second case by reversing the changed condition above, predict its result and compare actual behavior.\par
+\noindent\textbf{Control:} A text-only owner update should remain valid, and a cross-user GET should now be denied.\par
+\noindent\textbf{Later retrieval:} Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested.\par
 \noindent\textbf{Alignment references:} portswigger-mystery, kettle-research, owasp-asvs\par
 \subsubsection{ai-application-security: foundations}
 \noindent\textbf{Milestone:} foundations-milestone\par
-\noindent\textbf{Skill:} Prove the entry skills in a small lab\par
-\noindent\textbf{Experiment:} Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.\par
-\noindent\textbf{Transfer:} Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.\par
-\noindent\textbf{Control:} Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.\par
-\noindent\textbf{Later retrieval:} Reconstruct the environment and entry assumptions without following the setup notes.\par
+\noindent\textbf{Skill:} Trace untrusted text into a tool action\par
+\noindent\textbf{Experiment:} See where a toy assistant must enforce authorization.\par
+\noindent\textbf{Transfer:} Change the target to alice-note and caller to bob in a copy, then predict the same boundary failure.\par
+\noindent\textbf{Control:} The public training note should remain usable; blocking every output does not preserve intended behavior.\par
+\noindent\textbf{Later retrieval:} Without opening your report, reconstruct the inputs, observed result and main limitation of trace untrusted text into a tool action.\par
 \noindent\textbf{Alignment references:} owasp-llm, owasp-asvs\par
 \subsubsection{ai-application-security: boundaries}
 \noindent\textbf{Milestone:} boundaries-milestone\par
 \noindent\textbf{Skill:} Treat generated text as untrusted input\par
-\noindent\textbf{Experiment:} Build a threat model that identifies which component may authorize each action and where untrusted text enters.\par
+\noindent\textbf{Experiment:} Use assistant.py and DOCS. Draw user → retrieval → mock model → dispatcher → data and label each trust boundary.\par
 \noindent\textbf{Transfer:} Add an external document source and revise the trust assumptions.\par
 \noindent\textbf{Control:} Reject the idea that a model's assertion of permission is an authorization decision.\par
 \noindent\textbf{Later retrieval:} Reconstruct the tool-action boundary without referring to the system prompt.\par
@@ -1491,7 +1491,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{ai-application-security: retrieval}
 \noindent\textbf{Milestone:} retrieval-milestone\par
 \noindent\textbf{Skill:} Keep a document from becoming an instruction\par
-\noindent\textbf{Experiment:} In a deterministic toy pipeline, test adversarial documents and enforce authorization outside the mock model before any data access or action.\par
+\noindent\textbf{Experiment:} Use \path{REQUEST_OTHER} as instruction-like document content and the public note as a benign input. Record the original mock output and dispatched result.\par
 \noindent\textbf{Transfer:} Change the document wording or source label and verify the same application boundary still holds.\par
 \noindent\textbf{Control:} Keep a legitimate document answer working and deny a requested unrelated data access.\par
 \noindent\textbf{Later retrieval:} Explain why prompt wording alone cannot enforce a data-access policy.\par
@@ -1499,7 +1499,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{ai-application-security: output}
 \noindent\textbf{Milestone:} output-milestone\par
 \noindent\textbf{Skill:} Validate what the application will execute\par
-\noindent\textbf{Experiment:} Add strict schemas and safe handling to a toy assistant's output pipeline and test malformed or unauthorized synthetic outputs.\par
+\noindent\textbf{Experiment:} Define a strict action schema for answer(text) and read(document), rejecting extra privileged fields, unknown actions and wrong value types.\par
 \noindent\textbf{Transfer:} Nest a field or change output encoding and predict whether validation rejects it.\par
 \noindent\textbf{Control:} Preserve a valid allowed output while rejecting an extra privileged field.\par
 \noindent\textbf{Later retrieval:} Explain schema validity versus authorization of a valid action.\par
@@ -1507,7 +1507,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{ai-application-security: tools}
 \noindent\textbf{Milestone:} tools-milestone\par
 \noindent\textbf{Skill:} Give an agent a bounded capability\par
-\noindent\textbf{Experiment:} Implement or test an allowlisted dispatcher with synthetic files and a mock model; verify that model output cannot expand the allowed resource set.\par
+\noindent\textbf{Experiment:} Make dispatch an explicit allowlist of actions and document identifiers; use DOCS lookups rather than filesystem paths.\par
 \noindent\textbf{Transfer:} Change a resource identifier or attempt a second action outside the allowlist.\par
 \noindent\textbf{Control:} Permit the intended action and reject traversal-like or unrelated resource references.\par
 \noindent\textbf{Later retrieval:} Reconstruct where least privilege is enforced independently of the model.\par
@@ -1515,7 +1515,7 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{ai-application-security: data}
 \noindent\textbf{Milestone:} data-milestone\par
 \noindent\textbf{Skill:} Test retrieval separation between users\par
-\noindent\textbf{Experiment:} Test retrieval filters and result handling in an owned fixture so one user's documents cannot be returned to another user.\par
+\noindent\textbf{Experiment:} Write tests for alice, bob and public data across DOCS. Enforce ownership before exposing text to \path{mock_model}.\par
 \noindent\textbf{Transfer:} Change a document ID, cache key or role and independently retest isolation.\par
 \noindent\textbf{Control:} Include a shared public document that remains legitimately accessible to both users.\par
 \noindent\textbf{Later retrieval:} Explain why hiding a private citation after retrieval is too late to guarantee isolation.\par
@@ -1523,16 +1523,16 @@ Each entry corresponds to a named milestone in the original five or nineteen spe
 \subsubsection{ai-application-security: evaluation}
 \noindent\textbf{Milestone:} evaluation-milestone\par
 \noindent\textbf{Skill:} State exactly what the evaluation measured\par
-\noindent\textbf{Experiment:} Run the cases against the toy system, record failures and repairs, and distinguish deterministic application tests from any real-model observations.\par
+\noindent\textbf{Experiment:} Build a labeled suite covering benign answers, own/public document reads, other-user reads, unknown actions and malformed fields.\par
 \noindent\textbf{Transfer:} Add an unseen wording or tool-output shape and rerun the relevant boundary checks.\par
 \noindent\textbf{Control:} Include benign lookalikes so blocking every input cannot pass the evaluation.\par
 \noindent\textbf{Later retrieval:} Explain why a passing finite test set does not prove universal prompt-injection resistance.\par
 \noindent\textbf{Alignment references:} owasp-llm, owasp-asvs\par
 \subsubsection{ai-application-security: independent-transfer}
 \noindent\textbf{Milestone:} independent-transfer-milestone\par
-\noindent\textbf{Skill:} Revisit the skill on a fresh problem\par
-\noindent\textbf{Experiment:} After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.\par
-\noindent\textbf{Transfer:} Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.\par
-\noindent\textbf{Control:} Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.\par
-\noindent\textbf{Later retrieval:} Explain what transferred, what required help and which prerequisite needs another small experiment.\par
+\noindent\textbf{Skill:} Recheck the boundary with a specified change\par
+\noindent\textbf{Experiment:} Change \path{mock_model} to emit an extra privileged field inside a nested output object. Add a new instruction-like phrase that requests the same forbidden document and rerun boundary checks.\par
+\noindent\textbf{Transfer:} Add a second case by reversing the changed condition above, predict its result and compare actual behavior.\par
+\noindent\textbf{Control:} Keep the valid public answer and same-user retrieval working; refusing every generated output cannot pass.\par
+\noindent\textbf{Later retrieval:} Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested.\par
 \noindent\textbf{Alignment references:} owasp-llm, owasp-asvs\par

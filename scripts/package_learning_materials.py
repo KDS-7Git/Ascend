@@ -20,6 +20,7 @@ def outputs():
             if p.is_file() and "__pycache__" not in p.parts
         }
         files["report.py"] = (SOURCE / "shared/report.py").read_bytes()
+        files["LICENSE"] = (ROOT / "LICENSE").read_bytes()
         stream = io.BytesIO()
         with zipfile.ZipFile(stream, "w", zipfile.ZIP_DEFLATED) as archive:
             for name, data in sorted(files.items()):

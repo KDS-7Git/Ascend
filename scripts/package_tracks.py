@@ -33,10 +33,13 @@ def main():
         "**/*.tex",
         "screenshots/**/*.png",
         "curriculum/*.json",
+        "curriculum/*.md",
         "design/ui-workspace-sources.json",
     ]:
         for path in (ROOT / "docs").glob(pattern):
             files["docs/" + str(path.relative_to(ROOT / "docs"))] = path
+    for path in (ROOT / "web/training").glob("*.zip"):
+        files["learning-materials/" + path.name] = path
     files["LICENSE"] = ROOT / "LICENSE"
     destination = ROOT / "tracks/cyber-tracks-v4.zip"
     with zipfile.ZipFile(
@@ -44,7 +47,7 @@ def main():
     ) as archive:
         for name, path in sorted(files.items()):
             info = zipfile.ZipInfo(
-                "cyber-tracks/" + name, date_time=(2026, 11, 1, 0, 0, 0)
+                "cyber-tracks/" + name, date_time=(2026, 11, 2, 0, 0, 0)
             )
             info.compress_type = zipfile.ZIP_DEFLATED
             info.external_attr = 0o644 << 16
@@ -52,7 +55,7 @@ def main():
     with zipfile.ZipFile(destination) as archive:
         assert archive.testzip() is None
     print(
-        "RESULT: Public v4 archive contains 26 packs, seven PDFs and complete LaTeX sources; export equality and ZIP integrity passed."
+        "RESULT: Public v4 archive contains 26 packs, 21 practice ZIPs, seven PDFs and LaTeX sources; export equality and ZIP integrity passed."
     )
 
 

@@ -4,13 +4,13 @@
 SOC, Active Directory, cloud, containers, DevSecOps, DFIR, threat hunting, malware,
 mobile, APIs, cryptography, wireless/IoT, OT/ICS, architecture/GRC, vulnerability
 management, bug bounty and AI application security. An eight-task verified practice
-project and the public home lab (including Bandit 0–12) are also included.
+project and the public home lab (including Bandit) are also included.
 These packs require the current Ascend release with `lab` and `ctf` verifiers;
 copying TOML files does not upgrade an older server.
-Individual pack versions are independent: four original tracks remain v3, defense
-and home lab are v4, Ethical Hacking Foundations is v2, and other
-specialist/practice packs are v1. The foundations title now distinguishes it from
-the separate offensive tracks; its task IDs and completion requirements stay the same.
+Individual pack versions are independent: the four original technical tracks and
+Ethical Hacking Foundations are v4, defense is v5, the other specialist tracks are
+v2, and the home lab/practice packs retain their versions. The guidance update
+preserves task IDs while clarifying instructions and completion claims.
 
 Browse the editable tracks by domain:
 
@@ -29,6 +29,13 @@ assessment rubric, source register, catalog, installation, timers, lab proof bri
 and environment requirements. Source files and generated pack definitions live in
 the repository. Every supplied curriculum remains an unreviewed draft. Alignment
 with established courses and frameworks does not prove learner outcomes.
+
+Concrete practice inputs are organized by track under [materials](materials/).
+The web app offers one ZIP per track, including the report helper and license.
+The public archive also includes those standalone ZIPs under `learning-materials/`
+for offline use. Read setup requirements before timing: a synthetic fixture or
+tabletop does not demonstrate a real cloud account, directory, device or cluster.
+Optional reference links explain concepts; they are separate from actual lab files.
 
 ```sh
 ascend pack install verified-security-lab

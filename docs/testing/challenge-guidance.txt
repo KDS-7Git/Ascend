@@ -1,0 +1,16 @@
+Challenge guidance verification — 2026-11-02
+
+Full suite (disposable profiles):
+........................................................................ [ 37%]
+........................................................................ [ 75%]
+...............................................                          [100%]
+191 passed in 106.46s (0:01:46)
+
+After adding licenses to material ZIPs: tests/test_learning_materials.py: 6 passed.
+Generator/archive consistency checks, registry regeneration, Ruff formatting/import checks and git diff whitespace check passed.
+Wheel inspection: all 21 material archives are included and each contains LICENSE.
+Chromium: download, clipboard, responsive width and retained session checks at 390 and 1440 px. Visual captures use a temporary profile.
+Strict LaTeX checks are recorded separately in docs-build.txt.
+Local installation: 24 packs updated; protected database tables unchanged; health, new guidance fields and material download verified. A private database/pack backup was created before update.
+Known-pattern diagnostic covers 28 packs / 1,002 nodes with no remaining flags. This is not a claim of complete pedagogical validation or execution of all operational labs. Windows/AD CS, Android, cloud IAM, Kubernetes, Security Onion, Volatility and hardware environments were not all run here.
+RESULT: 191 tests passed; local recipes, downloads and state-preserving content update verified.
