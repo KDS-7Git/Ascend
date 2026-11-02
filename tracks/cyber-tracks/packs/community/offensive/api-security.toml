@@ -3,7 +3,7 @@
 "id" = "api-security"
 "title" = "API Security and Authorization Engineering"
 "kind" = "proficiency"
-"version" = 1
+"version" = 2
 "source" = "ai-draft"
 "reviewed" = false
 
@@ -12,7 +12,7 @@
 
 [[level]]
 "id" = "foundations"
-"title" = "Prove the entry skills in a small lab"
+"title" = "Compare authentication and ownership in a local API"
 "lane" = "main"
 
 [[level]]
@@ -47,7 +47,7 @@
 
 [[level]]
 "id" = "independent-transfer"
-"title" = "Revisit the skill on a fresh problem"
+"title" = "Recheck the boundary with a specified change"
 "lane" = "main"
 
 [[level]]
@@ -69,62 +69,79 @@
 "needs" = []
 "done_when" = "Compute the exact content hash of a fresh server-generated evidence fixture and pass its check."
 "brief" = "This small exercise tests evidence integrity. Track entry background: Read HTTP and JSON, use two synthetic accounts and explain authentication versus authorization."
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"resource" = "https://docs.python.org/3/library/hashlib.html"
 "verify" = { "type" = "lab", "exercise" = "integrity" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "foundations-reasoning"
 "level" = "foundations"
-"title" = "Reason it through: Prove the entry skills in a small lab"
+"title" = "Reason it through: Compare authentication and ownership in a local API"
 "size" = "S"
 "minutes" = 10
 "needs" = ["lab-readiness"]
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Read HTTP and JSON, use two synthetic accounts and explain authentication versus authorization."
-"steps" = ["Work through this preparation: Read HTTP and JSON, use two synthetic accounts and explain authentication versus authorization.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"brief" = "Use two synthetic identities against one concrete note."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "api-security:foundations" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "foundations-experiment"
 "level" = "foundations"
-"title" = "Investigate: Prove the entry skills in a small lab"
+"title" = "Compare authentication and ownership in a local API"
 "size" = "M"
-"minutes" = 60
+"minutes" = 30
 "needs" = ["foundations-reasoning"]
-"done_when" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/foundations-experiment.json."
-"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
-"steps" = ["Read HTTP and JSON, use two synthetic accounts and explain authentication versus authorization.", "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/foundations-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use two synthetic identities against one concrete note."
+"steps" = ["Read NOTES and do_GET in service.py. Note 1 belongs to alice. Start the fixture with python3 service.py.", "Compare a known owner, another known user and no identity.\n```sh\ncurl --noproxy \"*\" -i -H \"X-Lab-User: alice\" http://127.0.0.1:8765/notes/1\ncurl --noproxy \"*\" -i -H \"X-Lab-User: bob\" http://127.0.0.1:8765/notes/1\ncurl --noproxy \"*\" -i http://127.0.0.1:8765/notes/1\n```", "Record status and whether note content is returned. Explain why recognizing a user is different from authorizing that user for this object. Stop the service.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/foundations-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/foundations-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/api-security.zip" }]
 
 [[node]]
 "id" = "foundations-milestone"
 "level" = "foundations"
-"title" = "Apply it to a changed case: Prove the entry skills in a small lab"
+"title" = "Apply it: Compare authentication and ownership in a local API"
 "size" = "M"
-"minutes" = 120
+"minutes" = 30
 "needs" = ["foundations-reasoning", "foundations-experiment", "lab-readiness"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/foundations-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
-"steps" = ["Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Transfer: Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.", "Control: Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/foundations-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use two synthetic identities against one concrete note."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Read NOTES and do_GET in service.py. Note 1 belongs to alice. Start the fixture with python3 service.py.", "Change to test: Use note 2 with its owner bob and unrelated alice.", "Comparison to retain: A request without X-Lab-User should not return note contents.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/foundations-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/foundations-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/api-security.zip" }]
 
 [[node]]
 "id" = "recall-foundations"
 "level" = "recall-lane"
-"title" = "Return later: Prove the entry skills in a small lab"
+"title" = "Return later: Compare authentication and ownership in a local API"
 "size" = "S"
 "minutes" = 10
 "needs" = ["foundations-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
-"brief" = "Reconstruct the environment and entry assumptions without following the setup notes."
-"steps" = ["Reconstruct the environment and entry assumptions without following the setup notes.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"brief" = "Without opening your report, reconstruct the inputs, observed result and main limitation of compare authentication and ownership in a local api."
+"steps" = ["Without opening your report, reconstruct the inputs, observed result and main limitation of compare authentication and ownership in a local api.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "api-security:foundations" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "inventory-reasoning"
@@ -134,38 +151,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Read a small OpenAPI schema and list methods, objects, identities and state-changing operations."
-"steps" = ["Work through this preparation: Read a small OpenAPI schema and list methods, objects, identities and state-changing operations.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "api-security:inventory" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "inventory-experiment"
 "level" = "inventory"
-"title" = "Investigate: Find the contract the client assumes"
+"title" = "Practice: Find the contract the client assumes"
 "size" = "M"
 "minutes" = 60
 "needs" = ["inventory-reasoning"]
-"done_when" = "Inventory an owned training API, compare its documented and observed behavior, and identify two testable boundary hypotheses. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/inventory-experiment.json."
-"brief" = "Inventory an owned training API, compare its documented and observed behavior, and identify two testable boundary hypotheses."
-"steps" = ["Read a small OpenAPI schema and list methods, objects, identities and state-changing operations.", "Inventory an owned training API, compare its documented and observed behavior, and identify two testable boundary hypotheses.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/inventory-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Read service.py and inventory GET /health, GET /notes/{id} and PATCH /notes/{id}; list inputs, outputs and fake identity handling."
+"steps" = ["Read service.py and inventory GET /health, GET /notes/{id} and PATCH /notes/{id}; list inputs, outputs and fake identity handling.", "Run one valid request per handler and one unknown path. Compare source-supported behavior with actual status/body.", "State two hypotheses: cross-user object read and overbroad property update. Do not invent undocumented endpoints.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/inventory-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/inventory-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/api-security.zip" }]
 
 [[node]]
 "id" = "inventory-milestone"
 "level" = "inventory"
-"title" = "Apply it to a changed case: Find the contract the client assumes"
+"title" = "Apply it: Find the contract the client assumes"
 "size" = "M"
 "minutes" = 120
 "needs" = ["inventory-reasoning", "inventory-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/inventory-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Inventory an owned training API, compare its documented and observed behavior, and identify two testable boundary hypotheses."
-"steps" = ["Inventory an owned training API, compare its documented and observed behavior, and identify two testable boundary hypotheses.", "Transfer: Add a deprecated route or alternate version and update the inventory and risk assumptions.", "Control: Distinguish an intentionally public endpoint from an unintentionally unprotected operation.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/inventory-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Read service.py and inventory GET /health, GET /notes/{id} and PATCH /notes/{id}; list inputs, outputs and fake identity handling."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Read service.py and inventory GET /health, GET /notes/{id} and PATCH /notes/{id}; list inputs, outputs and fake identity handling.", "Change to test: Add a deprecated route or alternate version and update the inventory and risk assumptions.", "Comparison to retain: Distinguish an intentionally public endpoint from an unintentionally unprotected operation.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/inventory-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/inventory-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/api-security.zip" }]
 
 [[node]]
 "id" = "recall-inventory"
@@ -176,9 +204,12 @@
 "needs" = ["inventory-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Reconstruct one API trust boundary from method, identity and object."
-"steps" = ["Reconstruct one API trust boundary from method, identity and object.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"steps" = ["Reconstruct one API trust boundary from method, identity and object.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "api-security:inventory" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "object-authorization-reasoning"
@@ -188,38 +219,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Build an access matrix for two users and two synthetic objects."
-"steps" = ["Work through this preparation: Build an access matrix for two users and two synthetic objects.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "api-security:object-authorization" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "object-authorization-experiment"
 "level" = "object-authorization"
-"title" = "Investigate: Change the object, keep the identity"
+"title" = "Practice: Change the object, keep the identity"
 "size" = "M"
 "minutes" = 60
 "needs" = ["object-authorization-reasoning"]
-"done_when" = "In a designated API lesson, test owner and cross-user access using recorded requests, explain the missing check and demonstrate a corrected local equivalent. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/object-authorization-experiment.json."
-"brief" = "In a designated API lesson, test owner and cross-user access using recorded requests, explain the missing check and demonstrate a corrected local equivalent."
-"steps" = ["Build an access matrix for two users and two synthetic objects.", "In a designated API lesson, test owner and cross-user access using recorded requests, explain the missing check and demonstrate a corrected local equivalent.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/object-authorization-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use GET /notes/1 as alice and bob; save baseline status/body. Find where do_GET recognizes a user but omits ownership."
+"steps" = ["Use GET /notes/1 as alice and bob; save baseline status/body. Find where do_GET recognizes a user but omits ownership.", "Add an owner comparison before sending the note, using a denial response without content. Restart the local copy.", "Retest alice/note1, bob/note2, cross-user requests and unknown note IDs. Record the boundary and the fixture’s fake-authentication limitation.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/object-authorization-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/object-authorization-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/api-security.zip" }]
 
 [[node]]
 "id" = "object-authorization-milestone"
 "level" = "object-authorization"
-"title" = "Apply it to a changed case: Change the object, keep the identity"
+"title" = "Apply it: Change the object, keep the identity"
 "size" = "M"
 "minutes" = 120
 "needs" = ["object-authorization-reasoning", "object-authorization-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/object-authorization-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "In a designated API lesson, test owner and cross-user access using recorded requests, explain the missing check and demonstrate a corrected local equivalent."
-"steps" = ["In a designated API lesson, test owner and cross-user access using recorded requests, explain the missing check and demonstrate a corrected local equivalent.", "Transfer: Change the object type or HTTP verb and test whether the same boundary is enforced.", "Control: Show legitimate owner access and rejection of an unrelated authenticated user.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/object-authorization-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use GET /notes/1 as alice and bob; save baseline status/body. Find where do_GET recognizes a user but omits ownership."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use GET /notes/1 as alice and bob; save baseline status/body. Find where do_GET recognizes a user but omits ownership.", "Change to test: Change the object type or HTTP verb and test whether the same boundary is enforced.", "Comparison to retain: Show legitimate owner access and rejection of an unrelated authenticated user.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/object-authorization-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/object-authorization-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/api-security.zip" }]
 
 [[node]]
 "id" = "recall-object-authorization"
@@ -230,9 +272,12 @@
 "needs" = ["object-authorization-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain why unpredictable IDs cannot replace authorization."
-"steps" = ["Explain why unpredictable IDs cannot replace authorization.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"steps" = ["Explain why unpredictable IDs cannot replace authorization.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "api-security:object-authorization" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "property-authorization-reasoning"
@@ -242,38 +287,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Separate user-editable, server-owned and privileged fields in a toy request model."
-"steps" = ["Work through this preparation: Separate user-editable, server-owned and privileged fields in a toy request model.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "api-security:property-authorization" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "property-authorization-experiment"
 "level" = "property-authorization"
-"title" = "Investigate: Who may write this field?"
+"title" = "Practice: Who may write this field?"
 "size" = "M"
 "minutes" = 60
 "needs" = ["property-authorization-reasoning"]
-"done_when" = "Test a local API's property allowlist with a harmless administrative-flag fixture and patch overbroad binding or response exposure. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/property-authorization-experiment.json."
-"brief" = "Test a local API's property allowlist with a harmless administrative-flag fixture and patch overbroad binding or response exposure."
-"steps" = ["Separate user-editable, server-owned and privileged fields in a toy request model.", "Test a local API's property allowlist with a harmless administrative-flag fixture and patch overbroad binding or response exposure.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/property-authorization-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "As alice, PATCH note 1 with text only and then owner set to bob in the resettable fixture. Record whether the source allows both; restart afterward."
+"steps" = ["As alice, PATCH note 1 with text only and then owner set to bob in the resettable fixture. Record whether the source allows both; restart afterward.", "Define text as the only mutable user field, with a string type/length bound. Reject attempts to set owner/internal; limit returned fields separately.", "Test valid text, owner injection, internal disclosure and malformed JSON. Keep raw commands and before/after responses.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/property-authorization-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/property-authorization-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/api-security.zip" }]
 
 [[node]]
 "id" = "property-authorization-milestone"
 "level" = "property-authorization"
-"title" = "Apply it to a changed case: Who may write this field?"
+"title" = "Apply it: Who may write this field?"
 "size" = "M"
 "minutes" = 120
 "needs" = ["property-authorization-reasoning", "property-authorization-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/property-authorization-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Test a local API's property allowlist with a harmless administrative-flag fixture and patch overbroad binding or response exposure."
-"steps" = ["Test a local API's property allowlist with a harmless administrative-flag fixture and patch overbroad binding or response exposure.", "Transfer: Nest the property or switch update methods and predict whether the policy should change.", "Control: Keep ordinary editable fields working while rejecting privileged field writes and suppressing private response fields.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/property-authorization-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "As alice, PATCH note 1 with text only and then owner set to bob in the resettable fixture. Record whether the source allows both; restart afterward."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: As alice, PATCH note 1 with text only and then owner set to bob in the resettable fixture. Record whether the source allows both; restart afterward.", "Change to test: Nest the property or switch update methods and predict whether the policy should change.", "Comparison to retain: Keep ordinary editable fields working while rejecting privileged field writes and suppressing private response fields.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/property-authorization-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/property-authorization-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/api-security.zip" }]
 
 [[node]]
 "id" = "recall-property-authorization"
@@ -284,9 +340,12 @@
 "needs" = ["property-authorization-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain the relationship between mass assignment and field-level authorization."
-"steps" = ["Explain the relationship between mass assignment and field-level authorization.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"steps" = ["Explain the relationship between mass assignment and field-level authorization.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "api-security:property-authorization" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "tokens-reasoning"
@@ -296,38 +355,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Identify issuer, audience, expiration and granted scopes in a synthetic token description."
-"steps" = ["Work through this preparation: Identify issuer, audience, expiration and granted scopes in a synthetic token description.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "api-security:tokens" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "tokens-experiment"
 "level" = "tokens"
-"title" = "Investigate: Validate the whole token contract"
+"title" = "Practice: Validate the whole token contract"
 "size" = "M"
 "minutes" = 60
 "needs" = ["tokens-reasoning"]
-"done_when" = "Write or execute tests against an owned API for valid and invalid token contexts, separating signature validity from authorization. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/tokens-experiment.json."
-"brief" = "Write or execute tests against an owned API for valid and invalid token contexts, separating signature validity from authorization."
-"steps" = ["Identify issuer, audience, expiration and granted scopes in a synthetic token description.", "Write or execute tests against an owned API for valid and invalid token contexts, separating signature validity from authorization.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/tokens-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "This fixture has no real bearer-token authentication. Implement a separate token-context checker using synthetic claims: subject, issuer, audience, expiry and allowed action."
+"steps" = ["This fixture has no real bearer-token authentication. Implement a separate token-context checker using synthetic claims: subject, issuer, audience, expiry and allowed action.", "Write tests for matching/mismatched audience, expired claims, missing subject and valid-but-unowned note. If using JWT, use a maintained library and an isolated test key; signature validation must occur before trusting claims.", "Label a claims-only simulation as such. Do not claim cryptographic verification from testing a Python dictionary.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/tokens-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/tokens-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/api-security.zip" }]
 
 [[node]]
 "id" = "tokens-milestone"
 "level" = "tokens"
-"title" = "Apply it to a changed case: Validate the whole token contract"
+"title" = "Apply it: Validate the whole token contract"
 "size" = "M"
 "minutes" = 120
 "needs" = ["tokens-reasoning", "tokens-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/tokens-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Write or execute tests against an owned API for valid and invalid token contexts, separating signature validity from authorization."
-"steps" = ["Write or execute tests against an owned API for valid and invalid token contexts, separating signature validity from authorization.", "Transfer: Change audience, scope or expiry and predict which validation layer rejects the request.", "Control: Include a correctly signed but wrong-audience token and an authorized valid token.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/tokens-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "This fixture has no real bearer-token authentication. Implement a separate token-context checker using synthetic claims: subject, issuer, audience, expiry and allowed action."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: This fixture has no real bearer-token authentication. Implement a separate token-context checker using synthetic claims: subject, issuer, audience, expiry and allowed action.", "Change to test: Change audience, scope or expiry and predict which validation layer rejects the request.", "Comparison to retain: Include a correctly signed but wrong-audience token and an authorized valid token.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/tokens-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/tokens-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/api-security.zip" }]
 
 [[node]]
 "id" = "recall-tokens"
@@ -338,9 +408,12 @@
 "needs" = ["tokens-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain why a valid signature does not make every action authorized."
-"steps" = ["Explain why a valid signature does not make every action authorized.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"steps" = ["Explain why a valid signature does not make every action authorized.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "api-security:tokens" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "resource-limits-reasoning"
@@ -350,38 +423,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Identify pagination, batch operations and query depth/complexity in a toy API."
-"steps" = ["Work through this preparation: Identify pagination, batch operations and query depth/complexity in a toy API.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "api-security:resource-limits" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "resource-limits-experiment"
 "level" = "resource-limits"
-"title" = "Investigate: Make expensive work bounded"
+"title" = "Practice: Make expensive work bounded"
 "size" = "M"
 "minutes" = 60
 "needs" = ["resource-limits-reasoning"]
-"done_when" = "Apply explicit request-size and work limits to an owned small service, then test bounded valid and over-limit inputs without load-testing third parties. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/resource-limits-experiment.json."
-"brief" = "Apply explicit request-size and work limits to an owned small service, then test bounded valid and over-limit inputs without load-testing third parties."
-"steps" = ["Identify pagination, batch operations and query depth/complexity in a toy API.", "Apply explicit request-size and work limits to an owned small service, then test bounded valid and over-limit inputs without load-testing third parties.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/resource-limits-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Inspect the existing 2048-byte PATCH bound. Test one short valid text body and one 2049-byte body with a single request each; no traffic flood is needed."
+"steps" = ["Inspect the existing 2048-byte PATCH bound. Test one short valid text body and one 2049-byte body with a single request each; no traffic flood is needed.", "Add a smaller text-field bound such as 100 characters, preserving JSON-body validation. Test 99, 100 and 101 characters, malformed JSON and a negative length if using a raw local test client.", "Record actual status and that these tests demonstrate input bounds, not production rate limiting or denial-of-service resistance.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/resource-limits-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/resource-limits-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/api-security.zip" }]
 
 [[node]]
 "id" = "resource-limits-milestone"
 "level" = "resource-limits"
-"title" = "Apply it to a changed case: Make expensive work bounded"
+"title" = "Apply it: Make expensive work bounded"
 "size" = "M"
 "minutes" = 120
 "needs" = ["resource-limits-reasoning", "resource-limits-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/resource-limits-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Apply explicit request-size and work limits to an owned small service, then test bounded valid and over-limit inputs without load-testing third parties."
-"steps" = ["Apply explicit request-size and work limits to an owned small service, then test bounded valid and over-limit inputs without load-testing third parties.", "Transfer: Change nesting depth or batch composition and predict the work budget decision.", "Control: Preserve a legitimate paginated request and reject an inexpensive-looking input that exceeds the actual work budget.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/resource-limits-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Inspect the existing 2048-byte PATCH bound. Test one short valid text body and one 2049-byte body with a single request each; no traffic flood is needed."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Inspect the existing 2048-byte PATCH bound. Test one short valid text body and one 2049-byte body with a single request each; no traffic flood is needed.", "Change to test: Change nesting depth or batch composition and predict the work budget decision.", "Comparison to retain: Preserve a legitimate paginated request and reject an inexpensive-looking input that exceeds the actual work budget.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/resource-limits-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/resource-limits-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/api-security.zip" }]
 
 [[node]]
 "id" = "recall-resource-limits"
@@ -392,9 +476,12 @@
 "needs" = ["resource-limits-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain why request count alone may not bound resource consumption."
-"steps" = ["Explain why request count alone may not bound resource consumption.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"steps" = ["Explain why request count alone may not bound resource consumption.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "api-security:resource-limits" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "review-reasoning"
@@ -404,38 +491,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Draw the state and identity transitions for a small API workflow."
-"steps" = ["Work through this preparation: Draw the state and identity transitions for a small API workflow.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "api-security:review" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "review-experiment"
 "level" = "review"
-"title" = "Investigate: Test a workflow across its endpoints"
+"title" = "Practice: Test a workflow across its endpoints"
 "size" = "M"
 "minutes" = 60
 "needs" = ["review-reasoning"]
-"done_when" = "Assess an unfamiliar owned API fixture for object, property, token and workflow boundaries; deliver evidence and a tested minimal repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/review-experiment.json."
-"brief" = "Assess an unfamiliar owned API fixture for object, property, token and workflow boundaries; deliver evidence and a tested minimal repair."
-"steps" = ["Draw the state and identity transitions for a small API workflow.", "Assess an unfamiliar owned API fixture for object, property, token and workflow boundaries; deliver evidence and a tested minimal repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/review-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Extract a new service.py copy and use note 2/bob for the owned case. Independently assess object access, mutable fields and response properties."
+"steps" = ["Extract a new service.py copy and use note 2/bob for the owned case. Independently assess object access, mutable fields and response properties.", "Reproduce one defect, implement the smallest local repair and run the full valid/invalid matrix. Keep token-context results separate from the fake HTTP identity header.", "Deliver a report with exact fixture version, requests, repair and residual limitations; stop the server.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/review-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/review-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/api-security.zip" }]
 
 [[node]]
 "id" = "review-milestone"
 "level" = "review"
-"title" = "Apply it to a changed case: Test a workflow across its endpoints"
+"title" = "Apply it: Test a workflow across its endpoints"
 "size" = "M"
 "minutes" = 120
 "needs" = ["review-reasoning", "review-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/review-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Assess an unfamiliar owned API fixture for object, property, token and workflow boundaries; deliver evidence and a tested minimal repair."
-"steps" = ["Assess an unfamiliar owned API fixture for object, property, token and workflow boundaries; deliver evidence and a tested minimal repair.", "Transfer: Change operation order or user role and independently test whether the business invariant still holds.", "Control: Verify normal workflow completion and a rejected unauthorized transition after the fix.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/review-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Extract a new service.py copy and use note 2/bob for the owned case. Independently assess object access, mutable fields and response properties."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Extract a new service.py copy and use note 2/bob for the owned case. Independently assess object access, mutable fields and response properties.", "Change to test: Change operation order or user role and independently test whether the business invariant still holds.", "Comparison to retain: Verify normal workflow completion and a rejected unauthorized transition after the fix.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/review-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/review-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/api-security.zip" }]
 
 [[node]]
 "id" = "recall-review"
@@ -446,63 +544,80 @@
 "needs" = ["review-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Reconstruct the finding from the business invariant rather than the endpoint name."
-"steps" = ["Reconstruct the finding from the business invariant rather than the endpoint name.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"steps" = ["Reconstruct the finding from the business invariant rather than the endpoint name.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "api-security:review" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "independent-transfer-reasoning"
 "level" = "independent-transfer"
-"title" = "Reason it through: Revisit the skill on a fresh problem"
+"title" = "Reason it through: Recheck the boundary with a specified change"
 "size" = "S"
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution."
-"steps" = ["Work through this preparation: Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"brief" = "Use the named task files for the changed case. Predict the effect before opening previous notes."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "api-security:independent-transfer" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "independent-transfer-experiment"
 "level" = "independent-transfer"
-"title" = "Investigate: Revisit the skill on a fresh problem"
+"title" = "Practice: Recheck the boundary with a specified change"
 "size" = "M"
 "minutes" = 60
 "needs" = ["independent-transfer-reasoning"]
-"done_when" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/independent-transfer-experiment.json."
-"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
-"steps" = ["Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/independent-transfer-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "In your repaired service, add note 3 owned by alice. Test text update then read, cross-user PATCH, and an attempt to change owner before a read."
+"steps" = ["Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.", "In your repaired service, add note 3 owned by alice. Test text update then read, cross-user PATCH, and an attempt to change owner before a read.", "Bob must retain access to note 2, and changing operation order must not expose note 3.", "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/independent-transfer-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/api-security.zip" }]
 
 [[node]]
 "id" = "independent-transfer-milestone"
 "level" = "independent-transfer"
-"title" = "Apply it to a changed case: Revisit the skill on a fresh problem"
+"title" = "Apply it: Recheck the boundary with a specified change"
 "size" = "M"
 "minutes" = 120
 "needs" = ["independent-transfer-reasoning", "independent-transfer-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/independent-transfer-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
-"steps" = ["After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Transfer: Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.", "Control: Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/independent-transfer-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "In your repaired service, add note 3 owned by alice. Test text update then read, cross-user PATCH, and an attempt to change owner before a read."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.", "Change to test: Add a second case by reversing the changed condition above, predict its result and compare actual behavior.", "Comparison to retain: Bob must retain access to note 2, and changing operation order must not expose note 3.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/independent-transfer-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/api-security.zip" }]
 
 [[node]]
 "id" = "recall-independent-transfer"
 "level" = "recall-lane"
-"title" = "Return later: Revisit the skill on a fresh problem"
+"title" = "Return later: Recheck the boundary with a specified change"
 "size" = "S"
 "minutes" = 10
 "needs" = ["independent-transfer-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
-"brief" = "Explain what transferred, what required help and which prerequisite needs another small experiment."
-"steps" = ["Explain what transferred, what required help and which prerequisite needs another small experiment.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"brief" = "Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested."
+"steps" = ["Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "api-security:independent-transfer" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "quick-access-check"
@@ -512,5 +627,8 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Correctly evaluate every allow/deny decision for a fresh server-generated policy fixture."
-"resource" = "https://owasp.org/API-Security/editions/2023/en/0x11-t10/"
+"resource" = "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"
 "verify" = { "type" = "lab", "exercise" = "access-policy" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."

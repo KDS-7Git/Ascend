@@ -3,7 +3,7 @@
 "id" = "secure-development-devsecops"
 "title" = "Secure Development and DevSecOps"
 "kind" = "proficiency"
-"version" = 1
+"version" = 2
 "source" = "ai-draft"
 "reviewed" = false
 
@@ -12,7 +12,7 @@
 
 [[level]]
 "id" = "foundations"
-"title" = "Prove the entry skills in a small lab"
+"title" = "Run and inspect a tiny notes service"
 "lane" = "main"
 
 [[level]]
@@ -47,7 +47,7 @@
 
 [[level]]
 "id" = "independent-transfer"
-"title" = "Revisit the skill on a fresh problem"
+"title" = "Recheck the boundary with a specified change"
 "lane" = "main"
 
 [[level]]
@@ -69,62 +69,79 @@
 "needs" = []
 "done_when" = "Compute the exact content hash of a fresh server-generated evidence fixture and pass its check."
 "brief" = "This small exercise tests evidence integrity. Track entry background: Write a small program, use Git and run its tests."
-"resource" = "https://owasp.org/www-project-application-security-verification-standard/"
+"resource" = "https://docs.python.org/3/library/hashlib.html"
 "verify" = { "type" = "lab", "exercise" = "integrity" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "foundations-reasoning"
 "level" = "foundations"
-"title" = "Reason it through: Prove the entry skills in a small lab"
+"title" = "Reason it through: Run and inspect a tiny notes service"
 "size" = "S"
 "minutes" = 10
 "needs" = ["lab-readiness"]
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Write a small program, use Git and run its tests."
-"steps" = ["Work through this preparation: Write a small program, use Git and run its tests.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"brief" = "Make one real HTTP request and find its handler in source."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://owasp.org/www-project-application-security-verification-standard/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "secure-development-devsecops:foundations" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "foundations-experiment"
 "level" = "foundations"
-"title" = "Investigate: Prove the entry skills in a small lab"
+"title" = "Run and inspect a tiny notes service"
 "size" = "M"
-"minutes" = 60
+"minutes" = 30
 "needs" = ["foundations-reasoning"]
-"done_when" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/foundations-experiment.json."
-"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
-"steps" = ["Write a small program, use Git and run its tests.", "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/foundations-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Make one real HTTP request and find its handler in source."
+"steps" = ["Open service.py and find do_GET. In Terminal A start the local fixture.\n```sh\npython3 service.py\n```", "In Terminal B request health and the owner’s note.\n```sh\ncurl --noproxy \"*\" -i http://127.0.0.1:8765/health\ncurl --noproxy \"*\" -i -H \"X-Lab-User: alice\" http://127.0.0.1:8765/notes/1\n```", "Record status, JSON body and the source branch returning each. Stop the service. Create a new local Git repo if desired; do not modify Ascend’s source repository for this exercise.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/foundations-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "resource" = "https://owasp.org/www-project-application-security-verification-standard/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/foundations-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. Git is needed for versioned changes; use a new local repository inside the extracted folder."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/secure-development-devsecops.zip" }]
 
 [[node]]
 "id" = "foundations-milestone"
 "level" = "foundations"
-"title" = "Apply it to a changed case: Prove the entry skills in a small lab"
+"title" = "Apply it: Run and inspect a tiny notes service"
 "size" = "M"
-"minutes" = 120
+"minutes" = 30
 "needs" = ["foundations-reasoning", "foundations-experiment", "lab-readiness"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/foundations-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
-"steps" = ["Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Transfer: Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.", "Control: Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/foundations-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Make one real HTTP request and find its handler in source."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Open service.py and find do_GET. In Terminal A start the local fixture.\n```sh\npython3 service.py\n```", "Change to test: Request /notes/2 as bob and trace that record in NOTES.", "Comparison to retain: Request an unknown note; observe a 404 without treating it as an application crash.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/foundations-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
 "resource" = "https://owasp.org/www-project-application-security-verification-standard/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/foundations-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. Git is needed for versioned changes; use a new local repository inside the extracted folder."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/secure-development-devsecops.zip" }]
 
 [[node]]
 "id" = "recall-foundations"
 "level" = "recall-lane"
-"title" = "Return later: Prove the entry skills in a small lab"
+"title" = "Return later: Run and inspect a tiny notes service"
 "size" = "S"
 "minutes" = 10
 "needs" = ["foundations-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
-"brief" = "Reconstruct the environment and entry assumptions without following the setup notes."
-"steps" = ["Reconstruct the environment and entry assumptions without following the setup notes.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"brief" = "Without opening your report, reconstruct the inputs, observed result and main limitation of run and inspect a tiny notes service."
+"steps" = ["Without opening your report, reconstruct the inputs, observed result and main limitation of run and inspect a tiny notes service.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://owasp.org/www-project-application-security-verification-standard/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "secure-development-devsecops:foundations" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "threat-model-reasoning"
@@ -134,38 +151,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Identify assets, actors and data flows for a small upload or note-taking service."
-"steps" = ["Work through this preparation: Identify assets, actors and data flows for a small upload or note-taking service.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://owasp.org/www-project-application-security-verification-standard/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "secure-development-devsecops:threat-model" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "threat-model-experiment"
 "level" = "threat-model"
-"title" = "Investigate: Draw the trust boundary before coding"
+"title" = "Practice: Draw the trust boundary before coding"
 "size" = "M"
 "minutes" = 60
 "needs" = ["threat-model-reasoning"]
-"done_when" = "Build a threat model with three concrete abuse cases and map each to an ASVS-style testable requirement. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/threat-model-experiment.json."
-"brief" = "Build a threat model with three concrete abuse cases and map each to an ASVS-style testable requirement."
-"steps" = ["Identify assets, actors and data flows for a small upload or note-taking service.", "Build a threat model with three concrete abuse cases and map each to an ASVS-style testable requirement.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/threat-model-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use scenario.json and service.py. Draw browser → handler → in-memory notes and label X-Lab-User as a fake identity boundary."
+"steps" = ["Use scenario.json and service.py. Draw browser → handler → in-memory notes and label X-Lab-User as a fake identity boundary.", "Define three abuse cases: cross-user read, changing owner through PATCH, and returning internal metadata. Map each to a concrete allow/deny or output test.", "Write threats.md with affected data, responsible handler and one ASVS-style requirement per case; cite the optional standard for terminology.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/threat-model-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "resource" = "https://owasp.org/www-project-application-security-verification-standard/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/threat-model-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. Git is needed for versioned changes; use a new local repository inside the extracted folder."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/secure-development-devsecops.zip" }]
 
 [[node]]
 "id" = "threat-model-milestone"
 "level" = "threat-model"
-"title" = "Apply it to a changed case: Draw the trust boundary before coding"
+"title" = "Apply it: Draw the trust boundary before coding"
 "size" = "M"
 "minutes" = 120
 "needs" = ["threat-model-reasoning", "threat-model-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/threat-model-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Build a threat model with three concrete abuse cases and map each to an ASVS-style testable requirement."
-"steps" = ["Build a threat model with three concrete abuse cases and map each to an ASVS-style testable requirement.", "Transfer: Add a background worker or third-party integration and revise the boundaries and threats.", "Control: Include a failure outside the service's responsibility and document the dependency instead of claiming to fix it.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/threat-model-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use scenario.json and service.py. Draw browser → handler → in-memory notes and label X-Lab-User as a fake identity boundary."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use scenario.json and service.py. Draw browser → handler → in-memory notes and label X-Lab-User as a fake identity boundary.", "Change to test: Add a background worker or third-party integration and revise the boundaries and threats.", "Comparison to retain: Include a failure outside the service's responsibility and document the dependency instead of claiming to fix it.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/threat-model-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
 "resource" = "https://owasp.org/www-project-application-security-verification-standard/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/threat-model-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. Git is needed for versioned changes; use a new local repository inside the extracted folder."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/secure-development-devsecops.zip" }]
 
 [[node]]
 "id" = "recall-threat-model"
@@ -176,9 +204,12 @@
 "needs" = ["threat-model-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Reconstruct one threat from asset through entry point to consequence."
-"steps" = ["Reconstruct one threat from asset through entry point to consequence.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"steps" = ["Reconstruct one threat from asset through entry point to consequence.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://owasp.org/www-project-application-security-verification-standard/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "secure-development-devsecops:threat-model" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "input-and-output-reasoning"
@@ -188,38 +219,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Trace a user-controlled field through parsing, validation, storage and rendering in a toy service."
-"steps" = ["Work through this preparation: Trace a user-controlled field through parsing, validation, storage and rendering in a toy service.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://owasp.org/www-project-application-security-verification-standard/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "secure-development-devsecops:input-and-output" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "input-and-output-experiment"
 "level" = "input-and-output"
-"title" = "Investigate: Follow untrusted data to its sink"
+"title" = "Practice: Follow untrusted data to its sink"
 "size" = "M"
 "minutes" = 60
 "needs" = ["input-and-output-reasoning"]
-"done_when" = "Repair one input or output handling defect in your own code and write tests that reproduce the defect and preserve intended behavior. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/input-and-output-experiment.json."
-"brief" = "Repair one input or output handling defect in your own code and write tests that reproduce the defect and preserve intended behavior."
-"steps" = ["Trace a user-controlled field through parsing, validation, storage and rendering in a toy service.", "Repair one input or output handling defect in your own code and write tests that reproduce the defect and preserve intended behavior.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/input-and-output-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use PATCH /notes/1 with X-Lab-User: alice and a small JSON body. Compare an intended text update with an attempted owner or internal-field update in the disposable fixture."
+"steps" = ["Use PATCH /notes/1 with X-Lab-User: alice and a small JSON body. Compare an intended text update with an attempted owner or internal-field update in the disposable fixture.", "In your copy of do_PATCH, allow only text with an explicit type/length rule. Define whether unknown fields are rejected, then implement and test that decision.", "Use unittest or a small HTTP test script to show valid text still works and privileged fields cannot change. Restart to reset synthetic notes.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/input-and-output-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "resource" = "https://owasp.org/www-project-application-security-verification-standard/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/input-and-output-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. Git is needed for versioned changes; use a new local repository inside the extracted folder."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/secure-development-devsecops.zip" }]
 
 [[node]]
 "id" = "input-and-output-milestone"
 "level" = "input-and-output"
-"title" = "Apply it to a changed case: Follow untrusted data to its sink"
+"title" = "Apply it: Follow untrusted data to its sink"
 "size" = "M"
 "minutes" = 120
 "needs" = ["input-and-output-reasoning", "input-and-output-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/input-and-output-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Repair one input or output handling defect in your own code and write tests that reproduce the defect and preserve intended behavior."
-"steps" = ["Repair one input or output handling defect in your own code and write tests that reproduce the defect and preserve intended behavior.", "Transfer: Change the input encoding or rendering context and update the defense rather than reusing an unrelated escaping rule.", "Control: Include valid punctuation and an invalid structured input; reject the dangerous case without silently corrupting legitimate data.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/input-and-output-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use PATCH /notes/1 with X-Lab-User: alice and a small JSON body. Compare an intended text update with an attempted owner or internal-field update in the disposable fixture."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use PATCH /notes/1 with X-Lab-User: alice and a small JSON body. Compare an intended text update with an attempted owner or internal-field update in the disposable fixture.", "Change to test: Change the input encoding or rendering context and update the defense rather than reusing an unrelated escaping rule.", "Comparison to retain: Include valid punctuation and an invalid structured input; reject the dangerous case without silently corrupting legitimate data.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/input-and-output-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
 "resource" = "https://owasp.org/www-project-application-security-verification-standard/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/input-and-output-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. Git is needed for versioned changes; use a new local repository inside the extracted folder."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/secure-development-devsecops.zip" }]
 
 [[node]]
 "id" = "recall-input-and-output"
@@ -230,9 +272,12 @@
 "needs" = ["input-and-output-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain why validation and output encoding address different boundaries."
-"steps" = ["Explain why validation and output encoding address different boundaries.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"steps" = ["Explain why validation and output encoding address different boundaries.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://owasp.org/www-project-application-security-verification-standard/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "secure-development-devsecops:input-and-output" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "authz-reasoning"
@@ -242,38 +287,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Model two synthetic users, two objects and one administrative action."
-"steps" = ["Work through this preparation: Model two synthetic users, two objects and one administrative action.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://owasp.org/www-project-application-security-verification-standard/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "secure-development-devsecops:authz" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "authz-experiment"
 "level" = "authz"
-"title" = "Investigate: Put authorization beside the resource"
+"title" = "Practice: Put authorization beside the resource"
 "size" = "M"
 "minutes" = 60
 "needs" = ["authz-reasoning"]
-"done_when" = "Implement server-side authorization tests for owner access, cross-user access and the privileged operation; demonstrate the bug before the repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/authz-experiment.json."
-"brief" = "Implement server-side authorization tests for owner access, cross-user access and the privileged operation; demonstrate the bug before the repair."
-"steps" = ["Model two synthetic users, two objects and one administrative action.", "Implement server-side authorization tests for owner access, cross-user access and the privileged operation; demonstrate the bug before the repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/authz-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Reproduce GET /notes/1 as bob, then add the missing owner check in do_GET."
+"steps" = ["Reproduce GET /notes/1 as bob, then add the missing owner check in do_GET.", "Write regression tests for alice’s note, bob’s own note, cross-user access, unknown identity and nonexistent note. Check response content as well as status.", "Run tests against the original and fixed copy. Record the failure before repair and the passing boundary after repair; fake headers still are not production authentication.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/authz-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "resource" = "https://owasp.org/www-project-application-security-verification-standard/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/authz-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. Git is needed for versioned changes; use a new local repository inside the extracted folder."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/secure-development-devsecops.zip" }]
 
 [[node]]
 "id" = "authz-milestone"
 "level" = "authz"
-"title" = "Apply it to a changed case: Put authorization beside the resource"
+"title" = "Apply it: Put authorization beside the resource"
 "size" = "M"
 "minutes" = 120
 "needs" = ["authz-reasoning", "authz-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/authz-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Implement server-side authorization tests for owner access, cross-user access and the privileged operation; demonstrate the bug before the repair."
-"steps" = ["Implement server-side authorization tests for owner access, cross-user access and the privileged operation; demonstrate the bug before the repair.", "Transfer: Add a new HTTP method or background operation and check that it enforces the same resource policy.", "Control: Keep owner access working and deny an authenticated but unauthorized user.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/authz-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Reproduce GET /notes/1 as bob, then add the missing owner check in do_GET."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Reproduce GET /notes/1 as bob, then add the missing owner check in do_GET.", "Change to test: Add a new HTTP method or background operation and check that it enforces the same resource policy.", "Comparison to retain: Keep owner access working and deny an authenticated but unauthorized user.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/authz-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
 "resource" = "https://owasp.org/www-project-application-security-verification-standard/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/authz-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. Git is needed for versioned changes; use a new local repository inside the extracted folder."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/secure-development-devsecops.zip" }]
 
 [[node]]
 "id" = "recall-authz"
@@ -284,9 +340,12 @@
 "needs" = ["authz-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "State the policy independently of route names or UI controls."
-"steps" = ["State the policy independently of route names or UI controls.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"steps" = ["State the policy independently of route names or UI controls.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://owasp.org/www-project-application-security-verification-standard/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "secure-development-devsecops:authz" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "supply-chain-reasoning"
@@ -296,38 +355,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Identify direct and transitive dependencies and distinguish an SBOM from a vulnerability report."
-"steps" = ["Work through this preparation: Identify direct and transitive dependencies and distinguish an SBOM from a vulnerability report.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://owasp.org/www-project-application-security-verification-standard/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "secure-development-devsecops:supply-chain" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "supply-chain-experiment"
 "level" = "supply-chain"
-"title" = "Investigate: Make a dependency decision you can defend"
+"title" = "Practice: Make a dependency decision you can defend"
 "size" = "M"
 "minutes" = 60
 "needs" = ["supply-chain-reasoning"]
-"done_when" = "Produce an SBOM and pinned dependency manifest, investigate one advisory's applicability, and test an update or documented mitigation. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/supply-chain-experiment.json."
-"brief" = "Produce an SBOM and pinned dependency manifest, investigate one advisory's applicability, and test an update or documented mitigation."
-"steps" = ["Identify direct and transitive dependencies and distinguish an SBOM from a vulnerability report.", "Produce an SBOM and pinned dependency manifest, investigate one advisory's applicability, and test an update or documented mitigation.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/supply-chain-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Inventory this standard-library-only service: Python interpreter version, base OS if containerized, and no third-party runtime packages. Record those facts rather than inventing pip dependencies."
+"steps" = ["Inventory this standard-library-only service: Python interpreter version, base OS if containerized, and no third-party runtime packages. Record those facts rather than inventing pip dependencies.", "For a dependency-update exercise, add a pinned third-party test dependency in a separate virtual environment, collect pip inspect output and consult a real advisory for that exact package/version.", "Document applicability or a justified not-affected result; test any chosen update and preserve the actual manifest and interpreter version.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/supply-chain-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "resource" = "https://owasp.org/www-project-application-security-verification-standard/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/supply-chain-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. Git is needed for versioned changes; use a new local repository inside the extracted folder."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/secure-development-devsecops.zip" }]
 
 [[node]]
 "id" = "supply-chain-milestone"
 "level" = "supply-chain"
-"title" = "Apply it to a changed case: Make a dependency decision you can defend"
+"title" = "Apply it: Make a dependency decision you can defend"
 "size" = "M"
 "minutes" = 120
 "needs" = ["supply-chain-reasoning", "supply-chain-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/supply-chain-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Produce an SBOM and pinned dependency manifest, investigate one advisory's applicability, and test an update or documented mitigation."
-"steps" = ["Produce an SBOM and pinned dependency manifest, investigate one advisory's applicability, and test an update or documented mitigation.", "Transfer: Introduce a version change in a branch and assess both security and compatibility effects before merging.", "Control: Include an advisory that does not apply to the used component/version and explain the evidence.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/supply-chain-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Inventory this standard-library-only service: Python interpreter version, base OS if containerized, and no third-party runtime packages. Record those facts rather than inventing pip dependencies."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Inventory this standard-library-only service: Python interpreter version, base OS if containerized, and no third-party runtime packages. Record those facts rather than inventing pip dependencies.", "Change to test: Introduce a version change in a branch and assess both security and compatibility effects before merging.", "Comparison to retain: Include an advisory that does not apply to the used component/version and explain the evidence.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/supply-chain-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
 "resource" = "https://owasp.org/www-project-application-security-verification-standard/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/supply-chain-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. Git is needed for versioned changes; use a new local repository inside the extracted folder."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/secure-development-devsecops.zip" }]
 
 [[node]]
 "id" = "recall-supply-chain"
@@ -338,9 +408,12 @@
 "needs" = ["supply-chain-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain why dependency presence, reachability and exploitability are separate claims."
-"steps" = ["Explain why dependency presence, reachability and exploitability are separate claims.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"steps" = ["Explain why dependency presence, reachability and exploitability are separate claims.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://owasp.org/www-project-application-security-verification-standard/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "secure-development-devsecops:supply-chain" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "pipeline-reasoning"
@@ -350,38 +423,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Create a local test pipeline for the toy application with explicit failure conditions."
-"steps" = ["Work through this preparation: Create a local test pipeline for the toy application with explicit failure conditions.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://owasp.org/www-project-application-security-verification-standard/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "secure-development-devsecops:pipeline" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "pipeline-experiment"
 "level" = "pipeline"
-"title" = "Investigate: Make the pipeline stop for a real defect"
+"title" = "Practice: Make the pipeline stop for a real defect"
 "size" = "M"
 "minutes" = 60
 "needs" = ["pipeline-reasoning"]
-"done_when" = "Add security regression tests, a synthetic-secret check and artifact identity recording; demonstrate that each relevant bad fixture fails the gate. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/pipeline-experiment.json."
-"brief" = "Add security regression tests, a synthetic-secret check and artifact identity recording; demonstrate that each relevant bad fixture fails the gate."
-"steps" = ["Create a local test pipeline for the toy application with explicit failure conditions.", "Add security regression tests, a synthetic-secret check and artifact identity recording; demonstrate that each relevant bad fixture fails the gate.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/pipeline-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use unittest discovery for your authorization/property tests and a local script checking for a synthetic literal named TRAINING_SECRET_DO_NOT_COMMIT. Keep real credentials out."
+"steps" = ["Use unittest discovery for your authorization/property tests and a local script checking for a synthetic literal named TRAINING_SECRET_DO_NOT_COMMIT. Keep real credentials out.", "Demonstrate test failure by reverting one boundary in a throwaway copy, and secret-check failure by adding the synthetic marker. Preserve output for each gate.", "Record the service.py SHA-256 and Python version for a passing build. A local script is not a deployed CI service; describe how it would be invoked there.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/pipeline-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "resource" = "https://owasp.org/www-project-application-security-verification-standard/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/pipeline-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. Git is needed for versioned changes; use a new local repository inside the extracted folder."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/secure-development-devsecops.zip" }]
 
 [[node]]
 "id" = "pipeline-milestone"
 "level" = "pipeline"
-"title" = "Apply it to a changed case: Make the pipeline stop for a real defect"
+"title" = "Apply it: Make the pipeline stop for a real defect"
 "size" = "M"
 "minutes" = 120
 "needs" = ["pipeline-reasoning", "pipeline-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/pipeline-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Add security regression tests, a synthetic-secret check and artifact identity recording; demonstrate that each relevant bad fixture fails the gate."
-"steps" = ["Add security regression tests, a synthetic-secret check and artifact identity recording; demonstrate that each relevant bad fixture fails the gate.", "Transfer: Change a fixture's filename or encoding and test whether the intended check still applies.", "Control: Confirm clean code builds successfully and no test prints secret-like fixture values into published logs.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/pipeline-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use unittest discovery for your authorization/property tests and a local script checking for a synthetic literal named TRAINING_SECRET_DO_NOT_COMMIT. Keep real credentials out."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use unittest discovery for your authorization/property tests and a local script checking for a synthetic literal named TRAINING_SECRET_DO_NOT_COMMIT. Keep real credentials out.", "Change to test: Change a fixture's filename or encoding and test whether the intended check still applies.", "Comparison to retain: Confirm clean code builds successfully and no test prints secret-like fixture values into published logs.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/pipeline-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
 "resource" = "https://owasp.org/www-project-application-security-verification-standard/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/pipeline-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. Git is needed for versioned changes; use a new local repository inside the extracted folder."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/secure-development-devsecops.zip" }]
 
 [[node]]
 "id" = "recall-pipeline"
@@ -392,9 +476,12 @@
 "needs" = ["pipeline-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain the failure mode each gate detects and one it misses."
-"steps" = ["Explain the failure mode each gate detects and one it misses.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"steps" = ["Explain the failure mode each gate detects and one it misses.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://owasp.org/www-project-application-security-verification-standard/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "secure-development-devsecops:pipeline" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "release-reasoning"
@@ -404,38 +491,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Prepare a release checklist tied to threat-model requirements rather than tool counts."
-"steps" = ["Work through this preparation: Prepare a release checklist tied to threat-model requirements rather than tool counts.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://owasp.org/www-project-application-security-verification-standard/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "secure-development-devsecops:release" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "release-experiment"
 "level" = "release"
-"title" = "Investigate: Ship a small service with an assurance record"
+"title" = "Practice: Ship a small service with an assurance record"
 "size" = "M"
 "minutes" = 60
 "needs" = ["release-reasoning"]
-"done_when" = "Deliver the toy service with passing regression tests, reproducible build inputs, deployment permissions, rollback instructions and a documented residual risk. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/release-experiment.json."
-"brief" = "Deliver the toy service with passing regression tests, reproducible build inputs, deployment permissions, rollback instructions and a documented residual risk."
-"steps" = ["Prepare a release checklist tied to threat-model requirements rather than tool counts.", "Deliver the toy service with passing regression tests, reproducible build inputs, deployment permissions, rollback instructions and a documented residual risk.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/release-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Commit the fixed local service, tests and version manifest in your training Git repo. Run the complete local test suite from a fresh copy."
+"steps" = ["Commit the fixed local service, tests and version manifest in your training Git repo. Run the complete local test suite from a fresh copy.", "Write run/stop/reset instructions, bind address and intended permissions. Record that the fixture has no real authentication or durable database and is unsuitable for production.", "Rehearse rollback to your previous training commit, restart on loopback and rerun the owner test; return to the fixed version.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/release-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "resource" = "https://owasp.org/www-project-application-security-verification-standard/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/release-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. Git is needed for versioned changes; use a new local repository inside the extracted folder."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/secure-development-devsecops.zip" }]
 
 [[node]]
 "id" = "release-milestone"
 "level" = "release"
-"title" = "Apply it to a changed case: Ship a small service with an assurance record"
+"title" = "Apply it: Ship a small service with an assurance record"
 "size" = "M"
 "minutes" = 120
 "needs" = ["release-reasoning", "release-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/release-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Deliver the toy service with passing regression tests, reproducible build inputs, deployment permissions, rollback instructions and a documented residual risk."
-"steps" = ["Deliver the toy service with passing regression tests, reproducible build inputs, deployment permissions, rollback instructions and a documented residual risk.", "Transfer: Change a dependency or deployment setting and rerun only the checks whose assumptions changed, explaining the choice.", "Control: Reproduce a known security regression on the old version and show the release rejects it while valid use works.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/release-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Commit the fixed local service, tests and version manifest in your training Git repo. Run the complete local test suite from a fresh copy."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Commit the fixed local service, tests and version manifest in your training Git repo. Run the complete local test suite from a fresh copy.", "Change to test: Change a dependency or deployment setting and rerun only the checks whose assumptions changed, explaining the choice.", "Comparison to retain: Reproduce a known security regression on the old version and show the release rejects it while valid use works.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/release-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
 "resource" = "https://owasp.org/www-project-application-security-verification-standard/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/release-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. Git is needed for versioned changes; use a new local repository inside the extracted folder."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/secure-development-devsecops.zip" }]
 
 [[node]]
 "id" = "recall-release"
@@ -446,63 +544,80 @@
 "needs" = ["release-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Reconstruct the assurance argument and the strongest remaining limitation."
-"steps" = ["Reconstruct the assurance argument and the strongest remaining limitation.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"steps" = ["Reconstruct the assurance argument and the strongest remaining limitation.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://owasp.org/www-project-application-security-verification-standard/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "secure-development-devsecops:release" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "independent-transfer-reasoning"
 "level" = "independent-transfer"
-"title" = "Reason it through: Revisit the skill on a fresh problem"
+"title" = "Reason it through: Recheck the boundary with a specified change"
 "size" = "S"
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution."
-"steps" = ["Work through this preparation: Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"brief" = "Use the named task files for the changed case. Predict the effect before opening previous notes."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://owasp.org/www-project-application-security-verification-standard/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "secure-development-devsecops:independent-transfer" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "independent-transfer-experiment"
 "level" = "independent-transfer"
-"title" = "Investigate: Revisit the skill on a fresh problem"
+"title" = "Practice: Recheck the boundary with a specified change"
 "size" = "M"
 "minutes" = 60
 "needs" = ["independent-transfer-reasoning"]
-"done_when" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/independent-transfer-experiment.json."
-"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
-"steps" = ["Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/independent-transfer-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Add a maximum text length of 80 to your fixed service. Test boundary lengths 79, 80 and 81 together with the cross-user and property-injection cases."
+"steps" = ["Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.", "Add a maximum text length of 80 to your fixed service. Test boundary lengths 79, 80 and 81 together with the cross-user and property-injection cases.", "A valid owner update remains usable; length validation must not replace ownership checks.", "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/independent-transfer-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "resource" = "https://owasp.org/www-project-application-security-verification-standard/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. Git is needed for versioned changes; use a new local repository inside the extracted folder."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/secure-development-devsecops.zip" }]
 
 [[node]]
 "id" = "independent-transfer-milestone"
 "level" = "independent-transfer"
-"title" = "Apply it to a changed case: Revisit the skill on a fresh problem"
+"title" = "Apply it: Recheck the boundary with a specified change"
 "size" = "M"
 "minutes" = 120
 "needs" = ["independent-transfer-reasoning", "independent-transfer-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/independent-transfer-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
-"steps" = ["After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Transfer: Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.", "Control: Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/independent-transfer-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Add a maximum text length of 80 to your fixed service. Test boundary lengths 79, 80 and 81 together with the cross-user and property-injection cases."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.", "Change to test: Add a second case by reversing the changed condition above, predict its result and compare actual behavior.", "Comparison to retain: A valid owner update remains usable; length validation must not replace ownership checks.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/independent-transfer-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
 "resource" = "https://owasp.org/www-project-application-security-verification-standard/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. Git is needed for versioned changes; use a new local repository inside the extracted folder."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/secure-development-devsecops.zip" }]
 
 [[node]]
 "id" = "recall-independent-transfer"
 "level" = "recall-lane"
-"title" = "Return later: Revisit the skill on a fresh problem"
+"title" = "Return later: Recheck the boundary with a specified change"
 "size" = "S"
 "minutes" = 10
 "needs" = ["independent-transfer-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
-"brief" = "Explain what transferred, what required help and which prerequisite needs another small experiment."
-"steps" = ["Explain what transferred, what required help and which prerequisite needs another small experiment.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"brief" = "Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested."
+"steps" = ["Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://owasp.org/www-project-application-security-verification-standard/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "secure-development-devsecops:independent-transfer" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "quick-access-check"
@@ -514,3 +629,6 @@
 "done_when" = "Correctly evaluate every allow/deny decision for a fresh server-generated policy fixture."
 "resource" = "https://owasp.org/www-project-application-security-verification-standard/"
 "verify" = { "type" = "lab", "exercise" = "access-policy" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."

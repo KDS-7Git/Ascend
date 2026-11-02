@@ -3,7 +3,7 @@
 "id" = "security-architecture-grc"
 "title" = "Security Architecture, Risk and Governance"
 "kind" = "proficiency"
-"version" = 1
+"version" = 2
 "source" = "ai-draft"
 "reviewed" = false
 
@@ -12,7 +12,7 @@
 
 [[level]]
 "id" = "foundations"
-"title" = "Prove the entry skills in a small lab"
+"title" = "Turn a service description into a bounded review"
 "lane" = "main"
 
 [[level]]
@@ -47,7 +47,7 @@
 
 [[level]]
 "id" = "independent-transfer"
-"title" = "Revisit the skill on a fresh problem"
+"title" = "Recheck the boundary with a specified change"
 "lane" = "main"
 
 [[level]]
@@ -69,62 +69,79 @@
 "needs" = []
 "done_when" = "Compute the exact content hash of a fresh server-generated evidence fixture and pass its check."
 "brief" = "This small exercise tests evidence integrity. Track entry background: Understand service users, data and business purpose; distinguish a requirement from evidence."
-"resource" = "https://www.nist.gov/cyberframework"
+"resource" = "https://docs.python.org/3/library/hashlib.html"
 "verify" = { "type" = "lab", "exercise" = "integrity" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "foundations-reasoning"
 "level" = "foundations"
-"title" = "Reason it through: Prove the entry skills in a small lab"
+"title" = "Reason it through: Turn a service description into a bounded review"
 "size" = "S"
 "minutes" = 10
 "needs" = ["lab-readiness"]
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Understand service users, data and business purpose; distinguish a requirement from evidence."
-"steps" = ["Work through this preparation: Understand service users, data and business purpose; distinguish a requirement from evidence.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"brief" = "Identify what the service must protect and who makes its decisions."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://www.nist.gov/cyberframework"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "security-architecture-grc:foundations" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "foundations-experiment"
 "level" = "foundations"
-"title" = "Investigate: Prove the entry skills in a small lab"
+"title" = "Turn a service description into a bounded review"
 "size" = "M"
-"minutes" = 60
+"minutes" = 30
 "needs" = ["foundations-reasoning"]
-"done_when" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/foundations-experiment.json."
-"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
-"steps" = ["Understand service users, data and business purpose; distinguish a requirement from evidence.", "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/foundations-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Identify what the service must protect and who makes its decisions."
+"steps" = ["Read scenario.json. Name Harbor Notes’ owner, users, data, components, restore target and recovery-point target.", "Draw browser → API → note store and write one requirement with a measurable outcome, such as restoration within the stated four-hour window.", "Read E1 and E2. Explain why an old restore drill or missing cross-user regression does not establish current control effectiveness.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/foundations-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "resource" = "https://www.nist.gov/cyberframework"
 "verify" = { "type" = "file", "path" = "{lab_dir}/foundations-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/security-architecture-grc.zip" }]
 
 [[node]]
 "id" = "foundations-milestone"
 "level" = "foundations"
-"title" = "Apply it to a changed case: Prove the entry skills in a small lab"
+"title" = "Apply it: Turn a service description into a bounded review"
 "size" = "M"
-"minutes" = 120
+"minutes" = 30
 "needs" = ["foundations-reasoning", "foundations-experiment", "lab-readiness"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/foundations-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
-"steps" = ["Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Transfer: Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.", "Control: Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/foundations-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Identify what the service must protect and who makes its decisions."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Read scenario.json. Name Harbor Notes’ owner, users, data, components, restore target and recovery-point target.", "Change to test: Reduce the restore target to two hours in a copy and reevaluate whether E1 meets it.", "Comparison to retain: Do not reject the current service just because an unrelated design costs more; compare both against the same requirements.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/foundations-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
 "resource" = "https://www.nist.gov/cyberframework"
 "verify" = { "type" = "file", "path" = "{lab_dir}/foundations-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/security-architecture-grc.zip" }]
 
 [[node]]
 "id" = "recall-foundations"
 "level" = "recall-lane"
-"title" = "Return later: Prove the entry skills in a small lab"
+"title" = "Return later: Turn a service description into a bounded review"
 "size" = "S"
 "minutes" = 10
 "needs" = ["foundations-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
-"brief" = "Reconstruct the environment and entry assumptions without following the setup notes."
-"steps" = ["Reconstruct the environment and entry assumptions without following the setup notes.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"brief" = "Without opening your report, reconstruct the inputs, observed result and main limitation of turn a service description into a bounded review."
+"steps" = ["Without opening your report, reconstruct the inputs, observed result and main limitation of turn a service description into a bounded review.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://www.nist.gov/cyberframework"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "security-architecture-grc:foundations" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "assets-reasoning"
@@ -134,38 +151,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Inventory fictional assets, owners, data types and dependencies."
-"steps" = ["Work through this preparation: Inventory fictional assets, owners, data types and dependencies.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://www.nist.gov/cyberframework"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "security-architecture-grc:assets" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "assets-experiment"
 "level" = "assets"
-"title" = "Investigate: Define the system someone is responsible for"
+"title" = "Practice: Define the system someone is responsible for"
 "size" = "M"
 "minutes" = 60
 "needs" = ["assets-reasoning"]
-"done_when" = "Write a system boundary and data-flow diagram that includes outsourced services and critical business assumptions. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/assets-experiment.json."
-"brief" = "Write a system boundary and data-flow diagram that includes outsourced services and critical business assumptions."
-"steps" = ["Inventory fictional assets, owners, data types and dependencies.", "Write a system boundary and data-flow diagram that includes outsourced services and critical business assumptions.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/assets-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use scenario.json components, owner and data. Draw a boundary around the service and identify any proposed outsourced component explicitly as a proposal."
+"steps" = ["Use scenario.json components, owner and data. Draw a boundary around the service and identify any proposed outsourced component explicitly as a proposal.", "For every data flow, record content, identity assumption and trust boundary. Mark the in-memory store’s recovery limitation.", "List availability and recovery requirements with exact targets from the scenario; do not invent customer data.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/assets-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "resource" = "https://www.nist.gov/cyberframework"
 "verify" = { "type" = "file", "path" = "{lab_dir}/assets-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/security-architecture-grc.zip" }]
 
 [[node]]
 "id" = "assets-milestone"
 "level" = "assets"
-"title" = "Apply it to a changed case: Define the system someone is responsible for"
+"title" = "Apply it: Define the system someone is responsible for"
 "size" = "M"
 "minutes" = 120
 "needs" = ["assets-reasoning", "assets-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/assets-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Write a system boundary and data-flow diagram that includes outsourced services and critical business assumptions."
-"steps" = ["Write a system boundary and data-flow diagram that includes outsourced services and critical business assumptions.", "Transfer: Add a new data recipient and revise ownership and control responsibilities.", "Control: Identify an asset outside the boundary that still creates a dependency risk.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/assets-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use scenario.json components, owner and data. Draw a boundary around the service and identify any proposed outsourced component explicitly as a proposal."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use scenario.json components, owner and data. Draw a boundary around the service and identify any proposed outsourced component explicitly as a proposal.", "Change to test: Add a new data recipient and revise ownership and control responsibilities.", "Comparison to retain: Identify an asset outside the boundary that still creates a dependency risk.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/assets-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
 "resource" = "https://www.nist.gov/cyberframework"
 "verify" = { "type" = "file", "path" = "{lab_dir}/assets-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/security-architecture-grc.zip" }]
 
 [[node]]
 "id" = "recall-assets"
@@ -176,9 +204,12 @@
 "needs" = ["assets-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain why an incomplete boundary undermines an assessment."
-"steps" = ["Explain why an incomplete boundary undermines an assessment.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"steps" = ["Explain why an incomplete boundary undermines an assessment.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://www.nist.gov/cyberframework"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "security-architecture-grc:assets" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "threats-reasoning"
@@ -188,38 +219,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Separate asset value, threat, vulnerability, likelihood and impact in a sample scenario."
-"steps" = ["Work through this preparation: Separate asset value, threat, vulnerability, likelihood and impact in a sample scenario.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://www.nist.gov/cyberframework"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "security-architecture-grc:threats" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "threats-experiment"
 "level" = "threats"
-"title" = "Investigate: Connect the threat to a business consequence"
+"title" = "Practice: Connect the threat to a business consequence"
 "size" = "M"
 "minutes" = 60
 "needs" = ["threats-reasoning"]
-"done_when" = "Create a small risk register with evidence, uncertainty, existing controls and a named decision owner. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/threats-experiment.json."
-"brief" = "Create a small risk register with evidence, uncertainty, existing controls and a named decision owner."
-"steps" = ["Separate asset value, threat, vulnerability, likelihood and impact in a sample scenario.", "Create a small risk register with evidence, uncertainty, existing controls and a named decision owner.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/threats-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Build risk-register.csv with three scenarios: cross-user reading, unauthorized note changes and loss of in-memory notes. Use E1/E2/source facts as evidence."
+"steps" = ["Build risk-register.csv with three scenarios: cross-user reading, unauthorized note changes and loss of in-memory notes. Use E1/E2/source facts as evidence.", "For each, record impact, likelihood uncertainty, existing control, proposed action and Mira as decision owner.", "Distinguish an observed fixture defect from an assumed threat. State what evidence would change each priority.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/threats-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "resource" = "https://www.nist.gov/cyberframework"
 "verify" = { "type" = "file", "path" = "{lab_dir}/threats-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/security-architecture-grc.zip" }]
 
 [[node]]
 "id" = "threats-milestone"
 "level" = "threats"
-"title" = "Apply it to a changed case: Connect the threat to a business consequence"
+"title" = "Apply it: Connect the threat to a business consequence"
 "size" = "M"
 "minutes" = 120
 "needs" = ["threats-reasoning", "threats-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/threats-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Create a small risk register with evidence, uncertainty, existing controls and a named decision owner."
-"steps" = ["Create a small risk register with evidence, uncertainty, existing controls and a named decision owner.", "Transfer: Change exposure or business criticality and justify the resulting priority.", "Control: Avoid turning an unsupported numeric guess into a precise probability claim.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/threats-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Build risk-register.csv with three scenarios: cross-user reading, unauthorized note changes and loss of in-memory notes. Use E1/E2/source facts as evidence."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Build risk-register.csv with three scenarios: cross-user reading, unauthorized note changes and loss of in-memory notes. Use E1/E2/source facts as evidence.", "Change to test: Change exposure or business criticality and justify the resulting priority.", "Comparison to retain: Avoid turning an unsupported numeric guess into a precise probability claim.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/threats-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
 "resource" = "https://www.nist.gov/cyberframework"
 "verify" = { "type" = "file", "path" = "{lab_dir}/threats-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/security-architecture-grc.zip" }]
 
 [[node]]
 "id" = "recall-threats"
@@ -230,9 +272,12 @@
 "needs" = ["threats-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Reconstruct one risk from cause to consequence."
-"steps" = ["Reconstruct one risk from cause to consequence.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"steps" = ["Reconstruct one risk from cause to consequence.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://www.nist.gov/cyberframework"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "security-architecture-grc:threats" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "controls-reasoning"
@@ -242,38 +287,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Translate a broad policy statement into an observable control objective."
-"steps" = ["Work through this preparation: Translate a broad policy statement into an observable control objective.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://www.nist.gov/cyberframework"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "security-architecture-grc:controls" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "controls-experiment"
 "level" = "controls"
-"title" = "Investigate: Make the control testable"
+"title" = "Practice: Make the control testable"
 "size" = "M"
 "minutes" = 60
 "needs" = ["controls-reasoning"]
-"done_when" = "Map selected NIST CSF outcomes to concrete controls and evidence collection for a fictional service. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/controls-experiment.json."
-"brief" = "Map selected NIST CSF outcomes to concrete controls and evidence collection for a fictional service."
-"steps" = ["Translate a broad policy statement into an observable control objective.", "Map selected NIST CSF outcomes to concrete controls and evidence collection for a fictional service.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/controls-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Select NIST CSF outcomes relevant to access, detection and recovery. Record the exact outcome IDs from the current framework document."
+"steps" = ["Select NIST CSF outcomes relevant to access, detection and recovery. Record the exact outcome IDs from the current framework document.", "Map each to one concrete Harbor Notes control and evidence source, such as owner tests or a timed restoration drill.", "Specify evidence freshness and who collects it. A mapping table is not proof that a control works.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/controls-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "resource" = "https://www.nist.gov/cyberframework"
 "verify" = { "type" = "file", "path" = "{lab_dir}/controls-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/security-architecture-grc.zip" }]
 
 [[node]]
 "id" = "controls-milestone"
 "level" = "controls"
-"title" = "Apply it to a changed case: Make the control testable"
+"title" = "Apply it: Make the control testable"
 "size" = "M"
 "minutes" = 120
 "needs" = ["controls-reasoning", "controls-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/controls-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Map selected NIST CSF outcomes to concrete controls and evidence collection for a fictional service."
-"steps" = ["Map selected NIST CSF outcomes to concrete controls and evidence collection for a fictional service.", "Transfer: Change the hosting model and identify controls whose evidence must change.", "Control: Include a policy document that does not prove the operational control is running.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/controls-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Select NIST CSF outcomes relevant to access, detection and recovery. Record the exact outcome IDs from the current framework document."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Select NIST CSF outcomes relevant to access, detection and recovery. Record the exact outcome IDs from the current framework document.", "Change to test: Change the hosting model and identify controls whose evidence must change.", "Comparison to retain: Include a policy document that does not prove the operational control is running.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/controls-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
 "resource" = "https://www.nist.gov/cyberframework"
 "verify" = { "type" = "file", "path" = "{lab_dir}/controls-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/security-architecture-grc.zip" }]
 
 [[node]]
 "id" = "recall-controls"
@@ -284,9 +340,12 @@
 "needs" = ["controls-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain control design versus control operating effectiveness."
-"steps" = ["Explain control design versus control operating effectiveness.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"steps" = ["Explain control design versus control operating effectiveness.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://www.nist.gov/cyberframework"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "security-architecture-grc:controls" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "architecture-reasoning"
@@ -296,38 +355,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Diagram two authentication or segmentation designs and their failure modes."
-"steps" = ["Work through this preparation: Diagram two authentication or segmentation designs and their failure modes.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://www.nist.gov/cyberframework"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "security-architecture-grc:architecture" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "architecture-experiment"
 "level" = "architecture"
-"title" = "Investigate: Compare designs against explicit assumptions"
+"title" = "Practice: Compare designs against explicit assumptions"
 "size" = "M"
 "minutes" = 60
 "needs" = ["architecture-reasoning"]
-"done_when" = "Evaluate the designs against the same threat model, operational needs and recovery requirements, then justify a bounded choice. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/architecture-experiment.json."
-"brief" = "Evaluate the designs against the same threat model, operational needs and recovery requirements, then justify a bounded choice."
-"steps" = ["Diagram two authentication or segmentation designs and their failure modes.", "Evaluate the designs against the same threat model, operational needs and recovery requirements, then justify a bounded choice.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/architecture-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Compare designs A and B in scenario.json against the same restore target, budget constraint and authorization threat model."
+"steps" = ["Compare designs A and B in scenario.json against the same restore target, budget constraint and authorization threat model.", "Make a decision table with cost, recovery, complexity and unanswered questions; identify any unmet requirement.", "Recommend one bounded design or request a missing fact. State what would cause the decision to change.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/architecture-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "resource" = "https://www.nist.gov/cyberframework"
 "verify" = { "type" = "file", "path" = "{lab_dir}/architecture-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/security-architecture-grc.zip" }]
 
 [[node]]
 "id" = "architecture-milestone"
 "level" = "architecture"
-"title" = "Apply it to a changed case: Compare designs against explicit assumptions"
+"title" = "Apply it: Compare designs against explicit assumptions"
 "size" = "M"
 "minutes" = 120
 "needs" = ["architecture-reasoning", "architecture-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/architecture-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Evaluate the designs against the same threat model, operational needs and recovery requirements, then justify a bounded choice."
-"steps" = ["Evaluate the designs against the same threat model, operational needs and recovery requirements, then justify a bounded choice.", "Transfer: Remove one assumed trusted component and revise the recommendation.", "Control: Document one risk accepted by the chosen design instead of claiming universal superiority.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/architecture-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Compare designs A and B in scenario.json against the same restore target, budget constraint and authorization threat model."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Compare designs A and B in scenario.json against the same restore target, budget constraint and authorization threat model.", "Change to test: Remove one assumed trusted component and revise the recommendation.", "Comparison to retain: Document one risk accepted by the chosen design instead of claiming universal superiority.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/architecture-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
 "resource" = "https://www.nist.gov/cyberframework"
 "verify" = { "type" = "file", "path" = "{lab_dir}/architecture-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/security-architecture-grc.zip" }]
 
 [[node]]
 "id" = "recall-architecture"
@@ -338,9 +408,12 @@
 "needs" = ["architecture-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Reconstruct the tradeoff that drove the decision."
-"steps" = ["Reconstruct the tradeoff that drove the decision.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"steps" = ["Reconstruct the tradeoff that drove the decision.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://www.nist.gov/cyberframework"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "security-architecture-grc:architecture" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "assurance-reasoning"
@@ -350,38 +423,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Build a requirement, test, result and evidence-reference matrix for a toy service."
-"steps" = ["Work through this preparation: Build a requirement, test, result and evidence-reference matrix for a toy service.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://www.nist.gov/cyberframework"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "security-architecture-grc:assurance" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "assurance-experiment"
 "level" = "assurance"
-"title" = "Investigate: Trace a requirement to its evidence"
+"title" = "Practice: Trace a requirement to its evidence"
 "size" = "M"
 "minutes" = 60
 "needs" = ["assurance-reasoning"]
-"done_when" = "Review a small evidence pack, identify stale or missing evidence and produce a remediation plan with owners and retest criteria. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/assurance-experiment.json."
-"brief" = "Review a small evidence pack, identify stale or missing evidence and produce a remediation plan with owners and retest criteria."
-"steps" = ["Build a requirement, test, result and evidence-reference matrix for a toy service.", "Review a small evidence pack, identify stale or missing evidence and produce a remediation plan with owners and retest criteria.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/assurance-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Review evidence E1 and E2 against today’s service requirements. Identify staleness, missing test coverage and scope mismatches."
+"steps" = ["Review evidence E1 and E2 against today’s service requirements. Identify staleness, missing test coverage and scope mismatches.", "Write remediation actions with an owner, due date and retest criterion for each gap.", "A corrected note in the evidence table is not a new drill; leave control effectiveness unverified until the test is actually performed.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/assurance-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "resource" = "https://www.nist.gov/cyberframework"
 "verify" = { "type" = "file", "path" = "{lab_dir}/assurance-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/security-architecture-grc.zip" }]
 
 [[node]]
 "id" = "assurance-milestone"
 "level" = "assurance"
-"title" = "Apply it to a changed case: Trace a requirement to its evidence"
+"title" = "Apply it: Trace a requirement to its evidence"
 "size" = "M"
 "minutes" = 120
 "needs" = ["assurance-reasoning", "assurance-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/assurance-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Review a small evidence pack, identify stale or missing evidence and produce a remediation plan with owners and retest criteria."
-"steps" = ["Review a small evidence pack, identify stale or missing evidence and produce a remediation plan with owners and retest criteria.", "Transfer: Change a requirement version or evidence date and reassess adequacy.", "Control: Reject a screenshot or scanner summary that cannot substantiate the actual claim.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/assurance-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Review evidence E1 and E2 against today’s service requirements. Identify staleness, missing test coverage and scope mismatches."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Review evidence E1 and E2 against today’s service requirements. Identify staleness, missing test coverage and scope mismatches.", "Change to test: Change a requirement version or evidence date and reassess adequacy.", "Comparison to retain: Reject a screenshot or scanner summary that cannot substantiate the actual claim.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/assurance-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
 "resource" = "https://www.nist.gov/cyberframework"
 "verify" = { "type" = "file", "path" = "{lab_dir}/assurance-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/security-architecture-grc.zip" }]
 
 [[node]]
 "id" = "recall-assurance"
@@ -392,9 +476,12 @@
 "needs" = ["assurance-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain the difference between a failed control and insufficient evidence."
-"steps" = ["Explain the difference between a failed control and insufficient evidence.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"steps" = ["Explain the difference between a failed control and insufficient evidence.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://www.nist.gov/cyberframework"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "security-architecture-grc:assurance" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "review-reasoning"
@@ -404,38 +491,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Define review scope, stakeholders and acceptance criteria for a fictional launch."
-"steps" = ["Work through this preparation: Define review scope, stakeholders and acceptance criteria for a fictional launch.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://www.nist.gov/cyberframework"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "security-architecture-grc:review" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "review-experiment"
 "level" = "review"
-"title" = "Investigate: Deliver a decision-ready security review"
+"title" = "Practice: Deliver a decision-ready security review"
 "size" = "M"
 "minutes" = 60
 "needs" = ["review-reasoning"]
-"done_when" = "Deliver a concise architecture/risk review with prioritized actions, residual risks, evidence references and an accountable acceptance decision. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/review-experiment.json."
-"brief" = "Deliver a concise architecture/risk review with prioritized actions, residual risks, evidence references and an accountable acceptance decision."
-"steps" = ["Define review scope, stakeholders and acceptance criteria for a fictional launch.", "Deliver a concise architecture/risk review with prioritized actions, residual risks, evidence references and an accountable acceptance decision.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/review-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use a changed scenario with a two-hour restoration target and a missing owner for one component."
+"steps" = ["Use a changed scenario with a two-hour restoration target and a missing owner for one component.", "Deliver a concise review with priorities, cited evidence, residual risk and decisions requiring owner acceptance.", "Keep the acceptance as a fictional tabletop decision; do not claim an actual stakeholder approved it.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/review-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "resource" = "https://www.nist.gov/cyberframework"
 "verify" = { "type" = "file", "path" = "{lab_dir}/review-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/security-architecture-grc.zip" }]
 
 [[node]]
 "id" = "review-milestone"
 "level" = "review"
-"title" = "Apply it to a changed case: Deliver a decision-ready security review"
+"title" = "Apply it: Deliver a decision-ready security review"
 "size" = "M"
 "minutes" = 120
 "needs" = ["review-reasoning", "review-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/review-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Deliver a concise architecture/risk review with prioritized actions, residual risks, evidence references and an accountable acceptance decision."
-"steps" = ["Deliver a concise architecture/risk review with prioritized actions, residual risks, evidence references and an accountable acceptance decision.", "Transfer: Introduce a new dependency or material finding and update the decision transparently.", "Control: Keep a low-impact observation from obscuring an unresolved launch-critical control.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/review-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use a changed scenario with a two-hour restoration target and a missing owner for one component."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use a changed scenario with a two-hour restoration target and a missing owner for one component.", "Change to test: Introduce a new dependency or material finding and update the decision transparently.", "Comparison to retain: Keep a low-impact observation from obscuring an unresolved launch-critical control.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/review-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
 "resource" = "https://www.nist.gov/cyberframework"
 "verify" = { "type" = "file", "path" = "{lab_dir}/review-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/security-architecture-grc.zip" }]
 
 [[node]]
 "id" = "recall-review"
@@ -446,63 +544,80 @@
 "needs" = ["review-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Reconstruct the strongest assurance claim and its limits."
-"steps" = ["Reconstruct the strongest assurance claim and its limits.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"steps" = ["Reconstruct the strongest assurance claim and its limits.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://www.nist.gov/cyberframework"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "security-architecture-grc:review" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "independent-transfer-reasoning"
 "level" = "independent-transfer"
-"title" = "Reason it through: Revisit the skill on a fresh problem"
+"title" = "Reason it through: Recheck the boundary with a specified change"
 "size" = "S"
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution."
-"steps" = ["Work through this preparation: Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"brief" = "Use the named task files for the changed case. Predict the effect before opening previous notes."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://www.nist.gov/cyberframework"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "security-architecture-grc:independent-transfer" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "independent-transfer-experiment"
 "level" = "independent-transfer"
-"title" = "Investigate: Revisit the skill on a fresh problem"
+"title" = "Practice: Recheck the boundary with a specified change"
 "size" = "M"
 "minutes" = 60
 "needs" = ["independent-transfer-reasoning"]
-"done_when" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/independent-transfer-experiment.json."
-"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
-"steps" = ["Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/independent-transfer-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Change the scenario restore target to two hours and add a dependency whose recovery time is six hours. Reevaluate designs A/B and the acceptance decision."
+"steps" = ["Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.", "Change the scenario restore target to two hours and add a dependency whose recovery time is six hours. Reevaluate designs A/B and the acceptance decision.", "Do not let a low-impact documentation improvement hide the unresolved recovery requirement.", "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/independent-transfer-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "resource" = "https://www.nist.gov/cyberframework"
 "verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/security-architecture-grc.zip" }]
 
 [[node]]
 "id" = "independent-transfer-milestone"
 "level" = "independent-transfer"
-"title" = "Apply it to a changed case: Revisit the skill on a fresh problem"
+"title" = "Apply it: Recheck the boundary with a specified change"
 "size" = "M"
 "minutes" = 120
 "needs" = ["independent-transfer-reasoning", "independent-transfer-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/independent-transfer-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
-"steps" = ["After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Transfer: Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.", "Control: Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/independent-transfer-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Change the scenario restore target to two hours and add a dependency whose recovery time is six hours. Reevaluate designs A/B and the acceptance decision."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.", "Change to test: Add a second case by reversing the changed condition above, predict its result and compare actual behavior.", "Comparison to retain: Do not let a low-impact documentation improvement hide the unresolved recovery requirement.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/independent-transfer-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
 "resource" = "https://www.nist.gov/cyberframework"
 "verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/security-architecture-grc.zip" }]
 
 [[node]]
 "id" = "recall-independent-transfer"
 "level" = "recall-lane"
-"title" = "Return later: Revisit the skill on a fresh problem"
+"title" = "Return later: Recheck the boundary with a specified change"
 "size" = "S"
 "minutes" = 10
 "needs" = ["independent-transfer-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
-"brief" = "Explain what transferred, what required help and which prerequisite needs another small experiment."
-"steps" = ["Explain what transferred, what required help and which prerequisite needs another small experiment.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"brief" = "Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested."
+"steps" = ["Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://www.nist.gov/cyberframework"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "security-architecture-grc:independent-transfer" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "quick-access-check"
@@ -514,3 +629,6 @@
 "done_when" = "Correctly evaluate every allow/deny decision for a fresh server-generated policy fixture."
 "resource" = "https://www.nist.gov/cyberframework"
 "verify" = { "type" = "lab", "exercise" = "access-policy" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."

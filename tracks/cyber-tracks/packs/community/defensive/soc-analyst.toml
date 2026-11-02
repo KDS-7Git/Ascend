@@ -3,7 +3,7 @@
 "id" = "soc-analyst"
 "title" = "SOC Analyst: Triage, Investigation and Response"
 "kind" = "proficiency"
-"version" = 1
+"version" = 2
 "source" = "ai-draft"
 "reviewed" = false
 
@@ -12,7 +12,7 @@
 
 [[level]]
 "id" = "foundations"
-"title" = "Prove the entry skills in a small lab"
+"title" = "Read a login timeline in two time zones"
 "lane" = "main"
 
 [[level]]
@@ -47,7 +47,7 @@
 
 [[level]]
 "id" = "independent-transfer"
-"title" = "Revisit the skill on a fresh problem"
+"title" = "Recheck the boundary with a specified change"
 "lane" = "main"
 
 [[level]]
@@ -69,62 +69,79 @@
 "needs" = []
 "done_when" = "Compute the exact content hash of a fresh server-generated evidence fixture and pass its check."
 "brief" = "This small exercise tests evidence integrity. Track entry background: Read timestamps, IP addresses and basic authentication/web logs; distinguish an event from an alert."
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"resource" = "https://docs.python.org/3/library/hashlib.html"
 "verify" = { "type" = "lab", "exercise" = "integrity" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "foundations-reasoning"
 "level" = "foundations"
-"title" = "Reason it through: Prove the entry skills in a small lab"
+"title" = "Reason it through: Read a login timeline in two time zones"
 "size" = "S"
 "minutes" = 10
 "needs" = ["lab-readiness"]
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Read timestamps, IP addresses and basic authentication/web logs; distinguish an event from an alert."
-"steps" = ["Work through this preparation: Read timestamps, IP addresses and basic authentication/web logs; distinguish an event from an alert.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"brief" = "Find the same user’s events without confusing local time with UTC."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://docs.python.org/3/library/datetime.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "soc-analyst:foundations" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "foundations-experiment"
 "level" = "foundations"
-"title" = "Investigate: Prove the entry skills in a small lab"
+"title" = "Read a login timeline in two time zones"
 "size" = "M"
-"minutes" = 60
+"minutes" = 30
 "needs" = ["foundations-reasoning"]
-"done_when" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/foundations-experiment.json."
-"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
-"steps" = ["Read timestamps, IP addresses and basic authentication/web logs; distinguish an event from an alert.", "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/foundations-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Find the same user’s events without confusing local time with UTC."
+"steps" = ["Open events.csv and context.json. Each row has an id, timestamp, user, host, source address, kind and result. The investigation window is 09:00–09:10 UTC on 1 October 2026.", "Print timestamps in UTC using the standard library.\n```sh\npython3 -c \"import csv; from datetime import datetime, timezone; rows=csv.DictReader(open('events.csv')); [print(r['id'], datetime.fromisoformat(r['time']).astimezone(timezone.utc).isoformat(), r['user']) for r in rows]\"\n```", "Write down the exact row IDs for alice inside the window. Explain why alice-test and an earlier alice event are different. Use result to distinguish failed actions from successful ones; the rows alone do not prove compromise.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/foundations-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://docs.python.org/3/library/datetime.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/foundations-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/soc-analyst.zip" }]
 
 [[node]]
 "id" = "foundations-milestone"
 "level" = "foundations"
-"title" = "Apply it to a changed case: Prove the entry skills in a small lab"
+"title" = "Apply it: Read a login timeline in two time zones"
 "size" = "M"
-"minutes" = 120
+"minutes" = 30
 "needs" = ["foundations-reasoning", "foundations-experiment", "lab-readiness"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/foundations-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
-"steps" = ["Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Transfer: Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.", "Control: Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/foundations-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Find the same user’s events without confusing local time with UTC."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Open events.csv and context.json. Each row has an id, timestamp, user, host, source address, kind and result. The investigation window is 09:00–09:10 UTC on 1 October 2026.", "Change to test: Change only e3 to the equivalent UTC timestamp in a copy; the normalized timeline should be unchanged.", "Comparison to retain: Use alice-test and e7 as exclusions; a substring match or an unbounded time query must not include them.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/foundations-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"resource" = "https://docs.python.org/3/library/datetime.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/foundations-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/soc-analyst.zip" }]
 
 [[node]]
 "id" = "recall-foundations"
 "level" = "recall-lane"
-"title" = "Return later: Prove the entry skills in a small lab"
+"title" = "Return later: Read a login timeline in two time zones"
 "size" = "S"
 "minutes" = 10
 "needs" = ["foundations-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
-"brief" = "Reconstruct the environment and entry assumptions without following the setup notes."
-"steps" = ["Reconstruct the environment and entry assumptions without following the setup notes.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"brief" = "Without opening your report, reconstruct the inputs, observed result and main limitation of read a login timeline in two time zones."
+"steps" = ["Without opening your report, reconstruct the inputs, observed result and main limitation of read a login timeline in two time zones.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://docs.python.org/3/library/datetime.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "soc-analyst:foundations" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "intake-reasoning"
@@ -134,38 +151,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "List an alert source, affected asset, time range and the claim the alert makes."
-"steps" = ["Work through this preparation: List an alert source, affected asset, time range and the claim the alert makes.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://docs.python.org/3/library/datetime.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "soc-analyst:intake" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "intake-experiment"
 "level" = "intake"
-"title" = "Investigate: Turn an alert into a question"
+"title" = "Practice: Turn an alert into a question"
 "size" = "M"
 "minutes" = 60
 "needs" = ["intake-reasoning"]
-"done_when" = "Triage a synthetic queue containing a login anomaly, a web alert and a harmless maintenance event; assign urgency using evidence and business context. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/intake-experiment.json."
-"brief" = "Triage a synthetic queue containing a login anomaly, a web alert and a harmless maintenance event; assign urgency using evidence and business context."
-"steps" = ["List an alert source, affected asset, time range and the claim the alert makes.", "Triage a synthetic queue containing a login anomaly, a web alert and a harmless maintenance event; assign urgency using evidence and business context.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/intake-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use events.csv, context.json and message.eml. Create three queue items: Alice’s failures followed by role change; Bob’s blocked web link; the backup maintenance login."
+"steps" = ["Use events.csv, context.json and message.eml. Create three queue items: Alice’s failures followed by role change; Bob’s blocked web link; the backup maintenance login.", "For each, list row IDs, known business context, one benign alternative and one missing fact. Distinguish a blocked proxy request from demonstrated execution.", "Order the queue and justify the order. The fixture has no definitive incident verdict; your finish line is an evidence-based decision with uncertainty.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/intake-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://docs.python.org/3/library/datetime.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/intake-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/soc-analyst.zip" }]
 
 [[node]]
 "id" = "intake-milestone"
 "level" = "intake"
-"title" = "Apply it to a changed case: Turn an alert into a question"
+"title" = "Apply it: Turn an alert into a question"
 "size" = "M"
 "minutes" = 120
 "needs" = ["intake-reasoning", "intake-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/intake-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Triage a synthetic queue containing a login anomaly, a web alert and a harmless maintenance event; assign urgency using evidence and business context."
-"steps" = ["Triage a synthetic queue containing a login anomaly, a web alert and a harmless maintenance event; assign urgency using evidence and business context.", "Transfer: Change an asset from a sandbox to a critical service and justify whether prioritization changes.", "Control: Keep a noisy but low-impact event from outranking a corroborated compromise solely because of event volume.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/intake-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use events.csv, context.json and message.eml. Create three queue items: Alice’s failures followed by role change; Bob’s blocked web link; the backup maintenance login."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use events.csv, context.json and message.eml. Create three queue items: Alice’s failures followed by role change; Bob’s blocked web link; the backup maintenance login.", "Change to test: Change an asset from a sandbox to a critical service and justify whether prioritization changes.", "Comparison to retain: Keep a noisy but low-impact event from outranking a corroborated compromise solely because of event volume.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/intake-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"resource" = "https://docs.python.org/3/library/datetime.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/intake-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/soc-analyst.zip" }]
 
 [[node]]
 "id" = "recall-intake"
@@ -176,9 +204,12 @@
 "needs" = ["intake-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain event, alert, incident, severity and confidence using one example."
-"steps" = ["Explain event, alert, incident, severity and confidence using one example.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"steps" = ["Explain event, alert, incident, severity and confidence using one example.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://docs.python.org/3/library/datetime.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "soc-analyst:intake" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "queries-reasoning"
@@ -188,38 +219,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Normalize two timestamp formats and join a user identifier across two small log files."
-"steps" = ["Work through this preparation: Normalize two timestamp formats and join a user identifier across two small log files.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://docs.python.org/3/library/datetime.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "soc-analyst:queries" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "queries-experiment"
 "level" = "queries"
-"title" = "Investigate: Follow the entity across logs"
+"title" = "Practice: Follow the entity across logs"
 "size" = "M"
 "minutes" = 60
 "needs" = ["queries-reasoning"]
-"done_when" = "Build reproducible queries over a supplied dataset to trace an identity, host and source address through a bounded time window, recording missing fields. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/queries-experiment.json."
-"brief" = "Build reproducible queries over a supplied dataset to trace an identity, host and source address through a bounded time window, recording missing fields."
-"steps" = ["Normalize two timestamp formats and join a user identifier across two small log files.", "Build reproducible queries over a supplied dataset to trace an identity, host and source address through a bounded time window, recording missing fields.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/queries-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use the foundations timestamp-normalization command as a starting point. Filter exact user alice and the inclusive 09:00–09:10 UTC window; print id, time, host and source_ip."
+"steps" = ["Use the foundations timestamp-normalization command as a starting point. Filter exact user alice and the inclusive 09:00–09:10 UTC window; print id, time, host and source_ip.", "Save your reusable query as query.py. Run it from the folder containing events.csv and retain its actual output. Verify against the row IDs you selected by hand.", "Exclude alice-test and e7. Report any missing device/process fields that prevent a stronger correlation.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/queries-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://docs.python.org/3/library/datetime.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/queries-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/soc-analyst.zip" }]
 
 [[node]]
 "id" = "queries-milestone"
 "level" = "queries"
-"title" = "Apply it to a changed case: Follow the entity across logs"
+"title" = "Apply it: Follow the entity across logs"
 "size" = "M"
 "minutes" = 120
 "needs" = ["queries-reasoning", "queries-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/queries-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Build reproducible queries over a supplied dataset to trace an identity, host and source address through a bounded time window, recording missing fields."
-"steps" = ["Build reproducible queries over a supplied dataset to trace an identity, host and source address through a bounded time window, recording missing fields.", "Transfer: Change the time zone or host identifier in a synthetic copy and adjust the query without losing the same activity.", "Control: Include a similarly named account and an event outside the window that must not be joined.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/queries-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use the foundations timestamp-normalization command as a starting point. Filter exact user alice and the inclusive 09:00–09:10 UTC window; print id, time, host and source_ip."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use the foundations timestamp-normalization command as a starting point. Filter exact user alice and the inclusive 09:00–09:10 UTC window; print id, time, host and source_ip.", "Change to test: Change the time zone or host identifier in a synthetic copy and adjust the query without losing the same activity.", "Comparison to retain: Include a similarly named account and an event outside the window that must not be joined.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/queries-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"resource" = "https://docs.python.org/3/library/datetime.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/queries-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/soc-analyst.zip" }]
 
 [[node]]
 "id" = "recall-queries"
@@ -230,9 +272,12 @@
 "needs" = ["queries-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Recreate the query logic from the investigation question rather than memorizing syntax."
-"steps" = ["Recreate the query logic from the investigation question rather than memorizing syntax.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"steps" = ["Recreate the query logic from the investigation question rather than memorizing syntax.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://docs.python.org/3/library/datetime.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "soc-analyst:queries" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "authentication-reasoning"
@@ -242,38 +287,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Compare failed sign-ins, a success and a later privilege event for one synthetic identity."
-"steps" = ["Work through this preparation: Compare failed sign-ins, a success and a later privilege event for one synthetic identity.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://docs.python.org/3/library/datetime.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "soc-analyst:authentication" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "authentication-experiment"
 "level" = "authentication"
-"title" = "Investigate: Investigate a suspicious sign-in"
+"title" = "Practice: Investigate a suspicious sign-in"
 "size" = "M"
 "minutes" = 60
 "needs" = ["authentication-reasoning"]
-"done_when" = "Investigate a provided authentication timeline, rank account misuse against benign alternatives, and identify the next discriminating evidence. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/authentication-experiment.json."
-"brief" = "Investigate a provided authentication timeline, rank account misuse against benign alternatives, and identify the next discriminating evidence."
-"steps" = ["Compare failed sign-ins, a success and a later privilege event for one synthetic identity.", "Investigate a provided authentication timeline, rank account misuse against benign alternatives, and identify the next discriminating evidence.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/authentication-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Review e1–e4 and e11 in events.csv with context.json. Distinguish failed login, successful login, allowed role change and denied administrator grant."
+"steps" = ["Review e1–e4 and e11 in events.csv with context.json. Distinguish failed login, successful login, allowed role change and denied administrator grant.", "Build a table of hypotheses: user typo followed by authorized work, and possible misuse. For each, cite supporting and contradicting rows.", "Request one discriminating next fact in your report, such as the role-change approval. Do not invent that approval or treat the denied administrator grant as a successful privilege change.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/authentication-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://docs.python.org/3/library/datetime.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/authentication-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/soc-analyst.zip" }]
 
 [[node]]
 "id" = "authentication-milestone"
 "level" = "authentication"
-"title" = "Apply it to a changed case: Investigate a suspicious sign-in"
+"title" = "Apply it: Investigate a suspicious sign-in"
 "size" = "M"
 "minutes" = 120
 "needs" = ["authentication-reasoning", "authentication-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/authentication-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Investigate a provided authentication timeline, rank account misuse against benign alternatives, and identify the next discriminating evidence."
-"steps" = ["Investigate a provided authentication timeline, rank account misuse against benign alternatives, and identify the next discriminating evidence.", "Transfer: Add a service-account explanation or a contradictory device event and update the conclusion.", "Control: Include known maintenance logins and avoid treating location or failure count alone as compromise.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/authentication-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Review e1–e4 and e11 in events.csv with context.json. Distinguish failed login, successful login, allowed role change and denied administrator grant."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Review e1–e4 and e11 in events.csv with context.json. Distinguish failed login, successful login, allowed role change and denied administrator grant.", "Change to test: Add a service-account explanation or a contradictory device event and update the conclusion.", "Comparison to retain: Include known maintenance logins and avoid treating location or failure count alone as compromise.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/authentication-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"resource" = "https://docs.python.org/3/library/datetime.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/authentication-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/soc-analyst.zip" }]
 
 [[node]]
 "id" = "recall-authentication"
@@ -284,9 +340,12 @@
 "needs" = ["authentication-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain which evidence would raise or lower confidence in account misuse."
-"steps" = ["Explain which evidence would raise or lower confidence in account misuse.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"steps" = ["Explain which evidence would raise or lower confidence in account misuse.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://docs.python.org/3/library/datetime.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "soc-analyst:authentication" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "web-and-mail-reasoning"
@@ -296,38 +355,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Parse headers and URLs from an inert training message without opening unknown links or executing attachments."
-"steps" = ["Work through this preparation: Parse headers and URLs from an inert training message without opening unknown links or executing attachments.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://docs.python.org/3/library/datetime.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "soc-analyst:web-and-mail" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "web-and-mail-experiment"
 "level" = "web-and-mail"
-"title" = "Investigate: Preserve evidence before following a lure"
+"title" = "Practice: Preserve evidence before following a lure"
 "size" = "M"
 "minutes" = 60
 "needs" = ["web-and-mail-reasoning"]
-"done_when" = "Correlate an inert phishing-style message fixture with proxy/DNS and application logs, recording user exposure separately from demonstrated execution. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/web-and-mail-experiment.json."
-"brief" = "Correlate an inert phishing-style message fixture with proxy/DNS and application logs, recording user exposure separately from demonstrated execution."
-"steps" = ["Parse headers and URLs from an inert training message without opening unknown links or executing attachments.", "Correlate an inert phishing-style message fixture with proxy/DNS and application logs, recording user exposure separately from demonstrated execution.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/web-and-mail-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Read message.eml as TEXT. The .invalid URL is inert; there is no attachment to run. Correlate its Date and recipient with events e9 and e10."
+"steps" = ["Read message.eml as TEXT. The .invalid URL is inert; there is no attachment to run. Correlate its Date and recipient with events e9 and e10.", "List what DNS success and a blocked proxy event show. Keep delivery, clicking, successful page access and code execution as separate claims.", "Write the missing evidence you would need before claiming execution. Preserve the message ID and log IDs in your handoff.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/web-and-mail-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://docs.python.org/3/library/datetime.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/web-and-mail-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/soc-analyst.zip" }]
 
 [[node]]
 "id" = "web-and-mail-milestone"
 "level" = "web-and-mail"
-"title" = "Apply it to a changed case: Preserve evidence before following a lure"
+"title" = "Apply it: Preserve evidence before following a lure"
 "size" = "M"
 "minutes" = 120
 "needs" = ["web-and-mail-reasoning", "web-and-mail-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/web-and-mail-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Correlate an inert phishing-style message fixture with proxy/DNS and application logs, recording user exposure separately from demonstrated execution."
-"steps" = ["Correlate an inert phishing-style message fixture with proxy/DNS and application logs, recording user exposure separately from demonstrated execution.", "Transfer: Change a redirect or add a blocked request and reassess how far the activity progressed.", "Control: Include a legitimate message with similar wording and a blocked attempt with no evidence of execution.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/web-and-mail-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Read message.eml as TEXT. The .invalid URL is inert; there is no attachment to run. Correlate its Date and recipient with events e9 and e10."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Read message.eml as TEXT. The .invalid URL is inert; there is no attachment to run. Correlate its Date and recipient with events e9 and e10.", "Change to test: Change a redirect or add a blocked request and reassess how far the activity progressed.", "Comparison to retain: Include a legitimate message with similar wording and a blocked attempt with no evidence of execution.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/web-and-mail-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"resource" = "https://docs.python.org/3/library/datetime.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/web-and-mail-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/soc-analyst.zip" }]
 
 [[node]]
 "id" = "recall-web-and-mail"
@@ -338,9 +408,12 @@
 "needs" = ["web-and-mail-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain why receipt, click, execution and compromise are separate claims."
-"steps" = ["Explain why receipt, click, execution and compromise are separate claims.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"steps" = ["Explain why receipt, click, execution and compromise are separate claims.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://docs.python.org/3/library/datetime.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "soc-analyst:web-and-mail" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "response-reasoning"
@@ -350,38 +423,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Identify the owner, business dependency and rollback for a proposed containment action."
-"steps" = ["Work through this preparation: Identify the owner, business dependency and rollback for a proposed containment action.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://docs.python.org/3/library/datetime.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "soc-analyst:response" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "response-experiment"
 "level" = "response"
-"title" = "Investigate: Make containment proportionate"
+"title" = "Practice: Make containment proportionate"
 "size" = "M"
 "minutes" = 60
 "needs" = ["response-reasoning"]
-"done_when" = "Write and rehearse a lab incident runbook that preserves evidence, escalates uncertainty, contains a synthetic account or endpoint, and verifies intended access afterward. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/response-experiment.json."
-"brief" = "Write and rehearse a lab incident runbook that preserves evidence, escalates uncertainty, contains a synthetic account or endpoint, and verifies intended access afterward."
-"steps" = ["Identify the owner, business dependency and rollback for a proposed containment action.", "Write and rehearse a lab incident runbook that preserves evidence, escalates uncertainty, contains a synthetic account or endpoint, and verifies intended access afterward.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/response-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Write response.md for the fictional Alice case. Before containment, preserve a copy of events.csv and its SHA-256 hash; no real account should be changed."
+"steps" = ["Write response.md for the fictional Alice case. Before containment, preserve a copy of events.csv and its SHA-256 hash; no real account should be changed.", "Tabletop the decision with Mira as owner: list the evidence threshold for disabling a synthetic identity, how to record approval and how to reverse the action.", "Rehearse allowed-user and affected-user checks against a written access matrix. Label this a tabletop; it cannot prove that an actual IdP or endpoint was contained.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/response-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://docs.python.org/3/library/datetime.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/response-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/soc-analyst.zip" }]
 
 [[node]]
 "id" = "response-milestone"
 "level" = "response"
-"title" = "Apply it to a changed case: Make containment proportionate"
+"title" = "Apply it: Make containment proportionate"
 "size" = "M"
 "minutes" = 120
 "needs" = ["response-reasoning", "response-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/response-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Write and rehearse a lab incident runbook that preserves evidence, escalates uncertainty, contains a synthetic account or endpoint, and verifies intended access afterward."
-"steps" = ["Write and rehearse a lab incident runbook that preserves evidence, escalates uncertainty, contains a synthetic account or endpoint, and verifies intended access afterward.", "Transfer: Make the affected system unavailable to the responder and choose an alternative action with explicit residual risk.", "Control: Show that an unrelated account or service still works after containment.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/response-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Write response.md for the fictional Alice case. Before containment, preserve a copy of events.csv and its SHA-256 hash; no real account should be changed."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Write response.md for the fictional Alice case. Before containment, preserve a copy of events.csv and its SHA-256 hash; no real account should be changed.", "Change to test: Make the affected system unavailable to the responder and choose an alternative action with explicit residual risk.", "Comparison to retain: Show that an unrelated account or service still works after containment.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/response-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"resource" = "https://docs.python.org/3/library/datetime.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/response-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/soc-analyst.zip" }]
 
 [[node]]
 "id" = "recall-response"
@@ -392,9 +476,12 @@
 "needs" = ["response-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "State the evidence needed before choosing a disruptive action."
-"steps" = ["State the evidence needed before choosing a disruptive action.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"steps" = ["State the evidence needed before choosing a disruptive action.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://docs.python.org/3/library/datetime.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "soc-analyst:response" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "shift-handoff-reasoning"
@@ -404,38 +491,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Compare a useful case note with one that only lists tool output."
-"steps" = ["Work through this preparation: Compare a useful case note with one that only lists tool output.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://docs.python.org/3/library/datetime.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "soc-analyst:shift-handoff" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "shift-handoff-experiment"
 "level" = "shift-handoff"
-"title" = "Investigate: Close the case so someone can reopen it"
+"title" = "Practice: Close the case so someone can reopen it"
 "size" = "M"
 "minutes" = 60
 "needs" = ["shift-handoff-reasoning"]
-"done_when" = "Investigate an unfamiliar small log bundle and deliver a timeline, evidence references, confidence, response decision and shift handoff with unresolved questions. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/shift-handoff-experiment.json."
-"brief" = "Investigate an unfamiliar small log bundle and deliver a timeline, evidence references, confidence, response decision and shift handoff with unresolved questions."
-"steps" = ["Compare a useful case note with one that only lists tool output.", "Investigate an unfamiliar small log bundle and deliver a timeline, evidence references, confidence, response decision and shift handoff with unresolved questions.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/shift-handoff-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use a fresh copy of events.csv. Ask a peer to change one identity/time field, or move e4 outside the window yourself and record that assistance."
+"steps" = ["Use a fresh copy of events.csv. Ask a peer to change one identity/time field, or move e4 outside the window yourself and record that assistance.", "Run your investigation without copying the previous verdict. Produce the timeline, references, confidence, response decision and remaining question.", "Check that maintenance and blocked traffic remain correctly described. Include the exact query and changed fixture so the next analyst can reproduce the handoff.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/shift-handoff-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://docs.python.org/3/library/datetime.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/shift-handoff-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/soc-analyst.zip" }]
 
 [[node]]
 "id" = "shift-handoff-milestone"
 "level" = "shift-handoff"
-"title" = "Apply it to a changed case: Close the case so someone can reopen it"
+"title" = "Apply it: Close the case so someone can reopen it"
 "size" = "M"
 "minutes" = 120
 "needs" = ["shift-handoff-reasoning", "shift-handoff-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/shift-handoff-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Investigate an unfamiliar small log bundle and deliver a timeline, evidence references, confidence, response decision and shift handoff with unresolved questions."
-"steps" = ["Investigate an unfamiliar small log bundle and deliver a timeline, evidence references, confidence, response decision and shift handoff with unresolved questions.", "Transfer: Add a late contradictory event and revise the disposition while retaining the earlier reasoning.", "Control: Document one rejected hypothesis and a known-benign comparison; do not turn missing logs into a clean bill of health.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/shift-handoff-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use a fresh copy of events.csv. Ask a peer to change one identity/time field, or move e4 outside the window yourself and record that assistance."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use a fresh copy of events.csv. Ask a peer to change one identity/time field, or move e4 outside the window yourself and record that assistance.", "Change to test: Add a late contradictory event and revise the disposition while retaining the earlier reasoning.", "Comparison to retain: Document one rejected hypothesis and a known-benign comparison; do not turn missing logs into a clean bill of health.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/shift-handoff-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"resource" = "https://docs.python.org/3/library/datetime.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/shift-handoff-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/soc-analyst.zip" }]
 
 [[node]]
 "id" = "recall-shift-handoff"
@@ -446,63 +544,80 @@
 "needs" = ["shift-handoff-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Reconstruct the case and next action from the handoff alone after a delay."
-"steps" = ["Reconstruct the case and next action from the handoff alone after a delay.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"steps" = ["Reconstruct the case and next action from the handoff alone after a delay.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://docs.python.org/3/library/datetime.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "soc-analyst:shift-handoff" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "independent-transfer-reasoning"
 "level" = "independent-transfer"
-"title" = "Reason it through: Revisit the skill on a fresh problem"
+"title" = "Reason it through: Recheck the boundary with a specified change"
 "size" = "S"
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution."
-"steps" = ["Work through this preparation: Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"brief" = "Use the named task files for the changed case. Predict the effect before opening previous notes."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://docs.python.org/3/library/datetime.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "soc-analyst:independent-transfer" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "independent-transfer-experiment"
 "level" = "independent-transfer"
-"title" = "Investigate: Revisit the skill on a fresh problem"
+"title" = "Practice: Recheck the boundary with a specified change"
 "size" = "M"
 "minutes" = 60
 "needs" = ["independent-transfer-reasoning"]
-"done_when" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/independent-transfer-experiment.json."
-"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
-"steps" = ["Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/independent-transfer-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Add a synthetic approval for e4 to context.json, then move e4 outside the original investigation window in events.csv. Reevaluate the Alice case using your saved query."
+"steps" = ["Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.", "Add a synthetic approval for e4 to context.json, then move e4 outside the original investigation window in events.csv. Reevaluate the Alice case using your saved query.", "Keep alice-test excluded and preserve the denied status of e11.", "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/independent-transfer-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://docs.python.org/3/library/datetime.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/soc-analyst.zip" }]
 
 [[node]]
 "id" = "independent-transfer-milestone"
 "level" = "independent-transfer"
-"title" = "Apply it to a changed case: Revisit the skill on a fresh problem"
+"title" = "Apply it: Recheck the boundary with a specified change"
 "size" = "M"
 "minutes" = 120
 "needs" = ["independent-transfer-reasoning", "independent-transfer-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/independent-transfer-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
-"steps" = ["After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Transfer: Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.", "Control: Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/independent-transfer-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Add a synthetic approval for e4 to context.json, then move e4 outside the original investigation window in events.csv. Reevaluate the Alice case using your saved query."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.", "Change to test: Add a second case by reversing the changed condition above, predict its result and compare actual behavior.", "Comparison to retain: Keep alice-test excluded and preserve the denied status of e11.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/independent-transfer-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"resource" = "https://docs.python.org/3/library/datetime.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/soc-analyst.zip" }]
 
 [[node]]
 "id" = "recall-independent-transfer"
 "level" = "recall-lane"
-"title" = "Return later: Revisit the skill on a fresh problem"
+"title" = "Return later: Recheck the boundary with a specified change"
 "size" = "S"
 "minutes" = 10
 "needs" = ["independent-transfer-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
-"brief" = "Explain what transferred, what required help and which prerequisite needs another small experiment."
-"steps" = ["Explain what transferred, what required help and which prerequisite needs another small experiment.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"brief" = "Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested."
+"steps" = ["Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://docs.python.org/3/library/datetime.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "soc-analyst:independent-transfer" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "quick-access-check"
@@ -512,5 +627,8 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Correctly evaluate every allow/deny decision for a fresh server-generated policy fixture."
-"resource" = "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/sc-200"
+"resource" = "https://docs.python.org/3/library/datetime.html"
 "verify" = { "type" = "lab", "exercise" = "access-policy" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."

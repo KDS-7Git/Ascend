@@ -361,6 +361,8 @@ dialog::backdrop { background: #17191488; }
 .challenge-steps { padding-left: 22px; font-size: .9rem; line-height: 1.7; }
 .challenge-steps li { padding-left: 4px; margin-bottom: 12px; }
 .challenge-steps { max-width: 800px; }
+.challenge-setup, .challenge-materials { max-width: 760px; overflow-wrap: anywhere; }
+.challenge-materials { padding-left: 22px; margin-block: 14px 24px; }
 .challenge-steps li > p { margin-bottom: 10px; }
 .challenge-steps .doc-code { margin: 12px 0 16px; }
 .challenge-steps .code-toolbar { padding-block: 2px; }

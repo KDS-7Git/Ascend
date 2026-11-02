@@ -3,7 +3,7 @@
 "id" = "wireless-iot-security"
 "title" = "Wireless and IoT Security"
 "kind" = "proficiency"
-"version" = 1
+"version" = 2
 "source" = "ai-draft"
 "reviewed" = false
 
@@ -12,7 +12,7 @@
 
 [[level]]
 "id" = "foundations"
-"title" = "Prove the entry skills in a small lab"
+"title" = "Identify a sensor’s data flow and trust boundary"
 "lane" = "main"
 
 [[level]]
@@ -32,12 +32,12 @@
 
 [[level]]
 "id" = "wireless"
-"title" = "Interpret the capture you are actually able to make"
+"title" = "Inspect a synthetic Wi-Fi beacon"
 "lane" = "main"
 
 [[level]]
 "id" = "firmware"
-"title" = "Examine a firmware image as evidence"
+"title" = "Review update metadata in a device model"
 "lane" = "main"
 
 [[level]]
@@ -47,7 +47,7 @@
 
 [[level]]
 "id" = "independent-transfer"
-"title" = "Revisit the skill on a fresh problem"
+"title" = "Recheck the boundary with a specified change"
 "lane" = "main"
 
 [[level]]
@@ -69,62 +69,79 @@
 "needs" = []
 "done_when" = "Compute the exact content hash of a fresh server-generated evidence fixture and pass its check."
 "brief" = "This small exercise tests evidence integrity. Track entry background: Understand local networking, device ownership and basic authentication."
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"resource" = "https://docs.python.org/3/library/hashlib.html"
 "verify" = { "type" = "lab", "exercise" = "integrity" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "foundations-reasoning"
 "level" = "foundations"
-"title" = "Reason it through: Prove the entry skills in a small lab"
+"title" = "Reason it through: Identify a sensor’s data flow and trust boundary"
 "size" = "S"
 "minutes" = 10
 "needs" = ["lab-readiness"]
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Understand local networking, device ownership and basic authentication."
-"steps" = ["Work through this preparation: Understand local networking, device ownership and basic authentication.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"brief" = "Read one concrete IoT scenario before starting a broker."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://mosquitto.org/man/mosquitto-conf-5.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "wireless-iot-security:foundations" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "foundations-experiment"
 "level" = "foundations"
-"title" = "Investigate: Prove the entry skills in a small lab"
+"title" = "Identify a sensor’s data flow and trust boundary"
 "size" = "M"
-"minutes" = 60
+"minutes" = 30
 "needs" = ["foundations-reasoning"]
-"done_when" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/foundations-experiment.json."
-"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
-"steps" = ["Understand local networking, device ownership and basic authentication.", "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/foundations-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Read one concrete IoT scenario before starting a broker."
+"steps" = ["Open device.json. Identify the owner, model, topic and payload. Draw sensor → broker → subscriber as a three-component path.", "Read broker.conf. It binds port 18883 only on 127.0.0.1 and initially permits anonymous access. Explain why this setting is for the local exercise only.", "Write the expected publish and subscribe identities, allowed topic and one denied topic. This plan does not demonstrate wireless transmission or real firmware behavior.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/foundations-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://mosquitto.org/man/mosquitto-conf-5.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/foundations-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. MQTT needs the free Mosquitto broker and clients installed locally. The wireless task uses the bundled synthetic capture in Wireshark; no radio adapter is required for that analysis. Actual device/firmware operations need separately owned hardware."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/wireless-iot-security.zip" }]
 
 [[node]]
 "id" = "foundations-milestone"
 "level" = "foundations"
-"title" = "Apply it to a changed case: Prove the entry skills in a small lab"
+"title" = "Apply it: Identify a sensor’s data flow and trust boundary"
 "size" = "M"
-"minutes" = 120
+"minutes" = 30
 "needs" = ["foundations-reasoning", "foundations-experiment", "lab-readiness"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/foundations-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
-"steps" = ["Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Transfer: Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.", "Control: Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/foundations-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Read one concrete IoT scenario before starting a broker."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Open device.json. Identify the owner, model, topic and payload. Draw sensor → broker → subscriber as a three-component path.", "Change to test: Change the desired topic to ascend/sensor/humidity and revise the access matrix.", "Comparison to retain: A subscriber for temperature should not automatically get write permission to every sensor topic.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/foundations-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"resource" = "https://mosquitto.org/man/mosquitto-conf-5.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/foundations-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. MQTT needs the free Mosquitto broker and clients installed locally. The wireless task uses the bundled synthetic capture in Wireshark; no radio adapter is required for that analysis. Actual device/firmware operations need separately owned hardware."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/wireless-iot-security.zip" }]
 
 [[node]]
 "id" = "recall-foundations"
 "level" = "recall-lane"
-"title" = "Return later: Prove the entry skills in a small lab"
+"title" = "Return later: Identify a sensor’s data flow and trust boundary"
 "size" = "S"
 "minutes" = 10
 "needs" = ["foundations-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
-"brief" = "Reconstruct the environment and entry assumptions without following the setup notes."
-"steps" = ["Reconstruct the environment and entry assumptions without following the setup notes.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"brief" = "Without opening your report, reconstruct the inputs, observed result and main limitation of identify a sensor’s data flow and trust boundary."
+"steps" = ["Without opening your report, reconstruct the inputs, observed result and main limitation of identify a sensor’s data flow and trust boundary.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://mosquitto.org/man/mosquitto-conf-5.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "wireless-iot-security:foundations" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "inventory-reasoning"
@@ -134,38 +151,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Inventory a fictional device's interfaces, firmware, identities and update path."
-"steps" = ["Work through this preparation: Inventory a fictional device's interfaces, firmware, identities and update path.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://mosquitto.org/man/mosquitto-conf-5.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "wireless-iot-security:inventory" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "inventory-experiment"
 "level" = "inventory"
-"title" = "Investigate: Know which device and boundary you are testing"
+"title" = "Practice: Know which device and boundary you are testing"
 "size" = "M"
 "minutes" = 60
 "needs" = ["inventory-reasoning"]
-"done_when" = "Build a device threat model and an isolated test plan using an owned device or documented simulation. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/inventory-experiment.json."
-"brief" = "Build a device threat model and an isolated test plan using an owned device or documented simulation."
-"steps" = ["Inventory a fictional device's interfaces, firmware, identities and update path.", "Build a device threat model and an isolated test plan using an owned device or documented simulation.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/inventory-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use device.json as the documented simulation. Draw owner, device, broker, consumer and update source; mark every unauthenticated boundary."
+"steps" = ["Use device.json as the documented simulation. Draw owner, device, broker, consumer and update source; mark every unauthenticated boundary.", "List assets (synthetic readings and configuration), one plausible misuse and a bounded test per boundary.", "Label absent physical/radio properties as untested; there is no actual sensor in the JSON file.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/inventory-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://mosquitto.org/man/mosquitto-conf-5.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/inventory-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. MQTT needs the free Mosquitto broker and clients installed locally. The wireless task uses the bundled synthetic capture in Wireshark; no radio adapter is required for that analysis. Actual device/firmware operations need separately owned hardware."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/wireless-iot-security.zip" }]
 
 [[node]]
 "id" = "inventory-milestone"
 "level" = "inventory"
-"title" = "Apply it to a changed case: Know which device and boundary you are testing"
+"title" = "Apply it: Know which device and boundary you are testing"
 "size" = "M"
 "minutes" = 120
 "needs" = ["inventory-reasoning", "inventory-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/inventory-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Build a device threat model and an isolated test plan using an owned device or documented simulation."
-"steps" = ["Build a device threat model and an isolated test plan using an owned device or documented simulation.", "Transfer: Add a companion cloud service and revise the data and trust boundaries.", "Control: Exclude unrelated nearby devices even when technically visible.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/inventory-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use device.json as the documented simulation. Draw owner, device, broker, consumer and update source; mark every unauthenticated boundary."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use device.json as the documented simulation. Draw owner, device, broker, consumer and update source; mark every unauthenticated boundary.", "Change to test: Add a companion cloud service and revise the data and trust boundaries.", "Comparison to retain: Exclude unrelated nearby devices even when technically visible.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/inventory-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"resource" = "https://mosquitto.org/man/mosquitto-conf-5.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/inventory-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. MQTT needs the free Mosquitto broker and clients installed locally. The wireless task uses the bundled synthetic capture in Wireshark; no radio adapter is required for that analysis. Actual device/firmware operations need separately owned hardware."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/wireless-iot-security.zip" }]
 
 [[node]]
 "id" = "recall-inventory"
@@ -176,9 +204,12 @@
 "needs" = ["inventory-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain which observations require physical hardware."
-"steps" = ["Explain which observations require physical hardware.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"steps" = ["Explain which observations require physical hardware.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://mosquitto.org/man/mosquitto-conf-5.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "wireless-iot-security:inventory" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "mqtt-reasoning"
@@ -188,38 +219,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Explain topics, subscriptions, retained messages and session identity using a local broker."
-"steps" = ["Work through this preparation: Explain topics, subscriptions, retained messages and session identity using a local broker.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://mosquitto.org/man/mosquitto-conf-5.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "wireless-iot-security:mqtt" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "mqtt-experiment"
 "level" = "mqtt"
-"title" = "Investigate: Follow a message through the broker"
+"title" = "Practice: Follow a message through the broker"
 "size" = "M"
 "minutes" = 60
 "needs" = ["mqtt-reasoning"]
-"done_when" = "Publish and receive a unique harmless marker in the isolated MQTT profile and record exact topic/payload evidence. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/mqtt-experiment.json."
-"brief" = "Publish and receive a unique harmless marker in the isolated MQTT profile and record exact topic/payload evidence."
-"steps" = ["Explain topics, subscriptions, retained messages and session identity using a local broker.", "Publish and receive a unique harmless marker in the isolated MQTT profile and record exact topic/payload evidence.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/mqtt-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Start mosquitto -c broker.conf -v in Terminal A. In Terminal B subscribe with mosquitto_sub -h 127.0.0.1 -p 18883 -t ascend/sensor/temperature -C 1."
+"steps" = ["Start mosquitto -c broker.conf -v in Terminal A. In Terminal B subscribe with mosquitto_sub -h 127.0.0.1 -p 18883 -t ascend/sensor/temperature -C 1.", "In Terminal C publish one unique harmless marker with mosquitto_pub to the same host/port/topic. Save exact command and received payload.", "Stop the local broker. This proves a local broker round trip; the downloaded broker is not the optional Docker profile and produces no Docker proof receipt.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/mqtt-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://mosquitto.org/man/mosquitto-conf-5.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/mqtt-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. MQTT needs the free Mosquitto broker and clients installed locally. The wireless task uses the bundled synthetic capture in Wireshark; no radio adapter is required for that analysis. Actual device/firmware operations need separately owned hardware."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/wireless-iot-security.zip" }]
 
 [[node]]
 "id" = "mqtt-milestone"
 "level" = "mqtt"
-"title" = "Apply it to a changed case: Follow a message through the broker"
+"title" = "Apply it: Follow a message through the broker"
 "size" = "M"
 "minutes" = 120
 "needs" = ["mqtt-reasoning", "mqtt-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/mqtt-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Publish and receive a unique harmless marker in the isolated MQTT profile and record exact topic/payload evidence."
-"steps" = ["Publish and receive a unique harmless marker in the isolated MQTT profile and record exact topic/payload evidence.", "Transfer: Change the subscription wildcard and predict which messages are delivered.", "Control: Include an unmatched topic that must not reach the subscriber.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/mqtt-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Start mosquitto -c broker.conf -v in Terminal A. In Terminal B subscribe with mosquitto_sub -h 127.0.0.1 -p 18883 -t ascend/sensor/temperature -C 1."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Start mosquitto -c broker.conf -v in Terminal A. In Terminal B subscribe with mosquitto_sub -h 127.0.0.1 -p 18883 -t ascend/sensor/temperature -C 1.", "Change to test: Change the subscription wildcard and predict which messages are delivered.", "Comparison to retain: Include an unmatched topic that must not reach the subscriber.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/mqtt-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"resource" = "https://mosquitto.org/man/mosquitto-conf-5.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/mqtt-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. MQTT needs the free Mosquitto broker and clients installed locally. The wireless task uses the bundled synthetic capture in Wireshark; no radio adapter is required for that analysis. Actual device/firmware operations need separately owned hardware."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/wireless-iot-security.zip" }]
 
 [[node]]
 "id" = "recall-mqtt"
@@ -230,9 +272,12 @@
 "needs" = ["mqtt-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain retained delivery versus a new live publication."
-"steps" = ["Explain retained delivery versus a new live publication.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"steps" = ["Explain retained delivery versus a new live publication.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://mosquitto.org/man/mosquitto-conf-5.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "wireless-iot-security:mqtt" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "access-reasoning"
@@ -242,38 +287,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Model two synthetic device identities and allowed publish/subscribe topics."
-"steps" = ["Work through this preparation: Model two synthetic device identities and allowed publish/subscribe topics.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://mosquitto.org/man/mosquitto-conf-5.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "wireless-iot-security:access" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "access-experiment"
 "level" = "access"
-"title" = "Investigate: Give each device only its topics"
+"title" = "Practice: Give each device only its topics"
 "size" = "M"
 "minutes" = 60
 "needs" = ["access-reasoning"]
-"done_when" = "Configure a separate owned broker with authentication and topic ACLs; verify each identity's allowed and denied operations. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/access-experiment.json."
-"brief" = "Configure a separate owned broker with authentication and topic ACLs; verify each identity's allowed and denied operations."
-"steps" = ["Model two synthetic device identities and allowed publish/subscribe topics.", "Configure a separate owned broker with authentication and topic ACLs; verify each identity's allowed and denied operations.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/access-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Copy broker.conf to a new local lab folder. Use mosquitto_passwd interactively to create publisher/subscriber TEST users and configure password_file with allow_anonymous false."
+"steps" = ["Copy broker.conf to a new local lab folder. Use mosquitto_passwd interactively to create publisher/subscriber TEST users and configure password_file with allow_anonymous false.", "Create an acl_file giving publisher write and subscriber read to ascend/sensor/temperature only. Restart this separate loopback broker.", "Test allowed publish/subscribe, anonymous denial and an unrelated topic denial. Use synthetic passwords and keep them out of the report.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/access-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://mosquitto.org/man/mosquitto-conf-5.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/access-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. MQTT needs the free Mosquitto broker and clients installed locally. The wireless task uses the bundled synthetic capture in Wireshark; no radio adapter is required for that analysis. Actual device/firmware operations need separately owned hardware."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/wireless-iot-security.zip" }]
 
 [[node]]
 "id" = "access-milestone"
 "level" = "access"
-"title" = "Apply it to a changed case: Give each device only its topics"
+"title" = "Apply it: Give each device only its topics"
 "size" = "M"
 "minutes" = 120
 "needs" = ["access-reasoning", "access-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/access-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Configure a separate owned broker with authentication and topic ACLs; verify each identity's allowed and denied operations."
-"steps" = ["Configure a separate owned broker with authentication and topic ACLs; verify each identity's allowed and denied operations.", "Transfer: Change a wildcard or identity and predict effective topic access.", "Control: Preserve a device's intended telemetry while denying another device's private topic.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/access-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Copy broker.conf to a new local lab folder. Use mosquitto_passwd interactively to create publisher/subscriber TEST users and configure password_file with allow_anonymous false."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Copy broker.conf to a new local lab folder. Use mosquitto_passwd interactively to create publisher/subscriber TEST users and configure password_file with allow_anonymous false.", "Change to test: Change a wildcard or identity and predict effective topic access.", "Comparison to retain: Preserve a device's intended telemetry while denying another device's private topic.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/access-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"resource" = "https://mosquitto.org/man/mosquitto-conf-5.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/access-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. MQTT needs the free Mosquitto broker and clients installed locally. The wireless task uses the bundled synthetic capture in Wireshark; no radio adapter is required for that analysis. Actual device/firmware operations need separately owned hardware."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/wireless-iot-security.zip" }]
 
 [[node]]
 "id" = "recall-access"
@@ -284,117 +340,148 @@
 "needs" = ["access-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Reconstruct the difference between broker authentication and topic authorization."
-"steps" = ["Reconstruct the difference between broker authentication and topic authorization.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"steps" = ["Reconstruct the difference between broker authentication and topic authorization.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://mosquitto.org/man/mosquitto-conf-5.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "wireless-iot-security:access" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "wireless-reasoning"
 "level" = "wireless"
-"title" = "Reason it through: Interpret the capture you are actually able to make"
+"title" = "Reason it through: Inspect a synthetic Wi-Fi beacon"
 "size" = "S"
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Distinguish interface mode, channel and link-layer metadata in a supplied wireless capture."
-"steps" = ["Work through this preparation: Distinguish interface mode, channel and link-layer metadata in a supplied wireless capture.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://mosquitto.org/man/mosquitto-conf-5.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "wireless-iot-security:wireless" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "wireless-experiment"
 "level" = "wireless"
-"title" = "Investigate: Interpret the capture you are actually able to make"
+"title" = "Practice: Inspect a synthetic Wi-Fi beacon"
 "size" = "M"
 "minutes" = 60
 "needs" = ["wireless-reasoning"]
-"done_when" = "Analyze an owned or licensed training capture and explain association/security properties supported by visible frames. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/wireless-experiment.json."
-"brief" = "Analyze an owned or licensed training capture and explain association/security properties supported by visible frames."
-"steps" = ["Distinguish interface mode, channel and link-layer metadata in a supplied wireless capture.", "Analyze an owned or licensed training capture and explain association/security properties supported by visible frames.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/wireless-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Open wifi-beacon.pcap from this track’s downloaded ZIP in Wireshark. This is an authored synthetic IEEE 802.11 beacon, not captured radio traffic; no adapter or account is needed."
+"steps" = ["Open wifi-beacon.pcap from this track’s downloaded ZIP in Wireshark. This is an authored synthetic IEEE 802.11 beacon, not captured radio traffic; no adapter or account is needed.", "Inspect packet 1: frame-control type, transmitter/receiver, SSID, channel tag and RSN parameters. Record which fields advertise the network’s security configuration.", "Explain why a beacon advertisement does not prove successful association, a completed handshake, actual encryption or device trust. This one-packet fixture contains none of those exchanges.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/wireless-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://mosquitto.org/man/mosquitto-conf-5.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/wireless-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. MQTT needs the free Mosquitto broker and clients installed locally. The wireless task uses the bundled synthetic capture in Wireshark; no radio adapter is required for that analysis. Actual device/firmware operations need separately owned hardware."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/wireless-iot-security.zip" }]
 
 [[node]]
 "id" = "wireless-milestone"
 "level" = "wireless"
-"title" = "Apply it to a changed case: Interpret the capture you are actually able to make"
+"title" = "Apply it: Inspect a synthetic Wi-Fi beacon"
 "size" = "M"
 "minutes" = 120
 "needs" = ["wireless-reasoning", "wireless-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/wireless-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Analyze an owned or licensed training capture and explain association/security properties supported by visible frames."
-"steps" = ["Analyze an owned or licensed training capture and explain association/security properties supported by visible frames.", "Transfer: Change the selected channel or capture source and reassess missing observations.", "Control: Avoid claiming to see encrypted application content without the required decryption context.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/wireless-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Open wifi-beacon.pcap from this track’s downloaded ZIP in Wireshark. This is an authored synthetic IEEE 802.11 beacon, not captured radio traffic; no adapter or account is needed."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Open wifi-beacon.pcap from this track’s downloaded ZIP in Wireshark. This is an authored synthetic IEEE 802.11 beacon, not captured radio traffic; no adapter or account is needed.", "Change to test: Compare wifi-beacon.pcap with http-training.pcap in the same ZIP. Name which address/control fields belong to each link type.", "Comparison to retain: Identify a claim the one beacon cannot support, such as completed association or a captured handshake.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/wireless-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"resource" = "https://mosquitto.org/man/mosquitto-conf-5.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/wireless-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. MQTT needs the free Mosquitto broker and clients installed locally. The wireless task uses the bundled synthetic capture in Wireshark; no radio adapter is required for that analysis. Actual device/firmware operations need separately owned hardware."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/wireless-iot-security.zip" }]
 
 [[node]]
 "id" = "recall-wireless"
 "level" = "recall-lane"
-"title" = "Return later: Interpret the capture you are actually able to make"
+"title" = "Return later: Inspect a synthetic Wi-Fi beacon"
 "size" = "S"
 "minutes" = 10
 "needs" = ["wireless-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain why a monitor-capable adapter is a prerequisite for some tests."
-"steps" = ["Explain why a monitor-capable adapter is a prerequisite for some tests.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"steps" = ["Explain why a monitor-capable adapter is a prerequisite for some tests.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://mosquitto.org/man/mosquitto-conf-5.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "wireless-iot-security:wireless" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "firmware-reasoning"
 "level" = "firmware"
-"title" = "Reason it through: Examine a firmware image as evidence"
+"title" = "Reason it through: Review update metadata in a device model"
 "size" = "S"
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Identify format, architecture and provenance of a permitted training firmware image."
-"steps" = ["Work through this preparation: Identify format, architecture and provenance of a permitted training firmware image.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://mosquitto.org/man/mosquitto-conf-5.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "wireless-iot-security:firmware" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "firmware-experiment"
 "level" = "firmware"
-"title" = "Investigate: Examine a firmware image as evidence"
+"title" = "Practice: Review update metadata in a device model"
 "size" = "M"
 "minutes" = 60
 "needs" = ["firmware-reasoning"]
-"done_when" = "Inspect static configuration and update metadata from a supplied image, identify one concrete trust assumption and propose a testable improvement. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/firmware-experiment.json."
-"brief" = "Inspect static configuration and update metadata from a supplied image, identify one concrete trust assumption and propose a testable improvement."
-"steps" = ["Identify format, architecture and provenance of a permitted training firmware image.", "Inspect static configuration and update metadata from a supplied image, identify one concrete trust assumption and propose a testable improvement.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/firmware-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use device.json firmware as a static metadata exercise. It explicitly contains no bootable image and no measured binary architecture. List version, signature state and provenance gaps."
+"steps" = ["Use device.json firmware as a static metadata exercise. It explicitly contains no bootable image and no measured binary architecture. List version, signature state and provenance gaps.", "Write a toy updater predicate requiring matching model, a newer version and a separately verified signature result. Test using synthetic metadata and a stub signature result labeled as a stub.", "Accept a matching authorized update and reject wrong-model, old-version and failed-signature cases. This does not implement cryptographic verification or demonstrate a real device update.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/firmware-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://mosquitto.org/man/mosquitto-conf-5.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/firmware-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. MQTT needs the free Mosquitto broker and clients installed locally. The wireless task uses the bundled synthetic capture in Wireshark; no radio adapter is required for that analysis. Actual device/firmware operations need separately owned hardware."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/wireless-iot-security.zip" }]
 
 [[node]]
 "id" = "firmware-milestone"
 "level" = "firmware"
-"title" = "Apply it to a changed case: Examine a firmware image as evidence"
+"title" = "Apply it: Review update metadata in a device model"
 "size" = "M"
 "minutes" = 120
 "needs" = ["firmware-reasoning", "firmware-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/firmware-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Inspect static configuration and update metadata from a supplied image, identify one concrete trust assumption and propose a testable improvement."
-"steps" = ["Inspect static configuration and update metadata from a supplied image, identify one concrete trust assumption and propose a testable improvement.", "Transfer: Change a signed metadata field or use a mismatched device model in a toy updater test.", "Control: Accept valid matching metadata and reject tampering or a wrong-model update.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/firmware-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use device.json firmware as a static metadata exercise. It explicitly contains no bootable image and no measured binary architecture. List version, signature state and provenance gaps."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use device.json firmware as a static metadata exercise. It explicitly contains no bootable image and no measured binary architecture. List version, signature state and provenance gaps.", "Change to test: Change the model or version field and compare the toy predicate result. Keep the signature-verification stub clearly labeled.", "Comparison to retain: Accept a matching newer update with a successful stub result; reject wrong-model, old-version and failed-signature inputs.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/firmware-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"resource" = "https://mosquitto.org/man/mosquitto-conf-5.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/firmware-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. MQTT needs the free Mosquitto broker and clients installed locally. The wireless task uses the bundled synthetic capture in Wireshark; no radio adapter is required for that analysis. Actual device/firmware operations need separately owned hardware."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/wireless-iot-security.zip" }]
 
 [[node]]
 "id" = "recall-firmware"
 "level" = "recall-lane"
-"title" = "Return later: Examine a firmware image as evidence"
+"title" = "Return later: Review update metadata in a device model"
 "size" = "S"
 "minutes" = 10
 "needs" = ["firmware-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain what static image analysis cannot prove about a running device."
-"steps" = ["Explain what static image analysis cannot prove about a running device.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"steps" = ["Explain what static image analysis cannot prove about a running device.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://mosquitto.org/man/mosquitto-conf-5.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "wireless-iot-security:firmware" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "assessment-reasoning"
@@ -404,38 +491,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Map device, broker, companion app and update service boundaries."
-"steps" = ["Work through this preparation: Map device, broker, companion app and update service boundaries.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://mosquitto.org/man/mosquitto-conf-5.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "wireless-iot-security:assessment" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "assessment-experiment"
 "level" = "assessment"
-"title" = "Investigate: Review an end-to-end device workflow"
+"title" = "Practice: Review an end-to-end device workflow"
 "size" = "M"
 "minutes" = 60
 "needs" = ["assessment-reasoning"]
-"done_when" = "Assess a small owned MQTT workflow, repair one access defect and report remaining hardware/firmware assumptions. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/assessment-experiment.json."
-"brief" = "Assess a small owned MQTT workflow, repair one access defect and report remaining hardware/firmware assumptions."
-"steps" = ["Map device, broker, companion app and update service boundaries.", "Assess a small owned MQTT workflow, repair one access defect and report remaining hardware/firmware assumptions.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/assessment-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use your authenticated local broker configuration. In a new copy, introduce an overbroad subscriber write ACL, predict its effect and test with a harmless marker."
+"steps" = ["Use your authenticated local broker configuration. In a new copy, introduce an overbroad subscriber write ACL, predict its effect and test with a harmless marker.", "Repair only that rule, retest intended reads and denied writes, and verify an unrelated topic remains inaccessible.", "Stop the broker and write remaining limitations: no radio, real device or bootloader was examined.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/assessment-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://mosquitto.org/man/mosquitto-conf-5.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/assessment-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. MQTT needs the free Mosquitto broker and clients installed locally. The wireless task uses the bundled synthetic capture in Wireshark; no radio adapter is required for that analysis. Actual device/firmware operations need separately owned hardware."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/wireless-iot-security.zip" }]
 
 [[node]]
 "id" = "assessment-milestone"
 "level" = "assessment"
-"title" = "Apply it to a changed case: Review an end-to-end device workflow"
+"title" = "Apply it: Review an end-to-end device workflow"
 "size" = "M"
 "minutes" = 120
 "needs" = ["assessment-reasoning", "assessment-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/assessment-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Assess a small owned MQTT workflow, repair one access defect and report remaining hardware/firmware assumptions."
-"steps" = ["Assess a small owned MQTT workflow, repair one access defect and report remaining hardware/firmware assumptions.", "Transfer: Introduce another device identity or a changed topic layout and retest separation.", "Control: Keep legitimate telemetry working and deny the unrelated device.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/assessment-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use your authenticated local broker configuration. In a new copy, introduce an overbroad subscriber write ACL, predict its effect and test with a harmless marker."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use your authenticated local broker configuration. In a new copy, introduce an overbroad subscriber write ACL, predict its effect and test with a harmless marker.", "Change to test: Introduce another device identity or a changed topic layout and retest separation.", "Comparison to retain: Keep legitimate telemetry working and deny the unrelated device.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/assessment-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"resource" = "https://mosquitto.org/man/mosquitto-conf-5.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/assessment-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. MQTT needs the free Mosquitto broker and clients installed locally. The wireless task uses the bundled synthetic capture in Wireshark; no radio adapter is required for that analysis. Actual device/firmware operations need separately owned hardware."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/wireless-iot-security.zip" }]
 
 [[node]]
 "id" = "recall-assessment"
@@ -446,63 +544,80 @@
 "needs" = ["assessment-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Reconstruct the finding through the complete device-to-service path."
-"steps" = ["Reconstruct the finding through the complete device-to-service path.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"steps" = ["Reconstruct the finding through the complete device-to-service path.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://mosquitto.org/man/mosquitto-conf-5.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "wireless-iot-security:assessment" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "independent-transfer-reasoning"
 "level" = "independent-transfer"
-"title" = "Reason it through: Revisit the skill on a fresh problem"
+"title" = "Reason it through: Recheck the boundary with a specified change"
 "size" = "S"
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution."
-"steps" = ["Work through this preparation: Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"brief" = "Use the named task files for the changed case. Predict the effect before opening previous notes."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://mosquitto.org/man/mosquitto-conf-5.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "wireless-iot-security:independent-transfer" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "independent-transfer-experiment"
 "level" = "independent-transfer"
-"title" = "Investigate: Revisit the skill on a fresh problem"
+"title" = "Practice: Recheck the boundary with a specified change"
 "size" = "M"
 "minutes" = 60
 "needs" = ["independent-transfer-reasoning"]
-"done_when" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/independent-transfer-experiment.json."
-"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
-"steps" = ["Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/independent-transfer-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Add a second synthetic device identity and an ascend/sensor/humidity topic to your owned loopback broker. Independently write and test separate ACLs."
+"steps" = ["Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.", "Add a second synthetic device identity and an ascend/sensor/humidity topic to your owned loopback broker. Independently write and test separate ACLs.", "The original temperature subscriber must retain its read and must not publish or access the humidity topic without a grant.", "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/independent-transfer-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://mosquitto.org/man/mosquitto-conf-5.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. MQTT needs the free Mosquitto broker and clients installed locally. The wireless task uses the bundled synthetic capture in Wireshark; no radio adapter is required for that analysis. Actual device/firmware operations need separately owned hardware."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/wireless-iot-security.zip" }]
 
 [[node]]
 "id" = "independent-transfer-milestone"
 "level" = "independent-transfer"
-"title" = "Apply it to a changed case: Revisit the skill on a fresh problem"
+"title" = "Apply it: Recheck the boundary with a specified change"
 "size" = "M"
 "minutes" = 120
 "needs" = ["independent-transfer-reasoning", "independent-transfer-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/independent-transfer-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
-"steps" = ["After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Transfer: Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.", "Control: Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/independent-transfer-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Add a second synthetic device identity and an ascend/sensor/humidity topic to your owned loopback broker. Independently write and test separate ACLs."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.", "Change to test: Add a second case by reversing the changed condition above, predict its result and compare actual behavior.", "Comparison to retain: The original temperature subscriber must retain its read and must not publish or access the humidity topic without a grant.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/independent-transfer-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"resource" = "https://mosquitto.org/man/mosquitto-conf-5.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. MQTT needs the free Mosquitto broker and clients installed locally. The wireless task uses the bundled synthetic capture in Wireshark; no radio adapter is required for that analysis. Actual device/firmware operations need separately owned hardware."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/wireless-iot-security.zip" }]
 
 [[node]]
 "id" = "recall-independent-transfer"
 "level" = "recall-lane"
-"title" = "Return later: Revisit the skill on a fresh problem"
+"title" = "Return later: Recheck the boundary with a specified change"
 "size" = "S"
 "minutes" = 10
 "needs" = ["independent-transfer-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
-"brief" = "Explain what transferred, what required help and which prerequisite needs another small experiment."
-"steps" = ["Explain what transferred, what required help and which prerequisite needs another small experiment.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"brief" = "Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested."
+"steps" = ["Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://mosquitto.org/man/mosquitto-conf-5.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "wireless-iot-security:independent-transfer" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "quick-access-check"
@@ -512,5 +627,8 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Correctly evaluate every allow/deny decision for a fresh server-generated policy fixture."
-"resource" = "https://owasp.org/www-project-internet-of-things/"
+"resource" = "https://mosquitto.org/man/mosquitto-conf-5.html"
 "verify" = { "type" = "lab", "exercise" = "access-policy" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."

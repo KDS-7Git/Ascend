@@ -1,11 +1,12 @@
 """TOML parsing and validation, independent of the filesystem."""
 
-from dataclasses import dataclass, field
 import json
 import re
-from ascend.verifiers.catalog import CTF_PROVIDERS
 import tomllib
+from dataclasses import dataclass, field
 from urllib.parse import urlparse
+
+from ascend.verifiers.catalog import CTF_PROVIDERS
 
 SIZE_MIN = {"S": 30, "M": 120, "L": 240}
 BUILTINS = {"manual", "file", "command", "http", "git", "lab", "ctf"}
@@ -42,6 +43,8 @@ class Node:
     hints: tuple[str, ...] = ()
     resource_label: str = ""
     resource_note: str = ""
+    setup: str = ""
+    materials: tuple[dict, ...] = ()
 
     @property
     def estimate(self):
@@ -212,7 +215,7 @@ def parse_pack(text: str, variables=None, allowed_verifiers=None) -> Pack:
                 for key in ("milestone", "auto_complete"):
                     if type(n.get(key, False)) is not bool:
                         raise PackError(f"{key} must be boolean")
-                for key in ("brief", "resource_label", "resource_note"):
+                for key in ("brief", "resource_label", "resource_note", "setup"):
                     if not isinstance(n.get(key, ""), str):
                         raise PackError(f"{key} must be text")
                 for key in ("steps", "hints"):
@@ -221,6 +224,24 @@ def parse_pack(text: str, variables=None, allowed_verifiers=None) -> Pack:
                         for item in n.get(key, [])
                     ):
                         raise PackError(f"{key} must be a list of nonempty text")
+                materials = n.get("materials", [])
+                if not isinstance(materials, list):
+                    raise PackError("materials must be a list")
+                for material in materials:
+                    if not isinstance(material, dict):
+                        raise PackError("Each material needs a label and URL")
+                    _required(material, "label")
+                    location = _required(material, "url")
+                    parsed = urlparse(location)
+                    local = re.fullmatch(
+                        r"/training/[a-z0-9][a-z0-9/-]*\.(?:zip|json|csv|txt)", location
+                    )
+                    if not local and not (
+                        parsed.scheme in {"http", "https"} and parsed.netloc
+                    ):
+                        raise PackError(
+                            "Materials must use HTTP(S) or a bundled /training/ path"
+                        )
                 nodes.append(
                     Node(
                         nid,
@@ -244,6 +265,8 @@ def parse_pack(text: str, variables=None, allowed_verifiers=None) -> Pack:
                         tuple(n.get("hints", [])),
                         n.get("resource_label", ""),
                         n.get("resource_note", ""),
+                        n.get("setup", ""),
+                        tuple(materials),
                     )
                 )
         if not nodes:

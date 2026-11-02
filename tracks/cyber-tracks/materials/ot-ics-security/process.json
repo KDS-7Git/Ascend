@@ -1,0 +1,16 @@
+{
+  "synthetic": true,
+  "process": "Fictional water tank",
+  "normal_level_percent": [
+    40,
+    60
+  ],
+  "operator": "Mira",
+  "safety_contact": "Dev",
+  "baseline_peers": [
+    "192.0.2.10"
+  ],
+  "allowed_function": 3,
+  "read_register": 10,
+  "constraint": "A network shutdown could remove operator visibility; tabletop only. No industrial devices are connected."
+}

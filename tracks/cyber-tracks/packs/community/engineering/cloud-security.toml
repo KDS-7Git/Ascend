@@ -3,7 +3,7 @@
 "id" = "cloud-security"
 "title" = "Cloud Security: Identity, Exposure and Detection"
 "kind" = "proficiency"
-"version" = 1
+"version" = 2
 "source" = "ai-draft"
 "reviewed" = false
 
@@ -12,7 +12,7 @@
 
 [[level]]
 "id" = "foundations"
-"title" = "Prove the entry skills in a small lab"
+"title" = "Compare two roles in a local permission model"
 "lane" = "main"
 
 [[level]]
@@ -47,7 +47,7 @@
 
 [[level]]
 "id" = "independent-transfer"
-"title" = "Revisit the skill on a fresh problem"
+"title" = "Recheck the boundary with a specified change"
 "lane" = "main"
 
 [[level]]
@@ -69,62 +69,79 @@
 "needs" = []
 "done_when" = "Compute the exact content hash of a fresh server-generated evidence fixture and pass its check."
 "brief" = "This small exercise tests evidence integrity. Track entry background: Explain HTTP, role-based access and basic JSON; distinguish cloud control-plane actions from workload traffic."
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"resource" = "https://docs.python.org/3/library/hashlib.html"
 "verify" = { "type" = "lab", "exercise" = "integrity" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "foundations-reasoning"
 "level" = "foundations"
-"title" = "Reason it through: Prove the entry skills in a small lab"
+"title" = "Reason it through: Compare two roles in a local permission model"
 "size" = "S"
 "minutes" = 10
 "needs" = ["lab-readiness"]
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Explain HTTP, role-based access and basic JSON; distinguish cloud control-plane actions from workload traffic."
-"steps" = ["Work through this preparation: Explain HTTP, role-based access and basic JSON; distinguish cloud control-plane actions from workload traffic.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"brief" = "Read a concrete access matrix without needing a cloud subscription."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cloud-security:foundations" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "foundations-experiment"
 "level" = "foundations"
-"title" = "Investigate: Prove the entry skills in a small lab"
+"title" = "Compare two roles in a local permission model"
 "size" = "M"
-"minutes" = 60
+"minutes" = 30
 "needs" = ["foundations-reasoning"]
-"done_when" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/foundations-experiment.json."
-"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
-"steps" = ["Explain HTTP, role-based access and basic JSON; distinguish cloud control-plane actions from workload traffic.", "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/foundations-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Read a concrete access matrix without needing a cloud subscription."
+"steps" = ["Open cloud.json and policy.py. The roles map actions to reader/editor; the resource is synthetic. No API calls are made.", "Run the six-case matrix.\n```sh\npython3 policy.py\n```", "Record which role/action pairs are allowed and why unknown is denied. Explain which provider features this model omits, such as explicit deny, conditions and runtime identity.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/foundations-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/foundations-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The downloadable policy.py is a provider-neutral simulation. Cloud inventory/log analysis can be done locally. Any optional provider validation needs your own scoped account, its current billing terms and cleanup; no real-cloud validation is implied by a model result."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/cloud-security.zip" }]
 
 [[node]]
 "id" = "foundations-milestone"
 "level" = "foundations"
-"title" = "Apply it to a changed case: Prove the entry skills in a small lab"
+"title" = "Apply it: Compare two roles in a local permission model"
 "size" = "M"
-"minutes" = 120
+"minutes" = 30
 "needs" = ["foundations-reasoning", "foundations-experiment", "lab-readiness"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/foundations-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
-"steps" = ["Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Transfer: Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.", "Control: Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/foundations-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Read a concrete access matrix without needing a cloud subscription."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Open cloud.json and policy.py. The roles map actions to reader/editor; the resource is synthetic. No API calls are made.", "Change to test: Remove write from editor in a copy; predict and rerun the matrix.", "Comparison to retain: Reader read must remain allowed, and unknown write must remain denied.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/foundations-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"resource" = "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/foundations-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The downloadable policy.py is a provider-neutral simulation. Cloud inventory/log analysis can be done locally. Any optional provider validation needs your own scoped account, its current billing terms and cleanup; no real-cloud validation is implied by a model result."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/cloud-security.zip" }]
 
 [[node]]
 "id" = "recall-foundations"
 "level" = "recall-lane"
-"title" = "Return later: Prove the entry skills in a small lab"
+"title" = "Return later: Compare two roles in a local permission model"
 "size" = "S"
 "minutes" = 10
 "needs" = ["foundations-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
-"brief" = "Reconstruct the environment and entry assumptions without following the setup notes."
-"steps" = ["Reconstruct the environment and entry assumptions without following the setup notes.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"brief" = "Without opening your report, reconstruct the inputs, observed result and main limitation of compare two roles in a local permission model."
+"steps" = ["Without opening your report, reconstruct the inputs, observed result and main limitation of compare two roles in a local permission model.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cloud-security:foundations" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "shared-responsibility-reasoning"
@@ -134,38 +151,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Draw identity, workload, data and management-plane boundaries for a small fictional cloud service."
-"steps" = ["Work through this preparation: Draw identity, workload, data and management-plane boundaries for a small fictional cloud service.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cloud-security:shared-responsibility" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "shared-responsibility-experiment"
 "level" = "shared-responsibility"
-"title" = "Investigate: Identify who owns each control"
+"title" = "Practice: Identify who owns each control"
 "size" = "M"
 "minutes" = 60
 "needs" = ["shared-responsibility-reasoning"]
-"done_when" = "Build an asset and responsibility inventory covering account ownership, regions, exposed endpoints, audit sources and recovery responsibilities. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/shared-responsibility-experiment.json."
-"brief" = "Build an asset and responsibility inventory covering account ownership, regions, exposed endpoints, audit sources and recovery responsibilities."
-"steps" = ["Draw identity, workload, data and management-plane boundaries for a small fictional cloud service.", "Build an asset and responsibility inventory covering account ownership, regions, exposed endpoints, audit sources and recovery responsibilities.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/shared-responsibility-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use cloud.json as the fictional asset inventory. Name the notes resource, local region, application owner and provider/team responsibility split."
+"steps" = ["Use cloud.json as the fictional asset inventory. Name the notes resource, local region, application owner and provider/team responsibility split.", "Draw the internet → load-balancer → api → notes path. Assign responsibility for authorization, patching, audit collection and backup restoration.", "List what an actual provider account inventory would additionally require. Do not present synthetic inventory as inspected cloud infrastructure.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/shared-responsibility-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/shared-responsibility-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The downloadable policy.py is a provider-neutral simulation. Cloud inventory/log analysis can be done locally. Any optional provider validation needs your own scoped account, its current billing terms and cleanup; no real-cloud validation is implied by a model result."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/cloud-security.zip" }]
 
 [[node]]
 "id" = "shared-responsibility-milestone"
 "level" = "shared-responsibility"
-"title" = "Apply it to a changed case: Identify who owns each control"
+"title" = "Apply it: Identify who owns each control"
 "size" = "M"
 "minutes" = 120
 "needs" = ["shared-responsibility-reasoning", "shared-responsibility-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/shared-responsibility-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Build an asset and responsibility inventory covering account ownership, regions, exposed endpoints, audit sources and recovery responsibilities."
-"steps" = ["Build an asset and responsibility inventory covering account ownership, regions, exposed endpoints, audit sources and recovery responsibilities.", "Transfer: Move one component from a VM to a managed service and revise the shared-responsibility assumptions.", "Control: Include a provider-managed control that a workload operator cannot fix by changing application code.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/shared-responsibility-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use cloud.json as the fictional asset inventory. Name the notes resource, local region, application owner and provider/team responsibility split."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use cloud.json as the fictional asset inventory. Name the notes resource, local region, application owner and provider/team responsibility split.", "Change to test: Move one component from a VM to a managed service and revise the shared-responsibility assumptions.", "Comparison to retain: Include a provider-managed control that a workload operator cannot fix by changing application code.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/shared-responsibility-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"resource" = "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/shared-responsibility-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The downloadable policy.py is a provider-neutral simulation. Cloud inventory/log analysis can be done locally. Any optional provider validation needs your own scoped account, its current billing terms and cleanup; no real-cloud validation is implied by a model result."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/cloud-security.zip" }]
 
 [[node]]
 "id" = "recall-shared-responsibility"
@@ -176,9 +204,12 @@
 "needs" = ["shared-responsibility-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain the difference between provider security and secure use of the provider."
-"steps" = ["Explain the difference between provider security and secure use of the provider.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"steps" = ["Explain the difference between provider security and secure use of the provider.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cloud-security:shared-responsibility" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "iam-reasoning"
@@ -188,38 +219,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Evaluate small identity/resource-policy fixtures with explicit grants, denies and conditions."
-"steps" = ["Work through this preparation: Evaluate small identity/resource-policy fixtures with explicit grants, denies and conditions.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cloud-security:iam" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "iam-experiment"
 "level" = "iam"
-"title" = "Investigate: Predict the authorization decision"
+"title" = "Practice: Predict the authorization decision"
 "size" = "M"
 "minutes" = 60
 "needs" = ["iam-reasoning"]
-"done_when" = "Build an access matrix for two synthetic roles and one resource, test it in a provider policy simulator or scoped training account, and record where the simulator lacks runtime context. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/iam-experiment.json."
-"brief" = "Build an access matrix for two synthetic roles and one resource, test it in a provider policy simulator or scoped training account, and record where the simulator lacks runtime context."
-"steps" = ["Evaluate small identity/resource-policy fixtures with explicit grants, denies and conditions.", "Build an access matrix for two synthetic roles and one resource, test it in a provider policy simulator or scoped training account, and record where the simulator lacks runtime context.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/iam-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Run policy.py and write the reader/editor read/write matrix before changing it. Record the public flag separately from role permissions; this model does not apply the flag in its evaluator."
+"steps" = ["Run policy.py and write the reader/editor read/write matrix before changing it. Record the public flag separately from role permissions; this model does not apply the flag in its evaluator.", "Remove an overbroad write grant in a copy and rerun both intended reads and denied writes. For provider validation, translate the scenario into your provider simulator with explicit test identities and resource ARN; keep that result separate.", "Explain omitted conditions/explicit denies and whether you performed local modeling, provider simulation or real runtime tests.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/iam-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/iam-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The downloadable policy.py is a provider-neutral simulation. Cloud inventory/log analysis can be done locally. Any optional provider validation needs your own scoped account, its current billing terms and cleanup; no real-cloud validation is implied by a model result."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/cloud-security.zip" }]
 
 [[node]]
 "id" = "iam-milestone"
 "level" = "iam"
-"title" = "Apply it to a changed case: Predict the authorization decision"
+"title" = "Apply it: Predict the authorization decision"
 "size" = "M"
 "minutes" = 120
 "needs" = ["iam-reasoning", "iam-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/iam-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Build an access matrix for two synthetic roles and one resource, test it in a provider policy simulator or scoped training account, and record where the simulator lacks runtime context."
-"steps" = ["Build an access matrix for two synthetic roles and one resource, test it in a provider policy simulator or scoped training account, and record where the simulator lacks runtime context.", "Transfer: Add a condition or a resource policy and predict how the effective decision changes.", "Control: Demonstrate a denied unrelated principal and an intended allowed operation.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/iam-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Run policy.py and write the reader/editor read/write matrix before changing it. Record the public flag separately from role permissions; this model does not apply the flag in its evaluator."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Run policy.py and write the reader/editor read/write matrix before changing it. Record the public flag separately from role permissions; this model does not apply the flag in its evaluator.", "Change to test: Add a condition or a resource policy and predict how the effective decision changes.", "Comparison to retain: Demonstrate a denied unrelated principal and an intended allowed operation.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/iam-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"resource" = "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/iam-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The downloadable policy.py is a provider-neutral simulation. Cloud inventory/log analysis can be done locally. Any optional provider validation needs your own scoped account, its current billing terms and cleanup; no real-cloud validation is implied by a model result."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/cloud-security.zip" }]
 
 [[node]]
 "id" = "recall-iam"
@@ -230,9 +272,12 @@
 "needs" = ["iam-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain why an identity policy alone may not determine effective access."
-"steps" = ["Explain why an identity policy alone may not determine effective access.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"steps" = ["Explain why an identity policy alone may not determine effective access.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cloud-security:iam" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "exposure-reasoning"
@@ -242,38 +287,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Identify ingress, egress and object-sharing settings in a supplied cloud configuration."
-"steps" = ["Work through this preparation: Identify ingress, egress and object-sharing settings in a supplied cloud configuration.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cloud-security:exposure" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "exposure-experiment"
 "level" = "exposure"
-"title" = "Investigate: Public does not always mean intended"
+"title" = "Practice: Public does not always mean intended"
 "size" = "M"
 "minutes" = 60
 "needs" = ["exposure-reasoning"]
-"done_when" = "Trace a fictional application's exposure through load balancer, workload and data storage; validate selected rules using a local model or training account and propose a minimal repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/exposure-experiment.json."
-"brief" = "Trace a fictional application's exposure through load balancer, workload and data storage; validate selected rules using a local model or training account and propose a minimal repair."
-"steps" = ["Identify ingress, egress and object-sharing settings in a supplied cloud configuration.", "Trace a fictional application's exposure through load balancer, workload and data storage; validate selected rules using a local model or training account and propose a minimal repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/exposure-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Read cloud.json exposure and public fields. Define intended access: internet reaches the load-balancer only; notes is not publicly readable."
+"steps" = ["Read cloud.json exposure and public fields. Define intended access: internet reaches the load-balancer only; notes is not publicly readable.", "Write a small validator that flags resource.public=true and any direct internet → notes edge. Test the baseline, a repaired copy and an allowed load-balancer edge.", "Record that the validator checks configuration data, not packets or a provider firewall. A real reachability claim requires a separate training-account test.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/exposure-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/exposure-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The downloadable policy.py is a provider-neutral simulation. Cloud inventory/log analysis can be done locally. Any optional provider validation needs your own scoped account, its current billing terms and cleanup; no real-cloud validation is implied by a model result."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/cloud-security.zip" }]
 
 [[node]]
 "id" = "exposure-milestone"
 "level" = "exposure"
-"title" = "Apply it to a changed case: Public does not always mean intended"
+"title" = "Apply it: Public does not always mean intended"
 "size" = "M"
 "minutes" = 120
 "needs" = ["exposure-reasoning", "exposure-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/exposure-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Trace a fictional application's exposure through load balancer, workload and data storage; validate selected rules using a local model or training account and propose a minimal repair."
-"steps" = ["Trace a fictional application's exposure through load balancer, workload and data storage; validate selected rules using a local model or training account and propose a minimal repair.", "Transfer: Change a resource from private to shared-with-one-role and verify that the intended boundary survives.", "Control: Preserve legitimate client access and demonstrate that an unrelated identity cannot read the object.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/exposure-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Read cloud.json exposure and public fields. Define intended access: internet reaches the load-balancer only; notes is not publicly readable."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Read cloud.json exposure and public fields. Define intended access: internet reaches the load-balancer only; notes is not publicly readable.", "Change to test: Change a resource from private to shared-with-one-role and verify that the intended boundary survives.", "Comparison to retain: Preserve legitimate client access and demonstrate that an unrelated identity cannot read the object.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/exposure-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"resource" = "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/exposure-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The downloadable policy.py is a provider-neutral simulation. Cloud inventory/log analysis can be done locally. Any optional provider validation needs your own scoped account, its current billing terms and cleanup; no real-cloud validation is implied by a model result."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/cloud-security.zip" }]
 
 [[node]]
 "id" = "recall-exposure"
@@ -284,9 +340,12 @@
 "needs" = ["exposure-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Reconstruct the layers required to explain one exposure finding."
-"steps" = ["Reconstruct the layers required to explain one exposure finding.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"steps" = ["Reconstruct the layers required to explain one exposure finding.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cloud-security:exposure" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "secrets-reasoning"
@@ -296,38 +355,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Find synthetic hardcoded credentials in a toy repository and inventory every place they were copied."
-"steps" = ["Work through this preparation: Find synthetic hardcoded credentials in a toy repository and inventory every place they were copied.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cloud-security:secrets" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "secrets-experiment"
 "level" = "secrets"
-"title" = "Investigate: Separate workload identity from static keys"
+"title" = "Practice: Separate workload identity from static keys"
 "size" = "M"
 "minutes" = 60
 "needs" = ["secrets-reasoning"]
-"done_when" = "Replace a toy long-lived credential with a bounded local token or a training-provider workload identity, test expiration/revocation and document remaining trust assumptions. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/secrets-experiment.json."
-"brief" = "Replace a toy long-lived credential with a bounded local token or a training-provider workload identity, test expiration/revocation and document remaining trust assumptions."
-"steps" = ["Find synthetic hardcoded credentials in a toy repository and inventory every place they were copied.", "Replace a toy long-lived credential with a bounded local token or a training-provider workload identity, test expiration/revocation and document remaining trust assumptions.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/secrets-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Implement a local token record with fields token_id, allowed_action, expires_at and revoked. Use fixed synthetic times so tests are reproducible; no real credentials."
+"steps" = ["Implement a local token record with fields token_id, allowed_action, expires_at and revoked. Use fixed synthetic times so tests are reproducible; no real credentials.", "Test before expiry, exactly at expiry, after expiry and after revocation. Check permission separately from token lifetime.", "Record the comparison with provider workload identity and the trust assumptions your toy checker does not implement.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/secrets-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/secrets-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The downloadable policy.py is a provider-neutral simulation. Cloud inventory/log analysis can be done locally. Any optional provider validation needs your own scoped account, its current billing terms and cleanup; no real-cloud validation is implied by a model result."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/cloud-security.zip" }]
 
 [[node]]
 "id" = "secrets-milestone"
 "level" = "secrets"
-"title" = "Apply it to a changed case: Separate workload identity from static keys"
+"title" = "Apply it: Separate workload identity from static keys"
 "size" = "M"
 "minutes" = 120
 "needs" = ["secrets-reasoning", "secrets-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/secrets-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Replace a toy long-lived credential with a bounded local token or a training-provider workload identity, test expiration/revocation and document remaining trust assumptions."
-"steps" = ["Replace a toy long-lived credential with a bounded local token or a training-provider workload identity, test expiration/revocation and document remaining trust assumptions.", "Transfer: Change the audience, role or expiry and predict whether the request should still authenticate.", "Control: Verify a valid authorized request succeeds and a stale token is rejected without logging its contents.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/secrets-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Implement a local token record with fields token_id, allowed_action, expires_at and revoked. Use fixed synthetic times so tests are reproducible; no real credentials."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Implement a local token record with fields token_id, allowed_action, expires_at and revoked. Use fixed synthetic times so tests are reproducible; no real credentials.", "Change to test: Change the audience, role or expiry and predict whether the request should still authenticate.", "Comparison to retain: Verify a valid authorized request succeeds and a stale token is rejected without logging its contents.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/secrets-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"resource" = "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/secrets-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The downloadable policy.py is a provider-neutral simulation. Cloud inventory/log analysis can be done locally. Any optional provider validation needs your own scoped account, its current billing terms and cleanup; no real-cloud validation is implied by a model result."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/cloud-security.zip" }]
 
 [[node]]
 "id" = "recall-secrets"
@@ -338,9 +408,12 @@
 "needs" = ["secrets-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain rotation, revocation and short-lived identity as different mechanisms."
-"steps" = ["Explain rotation, revocation and short-lived identity as different mechanisms.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"steps" = ["Explain rotation, revocation and short-lived identity as different mechanisms.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cloud-security:secrets" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "logging-reasoning"
@@ -350,38 +423,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Read an audit event and distinguish actor, resource, action, result and event time."
-"steps" = ["Work through this preparation: Read an audit event and distinguish actor, resource, action, result and event time.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cloud-security:logging" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "logging-experiment"
 "level" = "logging"
-"title" = "Investigate: Follow a control-plane change"
+"title" = "Practice: Follow a control-plane change"
 "size" = "M"
 "minutes" = 60
 "needs" = ["logging-reasoning"]
-"done_when" = "Investigate supplied cloud audit events around a permission change and later resource access; construct a timeline and a detection query with explicit missing sources. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/logging-experiment.json."
-"brief" = "Investigate supplied cloud audit events around a permission change and later resource access; construct a timeline and a detection query with explicit missing sources."
-"steps" = ["Read an audit event and distinguish actor, resource, action, result and event time.", "Investigate supplied cloud audit events around a permission change and later resource access; construct a timeline and a detection query with explicit missing sources.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/logging-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use cloud.json audit, where every event has a stable c-ID. Sort the grant/access sequence by event time and distinguish success from denied."
+"steps" = ["Use cloud.json audit, where every event has a stable c-ID. Sort the grant/access sequence by event time and distinguish success from denied.", "Write a query finding successful grants followed by same-actor access to the same resource within five minutes. Test the c3 denial and c4 approved maintenance separately.", "Cite event IDs and absent sources; a temporal sequence is a lead, not proof of compromise.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/logging-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/logging-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The downloadable policy.py is a provider-neutral simulation. Cloud inventory/log analysis can be done locally. Any optional provider validation needs your own scoped account, its current billing terms and cleanup; no real-cloud validation is implied by a model result."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/cloud-security.zip" }]
 
 [[node]]
 "id" = "logging-milestone"
 "level" = "logging"
-"title" = "Apply it to a changed case: Follow a control-plane change"
+"title" = "Apply it: Follow a control-plane change"
 "size" = "M"
 "minutes" = 120
 "needs" = ["logging-reasoning", "logging-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/logging-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Investigate supplied cloud audit events around a permission change and later resource access; construct a timeline and a detection query with explicit missing sources."
-"steps" = ["Investigate supplied cloud audit events around a permission change and later resource access; construct a timeline and a detection query with explicit missing sources.", "Transfer: Change a resource name or actor and test whether the behavioral analytic still finds the sequence.", "Control: Include a denied change and a known maintenance change that must not be labeled successful compromise.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/logging-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use cloud.json audit, where every event has a stable c-ID. Sort the grant/access sequence by event time and distinguish success from denied."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use cloud.json audit, where every event has a stable c-ID. Sort the grant/access sequence by event time and distinguish success from denied.", "Change to test: Change a resource name or actor and test whether the behavioral analytic still finds the sequence.", "Comparison to retain: Include a denied change and a known maintenance change that must not be labeled successful compromise.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/logging-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"resource" = "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/logging-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The downloadable policy.py is a provider-neutral simulation. Cloud inventory/log analysis can be done locally. Any optional provider validation needs your own scoped account, its current billing terms and cleanup; no real-cloud validation is implied by a model result."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/cloud-security.zip" }]
 
 [[node]]
 "id" = "recall-logging"
@@ -392,9 +476,12 @@
 "needs" = ["logging-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain what the audit source can and cannot establish about data access."
-"steps" = ["Explain what the audit source can and cannot establish about data access.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"steps" = ["Explain what the audit source can and cannot establish about data access.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cloud-security:logging" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "assessment-reasoning"
@@ -404,38 +491,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Define an account, budget, allowed resources and teardown checklist for a small training exercise."
-"steps" = ["Work through this preparation: Define an account, budget, allowed resources and teardown checklist for a small training exercise.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cloud-security:assessment" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "assessment-experiment"
 "level" = "assessment"
-"title" = "Investigate: Deliver a bounded cloud review"
+"title" = "Practice: Deliver a bounded cloud review"
 "size" = "M"
 "minutes" = 60
 "needs" = ["assessment-reasoning"]
-"done_when" = "Review a fresh configuration and audit bundle, verify one identity or exposure defect in a scoped lab, apply a repair and record cleanup; use only owned training resources. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/assessment-experiment.json."
-"brief" = "Review a fresh configuration and audit bundle, verify one identity or exposure defect in a scoped lab, apply a repair and record cleanup; use only owned training resources."
-"steps" = ["Define an account, budget, allowed resources and teardown checklist for a small training exercise.", "Review a fresh configuration and audit bundle, verify one identity or exposure defect in a scoped lab, apply a repair and record cleanup; use only owned training resources.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/assessment-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Make a fresh copy of cloud.json with resource id changed to project-notes and actor alice changed to trainee. Add a direct internet → project-notes edge."
+"steps" = ["Make a fresh copy of cloud.json with resource id changed to project-notes and actor alice changed to trainee. Add a direct internet → project-notes edge.", "Use your inventory, policy and exposure checks to find and repair the local configuration defect; preserve intended role reads and the load-balancer route.", "Deliver the before/after model results and cleanup. Label the outcome local simulation unless you separately validated it in an owned provider lab.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/assessment-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/assessment-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The downloadable policy.py is a provider-neutral simulation. Cloud inventory/log analysis can be done locally. Any optional provider validation needs your own scoped account, its current billing terms and cleanup; no real-cloud validation is implied by a model result."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/cloud-security.zip" }]
 
 [[node]]
 "id" = "assessment-milestone"
 "level" = "assessment"
-"title" = "Apply it to a changed case: Deliver a bounded cloud review"
+"title" = "Apply it: Deliver a bounded cloud review"
 "size" = "M"
 "minutes" = 120
 "needs" = ["assessment-reasoning", "assessment-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/assessment-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Review a fresh configuration and audit bundle, verify one identity or exposure defect in a scoped lab, apply a repair and record cleanup; use only owned training resources."
-"steps" = ["Review a fresh configuration and audit bundle, verify one identity or exposure defect in a scoped lab, apply a repair and record cleanup; use only owned training resources.", "Transfer: Change one trust policy or network boundary and independently reassess the affected access path.", "Control: Verify legitimate workload behavior and prove temporary lab resources were removed where a real account was used.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/assessment-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Make a fresh copy of cloud.json with resource id changed to project-notes and actor alice changed to trainee. Add a direct internet → project-notes edge."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Make a fresh copy of cloud.json with resource id changed to project-notes and actor alice changed to trainee. Add a direct internet → project-notes edge.", "Change to test: Change one trust policy or network boundary and independently reassess the affected access path.", "Comparison to retain: Verify legitimate workload behavior and prove temporary lab resources were removed where a real account was used.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/assessment-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"resource" = "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/assessment-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The downloadable policy.py is a provider-neutral simulation. Cloud inventory/log analysis can be done locally. Any optional provider validation needs your own scoped account, its current billing terms and cleanup; no real-cloud validation is implied by a model result."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/cloud-security.zip" }]
 
 [[node]]
 "id" = "recall-assessment"
@@ -446,63 +544,80 @@
 "needs" = ["assessment-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Reconstruct the finding, provider-specific limits and remaining assurance gaps."
-"steps" = ["Reconstruct the finding, provider-specific limits and remaining assurance gaps.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"steps" = ["Reconstruct the finding, provider-specific limits and remaining assurance gaps.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cloud-security:assessment" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "independent-transfer-reasoning"
 "level" = "independent-transfer"
-"title" = "Reason it through: Revisit the skill on a fresh problem"
+"title" = "Reason it through: Recheck the boundary with a specified change"
 "size" = "S"
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution."
-"steps" = ["Work through this preparation: Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"brief" = "Use the named task files for the changed case. Predict the effect before opening previous notes."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cloud-security:independent-transfer" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "independent-transfer-experiment"
 "level" = "independent-transfer"
-"title" = "Investigate: Revisit the skill on a fresh problem"
+"title" = "Practice: Recheck the boundary with a specified change"
 "size" = "M"
 "minutes" = 60
 "needs" = ["independent-transfer-reasoning"]
-"done_when" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/independent-transfer-experiment.json."
-"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
-"steps" = ["Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/independent-transfer-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "In cloud.json rename notes to archive and remove editor write. Update the local policy/exposure tests to use the changed resource and intended read-only workflow."
+"steps" = ["Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.", "In cloud.json rename notes to archive and remove editor write. Update the local policy/exposure tests to use the changed resource and intended read-only workflow.", "Reader read remains allowed and unknown write remains denied. State provider-specific behavior left untested.", "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/independent-transfer-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The downloadable policy.py is a provider-neutral simulation. Cloud inventory/log analysis can be done locally. Any optional provider validation needs your own scoped account, its current billing terms and cleanup; no real-cloud validation is implied by a model result."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/cloud-security.zip" }]
 
 [[node]]
 "id" = "independent-transfer-milestone"
 "level" = "independent-transfer"
-"title" = "Apply it to a changed case: Revisit the skill on a fresh problem"
+"title" = "Apply it: Recheck the boundary with a specified change"
 "size" = "M"
 "minutes" = 120
 "needs" = ["independent-transfer-reasoning", "independent-transfer-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/independent-transfer-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
-"steps" = ["After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Transfer: Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.", "Control: Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/independent-transfer-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "In cloud.json rename notes to archive and remove editor write. Update the local policy/exposure tests to use the changed resource and intended read-only workflow."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.", "Change to test: Add a second case by reversing the changed condition above, predict its result and compare actual behavior.", "Comparison to retain: Reader read remains allowed and unknown write remains denied. State provider-specific behavior left untested.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/independent-transfer-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"resource" = "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The downloadable policy.py is a provider-neutral simulation. Cloud inventory/log analysis can be done locally. Any optional provider validation needs your own scoped account, its current billing terms and cleanup; no real-cloud validation is implied by a model result."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/cloud-security.zip" }]
 
 [[node]]
 "id" = "recall-independent-transfer"
 "level" = "recall-lane"
-"title" = "Return later: Revisit the skill on a fresh problem"
+"title" = "Return later: Recheck the boundary with a specified change"
 "size" = "S"
 "minutes" = 10
 "needs" = ["independent-transfer-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
-"brief" = "Explain what transferred, what required help and which prerequisite needs another small experiment."
-"steps" = ["Explain what transferred, what required help and which prerequisite needs another small experiment.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"brief" = "Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested."
+"steps" = ["Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cloud-security:independent-transfer" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "quick-access-check"
@@ -512,5 +627,8 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Correctly evaluate every allow/deny decision for a fresh server-generated policy fixture."
-"resource" = "https://owasp.org/www-project-cloud-native-application-security-top-10/"
+"resource" = "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html"
 "verify" = { "type" = "lab", "exercise" = "access-policy" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."

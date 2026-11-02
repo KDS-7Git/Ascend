@@ -3,7 +3,7 @@
 "id" = "ethical-hacking-foundations"
 "title" = "Ethical Hacking Foundations"
 "kind" = "proficiency"
-"version" = 3
+"version" = 4
 "source" = "ai-draft"
 "reviewed" = false
 
@@ -32,7 +32,7 @@
 
 [[level]]
 "id" = "permissions"
-"title" = "Who is this process allowed to be?"
+"title" = "Inspect and narrow permissions on a local file"
 "lane" = "main"
 
 [[level]]
@@ -47,7 +47,7 @@
 
 [[level]]
 "id" = "independent-transfer"
-"title" = "Revisit the skill on a fresh problem"
+"title" = "Recheck the boundary with a specified change"
 "lane" = "main"
 
 [[level]]
@@ -71,8 +71,9 @@
 "brief" = "This small exercise tests evidence integrity. Track entry background: Use a terminal, explain an IP address and HTTP request, and create a disposable local target."
 "resource" = "https://docs.python.org/3/library/hashlib.html"
 "verify" = { "type" = "lab", "exercise" = "integrity" }
-"resource_label" = "Free Python hashing reference (optional)"
-"resource_note" = "This reference is free. No course purchase or account is required."
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "foundations-reasoning"
@@ -83,11 +84,12 @@
 "needs" = ["lab-readiness"]
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
 "brief" = "A browser or curl sends an HTTP request to a server. The server returns a status code and a response body. You will observe both on your own computer."
-"steps" = ["Work through this preparation: A browser or curl sends an HTTP request to a server. The server returns a status code and a response body. You will observe both on your own computer.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://docs.python.org/3/library/http.server.html#command-line-interface"
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:foundations" }
-"resource_label" = "Free HTTP server reference (optional)"
-"resource_note" = "The steps here are the lab. This link is optional Python documentation, not a course to buy or enrol in."
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "foundations-experiment"
@@ -104,6 +106,8 @@
 "resource_label" = "Free HTTP server reference (optional)"
 "resource_note" = "The steps here are the lab. This link is optional Python documentation, not a course to buy or enrol in."
 "hints" = ["Ubuntu/Linux setup: if Python 3 or curl is missing, install the free packages with sudo apt update followed by sudo apt install python3 curl. Do this before starting the timer. No paid course is required.", "“Address already in use” means port 8765 is occupied. Use 8766 in the server command and in BOTH curl URLs; do not stop an unrelated service.", "“Connection refused” means curl could not reach a running server at that address/port. Check Terminal A and the URL. This differs from 404, which is a response from a running server.", "A 200 response demonstrates that this page was served. It does not demonstrate a vulnerability, an exploit, authentication or authorization. This is the networking setup skill you will use in later security labs."]
+"setup" = "Use Python 3, curl and two terminal windows on your own Ubuntu/Linux computer. This walkthrough creates its own temporary page; no course, account or downloaded app is needed. Check the tools before timing. The optional ZIP contains inputs for later tasks; do not start its service.py for this walkthrough."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ethical-hacking-foundations.zip" }]
 
 [[node]]
 "id" = "foundations-milestone"
@@ -121,6 +125,8 @@
 "verify" = { "type" = "file", "path" = "{lab_dir}/foundations-assessment.json", "min_bytes" = 300 }
 "resource_label" = "Free HTTP server reference (optional)"
 "resource_note" = "The steps here are the lab. This link is optional Python documentation, not a course to buy or enrol in."
+"setup" = "Use Python 3, curl and two terminal windows on your own Ubuntu/Linux computer. This walkthrough creates its own temporary page; no course, account or downloaded app is needed. Check the tools before timing. The optional ZIP contains inputs for later tasks; do not start its service.py for this walkthrough."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ethical-hacking-foundations.zip" }]
 
 [[node]]
 "id" = "recall-foundations"
@@ -131,11 +137,12 @@
 "needs" = ["foundations-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Without opening the walkthrough, explain 127.0.0.1, a port, a GET request, HTTP 200, HTTP 404 and a connection failure."
-"steps" = ["Without opening the walkthrough, explain 127.0.0.1, a port, a GET request, HTTP 200, HTTP 404 and a connection failure.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://docs.python.org/3/library/http.server.html#command-line-interface"
+"steps" = ["Without opening the walkthrough, explain 127.0.0.1, a port, a GET request, HTTP 200, HTTP 404 and a connection failure.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:foundations" }
-"resource_label" = "Free HTTP server reference (optional)"
-"resource_note" = "The steps here are the lab. This link is optional Python documentation, not a course to buy or enrol in."
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "scope-reasoning"
@@ -145,38 +152,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Draw owner, tester and asset boundaries for a fictional assessment; identify one asset whose permission is missing."
-"steps" = ["Work through this preparation: Draw owner, tester and asset boundaries for a fictional assessment; identify one asset whose permission is missing.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:scope" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "scope-experiment"
 "level" = "scope"
-"title" = "Investigate: What authorizes this test?"
+"title" = "Practice: What authorizes this test?"
 "size" = "M"
 "minutes" = 60
 "needs" = ["scope-reasoning"]
-"done_when" = "Write rules of engagement for a loopback training app, including allowed actions, rate limits, stop conditions, contacts and evidence handling. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/scope-experiment.json."
-"brief" = "Write rules of engagement for a loopback training app, including allowed actions, rate limits, stop conditions, contacts and evidence handling."
-"steps" = ["Draw owner, tester and asset boundaries for a fictional assessment; identify one asset whose permission is missing.", "Write rules of engagement for a loopback training app, including allowed actions, rate limits, stop conditions, contacts and evidence handling.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/scope-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Read scenario.json. Write scope.md naming Harbor Notes, 127.0.0.1:8765, the two synthetic users alice and bob, and the permitted GET requests. Mira is the fictional service owner and Dev is the stop/escalation contact."
+"steps" = ["Read scenario.json. Write scope.md naming Harbor Notes, 127.0.0.1:8765, the two synthetic users alice and bob, and the permitted GET requests. Mira is the fictional service owner and Dev is the stop/escalation contact.", "Set a maximum of one manual request per second. Copy the stop conditions and reset method from the scenario into your plan. Specify where you will store synthetic request/response evidence.", "Check two proposed actions against your plan: GET /health on loopback, and a request to a public website. Explain which falls outside this exercise. No request to the public website is needed.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/scope-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
 "verify" = { "type" = "file", "path" = "{lab_dir}/scope-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ethical-hacking-foundations.zip" }]
 
 [[node]]
 "id" = "scope-milestone"
 "level" = "scope"
-"title" = "Apply it to a changed case: What authorizes this test?"
+"title" = "Apply it: What authorizes this test?"
 "size" = "M"
 "minutes" = 120
 "needs" = ["scope-reasoning", "scope-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/scope-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Write rules of engagement for a loopback training app, including allowed actions, rate limits, stop conditions, contacts and evidence handling."
-"steps" = ["Write rules of engagement for a loopback training app, including allowed actions, rate limits, stop conditions, contacts and evidence handling.", "Transfer: Add a third-party login dependency and decide which requests must remain excluded until permission changes.", "Control: Show a technically reachable endpoint that the written scope forbids, and leave it untouched.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/scope-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Read scenario.json. Write scope.md naming Harbor Notes, 127.0.0.1:8765, the two synthetic users alice and bob, and the permitted GET requests. Mira is the fictional service owner and Dev is the stop/escalation contact."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Read scenario.json. Write scope.md naming Harbor Notes, 127.0.0.1:8765, the two synthetic users alice and bob, and the permitted GET requests. Mira is the fictional service owner and Dev is the stop/escalation contact.", "Change to test: Add a third-party login dependency and decide which requests must remain excluded until permission changes.", "Comparison to retain: Show a technically reachable endpoint that the written scope forbids, and leave it untouched.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/scope-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
 "verify" = { "type" = "file", "path" = "{lab_dir}/scope-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ethical-hacking-foundations.zip" }]
 
 [[node]]
 "id" = "recall-scope"
@@ -187,9 +205,12 @@
 "needs" = ["scope-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Reconstruct the difference between technical access, ownership and authorization."
-"steps" = ["Reconstruct the difference between technical access, ownership and authorization.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"steps" = ["Reconstruct the difference between technical access, ownership and authorization.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:scope" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "method-reasoning"
@@ -199,38 +220,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Explain the request path from browser to a local service and distinguish an observation from an assumption."
-"steps" = ["Work through this preparation: Explain the request path from browser to a local service and distinguish an observation from an assumption.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:method" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "method-experiment"
 "level" = "method"
-"title" = "Investigate: Follow a hypothesis, not a tool list"
+"title" = "Practice: Follow a hypothesis, not a tool list"
 "size" = "M"
 "minutes" = 60
 "needs" = ["method-reasoning"]
-"done_when" = "Inventory the disposable app, rank two vulnerability hypotheses, and run a small non-destructive check for each with sanitized request/response evidence. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/method-experiment.json."
-"brief" = "Inventory the disposable app, rank two vulnerability hypotheses, and run a small non-destructive check for each with sanitized request/response evidence."
-"steps" = ["Explain the request path from browser to a local service and distinguish an observation from an assumption.", "Inventory the disposable app, rank two vulnerability hypotheses, and run a small non-destructive check for each with sanitized request/response evidence.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/method-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Start service.py in Terminal A. In Terminal B, inventory its response and read its three endpoint handlers in the source."
+"steps" = ["Start service.py in Terminal A. In Terminal B, inventory its response and read its three endpoint handlers in the source.\n```sh\ncurl --noproxy \"*\" -i http://127.0.0.1:8765/health\n```", "Write two hypotheses before testing: whether an unknown path returns 404, and whether bob can read note 1 belonging to alice. Test only these two GET requests; save the commands and status/body.\n```sh\ncurl --noproxy \"*\" -i http://127.0.0.1:8765/no-such-path\ncurl --noproxy \"*\" -i -H \"X-Lab-User: bob\" http://127.0.0.1:8765/notes/1\n```", "A successful /health request establishes reachability only. Explain separately whether each observation supports your hypothesis; do not label a 404 as a vulnerability. Stop the server.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/method-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
 "verify" = { "type" = "file", "path" = "{lab_dir}/method-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ethical-hacking-foundations.zip" }]
 
 [[node]]
 "id" = "method-milestone"
 "level" = "method"
-"title" = "Apply it to a changed case: Follow a hypothesis, not a tool list"
+"title" = "Apply it: Follow a hypothesis, not a tool list"
 "size" = "M"
 "minutes" = 120
 "needs" = ["method-reasoning", "method-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/method-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Inventory the disposable app, rank two vulnerability hypotheses, and run a small non-destructive check for each with sanitized request/response evidence."
-"steps" = ["Inventory the disposable app, rank two vulnerability hypotheses, and run a small non-destructive check for each with sanitized request/response evidence.", "Transfer: Move the app to a new port or change a visible header and revise the hypotheses using actual behavior.", "Control: Compare a real route with an intentionally nonexistent route so a generic error page is not counted as a finding.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/method-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Start service.py in Terminal A. In Terminal B, inventory its response and read its three endpoint handlers in the source."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Start service.py in Terminal A. In Terminal B, inventory its response and read its three endpoint handlers in the source.\n```sh\ncurl --noproxy \"*\" -i http://127.0.0.1:8765/health\n```", "Change to test: Move the app to a new port or change a visible header and revise the hypotheses using actual behavior.", "Comparison to retain: Compare a real route with an intentionally nonexistent route so a generic error page is not counted as a finding.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/method-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
 "verify" = { "type" = "file", "path" = "{lab_dir}/method-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ethical-hacking-foundations.zip" }]
 
 [[node]]
 "id" = "recall-method"
@@ -241,9 +273,12 @@
 "needs" = ["method-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Given a new banner, name the next observation that could disprove your hypothesis."
-"steps" = ["Given a new banner, name the next observation that could disprove your hypothesis.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"steps" = ["Given a new banner, name the next observation that could disprove your hypothesis.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:method" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "web-boundaries-reasoning"
@@ -253,38 +288,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Create two synthetic accounts in a training app and draw which objects each is intended to access."
-"steps" = ["Work through this preparation: Create two synthetic accounts in a training app and draw which objects each is intended to access.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:web-boundaries" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "web-boundaries-experiment"
 "level" = "web-boundaries"
-"title" = "Investigate: Two accounts, one boundary"
+"title" = "Practice: Two accounts, one boundary"
 "size" = "M"
 "minutes" = 60
 "needs" = ["web-boundaries-reasoning"]
-"done_when" = "In an explicitly designated authorization lesson, test an owner and a second account against the same synthetic object and explain the server-side boundary. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/web-boundaries-experiment.json."
-"brief" = "In an explicitly designated authorization lesson, test an owner and a second account against the same synthetic object and explain the server-side boundary."
-"steps" = ["Create two synthetic accounts in a training app and draw which objects each is intended to access.", "In an explicitly designated authorization lesson, test an owner and a second account against the same synthetic object and explain the server-side boundary.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/web-boundaries-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use the local service.py fixture. Note 1 belongs to alice; note 2 belongs to bob. Read do_GET and predict owner and cross-user results."
+"steps" = ["Use the local service.py fixture. Note 1 belongs to alice; note 2 belongs to bob. Read do_GET and predict owner and cross-user results.", "Start the server and compare the same note with the two identities.\n```sh\ncurl --noproxy \"*\" -i -H \"X-Lab-User: alice\" http://127.0.0.1:8765/notes/1\ncurl --noproxy \"*\" -i -H \"X-Lab-User: bob\" http://127.0.0.1:8765/notes/1\n```", "In a COPY of service.py, add an ownership check before returning the note. Restart that copy. The owner should still receive the note; the other user should receive a denial without its contents. Preserve before/after output. This demonstrates a toy authorization boundary, not real login security.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/web-boundaries-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
 "verify" = { "type" = "file", "path" = "{lab_dir}/web-boundaries-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ethical-hacking-foundations.zip" }]
 
 [[node]]
 "id" = "web-boundaries-milestone"
 "level" = "web-boundaries"
-"title" = "Apply it to a changed case: Two accounts, one boundary"
+"title" = "Apply it: Two accounts, one boundary"
 "size" = "M"
 "minutes" = 120
 "needs" = ["web-boundaries-reasoning", "web-boundaries-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/web-boundaries-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "In an explicitly designated authorization lesson, test an owner and a second account against the same synthetic object and explain the server-side boundary."
-"steps" = ["In an explicitly designated authorization lesson, test an owner and a second account against the same synthetic object and explain the server-side boundary.", "Transfer: Change the object or HTTP method and predict whether the authorization decision should change.", "Control: Demonstrate legitimate owner access and a denied unauthorized request on a corrected local equivalent.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/web-boundaries-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use the local service.py fixture. Note 1 belongs to alice; note 2 belongs to bob. Read do_GET and predict owner and cross-user results."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use the local service.py fixture. Note 1 belongs to alice; note 2 belongs to bob. Read do_GET and predict owner and cross-user results.", "Change to test: Change the object or HTTP method and predict whether the authorization decision should change.", "Comparison to retain: Demonstrate legitimate owner access and a denied unauthorized request on a corrected local equivalent.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/web-boundaries-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
 "verify" = { "type" = "file", "path" = "{lab_dir}/web-boundaries-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ethical-hacking-foundations.zip" }]
 
 [[node]]
 "id" = "recall-web-boundaries"
@@ -295,63 +341,80 @@
 "needs" = ["web-boundaries-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain why hiding a button is different from enforcing authorization."
-"steps" = ["Explain why hiding a button is different from enforcing authorization.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"steps" = ["Explain why hiding a button is different from enforcing authorization.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:web-boundaries" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "permissions-reasoning"
 "level" = "permissions"
-"title" = "Reason it through: Who is this process allowed to be?"
+"title" = "Reason it through: Inspect and narrow permissions on a local file"
 "size" = "S"
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Use identity and file-permission commands in an unprivileged lab folder; predict read and write access."
-"steps" = ["Work through this preparation: Use identity and file-permission commands in an unprivileged lab folder; predict read and write access.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:permissions" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "permissions-experiment"
 "level" = "permissions"
-"title" = "Investigate: Who is this process allowed to be?"
+"title" = "Practice: Inspect and narrow permissions on a local file"
 "size" = "M"
 "minutes" = 60
 "needs" = ["permissions-reasoning"]
-"done_when" = "Create two local test roles or use a supplied permissions fixture, identify an overbroad grant, and repair it while recording before/after effective access. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/permissions-experiment.json."
-"brief" = "Create two local test roles or use a supplied permissions fixture, identify an overbroad grant, and repair it while recording before/after effective access."
-"steps" = ["Use identity and file-permission commands in an unprivileged lab folder; predict read and write access.", "Create two local test roles or use a supplied permissions fixture, identify an overbroad grant, and repair it while recording before/after effective access.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/permissions-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use Linux, macOS or WSL for this filesystem exercise. Work only on the extracted permissions.txt file. Inspect your identity and its mode."
+"steps" = ["Use Linux, macOS or WSL for this filesystem exercise. Work only on the extracted permissions.txt file. Inspect your identity and its mode.\n```sh\nid\nls -l permissions.txt\nchmod 644 permissions.txt\nls -l permissions.txt\n```", "Mode 644 gives the owner read/write and group/others read. Change only this training file to 600, then inspect the mode again and confirm you can still read it.\n```sh\nchmod 600 permissions.txt\nls -l permissions.txt\ncat permissions.txt\n```", "Record the removed group/other read bits and the retained owner read/write bits. A mode listing predicts permissions; it does not prove access as another OS user. If you have only one account, explicitly leave the second-identity runtime check untested.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/permissions-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
 "verify" = { "type" = "file", "path" = "{lab_dir}/permissions-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ethical-hacking-foundations.zip" }]
 
 [[node]]
 "id" = "permissions-milestone"
 "level" = "permissions"
-"title" = "Apply it to a changed case: Who is this process allowed to be?"
+"title" = "Apply it: Inspect and narrow permissions on a local file"
 "size" = "M"
 "minutes" = 120
 "needs" = ["permissions-reasoning", "permissions-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/permissions-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Create two local test roles or use a supplied permissions fixture, identify an overbroad grant, and repair it while recording before/after effective access."
-"steps" = ["Create two local test roles or use a supplied permissions fixture, identify an overbroad grant, and repair it while recording before/after effective access.", "Transfer: Change group membership or parent-directory permissions and predict the new access result.", "Control: Keep the intended reader working and demonstrate that the unrelated role remains denied.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/permissions-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use Linux, macOS or WSL for this filesystem exercise. Work only on the extracted permissions.txt file. Inspect your identity and its mode."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use Linux, macOS or WSL for this filesystem exercise. Work only on the extracted permissions.txt file. Inspect your identity and its mode.\n```sh\nid\nls -l permissions.txt\nchmod 644 permissions.txt\nls -l permissions.txt\n```", "Change to test: Change the training file to 640 and compare owner/group/other bits with 600. Record what a second-identity test would be needed to verify.", "Comparison to retain: Owner reading must still work; do not claim a runtime test as another user if you only inspected mode bits.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/permissions-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
 "verify" = { "type" = "file", "path" = "{lab_dir}/permissions-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ethical-hacking-foundations.zip" }]
 
 [[node]]
 "id" = "recall-permissions"
 "level" = "recall-lane"
-"title" = "Return later: Who is this process allowed to be?"
+"title" = "Return later: Inspect and narrow permissions on a local file"
 "size" = "S"
 "minutes" = 10
 "needs" = ["permissions-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain the difference between authentication, authorization and process privilege."
-"steps" = ["Explain the difference between authentication, authorization and process privilege.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"steps" = ["Explain the difference between authentication, authorization and process privilege.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:permissions" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "evidence-reasoning"
@@ -361,38 +424,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Separate a reproduction step, observed impact, root cause and proposed fix in a sample report."
-"steps" = ["Work through this preparation: Separate a reproduction step, observed impact, root cause and proposed fix in a sample report.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:evidence" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "evidence-experiment"
 "level" = "evidence"
-"title" = "Investigate: Make a finding another person can verify"
+"title" = "Practice: Make a finding another person can verify"
 "size" = "M"
 "minutes" = 60
 "needs" = ["evidence-reasoning"]
-"done_when" = "Write one lab finding with exact target/version, minimal steps, sanitized evidence, severity rationale and a tested local repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/evidence-experiment.json."
-"brief" = "Write one lab finding with exact target/version, minimal steps, sanitized evidence, severity rationale and a tested local repair."
-"steps" = ["Separate a reproduction step, observed impact, root cause and proposed fix in a sample report.", "Write one lab finding with exact target/version, minimal steps, sanitized evidence, severity rationale and a tested local repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/evidence-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use your saved owner/cross-user test from web-boundaries. Name the fixture version ascend-notes-v1 and the exact note/user relationship."
+"steps" = ["Use your saved owner/cross-user test from web-boundaries. Name the fixture version ascend-notes-v1 and the exact note/user relationship.", "Write finding.md with the minimal two requests, the synthetic response excerpt, the missing ownership check, affected data and why your impact claim is limited to this fixture.", "Attach the change you made to do_GET and the owner/denied cross-user retest. If your earlier test did not reproduce a leak, record that negative result and investigate the discrepancy instead of inventing one.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/evidence-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
 "verify" = { "type" = "file", "path" = "{lab_dir}/evidence-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ethical-hacking-foundations.zip" }]
 
 [[node]]
 "id" = "evidence-milestone"
 "level" = "evidence"
-"title" = "Apply it to a changed case: Make a finding another person can verify"
+"title" = "Apply it: Make a finding another person can verify"
 "size" = "M"
 "minutes" = 120
 "needs" = ["evidence-reasoning", "evidence-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/evidence-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Write one lab finding with exact target/version, minimal steps, sanitized evidence, severity rationale and a tested local repair."
-"steps" = ["Write one lab finding with exact target/version, minimal steps, sanitized evidence, severity rationale and a tested local repair.", "Transfer: Give a peer a changed input or repeat on a second clean fixture and identify assumptions missing from the report.", "Control: Show that the fix rejects the bad case without breaking an ordinary valid request.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/evidence-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use your saved owner/cross-user test from web-boundaries. Name the fixture version ascend-notes-v1 and the exact note/user relationship."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use your saved owner/cross-user test from web-boundaries. Name the fixture version ascend-notes-v1 and the exact note/user relationship.", "Change to test: Give a peer a changed input or repeat on a second clean fixture and identify assumptions missing from the report.", "Comparison to retain: Show that the fix rejects the bad case without breaking an ordinary valid request.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/evidence-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
 "verify" = { "type" = "file", "path" = "{lab_dir}/evidence-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ethical-hacking-foundations.zip" }]
 
 [[node]]
 "id" = "recall-evidence"
@@ -403,9 +477,12 @@
 "needs" = ["evidence-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Reconstruct a finding from its root cause without copying the original prose."
-"steps" = ["Reconstruct a finding from its root cause without copying the original prose.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"steps" = ["Reconstruct a finding from its root cause without copying the original prose.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:evidence" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "assessment-reasoning"
@@ -415,38 +492,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Plan a bounded 60-minute assessment of a fresh training instance with explicit stop rules."
-"steps" = ["Work through this preparation: Plan a bounded 60-minute assessment of a fresh training instance with explicit stop rules.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:assessment" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "assessment-experiment"
 "level" = "assessment"
-"title" = "Investigate: Run a small authorized assessment"
+"title" = "Practice: Run a small authorized assessment"
 "size" = "M"
 "minutes" = 60
 "needs" = ["assessment-reasoning"]
-"done_when" = "Perform scope confirmation, inventory, two hypothesis tests and one reproducible finding or justified negative result; deliver an executive summary and technical evidence. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/assessment-experiment.json."
-"brief" = "Perform scope confirmation, inventory, two hypothesis tests and one reproducible finding or justified negative result; deliver an executive summary and technical evidence."
-"steps" = ["Plan a bounded 60-minute assessment of a fresh training instance with explicit stop rules.", "Perform scope confirmation, inventory, two hypothesis tests and one reproducible finding or justified negative result; deliver an executive summary and technical evidence.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/assessment-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Extract a fresh copy of service.py and scenario.json. Independently use note 2 (owner bob) and alice as the unrelated user. State the scope before starting."
+"steps" = ["Extract a fresh copy of service.py and scenario.json. Independently use note 2 (owner bob) and alice as the unrelated user. State the scope before starting.", "Inventory /health and the handlers; predict and test a nonexistent note and the cross-user request. Produce either the reproducible defect or a justified negative result. Repair the observed permission problem in your copy.", "Retest bob reading note 2, alice reading her own note 1, and alice requesting note 2. Write a short nontechnical impact summary and a separate evidence index. Stop the server.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/assessment-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
 "verify" = { "type" = "file", "path" = "{lab_dir}/assessment-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ethical-hacking-foundations.zip" }]
 
 [[node]]
 "id" = "assessment-milestone"
 "level" = "assessment"
-"title" = "Apply it to a changed case: Run a small authorized assessment"
+"title" = "Apply it: Run a small authorized assessment"
 "size" = "M"
 "minutes" = 120
 "needs" = ["assessment-reasoning", "assessment-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/assessment-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Perform scope confirmation, inventory, two hypothesis tests and one reproducible finding or justified negative result; deliver an executive summary and technical evidence."
-"steps" = ["Perform scope confirmation, inventory, two hypothesis tests and one reproducible finding or justified negative result; deliver an executive summary and technical evidence.", "Transfer: Change an account role or route and independently reassess whether the suspected weakness remains.", "Control: Include an out-of-scope action you deliberately excluded and a benign workflow that survives the repair.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/assessment-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Extract a fresh copy of service.py and scenario.json. Independently use note 2 (owner bob) and alice as the unrelated user. State the scope before starting."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Extract a fresh copy of service.py and scenario.json. Independently use note 2 (owner bob) and alice as the unrelated user. State the scope before starting.", "Change to test: Change an account role or route and independently reassess whether the suspected weakness remains.", "Comparison to retain: Include an out-of-scope action you deliberately excluded and a benign workflow that survives the repair.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/assessment-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
 "verify" = { "type" = "file", "path" = "{lab_dir}/assessment-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ethical-hacking-foundations.zip" }]
 
 [[node]]
 "id" = "recall-assessment"
@@ -457,63 +545,80 @@
 "needs" = ["assessment-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain the assessment chain, one false lead and what evidence changed your mind."
-"steps" = ["Explain the assessment chain, one false lead and what evidence changed your mind.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"steps" = ["Explain the assessment chain, one false lead and what evidence changed your mind.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:assessment" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "independent-transfer-reasoning"
 "level" = "independent-transfer"
-"title" = "Reason it through: Revisit the skill on a fresh problem"
+"title" = "Reason it through: Recheck the boundary with a specified change"
 "size" = "S"
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution."
-"steps" = ["Work through this preparation: Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"brief" = "Use the named task files for the changed case. Predict the effect before opening previous notes."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:independent-transfer" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "independent-transfer-experiment"
 "level" = "independent-transfer"
-"title" = "Investigate: Revisit the skill on a fresh problem"
+"title" = "Practice: Recheck the boundary with a specified change"
 "size" = "M"
 "minutes" = 60
 "needs" = ["independent-transfer-reasoning"]
-"done_when" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/independent-transfer-experiment.json."
-"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
-"steps" = ["Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/independent-transfer-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use note 2 and replace its owner with carol in a fresh service.py copy. Update only the list of recognized synthetic users needed for that identity, then independently test and repair ownership."
+"steps" = ["Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.", "Use note 2 and replace its owner with carol in a fresh service.py copy. Update only the list of recognized synthetic users needed for that identity, then independently test and repair ownership.", "Bob must still read his own remaining test note; alice must not gain access to carol’s note.", "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/independent-transfer-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
 "verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ethical-hacking-foundations.zip" }]
 
 [[node]]
 "id" = "independent-transfer-milestone"
 "level" = "independent-transfer"
-"title" = "Apply it to a changed case: Revisit the skill on a fresh problem"
+"title" = "Apply it: Recheck the boundary with a specified change"
 "size" = "M"
 "minutes" = 120
 "needs" = ["independent-transfer-reasoning", "independent-transfer-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/independent-transfer-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
-"steps" = ["After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Transfer: Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.", "Control: Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/independent-transfer-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use note 2 and replace its owner with carol in a fresh service.py copy. Update only the list of recognized synthetic users needed for that identity, then independently test and repair ownership."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.", "Change to test: Add a second case by reversing the changed condition above, predict its result and compare actual behavior.", "Comparison to retain: Bob must still read his own remaining test note; alice must not gain access to carol’s note.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/independent-transfer-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
 "verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ethical-hacking-foundations.zip" }]
 
 [[node]]
 "id" = "recall-independent-transfer"
 "level" = "recall-lane"
-"title" = "Return later: Revisit the skill on a fresh problem"
+"title" = "Return later: Recheck the boundary with a specified change"
 "size" = "S"
 "minutes" = 10
 "needs" = ["independent-transfer-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
-"brief" = "Explain what transferred, what required help and which prerequisite needs another small experiment."
-"steps" = ["Explain what transferred, what required help and which prerequisite needs another small experiment.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"brief" = "Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested."
+"steps" = ["Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:independent-transfer" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "quick-access-check"
@@ -523,5 +628,8 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Correctly evaluate every allow/deny decision for a fresh server-generated policy fixture."
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
 "verify" = { "type" = "lab", "exercise" = "access-policy" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."

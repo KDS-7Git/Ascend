@@ -26,7 +26,7 @@ def exported_pack_path(pack_id):
 def test_curriculum_has_reachable_assessments_and_delayed_practice(pack_id):
     pack = parse_pack(bundled_pack_path(pack_id).read_text())
     nodes = {node.id: node for node in pack.nodes}
-    assert pack.version == (4 if pack_id == "defensive-security-and-detection" else 3)
+    assert pack.version == (5 if pack_id == "defensive-security-and-detection" else 4)
     assert pack.source == "ai-draft" and not pack.reviewed
     assert next_nodes(pack, {})[0].id == "lab-readiness"
     assert next_nodes(pack, {}, 10), "A brief optional session must remain possible"

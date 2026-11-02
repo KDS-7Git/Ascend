@@ -9,6 +9,93 @@ from ascend.engine.packs import dump_toml, parse_pack
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def evidence_step(path):
+    return (
+        "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n"
+        f'```sh\npython3 report.py "{path}"\n```\n'
+        "On Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."
+    )
+
+
+def apply_lab_guide(pack, track, guide):
+    levels = {level["id"]: level for level in track["levels"]}
+    material = {
+        "label": "Download this track’s lab files (ZIP)",
+        "url": "/training/" + track["id"] + ".zip",
+    }
+    for node in pack["node"]:
+        node.update(
+            resource=guide["resource"],
+            resource_label="Free reference (optional)",
+            resource_note="The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required.",
+        )
+        if node["verify"]["type"] == "lab":
+            node["setup"] = (
+                "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
+            )
+            if node["id"] == "lab-readiness":
+                node["resource"] = "https://docs.python.org/3/library/hashlib.html"
+            if node["verify"].get("exercise") == "case":
+                lid = node["verify"]["case_id"].split(":", 1)[1]
+                node["steps"] = [
+                    "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.",
+                    "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work.",
+                ]
+                if node["id"].startswith("recall-"):
+                    node["steps"].insert(0, levels[lid]["recall"])
+            continue
+        lid = node["level"]
+        level = levels[lid]
+        node["setup"] = guide["setup"]
+        node["materials"] = [material]
+        path = (
+            "{lab_dir}/"
+            + lid
+            + ("-assessment.json" if node.get("milestone") else "-experiment.json")
+        )
+        if lid == "foundations":
+            steps = guide["foundation"]["steps"]
+        elif lid == "independent-transfer":
+            steps = guide["transfer"]["steps"]
+        else:
+            steps = guide["topics"][lid]
+        node["brief"] = level["experiment"]
+        if node.get("milestone"):
+            node["title"] = "Apply it: " + level["title"]
+            node["steps"] = [
+                "Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.",
+                "Starting point: " + steps[0],
+                "Change to test: " + level["variant"],
+                "Comparison to retain: " + level["control"],
+                "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.",
+                evidence_step(path),
+            ]
+            node["done_when"] = (
+                "Your report at "
+                + path
+                + " includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+            )
+        else:
+            node["title"] = "Practice: " + level["title"]
+            node["steps"] = list(steps) + [evidence_step(path)]
+            node["done_when"] = (
+                "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in "
+                + path
+                + ". Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+            )
+        # Individually authored walkthroughs remain authoritative, including the HTTP lab.
+        apply_guidance(node, level.get("reference", {}))
+        apply_guidance(
+            node,
+            level.get(
+                "milestone_guidance"
+                if node.get("milestone")
+                else "experiment_guidance",
+                {},
+            ),
+        )
+
+
 def apply_guidance(node, guidance):
     allowed = {
         "title",
@@ -20,6 +107,8 @@ def apply_guidance(node, guidance):
         "resource",
         "resource_label",
         "resource_note",
+        "setup",
+        "materials",
     }
     if set(guidance) - allowed:
         raise ValueError(
@@ -30,6 +119,9 @@ def apply_guidance(node, guidance):
 
 def outputs():
     source = json.loads((ROOT / "docs/curriculum/specialist-paths.json").read_text())
+    guides = json.loads((ROOT / "docs/curriculum/lab-guides.json").read_text())[
+        "tracks"
+    ]
     sources = {
         r["id"]: r
         for r in json.loads((ROOT / "docs/curriculum/sources.json").read_text())[
@@ -213,6 +305,7 @@ def outputs():
                 "verify": {"type": "lab", "exercise": "access-policy"},
             }
         )
+        apply_lab_guide(pack, track, guides[pid])
         text = (
             "# Generated from docs/curriculum/specialist-paths.json; unreviewed draft.\n"
             + dump_toml(pack)

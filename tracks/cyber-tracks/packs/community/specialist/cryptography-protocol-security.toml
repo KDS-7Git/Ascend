@@ -3,7 +3,7 @@
 "id" = "cryptography-protocol-security"
 "title" = "Applied Cryptography and Protocol Security"
 "kind" = "proficiency"
-"version" = 1
+"version" = 2
 "source" = "ai-draft"
 "reviewed" = false
 
@@ -12,7 +12,7 @@
 
 [[level]]
 "id" = "foundations"
-"title" = "Prove the entry skills in a small lab"
+"title" = "Round-trip bytes through two encodings"
 "lane" = "main"
 
 [[level]]
@@ -47,7 +47,7 @@
 
 [[level]]
 "id" = "independent-transfer"
-"title" = "Revisit the skill on a fresh problem"
+"title" = "Recheck the boundary with a specified change"
 "lane" = "main"
 
 [[level]]
@@ -69,62 +69,79 @@
 "needs" = []
 "done_when" = "Compute the exact content hash of a fresh server-generated evidence fixture and pass its check."
 "brief" = "This small exercise tests evidence integrity. Track entry background: Work with bytes, hexadecimal and small Python programs; distinguish encoding from encryption."
-"resource" = "https://cryptohack.org/courses/"
+"resource" = "https://docs.python.org/3/library/hashlib.html"
 "verify" = { "type" = "lab", "exercise" = "integrity" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "foundations-reasoning"
 "level" = "foundations"
-"title" = "Reason it through: Prove the entry skills in a small lab"
+"title" = "Reason it through: Round-trip bytes through two encodings"
 "size" = "S"
 "minutes" = 10
 "needs" = ["lab-readiness"]
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Work with bytes, hexadecimal and small Python programs; distinguish encoding from encryption."
-"steps" = ["Work through this preparation: Work with bytes, hexadecimal and small Python programs; distinguish encoding from encryption.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://cryptohack.org/courses/"
+"brief" = "See which transformations are reversible without a secret."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://cryptography.io/en/latest/hazmat/primitives/aead/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cryptography-protocol-security:foundations" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "foundations-experiment"
 "level" = "foundations"
-"title" = "Investigate: Prove the entry skills in a small lab"
+"title" = "Round-trip bytes through two encodings"
 "size" = "M"
-"minutes" = 60
+"minutes" = 30
 "needs" = ["foundations-reasoning"]
-"done_when" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/foundations-experiment.json."
-"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
-"steps" = ["Work with bytes, hexadecimal and small Python programs; distinguish encoding from encryption.", "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://cryptohack.org/courses/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/foundations-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "See which transformations are reversible without a secret."
+"steps" = ["Read bytes_lab.py and run it.\n```sh\npython3 bytes_lab.py\n```", "Decode the printed hex with bytes.fromhex and the base64 with base64.b64decode. Compare exact bytes with message, including punctuation.", "Explain why encoding is reversible without a key, while the printed hash/HMAC are not encodings of the message. Do not use the published training key for real data.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/foundations-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://cryptography.io/en/latest/hazmat/primitives/aead/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/foundations-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Authenticated encryption/signature tasks use the free cryptography package in a separate virtual environment. TLS needs openssl and curl. Keep all keys and data synthetic."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/cryptography-protocol-security.zip" }]
 
 [[node]]
 "id" = "foundations-milestone"
 "level" = "foundations"
-"title" = "Apply it to a changed case: Prove the entry skills in a small lab"
+"title" = "Apply it: Round-trip bytes through two encodings"
 "size" = "M"
-"minutes" = 120
+"minutes" = 30
 "needs" = ["foundations-reasoning", "foundations-experiment", "lab-readiness"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/foundations-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
-"steps" = ["Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Transfer: Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.", "Control: Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/foundations-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "See which transformations are reversible without a secret."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Read bytes_lab.py and run it.\n```sh\npython3 bytes_lab.py\n```", "Change to test: Add a zero byte to the message in a copy and predict how length and encoded output change.", "Comparison to retain: Ensure your decode preserves the zero byte; text trimming is not a valid bytes round trip.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/foundations-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://cryptohack.org/courses/"
+"resource" = "https://cryptography.io/en/latest/hazmat/primitives/aead/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/foundations-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Authenticated encryption/signature tasks use the free cryptography package in a separate virtual environment. TLS needs openssl and curl. Keep all keys and data synthetic."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/cryptography-protocol-security.zip" }]
 
 [[node]]
 "id" = "recall-foundations"
 "level" = "recall-lane"
-"title" = "Return later: Prove the entry skills in a small lab"
+"title" = "Return later: Round-trip bytes through two encodings"
 "size" = "S"
 "minutes" = 10
 "needs" = ["foundations-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
-"brief" = "Reconstruct the environment and entry assumptions without following the setup notes."
-"steps" = ["Reconstruct the environment and entry assumptions without following the setup notes.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://cryptohack.org/courses/"
+"brief" = "Without opening your report, reconstruct the inputs, observed result and main limitation of round-trip bytes through two encodings."
+"steps" = ["Without opening your report, reconstruct the inputs, observed result and main limitation of round-trip bytes through two encodings.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://cryptography.io/en/latest/hazmat/primitives/aead/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cryptography-protocol-security:foundations" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "representations-reasoning"
@@ -134,38 +151,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Convert a short fixture between bytes, hex and Base64 and record exact lengths."
-"steps" = ["Work through this preparation: Convert a short fixture between bytes, hex and Base64 and record exact lengths.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://cryptohack.org/courses/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://cryptography.io/en/latest/hazmat/primitives/aead/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cryptography-protocol-security:representations" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "representations-experiment"
 "level" = "representations"
-"title" = "Investigate: Bytes are not the text displaying them"
+"title" = "Practice: Bytes are not the text displaying them"
 "size" = "M"
 "minutes" = 60
 "needs" = ["representations-reasoning"]
-"done_when" = "Implement round-trip tests for a bounded binary message and diagnose one encoding mismatch without losing bytes. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/representations-experiment.json."
-"brief" = "Implement round-trip tests for a bounded binary message and diagnose one encoding mismatch without losing bytes."
-"steps" = ["Convert a short fixture between bytes, hex and Base64 and record exact lengths.", "Implement round-trip tests for a bounded binary message and diagnose one encoding mismatch without losing bytes.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://cryptohack.org/courses/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/representations-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use message from bytes_lab.py. Write round-trip assertions for hex and base64, then include bytes 0 and 255 in a new message."
+"steps" = ["Use message from bytes_lab.py. Write round-trip assertions for hex and base64, then include bytes 0 and 255 in a new message.", "Deliberately decode the hex as UTF-8 text rather than bytes and record the type/representation mismatch.", "Repair the conversion and compare byte-for-byte, not visually. Include lengths and exact repr output.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/representations-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://cryptography.io/en/latest/hazmat/primitives/aead/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/representations-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Authenticated encryption/signature tasks use the free cryptography package in a separate virtual environment. TLS needs openssl and curl. Keep all keys and data synthetic."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/cryptography-protocol-security.zip" }]
 
 [[node]]
 "id" = "representations-milestone"
 "level" = "representations"
-"title" = "Apply it to a changed case: Bytes are not the text displaying them"
+"title" = "Apply it: Bytes are not the text displaying them"
 "size" = "M"
 "minutes" = 120
 "needs" = ["representations-reasoning", "representations-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/representations-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Implement round-trip tests for a bounded binary message and diagnose one encoding mismatch without losing bytes."
-"steps" = ["Implement round-trip tests for a bounded binary message and diagnose one encoding mismatch without losing bytes.", "Transfer: Introduce a zero byte or non-ASCII character and predict the representation change.", "Control: Reject malformed encoded input and preserve a valid binary message exactly.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/representations-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use message from bytes_lab.py. Write round-trip assertions for hex and base64, then include bytes 0 and 255 in a new message."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use message from bytes_lab.py. Write round-trip assertions for hex and base64, then include bytes 0 and 255 in a new message.", "Change to test: Introduce a zero byte or non-ASCII character and predict the representation change.", "Comparison to retain: Reject malformed encoded input and preserve a valid binary message exactly.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/representations-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://cryptohack.org/courses/"
+"resource" = "https://cryptography.io/en/latest/hazmat/primitives/aead/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/representations-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Authenticated encryption/signature tasks use the free cryptography package in a separate virtual environment. TLS needs openssl and curl. Keep all keys and data synthetic."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/cryptography-protocol-security.zip" }]
 
 [[node]]
 "id" = "recall-representations"
@@ -176,9 +204,12 @@
 "needs" = ["representations-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain why encoding provides no confidentiality."
-"steps" = ["Explain why encoding provides no confidentiality.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://cryptohack.org/courses/"
+"steps" = ["Explain why encoding provides no confidentiality.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://cryptography.io/en/latest/hazmat/primitives/aead/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cryptography-protocol-security:representations" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "integrity-reasoning"
@@ -188,38 +219,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Compare a hash with a keyed MAC using synthetic messages and a training key."
-"steps" = ["Work through this preparation: Compare a hash with a keyed MAC using synthetic messages and a training key.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://cryptohack.org/courses/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://cryptography.io/en/latest/hazmat/primitives/aead/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cryptography-protocol-security:integrity" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "integrity-experiment"
 "level" = "integrity"
-"title" = "Investigate: A checksum does not authenticate its author"
+"title" = "Practice: A checksum does not authenticate its author"
 "size" = "M"
 "minutes" = 60
 "needs" = ["integrity-reasoning"]
-"done_when" = "Use a standard library to authenticate a message, test verification and record what the key ownership assumption means. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/integrity-experiment.json."
-"brief" = "Use a standard library to authenticate a message, test verification and record what the key ownership assumption means."
-"steps" = ["Compare a hash with a keyed MAC using synthetic messages and a training key.", "Use a standard library to authenticate a message, test verification and record what the key ownership assumption means.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://cryptohack.org/courses/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/integrity-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Using hmac from the standard library and the public training key, compute an HMAC-SHA256 tag for message. Verify with hmac.compare_digest."
+"steps" = ["Using hmac from the standard library and the public training key, compute an HMAC-SHA256 tag for message. Verify with hmac.compare_digest.", "Keep the original tag but change one message byte, then change the key. Record verification results for valid and tampered cases.", "Explain that HMAC proves shared-key possession under its assumptions, not which of several key holders authored a message.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/integrity-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://cryptography.io/en/latest/hazmat/primitives/aead/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/integrity-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Authenticated encryption/signature tasks use the free cryptography package in a separate virtual environment. TLS needs openssl and curl. Keep all keys and data synthetic."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/cryptography-protocol-security.zip" }]
 
 [[node]]
 "id" = "integrity-milestone"
 "level" = "integrity"
-"title" = "Apply it to a changed case: A checksum does not authenticate its author"
+"title" = "Apply it: A checksum does not authenticate its author"
 "size" = "M"
 "minutes" = 120
 "needs" = ["integrity-reasoning", "integrity-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/integrity-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Use a standard library to authenticate a message, test verification and record what the key ownership assumption means."
-"steps" = ["Use a standard library to authenticate a message, test verification and record what the key ownership assumption means.", "Transfer: Change one message byte or use a different key and predict verification.", "Control: Accept the valid message and reject both tampering and a MAC made with the wrong key.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/integrity-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Using hmac from the standard library and the public training key, compute an HMAC-SHA256 tag for message. Verify with hmac.compare_digest."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Using hmac from the standard library and the public training key, compute an HMAC-SHA256 tag for message. Verify with hmac.compare_digest.", "Change to test: Change one message byte or use a different key and predict verification.", "Comparison to retain: Accept the valid message and reject both tampering and a MAC made with the wrong key.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/integrity-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://cryptohack.org/courses/"
+"resource" = "https://cryptography.io/en/latest/hazmat/primitives/aead/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/integrity-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Authenticated encryption/signature tasks use the free cryptography package in a separate virtual environment. TLS needs openssl and curl. Keep all keys and data synthetic."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/cryptography-protocol-security.zip" }]
 
 [[node]]
 "id" = "recall-integrity"
@@ -230,9 +272,12 @@
 "needs" = ["integrity-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain integrity versus origin authentication."
-"steps" = ["Explain integrity versus origin authentication.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://cryptohack.org/courses/"
+"steps" = ["Explain integrity versus origin authentication.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://cryptography.io/en/latest/hazmat/primitives/aead/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cryptography-protocol-security:integrity" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "symmetric-reasoning"
@@ -242,38 +287,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Identify nonce, ciphertext and authentication tag in an established AEAD API."
-"steps" = ["Work through this preparation: Identify nonce, ciphertext and authentication tag in an established AEAD API.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://cryptohack.org/courses/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://cryptography.io/en/latest/hazmat/primitives/aead/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cryptography-protocol-security:symmetric" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "symmetric-experiment"
 "level" = "symmetric"
-"title" = "Investigate: Make misuse visible in a toy experiment"
+"title" = "Practice: Make misuse visible in a toy experiment"
 "size" = "M"
 "minutes" = 60
 "needs" = ["symmetric-reasoning"]
-"done_when" = "Encrypt and decrypt synthetic data with an established authenticated-encryption library and test tamper rejection. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/symmetric-experiment.json."
-"brief" = "Encrypt and decrypt synthetic data with an established authenticated-encryption library and test tamper rejection."
-"steps" = ["Identify nonce, ciphertext and authentication tag in an established AEAD API.", "Encrypt and decrypt synthetic data with an established authenticated-encryption library and test tamper rejection.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://cryptohack.org/courses/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/symmetric-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Create a separate virtual environment and install cryptography using its official installation instructions. Record version. Use AESGCM with a generated key and a fresh 12-byte random nonce."
+"steps" = ["Create a separate virtual environment and install cryptography using its official installation instructions. Record version. Use AESGCM with a generated key and a fresh 12-byte random nonce.", "Encrypt a short synthetic message with a fixed associated-data label, then decrypt. Test changed ciphertext, associated data and nonce; preserve rejection exceptions without dumping real secrets.", "Explain nonce uniqueness per key and keep the key only in this disposable lab. Use the library API; do not implement AES yourself.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/symmetric-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://cryptography.io/en/latest/hazmat/primitives/aead/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/symmetric-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Authenticated encryption/signature tasks use the free cryptography package in a separate virtual environment. TLS needs openssl and curl. Keep all keys and data synthetic."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/cryptography-protocol-security.zip" }]
 
 [[node]]
 "id" = "symmetric-milestone"
 "level" = "symmetric"
-"title" = "Apply it to a changed case: Make misuse visible in a toy experiment"
+"title" = "Apply it: Make misuse visible in a toy experiment"
 "size" = "M"
 "minutes" = 120
 "needs" = ["symmetric-reasoning", "symmetric-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/symmetric-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Encrypt and decrypt synthetic data with an established authenticated-encryption library and test tamper rejection."
-"steps" = ["Encrypt and decrypt synthetic data with an established authenticated-encryption library and test tamper rejection.", "Transfer: Change associated data or the nonce and predict which operation should fail.", "Control: Keep the valid round trip working and reject a changed tag without releasing plaintext.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/symmetric-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Create a separate virtual environment and install cryptography using its official installation instructions. Record version. Use AESGCM with a generated key and a fresh 12-byte random nonce."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Create a separate virtual environment and install cryptography using its official installation instructions. Record version. Use AESGCM with a generated key and a fresh 12-byte random nonce.", "Change to test: Change associated data or the nonce and predict which operation should fail.", "Comparison to retain: Keep the valid round trip working and reject a changed tag without releasing plaintext.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/symmetric-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://cryptohack.org/courses/"
+"resource" = "https://cryptography.io/en/latest/hazmat/primitives/aead/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/symmetric-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Authenticated encryption/signature tasks use the free cryptography package in a separate virtual environment. TLS needs openssl and curl. Keep all keys and data synthetic."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/cryptography-protocol-security.zip" }]
 
 [[node]]
 "id" = "recall-symmetric"
@@ -284,9 +340,12 @@
 "needs" = ["symmetric-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain the nonce-use rule of the selected algorithm."
-"steps" = ["Explain the nonce-use rule of the selected algorithm.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://cryptohack.org/courses/"
+"steps" = ["Explain the nonce-use rule of the selected algorithm.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://cryptography.io/en/latest/hazmat/primitives/aead/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cryptography-protocol-security:symmetric" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "public-key-reasoning"
@@ -296,38 +355,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Distinguish public-key encryption, signatures and key agreement in small worked examples."
-"steps" = ["Work through this preparation: Distinguish public-key encryption, signatures and key agreement in small worked examples.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://cryptohack.org/courses/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://cryptography.io/en/latest/hazmat/primitives/aead/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cryptography-protocol-security:public-key" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "public-key-experiment"
 "level" = "public-key"
-"title" = "Investigate: State exactly what a signature proves"
+"title" = "Practice: State exactly what a signature proves"
 "size" = "M"
 "minutes" = 60
 "needs" = ["public-key-reasoning"]
-"done_when" = "Sign and verify a synthetic document with an established library and connect the verified key to an explicit identity assumption. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/public-key-experiment.json."
-"brief" = "Sign and verify a synthetic document with an established library and connect the verified key to an explicit identity assumption."
-"steps" = ["Distinguish public-key encryption, signatures and key agreement in small worked examples.", "Sign and verify a synthetic document with an established library and connect the verified key to an explicit identity assumption.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://cryptohack.org/courses/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/public-key-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use cryptography Ed25519PrivateKey.generate, sign and the corresponding public_key().verify on a synthetic note."
+"steps" = ["Use cryptography Ed25519PrivateKey.generate, sign and the corresponding public_key().verify on a synthetic note.", "Test the original note, a changed note and a different public key. Record success and InvalidSignature outcomes.", "State how the verifier obtained/trusted the public key. A signature from an unknown key does not establish a real person’s identity.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/public-key-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://cryptography.io/en/latest/hazmat/primitives/aead/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/public-key-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Authenticated encryption/signature tasks use the free cryptography package in a separate virtual environment. TLS needs openssl and curl. Keep all keys and data synthetic."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/cryptography-protocol-security.zip" }]
 
 [[node]]
 "id" = "public-key-milestone"
 "level" = "public-key"
-"title" = "Apply it to a changed case: State exactly what a signature proves"
+"title" = "Apply it: State exactly what a signature proves"
 "size" = "M"
 "minutes" = 120
 "needs" = ["public-key-reasoning", "public-key-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/public-key-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Sign and verify a synthetic document with an established library and connect the verified key to an explicit identity assumption."
-"steps" = ["Sign and verify a synthetic document with an established library and connect the verified key to an explicit identity assumption.", "Transfer: Change the message or trusted public key and predict the result.", "Control: Reject a valid signature from an untrusted key while accepting the intended signer's document.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/public-key-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use cryptography Ed25519PrivateKey.generate, sign and the corresponding public_key().verify on a synthetic note."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use cryptography Ed25519PrivateKey.generate, sign and the corresponding public_key().verify on a synthetic note.", "Change to test: Change the message or trusted public key and predict the result.", "Comparison to retain: Reject a valid signature from an untrusted key while accepting the intended signer's document.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/public-key-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://cryptohack.org/courses/"
+"resource" = "https://cryptography.io/en/latest/hazmat/primitives/aead/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/public-key-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Authenticated encryption/signature tasks use the free cryptography package in a separate virtual environment. TLS needs openssl and curl. Keep all keys and data synthetic."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/cryptography-protocol-security.zip" }]
 
 [[node]]
 "id" = "recall-public-key"
@@ -338,9 +408,12 @@
 "needs" = ["public-key-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain why a signature alone does not establish a real-world identity."
-"steps" = ["Explain why a signature alone does not establish a real-world identity.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://cryptohack.org/courses/"
+"steps" = ["Explain why a signature alone does not establish a real-world identity.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://cryptography.io/en/latest/hazmat/primitives/aead/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cryptography-protocol-security:public-key" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "tls-reasoning"
@@ -350,38 +423,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Read certificate issuer, subject alternative names, validity and key usage."
-"steps" = ["Work through this preparation: Read certificate issuer, subject alternative names, validity and key usage.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://cryptohack.org/courses/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://cryptography.io/en/latest/hazmat/primitives/aead/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cryptography-protocol-security:tls" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "tls-experiment"
 "level" = "tls"
-"title" = "Investigate: Test the certificate decision"
+"title" = "Practice: Test the certificate decision"
 "size" = "M"
 "minutes" = 60
 "needs" = ["tls-reasoning"]
-"done_when" = "Run a local TLS test service with training certificates and verify hostname, trust-chain and expiry failures without disabling validation. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/tls-experiment.json."
-"brief" = "Run a local TLS test service with training certificates and verify hostname, trust-chain and expiry failures without disabling validation."
-"steps" = ["Read certificate issuer, subject alternative names, validity and key usage.", "Run a local TLS test service with training certificates and verify hostname, trust-chain and expiry failures without disabling validation.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://cryptohack.org/courses/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/tls-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use openssl to create a one-day self-signed RSA training certificate with subject CN=localhost and subjectAltName=DNS:localhost; keep key/cert in this new lab folder. Start openssl s_server on 127.0.0.1:8443 with -www."
+"steps" = ["Use openssl to create a one-day self-signed RSA training certificate with subject CN=localhost and subjectAltName=DNS:localhost; keep key/cert in this new lab folder. Start openssl s_server on 127.0.0.1:8443 with -www.", "Use curl --cacert with that certificate to request https://localhost:8443/; compare the same request via 127.0.0.1 (hostname mismatch) and without --cacert (untrusted chain). Do not use -k.", "For expiry, inspect notAfter and use openssl verify -attime with a time after it. Record each failure independently and stop the local TLS server.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/tls-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://cryptography.io/en/latest/hazmat/primitives/aead/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/tls-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Authenticated encryption/signature tasks use the free cryptography package in a separate virtual environment. TLS needs openssl and curl. Keep all keys and data synthetic."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/cryptography-protocol-security.zip" }]
 
 [[node]]
 "id" = "tls-milestone"
 "level" = "tls"
-"title" = "Apply it to a changed case: Test the certificate decision"
+"title" = "Apply it: Test the certificate decision"
 "size" = "M"
 "minutes" = 120
 "needs" = ["tls-reasoning", "tls-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/tls-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Run a local TLS test service with training certificates and verify hostname, trust-chain and expiry failures without disabling validation."
-"steps" = ["Run a local TLS test service with training certificates and verify hostname, trust-chain and expiry failures without disabling validation.", "Transfer: Change the hostname or CA trust set and predict acceptance.", "Control: Demonstrate a valid connection and rejection of an unrelated trusted-but-wrong-host certificate.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/tls-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use openssl to create a one-day self-signed RSA training certificate with subject CN=localhost and subjectAltName=DNS:localhost; keep key/cert in this new lab folder. Start openssl s_server on 127.0.0.1:8443 with -www."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use openssl to create a one-day self-signed RSA training certificate with subject CN=localhost and subjectAltName=DNS:localhost; keep key/cert in this new lab folder. Start openssl s_server on 127.0.0.1:8443 with -www.", "Change to test: Change the hostname or CA trust set and predict acceptance.", "Comparison to retain: Demonstrate a valid connection and rejection of an unrelated trusted-but-wrong-host certificate.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/tls-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://cryptohack.org/courses/"
+"resource" = "https://cryptography.io/en/latest/hazmat/primitives/aead/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/tls-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Authenticated encryption/signature tasks use the free cryptography package in a separate virtual environment. TLS needs openssl and curl. Keep all keys and data synthetic."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/cryptography-protocol-security.zip" }]
 
 [[node]]
 "id" = "recall-tls"
@@ -392,9 +476,12 @@
 "needs" = ["tls-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Reconstruct the checks needed for server identity validation."
-"steps" = ["Reconstruct the checks needed for server identity validation.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://cryptohack.org/courses/"
+"steps" = ["Reconstruct the checks needed for server identity validation.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://cryptography.io/en/latest/hazmat/primitives/aead/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cryptography-protocol-security:tls" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "review-reasoning"
@@ -404,38 +491,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Diagram the messages and trust assumptions of a toy authenticated exchange."
-"steps" = ["Work through this preparation: Diagram the messages and trust assumptions of a toy authenticated exchange.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://cryptohack.org/courses/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://cryptography.io/en/latest/hazmat/primitives/aead/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cryptography-protocol-security:review" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "review-experiment"
 "level" = "review"
-"title" = "Investigate: Find a protocol assumption that can be tested"
+"title" = "Practice: Find a protocol assumption that can be tested"
 "size" = "M"
 "minutes" = 60
 "needs" = ["review-reasoning"]
-"done_when" = "Review a toy protocol for replay, identity and integrity mistakes, repair one defect and provide executable regression tests. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/review-experiment.json."
-"brief" = "Review a toy protocol for replay, identity and integrity mistakes, repair one defect and provide executable regression tests."
-"steps" = ["Diagram the messages and trust assumptions of a toy authenticated exchange.", "Review a toy protocol for replay, identity and integrity mistakes, repair one defect and provide executable regression tests.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://cryptohack.org/courses/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/review-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Create a toy message envelope with payload, sender key identity, nonce and sequence number. Authenticate it with the standard-library HMAC exercise or the signature library."
+"steps" = ["Create a toy message envelope with payload, sender key identity, nonce and sequence number. Authenticate it with the standard-library HMAC exercise or the signature library.", "Test valid, modified, replayed and wrong-key messages; add replay state so an already accepted sequence is rejected while the next valid one works.", "State how key identity and sequence state are trusted. Preserve runnable regression tests and distinguish toy protocol behavior from a production cryptographic design.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/review-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://cryptography.io/en/latest/hazmat/primitives/aead/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/review-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Authenticated encryption/signature tasks use the free cryptography package in a separate virtual environment. TLS needs openssl and curl. Keep all keys and data synthetic."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/cryptography-protocol-security.zip" }]
 
 [[node]]
 "id" = "review-milestone"
 "level" = "review"
-"title" = "Apply it to a changed case: Find a protocol assumption that can be tested"
+"title" = "Apply it: Find a protocol assumption that can be tested"
 "size" = "M"
 "minutes" = 120
 "needs" = ["review-reasoning", "review-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/review-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Review a toy protocol for replay, identity and integrity mistakes, repair one defect and provide executable regression tests."
-"steps" = ["Review a toy protocol for replay, identity and integrity mistakes, repair one defect and provide executable regression tests.", "Transfer: Reorder or replay a message and predict the corrected protocol's response.", "Control: Preserve a legitimate fresh exchange while rejecting a stale authenticated message.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/review-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Create a toy message envelope with payload, sender key identity, nonce and sequence number. Authenticate it with the standard-library HMAC exercise or the signature library."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Create a toy message envelope with payload, sender key identity, nonce and sequence number. Authenticate it with the standard-library HMAC exercise or the signature library.", "Change to test: Reorder or replay a message and predict the corrected protocol's response.", "Comparison to retain: Preserve a legitimate fresh exchange while rejecting a stale authenticated message.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/review-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://cryptohack.org/courses/"
+"resource" = "https://cryptography.io/en/latest/hazmat/primitives/aead/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/review-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Authenticated encryption/signature tasks use the free cryptography package in a separate virtual environment. TLS needs openssl and curl. Keep all keys and data synthetic."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/cryptography-protocol-security.zip" }]
 
 [[node]]
 "id" = "recall-review"
@@ -446,63 +544,80 @@
 "needs" = ["review-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain which property the repair establishes and which it does not."
-"steps" = ["Explain which property the repair establishes and which it does not.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://cryptohack.org/courses/"
+"steps" = ["Explain which property the repair establishes and which it does not.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://cryptography.io/en/latest/hazmat/primitives/aead/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cryptography-protocol-security:review" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "independent-transfer-reasoning"
 "level" = "independent-transfer"
-"title" = "Reason it through: Revisit the skill on a fresh problem"
+"title" = "Reason it through: Recheck the boundary with a specified change"
 "size" = "S"
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution."
-"steps" = ["Work through this preparation: Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://cryptohack.org/courses/"
+"brief" = "Use the named task files for the changed case. Predict the effect before opening previous notes."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://cryptography.io/en/latest/hazmat/primitives/aead/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cryptography-protocol-security:independent-transfer" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "independent-transfer-experiment"
 "level" = "independent-transfer"
-"title" = "Investigate: Revisit the skill on a fresh problem"
+"title" = "Practice: Recheck the boundary with a specified change"
 "size" = "M"
 "minutes" = 60
 "needs" = ["independent-transfer-reasoning"]
-"done_when" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/independent-transfer-experiment.json."
-"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
-"steps" = ["Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://cryptohack.org/courses/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/independent-transfer-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use your authenticated message envelope to send sequence 2 before sequence 1, then replay sequence 2. Define the intended ordering policy first and test it."
+"steps" = ["Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.", "Use your authenticated message envelope to send sequence 2 before sequence 1, then replay sequence 2. Define the intended ordering policy first and test it.", "A fresh permitted sequence must still be accepted; reject a stale authenticated replay for the stated reason.", "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/independent-transfer-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://cryptography.io/en/latest/hazmat/primitives/aead/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Authenticated encryption/signature tasks use the free cryptography package in a separate virtual environment. TLS needs openssl and curl. Keep all keys and data synthetic."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/cryptography-protocol-security.zip" }]
 
 [[node]]
 "id" = "independent-transfer-milestone"
 "level" = "independent-transfer"
-"title" = "Apply it to a changed case: Revisit the skill on a fresh problem"
+"title" = "Apply it: Recheck the boundary with a specified change"
 "size" = "M"
 "minutes" = 120
 "needs" = ["independent-transfer-reasoning", "independent-transfer-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/independent-transfer-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
-"steps" = ["After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Transfer: Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.", "Control: Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/independent-transfer-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use your authenticated message envelope to send sequence 2 before sequence 1, then replay sequence 2. Define the intended ordering policy first and test it."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.", "Change to test: Add a second case by reversing the changed condition above, predict its result and compare actual behavior.", "Comparison to retain: A fresh permitted sequence must still be accepted; reject a stale authenticated replay for the stated reason.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/independent-transfer-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://cryptohack.org/courses/"
+"resource" = "https://cryptography.io/en/latest/hazmat/primitives/aead/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Authenticated encryption/signature tasks use the free cryptography package in a separate virtual environment. TLS needs openssl and curl. Keep all keys and data synthetic."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/cryptography-protocol-security.zip" }]
 
 [[node]]
 "id" = "recall-independent-transfer"
 "level" = "recall-lane"
-"title" = "Return later: Revisit the skill on a fresh problem"
+"title" = "Return later: Recheck the boundary with a specified change"
 "size" = "S"
 "minutes" = 10
 "needs" = ["independent-transfer-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
-"brief" = "Explain what transferred, what required help and which prerequisite needs another small experiment."
-"steps" = ["Explain what transferred, what required help and which prerequisite needs another small experiment.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://cryptohack.org/courses/"
+"brief" = "Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested."
+"steps" = ["Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://cryptography.io/en/latest/hazmat/primitives/aead/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "cryptography-protocol-security:independent-transfer" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "quick-access-check"
@@ -512,5 +627,8 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Correctly evaluate every allow/deny decision for a fresh server-generated policy fixture."
-"resource" = "https://cryptohack.org/courses/"
+"resource" = "https://cryptography.io/en/latest/hazmat/primitives/aead/"
 "verify" = { "type" = "lab", "exercise" = "access-policy" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."

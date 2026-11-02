@@ -1,0 +1,19 @@
+{
+  "synthetic": true,
+  "window": [
+    "2026-10-01T09:00:00Z",
+    "2026-10-01T09:10:00Z"
+  ],
+  "maintenance": {
+    "M17": "backup login approved 09:00\u201309:15 UTC"
+  },
+  "unknowns": [
+    "No endpoint process telemetry for workstation-3",
+    "No HR confirmation of Alice role change"
+  ],
+  "contacts": {
+    "incident_owner": "Mira (fictional)",
+    "defender": "Dev (fictional)"
+  },
+  "constraint": "Do not interpret an allowed request alone as proof of compromise."
+}

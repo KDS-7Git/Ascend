@@ -1,0 +1,52 @@
+{
+  "name": "Harbor Notes (fictional)",
+  "purpose": "A team shares synthetic project notes",
+  "owner": "Mira (service owner)",
+  "reviewer": "Dev (security reviewer)",
+  "data": "Synthetic notes only; no customer data",
+  "scope": "Local files and 127.0.0.1:8765 only",
+  "rate_limit": "One manual request per second; no load testing",
+  "stop_conditions": [
+    "An unexpected external host appears",
+    "The practice service becomes unstable"
+  ],
+  "recovery": "Stop local server with Ctrl+C; restart to reset in-memory notes",
+  "business": {
+    "availability_target": "Restore within 4 hours",
+    "recovery_point": "At most 24 hours of note changes lost",
+    "cost_limit": "No cloud spend"
+  },
+  "components": [
+    "browser",
+    "Python API",
+    "in-memory note store"
+  ],
+  "designs": [
+    {
+      "id": "A",
+      "description": "Single API with daily offline export",
+      "cost_per_month": 10,
+      "restore_hours": 3
+    },
+    {
+      "id": "B",
+      "description": "Replicated API with synchronous storage",
+      "cost_per_month": 60,
+      "restore_hours": 1
+    }
+  ],
+  "evidence": [
+    {
+      "id": "E1",
+      "control": "restore drill",
+      "date": "2025-01-01",
+      "result": "3 hours on old build"
+    },
+    {
+      "id": "E2",
+      "control": "owner authorization",
+      "date": "2026-10-01",
+      "result": "Cross-user regression missing"
+    }
+  ]
+}

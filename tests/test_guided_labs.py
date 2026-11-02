@@ -72,6 +72,7 @@ def test_http_walkthrough_commands_produce_real_responses_and_preserve_notes(tmp
             capture_output=True,
             text=True,
             timeout=5,
+            check=False,
         )
         assert result.returncode == 0, result.stderr
         report = tmp_path / "notes/foundations-experiment.json"
@@ -83,6 +84,7 @@ def test_http_walkthrough_commands_produce_real_responses_and_preserve_notes(tmp
             capture_output=True,
             text=True,
             timeout=5,
+            check=False,
         )
         assert retry.returncode != 0 and "already exists" in retry.stderr
         assert report.read_bytes() == before

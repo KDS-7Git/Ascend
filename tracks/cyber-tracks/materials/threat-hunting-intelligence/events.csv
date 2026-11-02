@@ -1,0 +1,12 @@
+id,time,user,host,source_ip,kind,result,detail
+e1,2026-10-01T09:00:00+00:00,alice,workstation-1,192.0.2.10,login,failed,bad-password
+e2,2026-10-01T09:01:00+00:00,alice,workstation-1,192.0.2.10,login,failed,bad-password
+e3,2026-10-01T14:32:00+05:30,alice,workstation-1,192.0.2.10,login,success,normal-device
+e4,2026-10-01T09:03:00+00:00,alice,workstation-1,192.0.2.10,role-change,success,notes-editor
+e5,2026-10-01T09:04:00+00:00,alice,workstation-1,192.0.2.10,web,success,/notes/1
+e6,2026-10-01T09:02:00+00:00,alice-test,workstation-2,192.0.2.11,login,success,training-user
+e7,2026-10-01T08:02:00+00:00,alice,workstation-1,192.0.2.10,login,success,outside-window
+e8,2026-10-01T09:01:00+00:00,backup,server-1,192.0.2.20,login,success,approved-M17
+e9,2026-10-01T09:05:00+00:00,bob,workstation-3,192.0.2.30,dns,success,training-mail.invalid
+e10,2026-10-01T09:06:00+00:00,bob,workstation-3,192.0.2.30,proxy,blocked,training-mail.invalid/link
+e11,2026-10-01T09:07:00+00:00,alice,workstation-1,192.0.2.10,role-change,denied,administrator

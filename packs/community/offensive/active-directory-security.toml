@@ -3,7 +3,7 @@
 "id" = "active-directory-security"
 "title" = "Active Directory and Windows Identity Security"
 "kind" = "proficiency"
-"version" = 1
+"version" = 2
 "source" = "ai-draft"
 "reviewed" = false
 
@@ -12,7 +12,7 @@
 
 [[level]]
 "id" = "foundations"
-"title" = "Prove the entry skills in a small lab"
+"title" = "Trace group membership in a small directory model"
 "lane" = "main"
 
 [[level]]
@@ -47,7 +47,7 @@
 
 [[level]]
 "id" = "independent-transfer"
-"title" = "Revisit the skill on a fresh problem"
+"title" = "Recheck the boundary with a specified change"
 "lane" = "main"
 
 [[level]]
@@ -69,62 +69,79 @@
 "needs" = []
 "done_when" = "Compute the exact content hash of a fresh server-generated evidence fixture and pass its check."
 "brief" = "This small exercise tests evidence integrity. Track entry background: Demonstrate Windows users/groups, basic DNS and TCP/IP, and permission inspection."
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"resource" = "https://docs.python.org/3/library/hashlib.html"
 "verify" = { "type" = "lab", "exercise" = "integrity" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "foundations-reasoning"
 "level" = "foundations"
-"title" = "Reason it through: Prove the entry skills in a small lab"
+"title" = "Reason it through: Trace group membership in a small directory model"
 "size" = "S"
 "minutes" = 10
 "needs" = ["lab-readiness"]
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Demonstrate Windows users/groups, basic DNS and TCP/IP, and permission inspection."
-"steps" = ["Work through this preparation: Demonstrate Windows users/groups, basic DNS and TCP/IP, and permission inspection.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"brief" = "Predict a permission path before inspecting a real directory."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "active-directory-security:foundations" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "foundations-experiment"
 "level" = "foundations"
-"title" = "Investigate: Prove the entry skills in a small lab"
+"title" = "Trace group membership in a small directory model"
 "size" = "M"
-"minutes" = 60
+"minutes" = 30
 "needs" = ["foundations-reasoning"]
-"done_when" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/foundations-experiment.json."
-"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
-"steps" = ["Demonstrate Windows users/groups, basic DNS and TCP/IP, and permission inspection.", "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/foundations-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Predict a permission path before inspecting a real directory."
+"steps" = ["Open directory-model.json. It contains two users, nested groups, an allow list and an explicit deny. This is a simplified graph; it is not a Windows access-check implementation.", "Draw LabReader → LabReaders → LabOperators. List the read/write permissions suggested by the group edges, then identify the explicit LabReader write deny.", "Write one prediction and the native evidence needed to test it: token membership and the object ACL. If on your own Windows host, inspect identity with whoami /user and whoami /groups; do not create accounts on a work domain.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/foundations-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-"
 "verify" = { "type" = "file", "path" = "{lab_dir}/foundations-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The foundations task is a static directory model. Later operational tasks require isolated Windows Server and Windows client VMs, an administrator account in YOUR training domain, DNS between those VMs and the AD PowerShell module. Windows evaluation images have time-limited licensing and substantial RAM/disk requirements. Use Microsoft Evaluation Center; no paid training course is required. A model-only result cannot complete an operational task."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/active-directory-security.zip" }]
 
 [[node]]
 "id" = "foundations-milestone"
 "level" = "foundations"
-"title" = "Apply it to a changed case: Prove the entry skills in a small lab"
+"title" = "Apply it: Trace group membership in a small directory model"
 "size" = "M"
-"minutes" = 120
+"minutes" = 30
 "needs" = ["foundations-reasoning", "foundations-experiment", "lab-readiness"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/foundations-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
-"steps" = ["Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Transfer: Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.", "Control: Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/foundations-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Predict a permission path before inspecting a real directory."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Open directory-model.json. It contains two users, nested groups, an allow list and an explicit deny. This is a simplified graph; it is not a Windows access-check implementation.", "Change to test: Remove LabReaders from LabOperators in a copy and redraw the reachable group path.", "Comparison to retain: Keep LabOperator in LabOperators. Explain why that unrelated membership should remain intact.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/foundations-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-"
 "verify" = { "type" = "file", "path" = "{lab_dir}/foundations-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The foundations task is a static directory model. Later operational tasks require isolated Windows Server and Windows client VMs, an administrator account in YOUR training domain, DNS between those VMs and the AD PowerShell module. Windows evaluation images have time-limited licensing and substantial RAM/disk requirements. Use Microsoft Evaluation Center; no paid training course is required. A model-only result cannot complete an operational task."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/active-directory-security.zip" }]
 
 [[node]]
 "id" = "recall-foundations"
 "level" = "recall-lane"
-"title" = "Return later: Prove the entry skills in a small lab"
+"title" = "Return later: Trace group membership in a small directory model"
 "size" = "S"
 "minutes" = 10
 "needs" = ["foundations-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
-"brief" = "Reconstruct the environment and entry assumptions without following the setup notes."
-"steps" = ["Reconstruct the environment and entry assumptions without following the setup notes.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"brief" = "Without opening your report, reconstruct the inputs, observed result and main limitation of trace group membership in a small directory model."
+"steps" = ["Without opening your report, reconstruct the inputs, observed result and main limitation of trace group membership in a small directory model.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "active-directory-security:foundations" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "domain-model-reasoning"
@@ -134,38 +151,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Identify domain, forest, OU, account, group and computer objects in a supplied directory export."
-"steps" = ["Work through this preparation: Identify domain, forest, OU, account, group and computer objects in a supplied directory export.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "active-directory-security:domain-model" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "domain-model-experiment"
 "level" = "domain-model"
-"title" = "Investigate: Draw the domain before testing it"
+"title" = "Practice: Draw the domain before testing it"
 "size" = "M"
 "minutes" = 60
 "needs" = ["domain-model-reasoning"]
-"done_when" = "On a training domain, document DNS discovery, one domain join and a normal domain sign-in; preserve an architecture diagram and baseline event evidence. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/domain-model-experiment.json."
-"brief" = "On a training domain, document DNS discovery, one domain join and a normal domain sign-in; preserve an architecture diagram and baseline event evidence."
-"steps" = ["Identify domain, forest, OU, account, group and computer objects in a supplied directory export.", "On a training domain, document DNS discovery, one domain join and a normal domain sign-in; preserve an architecture diagram and baseline event evidence.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/domain-model-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Prepare an isolated training.example.test forest using the linked Microsoft AD DS installation guide on a fresh evaluation VM. Point a separate training client’s DNS at the DC. Record the VM network, OS build and reset snapshot."
+"steps" = ["Prepare an isolated training.example.test forest using the linked Microsoft AD DS installation guide on a fresh evaluation VM. Point a separate training client’s DNS at the DC. Record the VM network, OS build and reset snapshot.", "Create the Training OU and the LabReader/LabOperator test users in that lab only. Join the test client using Windows Settings → System → About → Domain or workgroup. Reboot and sign in as a test user.", "Capture Get-ADDomain, client ipconfig /all and the domain sign-in event. A static JSON graph does not fulfill this task.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/domain-model-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-"
 "verify" = { "type" = "file", "path" = "{lab_dir}/domain-model-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The foundations task is a static directory model. Later operational tasks require isolated Windows Server and Windows client VMs, an administrator account in YOUR training domain, DNS between those VMs and the AD PowerShell module. Windows evaluation images have time-limited licensing and substantial RAM/disk requirements. Use Microsoft Evaluation Center; no paid training course is required. A model-only result cannot complete an operational task."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/active-directory-security.zip" }]
 
 [[node]]
 "id" = "domain-model-milestone"
 "level" = "domain-model"
-"title" = "Apply it to a changed case: Draw the domain before testing it"
+"title" = "Apply it: Draw the domain before testing it"
 "size" = "M"
 "minutes" = 120
 "needs" = ["domain-model-reasoning", "domain-model-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/domain-model-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "On a training domain, document DNS discovery, one domain join and a normal domain sign-in; preserve an architecture diagram and baseline event evidence."
-"steps" = ["On a training domain, document DNS discovery, one domain join and a normal domain sign-in; preserve an architecture diagram and baseline event evidence.", "Transfer: Change the client DNS server in the disposable lab and predict which discovery or authentication step fails.", "Control: Compare a local login with a domain login and explain which identity authority answered.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/domain-model-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Prepare an isolated training.example.test forest using the linked Microsoft AD DS installation guide on a fresh evaluation VM. Point a separate training client’s DNS at the DC. Record the VM network, OS build and reset snapshot."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Prepare an isolated training.example.test forest using the linked Microsoft AD DS installation guide on a fresh evaluation VM. Point a separate training client’s DNS at the DC. Record the VM network, OS build and reset snapshot.", "Change to test: Change the client DNS server in the disposable lab and predict which discovery or authentication step fails.", "Comparison to retain: Compare a local login with a domain login and explain which identity authority answered.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/domain-model-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-"
 "verify" = { "type" = "file", "path" = "{lab_dir}/domain-model-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The foundations task is a static directory model. Later operational tasks require isolated Windows Server and Windows client VMs, an administrator account in YOUR training domain, DNS between those VMs and the AD PowerShell module. Windows evaluation images have time-limited licensing and substantial RAM/disk requirements. Use Microsoft Evaluation Center; no paid training course is required. A model-only result cannot complete an operational task."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/active-directory-security.zip" }]
 
 [[node]]
 "id" = "recall-domain-model"
@@ -176,9 +204,12 @@
 "needs" = ["domain-model-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Recreate the domain discovery and trust boundaries from memory."
-"steps" = ["Recreate the domain discovery and trust boundaries from memory.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"steps" = ["Recreate the domain discovery and trust boundaries from memory.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "active-directory-security:domain-model" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "auth-protocols-reasoning"
@@ -188,38 +219,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Draw the normal Kerberos ticket flow and distinguish it from NTLM challenge-response using official protocol material."
-"steps" = ["Work through this preparation: Draw the normal Kerberos ticket flow and distinguish it from NTLM challenge-response using official protocol material.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "active-directory-security:auth-protocols" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "auth-protocols-experiment"
 "level" = "auth-protocols"
-"title" = "Investigate: A ticket is not a password"
+"title" = "Practice: A ticket is not a password"
 "size" = "M"
 "minutes" = 60
 "needs" = ["auth-protocols-reasoning"]
-"done_when" = "Capture permitted authentication telemetry in a training domain and correlate ticket issuance or fallback with a controlled client action, without collecting real credentials. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/auth-protocols-experiment.json."
-"brief" = "Capture permitted authentication telemetry in a training domain and correlate ticket issuance or fallback with a controlled client action, without collecting real credentials."
-"steps" = ["Draw the normal Kerberos ticket flow and distinguish it from NTLM challenge-response using official protocol material.", "Capture permitted authentication telemetry in a training domain and correlate ticket issuance or fallback with a controlled client action, without collecting real credentials.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/auth-protocols-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use your joined training client and DC from domain-model. Record their clock/DNS settings. On the client run klist before and after accessing a share you created on the training DC."
+"steps" = ["Use your joined training client and DC from domain-model. Record their clock/DNS settings. On the client run klist before and after accessing a share you created on the training DC.", "On the DC inspect the corresponding Security log ticket events (4768/4769) if auditing is enabled; compare account, service and time with the client action.", "If no event is collected, record the audit setting and gap; do not fabricate a ticket event or collect real user passwords.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/auth-protocols-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-"
 "verify" = { "type" = "file", "path" = "{lab_dir}/auth-protocols-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The foundations task is a static directory model. Later operational tasks require isolated Windows Server and Windows client VMs, an administrator account in YOUR training domain, DNS between those VMs and the AD PowerShell module. Windows evaluation images have time-limited licensing and substantial RAM/disk requirements. Use Microsoft Evaluation Center; no paid training course is required. A model-only result cannot complete an operational task."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/active-directory-security.zip" }]
 
 [[node]]
 "id" = "auth-protocols-milestone"
 "level" = "auth-protocols"
-"title" = "Apply it to a changed case: A ticket is not a password"
+"title" = "Apply it: A ticket is not a password"
 "size" = "M"
 "minutes" = 120
 "needs" = ["auth-protocols-reasoning", "auth-protocols-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/auth-protocols-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Capture permitted authentication telemetry in a training domain and correlate ticket issuance or fallback with a controlled client action, without collecting real credentials."
-"steps" = ["Capture permitted authentication telemetry in a training domain and correlate ticket issuance or fallback with a controlled client action, without collecting real credentials.", "Transfer: Change a service name or introduce documented clock skew in the disposable lab and predict the failure or fallback.", "Control: Include a normal successful service access and a deliberately invalid service reference.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/auth-protocols-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use your joined training client and DC from domain-model. Record their clock/DNS settings. On the client run klist before and after accessing a share you created on the training DC."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use your joined training client and DC from domain-model. Record their clock/DNS settings. On the client run klist before and after accessing a share you created on the training DC.", "Change to test: Change a service name or introduce documented clock skew in the disposable lab and predict the failure or fallback.", "Comparison to retain: Include a normal successful service access and a deliberately invalid service reference.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/auth-protocols-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-"
 "verify" = { "type" = "file", "path" = "{lab_dir}/auth-protocols-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The foundations task is a static directory model. Later operational tasks require isolated Windows Server and Windows client VMs, an administrator account in YOUR training domain, DNS between those VMs and the AD PowerShell module. Windows evaluation images have time-limited licensing and substantial RAM/disk requirements. Use Microsoft Evaluation Center; no paid training course is required. A model-only result cannot complete an operational task."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/active-directory-security.zip" }]
 
 [[node]]
 "id" = "recall-auth-protocols"
@@ -230,9 +272,12 @@
 "needs" = ["auth-protocols-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain why DNS, SPNs and time synchronization matter to Kerberos."
-"steps" = ["Explain why DNS, SPNs and time synchronization matter to Kerberos.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"steps" = ["Explain why DNS, SPNs and time synchronization matter to Kerberos.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "active-directory-security:auth-protocols" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "permissions-reasoning"
@@ -242,38 +287,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Calculate effective membership for nested training groups and inspect one object's ACL."
-"steps" = ["Work through this preparation: Calculate effective membership for nested training groups and inspect one object's ACL.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "active-directory-security:permissions" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "permissions-experiment"
 "level" = "permissions"
-"title" = "Investigate: Prove an identity graph edge"
+"title" = "Practice: Prove an identity graph edge"
 "size" = "M"
 "minutes" = 60
 "needs" = ["permissions-reasoning"]
-"done_when" = "Trace a least-privilege violation in a supplied or owned directory graph and verify the claimed edge against native permissions before proposing a fix. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/permissions-experiment.json."
-"brief" = "Trace a least-privilege violation in a supplied or owned directory graph and verify the claimed edge against native permissions before proposing a fix."
-"steps" = ["Calculate effective membership for nested training groups and inspect one object's ACL.", "Trace a least-privilege violation in a supplied or owned directory graph and verify the claimed edge against native permissions before proposing a fix.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/permissions-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Create LabReaders and LabOperators groups in your isolated domain and place them under the Training OU. Recreate the nested membership in directory-model.json."
+"steps" = ["Create LabReaders and LabOperators groups in your isolated domain and place them under the Training OU. Recreate the nested membership in directory-model.json.", "Inspect Get-ADGroupMember -Recursive, the test user token, and Get-Acl on the Training OU. Select one real inherited or explicit grant and predict effective access; model deny behavior may differ from your actual ACL.", "Remove only the overbroad TEST grant, then compare native ACL and intended test-user access before/after. A graph path alone is insufficient evidence.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/permissions-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-"
 "verify" = { "type" = "file", "path" = "{lab_dir}/permissions-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The foundations task is a static directory model. Later operational tasks require isolated Windows Server and Windows client VMs, an administrator account in YOUR training domain, DNS between those VMs and the AD PowerShell module. Windows evaluation images have time-limited licensing and substantial RAM/disk requirements. Use Microsoft Evaluation Center; no paid training course is required. A model-only result cannot complete an operational task."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/active-directory-security.zip" }]
 
 [[node]]
 "id" = "permissions-milestone"
 "level" = "permissions"
-"title" = "Apply it to a changed case: Prove an identity graph edge"
+"title" = "Apply it: Prove an identity graph edge"
 "size" = "M"
 "minutes" = 120
 "needs" = ["permissions-reasoning", "permissions-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/permissions-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Trace a least-privilege violation in a supplied or owned directory graph and verify the claimed edge against native permissions before proposing a fix."
-"steps" = ["Trace a least-privilege violation in a supplied or owned directory graph and verify the claimed edge against native permissions before proposing a fix.", "Transfer: Remove one group membership or inherited permission and predict whether the path still exists.", "Control: Include a graph edge that appears plausible but is denied by the effective permissions.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/permissions-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Create LabReaders and LabOperators groups in your isolated domain and place them under the Training OU. Recreate the nested membership in directory-model.json."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Create LabReaders and LabOperators groups in your isolated domain and place them under the Training OU. Recreate the nested membership in directory-model.json.", "Change to test: Remove one group membership or inherited permission and predict whether the path still exists.", "Comparison to retain: Include a graph edge that appears plausible but is denied by the effective permissions.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/permissions-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-"
 "verify" = { "type" = "file", "path" = "{lab_dir}/permissions-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The foundations task is a static directory model. Later operational tasks require isolated Windows Server and Windows client VMs, an administrator account in YOUR training domain, DNS between those VMs and the AD PowerShell module. Windows evaluation images have time-limited licensing and substantial RAM/disk requirements. Use Microsoft Evaluation Center; no paid training course is required. A model-only result cannot complete an operational task."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/active-directory-security.zip" }]
 
 [[node]]
 "id" = "recall-permissions"
@@ -284,9 +340,12 @@
 "needs" = ["permissions-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain the distinction between a graph hypothesis and a verified authorization path."
-"steps" = ["Explain the distinction between a graph hypothesis and a verified authorization path.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"steps" = ["Explain the distinction between a graph hypothesis and a verified authorization path.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "active-directory-security:permissions" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "gpo-delegation-reasoning"
@@ -296,38 +355,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Identify which principal can edit a policy and where that policy is linked in a lab export."
-"steps" = ["Work through this preparation: Identify which principal can edit a policy and where that policy is linked in a lab export.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "active-directory-security:gpo-delegation" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "gpo-delegation-experiment"
 "level" = "gpo-delegation"
-"title" = "Investigate: Separate management power from service identity"
+"title" = "Practice: Separate management power from service identity"
 "size" = "M"
 "minutes" = 60
 "needs" = ["gpo-delegation-reasoning"]
-"done_when" = "Inspect a training GPO and a documented delegation configuration, explain their intended function and identify an overbroad grant using effective access and normal service behavior. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/gpo-delegation-experiment.json."
-"brief" = "Inspect a training GPO and a documented delegation configuration, explain their intended function and identify an overbroad grant using effective access and normal service behavior."
-"steps" = ["Identify which principal can edit a policy and where that policy is linked in a lab export.", "Inspect a training GPO and a documented delegation configuration, explain their intended function and identify an overbroad grant using effective access and normal service behavior.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/gpo-delegation-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "In Group Policy Management on your training DC, create an otherwise empty TrainingNotes GPO linked only to the Training OU. Record its scope and delegation tab."
+"steps" = ["In Group Policy Management on your training DC, create an otherwise empty TrainingNotes GPO linked only to the Training OU. Record its scope and delegation tab.", "Compare the ability of LabReader and LabOperator to read versus edit this GPO. Grant only a test-group permission when constructing the exercise; preserve the baseline for restoration.", "Remove an overbroad edit grant and check that the intended delegated editor still works. Record actual effective access, not just group names.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/gpo-delegation-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-"
 "verify" = { "type" = "file", "path" = "{lab_dir}/gpo-delegation-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The foundations task is a static directory model. Later operational tasks require isolated Windows Server and Windows client VMs, an administrator account in YOUR training domain, DNS between those VMs and the AD PowerShell module. Windows evaluation images have time-limited licensing and substantial RAM/disk requirements. Use Microsoft Evaluation Center; no paid training course is required. A model-only result cannot complete an operational task."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/active-directory-security.zip" }]
 
 [[node]]
 "id" = "gpo-delegation-milestone"
 "level" = "gpo-delegation"
-"title" = "Apply it to a changed case: Separate management power from service identity"
+"title" = "Apply it: Separate management power from service identity"
 "size" = "M"
 "minutes" = 120
 "needs" = ["gpo-delegation-reasoning", "gpo-delegation-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/gpo-delegation-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Inspect a training GPO and a documented delegation configuration, explain their intended function and identify an overbroad grant using effective access and normal service behavior."
-"steps" = ["Inspect a training GPO and a documented delegation configuration, explain their intended function and identify an overbroad grant using effective access and normal service behavior.", "Transfer: Restrict the policy link or delegated target and predict which administrative or service action stops working.", "Control: Keep an intended management action functioning after the proposed least-privilege change.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/gpo-delegation-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "In Group Policy Management on your training DC, create an otherwise empty TrainingNotes GPO linked only to the Training OU. Record its scope and delegation tab."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: In Group Policy Management on your training DC, create an otherwise empty TrainingNotes GPO linked only to the Training OU. Record its scope and delegation tab.", "Change to test: Restrict the policy link or delegated target and predict which administrative or service action stops working.", "Comparison to retain: Keep an intended management action functioning after the proposed least-privilege change.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/gpo-delegation-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-"
 "verify" = { "type" = "file", "path" = "{lab_dir}/gpo-delegation-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The foundations task is a static directory model. Later operational tasks require isolated Windows Server and Windows client VMs, an administrator account in YOUR training domain, DNS between those VMs and the AD PowerShell module. Windows evaluation images have time-limited licensing and substantial RAM/disk requirements. Use Microsoft Evaluation Center; no paid training course is required. A model-only result cannot complete an operational task."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/active-directory-security.zip" }]
 
 [[node]]
 "id" = "recall-gpo-delegation"
@@ -338,9 +408,12 @@
 "needs" = ["gpo-delegation-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain why controlling a policy object and applying that policy are separate conditions."
-"steps" = ["Explain why controlling a policy object and applying that policy are separate conditions.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"steps" = ["Explain why controlling a policy object and applying that policy are separate conditions.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "active-directory-security:gpo-delegation" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "certificate-services-reasoning"
@@ -350,38 +423,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Read a training certificate's subject, SAN, EKU, issuer and validity; explain chain trust separately from identity mapping."
-"steps" = ["Work through this preparation: Read a training certificate's subject, SAN, EKU, issuer and validity; explain chain trust separately from identity mapping.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "active-directory-security:certificate-services" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "certificate-services-experiment"
 "level" = "certificate-services"
-"title" = "Investigate: Follow the certificate enrollment decision"
+"title" = "Practice: Follow the certificate enrollment decision"
 "size" = "M"
 "minutes" = 60
 "needs" = ["certificate-services-reasoning"]
-"done_when" = "In an isolated AD CS lab or supplied configuration exercise, map template enrollment permissions and identity settings to a concrete authentication risk; test a corrected configuration in a real lab before claiming operational completion. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/certificate-services-experiment.json."
-"brief" = "In an isolated AD CS lab or supplied configuration exercise, map template enrollment permissions and identity settings to a concrete authentication risk; test a corrected configuration in a real lab before claiming operational completion."
-"steps" = ["Read a training certificate's subject, SAN, EKU, issuer and validity; explain chain trust separately from identity mapping.", "In an isolated AD CS lab or supplied configuration exercise, map template enrollment permissions and identity settings to a concrete authentication risk; test a corrected configuration in a real lab before claiming operational completion.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/certificate-services-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "This task additionally needs an isolated AD CS evaluation lab. Follow Microsoft AD CS installation documentation; take a reset snapshot before adding the role. Keep issued certificates in the training domain."
+"steps" = ["This task additionally needs an isolated AD CS evaluation lab. Follow Microsoft AD CS installation documentation; take a reset snapshot before adding the role. Keep issued certificates in the training domain.", "Inspect one duplicated, training-only user template’s enrollment ACL, subject-name source and authentication purpose. Record exact settings and predict which user can enroll as which identity.", "Tighten the training template and test permitted enrollment plus a denied case. Without the AD CS environment, record preparation only; directory-model.json does not demonstrate certificate behavior.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/certificate-services-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-"
 "verify" = { "type" = "file", "path" = "{lab_dir}/certificate-services-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The foundations task is a static directory model. Later operational tasks require isolated Windows Server and Windows client VMs, an administrator account in YOUR training domain, DNS between those VMs and the AD PowerShell module. Windows evaluation images have time-limited licensing and substantial RAM/disk requirements. Use Microsoft Evaluation Center; no paid training course is required. A model-only result cannot complete an operational task."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/active-directory-security.zip" }]
 
 [[node]]
 "id" = "certificate-services-milestone"
 "level" = "certificate-services"
-"title" = "Apply it to a changed case: Follow the certificate enrollment decision"
+"title" = "Apply it: Follow the certificate enrollment decision"
 "size" = "M"
 "minutes" = 120
 "needs" = ["certificate-services-reasoning", "certificate-services-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/certificate-services-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "In an isolated AD CS lab or supplied configuration exercise, map template enrollment permissions and identity settings to a concrete authentication risk; test a corrected configuration in a real lab before claiming operational completion."
-"steps" = ["In an isolated AD CS lab or supplied configuration exercise, map template enrollment permissions and identity settings to a concrete authentication risk; test a corrected configuration in a real lab before claiming operational completion.", "Transfer: Change enrollment rights or an identity-related template setting and predict which request is permitted or rejected.", "Control: Show a legitimate enrollment still works and an unauthorized identity request is rejected after the repair.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/certificate-services-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "This task additionally needs an isolated AD CS evaluation lab. Follow Microsoft AD CS installation documentation; take a reset snapshot before adding the role. Keep issued certificates in the training domain."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: This task additionally needs an isolated AD CS evaluation lab. Follow Microsoft AD CS installation documentation; take a reset snapshot before adding the role. Keep issued certificates in the training domain.", "Change to test: Change enrollment rights or an identity-related template setting and predict which request is permitted or rejected.", "Comparison to retain: Show a legitimate enrollment still works and an unauthorized identity request is rejected after the repair.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/certificate-services-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-"
 "verify" = { "type" = "file", "path" = "{lab_dir}/certificate-services-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The foundations task is a static directory model. Later operational tasks require isolated Windows Server and Windows client VMs, an administrator account in YOUR training domain, DNS between those VMs and the AD PowerShell module. Windows evaluation images have time-limited licensing and substantial RAM/disk requirements. Use Microsoft Evaluation Center; no paid training course is required. A model-only result cannot complete an operational task."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/active-directory-security.zip" }]
 
 [[node]]
 "id" = "recall-certificate-services"
@@ -392,9 +476,12 @@
 "needs" = ["certificate-services-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain why possessing a valid certificate is not sufficient proof of an authorized identity."
-"steps" = ["Explain why possessing a valid certificate is not sufficient proof of an authorized identity.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"steps" = ["Explain why possessing a valid certificate is not sufficient proof of an authorized identity.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "active-directory-security:certificate-services" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "assessment-reasoning"
@@ -404,38 +491,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Define scope, snapshot recovery and two identity hypotheses for an unfamiliar lab domain."
-"steps" = ["Work through this preparation: Define scope, snapshot recovery and two identity hypotheses for an unfamiliar lab domain.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "active-directory-security:assessment" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "assessment-experiment"
 "level" = "assessment"
-"title" = "Investigate: Harden a small domain and retest it"
+"title" = "Practice: Harden a small domain and retest it"
 "size" = "M"
 "minutes" = 60
 "needs" = ["assessment-reasoning"]
-"done_when" = "Audit the training domain's discovery, authentication, permissions and one certificate or policy boundary; deliver native evidence, impact and a verified least-privilege repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/assessment-experiment.json."
-"brief" = "Audit the training domain's discovery, authentication, permissions and one certificate or policy boundary; deliver native evidence, impact and a verified least-privilege repair."
-"steps" = ["Define scope, snapshot recovery and two identity hypotheses for an unfamiliar lab domain.", "Audit the training domain's discovery, authentication, permissions and one certificate or policy boundary; deliver native evidence, impact and a verified least-privilege repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/assessment-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use your existing training domain and a fresh test OU. Audit DNS discovery, one domain sign-in and one inherited permission or GPO delegation edge."
+"steps" = ["Use your existing training domain and a fresh test OU. Audit DNS discovery, one domain sign-in and one inherited permission or GPO delegation edge.", "Predict a least-privilege repair, apply it only to the test object and verify both the denied unrelated identity and the intended operation.", "Export native evidence and restore the lab change. Identify any AD CS area left untested.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/assessment-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-"
 "verify" = { "type" = "file", "path" = "{lab_dir}/assessment-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The foundations task is a static directory model. Later operational tasks require isolated Windows Server and Windows client VMs, an administrator account in YOUR training domain, DNS between those VMs and the AD PowerShell module. Windows evaluation images have time-limited licensing and substantial RAM/disk requirements. Use Microsoft Evaluation Center; no paid training course is required. A model-only result cannot complete an operational task."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/active-directory-security.zip" }]
 
 [[node]]
 "id" = "assessment-milestone"
 "level" = "assessment"
-"title" = "Apply it to a changed case: Harden a small domain and retest it"
+"title" = "Apply it: Harden a small domain and retest it"
 "size" = "M"
 "minutes" = 120
 "needs" = ["assessment-reasoning", "assessment-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/assessment-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Audit the training domain's discovery, authentication, permissions and one certificate or policy boundary; deliver native evidence, impact and a verified least-privilege repair."
-"steps" = ["Audit the training domain's discovery, authentication, permissions and one certificate or policy boundary; deliver native evidence, impact and a verified least-privilege repair.", "Transfer: Change one account's memberships or a policy scope and independently re-evaluate the affected path.", "Control: Retest normal user/service sign-in and document which enterprise controls were not present in the lab.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/assessment-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use your existing training domain and a fresh test OU. Audit DNS discovery, one domain sign-in and one inherited permission or GPO delegation edge."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use your existing training domain and a fresh test OU. Audit DNS discovery, one domain sign-in and one inherited permission or GPO delegation edge.", "Change to test: Change one account's memberships or a policy scope and independently re-evaluate the affected path.", "Comparison to retain: Retest normal user/service sign-in and document which enterprise controls were not present in the lab.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/assessment-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-"
 "verify" = { "type" = "file", "path" = "{lab_dir}/assessment-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The foundations task is a static directory model. Later operational tasks require isolated Windows Server and Windows client VMs, an administrator account in YOUR training domain, DNS between those VMs and the AD PowerShell module. Windows evaluation images have time-limited licensing and substantial RAM/disk requirements. Use Microsoft Evaluation Center; no paid training course is required. A model-only result cannot complete an operational task."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/active-directory-security.zip" }]
 
 [[node]]
 "id" = "recall-assessment"
@@ -446,63 +544,80 @@
 "needs" = ["assessment-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Reconstruct one privilege path and the exact permission change that removed it."
-"steps" = ["Reconstruct one privilege path and the exact permission change that removed it.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"steps" = ["Reconstruct one privilege path and the exact permission change that removed it.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "active-directory-security:assessment" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "independent-transfer-reasoning"
 "level" = "independent-transfer"
-"title" = "Reason it through: Revisit the skill on a fresh problem"
+"title" = "Reason it through: Recheck the boundary with a specified change"
 "size" = "S"
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution."
-"steps" = ["Work through this preparation: Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"brief" = "Use the named task files for the changed case. Predict the effect before opening previous notes."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "active-directory-security:independent-transfer" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "independent-transfer-experiment"
 "level" = "independent-transfer"
-"title" = "Investigate: Revisit the skill on a fresh problem"
+"title" = "Practice: Recheck the boundary with a specified change"
 "size" = "M"
 "minutes" = 60
 "needs" = ["independent-transfer-reasoning"]
-"done_when" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/independent-transfer-experiment.json."
-"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
-"steps" = ["Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/independent-transfer-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "In your isolated domain, move the TrainingNotes GPO link from the Training OU to a new TrainingReview OU containing only LabOperator. Predict and measure which test user is affected."
+"steps" = ["Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.", "In your isolated domain, move the TrainingNotes GPO link from the Training OU to a new TrainingReview OU containing only LabOperator. Predict and measure which test user is affected.", "Normal LabReader sign-in must still work; leave other OUs untouched.", "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/independent-transfer-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-"
 "verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The foundations task is a static directory model. Later operational tasks require isolated Windows Server and Windows client VMs, an administrator account in YOUR training domain, DNS between those VMs and the AD PowerShell module. Windows evaluation images have time-limited licensing and substantial RAM/disk requirements. Use Microsoft Evaluation Center; no paid training course is required. A model-only result cannot complete an operational task."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/active-directory-security.zip" }]
 
 [[node]]
 "id" = "independent-transfer-milestone"
 "level" = "independent-transfer"
-"title" = "Apply it to a changed case: Revisit the skill on a fresh problem"
+"title" = "Apply it: Recheck the boundary with a specified change"
 "size" = "M"
 "minutes" = 120
 "needs" = ["independent-transfer-reasoning", "independent-transfer-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/independent-transfer-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
-"steps" = ["After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Transfer: Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.", "Control: Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/independent-transfer-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "In your isolated domain, move the TrainingNotes GPO link from the Training OU to a new TrainingReview OU containing only LabOperator. Predict and measure which test user is affected."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.", "Change to test: Add a second case by reversing the changed condition above, predict its result and compare actual behavior.", "Comparison to retain: Normal LabReader sign-in must still work; leave other OUs untouched.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/independent-transfer-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-"
 "verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The foundations task is a static directory model. Later operational tasks require isolated Windows Server and Windows client VMs, an administrator account in YOUR training domain, DNS between those VMs and the AD PowerShell module. Windows evaluation images have time-limited licensing and substantial RAM/disk requirements. Use Microsoft Evaluation Center; no paid training course is required. A model-only result cannot complete an operational task."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/active-directory-security.zip" }]
 
 [[node]]
 "id" = "recall-independent-transfer"
 "level" = "recall-lane"
-"title" = "Return later: Revisit the skill on a fresh problem"
+"title" = "Return later: Recheck the boundary with a specified change"
 "size" = "S"
 "minutes" = 10
 "needs" = ["independent-transfer-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
-"brief" = "Explain what transferred, what required help and which prerequisite needs another small experiment."
-"steps" = ["Explain what transferred, what required help and which prerequisite needs another small experiment.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"brief" = "Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested."
+"steps" = ["Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "active-directory-security:independent-transfer" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "quick-access-check"
@@ -512,5 +627,8 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Correctly evaluate every allow/deny decision for a fresh server-generated policy fixture."
-"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview"
+"resource" = "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-"
 "verify" = { "type" = "lab", "exercise" = "access-policy" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."

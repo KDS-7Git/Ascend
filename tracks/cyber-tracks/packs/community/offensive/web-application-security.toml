@@ -1,600 +1,584 @@
-# Track 2 of 5: Web Application Security
-# kind = "proficiency": goes well past the Juice Shop intro in the home-hack-lab project pack. That pack gave you
-# one SQLi, one XSS, one broken-access-control win -- this track builds the full OWASP Top 10 picture using
-# PortSwigger's Web Security Academy, the free, industry-standard resource for this exact subject.
-# Suggested prerequisite: networking-for-security (at least the application-layer level), since this track
-# assumes you already know what an HTTP request/response actually looks like.
-#
-# DRAFT written by Claude. NOT reviewed. Run `ascend pack lint`, `ascend pack check-links`, read every
-# done_when, then `ascend pack review web-application-security` before trusting it.
-
 [pack]
-id = "web-application-security"
-title = "Web Application Security: beyond the OWASP Top 10 basics"
-kind = "proficiency"
-version = 3
-source = "ai-draft"
-reviewed = false
+"id" = "web-application-security"
+"title" = "Web Application Security: beyond the OWASP Top 10 basics"
+"kind" = "proficiency"
+"version" = 4
+"source" = "ai-draft"
+"reviewed" = false
 
 [vars]
-lab_dir = "~/cyber/webapp"
-pi_ip = "192.168.1.50"
+"lab_dir" = "~/cyber/webapp"
+"pi_ip" = "192.168.1.50"
 
 [[level]]
-id = "injection"
-title = "Injection: SQL, command, and beyond"
-lane = "main"
+"id" = "injection"
+"title" = "Injection: SQL, command, and beyond"
+"lane" = "main"
 
 [[level]]
-id = "auth"
-title = "Broken authentication and session management"
-lane = "main"
+"id" = "auth"
+"title" = "Broken authentication and session management"
+"lane" = "main"
 
 [[level]]
-id = "access-control"
-title = "Broken access control, in depth"
-lane = "main"
+"id" = "access-control"
+"title" = "Broken access control, in depth"
+"lane" = "main"
 
 [[level]]
-id = "xss-and-csrf"
-title = "XSS, CSRF, and client-side trust"
-lane = "main"
+"id" = "xss-and-csrf"
+"title" = "XSS, CSRF, and client-side trust"
+"lane" = "main"
 
 [[level]]
-id = "ssrf-and-deserialization"
-title = "SSRF, insecure deserialization, XXE"
-lane = "main"
+"id" = "ssrf-and-deserialization"
+"title" = "SSRF, insecure deserialization, XXE"
+"lane" = "main"
 
 [[level]]
-id = "logic-flaws"
-title = "Business logic vulnerabilities"
-lane = "main"
+"id" = "logic-flaws"
+"title" = "Business logic vulnerabilities"
+"lane" = "main"
 
 [[level]]
-id = "api-security"
-title = "API security: REST, GraphQL, JWTs"
-lane = "main"
+"id" = "api-security"
+"title" = "API security: REST, GraphQL, JWTs"
+"lane" = "main"
 
 [[level]]
-id = "capstone"
-title = "Full assessment on one target"
-lane = "main"
+"id" = "capstone"
+"title" = "Full assessment on one target"
+"lane" = "main"
 
 [[level]]
-id = "drills"
-title = "PortSwigger Academy drills"
-lane = "side"
+"id" = "drills"
+"title" = "PortSwigger Academy drills"
+"lane" = "side"
 
-# ---------------------------------------------------------------- 1: injection
 [[level]]
-id = "retrieval"
-title = "Return later: explain and transfer"
-lane = "side"
+"id" = "retrieval"
+"title" = "Return later: explain and transfer"
+"lane" = "side"
 
 [[node]]
-id = "lab-readiness"
-level = "injection"
-title = "Capture and replay a request in a training lab"
-size = "S"
-minutes = 30
-needs = []
-brief = "Establish the prerequisites with a small demonstration. Use a foundations lesson if you cannot yet explain the result."
-done_when = "Launch an authorized Academy lab, capture one request in Burp Community or browser tools, replay it, and identify method, path, parameter, status, and cookie role. Explain which identity the server sees; save no live tokens."
-resource = "https://portswigger.net/web-security/learning-paths"
-verify = { type = "manual" }
+"id" = "lab-readiness"
+"level" = "injection"
+"title" = "Capture and replay a request in a training lab"
+"size" = "S"
+"minutes" = 30
+"needs" = []
+"brief" = "Establish the prerequisites with a small demonstration. Use a foundations lesson if you cannot yet explain the result."
+"done_when" = "Launch an authorized Academy lab, capture one request in Burp Community or browser tools, replay it, and identify method, path, parameter, status, and cookie role. Explain which identity the server sees; save no live tokens."
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
+"verify" = { "type" = "manual" }
+"resource_label" = "Free setup reference (optional)"
+"resource_note" = "Use the task instructions and your own training environment. This link is documentation, not a course purchase."
 
 [[node]]
-level = "injection"
-id = "sqli-union"
-title = "Make a lab reveal a hidden row"
-size = "M"
-needs = ["lab-readiness"]
-done_when = "Solved one PortSwigger UNION lab and saved the successful request, solved status, and why the column counts/types match in {lab_dir}/notes/sqli-union.md."
-resource = "https://portswigger.net/web-security/sql-injection/union-attacks"
-verify = { type = "file", path = "{lab_dir}/notes/sqli-union.md", min_bytes = 150 }
-minutes = 45
-brief = "A product page trusts its input. Use one UNION-based Academy lab to discover what else its database can reveal."
-steps = ["Open the resource and choose one apprentice UNION lab on PortSwigger Academy. Use only the provided lab instance.", "Capture a normal request, then change one input at a time until your UNION query returns the lab’s target value.", "Save the solved-lab evidence, your request, and one sentence on column compatibility in {lab_dir}/notes/sqli-union.md. Redact any secrets."]
-hints = ["A UNION query needs the same number of columns, with compatible types. Establish the shape before trying to extract a value."]
+"level" = "injection"
+"id" = "sqli-union"
+"title" = "Make a lab reveal a hidden row"
+"size" = "M"
+"needs" = ["lab-readiness"]
+"done_when" = "Solved one PortSwigger UNION lab and saved the successful request, solved status, and why the column counts/types match in {lab_dir}/notes/sqli-union.md."
+"resource" = "https://portswigger.net/web-security/sql-injection/union-attacks"
+"verify" = { "type" = "file", "path" = "{lab_dir}/notes/sqli-union.md", "min_bytes" = 150 }
+"minutes" = 45
+"brief" = "A product page trusts its input. Use one UNION-based Academy lab to discover what else its database can reveal."
+"steps" = ["Open the resource and choose one apprentice UNION lab on PortSwigger Academy. Use only the provided lab instance.", "Capture a normal request, then change one input at a time until your UNION query returns the lab’s target value.", "Save the solved-lab evidence, your request, and one sentence on column compatibility in {lab_dir}/notes/sqli-union.md. Redact any secrets."]
+"hints" = ["A UNION query needs the same number of columns, with compatible types. Establish the shape before trying to extract a value."]
 
 [[node]]
-level = "injection"
-id = "sqli-blind"
-title = "Ask a database a question without seeing its answer"
-size = "M"
-needs = ["sqli-union"]
-done_when = "Solved one blind SQLi lab and saved repeated true/false evidence and an explanation of the signal in {lab_dir}/notes/sqli-blind.md."
-resource = "https://portswigger.net/web-security/sql-injection/blind"
-verify = { type = "file", path = "{lab_dir}/notes/sqli-blind.md", min_bytes = 150 }
-minutes = 60
-brief = "The page hides query results. Find a reliable signal that distinguishes true from false."
-steps = ["Choose one blind SQL injection lab from the linked Academy topic.", "Compare a known-true and a known-false condition. Repeat the comparison to rule out noise.", "Solve the lab and save the contrasting requests, observed signal, and root cause in {lab_dir}/notes/sqli-blind.md."]
-hints = ["Look for a content difference, an error, or a repeatable delay. Match the signal to the lab you chose."]
+"level" = "injection"
+"id" = "sqli-blind"
+"title" = "Ask a database a question without seeing its answer"
+"size" = "M"
+"needs" = ["sqli-union"]
+"done_when" = "Solved one blind SQLi lab and saved repeated true/false evidence and an explanation of the signal in {lab_dir}/notes/sqli-blind.md."
+"resource" = "https://portswigger.net/web-security/sql-injection/blind"
+"verify" = { "type" = "file", "path" = "{lab_dir}/notes/sqli-blind.md", "min_bytes" = 150 }
+"minutes" = 60
+"brief" = "The page hides query results. Find a reliable signal that distinguishes true from false."
+"steps" = ["Choose one blind SQL injection lab from the linked Academy topic.", "Compare a known-true and a known-false condition. Repeat the comparison to rule out noise.", "Solve the lab and save the contrasting requests, observed signal, and root cause in {lab_dir}/notes/sqli-blind.md."]
+"hints" = ["Look for a content difference, an error, or a repeatable delay. Match the signal to the lab you chose."]
 
 [[node]]
-level = "injection"
-id = "command-injection"
-title = "Make a lab server do one unintended thing"
-size = "M"
-needs = ["lab-readiness"]
-done_when = "completed one OS command injection lab and wrote the exact payload plus why the application's input handling allowed it, at {lab_dir}/notes/command-injection.md"
-resource = "https://portswigger.net/web-security/os-command-injection"
-verify = { type = "file", path = "{lab_dir}/notes/command-injection.md", min_bytes = 150 }
-minutes = 45
-brief = "Find the boundary between harmless user input and a command the server executes."
-steps = ["Launch one command-injection lab on PortSwigger Academy and capture its normal request.", "Use the lab’s intended harmless proof to show that input reaches a shell.", "Save the solved status, request, and the unsafe input boundary in {lab_dir}/notes/command-injection.md."]
-hints = ["Compare a normal input with your test input. Explain why the application should treat both as data."]
+"level" = "injection"
+"id" = "command-injection"
+"title" = "Make a lab server do one unintended thing"
+"size" = "M"
+"needs" = ["lab-readiness"]
+"done_when" = "completed one OS command injection lab and wrote the exact payload plus why the application's input handling allowed it, at {lab_dir}/notes/command-injection.md"
+"resource" = "https://portswigger.net/web-security/os-command-injection"
+"verify" = { "type" = "file", "path" = "{lab_dir}/notes/command-injection.md", "min_bytes" = 150 }
+"minutes" = 45
+"brief" = "Find the boundary between harmless user input and a command the server executes."
+"steps" = ["Launch one command-injection lab on PortSwigger Academy and capture its normal request.", "Use the lab’s intended harmless proof to show that input reaches a shell.", "Save the solved status, request, and the unsafe input boundary in {lab_dir}/notes/command-injection.md."]
+"hints" = ["Compare a normal input with your test input. Explain why the application should treat both as data."]
 
 [[node]]
-level = "injection"
-id = "injection-milestone"
-title = "Solve an injection lab, then explain the repair"
-size = "L"
-needs = ["lab-readiness", "sqli-union", "sqli-blind", "command-injection"]
-milestone = true
-done_when = "Demonstrated: Infer an injection mechanism from request/response evidence and distinguish a real signal from noise. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/injection-milestone.md."
-resource = "https://portswigger.net/web-security/sql-injection"
-verify = { type = "file", path = "{lab_dir}/notes/injection-milestone.md", min_bytes = 250 }
-
-# ---------------------------------------------------------------- 2: auth
-minutes = 90
-brief = "Infer an injection mechanism from request/response evidence and distinguish a real signal from noise."
-steps = ["Before testing, record your prediction and the observation that would change your mind.", "Solve an unfamiliar scoped Academy injection lab; save redacted baseline and successful requests, observations, root cause, and a specific repair.", "Transfer check: Solve a second small variation of the same mechanism with a different input location, data shape, or response signal.", "Control check: Include a negative request and explain why a status change or delay alone is insufficient evidence.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/injection-milestone.md."]
-hints = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
+"level" = "injection"
+"id" = "injection-milestone"
+"title" = "Solve an injection lab, then explain the repair"
+"size" = "L"
+"needs" = ["lab-readiness", "sqli-union", "sqli-blind", "command-injection"]
+"milestone" = true
+"done_when" = "Demonstrated: Infer an injection mechanism from request/response evidence and distinguish a real signal from noise. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/injection-milestone.md."
+"resource" = "https://portswigger.net/web-security/sql-injection"
+"verify" = { "type" = "file", "path" = "{lab_dir}/notes/injection-milestone.md", "min_bytes" = 250 }
+"minutes" = 90
+"brief" = "Infer an injection mechanism from request/response evidence and distinguish a real signal from noise."
+"steps" = ["Before testing, record your prediction and the observation that would change your mind.", "Solve an unfamiliar scoped Academy injection lab; save redacted baseline and successful requests, observations, root cause, and a specific repair.", "Transfer check: Solve a second small variation of the same mechanism with a different input location, data shape, or response signal.", "Control check: Include a negative request and explain why a status change or delay alone is insufficient evidence.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/injection-milestone.md."]
+"hints" = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
 
 [[node]]
-level = "auth"
-id = "auth-bypass"
-title = "Authentication bypass techniques"
-size = "M"
-needs = []
-done_when = "completed one authentication bypass lab and wrote {lab_dir}/notes/auth-bypass.md on exactly what check was missing or bypassable"
-resource = "https://portswigger.net/web-security/authentication"
-verify = { type = "file", path = "{lab_dir}/notes/auth-bypass.md", min_bytes = 150 }
+"level" = "auth"
+"id" = "auth-bypass"
+"title" = "Authentication bypass techniques"
+"size" = "M"
+"needs" = []
+"done_when" = "completed one authentication bypass lab and wrote {lab_dir}/notes/auth-bypass.md on exactly what check was missing or bypassable"
+"resource" = "https://portswigger.net/web-security/authentication"
+"verify" = { "type" = "file", "path" = "{lab_dir}/notes/auth-bypass.md", "min_bytes" = 150 }
 
 [[node]]
-level = "auth"
-id = "password-reset-flaws"
-title = "Password reset and account recovery flaws"
-size = "M"
-needs = []
-done_when = "completed one password-reset-flow lab and documented the flaw at {lab_dir}/notes/password-reset.md"
-resource = "https://portswigger.net/web-security/authentication/other-mechanisms"
-verify = { type = "file", path = "{lab_dir}/notes/password-reset.md", min_bytes = 150 }
+"level" = "auth"
+"id" = "password-reset-flaws"
+"title" = "Password reset and account recovery flaws"
+"size" = "M"
+"needs" = []
+"done_when" = "completed one password-reset-flow lab and documented the flaw at {lab_dir}/notes/password-reset.md"
+"resource" = "https://portswigger.net/web-security/authentication/other-mechanisms"
+"verify" = { "type" = "file", "path" = "{lab_dir}/notes/password-reset.md", "min_bytes" = 150 }
 
 [[node]]
-level = "auth"
-id = "session-management"
-title = "Session tokens: fixation, prediction, hijacking"
-size = "M"
-needs = ["auth-bypass"]
-done_when = "Completed a training session-management exercise, compared a valid token with a logged-out, expired, or altered token, and saved the actual mechanism in {lab_dir}/notes/session.md without assuming every flaw is token prediction."
-resource = "https://portswigger.net/web-security/authentication/other-mechanisms"
-verify = { type = "file", path = "{lab_dir}/notes/session.md", min_bytes = 150 }
+"level" = "auth"
+"id" = "session-management"
+"title" = "Session tokens: fixation, prediction, hijacking"
+"size" = "M"
+"needs" = ["auth-bypass"]
+"done_when" = "Completed a training session-management exercise, compared a valid token with a logged-out, expired, or altered token, and saved the actual mechanism in {lab_dir}/notes/session.md without assuming every flaw is token prediction."
+"resource" = "https://portswigger.net/web-security/authentication/other-mechanisms"
+"verify" = { "type" = "file", "path" = "{lab_dir}/notes/session.md", "min_bytes" = 150 }
 
 [[node]]
-level = "auth"
-id = "auth-milestone"
-title = "Chain an auth flaw into full account takeover (milestone)"
-size = "L"
-needs = ["auth-bypass", "password-reset-flaws", "session-management"]
-milestone = true
-done_when = "Demonstrated: Track authentication state and identify the missing validation in an account-recovery or session flow. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/auth-milestone.md."
-resource = "https://portswigger.net/web-security/authentication"
-verify = { type = "file", path = "{lab_dir}/notes/auth-milestone.md", min_bytes = 250 }
-
-# ---------------------------------------------------------------- 3: access-control
-brief = "Track authentication state and identify the missing validation in an account-recovery or session flow."
-steps = ["Before testing, record your prediction and the observation that would change your mind.", "Solve a scoped multi-step authentication lab; record the state transition that incorrectly grants access and the intended authentication boundary.", "Transfer check: Change the account relationship or order of recovery/session operations in a comparable training case. Predict which state transition permits or denies access, then test without a walkthrough.", "Control check: Show a legitimate login and a denied unauthenticated request; specify which server-side check breaks the attack chain.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/auth-milestone.md."]
-hints = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
+"level" = "auth"
+"id" = "auth-milestone"
+"title" = "Chain an auth flaw into full account takeover (milestone)"
+"size" = "L"
+"needs" = ["auth-bypass", "password-reset-flaws", "session-management"]
+"milestone" = true
+"done_when" = "Demonstrated: Track authentication state and identify the missing validation in an account-recovery or session flow. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/auth-milestone.md."
+"resource" = "https://portswigger.net/web-security/authentication"
+"verify" = { "type" = "file", "path" = "{lab_dir}/notes/auth-milestone.md", "min_bytes" = 250 }
+"brief" = "Track authentication state and identify the missing validation in an account-recovery or session flow."
+"steps" = ["Before testing, record your prediction and the observation that would change your mind.", "Solve a scoped multi-step authentication lab; record the state transition that incorrectly grants access and the intended authentication boundary.", "Transfer check: Change the account relationship or order of recovery/session operations in a comparable training case. Predict which state transition permits or denies access, then test without a walkthrough.", "Control check: Show a legitimate login and a denied unauthenticated request; specify which server-side check breaks the attack chain.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/auth-milestone.md."]
+"hints" = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
 
 [[node]]
-level = "access-control"
-id = "idor"
-title = "Insecure Direct Object References (IDOR)"
-size = "M"
-needs = []
-done_when = "completed one IDOR lab and wrote {lab_dir}/notes/idor.md explaining exactly which authorization check was missing"
-resource = "https://portswigger.net/web-security/access-control/idor"
-verify = { type = "file", path = "{lab_dir}/notes/idor.md", min_bytes = 150 }
+"level" = "access-control"
+"id" = "idor"
+"title" = "Insecure Direct Object References (IDOR)"
+"size" = "M"
+"needs" = []
+"done_when" = "completed one IDOR lab and wrote {lab_dir}/notes/idor.md explaining exactly which authorization check was missing"
+"resource" = "https://portswigger.net/web-security/access-control/idor"
+"verify" = { "type" = "file", "path" = "{lab_dir}/notes/idor.md", "min_bytes" = 150 }
 
 [[node]]
-level = "access-control"
-id = "vertical-privesc"
-title = "Vertical privilege escalation (user to admin)"
-size = "M"
-needs = ["idor"]
-done_when = "completed one vertical-privilege-escalation lab and documented the path from low-priv user to admin at {lab_dir}/notes/vertical-privesc.md"
-resource = "https://portswigger.net/web-security/access-control"
-verify = { type = "file", path = "{lab_dir}/notes/vertical-privesc.md", min_bytes = 150 }
+"level" = "access-control"
+"id" = "vertical-privesc"
+"title" = "Vertical privilege escalation (user to admin)"
+"size" = "M"
+"needs" = ["idor"]
+"done_when" = "completed one vertical-privilege-escalation lab and documented the path from low-priv user to admin at {lab_dir}/notes/vertical-privesc.md"
+"resource" = "https://portswigger.net/web-security/access-control"
+"verify" = { "type" = "file", "path" = "{lab_dir}/notes/vertical-privesc.md", "min_bytes" = 150 }
 
 [[node]]
-level = "access-control"
-id = "multi-step-process-flaws"
-title = "Access control in multi-step processes"
-size = "M"
-needs = []
-done_when = "completed one multi-step access-control lab and wrote {lab_dir}/notes/multi-step.md on which step the check was missing at"
-resource = "https://portswigger.net/web-security/access-control"
-verify = { type = "file", path = "{lab_dir}/notes/multi-step.md", min_bytes = 150 }
+"level" = "access-control"
+"id" = "multi-step-process-flaws"
+"title" = "Access control in multi-step processes"
+"size" = "M"
+"needs" = []
+"done_when" = "completed one multi-step access-control lab and wrote {lab_dir}/notes/multi-step.md on which step the check was missing at"
+"resource" = "https://portswigger.net/web-security/access-control"
+"verify" = { "type" = "file", "path" = "{lab_dir}/notes/multi-step.md", "min_bytes" = 150 }
 
 [[node]]
-level = "access-control"
-id = "access-control-milestone"
-title = "Audit your own home-hack-lab Juice Shop for access-control gaps (milestone)"
-size = "L"
-needs = ["idor", "vertical-privesc", "multi-step-process-flaws"]
-milestone = true
-done_when = "Demonstrated: Test authorization separately from authentication. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/access-control-milestone.md."
-resource = "https://portswigger.net/web-security/access-control"
-verify = { type = "file", path = "{lab_dir}/notes/access-control-milestone.md", min_bytes = 250 }
-
-# ---------------------------------------------------------------- 4: xss-and-csrf
-brief = "Test authorization separately from authentication."
-steps = ["Before testing, record your prediction and the observation that would change your mind.", "Using two lab users and an administrator role where available, build an owner/other-user/anonymous access matrix for one resource and demonstrate a missing check.", "Transfer check: Change the object identifier or request method and repeat the authorization test without following a walkthrough.", "Control check: Include the legitimate owner request and a correctly denied cross-user request or a repaired local endpoint.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/access-control-milestone.md."]
-hints = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
+"level" = "access-control"
+"id" = "access-control-milestone"
+"title" = "Audit your own home-hack-lab Juice Shop for access-control gaps (milestone)"
+"size" = "L"
+"needs" = ["idor", "vertical-privesc", "multi-step-process-flaws"]
+"milestone" = true
+"done_when" = "Demonstrated: Test authorization separately from authentication. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/access-control-milestone.md."
+"resource" = "https://portswigger.net/web-security/access-control"
+"verify" = { "type" = "file", "path" = "{lab_dir}/notes/access-control-milestone.md", "min_bytes" = 250 }
+"brief" = "Test authorization separately from authentication."
+"steps" = ["Before testing, record your prediction and the observation that would change your mind.", "Using two lab users and an administrator role where available, build an owner/other-user/anonymous access matrix for one resource and demonstrate a missing check.", "Transfer check: Change the object identifier or request method and repeat the authorization test without following a walkthrough.", "Control check: Include the legitimate owner request and a correctly denied cross-user request or a repaired local endpoint.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/access-control-milestone.md."]
+"hints" = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
 
 [[node]]
-level = "xss-and-csrf"
-id = "xss-types"
-title = "Reflected, stored, and DOM-based XSS"
-size = "M"
-needs = []
-done_when = "completed one lab of each XSS type (reflected, stored, DOM-based) and wrote {lab_dir}/notes/xss-types.md comparing how each one executes"
-resource = "https://portswigger.net/web-security/cross-site-scripting"
-verify = { type = "file", path = "{lab_dir}/notes/xss-types.md", min_bytes = 200 }
+"level" = "xss-and-csrf"
+"id" = "xss-types"
+"title" = "Reflected, stored, and DOM-based XSS"
+"size" = "M"
+"needs" = []
+"done_when" = "completed one lab of each XSS type (reflected, stored, DOM-based) and wrote {lab_dir}/notes/xss-types.md comparing how each one executes"
+"resource" = "https://portswigger.net/web-security/cross-site-scripting"
+"verify" = { "type" = "file", "path" = "{lab_dir}/notes/xss-types.md", "min_bytes" = 200 }
 
 [[node]]
-level = "xss-and-csrf"
-id = "csp-bypass"
-title = "Content Security Policy and how it's bypassed"
-size = "M"
-needs = ["xss-types"]
-done_when = "completed one CSP-bypass lab and wrote {lab_dir}/notes/csp.md on exactly what the policy allowed that it shouldn't have"
-resource = "https://portswigger.net/web-security/cross-site-scripting/content-security-policy"
-verify = { type = "file", path = "{lab_dir}/notes/csp.md", min_bytes = 150 }
+"level" = "xss-and-csrf"
+"id" = "csp-bypass"
+"title" = "Content Security Policy and how it's bypassed"
+"size" = "M"
+"needs" = ["xss-types"]
+"done_when" = "completed one CSP-bypass lab and wrote {lab_dir}/notes/csp.md on exactly what the policy allowed that it shouldn't have"
+"resource" = "https://portswigger.net/web-security/cross-site-scripting/content-security-policy"
+"verify" = { "type" = "file", "path" = "{lab_dir}/notes/csp.md", "min_bytes" = 150 }
 
 [[node]]
-level = "xss-and-csrf"
-id = "csrf"
-title = "CSRF: when the browser's trust is the vulnerability"
-size = "M"
-needs = []
-done_when = "completed one CSRF lab and wrote {lab_dir}/notes/csrf.md explaining why same-origin cookies alone don't stop it"
-resource = "https://portswigger.net/web-security/csrf"
-verify = { type = "file", path = "{lab_dir}/notes/csrf.md", min_bytes = 150 }
+"level" = "xss-and-csrf"
+"id" = "csrf"
+"title" = "CSRF: when the browser's trust is the vulnerability"
+"size" = "M"
+"needs" = []
+"done_when" = "completed one CSRF lab and wrote {lab_dir}/notes/csrf.md explaining why same-origin cookies alone don't stop it"
+"resource" = "https://portswigger.net/web-security/csrf"
+"verify" = { "type" = "file", "path" = "{lab_dir}/notes/csrf.md", "min_bytes" = 150 }
 
 [[node]]
-level = "xss-and-csrf"
-id = "xss-csrf-milestone"
-title = "Write a working XSS payload from scratch, no lab hints (milestone)"
-size = "L"
-needs = ["xss-types", "csp-bypass", "csrf"]
-milestone = true
-done_when = "Demonstrated: Separate script execution caused by unsafe output handling from an unwanted authenticated cross-site action. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/xss-csrf-milestone.md."
-resource = "https://portswigger.net/web-security/cross-site-scripting"
-verify = { type = "file", path = "{lab_dir}/notes/xss-csrf-milestone.md", min_bytes = 250 }
-
-# ---------------------------------------------------------------- 5: ssrf-and-deserialization
-brief = "Separate script execution caused by unsafe output handling from an unwanted authenticated cross-site action."
-steps = ["Before testing, record your prediction and the observation that would change your mind.", "Complete a scoped XSS exercise and a scoped CSRF exercise; trace source, browser context, and effect for each. Use harmless lab proofs.", "Transfer check: Change the XSS rendering context or the CSRF request conditions and predict whether the previous proof still works.", "Control check: Compare correctly encoded output or a rejected anti-CSRF token; explain why an XSS fix is not automatically a CSRF fix.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/xss-csrf-milestone.md."]
-hints = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
+"level" = "xss-and-csrf"
+"id" = "xss-csrf-milestone"
+"title" = "Write a working XSS payload from scratch, no lab hints (milestone)"
+"size" = "L"
+"needs" = ["xss-types", "csp-bypass", "csrf"]
+"milestone" = true
+"done_when" = "Demonstrated: Separate script execution caused by unsafe output handling from an unwanted authenticated cross-site action. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/xss-csrf-milestone.md."
+"resource" = "https://portswigger.net/web-security/cross-site-scripting"
+"verify" = { "type" = "file", "path" = "{lab_dir}/notes/xss-csrf-milestone.md", "min_bytes" = 250 }
+"brief" = "Separate script execution caused by unsafe output handling from an unwanted authenticated cross-site action."
+"steps" = ["Before testing, record your prediction and the observation that would change your mind.", "Complete a scoped XSS exercise and a scoped CSRF exercise; trace source, browser context, and effect for each. Use harmless lab proofs.", "Transfer check: Change the XSS rendering context or the CSRF request conditions and predict whether the previous proof still works.", "Control check: Compare correctly encoded output or a rejected anti-CSRF token; explain why an XSS fix is not automatically a CSRF fix.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/xss-csrf-milestone.md."]
+"hints" = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
 
 [[node]]
-level = "ssrf-and-deserialization"
-id = "ssrf-basics"
-title = "Server-Side Request Forgery basics"
-size = "M"
-needs = []
-done_when = "completed one basic SSRF lab and wrote {lab_dir}/notes/ssrf.md on why the server fetching a URL on your behalf is dangerous"
-resource = "https://portswigger.net/web-security/ssrf"
-verify = { type = "file", path = "{lab_dir}/notes/ssrf.md", min_bytes = 150 }
+"level" = "ssrf-and-deserialization"
+"id" = "ssrf-basics"
+"title" = "Server-Side Request Forgery basics"
+"size" = "M"
+"needs" = []
+"done_when" = "completed one basic SSRF lab and wrote {lab_dir}/notes/ssrf.md on why the server fetching a URL on your behalf is dangerous"
+"resource" = "https://portswigger.net/web-security/ssrf"
+"verify" = { "type" = "file", "path" = "{lab_dir}/notes/ssrf.md", "min_bytes" = 150 }
 
 [[node]]
-level = "ssrf-and-deserialization"
-id = "xxe"
-title = "XML External Entity (XXE) injection"
-size = "M"
-needs = []
-done_when = "completed one XXE lab and wrote {lab_dir}/notes/xxe.md on what the XML parser was allowed to do that it shouldn't"
-resource = "https://portswigger.net/web-security/xxe"
-verify = { type = "file", path = "{lab_dir}/notes/xxe.md", min_bytes = 150 }
+"level" = "ssrf-and-deserialization"
+"id" = "xxe"
+"title" = "XML External Entity (XXE) injection"
+"size" = "M"
+"needs" = []
+"done_when" = "completed one XXE lab and wrote {lab_dir}/notes/xxe.md on what the XML parser was allowed to do that it shouldn't"
+"resource" = "https://portswigger.net/web-security/xxe"
+"verify" = { "type" = "file", "path" = "{lab_dir}/notes/xxe.md", "min_bytes" = 150 }
 
 [[node]]
-level = "ssrf-and-deserialization"
-id = "insecure-deserialization"
-title = "Insecure deserialization"
-size = "M"
-needs = ["xxe"]
-done_when = "completed one insecure-deserialization lab and wrote {lab_dir}/notes/deserialization.md explaining why deserializing untrusted data is dangerous, in your own words"
-resource = "https://portswigger.net/web-security/deserialization"
-verify = { type = "file", path = "{lab_dir}/notes/deserialization.md", min_bytes = 150 }
+"level" = "ssrf-and-deserialization"
+"id" = "insecure-deserialization"
+"title" = "Insecure deserialization"
+"size" = "M"
+"needs" = ["xxe"]
+"done_when" = "completed one insecure-deserialization lab and wrote {lab_dir}/notes/deserialization.md explaining why deserializing untrusted data is dangerous, in your own words"
+"resource" = "https://portswigger.net/web-security/deserialization"
+"verify" = { "type" = "file", "path" = "{lab_dir}/notes/deserialization.md", "min_bytes" = 150 }
 
 [[node]]
-level = "ssrf-and-deserialization"
-id = "ssrf-deser-milestone"
-title = "Chain SSRF into internal network access (milestone)"
-size = "L"
-needs = ["ssrf-basics", "xxe", "insecure-deserialization"]
-milestone = true
-done_when = "Demonstrated: Distinguish server-side fetching, external-entity expansion, and unsafe object reconstruction. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/ssrf-deser-milestone.md."
-resource = "https://portswigger.net/web-security/ssrf"
-verify = { type = "file", path = "{lab_dir}/notes/ssrf-deser-milestone.md", min_bytes = 250 }
-
-# ---------------------------------------------------------------- 6: logic-flaws
-brief = "Distinguish server-side fetching, external-entity expansion, and unsafe object reconstruction."
-steps = ["Before testing, record your prediction and the observation that would change your mind.", "Use scoped lab evidence from SSRF, XXE, and deserialization exercises to explain each input-to-action chain; independently reproduce one on an unfamiliar lab.", "Transfer check: Change the SSRF destination, XML entity setting, or serialized property and predict the result before testing in the lab.", "Control check: Include a rejected or inert input and identify the specific allowlist, parser, or data-format boundary that prevents the action.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/ssrf-deser-milestone.md."]
-hints = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
+"level" = "ssrf-and-deserialization"
+"id" = "ssrf-deser-milestone"
+"title" = "Chain SSRF into internal network access (milestone)"
+"size" = "L"
+"needs" = ["ssrf-basics", "xxe", "insecure-deserialization"]
+"milestone" = true
+"done_when" = "Demonstrated: Distinguish server-side fetching, external-entity expansion, and unsafe object reconstruction. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/ssrf-deser-milestone.md."
+"resource" = "https://portswigger.net/web-security/ssrf"
+"verify" = { "type" = "file", "path" = "{lab_dir}/notes/ssrf-deser-milestone.md", "min_bytes" = 250 }
+"brief" = "Distinguish server-side fetching, external-entity expansion, and unsafe object reconstruction."
+"steps" = ["Before testing, record your prediction and the observation that would change your mind.", "Use scoped lab evidence from SSRF, XXE, and deserialization exercises to explain each input-to-action chain; independently reproduce one on an unfamiliar lab.", "Transfer check: Change the SSRF destination, XML entity setting, or serialized property and predict the result before testing in the lab.", "Control check: Include a rejected or inert input and identify the specific allowlist, parser, or data-format boundary that prevents the action.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/ssrf-deser-milestone.md."]
+"hints" = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
 
 [[node]]
-level = "logic-flaws"
-id = "logic-flaws-intro"
-title = "Write an invariant, then try to break it"
-size = "S"
-needs = []
-done_when = "For a training cart or account workflow, wrote one invariant, tested a normal sequence and one reordered/repeated sequence, and saved both outcomes in {lab_dir}/notes/logic-intro.md. Distinguished state-machine failure from interpreting input as code."
-resource = "https://portswigger.net/web-security/logic-flaws"
+"level" = "logic-flaws"
+"id" = "logic-flaws-intro"
+"title" = "Write an invariant, then try to break it"
+"size" = "S"
+"needs" = []
+"done_when" = "For a training cart or account workflow, wrote one invariant, tested a normal sequence and one reordered/repeated sequence, and saved both outcomes in {lab_dir}/notes/logic-intro.md. Distinguished state-machine failure from interpreting input as code."
+"resource" = "https://portswigger.net/web-security/logic-flaws"
 
 [[node]]
-level = "logic-flaws"
-id = "logic-flaws-lab"
-title = "Solve two business-logic-vulnerability labs"
-size = "M"
-needs = ["logic-flaws-intro"]
-done_when = "completed 2 business-logic labs and wrote {lab_dir}/notes/logic-flaws.md on what assumption the developer made that turned out false"
-resource = "https://portswigger.net/web-security/logic-flaws"
-verify = { type = "file", path = "{lab_dir}/notes/logic-flaws.md", min_bytes = 200 }
+"level" = "logic-flaws"
+"id" = "logic-flaws-lab"
+"title" = "Solve two business-logic-vulnerability labs"
+"size" = "M"
+"needs" = ["logic-flaws-intro"]
+"done_when" = "completed 2 business-logic labs and wrote {lab_dir}/notes/logic-flaws.md on what assumption the developer made that turned out false"
+"resource" = "https://portswigger.net/web-security/logic-flaws"
+"verify" = { "type" = "file", "path" = "{lab_dir}/notes/logic-flaws.md", "min_bytes" = 200 }
 
 [[node]]
-level = "logic-flaws"
-id = "race-conditions"
-title = "Race conditions in web applications"
-size = "M"
-needs = []
-done_when = "completed one race-condition lab and wrote {lab_dir}/notes/race-conditions.md on how sending requests in parallel broke an assumption of sequential processing"
-resource = "https://portswigger.net/web-security/race-conditions"
-verify = { type = "file", path = "{lab_dir}/notes/race-conditions.md", min_bytes = 150 }
+"level" = "logic-flaws"
+"id" = "race-conditions"
+"title" = "Race conditions in web applications"
+"size" = "M"
+"needs" = []
+"done_when" = "completed one race-condition lab and wrote {lab_dir}/notes/race-conditions.md on how sending requests in parallel broke an assumption of sequential processing"
+"resource" = "https://portswigger.net/web-security/race-conditions"
+"verify" = { "type" = "file", "path" = "{lab_dir}/notes/race-conditions.md", "min_bytes" = 150 }
 
 [[node]]
-level = "logic-flaws"
-id = "logic-milestone"
-title = "Find a logic flaw nobody told you existed (milestone)"
-size = "L"
-needs = ["logic-flaws-intro", "logic-flaws-lab", "race-conditions"]
-milestone = true
-done_when = "Demonstrated: Express a business invariant and produce a sequence that violates it. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/logic-milestone.md."
-resource = "https://portswigger.net/web-security/logic-flaws"
-verify = { type = "file", path = "{lab_dir}/notes/logic-milestone.md", min_bytes = 250 }
-
-# ---------------------------------------------------------------- 7: api-security
-brief = "Express a business invariant and produce a sequence that violates it."
-steps = ["Before testing, record your prediction and the observation that would change your mind.", "Choose a lab workflow, write its expected invariant, and test reordered, repeated, or concurrent operations to find a violation.", "Transfer check: Change the operation order or concurrency and predict whether the invariant still fails.", "Control check: Show the ordinary sequence preserving the invariant and propose a server-side transaction or state check.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/logic-milestone.md."]
-hints = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
+"level" = "logic-flaws"
+"id" = "logic-milestone"
+"title" = "Find a logic flaw nobody told you existed (milestone)"
+"size" = "L"
+"needs" = ["logic-flaws-intro", "logic-flaws-lab", "race-conditions"]
+"milestone" = true
+"done_when" = "Demonstrated: Express a business invariant and produce a sequence that violates it. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/logic-milestone.md."
+"resource" = "https://portswigger.net/web-security/logic-flaws"
+"verify" = { "type" = "file", "path" = "{lab_dir}/notes/logic-milestone.md", "min_bytes" = 250 }
+"brief" = "Express a business invariant and produce a sequence that violates it."
+"steps" = ["Before testing, record your prediction and the observation that would change your mind.", "Choose a lab workflow, write its expected invariant, and test reordered, repeated, or concurrent operations to find a violation.", "Transfer check: Change the operation order or concurrency and predict whether the invariant still fails.", "Control check: Show the ordinary sequence preserving the invariant and propose a server-side transaction or state check.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/logic-milestone.md."]
+"hints" = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
 
 [[node]]
-level = "api-security"
-id = "rest-api-basics"
-title = "Attacking REST APIs: same bugs, different surface"
-size = "M"
-needs = []
-done_when = "used Burp to intercept and modify a REST API call from Juice Shop or a lab, and wrote {lab_dir}/notes/rest-api.md on what the client-side validation didn't actually enforce server-side"
-resource = "https://portswigger.net/web-security/api-testing"
-verify = { type = "file", path = "{lab_dir}/notes/rest-api.md", min_bytes = 150 }
+"level" = "api-security"
+"id" = "rest-api-basics"
+"title" = "Attacking REST APIs: same bugs, different surface"
+"size" = "M"
+"needs" = []
+"done_when" = "used Burp to intercept and modify a REST API call from Juice Shop or a lab, and wrote {lab_dir}/notes/rest-api.md on what the client-side validation didn't actually enforce server-side"
+"resource" = "https://portswigger.net/web-security/api-testing"
+"verify" = { "type" = "file", "path" = "{lab_dir}/notes/rest-api.md", "min_bytes" = 150 }
 
 [[node]]
-level = "api-security"
-id = "jwt-attacks"
-title = "JWT attacks: alg confusion, weak secrets, none algorithm"
-size = "M"
-needs = ["rest-api-basics"]
-done_when = "completed one JWT-attack lab and wrote {lab_dir}/notes/jwt.md on exactly how the token was forged or the signature bypassed"
-resource = "https://portswigger.net/web-security/jwt"
-verify = { type = "file", path = "{lab_dir}/notes/jwt.md", min_bytes = 150 }
+"level" = "api-security"
+"id" = "jwt-attacks"
+"title" = "JWT attacks: alg confusion, weak secrets, none algorithm"
+"size" = "M"
+"needs" = ["rest-api-basics"]
+"done_when" = "completed one JWT-attack lab and wrote {lab_dir}/notes/jwt.md on exactly how the token was forged or the signature bypassed"
+"resource" = "https://portswigger.net/web-security/jwt"
+"verify" = { "type" = "file", "path" = "{lab_dir}/notes/jwt.md", "min_bytes" = 150 }
 
 [[node]]
-level = "api-security"
-id = "graphql-basics"
-title = "GraphQL: introspection and over-fetching"
-size = "M"
-needs = []
-done_when = "Used a training GraphQL endpoint to inspect a permitted schema and compare an owner request with a request for another lab user’s object. Saved requests and authorization results in {lab_dir}/notes/graphql.md; treated introspection as discovery, not a vulnerability by itself."
-resource = "https://portswigger.net/web-security/graphql"
-verify = { type = "file", path = "{lab_dir}/notes/graphql.md", min_bytes = 150 }
+"level" = "api-security"
+"id" = "graphql-basics"
+"title" = "GraphQL: introspection and over-fetching"
+"size" = "M"
+"needs" = []
+"done_when" = "Used a training GraphQL endpoint to inspect a permitted schema and compare an owner request with a request for another lab user’s object. Saved requests and authorization results in {lab_dir}/notes/graphql.md; treated introspection as discovery, not a vulnerability by itself."
+"resource" = "https://portswigger.net/web-security/graphql"
+"verify" = { "type" = "file", "path" = "{lab_dir}/notes/graphql.md", "min_bytes" = 150 }
 
 [[node]]
-level = "api-security"
-id = "api-milestone"
-title = "Full API attack surface mapping on one target (milestone)"
-size = "L"
-needs = ["rest-api-basics", "jwt-attacks", "graphql-basics"]
-milestone = true
-done_when = "Demonstrated: Test API authorization and token handling using a bounded endpoint inventory. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/api-milestone.md."
-resource = "https://portswigger.net/web-security/api-testing"
-verify = { type = "file", path = "{lab_dir}/notes/api-milestone.md", min_bytes = 250 }
-
-# ---------------------------------------------------------------- 8: capstone
-brief = "Test API authorization and token handling using a bounded endpoint inventory."
-steps = ["Before testing, record your prediction and the observation that would change your mind.", "Map a small lab API and test anonymous, owner, and other-user access for the selected operations. Explain one JWT or GraphQL finding with a reproducible request.", "Transfer check: Change an object ID, field, role, or token property and test whether the proposed boundary holds.", "Control check: Show a correctly rejected request; do not label introspection alone a vulnerability without sensitive exposure or unauthorized access.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/api-milestone.md."]
-hints = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
+"level" = "api-security"
+"id" = "api-milestone"
+"title" = "Full API attack surface mapping on one target (milestone)"
+"size" = "L"
+"needs" = ["rest-api-basics", "jwt-attacks", "graphql-basics"]
+"milestone" = true
+"done_when" = "Demonstrated: Test API authorization and token handling using a bounded endpoint inventory. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/api-milestone.md."
+"resource" = "https://portswigger.net/web-security/api-testing"
+"verify" = { "type" = "file", "path" = "{lab_dir}/notes/api-milestone.md", "min_bytes" = 250 }
+"brief" = "Test API authorization and token handling using a bounded endpoint inventory."
+"steps" = ["Before testing, record your prediction and the observation that would change your mind.", "Map a small lab API and test anonymous, owner, and other-user access for the selected operations. Explain one JWT or GraphQL finding with a reproducible request.", "Transfer check: Change an object ID, field, role, or token property and test whether the proposed boundary holds.", "Control check: Show a correctly rejected request; do not label introspection alone a vulnerability without sensitive exposure or unauthorized access.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/api-milestone.md."]
+"hints" = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
 
 [[node]]
-level = "capstone"
-id = "recon-target"
-title = "Recon a target web app from scratch"
-size = "M"
-needs = []
-done_when = "picked a target (Juice Shop or a fresh PortSwigger lab) and did recon only -- mapped every page, form, and parameter -- before touching any attack, saved at {lab_dir}/notes/recon.md"
-resource = "https://portswigger.net/web-security/information-disclosure"
-verify = { type = "file", path = "{lab_dir}/notes/recon.md", min_bytes = 200 }
+"level" = "capstone"
+"id" = "recon-target"
+"title" = "Recon a target web app from scratch"
+"size" = "M"
+"needs" = []
+"done_when" = "picked a target (Juice Shop or a fresh PortSwigger lab) and did recon only -- mapped every page, form, and parameter -- before touching any attack, saved at {lab_dir}/notes/recon.md"
+"resource" = "https://portswigger.net/web-security/information-disclosure"
+"verify" = { "type" = "file", "path" = "{lab_dir}/notes/recon.md", "min_bytes" = 200 }
 
 [[node]]
-level = "capstone"
-id = "find-three-classes"
-title = "Find vulnerabilities across 3 different classes on the same target"
-size = "L"
-needs = ["recon-target"]
-done_when = "found and documented 3 vulnerabilities from 3 DIFFERENT categories covered in this track (not 3 SQLi), with evidence for each, at {lab_dir}/notes/three-classes.md"
-resource = "https://portswigger.net/web-security/all-topics"
-verify = { type = "file", path = "{lab_dir}/notes/three-classes.md", min_bytes = 300 }
+"level" = "capstone"
+"id" = "find-three-classes"
+"title" = "Find vulnerabilities across 3 different classes on the same target"
+"size" = "L"
+"needs" = ["recon-target"]
+"done_when" = "found and documented 3 vulnerabilities from 3 DIFFERENT categories covered in this track (not 3 SQLi), with evidence for each, at {lab_dir}/notes/three-classes.md"
+"resource" = "https://portswigger.net/web-security/all-topics"
+"verify" = { "type" = "file", "path" = "{lab_dir}/notes/three-classes.md", "min_bytes" = 300 }
 
 [[node]]
-level = "capstone"
-id = "write-fixes"
-title = "Write the developer-side fix for each finding"
-size = "M"
-needs = ["find-three-classes"]
-done_when = "for each of the 3 findings, wrote the actual code-level or config-level fix, not just 'sanitize input', at {lab_dir}/notes/fixes.md"
-resource = "https://owasp.org/www-project-top-ten/"
-verify = { type = "file", path = "{lab_dir}/notes/fixes.md", min_bytes = 200 }
+"level" = "capstone"
+"id" = "write-fixes"
+"title" = "Write the developer-side fix for each finding"
+"size" = "M"
+"needs" = ["find-three-classes"]
+"done_when" = "for each of the 3 findings, wrote the actual code-level or config-level fix, not just 'sanitize input', at {lab_dir}/notes/fixes.md"
+"resource" = "https://owasp.org/www-project-top-ten/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/notes/fixes.md", "min_bytes" = 200 }
 
 [[node]]
-level = "capstone"
-id = "capstone-milestone"
-title = "Full written assessment report (milestone)"
-size = "L"
-needs = ["recon-target", "find-three-classes", "write-fixes"]
-milestone = true
-done_when = "Demonstrated: Produce an assessment another learner can reproduce and critically review. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/capstone-report.md."
-resource = "https://owasp.org/www-project-web-security-testing-guide/"
-verify = { type = "file", path = "{lab_dir}/notes/capstone-report.md", min_bytes = 250 }
-brief = "Produce an assessment another learner can reproduce and critically review."
-steps = ["Before testing, record your prediction and the observation that would change your mind.", "On a fresh scoped target, reproduce three findings from distinct covered mechanisms. Report scope, evidence, impact, root cause, and a specific fix for each.", "Transfer check: Change a relevant request input, role, or workflow in an owned reproduction of one finding. Predict whether the same weakness applies and independently test the prediction.", "Control check: Implement and retest at least one fix in an owned local reproduction, keeping legitimate behavior working; label other fixes as proposed.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/capstone-report.md."]
-hints = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
+"level" = "capstone"
+"id" = "capstone-milestone"
+"title" = "Full written assessment report (milestone)"
+"size" = "L"
+"needs" = ["recon-target", "find-three-classes", "write-fixes"]
+"milestone" = true
+"done_when" = "Demonstrated: Produce an assessment another learner can reproduce and critically review. Completed the experiment, independently tested the changed case, compared the control, and explained the mechanism and limits. Saved predictions, observations, reproduction steps, and help used at {lab_dir}/notes/capstone-report.md."
+"resource" = "https://owasp.org/www-project-web-security-testing-guide/"
+"verify" = { "type" = "file", "path" = "{lab_dir}/notes/capstone-report.md", "min_bytes" = 250 }
+"brief" = "Produce an assessment another learner can reproduce and critically review."
+"steps" = ["Before testing, record your prediction and the observation that would change your mind.", "On a fresh scoped target, reproduce three findings from distinct covered mechanisms. Report scope, evidence, impact, root cause, and a specific fix for each.", "Transfer check: Change a relevant request input, role, or workflow in an owned reproduction of one finding. Predict whether the same weakness applies and independently test the prediction.", "Control check: Implement and retest at least one fix in an owned local reproduction, keeping legitimate behavior working; label other fixes as proposed.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/capstone-report.md."]
+"hints" = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
 
 [[node]]
-level = "drills"
-id = "first-discovery"
-title = "Find the request behind a button"
-size = "S"
-minutes = 10
-needs = []
-brief = "Open your browser tools and discover what one action actually sends."
-done_when = "On your own app or a training lab, open the Network panel and click one button. Find the request method, path, status, and one input. Record them without tokens or cookies."
-resource = "https://developer.chrome.com/docs/devtools/network/"
-verify = { type = "manual" }
-
-
-[[node]]
-id = "recall-injection"
-level = "retrieval"
-title = "Return later: Injection: SQL, command, and beyond"
-size = "S"
-minutes = 20
-needs = ["injection-milestone"]
-brief = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
-steps = ["Start with closed notes: Reconstruct the data-to-query or data-to-command boundary from memory and predict a new input.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
-done_when = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Reconstruct the data-to-query or data-to-command boundary from memory and predict a new input. Logged the practice date and help used; did not copy the previous write-up."
-resource = "https://portswigger.net/web-security/learning-paths"
-verify = { type = "manual" }
-
+"level" = "drills"
+"id" = "first-discovery"
+"title" = "Find the request behind a button"
+"size" = "S"
+"minutes" = 10
+"needs" = []
+"brief" = "Open your browser tools and discover what one action actually sends."
+"done_when" = "On your own app or a training lab, open the Network panel and click one button. Find the request method, path, status, and one input. Record them without tokens or cookies."
+"resource" = "https://developer.chrome.com/docs/devtools/network/"
+"verify" = { "type" = "manual" }
 
 [[node]]
-id = "recall-auth"
-level = "retrieval"
-title = "Return later: Broken authentication and session management"
-size = "S"
-minutes = 20
-needs = ["auth-milestone"]
-brief = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
-steps = ["Start with closed notes: Draw the relevant session or recovery state transitions without notes and identify the vulnerable transition.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
-done_when = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Draw the relevant session or recovery state transitions without notes and identify the vulnerable transition. Logged the practice date and help used; did not copy the previous write-up."
-resource = "https://portswigger.net/web-security/learning-paths"
-verify = { type = "manual" }
-
-
-[[node]]
-id = "recall-access-control"
-level = "retrieval"
-title = "Return later: Broken access control, in depth"
-size = "S"
-minutes = 20
-needs = ["access-control-milestone"]
-brief = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
-steps = ["Start with closed notes: Explain why knowing an object ID does not grant authority, then design a fresh access test.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
-done_when = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Explain why knowing an object ID does not grant authority, then design a fresh access test. Logged the practice date and help used; did not copy the previous write-up."
-resource = "https://portswigger.net/web-security/learning-paths"
-verify = { type = "manual" }
-
+"id" = "recall-injection"
+"level" = "retrieval"
+"title" = "Return later: Injection: SQL, command, and beyond"
+"size" = "S"
+"minutes" = 20
+"needs" = ["injection-milestone"]
+"brief" = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
+"steps" = ["Start with closed notes: Reconstruct the data-to-query or data-to-command boundary from memory and predict a new input.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
+"done_when" = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Reconstruct the data-to-query or data-to-command boundary from memory and predict a new input. Logged the practice date and help used; did not copy the previous write-up."
+"resource" = "https://portswigger.net/web-security/learning-paths"
+"verify" = { "type" = "manual" }
+"resource_label" = "Curriculum background (optional)"
+"resource_note" = "This is a return-to-your-notes exercise. The linked curriculum is optional background, not a lab assignment or a course you must buy."
 
 [[node]]
-id = "recall-xss-and-csrf"
-level = "retrieval"
-title = "Return later: XSS, CSRF, and client-side trust"
-size = "S"
-minutes = 20
-needs = ["xss-csrf-milestone"]
-brief = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
-steps = ["Start with closed notes: From two request traces, distinguish XSS from CSRF and name the relevant trust boundary.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
-done_when = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: From two request traces, distinguish XSS from CSRF and name the relevant trust boundary. Logged the practice date and help used; did not copy the previous write-up."
-resource = "https://portswigger.net/web-security/learning-paths"
-verify = { type = "manual" }
-
-
-[[node]]
-id = "recall-ssrf-and-deserialization"
-level = "retrieval"
-title = "Return later: SSRF, insecure deserialization, XXE"
-size = "S"
-minutes = 20
-needs = ["ssrf-deser-milestone"]
-brief = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
-steps = ["Start with closed notes: Classify three short scenarios by mechanism and explain why cloud metadata access is not implied by every SSRF.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
-done_when = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Classify three short scenarios by mechanism and explain why cloud metadata access is not implied by every SSRF. Logged the practice date and help used; did not copy the previous write-up."
-resource = "https://portswigger.net/web-security/learning-paths"
-verify = { type = "manual" }
-
+"id" = "recall-auth"
+"level" = "retrieval"
+"title" = "Return later: Broken authentication and session management"
+"size" = "S"
+"minutes" = 20
+"needs" = ["auth-milestone"]
+"brief" = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
+"steps" = ["Start with closed notes: Draw the relevant session or recovery state transitions without notes and identify the vulnerable transition.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
+"done_when" = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Draw the relevant session or recovery state transitions without notes and identify the vulnerable transition. Logged the practice date and help used; did not copy the previous write-up."
+"resource" = "https://portswigger.net/web-security/learning-paths"
+"verify" = { "type" = "manual" }
+"resource_label" = "Curriculum background (optional)"
+"resource_note" = "This is a return-to-your-notes exercise. The linked curriculum is optional background, not a lab assignment or a course you must buy."
 
 [[node]]
-id = "recall-logic-flaws"
-level = "retrieval"
-title = "Return later: Business logic vulnerabilities"
-size = "S"
-minutes = 20
-needs = ["logic-milestone"]
-brief = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
-steps = ["Start with closed notes: State an invariant for a different workflow and propose a discriminating test.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
-done_when = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: State an invariant for a different workflow and propose a discriminating test. Logged the practice date and help used; did not copy the previous write-up."
-resource = "https://portswigger.net/web-security/learning-paths"
-verify = { type = "manual" }
-
-
-[[node]]
-id = "recall-api-security"
-level = "retrieval"
-title = "Return later: API security: REST, GraphQL, JWTs"
-size = "S"
-minutes = 20
-needs = ["api-milestone"]
-brief = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
-steps = ["Start with closed notes: Design an owner/other-user API test from memory and explain the difference between token decoding and signature validation.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
-done_when = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Design an owner/other-user API test from memory and explain the difference between token decoding and signature validation. Logged the practice date and help used; did not copy the previous write-up."
-resource = "https://portswigger.net/web-security/learning-paths"
-verify = { type = "manual" }
-
+"id" = "recall-access-control"
+"level" = "retrieval"
+"title" = "Return later: Broken access control, in depth"
+"size" = "S"
+"minutes" = 20
+"needs" = ["access-control-milestone"]
+"brief" = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
+"steps" = ["Start with closed notes: Explain why knowing an object ID does not grant authority, then design a fresh access test.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
+"done_when" = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Explain why knowing an object ID does not grant authority, then design a fresh access test. Logged the practice date and help used; did not copy the previous write-up."
+"resource" = "https://portswigger.net/web-security/learning-paths"
+"verify" = { "type" = "manual" }
+"resource_label" = "Curriculum background (optional)"
+"resource_note" = "This is a return-to-your-notes exercise. The linked curriculum is optional background, not a lab assignment or a course you must buy."
 
 [[node]]
-id = "recall-capstone"
-level = "retrieval"
-title = "Return later: Full assessment on one target"
-size = "S"
-minutes = 20
-needs = ["capstone-milestone"]
-brief = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
-steps = ["Start with closed notes: Explain one finding and its fix from memory, then test a changed request.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
-done_when = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Explain one finding and its fix from memory, then test a changed request. Logged the practice date and help used; did not copy the previous write-up."
-resource = "https://portswigger.net/web-security/learning-paths"
-verify = { type = "manual" }
+"id" = "recall-xss-and-csrf"
+"level" = "retrieval"
+"title" = "Return later: XSS, CSRF, and client-side trust"
+"size" = "S"
+"minutes" = 20
+"needs" = ["xss-csrf-milestone"]
+"brief" = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
+"steps" = ["Start with closed notes: From two request traces, distinguish XSS from CSRF and name the relevant trust boundary.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
+"done_when" = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: From two request traces, distinguish XSS from CSRF and name the relevant trust boundary. Logged the practice date and help used; did not copy the previous write-up."
+"resource" = "https://portswigger.net/web-security/learning-paths"
+"verify" = { "type" = "manual" }
+"resource_label" = "Curriculum background (optional)"
+"resource_note" = "This is a return-to-your-notes exercise. The linked curriculum is optional background, not a lab assignment or a course you must buy."
 
-# ---------------------------------------------------------------- side lane: quick drills
 [[node]]
-level = "drills"
-id = "portswigger-apprentice"
-title = "PortSwigger Academy apprentice-level labs, one at a time"
-series = { from = 1, to = 20 }
-size = "S"
-needs = []
-done_when = "completed apprentice lab #{n} from any category on PortSwigger's Web Security Academy and noted the category plus the one-line trick in {lab_dir}/notes/drills.md"
-resource = "https://portswigger.net/web-security/all-labs"
+"id" = "recall-ssrf-and-deserialization"
+"level" = "retrieval"
+"title" = "Return later: SSRF, insecure deserialization, XXE"
+"size" = "S"
+"minutes" = 20
+"needs" = ["ssrf-deser-milestone"]
+"brief" = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
+"steps" = ["Start with closed notes: Classify three short scenarios by mechanism and explain why cloud metadata access is not implied by every SSRF.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
+"done_when" = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Classify three short scenarios by mechanism and explain why cloud metadata access is not implied by every SSRF. Logged the practice date and help used; did not copy the previous write-up."
+"resource" = "https://portswigger.net/web-security/learning-paths"
+"verify" = { "type" = "manual" }
+"resource_label" = "Curriculum background (optional)"
+"resource_note" = "This is a return-to-your-notes exercise. The linked curriculum is optional background, not a lab assignment or a course you must buy."
+
+[[node]]
+"id" = "recall-logic-flaws"
+"level" = "retrieval"
+"title" = "Return later: Business logic vulnerabilities"
+"size" = "S"
+"minutes" = 20
+"needs" = ["logic-milestone"]
+"brief" = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
+"steps" = ["Start with closed notes: State an invariant for a different workflow and propose a discriminating test.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
+"done_when" = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: State an invariant for a different workflow and propose a discriminating test. Logged the practice date and help used; did not copy the previous write-up."
+"resource" = "https://portswigger.net/web-security/learning-paths"
+"verify" = { "type" = "manual" }
+"resource_label" = "Curriculum background (optional)"
+"resource_note" = "This is a return-to-your-notes exercise. The linked curriculum is optional background, not a lab assignment or a course you must buy."
+
+[[node]]
+"id" = "recall-api-security"
+"level" = "retrieval"
+"title" = "Return later: API security: REST, GraphQL, JWTs"
+"size" = "S"
+"minutes" = 20
+"needs" = ["api-milestone"]
+"brief" = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
+"steps" = ["Start with closed notes: Design an owner/other-user API test from memory and explain the difference between token decoding and signature validation.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
+"done_when" = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Design an owner/other-user API test from memory and explain the difference between token decoding and signature validation. Logged the practice date and help used; did not copy the previous write-up."
+"resource" = "https://portswigger.net/web-security/learning-paths"
+"verify" = { "type" = "manual" }
+"resource_label" = "Curriculum background (optional)"
+"resource_note" = "This is a return-to-your-notes exercise. The linked curriculum is optional background, not a lab assignment or a course you must buy."
+
+[[node]]
+"id" = "recall-capstone"
+"level" = "retrieval"
+"title" = "Return later: Full assessment on one target"
+"size" = "S"
+"minutes" = 20
+"needs" = ["capstone-milestone"]
+"brief" = "On a later day, check what you can reconstruct and apply without your original notes. The 2–7 day window is a suggested practice interval, not an enforced schedule."
+"steps" = ["Start with closed notes: Explain one finding and its fix from memory, then test a changed request.", "Try the small changed case first. Then open your evidence to compare, correct mistakes, and name what needs another practice session."]
+"done_when" = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Explain one finding and its fix from memory, then test a changed request. Logged the practice date and help used; did not copy the previous write-up."
+"resource" = "https://portswigger.net/web-security/learning-paths"
+"verify" = { "type" = "manual" }
+"resource_label" = "Curriculum background (optional)"
+"resource_note" = "This is a return-to-your-notes exercise. The linked curriculum is optional background, not a lab assignment or a course you must buy."
+
+[[node]]
+"level" = "drills"
+"id" = "portswigger-apprentice"
+"title" = "PortSwigger Academy apprentice-level labs, one at a time"
+"series" = { "from" = 1, "to" = 20 }
+"size" = "S"
+"needs" = []
+"done_when" = "completed apprentice lab #{n} from any category on PortSwigger's Web Security Academy and noted the category plus the one-line trick in {lab_dir}/notes/drills.md"
+"resource" = "https://portswigger.net/web-security/all-labs"
 
 [[node]]
 "level" = "drills"

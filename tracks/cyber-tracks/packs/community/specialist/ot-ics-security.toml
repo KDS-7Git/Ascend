@@ -3,7 +3,7 @@
 "id" = "ot-ics-security"
 "title" = "OT and Industrial Control Security"
 "kind" = "proficiency"
-"version" = 1
+"version" = 2
 "source" = "ai-draft"
 "reviewed" = false
 
@@ -12,7 +12,7 @@
 
 [[level]]
 "id" = "foundations"
-"title" = "Prove the entry skills in a small lab"
+"title" = "Read a simulated tank register and state a safety constraint"
 "lane" = "main"
 
 [[level]]
@@ -47,7 +47,7 @@
 
 [[level]]
 "id" = "independent-transfer"
-"title" = "Revisit the skill on a fresh problem"
+"title" = "Recheck the boundary with a specified change"
 "lane" = "main"
 
 [[level]]
@@ -69,62 +69,79 @@
 "needs" = []
 "done_when" = "Compute the exact content hash of a fresh server-generated evidence fixture and pass its check."
 "brief" = "This small exercise tests evidence integrity. Track entry background: Read network diagrams and distinguish operational safety from information confidentiality."
-"resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
+"resource" = "https://docs.python.org/3/library/hashlib.html"
 "verify" = { "type" = "lab", "exercise" = "integrity" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "foundations-reasoning"
 "level" = "foundations"
-"title" = "Reason it through: Prove the entry skills in a small lab"
+"title" = "Reason it through: Read a simulated tank register and state a safety constraint"
 "size" = "S"
 "minutes" = 10
 "needs" = ["lab-readiness"]
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Read network diagrams and distinguish operational safety from information confidentiality."
-"steps" = ["Work through this preparation: Read network diagrams and distinguish operational safety from information confidentiality.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"brief" = "Separate a numeric observation from an operational conclusion."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ot-ics-security:foundations" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "foundations-experiment"
 "level" = "foundations"
-"title" = "Investigate: Prove the entry skills in a small lab"
+"title" = "Read a simulated tank register and state a safety constraint"
 "size" = "M"
-"minutes" = 60
+"minutes" = 30
 "needs" = ["foundations-reasoning"]
-"done_when" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/foundations-experiment.json."
-"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
-"steps" = ["Read network diagrams and distinguish operational safety from information confidentiality.", "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/foundations-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Separate a numeric observation from an operational conclusion."
+"steps" = ["Read process.json and registers.py. Register 10 models tank level; the normal range is 40–60 percent. Run the model.\n```sh\npython3 registers.py\n```", "Record the actual address/value pairs. Explain which unit/range comes from the scenario and cannot be inferred from the integer alone.", "Write the stated risk of losing operator visibility during containment. No packet was sent and no physical tank was observed.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/foundations-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
 "verify" = { "type" = "file", "path" = "{lab_dir}/foundations-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. These are offline simulations/tabletops, with no industrial device connection. registers.py models integer reads only; it is not a Modbus implementation."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ot-ics-security.zip" }]
 
 [[node]]
 "id" = "foundations-milestone"
 "level" = "foundations"
-"title" = "Apply it to a changed case: Prove the entry skills in a small lab"
+"title" = "Apply it: Read a simulated tank register and state a safety constraint"
 "size" = "M"
-"minutes" = 120
+"minutes" = 30
 "needs" = ["foundations-reasoning", "foundations-experiment", "lab-readiness"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/foundations-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
-"steps" = ["Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Transfer: Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.", "Control: Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/foundations-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Separate a numeric observation from an operational conclusion."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Read process.json and registers.py. Register 10 models tank level; the normal range is 40–60 percent. Run the model.\n```sh\npython3 registers.py\n```", "Change to test: Change register 10 to 65 in a copy and predict whether it falls outside the written range.", "Comparison to retain: Read an unknown register in a small Python call and preserve the error; do not interpret missing data as a tank reading of zero.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/foundations-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
 "resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
 "verify" = { "type" = "file", "path" = "{lab_dir}/foundations-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. These are offline simulations/tabletops, with no industrial device connection. registers.py models integer reads only; it is not a Modbus implementation."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ot-ics-security.zip" }]
 
 [[node]]
 "id" = "recall-foundations"
 "level" = "recall-lane"
-"title" = "Return later: Prove the entry skills in a small lab"
+"title" = "Return later: Read a simulated tank register and state a safety constraint"
 "size" = "S"
 "minutes" = 10
 "needs" = ["foundations-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
-"brief" = "Reconstruct the environment and entry assumptions without following the setup notes."
-"steps" = ["Reconstruct the environment and entry assumptions without following the setup notes.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"brief" = "Without opening your report, reconstruct the inputs, observed result and main limitation of read a simulated tank register and state a safety constraint."
+"steps" = ["Without opening your report, reconstruct the inputs, observed result and main limitation of read a simulated tank register and state a safety constraint.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ot-ics-security:foundations" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "process-reasoning"
@@ -134,38 +151,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Draw a simulated sensor, controller and actuator workflow with safety constraints."
-"steps" = ["Work through this preparation: Draw a simulated sensor, controller and actuator workflow with safety constraints.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ot-ics-security:process" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "process-experiment"
 "level" = "process"
-"title" = "Investigate: Start with the process consequence"
+"title" = "Practice: Start with the process consequence"
 "size" = "M"
 "minutes" = 60
 "needs" = ["process-reasoning"]
-"done_when" = "Build an asset/zone diagram and identify how loss of view, control or availability affects the simulated process. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/process-experiment.json."
-"brief" = "Build an asset/zone diagram and identify how loss of view, control or availability affects the simulated process."
-"steps" = ["Draw a simulated sensor, controller and actuator workflow with safety constraints.", "Build an asset/zone diagram and identify how loss of view, control or availability affects the simulated process.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/process-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use process.json to draw sensor, controller, operator display and historian as a fictional process. Mark the baseline peer and expected register read."
+"steps" = ["Use process.json to draw sensor, controller, operator display and historian as a fictional process. Mark the baseline peer and expected register read.", "Describe separate consequences for loss of view, control and availability, tying each to the tank scenario.", "Record missing physical protections and unknown safety assumptions. The diagram alone cannot certify a real control system.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/process-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
 "verify" = { "type" = "file", "path" = "{lab_dir}/process-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. These are offline simulations/tabletops, with no industrial device connection. registers.py models integer reads only; it is not a Modbus implementation."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ot-ics-security.zip" }]
 
 [[node]]
 "id" = "process-milestone"
 "level" = "process"
-"title" = "Apply it to a changed case: Start with the process consequence"
+"title" = "Apply it: Start with the process consequence"
 "size" = "M"
 "minutes" = 120
 "needs" = ["process-reasoning", "process-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/process-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Build an asset/zone diagram and identify how loss of view, control or availability affects the simulated process."
-"steps" = ["Build an asset/zone diagram and identify how loss of view, control or availability affects the simulated process.", "Transfer: Change a process dependency and revise the priority of affected controls.", "Control: Distinguish a confidentiality issue from a change that could affect safe operation.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/process-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use process.json to draw sensor, controller, operator display and historian as a fictional process. Mark the baseline peer and expected register read."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use process.json to draw sensor, controller, operator display and historian as a fictional process. Mark the baseline peer and expected register read.", "Change to test: Change a process dependency and revise the priority of affected controls.", "Comparison to retain: Distinguish a confidentiality issue from a change that could affect safe operation.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/process-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
 "resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
 "verify" = { "type" = "file", "path" = "{lab_dir}/process-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. These are offline simulations/tabletops, with no industrial device connection. registers.py models integer reads only; it is not a Modbus implementation."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ot-ics-security.zip" }]
 
 [[node]]
 "id" = "recall-process"
@@ -176,9 +204,12 @@
 "needs" = ["process-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain why enterprise IT priorities cannot be copied blindly into OT."
-"steps" = ["Explain why enterprise IT priorities cannot be copied blindly into OT.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"steps" = ["Explain why enterprise IT priorities cannot be copied blindly into OT.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ot-ics-security:process" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "protocol-reasoning"
@@ -188,38 +219,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Interpret function code, address, unit identity and value from a supplied Modbus exchange."
-"steps" = ["Work through this preparation: Interpret function code, address, unit identity and value from a supplied Modbus exchange.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ot-ics-security:protocol" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "protocol-experiment"
 "level" = "protocol"
-"title" = "Investigate: Read the register with its context"
+"title" = "Practice: Read the register with its context"
 "size" = "M"
 "minutes" = 60
 "needs" = ["protocol-reasoning"]
-"done_when" = "Use an isolated software simulator or capture to trace a benign register read and document address and data-type assumptions. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/protocol-experiment.json."
-"brief" = "Use an isolated software simulator or capture to trace a benign register read and document address and data-type assumptions."
-"steps" = ["Interpret function code, address, unit identity and value from a supplied Modbus exchange.", "Use an isolated software simulator or capture to trace a benign register read and document address and data-type assumptions.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/protocol-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use registers.py and traffic.csv. Map function 3 rows to the read-register concept and the function 6 row to a single-register write in the synthetic trace."
+"steps" = ["Use registers.py and traffic.csv. Map function 3 rows to the read-register concept and the function 6 row to a single-register write in the synthetic trace.", "Compare register 10 values and record address numbering and unit assumptions. Run the local integer model for a benign read; it does not parse Modbus packets.", "If performing a real protocol lab, separately configure a loopback PyModbus simulator using its official examples and retain actual request/response bytes. Keep this optional runtime result distinct from the offline model.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/protocol-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
 "verify" = { "type" = "file", "path" = "{lab_dir}/protocol-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. These are offline simulations/tabletops, with no industrial device connection. registers.py models integer reads only; it is not a Modbus implementation."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ot-ics-security.zip" }]
 
 [[node]]
 "id" = "protocol-milestone"
 "level" = "protocol"
-"title" = "Apply it to a changed case: Read the register with its context"
+"title" = "Apply it: Read the register with its context"
 "size" = "M"
 "minutes" = 120
 "needs" = ["protocol-reasoning", "protocol-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/protocol-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Use an isolated software simulator or capture to trace a benign register read and document address and data-type assumptions."
-"steps" = ["Use an isolated software simulator or capture to trace a benign register read and document address and data-type assumptions.", "Transfer: Change register address or byte order in a fixture and predict the interpretation.", "Control: Reject an out-of-range or mismatched response instead of inventing a process value.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/protocol-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use registers.py and traffic.csv. Map function 3 rows to the read-register concept and the function 6 row to a single-register write in the synthetic trace."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use registers.py and traffic.csv. Map function 3 rows to the read-register concept and the function 6 row to a single-register write in the synthetic trace.", "Change to test: Change register address or byte order in a fixture and predict the interpretation.", "Comparison to retain: Reject an out-of-range or mismatched response instead of inventing a process value.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/protocol-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
 "resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
 "verify" = { "type" = "file", "path" = "{lab_dir}/protocol-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. These are offline simulations/tabletops, with no industrial device connection. registers.py models integer reads only; it is not a Modbus implementation."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ot-ics-security.zip" }]
 
 [[node]]
 "id" = "recall-protocol"
@@ -230,9 +272,12 @@
 "needs" = ["protocol-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain why a register number alone does not identify a physical measurement."
-"steps" = ["Explain why a register number alone does not identify a physical measurement.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"steps" = ["Explain why a register number alone does not identify a physical measurement.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ot-ics-security:protocol" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "segmentation-reasoning"
@@ -242,38 +287,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Define engineering, operator and monitoring roles for a simulated cell."
-"steps" = ["Work through this preparation: Define engineering, operator and monitoring roles for a simulated cell.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ot-ics-security:segmentation" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "segmentation-experiment"
 "level" = "segmentation"
-"title" = "Investigate: Prove the permitted path"
+"title" = "Practice: Prove the permitted path"
 "size" = "M"
 "minutes" = 60
 "needs" = ["segmentation-reasoning"]
-"done_when" = "Model and test a small allowlist of communication paths using local fixtures or a disposable network. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/segmentation-experiment.json."
-"brief" = "Model and test a small allowlist of communication paths using local fixtures or a disposable network."
-"steps" = ["Define engineering, operator and monitoring roles for a simulated cell.", "Model and test a small allowlist of communication paths using local fixtures or a disposable network.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/segmentation-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Define an offline allowlist using process.json baseline peer, function 3 and register 10. Implement a predicate over traffic.csv rows."
+"steps" = ["Define an offline allowlist using process.json baseline peer, function 3 and register 10. Implement a predicate over traffic.csv rows.", "Predict and then print which rows violate the peer/function rule. Test an allowed baseline read and an unrecognized peer separately.", "Describe the additional network enforcement needed; your predicate is a model and is not a deployed industrial firewall.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/segmentation-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
 "verify" = { "type" = "file", "path" = "{lab_dir}/segmentation-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. These are offline simulations/tabletops, with no industrial device connection. registers.py models integer reads only; it is not a Modbus implementation."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ot-ics-security.zip" }]
 
 [[node]]
 "id" = "segmentation-milestone"
 "level" = "segmentation"
-"title" = "Apply it to a changed case: Prove the permitted path"
+"title" = "Apply it: Prove the permitted path"
 "size" = "M"
 "minutes" = 120
 "needs" = ["segmentation-reasoning", "segmentation-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/segmentation-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Model and test a small allowlist of communication paths using local fixtures or a disposable network."
-"steps" = ["Model and test a small allowlist of communication paths using local fixtures or a disposable network.", "Transfer: Change a client role or destination port and predict whether access should remain.", "Control: Preserve required monitoring while denying an unrelated management path.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/segmentation-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Define an offline allowlist using process.json baseline peer, function 3 and register 10. Implement a predicate over traffic.csv rows."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Define an offline allowlist using process.json baseline peer, function 3 and register 10. Implement a predicate over traffic.csv rows.", "Change to test: Change a client role or destination port and predict whether access should remain.", "Comparison to retain: Preserve required monitoring while denying an unrelated management path.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/segmentation-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
 "resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
 "verify" = { "type" = "file", "path" = "{lab_dir}/segmentation-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. These are offline simulations/tabletops, with no industrial device connection. registers.py models integer reads only; it is not a Modbus implementation."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ot-ics-security.zip" }]
 
 [[node]]
 "id" = "recall-segmentation"
@@ -284,9 +340,12 @@
 "needs" = ["segmentation-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Reconstruct one zone boundary and its operational justification."
-"steps" = ["Reconstruct one zone boundary and its operational justification.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"steps" = ["Reconstruct one zone boundary and its operational justification.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ot-ics-security:segmentation" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "monitoring-reasoning"
@@ -296,38 +355,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Read baseline function codes and timing from a supplied industrial training trace."
-"steps" = ["Work through this preparation: Read baseline function codes and timing from a supplied industrial training trace.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ot-ics-security:monitoring" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "monitoring-experiment"
 "level" = "monitoring"
-"title" = "Investigate: Distinguish a maintenance action from an anomaly"
+"title" = "Practice: Distinguish a maintenance action from an anomaly"
 "size" = "M"
 "minutes" = 60
 "needs" = ["monitoring-reasoning"]
-"done_when" = "Create a detection hypothesis for an unexpected write or new peer and evaluate it against labeled simulator traffic. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/monitoring-experiment.json."
-"brief" = "Create a detection hypothesis for an unexpected write or new peer and evaluate it against labeled simulator traffic."
-"steps" = ["Read baseline function codes and timing from a supplied industrial training trace.", "Create a detection hypothesis for an unexpected write or new peer and evaluate it against labeled simulator traffic.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/monitoring-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use traffic.csv and process.json; keep the label column hidden while constructing a rule for unexpected peer or write function."
+"steps" = ["Use traffic.csv and process.json; keep the label column hidden while constructing a rule for unexpected peer or write function.", "Evaluate the rule, then compare matched IDs against labels. Record true detections, false positives and misses.", "Explain why a new peer may require investigation without proving process damage. This synthetic trace is the exact task input.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/monitoring-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
 "verify" = { "type" = "file", "path" = "{lab_dir}/monitoring-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. These are offline simulations/tabletops, with no industrial device connection. registers.py models integer reads only; it is not a Modbus implementation."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ot-ics-security.zip" }]
 
 [[node]]
 "id" = "monitoring-milestone"
 "level" = "monitoring"
-"title" = "Apply it to a changed case: Distinguish a maintenance action from an anomaly"
+"title" = "Apply it: Distinguish a maintenance action from an anomaly"
 "size" = "M"
 "minutes" = 120
 "needs" = ["monitoring-reasoning", "monitoring-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/monitoring-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Create a detection hypothesis for an unexpected write or new peer and evaluate it against labeled simulator traffic."
-"steps" = ["Create a detection hypothesis for an unexpected write or new peer and evaluate it against labeled simulator traffic.", "Transfer: Change a nonessential address or schedule and reassess the rule.", "Control: Include approved maintenance and record the context needed to avoid a false incident.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/monitoring-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use traffic.csv and process.json; keep the label column hidden while constructing a rule for unexpected peer or write function."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use traffic.csv and process.json; keep the label column hidden while constructing a rule for unexpected peer or write function.", "Change to test: Change a nonessential address or schedule and reassess the rule.", "Comparison to retain: Include approved maintenance and record the context needed to avoid a false incident.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/monitoring-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
 "resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
 "verify" = { "type" = "file", "path" = "{lab_dir}/monitoring-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. These are offline simulations/tabletops, with no industrial device connection. registers.py models integer reads only; it is not a Modbus implementation."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ot-ics-security.zip" }]
 
 [[node]]
 "id" = "recall-monitoring"
@@ -338,9 +408,12 @@
 "needs" = ["monitoring-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain what the network sensor cannot establish about physical state."
-"steps" = ["Explain what the network sensor cannot establish about physical state.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"steps" = ["Explain what the network sensor cannot establish about physical state.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ot-ics-security:monitoring" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "change-control-reasoning"
@@ -350,38 +423,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Write a pre-check, change, validation and rollback plan for a simulator configuration."
-"steps" = ["Work through this preparation: Write a pre-check, change, validation and rollback plan for a simulator configuration.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ot-ics-security:change-control" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "change-control-experiment"
 "level" = "change-control"
-"title" = "Investigate: Rehearse a reversible change"
+"title" = "Practice: Rehearse a reversible change"
 "size" = "M"
 "minutes" = 60
 "needs" = ["change-control-reasoning"]
-"done_when" = "Apply one non-disruptive simulator hardening change, preserve the baseline and verify expected readings afterward. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/change-control-experiment.json."
-"brief" = "Apply one non-disruptive simulator hardening change, preserve the baseline and verify expected readings afterward."
-"steps" = ["Write a pre-check, change, validation and rollback plan for a simulator configuration.", "Apply one non-disruptive simulator hardening change, preserve the baseline and verify expected readings afterward.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/change-control-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Copy the register/traffic model before editing. Add a rule limiting reads to the baseline peer and preserve valid register 10 reads."
+"steps" = ["Copy the register/traffic model before editing. Add a rule limiting reads to the baseline peer and preserve valid register 10 reads.", "Test known peer, new peer and unknown register cases. Keep before/after output and a rollback copy.", "Record that the change hardens only the model; no live PLC or safety function was changed.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/change-control-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
 "verify" = { "type" = "file", "path" = "{lab_dir}/change-control-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. These are offline simulations/tabletops, with no industrial device connection. registers.py models integer reads only; it is not a Modbus implementation."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ot-ics-security.zip" }]
 
 [[node]]
 "id" = "change-control-milestone"
 "level" = "change-control"
-"title" = "Apply it to a changed case: Rehearse a reversible change"
+"title" = "Apply it: Rehearse a reversible change"
 "size" = "M"
 "minutes" = 120
 "needs" = ["change-control-reasoning", "change-control-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/change-control-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Apply one non-disruptive simulator hardening change, preserve the baseline and verify expected readings afterward."
-"steps" = ["Apply one non-disruptive simulator hardening change, preserve the baseline and verify expected readings afterward.", "Transfer: Remove an assumed maintenance window and decide whether to defer or redesign the change.", "Control: Demonstrate that a failed validation leads to rollback rather than an unsupported success claim.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/change-control-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Copy the register/traffic model before editing. Add a rule limiting reads to the baseline peer and preserve valid register 10 reads."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Copy the register/traffic model before editing. Add a rule limiting reads to the baseline peer and preserve valid register 10 reads.", "Change to test: Remove an assumed maintenance window and decide whether to defer or redesign the change.", "Comparison to retain: Demonstrate that a failed validation leads to rollback rather than an unsupported success claim.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/change-control-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
 "resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
 "verify" = { "type" = "file", "path" = "{lab_dir}/change-control-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. These are offline simulations/tabletops, with no industrial device connection. registers.py models integer reads only; it is not a Modbus implementation."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ot-ics-security.zip" }]
 
 [[node]]
 "id" = "recall-change-control"
@@ -392,9 +476,12 @@
 "needs" = ["change-control-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain the evidence required before a change could be considered in a real plant."
-"steps" = ["Explain the evidence required before a change could be considered in a real plant.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"steps" = ["Explain the evidence required before a change could be considered in a real plant.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ot-ics-security:change-control" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "exercise-reasoning"
@@ -404,38 +491,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Define process owners, safety contacts and evidence sources for a fictional incident."
-"steps" = ["Work through this preparation: Define process owners, safety contacts and evidence sources for a fictional incident.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ot-ics-security:exercise" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "exercise-experiment"
 "level" = "exercise"
-"title" = "Investigate: Run an incident tabletop with technical evidence"
+"title" = "Practice: Run an incident tabletop with technical evidence"
 "size" = "M"
 "minutes" = 60
 "needs" = ["exercise-reasoning"]
-"done_when" = "Investigate a supplied OT trace and conduct a tabletop containment decision with a technical timeline and explicit safety uncertainty. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/exercise-experiment.json."
-"brief" = "Investigate a supplied OT trace and conduct a tabletop containment decision with a technical timeline and explicit safety uncertainty."
-"steps" = ["Define process owners, safety contacts and evidence sources for a fictional incident.", "Investigate a supplied OT trace and conduct a tabletop containment decision with a technical timeline and explicit safety uncertainty.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/exercise-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use traffic.csv and process.json as the tabletop incident pack. Build a timeline for o1–o5 and identify the unexpected write/new peer."
+"steps" = ["Use traffic.csv and process.json as the tabletop incident pack. Build a timeline for o1–o5 and identify the unexpected write/new peer.", "Act as analyst briefing fictional operator Mira and safety contact Dev. Choose the next evidence to collect before a containment decision.", "Explain why blindly disconnecting the operator network could violate the stated visibility constraint. Add a contradictory reading in a copy and revise your confidence.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/exercise-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
 "verify" = { "type" = "file", "path" = "{lab_dir}/exercise-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. These are offline simulations/tabletops, with no industrial device connection. registers.py models integer reads only; it is not a Modbus implementation."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ot-ics-security.zip" }]
 
 [[node]]
 "id" = "exercise-milestone"
 "level" = "exercise"
-"title" = "Apply it to a changed case: Run an incident tabletop with technical evidence"
+"title" = "Apply it: Run an incident tabletop with technical evidence"
 "size" = "M"
 "minutes" = 120
 "needs" = ["exercise-reasoning", "exercise-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/exercise-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Investigate a supplied OT trace and conduct a tabletop containment decision with a technical timeline and explicit safety uncertainty."
-"steps" = ["Investigate a supplied OT trace and conduct a tabletop containment decision with a technical timeline and explicit safety uncertainty.", "Transfer: Add contradictory process evidence and revise the decision.", "Control: Reject an IT-style containment action that would violate the stated process constraint.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/exercise-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use traffic.csv and process.json as the tabletop incident pack. Build a timeline for o1–o5 and identify the unexpected write/new peer."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use traffic.csv and process.json as the tabletop incident pack. Build a timeline for o1–o5 and identify the unexpected write/new peer.", "Change to test: Add contradictory process evidence and revise the decision.", "Comparison to retain: Reject an IT-style containment action that would violate the stated process constraint.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/exercise-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
 "resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
 "verify" = { "type" = "file", "path" = "{lab_dir}/exercise-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. These are offline simulations/tabletops, with no industrial device connection. registers.py models integer reads only; it is not a Modbus implementation."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ot-ics-security.zip" }]
 
 [[node]]
 "id" = "recall-exercise"
@@ -446,63 +544,80 @@
 "needs" = ["exercise-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Reconstruct the decision and the unresolved question requiring a process engineer."
-"steps" = ["Reconstruct the decision and the unresolved question requiring a process engineer.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"steps" = ["Reconstruct the decision and the unresolved question requiring a process engineer.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ot-ics-security:exercise" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "independent-transfer-reasoning"
 "level" = "independent-transfer"
-"title" = "Reason it through: Revisit the skill on a fresh problem"
+"title" = "Reason it through: Recheck the boundary with a specified change"
 "size" = "S"
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution."
-"steps" = ["Work through this preparation: Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"brief" = "Use the named task files for the changed case. Predict the effect before opening previous notes."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ot-ics-security:independent-transfer" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "independent-transfer-experiment"
 "level" = "independent-transfer"
-"title" = "Investigate: Revisit the skill on a fresh problem"
+"title" = "Practice: Recheck the boundary with a specified change"
 "size" = "M"
 "minutes" = 60
 "needs" = ["independent-transfer-reasoning"]
-"done_when" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/independent-transfer-experiment.json."
-"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
-"steps" = ["Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/independent-transfer-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Add a second synthetic tank-level row at the same time as o4 with value 49 from a separate source. Revise your tabletop account and next evidence request."
+"steps" = ["Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.", "Add a second synthetic tank-level row at the same time as o4 with value 49 from a separate source. Revise your tabletop account and next evidence request.", "Do not disconnect the fictional operator network merely to make an IT containment checklist pass.", "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/independent-transfer-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
 "verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. These are offline simulations/tabletops, with no industrial device connection. registers.py models integer reads only; it is not a Modbus implementation."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ot-ics-security.zip" }]
 
 [[node]]
 "id" = "independent-transfer-milestone"
 "level" = "independent-transfer"
-"title" = "Apply it to a changed case: Revisit the skill on a fresh problem"
+"title" = "Apply it: Recheck the boundary with a specified change"
 "size" = "M"
 "minutes" = 120
 "needs" = ["independent-transfer-reasoning", "independent-transfer-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/independent-transfer-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
-"steps" = ["After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Transfer: Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.", "Control: Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/independent-transfer-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Add a second synthetic tank-level row at the same time as o4 with value 49 from a separate source. Revise your tabletop account and next evidence request."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.", "Change to test: Add a second case by reversing the changed condition above, predict its result and compare actual behavior.", "Comparison to retain: Do not disconnect the fictional operator network merely to make an IT containment checklist pass.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/independent-transfer-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
 "resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
 "verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. These are offline simulations/tabletops, with no industrial device connection. registers.py models integer reads only; it is not a Modbus implementation."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ot-ics-security.zip" }]
 
 [[node]]
 "id" = "recall-independent-transfer"
 "level" = "recall-lane"
-"title" = "Return later: Revisit the skill on a fresh problem"
+"title" = "Return later: Recheck the boundary with a specified change"
 "size" = "S"
 "minutes" = 10
 "needs" = ["independent-transfer-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
-"brief" = "Explain what transferred, what required help and which prerequisite needs another small experiment."
-"steps" = ["Explain what transferred, what required help and which prerequisite needs another small experiment.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"brief" = "Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested."
+"steps" = ["Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
 "resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ot-ics-security:independent-transfer" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "quick-access-check"
@@ -514,3 +629,6 @@
 "done_when" = "Correctly evaluate every allow/deny decision for a fresh server-generated policy fixture."
 "resource" = "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices"
 "verify" = { "type" = "lab", "exercise" = "access-policy" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."

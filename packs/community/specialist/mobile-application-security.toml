@@ -3,7 +3,7 @@
 "id" = "mobile-application-security"
 "title" = "Mobile Application Security"
 "kind" = "proficiency"
-"version" = 1
+"version" = 2
 "source" = "ai-draft"
 "reviewed" = false
 
@@ -12,7 +12,7 @@
 
 [[level]]
 "id" = "foundations"
-"title" = "Prove the entry skills in a small lab"
+"title" = "Read an Android manifest and state its limits"
 "lane" = "main"
 
 [[level]]
@@ -47,7 +47,7 @@
 
 [[level]]
 "id" = "independent-transfer"
-"title" = "Revisit the skill on a fresh problem"
+"title" = "Recheck the boundary with a specified change"
 "lane" = "main"
 
 [[level]]
@@ -69,62 +69,79 @@
 "needs" = []
 "done_when" = "Compute the exact content hash of a fresh server-generated evidence fixture and pass its check."
 "brief" = "This small exercise tests evidence integrity. Track entry background: Understand HTTP and application permissions; use an owned test device or appropriate emulator."
-"resource" = "https://mas.owasp.org/MASTG/"
+"resource" = "https://docs.python.org/3/library/hashlib.html"
 "verify" = { "type" = "lab", "exercise" = "integrity" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "foundations-reasoning"
 "level" = "foundations"
-"title" = "Reason it through: Prove the entry skills in a small lab"
+"title" = "Reason it through: Read an Android manifest and state its limits"
 "size" = "S"
 "minutes" = 10
 "needs" = ["lab-readiness"]
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Understand HTTP and application permissions; use an owned test device or appropriate emulator."
-"steps" = ["Work through this preparation: Understand HTTP and application permissions; use an owned test device or appropriate emulator.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://mas.owasp.org/MASTG/"
+"brief" = "Identify exposed components in a synthetic app declaration."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "mobile-application-security:foundations" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "foundations-experiment"
 "level" = "foundations"
-"title" = "Investigate: Prove the entry skills in a small lab"
+"title" = "Read an Android manifest and state its limits"
 "size" = "M"
-"minutes" = 60
+"minutes" = 30
 "needs" = ["foundations-reasoning"]
-"done_when" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/foundations-experiment.json."
-"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
-"steps" = ["Understand HTTP and application permissions; use an owned test device or appropriate emulator.", "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://mas.owasp.org/MASTG/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/foundations-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Identify exposed components in a synthetic app declaration."
+"steps" = ["Open AndroidManifest.xml as text. It declares the INTERNET permission, cleartext-traffic setting, an exported activity and an exported provider.", "Make a table of each component, its exported value and any required caller permission actually shown. Identify which question requires runtime testing.", "Explain that this file is a training snippet, not a buildable or installed APK. Do not claim a data leak solely from exported=true without testing the component implementation.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/foundations-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/foundations-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. The foundation is static manifest reading only. Device tasks require Android Studio’s free emulator (hardware virtualization and disk space) or your own Android test device, adb and a sanctioned practice APK. Use the named OWASP MASTG Hacking Playground, never a personal/banking app. A manifest file is not an installed app."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/mobile-application-security.zip" }]
 
 [[node]]
 "id" = "foundations-milestone"
 "level" = "foundations"
-"title" = "Apply it to a changed case: Prove the entry skills in a small lab"
+"title" = "Apply it: Read an Android manifest and state its limits"
 "size" = "M"
-"minutes" = 120
+"minutes" = 30
 "needs" = ["foundations-reasoning", "foundations-experiment", "lab-readiness"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/foundations-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
-"steps" = ["Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Transfer: Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.", "Control: Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/foundations-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Identify exposed components in a synthetic app declaration."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Open AndroidManifest.xml as text. It declares the INTERNET permission, cleartext-traffic setting, an exported activity and an exported provider.", "Change to test: In a copy, add a caller permission to the provider and predict what external callers would need.", "Comparison to retain: Keep the main activity launchable in your design; blanket removal of every component is not a useful repair.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/foundations-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://mas.owasp.org/MASTG/"
+"resource" = "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/foundations-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. The foundation is static manifest reading only. Device tasks require Android Studio’s free emulator (hardware virtualization and disk space) or your own Android test device, adb and a sanctioned practice APK. Use the named OWASP MASTG Hacking Playground, never a personal/banking app. A manifest file is not an installed app."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/mobile-application-security.zip" }]
 
 [[node]]
 "id" = "recall-foundations"
 "level" = "recall-lane"
-"title" = "Return later: Prove the entry skills in a small lab"
+"title" = "Return later: Read an Android manifest and state its limits"
 "size" = "S"
 "minutes" = 10
 "needs" = ["foundations-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
-"brief" = "Reconstruct the environment and entry assumptions without following the setup notes."
-"steps" = ["Reconstruct the environment and entry assumptions without following the setup notes.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://mas.owasp.org/MASTG/"
+"brief" = "Without opening your report, reconstruct the inputs, observed result and main limitation of read an android manifest and state its limits."
+"steps" = ["Without opening your report, reconstruct the inputs, observed result and main limitation of read an android manifest and state its limits.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "mobile-application-security:foundations" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "platform-model-reasoning"
@@ -134,38 +151,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Draw app sandbox, OS permissions, local storage and backend boundaries for a toy mobile app."
-"steps" = ["Work through this preparation: Draw app sandbox, OS permissions, local storage and backend boundaries for a toy mobile app.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://mas.owasp.org/MASTG/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "mobile-application-security:platform-model" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "platform-model-experiment"
 "level" = "platform-model"
-"title" = "Investigate: Locate the mobile trust boundary"
+"title" = "Practice: Locate the mobile trust boundary"
 "size" = "M"
 "minutes" = 60
 "needs" = ["platform-model-reasoning"]
-"done_when" = "Inventory an owned practice app's manifest/entitlements, components and data flows and map two questions to MASTG tests. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/platform-model-experiment.json."
-"brief" = "Inventory an owned practice app's manifest/entitlements, components and data flows and map two questions to MASTG tests."
-"steps" = ["Draw app sandbox, OS permissions, local storage and backend boundaries for a toy mobile app.", "Inventory an owned practice app's manifest/entitlements, components and data flows and map two questions to MASTG tests.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://mas.owasp.org/MASTG/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/platform-model-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Choose the OWASP MASTG Hacking Playground Android app from the linked test-app index; follow that app’s README to build/install it on your own emulator. Record APK hash, OS/API level and package name."
+"steps" = ["Choose the OWASP MASTG Hacking Playground Android app from the linked test-app index; follow that app’s README to build/install it on your own emulator. Record APK hash, OS/API level and package name.", "Inspect its real AndroidManifest.xml/entitlements and list components, permissions and data flows. Keep the bundled snippet separate from actual APK evidence.", "Choose two named MASTG tests relevant to observed storage or component boundaries and explain why they apply.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/platform-model-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/platform-model-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. The foundation is static manifest reading only. Device tasks require Android Studio’s free emulator (hardware virtualization and disk space) or your own Android test device, adb and a sanctioned practice APK. Use the named OWASP MASTG Hacking Playground, never a personal/banking app. A manifest file is not an installed app."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/mobile-application-security.zip" }]
 
 [[node]]
 "id" = "platform-model-milestone"
 "level" = "platform-model"
-"title" = "Apply it to a changed case: Locate the mobile trust boundary"
+"title" = "Apply it: Locate the mobile trust boundary"
 "size" = "M"
 "minutes" = 120
 "needs" = ["platform-model-reasoning", "platform-model-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/platform-model-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Inventory an owned practice app's manifest/entitlements, components and data flows and map two questions to MASTG tests."
-"steps" = ["Inventory an owned practice app's manifest/entitlements, components and data flows and map two questions to MASTG tests.", "Transfer: Add an exported component or a new permission in a toy build and reassess exposure.", "Control: Include a permission declaration that does not establish actual sensitive behavior by itself.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/platform-model-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Choose the OWASP MASTG Hacking Playground Android app from the linked test-app index; follow that app’s README to build/install it on your own emulator. Record APK hash, OS/API level and package name."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Choose the OWASP MASTG Hacking Playground Android app from the linked test-app index; follow that app’s README to build/install it on your own emulator. Record APK hash, OS/API level and package name.", "Change to test: Add an exported component or a new permission in a toy build and reassess exposure.", "Comparison to retain: Include a permission declaration that does not establish actual sensitive behavior by itself.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/platform-model-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://mas.owasp.org/MASTG/"
+"resource" = "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/platform-model-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. The foundation is static manifest reading only. Device tasks require Android Studio’s free emulator (hardware virtualization and disk space) or your own Android test device, adb and a sanctioned practice APK. Use the named OWASP MASTG Hacking Playground, never a personal/banking app. A manifest file is not an installed app."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/mobile-application-security.zip" }]
 
 [[node]]
 "id" = "recall-platform-model"
@@ -176,9 +204,12 @@
 "needs" = ["platform-model-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain how platform permissions and backend authorization differ."
-"steps" = ["Explain how platform permissions and backend authorization differ.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://mas.owasp.org/MASTG/"
+"steps" = ["Explain how platform permissions and backend authorization differ.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "mobile-application-security:platform-model" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "local-storage-reasoning"
@@ -188,38 +219,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Classify preferences, databases, caches and logs in a practice application's data model."
-"steps" = ["Work through this preparation: Classify preferences, databases, caches and logs in a practice application's data model.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://mas.owasp.org/MASTG/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "mobile-application-security:local-storage" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "local-storage-experiment"
 "level" = "local-storage"
-"title" = "Investigate: Find where the app leaves data"
+"title" = "Practice: Find where the app leaves data"
 "size" = "M"
 "minutes" = 60
 "needs" = ["local-storage-reasoning"]
-"done_when" = "Using an owned device/emulator and a sanctioned practice app, locate a synthetic sensitive value, document its storage/access assumptions and test a safer toy implementation. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/local-storage-experiment.json."
-"brief" = "Using an owned device/emulator and a sanctioned practice app, locate a synthetic sensitive value, document its storage/access assumptions and test a safer toy implementation."
-"steps" = ["Classify preferences, databases, caches and logs in a practice application's data model.", "Using an owned device/emulator and a sanctioned practice app, locate a synthetic sensitive value, document its storage/access assumptions and test a safer toy implementation.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://mas.owasp.org/MASTG/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/local-storage-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "On your practice app/emulator, choose a documented storage lesson and create a unique synthetic value such as ASCEND_TRAINING_NOTE. Record the exact lesson and app build."
+"steps" = ["On your practice app/emulator, choose a documented storage lesson and create a unique synthetic value such as ASCEND_TRAINING_NOTE. Record the exact lesson and app build.", "Using the lesson’s supported adb/run-as or debug tooling, locate the value and document which identity can access it. Do not assume release apps permit run-as.", "Build a small corrected storage example or modify the owned practice source, then retest intended reads and unrelated access. If you only inspected the snippet, leave runtime work incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/local-storage-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/local-storage-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. The foundation is static manifest reading only. Device tasks require Android Studio’s free emulator (hardware virtualization and disk space) or your own Android test device, adb and a sanctioned practice APK. Use the named OWASP MASTG Hacking Playground, never a personal/banking app. A manifest file is not an installed app."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/mobile-application-security.zip" }]
 
 [[node]]
 "id" = "local-storage-milestone"
 "level" = "local-storage"
-"title" = "Apply it to a changed case: Find where the app leaves data"
+"title" = "Apply it: Find where the app leaves data"
 "size" = "M"
 "minutes" = 120
 "needs" = ["local-storage-reasoning", "local-storage-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/local-storage-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Using an owned device/emulator and a sanctioned practice app, locate a synthetic sensitive value, document its storage/access assumptions and test a safer toy implementation."
-"steps" = ["Using an owned device/emulator and a sanctioned practice app, locate a synthetic sensitive value, document its storage/access assumptions and test a safer toy implementation.", "Transfer: Change device state or storage location and predict whether the same extraction method applies.", "Control: Keep intended app persistence working and show that unrelated sandboxed apps do not gain access through the proposed fix.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/local-storage-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "On your practice app/emulator, choose a documented storage lesson and create a unique synthetic value such as ASCEND_TRAINING_NOTE. Record the exact lesson and app build."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: On your practice app/emulator, choose a documented storage lesson and create a unique synthetic value such as ASCEND_TRAINING_NOTE. Record the exact lesson and app build.", "Change to test: Change device state or storage location and predict whether the same extraction method applies.", "Comparison to retain: Keep intended app persistence working and show that unrelated sandboxed apps do not gain access through the proposed fix.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/local-storage-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://mas.owasp.org/MASTG/"
+"resource" = "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/local-storage-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. The foundation is static manifest reading only. Device tasks require Android Studio’s free emulator (hardware virtualization and disk space) or your own Android test device, adb and a sanctioned practice APK. Use the named OWASP MASTG Hacking Playground, never a personal/banking app. A manifest file is not an installed app."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/mobile-application-security.zip" }]
 
 [[node]]
 "id" = "recall-local-storage"
@@ -230,9 +272,12 @@
 "needs" = ["local-storage-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain encryption-at-rest limits when the app itself can access the key."
-"steps" = ["Explain encryption-at-rest limits when the app itself can access the key.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://mas.owasp.org/MASTG/"
+"steps" = ["Explain encryption-at-rest limits when the app itself can access the key.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "mobile-application-security:local-storage" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "transport-reasoning"
@@ -242,38 +287,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Explain the certificate trust path and difference between an interception setup and a production configuration."
-"steps" = ["Work through this preparation: Explain the certificate trust path and difference between an interception setup and a production configuration.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://mas.owasp.org/MASTG/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "mobile-application-security:transport" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "transport-experiment"
 "level" = "transport"
-"title" = "Investigate: Inspect a request without weakening the conclusion"
+"title" = "Practice: Inspect a request without weakening the conclusion"
 "size" = "M"
 "minutes" = 60
 "needs" = ["transport-reasoning"]
-"done_when" = "Capture permitted training-app traffic on your own device/emulator, identify transmitted synthetic data and evaluate server identity validation under documented test settings. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/transport-experiment.json."
-"brief" = "Capture permitted training-app traffic on your own device/emulator, identify transmitted synthetic data and evaluate server identity validation under documented test settings."
-"steps" = ["Explain the certificate trust path and difference between an interception setup and a production configuration.", "Capture permitted training-app traffic on your own device/emulator, identify transmitted synthetic data and evaluate server identity validation under documented test settings.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://mas.owasp.org/MASTG/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/transport-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use only a documented network lesson in the OWASP practice app. Configure a debugging proxy on your emulator following the app’s instructions; use synthetic values only."
+"steps" = ["Use only a documented network lesson in the OWASP practice app. Configure a debugging proxy on your emulator following the app’s instructions; use synthetic values only.", "Record app target SDK, trust configuration and what traffic you actually observe. Distinguish a debug trust override from production trust behavior.", "Test a wrong-server certificate only in that local setup; preserve the observed rejection or lesson-specific behavior without disabling validation as your proposed fix.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/transport-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/transport-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. The foundation is static manifest reading only. Device tasks require Android Studio’s free emulator (hardware virtualization and disk space) or your own Android test device, adb and a sanctioned practice APK. Use the named OWASP MASTG Hacking Playground, never a personal/banking app. A manifest file is not an installed app."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/mobile-application-security.zip" }]
 
 [[node]]
 "id" = "transport-milestone"
 "level" = "transport"
-"title" = "Apply it to a changed case: Inspect a request without weakening the conclusion"
+"title" = "Apply it: Inspect a request without weakening the conclusion"
 "size" = "M"
 "minutes" = 120
 "needs" = ["transport-reasoning", "transport-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/transport-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Capture permitted training-app traffic on your own device/emulator, identify transmitted synthetic data and evaluate server identity validation under documented test settings."
-"steps" = ["Capture permitted training-app traffic on your own device/emulator, identify transmitted synthetic data and evaluate server identity validation under documented test settings.", "Transfer: Change the server certificate or hostname and predict acceptance or rejection.", "Control: Verify a valid connection succeeds and an invalid identity is rejected by the corrected toy app.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/transport-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use only a documented network lesson in the OWASP practice app. Configure a debugging proxy on your emulator following the app’s instructions; use synthetic values only."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use only a documented network lesson in the OWASP practice app. Configure a debugging proxy on your emulator following the app’s instructions; use synthetic values only.", "Change to test: Change the server certificate or hostname and predict acceptance or rejection.", "Comparison to retain: Verify a valid connection succeeds and an invalid identity is rejected by the corrected toy app.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/transport-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://mas.owasp.org/MASTG/"
+"resource" = "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/transport-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. The foundation is static manifest reading only. Device tasks require Android Studio’s free emulator (hardware virtualization and disk space) or your own Android test device, adb and a sanctioned practice APK. Use the named OWASP MASTG Hacking Playground, never a personal/banking app. A manifest file is not an installed app."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/mobile-application-security.zip" }]
 
 [[node]]
 "id" = "recall-transport"
@@ -284,9 +340,12 @@
 "needs" = ["transport-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain why disabling pinning for analysis does not prove a production bypass."
-"steps" = ["Explain why disabling pinning for analysis does not prove a production bypass.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://mas.owasp.org/MASTG/"
+"steps" = ["Explain why disabling pinning for analysis does not prove a production bypass.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "mobile-application-security:transport" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "components-reasoning"
@@ -296,38 +355,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Identify an exported activity, service or deep-link handler in an owned practice app."
-"steps" = ["Work through this preparation: Identify an exported activity, service or deep-link handler in an owned practice app.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://mas.owasp.org/MASTG/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "mobile-application-security:components" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "components-experiment"
 "level" = "components"
-"title" = "Investigate: Test the component's actual caller"
+"title" = "Practice: Test the component's actual caller"
 "size" = "M"
 "minutes" = 60
 "needs" = ["components-reasoning"]
-"done_when" = "Test a documented component boundary with benign input and record the caller identity, required permissions and resulting app behavior. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/components-experiment.json."
-"brief" = "Test a documented component boundary with benign input and record the caller identity, required permissions and resulting app behavior."
-"steps" = ["Identify an exported activity, service or deep-link handler in an owned practice app.", "Test a documented component boundary with benign input and record the caller identity, required permissions and resulting app behavior.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://mas.owasp.org/MASTG/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/components-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Select one documented exported-component lesson in the practice app. Record component name, calling test app/adb identity and required permission."
+"steps" = ["Select one documented exported-component lesson in the practice app. Record component name, calling test app/adb identity and required permission.", "Send one harmless supported input using the lesson’s exact invocation, then a caller lacking the required permission. Capture resulting app behavior and logs.", "Compare native behavior with the declaration. The bundled manifest alone cannot answer this runtime access question.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/components-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/components-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. The foundation is static manifest reading only. Device tasks require Android Studio’s free emulator (hardware virtualization and disk space) or your own Android test device, adb and a sanctioned practice APK. Use the named OWASP MASTG Hacking Playground, never a personal/banking app. A manifest file is not an installed app."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/mobile-application-security.zip" }]
 
 [[node]]
 "id" = "components-milestone"
 "level" = "components"
-"title" = "Apply it to a changed case: Test the component's actual caller"
+"title" = "Apply it: Test the component's actual caller"
 "size" = "M"
 "minutes" = 120
 "needs" = ["components-reasoning", "components-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/components-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Test a documented component boundary with benign input and record the caller identity, required permissions and resulting app behavior."
-"steps" = ["Test a documented component boundary with benign input and record the caller identity, required permissions and resulting app behavior.", "Transfer: Change a deep-link parameter or invoking app identity and predict whether access should be permitted.", "Control: Keep the intended navigation working while rejecting an unauthorized or malformed invocation.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/components-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Select one documented exported-component lesson in the practice app. Record component name, calling test app/adb identity and required permission."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Select one documented exported-component lesson in the practice app. Record component name, calling test app/adb identity and required permission.", "Change to test: Change a deep-link parameter or invoking app identity and predict whether access should be permitted.", "Comparison to retain: Keep the intended navigation working while rejecting an unauthorized or malformed invocation.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/components-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://mas.owasp.org/MASTG/"
+"resource" = "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/components-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. The foundation is static manifest reading only. Device tasks require Android Studio’s free emulator (hardware virtualization and disk space) or your own Android test device, adb and a sanctioned practice APK. Use the named OWASP MASTG Hacking Playground, never a personal/banking app. A manifest file is not an installed app."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/mobile-application-security.zip" }]
 
 [[node]]
 "id" = "recall-components"
@@ -338,9 +408,12 @@
 "needs" = ["components-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain why an exported component is a review target rather than automatically a vulnerability."
-"steps" = ["Explain why an exported component is a review target rather than automatically a vulnerability.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://mas.owasp.org/MASTG/"
+"steps" = ["Explain why an exported component is a review target rather than automatically a vulnerability.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "mobile-application-security:components" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "backend-reasoning"
@@ -350,38 +423,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Model two mobile users and backend objects using synthetic accounts."
-"steps" = ["Work through this preparation: Model two mobile users and backend objects using synthetic accounts.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://mas.owasp.org/MASTG/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "mobile-application-security:backend" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "backend-experiment"
 "level" = "backend"
-"title" = "Investigate: The phone is not the authorization boundary"
+"title" = "Practice: The phone is not the authorization boundary"
 "size" = "M"
 "minutes" = 60
 "needs" = ["backend-reasoning"]
-"done_when" = "Exercise a training app's API with two roles and verify server-side ownership checks independently of the mobile interface. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/backend-experiment.json."
-"brief" = "Exercise a training app's API with two roles and verify server-side ownership checks independently of the mobile interface."
-"steps" = ["Model two mobile users and backend objects using synthetic accounts.", "Exercise a training app's API with two roles and verify server-side ownership checks independently of the mobile interface.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://mas.owasp.org/MASTG/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/backend-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use local service.py independently of the Android UI. Compare alice and bob requesting /notes/1 with curl; the fake header simulates identity for the boundary exercise."
+"steps" = ["Use local service.py independently of the Android UI. Compare alice and bob requesting /notes/1 with curl; the fake header simulates identity for the boundary exercise.", "Repair do_GET ownership in your local copy and retest owner/cross-user cases.", "Explain why a mobile interface hiding a note does not enforce server-side ownership. Keep toy API findings separate from a claim about the practice APK backend.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/backend-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/backend-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. The foundation is static manifest reading only. Device tasks require Android Studio’s free emulator (hardware virtualization and disk space) or your own Android test device, adb and a sanctioned practice APK. Use the named OWASP MASTG Hacking Playground, never a personal/banking app. A manifest file is not an installed app."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/mobile-application-security.zip" }]
 
 [[node]]
 "id" = "backend-milestone"
 "level" = "backend"
-"title" = "Apply it to a changed case: The phone is not the authorization boundary"
+"title" = "Apply it: The phone is not the authorization boundary"
 "size" = "M"
 "minutes" = 120
 "needs" = ["backend-reasoning", "backend-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/backend-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Exercise a training app's API with two roles and verify server-side ownership checks independently of the mobile interface."
-"steps" = ["Exercise a training app's API with two roles and verify server-side ownership checks independently of the mobile interface.", "Transfer: Change object ID or request method and repeat the authorization decision with fresh evidence.", "Control: Preserve authorized access and deny an authenticated user who does not own the resource.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/backend-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use local service.py independently of the Android UI. Compare alice and bob requesting /notes/1 with curl; the fake header simulates identity for the boundary exercise."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use local service.py independently of the Android UI. Compare alice and bob requesting /notes/1 with curl; the fake header simulates identity for the boundary exercise.", "Change to test: Change object ID or request method and repeat the authorization decision with fresh evidence.", "Comparison to retain: Preserve authorized access and deny an authenticated user who does not own the resource.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/backend-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://mas.owasp.org/MASTG/"
+"resource" = "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/backend-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. The foundation is static manifest reading only. Device tasks require Android Studio’s free emulator (hardware virtualization and disk space) or your own Android test device, adb and a sanctioned practice APK. Use the named OWASP MASTG Hacking Playground, never a personal/banking app. A manifest file is not an installed app."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/mobile-application-security.zip" }]
 
 [[node]]
 "id" = "recall-backend"
@@ -392,9 +476,12 @@
 "needs" = ["backend-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain which finding belongs to the mobile client and which belongs to the backend."
-"steps" = ["Explain which finding belongs to the mobile client and which belongs to the backend.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://mas.owasp.org/MASTG/"
+"steps" = ["Explain which finding belongs to the mobile client and which belongs to the backend.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "mobile-application-security:backend" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "assessment-reasoning"
@@ -404,38 +491,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Specify app version, device OS, test state and permitted instrumentation before an assessment."
-"steps" = ["Work through this preparation: Specify app version, device OS, test state and permitted instrumentation before an assessment.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://mas.owasp.org/MASTG/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "mobile-application-security:assessment" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "assessment-experiment"
 "level" = "assessment"
-"title" = "Investigate: Deliver a platform-aware mobile review"
+"title" = "Practice: Deliver a platform-aware mobile review"
 "size" = "M"
 "minutes" = 60
 "needs" = ["assessment-reasoning"]
-"done_when" = "Review a fresh practice app against selected MASTG objectives, produce reproducible findings and retest one correction in an owned build. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/assessment-experiment.json."
-"brief" = "Review a fresh practice app against selected MASTG objectives, produce reproducible findings and retest one correction in an owned build."
-"steps" = ["Specify app version, device OS, test state and permitted instrumentation before an assessment.", "Review a fresh practice app against selected MASTG objectives, produce reproducible findings and retest one correction in an owned build.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://mas.owasp.org/MASTG/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/assessment-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Choose a second documented lesson in the same practice APK, different from your previous one. Record its MASTG objective, APK version and emulator state."
+"steps" = ["Choose a second documented lesson in the same practice APK, different from your previous one. Record its MASTG objective, APK version and emulator state.", "Perform the selected storage/component/network test with synthetic data, then implement and retest a correction in an owned build if available.", "Document what you could verify and what remains a proposed repair. A proposed patch without an owned build is not a tested correction.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/assessment-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/assessment-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. The foundation is static manifest reading only. Device tasks require Android Studio’s free emulator (hardware virtualization and disk space) or your own Android test device, adb and a sanctioned practice APK. Use the named OWASP MASTG Hacking Playground, never a personal/banking app. A manifest file is not an installed app."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/mobile-application-security.zip" }]
 
 [[node]]
 "id" = "assessment-milestone"
 "level" = "assessment"
-"title" = "Apply it to a changed case: Deliver a platform-aware mobile review"
+"title" = "Apply it: Deliver a platform-aware mobile review"
 "size" = "M"
 "minutes" = 120
 "needs" = ["assessment-reasoning", "assessment-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/assessment-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Review a fresh practice app against selected MASTG objectives, produce reproducible findings and retest one correction in an owned build."
-"steps" = ["Review a fresh practice app against selected MASTG objectives, produce reproducible findings and retest one correction in an owned build.", "Transfer: Change an OS/app version or component permission and independently re-evaluate the affected finding.", "Control: Record a test whose result depends on debug/rooted-device conditions and limit the production claim accordingly.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/assessment-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Choose a second documented lesson in the same practice APK, different from your previous one. Record its MASTG objective, APK version and emulator state."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Choose a second documented lesson in the same practice APK, different from your previous one. Record its MASTG objective, APK version and emulator state.", "Change to test: Change an OS/app version or component permission and independently re-evaluate the affected finding.", "Comparison to retain: Record a test whose result depends on debug/rooted-device conditions and limit the production claim accordingly.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/assessment-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://mas.owasp.org/MASTG/"
+"resource" = "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/assessment-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. The foundation is static manifest reading only. Device tasks require Android Studio’s free emulator (hardware virtualization and disk space) or your own Android test device, adb and a sanctioned practice APK. Use the named OWASP MASTG Hacking Playground, never a personal/banking app. A manifest file is not an installed app."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/mobile-application-security.zip" }]
 
 [[node]]
 "id" = "recall-assessment"
@@ -446,63 +544,80 @@
 "needs" = ["assessment-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Reconstruct one finding including the exact platform assumptions required to reproduce it."
-"steps" = ["Reconstruct one finding including the exact platform assumptions required to reproduce it.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://mas.owasp.org/MASTG/"
+"steps" = ["Reconstruct one finding including the exact platform assumptions required to reproduce it.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "mobile-application-security:assessment" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "independent-transfer-reasoning"
 "level" = "independent-transfer"
-"title" = "Reason it through: Revisit the skill on a fresh problem"
+"title" = "Reason it through: Recheck the boundary with a specified change"
 "size" = "S"
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution."
-"steps" = ["Work through this preparation: Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://mas.owasp.org/MASTG/"
+"brief" = "Use the named task files for the changed case. Predict the effect before opening previous notes."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "mobile-application-security:independent-transfer" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "independent-transfer-experiment"
 "level" = "independent-transfer"
-"title" = "Investigate: Revisit the skill on a fresh problem"
+"title" = "Practice: Recheck the boundary with a specified change"
 "size" = "M"
 "minutes" = 60
 "needs" = ["independent-transfer-reasoning"]
-"done_when" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/independent-transfer-experiment.json."
-"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
-"steps" = ["Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://mas.owasp.org/MASTG/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/independent-transfer-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "In an owned build of your selected OWASP practice-app component lesson, add a caller permission to the test component. Compare before/after behavior from authorized and unrelated test callers."
+"steps" = ["Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.", "In an owned build of your selected OWASP practice-app component lesson, add a caller permission to the test component. Compare before/after behavior from authorized and unrelated test callers.", "The intended app workflow must still work. Without an owned build/emulator, leave the runtime task incomplete.", "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/independent-transfer-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. The foundation is static manifest reading only. Device tasks require Android Studio’s free emulator (hardware virtualization and disk space) or your own Android test device, adb and a sanctioned practice APK. Use the named OWASP MASTG Hacking Playground, never a personal/banking app. A manifest file is not an installed app."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/mobile-application-security.zip" }]
 
 [[node]]
 "id" = "independent-transfer-milestone"
 "level" = "independent-transfer"
-"title" = "Apply it to a changed case: Revisit the skill on a fresh problem"
+"title" = "Apply it: Recheck the boundary with a specified change"
 "size" = "M"
 "minutes" = 120
 "needs" = ["independent-transfer-reasoning", "independent-transfer-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/independent-transfer-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
-"steps" = ["After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Transfer: Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.", "Control: Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/independent-transfer-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "In an owned build of your selected OWASP practice-app component lesson, add a caller permission to the test component. Compare before/after behavior from authorized and unrelated test callers."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.", "Change to test: Add a second case by reversing the changed condition above, predict its result and compare actual behavior.", "Comparison to retain: The intended app workflow must still work. Without an owned build/emulator, leave the runtime task incomplete.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/independent-transfer-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://mas.owasp.org/MASTG/"
+"resource" = "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. The foundation is static manifest reading only. Device tasks require Android Studio’s free emulator (hardware virtualization and disk space) or your own Android test device, adb and a sanctioned practice APK. Use the named OWASP MASTG Hacking Playground, never a personal/banking app. A manifest file is not an installed app."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/mobile-application-security.zip" }]
 
 [[node]]
 "id" = "recall-independent-transfer"
 "level" = "recall-lane"
-"title" = "Return later: Revisit the skill on a fresh problem"
+"title" = "Return later: Recheck the boundary with a specified change"
 "size" = "S"
 "minutes" = 10
 "needs" = ["independent-transfer-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
-"brief" = "Explain what transferred, what required help and which prerequisite needs another small experiment."
-"steps" = ["Explain what transferred, what required help and which prerequisite needs another small experiment.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://mas.owasp.org/MASTG/"
+"brief" = "Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested."
+"steps" = ["Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "mobile-application-security:independent-transfer" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "quick-access-check"
@@ -512,5 +627,8 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Correctly evaluate every allow/deny decision for a fresh server-generated policy fixture."
-"resource" = "https://mas.owasp.org/MASTG/"
+"resource" = "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/"
 "verify" = { "type" = "lab", "exercise" = "access-policy" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."

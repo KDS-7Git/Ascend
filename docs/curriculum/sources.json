@@ -549,6 +549,36 @@
       "evidence_kind": "first-party public curriculum, technical guidance or project documentation; page reviewed",
       "finding": "The tool provisions real AWS training resources and requires a scoped account, budget and teardown.",
       "limits": "Alignment or implementation guidance, not empirical validation of Ascend learning outcomes. Private course contents and every external exercise were not audited."
+    },
+    {
+      "id": "python-http-lab",
+      "url": "https://docs.python.org/3/library/http.server.html#command-line-interface",
+      "title": "Python HTTP server command-line interface",
+      "accessed": "2026-11-02",
+      "status": 200,
+      "evidence_kind": "technical documentation for local training recipes",
+      "finding": "The guided lab uses an explicit loopback bind and a disposable document directory.",
+      "limits": "Used for command/format semantics; local fixture tests do not establish operational proficiency or measured learning outcomes."
+    },
+    {
+      "id": "python-datetime-lab",
+      "url": "https://docs.python.org/3/library/datetime.html",
+      "title": "Python datetime reference",
+      "accessed": "2026-11-02",
+      "status": 200,
+      "evidence_kind": "technical documentation for local training recipes",
+      "finding": "Timezone-aware ISO timestamps can be normalized to UTC before comparing a log window.",
+      "limits": "Used for command/format semantics; local fixture tests do not establish operational proficiency or measured learning outcomes."
+    },
+    {
+      "id": "wireshark-fixtures",
+      "url": "https://www.wireshark.org/docs/wsug_html_chunked/",
+      "title": "Wireshark User Guide",
+      "accessed": "2026-11-02",
+      "status": 200,
+      "evidence_kind": "technical documentation for local training recipes",
+      "finding": "Packet inspection distinguishes Ethernet HTTP exchanges from a raw IEEE 802.11 beacon.",
+      "limits": "Used for command/format semantics; local fixture tests do not establish operational proficiency or measured learning outcomes."
     }
   ],
   "discovery_limits": [

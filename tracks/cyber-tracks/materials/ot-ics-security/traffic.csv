@@ -1,0 +1,6 @@
+id,time,peer,function,register,value,label
+o1,09:00:00,192.0.2.10,3,10,50,baseline-read
+o2,09:00:05,192.0.2.10,3,10,51,baseline-read
+o3,09:00:10,192.0.2.77,3,10,51,new-peer
+o4,09:00:15,192.0.2.10,6,10,55,unexpected-write
+o5,09:00:20,192.0.2.10,3,10,55,baseline-read

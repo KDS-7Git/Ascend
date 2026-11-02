@@ -1,0 +1,1053 @@
+{
+  "version": 1,
+  "tracks": {
+    "ethical-hacking-foundations": {
+      "setup": "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication.",
+      "resource": "https://developer.mozilla.org/en-US/docs/Web/HTTP",
+      "foundation": {
+        "title": "Your first local HTTP lab",
+        "brief": "Serve one page on your own computer, request it with curl, then compare its successful response with a request for a page that does not exist.",
+        "steps": [
+          "Prepare two terminal windows on the computer where you will run this lab. We will call them Terminal A and Terminal B. Start the timed task when you are ready; the commands below are for you to run, not commands Ascend runs automatically.\n\nIn Terminal A, check that both tools are available:\n```sh\npython3 --version\ncurl --version\n```\nA Python 3 version and a curl version mean you can continue. If a command is missing, use the first hint below before starting the timer.",
+          "In Terminal A, make a new temporary folder containing one page, then serve that folder on your own computer:\n```sh\nlab_site=$(mktemp -d /tmp/ascend-http.XXXXXX)\nprintf '<h1>My first lab</h1>\\n' > \"$lab_site/index.html\"\npython3 -m http.server 8765 --bind 127.0.0.1 --directory \"$lab_site\"\n```\nLeave this terminal running. A message beginning \u201cServing HTTP on 127.0.0.1\u201d means the server started. 127.0.0.1 means this computer; 8765 is the port identifying this server. No public website is involved.",
+          "In Terminal B, request your page:\n```sh\ncurl --noproxy \"*\" -i http://127.0.0.1:8765/\n```\nThis sends a GET request for /. The -i option shows response headers as well as the body. Find the first HTTP line: expect status 200. Below the headers, find the page text \u201cMy first lab\u201d. Also look at Terminal A: it should log this request. Record what you actually see.",
+          "In Terminal B, ask the same server for a page you did not create:\n```sh\ncurl --noproxy \"*\" -i http://127.0.0.1:8765/missing-page\n```\nExpect status 404. The server is still running and answering; this path simply has no page. Compare the two status codes and response bodies. A 404 here is an expected observation, not a failed setup.",
+          "Save your observations from Terminal B. Copy this whole block. It asks for your actual results and your own short explanations, then creates the JSON report at the finish-line path. It does not supply the answers or overwrite an existing report.\n```sh\npython3 -c '\nimport json\nfrom pathlib import Path\nreport = {\n    \"scope\": \"Only my own local practice server\",\n    \"target\": input(\"URL you requested: \").strip(),\n    \"home_status\": input(\"Status code for /: \").strip(),\n    \"home_body\": input(\"One line from the / response body: \").strip(),\n    \"missing_status\": input(\"Status code for /missing-page: \").strip(),\n    \"loopback_meaning\": input(\"What does 127.0.0.1 mean? \").strip(),\n    \"port_meaning\": input(\"What is the port number for? \").strip(),\n    \"comparison\": input(\"Why did the two requests give different responses? \").strip(),\n    \"limitations\": input(\"What did this lab not test? \").strip()\n}\nif not all(report.values()):\n    raise SystemExit(\"An answer was empty. No report saved; run again when ready.\")\npath = Path(\"{lab_dir}/foundations-experiment.json\").expanduser()\npath.parent.mkdir(parents=True, exist_ok=True)\nif path.exists():\n    raise SystemExit(\"A report already exists. Open it in your text editor to update it.\")\nwith path.open(\"x\") as output:\n    json.dump(report, output, indent=2)\nprint(\"Saved:\", path)\n'\n```\nIf the report already exists, open it in your text editor to review or update your notes instead of replacing it. This exercise checks the file on the computer running Ascend. For a hosted/container server, the report must be placed at that server\u2019s configured lab path; a file saved only on your laptop will not be visible to the checker.",
+          "Stop your practice server: return to Terminal A and press Ctrl+C. Keep your saved report.\n\nBack in Ascend, open Challenge options \u2192 Check evidence to check that the report file is present. Then use Log progress, briefly describe what you learned, and select Mark as done when your report contains the observations and explanations above. This file check does not grade your reasoning and this task does not earn automatic XP."
+        ],
+        "variant": "Repeat the local page request on port 8766. Predict which part of the URL must change, then record the actual response.",
+        "control": "Stop your local server and repeat the same request. Explain why a connection failure differs from an HTTP 404 returned by a running server."
+      },
+      "topics": {
+        "scope": [
+          "Read scenario.json. Write scope.md naming Harbor Notes, 127.0.0.1:8765, the two synthetic users alice and bob, and the permitted GET requests. Mira is the fictional service owner and Dev is the stop/escalation contact.",
+          "Set a maximum of one manual request per second. Copy the stop conditions and reset method from the scenario into your plan. Specify where you will store synthetic request/response evidence.",
+          "Check two proposed actions against your plan: GET /health on loopback, and a request to a public website. Explain which falls outside this exercise. No request to the public website is needed."
+        ],
+        "method": [
+          "Start service.py in Terminal A. In Terminal B, inventory its response and read its three endpoint handlers in the source.\n```sh\ncurl --noproxy \"*\" -i http://127.0.0.1:8765/health\n```",
+          "Write two hypotheses before testing: whether an unknown path returns 404, and whether bob can read note 1 belonging to alice. Test only these two GET requests; save the commands and status/body.\n```sh\ncurl --noproxy \"*\" -i http://127.0.0.1:8765/no-such-path\ncurl --noproxy \"*\" -i -H \"X-Lab-User: bob\" http://127.0.0.1:8765/notes/1\n```",
+          "A successful /health request establishes reachability only. Explain separately whether each observation supports your hypothesis; do not label a 404 as a vulnerability. Stop the server."
+        ],
+        "web-boundaries": [
+          "Use the local service.py fixture. Note 1 belongs to alice; note 2 belongs to bob. Read do_GET and predict owner and cross-user results.",
+          "Start the server and compare the same note with the two identities.\n```sh\ncurl --noproxy \"*\" -i -H \"X-Lab-User: alice\" http://127.0.0.1:8765/notes/1\ncurl --noproxy \"*\" -i -H \"X-Lab-User: bob\" http://127.0.0.1:8765/notes/1\n```",
+          "In a COPY of service.py, add an ownership check before returning the note. Restart that copy. The owner should still receive the note; the other user should receive a denial without its contents. Preserve before/after output. This demonstrates a toy authorization boundary, not real login security."
+        ],
+        "permissions": [
+          "Use Linux, macOS or WSL for this filesystem exercise. Work only on the extracted permissions.txt file. Inspect your identity and its mode.\n```sh\nid\nls -l permissions.txt\nchmod 644 permissions.txt\nls -l permissions.txt\n```",
+          "Mode 644 gives the owner read/write and group/others read. Change only this training file to 600, then inspect the mode again and confirm you can still read it.\n```sh\nchmod 600 permissions.txt\nls -l permissions.txt\ncat permissions.txt\n```",
+          "Record the removed group/other read bits and the retained owner read/write bits. A mode listing predicts permissions; it does not prove access as another OS user. If you have only one account, explicitly leave the second-identity runtime check untested."
+        ],
+        "evidence": [
+          "Use your saved owner/cross-user test from web-boundaries. Name the fixture version ascend-notes-v1 and the exact note/user relationship.",
+          "Write finding.md with the minimal two requests, the synthetic response excerpt, the missing ownership check, affected data and why your impact claim is limited to this fixture.",
+          "Attach the change you made to do_GET and the owner/denied cross-user retest. If your earlier test did not reproduce a leak, record that negative result and investigate the discrepancy instead of inventing one."
+        ],
+        "assessment": [
+          "Extract a fresh copy of service.py and scenario.json. Independently use note 2 (owner bob) and alice as the unrelated user. State the scope before starting.",
+          "Inventory /health and the handlers; predict and test a nonexistent note and the cross-user request. Produce either the reproducible defect or a justified negative result. Repair the observed permission problem in your copy.",
+          "Retest bob reading note 2, alice reading her own note 1, and alice requesting note 2. Write a short nontechnical impact summary and a separate evidence index. Stop the server."
+        ]
+      },
+      "transfer": {
+        "steps": [
+          "Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.",
+          "Use note 2 and replace its owner with carol in a fresh service.py copy. Update only the list of recognized synthetic users needed for that identity, then independently test and repair ownership.",
+          "Bob must still read his own remaining test note; alice must not gain access to carol\u2019s note.",
+          "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
+        ]
+      }
+    },
+    "red-team-adversary-emulation": {
+      "setup": "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs.",
+      "resource": "https://attack.mitre.org/techniques/T1074/001/",
+      "foundation": {
+        "title": "Create a harmless marker and verify cleanup",
+        "brief": "Observe the difference between performing an action and collecting evidence of it.",
+        "steps": [
+          "Read marker.py first. It writes one training-marker.txt, records create/remove events in marker-events.jsonl and removes only the file it created. It refuses to overwrite an existing log.",
+          "Run it in the extracted folder.\n```sh\npython3 marker.py\n```",
+          "Inspect the two timestamps and the printed Marker absent result. Explain that these are the script\u2019s own logs; they do not prove that an endpoint sensor or SOC detected anything."
+        ],
+        "variant": "In a new copy, change the marker filename to training-marker-2.txt and predict which event fields should change. Run and compare.",
+        "control": "Delete the remove step only in a disposable COPY. Verify that a remaining marker is a cleanup failure, not evidence of successful cleanup."
+      },
+      "topics": {
+        "objectives": [
+          "Read context.json and marker.py. Write an engagement plan limited to creation and deletion of this local marker; use Mira and Dev as the fictional owner/defender contacts.",
+          "State one objective: whether the marker action is visible in the selected telemetry. Define the two expected events, the rate (one run), stop conditions and cleanup check.",
+          "List missing OS/process/network collectors explicitly. A script log can demonstrate the marker sequence but cannot establish production detection coverage."
+        ],
+        "threat-model": [
+          "Read the linked ATT&CK T1074.001 description (local data staging). Define a hypothesis that creating a named harmless local file could produce observable file events.",
+          "Map your marker to only the file-creation observable. Do not claim data theft, evasion or full adversary emulation. Cite the technique URL and access date in threat-note.md.",
+          "Predict what a collector would need to record: timestamp, actor, process and path. Mark any field absent from marker-events.jsonl as a collection gap."
+        ],
+        "telemetry": [
+          "Run marker.py once in a fresh extracted folder and open marker-events.jsonl alongside events.csv.",
+          "Build a timeline for each source separately, normalize its time zone, and record the fields actually present. Do not join the synthetic October events to a newly executed marker as if they occurred together.",
+          "Document which joins would require a process ID, user or host field missing from the marker log. This missing coverage is a valid finding."
+        ],
+        "emulation": [
+          "Use the marker-only plan from objectives. Read the exact marker.py copy you intend to run and record its SHA-256 with Python hashlib or sha256sum marker.py on Linux.",
+          "Run once in a fresh folder. Preserve stdout and marker-events.jsonl. Compare actual creation/deletion effects with your prewritten objective.",
+          "Confirm training-marker.txt is absent and no unrelated files changed. This task contains no credential access, persistence or external targets."
+        ],
+        "purple-team": [
+          "Combine a COPY of events.csv with the two marker events into a table whose columns include source, time, action and evidence ID. Keep source differences visible.",
+          "Have a peer, or a second pass with rows shuffled, classify marker activity and benign events. Keep your original labels separate until after classification.",
+          "Count missed markers and benign rows called markers. Revise one rule and retest both sets; this is an offline classification exercise, not evidence of a deployed EDR analytic."
+        ],
+        "campaign": [
+          "Use a new folder and your approved marker plan. Predict creation, logging and cleanup for training-marker-2.txt.",
+          "Perform the bounded sequence once, collect the script log, inspect actual files and compare with the objective.",
+          "Deliver a report separating action success, available telemetry, analyst classification and cleanup. An absent collector must remain an untested measurement."
+        ]
+      },
+      "transfer": {
+        "steps": [
+          "Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.",
+          "In a fresh marker.py copy, omit the deletion log while retaining deletion itself. Determine whether you can establish cleanup from filesystem inspection and which telemetry is missing.",
+          "Retain the creation event and confirm that missing telemetry is not evidence that the action never happened.",
+          "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
+        ]
+      }
+    },
+    "soc-analyst": {
+      "setup": "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs.",
+      "resource": "https://docs.python.org/3/library/datetime.html",
+      "foundation": {
+        "title": "Read a login timeline in two time zones",
+        "brief": "Find the same user\u2019s events without confusing local time with UTC.",
+        "steps": [
+          "Open events.csv and context.json. Each row has an id, timestamp, user, host, source address, kind and result. The investigation window is 09:00\u201309:10 UTC on 1 October 2026.",
+          "Print timestamps in UTC using the standard library.\n```sh\npython3 -c \"import csv; from datetime import datetime, timezone; rows=csv.DictReader(open('events.csv')); [print(r['id'], datetime.fromisoformat(r['time']).astimezone(timezone.utc).isoformat(), r['user']) for r in rows]\"\n```",
+          "Write down the exact row IDs for alice inside the window. Explain why alice-test and an earlier alice event are different. Use result to distinguish failed actions from successful ones; the rows alone do not prove compromise."
+        ],
+        "variant": "Change only e3 to the equivalent UTC timestamp in a copy; the normalized timeline should be unchanged.",
+        "control": "Use alice-test and e7 as exclusions; a substring match or an unbounded time query must not include them."
+      },
+      "topics": {
+        "intake": [
+          "Use events.csv, context.json and message.eml. Create three queue items: Alice\u2019s failures followed by role change; Bob\u2019s blocked web link; the backup maintenance login.",
+          "For each, list row IDs, known business context, one benign alternative and one missing fact. Distinguish a blocked proxy request from demonstrated execution.",
+          "Order the queue and justify the order. The fixture has no definitive incident verdict; your finish line is an evidence-based decision with uncertainty."
+        ],
+        "queries": [
+          "Use the foundations timestamp-normalization command as a starting point. Filter exact user alice and the inclusive 09:00\u201309:10 UTC window; print id, time, host and source_ip.",
+          "Save your reusable query as query.py. Run it from the folder containing events.csv and retain its actual output. Verify against the row IDs you selected by hand.",
+          "Exclude alice-test and e7. Report any missing device/process fields that prevent a stronger correlation."
+        ],
+        "authentication": [
+          "Review e1\u2013e4 and e11 in events.csv with context.json. Distinguish failed login, successful login, allowed role change and denied administrator grant.",
+          "Build a table of hypotheses: user typo followed by authorized work, and possible misuse. For each, cite supporting and contradicting rows.",
+          "Request one discriminating next fact in your report, such as the role-change approval. Do not invent that approval or treat the denied administrator grant as a successful privilege change."
+        ],
+        "web-and-mail": [
+          "Read message.eml as TEXT. The .invalid URL is inert; there is no attachment to run. Correlate its Date and recipient with events e9 and e10.",
+          "List what DNS success and a blocked proxy event show. Keep delivery, clicking, successful page access and code execution as separate claims.",
+          "Write the missing evidence you would need before claiming execution. Preserve the message ID and log IDs in your handoff."
+        ],
+        "response": [
+          "Write response.md for the fictional Alice case. Before containment, preserve a copy of events.csv and its SHA-256 hash; no real account should be changed.",
+          "Tabletop the decision with Mira as owner: list the evidence threshold for disabling a synthetic identity, how to record approval and how to reverse the action.",
+          "Rehearse allowed-user and affected-user checks against a written access matrix. Label this a tabletop; it cannot prove that an actual IdP or endpoint was contained."
+        ],
+        "shift-handoff": [
+          "Use a fresh copy of events.csv. Ask a peer to change one identity/time field, or move e4 outside the window yourself and record that assistance.",
+          "Run your investigation without copying the previous verdict. Produce the timeline, references, confidence, response decision and remaining question.",
+          "Check that maintenance and blocked traffic remain correctly described. Include the exact query and changed fixture so the next analyst can reproduce the handoff."
+        ]
+      },
+      "transfer": {
+        "steps": [
+          "Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.",
+          "Add a synthetic approval for e4 to context.json, then move e4 outside the original investigation window in events.csv. Reevaluate the Alice case using your saved query.",
+          "Keep alice-test excluded and preserve the denied status of e11.",
+          "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
+        ]
+      }
+    },
+    "active-directory-security": {
+      "setup": "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The foundations task is a static directory model. Later operational tasks require isolated Windows Server and Windows client VMs, an administrator account in YOUR training domain, DNS between those VMs and the AD PowerShell module. Windows evaluation images have time-limited licensing and substantial RAM/disk requirements. Use Microsoft Evaluation Center; no paid training course is required. A model-only result cannot complete an operational task.",
+      "resource": "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-",
+      "foundation": {
+        "title": "Trace group membership in a small directory model",
+        "brief": "Predict a permission path before inspecting a real directory.",
+        "steps": [
+          "Open directory-model.json. It contains two users, nested groups, an allow list and an explicit deny. This is a simplified graph; it is not a Windows access-check implementation.",
+          "Draw LabReader \u2192 LabReaders \u2192 LabOperators. List the read/write permissions suggested by the group edges, then identify the explicit LabReader write deny.",
+          "Write one prediction and the native evidence needed to test it: token membership and the object ACL. If on your own Windows host, inspect identity with whoami /user and whoami /groups; do not create accounts on a work domain."
+        ],
+        "variant": "Remove LabReaders from LabOperators in a copy and redraw the reachable group path.",
+        "control": "Keep LabOperator in LabOperators. Explain why that unrelated membership should remain intact."
+      },
+      "topics": {
+        "domain-model": [
+          "Prepare an isolated training.example.test forest using the linked Microsoft AD DS installation guide on a fresh evaluation VM. Point a separate training client\u2019s DNS at the DC. Record the VM network, OS build and reset snapshot.",
+          "Create the Training OU and the LabReader/LabOperator test users in that lab only. Join the test client using Windows Settings \u2192 System \u2192 About \u2192 Domain or workgroup. Reboot and sign in as a test user.",
+          "Capture Get-ADDomain, client ipconfig /all and the domain sign-in event. A static JSON graph does not fulfill this task."
+        ],
+        "auth-protocols": [
+          "Use your joined training client and DC from domain-model. Record their clock/DNS settings. On the client run klist before and after accessing a share you created on the training DC.",
+          "On the DC inspect the corresponding Security log ticket events (4768/4769) if auditing is enabled; compare account, service and time with the client action.",
+          "If no event is collected, record the audit setting and gap; do not fabricate a ticket event or collect real user passwords."
+        ],
+        "permissions": [
+          "Create LabReaders and LabOperators groups in your isolated domain and place them under the Training OU. Recreate the nested membership in directory-model.json.",
+          "Inspect Get-ADGroupMember -Recursive, the test user token, and Get-Acl on the Training OU. Select one real inherited or explicit grant and predict effective access; model deny behavior may differ from your actual ACL.",
+          "Remove only the overbroad TEST grant, then compare native ACL and intended test-user access before/after. A graph path alone is insufficient evidence."
+        ],
+        "gpo-delegation": [
+          "In Group Policy Management on your training DC, create an otherwise empty TrainingNotes GPO linked only to the Training OU. Record its scope and delegation tab.",
+          "Compare the ability of LabReader and LabOperator to read versus edit this GPO. Grant only a test-group permission when constructing the exercise; preserve the baseline for restoration.",
+          "Remove an overbroad edit grant and check that the intended delegated editor still works. Record actual effective access, not just group names."
+        ],
+        "certificate-services": [
+          "This task additionally needs an isolated AD CS evaluation lab. Follow Microsoft AD CS installation documentation; take a reset snapshot before adding the role. Keep issued certificates in the training domain.",
+          "Inspect one duplicated, training-only user template\u2019s enrollment ACL, subject-name source and authentication purpose. Record exact settings and predict which user can enroll as which identity.",
+          "Tighten the training template and test permitted enrollment plus a denied case. Without the AD CS environment, record preparation only; directory-model.json does not demonstrate certificate behavior."
+        ],
+        "assessment": [
+          "Use your existing training domain and a fresh test OU. Audit DNS discovery, one domain sign-in and one inherited permission or GPO delegation edge.",
+          "Predict a least-privilege repair, apply it only to the test object and verify both the denied unrelated identity and the intended operation.",
+          "Export native evidence and restore the lab change. Identify any AD CS area left untested."
+        ]
+      },
+      "transfer": {
+        "steps": [
+          "Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.",
+          "In your isolated domain, move the TrainingNotes GPO link from the Training OU to a new TrainingReview OU containing only LabOperator. Predict and measure which test user is affected.",
+          "Normal LabReader sign-in must still work; leave other OUs untouched.",
+          "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
+        ]
+      }
+    },
+    "cloud-security": {
+      "setup": "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The downloadable policy.py is a provider-neutral simulation. Cloud inventory/log analysis can be done locally. Any optional provider validation needs your own scoped account, its current billing terms and cleanup; no real-cloud validation is implied by a model result.",
+      "resource": "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html",
+      "foundation": {
+        "title": "Compare two roles in a local permission model",
+        "brief": "Read a concrete access matrix without needing a cloud subscription.",
+        "steps": [
+          "Open cloud.json and policy.py. The roles map actions to reader/editor; the resource is synthetic. No API calls are made.",
+          "Run the six-case matrix.\n```sh\npython3 policy.py\n```",
+          "Record which role/action pairs are allowed and why unknown is denied. Explain which provider features this model omits, such as explicit deny, conditions and runtime identity."
+        ],
+        "variant": "Remove write from editor in a copy; predict and rerun the matrix.",
+        "control": "Reader read must remain allowed, and unknown write must remain denied."
+      },
+      "topics": {
+        "shared-responsibility": [
+          "Use cloud.json as the fictional asset inventory. Name the notes resource, local region, application owner and provider/team responsibility split.",
+          "Draw the internet \u2192 load-balancer \u2192 api \u2192 notes path. Assign responsibility for authorization, patching, audit collection and backup restoration.",
+          "List what an actual provider account inventory would additionally require. Do not present synthetic inventory as inspected cloud infrastructure."
+        ],
+        "iam": [
+          "Run policy.py and write the reader/editor read/write matrix before changing it. Record the public flag separately from role permissions; this model does not apply the flag in its evaluator.",
+          "Remove an overbroad write grant in a copy and rerun both intended reads and denied writes. For provider validation, translate the scenario into your provider simulator with explicit test identities and resource ARN; keep that result separate.",
+          "Explain omitted conditions/explicit denies and whether you performed local modeling, provider simulation or real runtime tests."
+        ],
+        "exposure": [
+          "Read cloud.json exposure and public fields. Define intended access: internet reaches the load-balancer only; notes is not publicly readable.",
+          "Write a small validator that flags resource.public=true and any direct internet \u2192 notes edge. Test the baseline, a repaired copy and an allowed load-balancer edge.",
+          "Record that the validator checks configuration data, not packets or a provider firewall. A real reachability claim requires a separate training-account test."
+        ],
+        "secrets": [
+          "Implement a local token record with fields token_id, allowed_action, expires_at and revoked. Use fixed synthetic times so tests are reproducible; no real credentials.",
+          "Test before expiry, exactly at expiry, after expiry and after revocation. Check permission separately from token lifetime.",
+          "Record the comparison with provider workload identity and the trust assumptions your toy checker does not implement."
+        ],
+        "logging": [
+          "Use cloud.json audit, where every event has a stable c-ID. Sort the grant/access sequence by event time and distinguish success from denied.",
+          "Write a query finding successful grants followed by same-actor access to the same resource within five minutes. Test the c3 denial and c4 approved maintenance separately.",
+          "Cite event IDs and absent sources; a temporal sequence is a lead, not proof of compromise."
+        ],
+        "assessment": [
+          "Make a fresh copy of cloud.json with resource id changed to project-notes and actor alice changed to trainee. Add a direct internet \u2192 project-notes edge.",
+          "Use your inventory, policy and exposure checks to find and repair the local configuration defect; preserve intended role reads and the load-balancer route.",
+          "Deliver the before/after model results and cleanup. Label the outcome local simulation unless you separately validated it in an owned provider lab."
+        ]
+      },
+      "transfer": {
+        "steps": [
+          "Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.",
+          "In cloud.json rename notes to archive and remove editor write. Update the local policy/exposure tests to use the changed resource and intended read-only workflow.",
+          "Reader read remains allowed and unknown write remains denied. State provider-specific behavior left untested.",
+          "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
+        ]
+      }
+    },
+    "container-kubernetes-security": {
+      "setup": "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Container tasks additionally need Docker Engine or Podman with a working local daemon and network access to pull public images. Kubernetes tasks require a disposable kind/minikube cluster and kubectl; check RAM/disk requirements before timing. Do not use a work cluster. No paid course or cloud cluster is required.",
+      "resource": "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/",
+      "foundation": {
+        "title": "Inspect the process inside your first training container",
+        "brief": "Build a minimal local image and verify its runtime user.",
+        "steps": [
+          "Inspect Dockerfile and service.py. The image runs the synthetic service as uid 10001; it is not an intentionally privileged container. Confirm your container engine works before starting.",
+          "From the extracted folder, build and run an identity check. The base-image download needs internet.\n```sh\ndocker build -t ascend-notes:training .\ndocker run --rm --network none ascend-notes:training id\n```",
+          "Record the actual uid/gid and inspect mounts with docker image inspect ascend-notes:training. Explain the difference between an image and a running container. These commands do not test network exposure."
+        ],
+        "variant": "Override the training container user with --user 10002:10002 and compare id output.",
+        "control": "Run with --network none and confirm identity inspection still works; network access is unnecessary for this check."
+      },
+      "topics": {
+        "container-boundary": [
+          "Use the downloaded Dockerfile and build ascend-notes:training. Run id with --cap-drop ALL --security-opt no-new-privileges --read-only --tmpfs /tmp:rw,size=16m --network none.",
+          "Using python3 -c inside that same bounded container, attempt to write /app/test and /tmp/test; retain the permission/read-only failure and the successful temporary write.",
+          "Explain the effects of uid, read-only root and tmpfs separately. The service binds container loopback, so this task does not demonstrate host reachability."
+        ],
+        "image-supply-chain": [
+          "Build the Dockerfile and record docker image inspect output, including base image identity. Install a locally supported Syft release from its official documentation if using an SBOM generator.",
+          "Run syft ascend-notes:training -o cyclonedx-json into sbom.json. Inspect package names/versions and record tool version; a local build may not have a registry RepoDigest.",
+          "Pin the FROM image to the actual digest you resolved, rebuild, and investigate one applicable advisory using its vendor source. If none applies, record that bounded result instead of inventing a finding."
+        ],
+        "network-separation": [
+          "Pull nginx:alpine for this network task; unlike service.py it listens on the container interface. Run a named disposable container with --memory 128m --cpus 0.5 --pids-limit 64 and -p 127.0.0.1:8765:80.",
+          "Use curl on loopback and docker inspect to verify the bound host IP, resource limits and mounts. Do not add Docker socket or tracker-volume mounts.",
+          "Stop and remove only the named training container. Record what loopback binding shows and what it does not establish about a different host\u2019s firewall."
+        ],
+        "cluster-identity": [
+          "Create a disposable kind/minikube cluster using the linked setup guide; verify kubectl config current-context identifies that lab. Read pod.yaml, then apply it only there.",
+          "Run kubectl auth can-i list pods --as=system:serviceaccount:ascend-lab:reader -n ascend-lab; compare delete pods and a request in default namespace.",
+          "Save actual allowed/denied results, then delete the ascend-lab namespace in that lab. These checks test API authorization, not pod network traffic."
+        ],
+        "cluster-network": [
+          "Use a disposable cluster whose CNI supports NetworkPolicy. Create an ascend-lab namespace, an nginx server pod/service and a curl client; record the image versions.",
+          "Confirm baseline client \u2192 server connectivity, then apply ingress default-deny. Add an allow policy selecting only the intended client label and port 80; retest.",
+          "Keep an unrelated client as a denial control. If the CNI does not enforce NetworkPolicy, record the failed prerequisite rather than declaring isolation from YAML alone."
+        ],
+        "review": [
+          "Use a copy of pod.yaml. Add an excessive pods/delete verb to its role as the deliberate configuration defect, then apply only in your disposable cluster.",
+          "Demonstrate the extra permission with kubectl auth can-i, remove it, reapply and retest list versus delete.",
+          "Inspect namespace/context and delete only your training namespace. Preserve the before/after manifest and API results."
+        ]
+      },
+      "transfer": {
+        "steps": [
+          "Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.",
+          "In a disposable cluster, change the downloaded Role/RoleBinding namespace from ascend-lab to ascend-review and test the same service-account get/list/delete matrix there.",
+          "The training service account must not gain privileges in default; delete only the new training namespace afterward.",
+          "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
+        ]
+      }
+    },
+    "secure-development-devsecops": {
+      "setup": "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. Git is needed for versioned changes; use a new local repository inside the extracted folder.",
+      "resource": "https://owasp.org/www-project-application-security-verification-standard/",
+      "foundation": {
+        "title": "Run and inspect a tiny notes service",
+        "brief": "Make one real HTTP request and find its handler in source.",
+        "steps": [
+          "Open service.py and find do_GET. In Terminal A start the local fixture.\n```sh\npython3 service.py\n```",
+          "In Terminal B request health and the owner\u2019s note.\n```sh\ncurl --noproxy \"*\" -i http://127.0.0.1:8765/health\ncurl --noproxy \"*\" -i -H \"X-Lab-User: alice\" http://127.0.0.1:8765/notes/1\n```",
+          "Record status, JSON body and the source branch returning each. Stop the service. Create a new local Git repo if desired; do not modify Ascend\u2019s source repository for this exercise."
+        ],
+        "variant": "Request /notes/2 as bob and trace that record in NOTES.",
+        "control": "Request an unknown note; observe a 404 without treating it as an application crash."
+      },
+      "topics": {
+        "threat-model": [
+          "Use scenario.json and service.py. Draw browser \u2192 handler \u2192 in-memory notes and label X-Lab-User as a fake identity boundary.",
+          "Define three abuse cases: cross-user read, changing owner through PATCH, and returning internal metadata. Map each to a concrete allow/deny or output test.",
+          "Write threats.md with affected data, responsible handler and one ASVS-style requirement per case; cite the optional standard for terminology."
+        ],
+        "input-and-output": [
+          "Use PATCH /notes/1 with X-Lab-User: alice and a small JSON body. Compare an intended text update with an attempted owner or internal-field update in the disposable fixture.",
+          "In your copy of do_PATCH, allow only text with an explicit type/length rule. Define whether unknown fields are rejected, then implement and test that decision.",
+          "Use unittest or a small HTTP test script to show valid text still works and privileged fields cannot change. Restart to reset synthetic notes."
+        ],
+        "authz": [
+          "Reproduce GET /notes/1 as bob, then add the missing owner check in do_GET.",
+          "Write regression tests for alice\u2019s note, bob\u2019s own note, cross-user access, unknown identity and nonexistent note. Check response content as well as status.",
+          "Run tests against the original and fixed copy. Record the failure before repair and the passing boundary after repair; fake headers still are not production authentication."
+        ],
+        "supply-chain": [
+          "Inventory this standard-library-only service: Python interpreter version, base OS if containerized, and no third-party runtime packages. Record those facts rather than inventing pip dependencies.",
+          "For a dependency-update exercise, add a pinned third-party test dependency in a separate virtual environment, collect pip inspect output and consult a real advisory for that exact package/version.",
+          "Document applicability or a justified not-affected result; test any chosen update and preserve the actual manifest and interpreter version."
+        ],
+        "pipeline": [
+          "Use unittest discovery for your authorization/property tests and a local script checking for a synthetic literal named TRAINING_SECRET_DO_NOT_COMMIT. Keep real credentials out.",
+          "Demonstrate test failure by reverting one boundary in a throwaway copy, and secret-check failure by adding the synthetic marker. Preserve output for each gate.",
+          "Record the service.py SHA-256 and Python version for a passing build. A local script is not a deployed CI service; describe how it would be invoked there."
+        ],
+        "release": [
+          "Commit the fixed local service, tests and version manifest in your training Git repo. Run the complete local test suite from a fresh copy.",
+          "Write run/stop/reset instructions, bind address and intended permissions. Record that the fixture has no real authentication or durable database and is unsuitable for production.",
+          "Rehearse rollback to your previous training commit, restart on loopback and rerun the owner test; return to the fixed version."
+        ]
+      },
+      "transfer": {
+        "steps": [
+          "Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.",
+          "Add a maximum text length of 80 to your fixed service. Test boundary lengths 79, 80 and 81 together with the cross-user and property-injection cases.",
+          "A valid owner update remains usable; length validation must not replace ownership checks.",
+          "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
+        ]
+      }
+    },
+    "digital-forensics-incident-response": {
+      "setup": "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The memory task additionally requires a compatible public memory image and analysis tool; its specific external download and host requirements are listed in that task. No paid course is required.",
+      "resource": "https://docs.python.org/3/library/hashlib.html",
+      "foundation": {
+        "title": "Hash an evidence copy without changing the original",
+        "brief": "Preserve an authored file and distinguish content integrity from provenance.",
+        "steps": [
+          "Read original/manifest.json. This is a synthetic note, not an acquired disk image; extraction timestamps are not original event times.",
+          "Copy and hash the note using Python.\n```sh\npython3 -c \"from pathlib import Path; import hashlib, shutil; shutil.copytree('original', 'analysis-copy'); [print(p, hashlib.sha256(p.read_bytes()).hexdigest()) for p in (Path('original/note.txt'),Path('analysis-copy/note.txt'))]\"\n```",
+          "Compare hashes and explain what equality shows about bytes and what it cannot show about who created the note. Keep original unchanged."
+        ],
+        "variant": "Edit only analysis-copy/note.txt and recalculate both hashes.",
+        "control": "Verify the original hash stayed unchanged; differing copy bytes must not be described as an untouched original."
+      },
+      "topics": {
+        "preservation": [
+          "Use original/ and the analysis-copy made in foundations. Record source description, acquisition field, hashes and your copy operation in a manifest.",
+          "Read/analyze only the copy, then recalculate the original hash. Include tool/Python version and actual handling time in UTC.",
+          "Explain that this preserves a synthetic file\u2019s bytes and does not demonstrate hardware write-blocking, forensic acquisition or chain of custody for a real incident."
+        ],
+        "filesystem": [
+          "Use an analysis copy of original/note.txt. Inspect Path.stat() values for size, mtime and ctime; record your OS/filesystem semantics.",
+          "In a separate disposable copy, change file content and compare timestamps. On Unix ctime is metadata-change time, not creation time.",
+          "Build a bounded timeline from your own operations and measurements. Archive extraction metadata must not be claimed as original incident creation times."
+        ],
+        "timeline": [
+          "Use events.csv and context.json. Normalize every timestamp to UTC and sort by event time, retaining row IDs and source filename.",
+          "Correlate exact user/host fields and separate the denied role change from successful events. Identify absent process evidence.",
+          "Record alternative explanations and confidence; do not join sources using a matching username alone when time/context contradict it."
+        ],
+        "memory": [
+          "Download the named cridex.vmem training image via the Volatility Foundation Memory Samples page: https://github.com/volatilityfoundation/volatility/wiki/Memory-Samples . It is a memory image from a historical Windows malware investigation, not an executable to run. Check source terms, compressed/uncompressed size and hash before downloading.",
+          "Install Volatility 3 in a separate analysis environment using https://volatility3.readthedocs.io/en/latest/getting-started-windows-tutorial.html . Run windows.info, then windows.pslist and windows.netscan against the image; retain OS/build, symbol acquisition and tool output.",
+          "Correlate one process with available connections and distinguish observed artifacts from inference. If download, symbols or plugin compatibility fails, save the exact error as setup progress; no bundled JSON substitutes for memory analysis."
+        ],
+        "containment": [
+          "Use copies of events.csv and context.json for a tabletop response. Hash and preserve original logs before making a decision about fictional alice.",
+          "Describe the identity-disable operation in a training system you actually own and the evidence needed to authorize it. If no test identity provider exists, rehearse the decision on paper and label it tabletop.",
+          "For an operational completion, perform the change only in your disposable test system, verify the affected identity is denied and an unaffected user works, then restore. Keep tabletop and runtime results distinct."
+        ],
+        "case": [
+          "Create a variation of events.csv by moving e4 after the investigation window and changing one host. Preserve the changed input and disclose whether you or a peer selected it.",
+          "Build an evidence-indexed timeline without copying the prior conclusion. Include affected scope, benign alternatives and missing data.",
+          "Choose a bounded response and explain how the altered evidence changed it. Verify original evidence hashes after analysis."
+        ]
+      },
+      "transfer": {
+        "steps": [
+          "Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.",
+          "Add a synthetic device record contradicting the host attributed to e4 in your copied evidence bundle. Rebuild the timeline and state whether the join remains justified.",
+          "Keep original evidence unchanged and retain its hashes; a conflicting record does not license deleting the earlier evidence.",
+          "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
+        ]
+      }
+    },
+    "threat-hunting-intelligence": {
+      "setup": "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs.",
+      "resource": "https://attack.mitre.org/techniques/T1078/",
+      "foundation": {
+        "title": "Separate event facts from a hunt hypothesis",
+        "brief": "Use a small log bundle to write a testable question.",
+        "steps": [
+          "Open events.csv and context.json. Select the sequence for exact user alice; keep allowed and denied actions distinct.",
+          "Write three directly observable facts with row IDs and one hypothesis about the sequence. A hypothesis is not a confirmed incident.",
+          "Name one fact that could disprove your hypothesis, such as an approved role-change ticket. Record that this ticket is currently absent rather than assuming either outcome."
+        ],
+        "variant": "Add an approval note for e4 in a COPY of context.json and revise confidence.",
+        "control": "Keep the denied e11 event as denied; do not count it as a successful administrator grant."
+      },
+      "topics": {
+        "source-quality": [
+          "Use the ATT&CK Valid Accounts page as a public behavior reference and context.json as the synthetic local source. Record authorship, date accessed and collection limits separately.",
+          "Write an intelligence note aimed at the fictional defender Dev: should they investigate the Alice sequence, and what additional evidence is needed?",
+          "Separate quoted source facts, fixture observations and analyst judgments. ATT&CK describing a behavior does not prove attribution of these synthetic events."
+        ],
+        "behavior": [
+          "Define a hypothesis over events.csv: a successful role change followed by same-user resource access within five minutes deserves review.",
+          "List fields required, a falsifier and benign lookalikes such as maintenance. Describe why this is related to account use without asserting a specific threat actor.",
+          "Predict which rows your query should inspect before implementing it."
+        ],
+        "queries": [
+          "Write a Python csv/datetime query implementing your hypothesis with exact identity, bounded time and successful result. Use the foundations timeline normalization method.",
+          "Make a separate labels file after manual review, then compare query matches with positives and benign events.",
+          "Count false matches and misses. Change only a user label in a copy to check whether you overfitted alice rather than the behavior."
+        ],
+        "context": [
+          "Use events.csv addresses and context.json to build a graph of user \u2192 host \u2192 synthetic source IP. Every edge needs a row ID, timestamp and confidence.",
+          "192.0.2.0/24 is documentation address space; do not query reputation services or fabricate public ownership/attribution for these addresses.",
+          "Add an alternative explanation per suspicious edge and note the external context you would need for a real investigation."
+        ],
+        "intelligence-format": [
+          "Create a STIX 2.1 bundle for a fictional observed sequence using https://oasis-open.github.io/cti-documentation/ . Include a valid bundle UUID and an indicator with reserved-domain/IP data only.",
+          "Use the official stix2-validator package in a separate virtual environment; record schema errors and corrected output.",
+          "Explain that schema validity does not verify the truth, source quality or attribution of your intelligence."
+        ],
+        "hunt-report": [
+          "Use a changed copy of events.csv with an additional approved maintenance role change. Keep expected labels separate.",
+          "Run the hunt, investigate matches and document query version, false positives, negative results and missing sources.",
+          "Propose one specific collection or analytic change and retest the changed fixture."
+        ]
+      },
+      "transfer": {
+        "steps": [
+          "Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.",
+          "Remove the role-change source rows from a COPY of events.csv. Rerun your successful-grant-followed-by-access hunt and revise the coverage statement.",
+          "Do not report no matches as proof that no role change occurred; preserve the known benign maintenance context.",
+          "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
+        ]
+      }
+    },
+    "malware-analysis": {
+      "setup": "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. sample.py is readable benign Python source; no unknown malware is executed in these exercises. Python disassembly here is not native executable analysis.",
+      "resource": "https://docs.python.org/3/library/dis.html",
+      "foundation": {
+        "title": "Inspect a benign program before running it",
+        "brief": "Separate source capability, file identity and actual output.",
+        "steps": [
+          "Read sample.py. List imports and the branch in choose; note that it makes no network connections or process launches.",
+          "Hash it, then run two inputs.\n```sh\npython3 -c \"import hashlib; from pathlib import Path; print(hashlib.sha256(Path('sample.py').read_bytes()).hexdigest())\"\npython3 sample.py demo\npython3 sample.py other\n```",
+          "Record which input selects the marker and which produces no action. Explain why the file hash identifies bytes without describing their intent."
+        ],
+        "variant": "Change only the branch string in a new copy and predict the two outputs.",
+        "control": "Use an unmatched input to verify that the marker branch is not always taken."
+      },
+      "topics": {
+        "triage": [
+          "Use sample.py and its SHA-256. Record file type as Python text, byte length, imports and embedded CONFIG string.",
+          "Separate measured properties from inferred behavior. State one question, such as which input reaches the marker branch.",
+          "Answer that question from source or bounded execution and keep the evidence. Do not label the harmless fixture malware."
+        ],
+        "static-flow": [
+          "Disassemble the choose function using python3 -c \"import sample, dis; dis.dis(sample.choose)\". Record Python version since bytecode changes by release.",
+          "Relate comparisons/jumps to the source branch; predict outputs for demo and other before executing.",
+          "Compare predictions with actual runs. This exercises Python bytecode reasoning; it does not demonstrate x86 disassembly or decompiler behavior."
+        ],
+        "behavior": [
+          "Open trace.json, which is explicitly synthetic telemetry. Build a timeline retaining b-IDs and distinguish sample stdout from the analyst shell\u2019s file redirection.",
+          "Compare the observed trace with sample.py capability. No OS network collector is present; lack of a network event is not comprehensive proof of no network activity.",
+          "Document one further collector needed to support a stronger claim. Do not invent registry or network effects absent from the trace."
+        ],
+        "configuration": [
+          "Locate CONFIG in sample.py and decode it with base64 into bytes, then json.loads. Preserve the original encoded string and its byte offset in the file.",
+          "Write a parser accepting only a JSON object with expected mode/topic fields and bounded length. Test valid, invalid base64 and malformed JSON inputs.",
+          "Explain that base64 is encoding, not encryption, and that parsing a value does not prove it was used at runtime."
+        ],
+        "signatures": [
+          "Create three source copies: unchanged sample.py, a copy with a harmless whitespace edit, and a benign unrelated hello-world file. Record hashes as the sample set.",
+          "Write a YARA rule or equivalent declarative matching rule targeting multiple fixture-specific features; state which family definition you intended.",
+          "Measure matches across all three, add a benign lookalike and record false positives. Do not claim broad malware-family coverage from this tiny set."
+        ],
+        "report": [
+          "Use a fresh sample.py copy with changed CONFIG topic and branch string. Keep source, disassembly, run output and the synthetic trace separately identified.",
+          "Recover configuration, test branch predictions and evaluate your signature on the modified source plus a benign control.",
+          "Write a report distinguishing static facts, runtime evidence, synthetic events and remaining uncertainty."
+        ]
+      },
+      "transfer": {
+        "steps": [
+          "Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.",
+          "Change sample.py CONFIG topic and branch literal in a fresh copy without consulting the prior report. Recover fields, predict both branches and retest your signature.",
+          "A hello-world file must remain a non-match. State that native binaries and unknown malware were not analyzed.",
+          "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
+        ]
+      }
+    },
+    "mobile-application-security": {
+      "setup": "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. The foundation is static manifest reading only. Device tasks require Android Studio\u2019s free emulator (hardware virtualization and disk space) or your own Android test device, adb and a sanctioned practice APK. Use the named OWASP MASTG Hacking Playground, never a personal/banking app. A manifest file is not an installed app.",
+      "resource": "https://mas.owasp.org/MASTG/apps/android/MASTG-APP-0011/",
+      "foundation": {
+        "title": "Read an Android manifest and state its limits",
+        "brief": "Identify exposed components in a synthetic app declaration.",
+        "steps": [
+          "Open AndroidManifest.xml as text. It declares the INTERNET permission, cleartext-traffic setting, an exported activity and an exported provider.",
+          "Make a table of each component, its exported value and any required caller permission actually shown. Identify which question requires runtime testing.",
+          "Explain that this file is a training snippet, not a buildable or installed APK. Do not claim a data leak solely from exported=true without testing the component implementation."
+        ],
+        "variant": "In a copy, add a caller permission to the provider and predict what external callers would need.",
+        "control": "Keep the main activity launchable in your design; blanket removal of every component is not a useful repair."
+      },
+      "topics": {
+        "platform-model": [
+          "Choose the OWASP MASTG Hacking Playground Android app from the linked test-app index; follow that app\u2019s README to build/install it on your own emulator. Record APK hash, OS/API level and package name.",
+          "Inspect its real AndroidManifest.xml/entitlements and list components, permissions and data flows. Keep the bundled snippet separate from actual APK evidence.",
+          "Choose two named MASTG tests relevant to observed storage or component boundaries and explain why they apply."
+        ],
+        "local-storage": [
+          "On your practice app/emulator, choose a documented storage lesson and create a unique synthetic value such as ASCEND_TRAINING_NOTE. Record the exact lesson and app build.",
+          "Using the lesson\u2019s supported adb/run-as or debug tooling, locate the value and document which identity can access it. Do not assume release apps permit run-as.",
+          "Build a small corrected storage example or modify the owned practice source, then retest intended reads and unrelated access. If you only inspected the snippet, leave runtime work incomplete."
+        ],
+        "transport": [
+          "Use only a documented network lesson in the OWASP practice app. Configure a debugging proxy on your emulator following the app\u2019s instructions; use synthetic values only.",
+          "Record app target SDK, trust configuration and what traffic you actually observe. Distinguish a debug trust override from production trust behavior.",
+          "Test a wrong-server certificate only in that local setup; preserve the observed rejection or lesson-specific behavior without disabling validation as your proposed fix."
+        ],
+        "components": [
+          "Select one documented exported-component lesson in the practice app. Record component name, calling test app/adb identity and required permission.",
+          "Send one harmless supported input using the lesson\u2019s exact invocation, then a caller lacking the required permission. Capture resulting app behavior and logs.",
+          "Compare native behavior with the declaration. The bundled manifest alone cannot answer this runtime access question."
+        ],
+        "backend": [
+          "Use local service.py independently of the Android UI. Compare alice and bob requesting /notes/1 with curl; the fake header simulates identity for the boundary exercise.",
+          "Repair do_GET ownership in your local copy and retest owner/cross-user cases.",
+          "Explain why a mobile interface hiding a note does not enforce server-side ownership. Keep toy API findings separate from a claim about the practice APK backend."
+        ],
+        "assessment": [
+          "Choose a second documented lesson in the same practice APK, different from your previous one. Record its MASTG objective, APK version and emulator state.",
+          "Perform the selected storage/component/network test with synthetic data, then implement and retest a correction in an owned build if available.",
+          "Document what you could verify and what remains a proposed repair. A proposed patch without an owned build is not a tested correction."
+        ]
+      },
+      "transfer": {
+        "steps": [
+          "Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.",
+          "In an owned build of your selected OWASP practice-app component lesson, add a caller permission to the test component. Compare before/after behavior from authorized and unrelated test callers.",
+          "The intended app workflow must still work. Without an owned build/emulator, leave the runtime task incomplete.",
+          "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
+        ]
+      }
+    },
+    "api-security": {
+      "setup": "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication.",
+      "resource": "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/",
+      "foundation": {
+        "title": "Compare authentication and ownership in a local API",
+        "brief": "Use two synthetic identities against one concrete note.",
+        "steps": [
+          "Read NOTES and do_GET in service.py. Note 1 belongs to alice. Start the fixture with python3 service.py.",
+          "Compare a known owner, another known user and no identity.\n```sh\ncurl --noproxy \"*\" -i -H \"X-Lab-User: alice\" http://127.0.0.1:8765/notes/1\ncurl --noproxy \"*\" -i -H \"X-Lab-User: bob\" http://127.0.0.1:8765/notes/1\ncurl --noproxy \"*\" -i http://127.0.0.1:8765/notes/1\n```",
+          "Record status and whether note content is returned. Explain why recognizing a user is different from authorizing that user for this object. Stop the service."
+        ],
+        "variant": "Use note 2 with its owner bob and unrelated alice.",
+        "control": "A request without X-Lab-User should not return note contents."
+      },
+      "topics": {
+        "inventory": [
+          "Read service.py and inventory GET /health, GET /notes/{id} and PATCH /notes/{id}; list inputs, outputs and fake identity handling.",
+          "Run one valid request per handler and one unknown path. Compare source-supported behavior with actual status/body.",
+          "State two hypotheses: cross-user object read and overbroad property update. Do not invent undocumented endpoints."
+        ],
+        "object-authorization": [
+          "Use GET /notes/1 as alice and bob; save baseline status/body. Find where do_GET recognizes a user but omits ownership.",
+          "Add an owner comparison before sending the note, using a denial response without content. Restart the local copy.",
+          "Retest alice/note1, bob/note2, cross-user requests and unknown note IDs. Record the boundary and the fixture\u2019s fake-authentication limitation."
+        ],
+        "property-authorization": [
+          "As alice, PATCH note 1 with text only and then owner set to bob in the resettable fixture. Record whether the source allows both; restart afterward.",
+          "Define text as the only mutable user field, with a string type/length bound. Reject attempts to set owner/internal; limit returned fields separately.",
+          "Test valid text, owner injection, internal disclosure and malformed JSON. Keep raw commands and before/after responses."
+        ],
+        "tokens": [
+          "This fixture has no real bearer-token authentication. Implement a separate token-context checker using synthetic claims: subject, issuer, audience, expiry and allowed action.",
+          "Write tests for matching/mismatched audience, expired claims, missing subject and valid-but-unowned note. If using JWT, use a maintained library and an isolated test key; signature validation must occur before trusting claims.",
+          "Label a claims-only simulation as such. Do not claim cryptographic verification from testing a Python dictionary."
+        ],
+        "resource-limits": [
+          "Inspect the existing 2048-byte PATCH bound. Test one short valid text body and one 2049-byte body with a single request each; no traffic flood is needed.",
+          "Add a smaller text-field bound such as 100 characters, preserving JSON-body validation. Test 99, 100 and 101 characters, malformed JSON and a negative length if using a raw local test client.",
+          "Record actual status and that these tests demonstrate input bounds, not production rate limiting or denial-of-service resistance."
+        ],
+        "review": [
+          "Extract a new service.py copy and use note 2/bob for the owned case. Independently assess object access, mutable fields and response properties.",
+          "Reproduce one defect, implement the smallest local repair and run the full valid/invalid matrix. Keep token-context results separate from the fake HTTP identity header.",
+          "Deliver a report with exact fixture version, requests, repair and residual limitations; stop the server."
+        ]
+      },
+      "transfer": {
+        "steps": [
+          "Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.",
+          "In your repaired service, add note 3 owned by alice. Test text update then read, cross-user PATCH, and an attempt to change owner before a read.",
+          "Bob must retain access to note 2, and changing operation order must not expose note 3.",
+          "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
+        ]
+      }
+    },
+    "cryptography-protocol-security": {
+      "setup": "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Authenticated encryption/signature tasks use the free cryptography package in a separate virtual environment. TLS needs openssl and curl. Keep all keys and data synthetic.",
+      "resource": "https://cryptography.io/en/latest/hazmat/primitives/aead/",
+      "foundation": {
+        "title": "Round-trip bytes through two encodings",
+        "brief": "See which transformations are reversible without a secret.",
+        "steps": [
+          "Read bytes_lab.py and run it.\n```sh\npython3 bytes_lab.py\n```",
+          "Decode the printed hex with bytes.fromhex and the base64 with base64.b64decode. Compare exact bytes with message, including punctuation.",
+          "Explain why encoding is reversible without a key, while the printed hash/HMAC are not encodings of the message. Do not use the published training key for real data."
+        ],
+        "variant": "Add a zero byte to the message in a copy and predict how length and encoded output change.",
+        "control": "Ensure your decode preserves the zero byte; text trimming is not a valid bytes round trip."
+      },
+      "topics": {
+        "representations": [
+          "Use message from bytes_lab.py. Write round-trip assertions for hex and base64, then include bytes 0 and 255 in a new message.",
+          "Deliberately decode the hex as UTF-8 text rather than bytes and record the type/representation mismatch.",
+          "Repair the conversion and compare byte-for-byte, not visually. Include lengths and exact repr output."
+        ],
+        "integrity": [
+          "Using hmac from the standard library and the public training key, compute an HMAC-SHA256 tag for message. Verify with hmac.compare_digest.",
+          "Keep the original tag but change one message byte, then change the key. Record verification results for valid and tampered cases.",
+          "Explain that HMAC proves shared-key possession under its assumptions, not which of several key holders authored a message."
+        ],
+        "symmetric": [
+          "Create a separate virtual environment and install cryptography using its official installation instructions. Record version. Use AESGCM with a generated key and a fresh 12-byte random nonce.",
+          "Encrypt a short synthetic message with a fixed associated-data label, then decrypt. Test changed ciphertext, associated data and nonce; preserve rejection exceptions without dumping real secrets.",
+          "Explain nonce uniqueness per key and keep the key only in this disposable lab. Use the library API; do not implement AES yourself."
+        ],
+        "public-key": [
+          "Use cryptography Ed25519PrivateKey.generate, sign and the corresponding public_key().verify on a synthetic note.",
+          "Test the original note, a changed note and a different public key. Record success and InvalidSignature outcomes.",
+          "State how the verifier obtained/trusted the public key. A signature from an unknown key does not establish a real person\u2019s identity."
+        ],
+        "tls": [
+          "Use openssl to create a one-day self-signed RSA training certificate with subject CN=localhost and subjectAltName=DNS:localhost; keep key/cert in this new lab folder. Start openssl s_server on 127.0.0.1:8443 with -www.",
+          "Use curl --cacert with that certificate to request https://localhost:8443/; compare the same request via 127.0.0.1 (hostname mismatch) and without --cacert (untrusted chain). Do not use -k.",
+          "For expiry, inspect notAfter and use openssl verify -attime with a time after it. Record each failure independently and stop the local TLS server."
+        ],
+        "review": [
+          "Create a toy message envelope with payload, sender key identity, nonce and sequence number. Authenticate it with the standard-library HMAC exercise or the signature library.",
+          "Test valid, modified, replayed and wrong-key messages; add replay state so an already accepted sequence is rejected while the next valid one works.",
+          "State how key identity and sequence state are trusted. Preserve runnable regression tests and distinguish toy protocol behavior from a production cryptographic design."
+        ]
+      },
+      "transfer": {
+        "steps": [
+          "Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.",
+          "Use your authenticated message envelope to send sequence 2 before sequence 1, then replay sequence 2. Define the intended ordering policy first and test it.",
+          "A fresh permitted sequence must still be accepted; reject a stale authenticated replay for the stated reason.",
+          "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
+        ]
+      }
+    },
+    "wireless-iot-security": {
+      "setup": "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. MQTT needs the free Mosquitto broker and clients installed locally. The wireless task uses the bundled synthetic capture in Wireshark; no radio adapter is required for that analysis. Actual device/firmware operations need separately owned hardware.",
+      "resource": "https://mosquitto.org/man/mosquitto-conf-5.html",
+      "foundation": {
+        "title": "Identify a sensor\u2019s data flow and trust boundary",
+        "brief": "Read one concrete IoT scenario before starting a broker.",
+        "steps": [
+          "Open device.json. Identify the owner, model, topic and payload. Draw sensor \u2192 broker \u2192 subscriber as a three-component path.",
+          "Read broker.conf. It binds port 18883 only on 127.0.0.1 and initially permits anonymous access. Explain why this setting is for the local exercise only.",
+          "Write the expected publish and subscribe identities, allowed topic and one denied topic. This plan does not demonstrate wireless transmission or real firmware behavior."
+        ],
+        "variant": "Change the desired topic to ascend/sensor/humidity and revise the access matrix.",
+        "control": "A subscriber for temperature should not automatically get write permission to every sensor topic."
+      },
+      "topics": {
+        "inventory": [
+          "Use device.json as the documented simulation. Draw owner, device, broker, consumer and update source; mark every unauthenticated boundary.",
+          "List assets (synthetic readings and configuration), one plausible misuse and a bounded test per boundary.",
+          "Label absent physical/radio properties as untested; there is no actual sensor in the JSON file."
+        ],
+        "mqtt": [
+          "Start mosquitto -c broker.conf -v in Terminal A. In Terminal B subscribe with mosquitto_sub -h 127.0.0.1 -p 18883 -t ascend/sensor/temperature -C 1.",
+          "In Terminal C publish one unique harmless marker with mosquitto_pub to the same host/port/topic. Save exact command and received payload.",
+          "Stop the local broker. This proves a local broker round trip; the downloaded broker is not the optional Docker profile and produces no Docker proof receipt."
+        ],
+        "access": [
+          "Copy broker.conf to a new local lab folder. Use mosquitto_passwd interactively to create publisher/subscriber TEST users and configure password_file with allow_anonymous false.",
+          "Create an acl_file giving publisher write and subscriber read to ascend/sensor/temperature only. Restart this separate loopback broker.",
+          "Test allowed publish/subscribe, anonymous denial and an unrelated topic denial. Use synthetic passwords and keep them out of the report."
+        ],
+        "wireless": [
+          "Open wifi-beacon.pcap from this track\u2019s downloaded ZIP in Wireshark. This is an authored synthetic IEEE 802.11 beacon, not captured radio traffic; no adapter or account is needed.",
+          "Inspect packet 1: frame-control type, transmitter/receiver, SSID, channel tag and RSN parameters. Record which fields advertise the network\u2019s security configuration.",
+          "Explain why a beacon advertisement does not prove successful association, a completed handshake, actual encryption or device trust. This one-packet fixture contains none of those exchanges."
+        ],
+        "firmware": [
+          "Use device.json firmware as a static metadata exercise. It explicitly contains no bootable image and no measured binary architecture. List version, signature state and provenance gaps.",
+          "Write a toy updater predicate requiring matching model, a newer version and a separately verified signature result. Test using synthetic metadata and a stub signature result labeled as a stub.",
+          "Accept a matching authorized update and reject wrong-model, old-version and failed-signature cases. This does not implement cryptographic verification or demonstrate a real device update."
+        ],
+        "assessment": [
+          "Use your authenticated local broker configuration. In a new copy, introduce an overbroad subscriber write ACL, predict its effect and test with a harmless marker.",
+          "Repair only that rule, retest intended reads and denied writes, and verify an unrelated topic remains inaccessible.",
+          "Stop the broker and write remaining limitations: no radio, real device or bootloader was examined."
+        ]
+      },
+      "transfer": {
+        "steps": [
+          "Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.",
+          "Add a second synthetic device identity and an ascend/sensor/humidity topic to your owned loopback broker. Independently write and test separate ACLs.",
+          "The original temperature subscriber must retain its read and must not publish or access the humidity topic without a grant.",
+          "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
+        ]
+      }
+    },
+    "ot-ics-security": {
+      "setup": "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. These are offline simulations/tabletops, with no industrial device connection. registers.py models integer reads only; it is not a Modbus implementation.",
+      "resource": "https://www.cisa.gov/resources-tools/resources/ics-recommended-practices",
+      "foundation": {
+        "title": "Read a simulated tank register and state a safety constraint",
+        "brief": "Separate a numeric observation from an operational conclusion.",
+        "steps": [
+          "Read process.json and registers.py. Register 10 models tank level; the normal range is 40\u201360 percent. Run the model.\n```sh\npython3 registers.py\n```",
+          "Record the actual address/value pairs. Explain which unit/range comes from the scenario and cannot be inferred from the integer alone.",
+          "Write the stated risk of losing operator visibility during containment. No packet was sent and no physical tank was observed."
+        ],
+        "variant": "Change register 10 to 65 in a copy and predict whether it falls outside the written range.",
+        "control": "Read an unknown register in a small Python call and preserve the error; do not interpret missing data as a tank reading of zero."
+      },
+      "topics": {
+        "process": [
+          "Use process.json to draw sensor, controller, operator display and historian as a fictional process. Mark the baseline peer and expected register read.",
+          "Describe separate consequences for loss of view, control and availability, tying each to the tank scenario.",
+          "Record missing physical protections and unknown safety assumptions. The diagram alone cannot certify a real control system."
+        ],
+        "protocol": [
+          "Use registers.py and traffic.csv. Map function 3 rows to the read-register concept and the function 6 row to a single-register write in the synthetic trace.",
+          "Compare register 10 values and record address numbering and unit assumptions. Run the local integer model for a benign read; it does not parse Modbus packets.",
+          "If performing a real protocol lab, separately configure a loopback PyModbus simulator using its official examples and retain actual request/response bytes. Keep this optional runtime result distinct from the offline model."
+        ],
+        "segmentation": [
+          "Define an offline allowlist using process.json baseline peer, function 3 and register 10. Implement a predicate over traffic.csv rows.",
+          "Predict and then print which rows violate the peer/function rule. Test an allowed baseline read and an unrecognized peer separately.",
+          "Describe the additional network enforcement needed; your predicate is a model and is not a deployed industrial firewall."
+        ],
+        "monitoring": [
+          "Use traffic.csv and process.json; keep the label column hidden while constructing a rule for unexpected peer or write function.",
+          "Evaluate the rule, then compare matched IDs against labels. Record true detections, false positives and misses.",
+          "Explain why a new peer may require investigation without proving process damage. This synthetic trace is the exact task input."
+        ],
+        "change-control": [
+          "Copy the register/traffic model before editing. Add a rule limiting reads to the baseline peer and preserve valid register 10 reads.",
+          "Test known peer, new peer and unknown register cases. Keep before/after output and a rollback copy.",
+          "Record that the change hardens only the model; no live PLC or safety function was changed."
+        ],
+        "exercise": [
+          "Use traffic.csv and process.json as the tabletop incident pack. Build a timeline for o1\u2013o5 and identify the unexpected write/new peer.",
+          "Act as analyst briefing fictional operator Mira and safety contact Dev. Choose the next evidence to collect before a containment decision.",
+          "Explain why blindly disconnecting the operator network could violate the stated visibility constraint. Add a contradictory reading in a copy and revise your confidence."
+        ]
+      },
+      "transfer": {
+        "steps": [
+          "Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.",
+          "Add a second synthetic tank-level row at the same time as o4 with value 49 from a separate source. Revise your tabletop account and next evidence request.",
+          "Do not disconnect the fictional operator network merely to make an IT containment checklist pass.",
+          "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
+        ]
+      }
+    },
+    "security-architecture-grc": {
+      "setup": "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs.",
+      "resource": "https://www.nist.gov/cyberframework",
+      "foundation": {
+        "title": "Turn a service description into a bounded review",
+        "brief": "Identify what the service must protect and who makes its decisions.",
+        "steps": [
+          "Read scenario.json. Name Harbor Notes\u2019 owner, users, data, components, restore target and recovery-point target.",
+          "Draw browser \u2192 API \u2192 note store and write one requirement with a measurable outcome, such as restoration within the stated four-hour window.",
+          "Read E1 and E2. Explain why an old restore drill or missing cross-user regression does not establish current control effectiveness."
+        ],
+        "variant": "Reduce the restore target to two hours in a copy and reevaluate whether E1 meets it.",
+        "control": "Do not reject the current service just because an unrelated design costs more; compare both against the same requirements."
+      },
+      "topics": {
+        "assets": [
+          "Use scenario.json components, owner and data. Draw a boundary around the service and identify any proposed outsourced component explicitly as a proposal.",
+          "For every data flow, record content, identity assumption and trust boundary. Mark the in-memory store\u2019s recovery limitation.",
+          "List availability and recovery requirements with exact targets from the scenario; do not invent customer data."
+        ],
+        "threats": [
+          "Build risk-register.csv with three scenarios: cross-user reading, unauthorized note changes and loss of in-memory notes. Use E1/E2/source facts as evidence.",
+          "For each, record impact, likelihood uncertainty, existing control, proposed action and Mira as decision owner.",
+          "Distinguish an observed fixture defect from an assumed threat. State what evidence would change each priority."
+        ],
+        "controls": [
+          "Select NIST CSF outcomes relevant to access, detection and recovery. Record the exact outcome IDs from the current framework document.",
+          "Map each to one concrete Harbor Notes control and evidence source, such as owner tests or a timed restoration drill.",
+          "Specify evidence freshness and who collects it. A mapping table is not proof that a control works."
+        ],
+        "architecture": [
+          "Compare designs A and B in scenario.json against the same restore target, budget constraint and authorization threat model.",
+          "Make a decision table with cost, recovery, complexity and unanswered questions; identify any unmet requirement.",
+          "Recommend one bounded design or request a missing fact. State what would cause the decision to change."
+        ],
+        "assurance": [
+          "Review evidence E1 and E2 against today\u2019s service requirements. Identify staleness, missing test coverage and scope mismatches.",
+          "Write remediation actions with an owner, due date and retest criterion for each gap.",
+          "A corrected note in the evidence table is not a new drill; leave control effectiveness unverified until the test is actually performed."
+        ],
+        "review": [
+          "Use a changed scenario with a two-hour restoration target and a missing owner for one component.",
+          "Deliver a concise review with priorities, cited evidence, residual risk and decisions requiring owner acceptance.",
+          "Keep the acceptance as a fictional tabletop decision; do not claim an actual stakeholder approved it."
+        ]
+      },
+      "transfer": {
+        "steps": [
+          "Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.",
+          "Change the scenario restore target to two hours and add a dependency whose recovery time is six hours. Reevaluate designs A/B and the acceptance decision.",
+          "Do not let a low-impact documentation improvement hide the unresolved recovery requirement.",
+          "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
+        ]
+      }
+    },
+    "vulnerability-management": {
+      "setup": "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs.",
+      "resource": "https://www.cisa.gov/stakeholder-specific-vulnerability-categorization-ssvc",
+      "foundation": {
+        "title": "Check a finding against a deployed version",
+        "brief": "Separate a scan claim from evidence that the condition applies.",
+        "steps": [
+          "Open inventory.json. LAB-001 and LAB-002 are fictional advisories, not CVEs. Find each finding\u2019s asset, version and required configuration.",
+          "Run the local condition checker.\n```sh\npython3 affected.py\n```",
+          "Classify S1, S2 and S3 using the actual fields: confirmed in this model, not applicable, or insufficient evidence. Cite missing version/owner fields instead of guessing."
+        ],
+        "variant": "Turn sharing off for asset A in a copy and rerun the checker.",
+        "control": "Asset B on fixed version 1.1 must not be classified affected merely because a scan row names LAB-001."
+      },
+      "topics": {
+        "inventory": [
+          "Join scan rows to assets by exact asset ID in inventory.json. Record component, version, owner, exposure and missing values.",
+          "Identify unknown ownership/version for C and distinguish this from a verified clean asset.",
+          "Save your reconciliation table with S/A IDs and the source fixture version."
+        ],
+        "validation": [
+          "Use the explicit LAB-001 condition: notes below 1.1 with sharing enabled. Evaluate A and B, then compare affected.py output.",
+          "For LAB-002/C, record which missing version prevents a decision. Do not invent an installed version or search the fictional ID as a CVE.",
+          "Write a classification and evidence reference for every scan finding."
+        ],
+        "prioritization": [
+          "Use inventory.json exposure, criticality and fictional exploitation evidence. Apply a written SSVC-style decision path to each item.",
+          "Separate the confirmed exposed defect on A, the fixed B finding and the unresolved C inventory gap. Explain any urgent need to collect more data.",
+          "Record the factors and uncertainty behind the order; a numeric score alone is not the required rationale."
+        ],
+        "remediation": [
+          "In a COPY of inventory.json, model upgrading A to 1.1 or disabling sharing. Run affected.py before and after.",
+          "Keep a normal permitted sharing/use case in your design and explain the tradeoff if disabling sharing is the mitigation.",
+          "Label this a configuration/advisory model. Operational patch completion requires a real owned service build and its regression tests; no model result proves a deployed patch."
+        ],
+        "exceptions": [
+          "Use fictional asset C as temporarily unpatchable because its owner/version is unresolved. Write an exception request with current uncertainty, decision owner and expiry.",
+          "Define measurable compensating restrictions and the evidence needed to resolve the inventory gap.",
+          "State the trigger for retest and the consequence if no owner accepts the risk; an unsigned request is not accepted risk."
+        ],
+        "program": [
+          "Use a new inventory copy where A is fixed and C now has an owner but still lacks a version.",
+          "Produce counts separating model-verified remediation, not-applicable scan findings, unresolved data and requested exceptions.",
+          "Reproduce each count from S/A IDs and identify one recurring data-quality improvement. Do not call an exception a fix."
+        ]
+      },
+      "transfer": {
+        "steps": [
+          "Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.",
+          "Add a new exposed notes 1.0 asset D with sharing enabled to inventory.json but omit it from scan. Recompute known exposure and scan coverage.",
+          "A smaller number of scan findings must not be reported as reduced exposure when coverage fell.",
+          "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
+        ]
+      }
+    },
+    "vulnerability-research-bug-bounty": {
+      "setup": "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication.",
+      "resource": "https://docs.python.org/3/library/unittest.html",
+      "foundation": {
+        "title": "Reproduce one boundary defect in an owned fixture",
+        "brief": "Find the smallest request pair that distinguishes intended from unintended access.",
+        "steps": [
+          "Read service.py and scenario.json; the only target is your loopback notes fixture. Start python3 service.py.",
+          "Request note 1 as alice and bob, preserving method, path, synthetic identity, status and body. Locate the condition responsible in do_GET.",
+          "Write a falsifiable root-cause statement and the owner request as a legitimate control. Stop the server. This is a private training report, not a third-party bounty submission."
+        ],
+        "variant": "Use note 2/bob as owner and alice as the unrelated identity.",
+        "control": "A nonexistent object should give 404, not be counted as a successful unauthorized read."
+      },
+      "topics": {
+        "scope": [
+          "Use scenario.json scope and rate limit. Write a local-only research question about do_GET ownership or do_PATCH properties.",
+          "Define the minimal expected impact using synthetic note contents and two users. Exclude external targets and real accounts.",
+          "List one observation that would disprove your hypothesis before testing."
+        ],
+        "model": [
+          "Trace user input through the selected handler to the note read/update. Mark the exact missing or insufficient check.",
+          "Design one valid request and one minimally different invalid request. Predict status and content for each.",
+          "Run the pair and retain negative evidence too; reading source is not itself a runtime reproduction."
+        ],
+        "fuzzing": [
+          "Use a bounded generator of at most 20 local cases over note IDs, missing identity and small JSON property names. One request per second; no arbitrary external URL input.",
+          "Record a failing boundary assertion, then remove unnecessary fields to minimize it. Invalid JSON returning 400 is expected behavior, not automatically a bug.",
+          "Keep the reduced input and a valid control as regression tests."
+        ],
+        "impact": [
+          "Use only the synthetic note data. Show what one unrelated identity can read or alter and the prerequisites needed.",
+          "Avoid extrapolating to arbitrary filesystem access or real users; those are not present in this fixture.",
+          "Patch the local handler and retest the exact impact plus legitimate owner behavior."
+        ],
+        "disclosure": [
+          "Write a PRIVATE training report with title, affected local fixture/version, scope, minimal requests, actual output, impact limits and tested patch.",
+          "Remove even synthetic credentials if unnecessary, and include regression-test commands.",
+          "Have a peer or a second review pass reproduce it from a fresh copy. There is no third-party reporting action in this exercise."
+        ],
+        "research": [
+          "Switch from the GET ownership case to PATCH mutable properties in a fresh service.py copy. Define the boundary before reusing previous assumptions.",
+          "Test intended text update versus changing owner/internal. Reproduce, minimize, repair and add regression cases.",
+          "Explain what generalized between handlers and what needed a different property-level rule."
+        ]
+      },
+      "transfer": {
+        "steps": [
+          "Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.",
+          "In a copy of service.py, repair GET ownership but leave PATCH unrestricted property binding. Test whether the previous root-cause explanation still describes the remaining defect.",
+          "A text-only owner update should remain valid, and a cross-user GET should now be denied.",
+          "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
+        ]
+      }
+    },
+    "ai-application-security": {
+      "setup": "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance.",
+      "resource": "https://owasp.org/www-project-top-10-for-large-language-model-applications/",
+      "foundation": {
+        "title": "Trace untrusted text into a tool action",
+        "brief": "See where a toy assistant must enforce authorization.",
+        "steps": [
+          "Read assistant.py. DOCS contains public, alice-note and bob-note. The mock_model selects a read action when it sees REQUEST_OTHER; this is deterministic branching, not a real language model.",
+          "Run the two cases.\n```sh\npython3 assistant.py\n```",
+          "Trace how text leads to a read of bob-note for user alice. Identify the component that must enforce ownership before returning private text. Record both benign and unintended results."
+        ],
+        "variant": "Change the target to alice-note and caller to bob in a copy, then predict the same boundary failure.",
+        "control": "The public training note should remain usable; blocking every output does not preserve intended behavior."
+      },
+      "topics": {
+        "boundaries": [
+          "Use assistant.py and DOCS. Draw user \u2192 retrieval \u2192 mock model \u2192 dispatcher \u2192 data and label each trust boundary.",
+          "State which trusted code is allowed to authorize a document read; a returned model action is a request, not permission.",
+          "Add a fictional external document source to the diagram and identify its text as untrusted data."
+        ],
+        "retrieval": [
+          "Use REQUEST_OTHER as instruction-like document content and the public note as a benign input. Record the original mock output and dispatched result.",
+          "Add an ownership check before retrieve returns any text, permitting public documents and the matching owner.",
+          "Retest both users, public data and cross-user requests. Describe why changing prompt wording would not replace this code boundary."
+        ],
+        "output": [
+          "Define a strict action schema for answer(text) and read(document), rejecting extra privileged fields, unknown actions and wrong value types.",
+          "Test legitimate shapes, missing fields, nested unexpected data and an otherwise valid unauthorized document request.",
+          "Enforce authorization after schema validation. Record separate schema-error and access-denied outcomes without private content."
+        ],
+        "tools": [
+          "Make dispatch an explicit allowlist of actions and document identifiers; use DOCS lookups rather than filesystem paths.",
+          "Try the intended public read, another user\u2019s note, an unknown ID and a traversal-like string such as ../private.",
+          "Check that persuasive text fields or extra output keys cannot expand allowed resources. Keep allowed answers working."
+        ],
+        "data": [
+          "Write tests for alice, bob and public data across DOCS. Enforce ownership before exposing text to mock_model.",
+          "If adding a cache for the exercise, deliberately compare a doc-only key with a user-plus-doc key under the same access checks.",
+          "Verify no wrong-user text enters the mock input, even if a later renderer would hide the citation."
+        ],
+        "evaluation": [
+          "Build a labeled suite covering benign answers, own/public document reads, other-user reads, unknown actions and malformed fields.",
+          "Run it against your fixed assistant, then add an unseen wording that still produces a forbidden action and one benign lookalike.",
+          "Report passed/failed application properties and untested real-model behavior; a finite deterministic test suite is not proof against every prompt injection."
+        ]
+      },
+      "transfer": {
+        "steps": [
+          "Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.",
+          "Change mock_model to emit an extra privileged field inside a nested output object. Add a new instruction-like phrase that requests the same forbidden document and rerun boundary checks.",
+          "Keep the valid public answer and same-user retrieval working; refusing every generated output cannot pass.",
+          "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
+        ]
+      }
+    }
+  }
+}

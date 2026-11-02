@@ -3,8 +3,8 @@ from pathlib import Path
 
 import pytest
 
-from ascend.engine.packs import PackError, dump_toml, parse_pack
 from ascend.engine.levels import next_nodes, open_levels
+from ascend.engine.packs import PackError, dump_toml, parse_pack
 
 
 def test_challenge_guidance_is_optional_and_substitutes_variables(pack_data):
@@ -17,6 +17,8 @@ def test_challenge_guidance_is_optional_and_substitutes_variables(pack_data):
         hints=["Inspect one input at a time."],
         resource_label="Free {lab} reference",
         resource_note="This reference is optional.",
+        setup="Use the {lab} before starting the timer.",
+        materials=[{"label": "Inputs for {lab}", "url": "/training/example.zip"}],
     )
     node = parse_pack(dump_toml(pack_data)).nodes[0]
     assert node.brief == "Investigate the local lab."
@@ -24,6 +26,10 @@ def test_challenge_guidance_is_optional_and_substitutes_variables(pack_data):
     assert node.hints == ("Inspect one input at a time.",)
     assert node.resource_label == "Free local lab reference"
     assert node.resource_note == "This reference is optional."
+    assert node.setup == "Use the local lab before starting the timer."
+    assert node.materials == (
+        {"label": "Inputs for local lab", "url": "/training/example.zip"},
+    )
 
 
 @pytest.mark.parametrize(
@@ -32,6 +38,8 @@ def test_challenge_guidance_is_optional_and_substitutes_variables(pack_data):
         ("brief", 2),
         ("resource_label", 2),
         ("resource_note", ["not text"]),
+        ("setup", 5),
+        ("materials", "not a list"),
         ("steps", "not a list"),
         ("steps", [""]),
         ("hints", [42]),
@@ -41,6 +49,22 @@ def test_challenge_guidance_is_optional_and_substitutes_variables(pack_data):
 def test_invalid_challenge_guidance_is_rejected(pack_data, field, value):
     pack_data["node"][0][field] = value
     with pytest.raises(PackError, match=field):
+        parse_pack(dump_toml(pack_data))
+
+
+@pytest.mark.parametrize(
+    "url",
+    [
+        "javascript:alert(1)",
+        "//example.com/file.zip",
+        "/training/../secret.zip",
+        "/training/%2e%2e/secret.zip",
+        "/private.json",
+    ],
+)
+def test_material_urls_cannot_escape_bundled_training_path(pack_data, url):
+    pack_data["node"][0]["materials"] = [{"label": "Inputs", "url": url}]
+    with pytest.raises(PackError, match="Materials"):
         parse_pack(dump_toml(pack_data))
 
 

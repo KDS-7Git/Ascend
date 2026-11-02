@@ -156,9 +156,9 @@ def test_browser_complete_flow(live_server, width, height, tmp_path):
         page.get_by_role("button", name="Any time", exact=True).click()
         page.locator(".next-card").get_by_role("button", name="Open challenge").click()
         expect(page.get_by_role("heading", name="Your finish line")).to_be_visible()
-        expect(
-            page.get_by_role("link", name="Open learning resource")
-        ).to_have_attribute("href", "https://docs.python.org/3/")
+        expect(page.get_by_role("link", name="Learning reference")).to_have_attribute(
+            "href", "https://docs.python.org/3/"
+        )
         page.locator("#sheet").get_by_role(
             "button", name="Log progress", exact=True
         ).click()
@@ -1022,10 +1022,12 @@ def test_guided_challenge_has_copyable_commands_and_free_reference(
         "resource",
         "resource_label",
         "resource_note",
+        "setup",
         "minutes",
     ]:
         pack_data["node"][0][key] = getattr(guide, key)
     pack_data["node"][0]["steps"] = list(guide.steps)
+    pack_data["node"][0]["materials"] = list(guide.materials)
     response = httpx.post(
         live_server + "/api/packs",
         files={"file": ("test.toml", dump_toml(pack_data), "text/plain")},
@@ -1040,6 +1042,15 @@ def test_guided_challenge_has_copyable_commands_and_free_reference(
         page.goto(live_server)
         page.locator(".next-card").get_by_role("button", name="Open challenge").click()
         expect(page.locator("#sheet-title")).to_have_text(guide.title)
+        expect(page.get_by_role("heading", name="Before you start")).to_be_visible()
+        material = page.get_by_role(
+            "link", name="Download this track’s lab files (ZIP)"
+        )
+        expect(material).to_have_attribute("href", guide.materials[0]["url"])
+        with page.expect_download() as download:
+            material.click()
+        assert download.value.suggested_filename == "ethical-hacking-foundations.zip"
+        assert download.value.failure() is None
         expect(page.locator("#sheet .challenge-steps .doc-code")).to_have_count(5)
         expect(
             page.get_by_role("link", name="Free HTTP server reference (optional)")

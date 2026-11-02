@@ -368,6 +368,16 @@ function showNode(node, level = levelFor(node), workspace = false, session = nul
   const title = el(workspace ? 'h1' : 'h2', node.title); title.id = workspace ? 'challenge-title' : 'sheet-title'; content.append(title);
   if (node.brief && !node.done_when.startsWith(node.brief)) content.append(el('p', node.brief, 'challenge-brief'));
   const outcome = el('section', undefined, 'outcome'); outcome.append(el('h3', 'Your finish line'), el('p', node.done_when)); content.append(outcome); content.append(el('p', verificationLabel(node), 'verification-label'));
+  if (node.setup) { const setup = el('section', undefined, 'challenge-setup'); setup.append(el('h3', 'Before you start'), instructionBlocks(node.setup)); content.append(setup); }
+  if (node.materials?.length) {
+    const materials = el('ul', undefined, 'challenge-materials');
+    for (const material of node.materials) {
+      const item = el('li'), link = el('a', material.label, 'resource-link'); link.href = material.url;
+      if (material.url.startsWith('/training/')) link.download = ''; else { link.target = '_blank'; link.rel = 'noopener noreferrer'; }
+      item.append(link); materials.append(item);
+    }
+    content.append(materials);
+  }
   if (node.steps?.length) {
     const list = el('ol', undefined, 'challenge-steps');
     for (const step of node.steps) { const item = el('li'); item.append(instructionBlocks(step)); list.append(item); }

@@ -1,0 +1,71 @@
+{
+  "synthetic": true,
+  "roles": {
+    "reader": [
+      "read"
+    ],
+    "editor": [
+      "read",
+      "write"
+    ]
+  },
+  "resource": {
+    "id": "notes",
+    "public": true,
+    "region": "lab-local"
+  },
+  "audit": [
+    {
+      "id": "c1",
+      "time": "09:00:00Z",
+      "actor": "alice",
+      "action": "grant",
+      "result": "success",
+      "resource": "notes",
+      "role": "editor"
+    },
+    {
+      "id": "c2",
+      "time": "09:02:00Z",
+      "actor": "alice",
+      "action": "read",
+      "result": "success",
+      "resource": "notes"
+    },
+    {
+      "id": "c3",
+      "time": "09:03:00Z",
+      "actor": "bob",
+      "action": "grant",
+      "result": "denied",
+      "resource": "notes"
+    },
+    {
+      "id": "c4",
+      "time": "09:04:00Z",
+      "actor": "backup",
+      "action": "grant",
+      "result": "success",
+      "resource": "notes",
+      "change_ticket": "M17"
+    }
+  ],
+  "maintenance": {
+    "M17": "backup role maintenance approved"
+  },
+  "responsibility": {
+    "provider": "Physical hardware (fictional)",
+    "team": "Application authorization, logging and backups"
+  },
+  "exposure": {
+    "internet": [
+      "load-balancer"
+    ],
+    "load-balancer": [
+      "api"
+    ],
+    "api": [
+      "notes"
+    ]
+  }
+}

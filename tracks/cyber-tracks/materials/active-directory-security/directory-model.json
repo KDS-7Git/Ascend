@@ -1,0 +1,33 @@
+{
+  "synthetic": true,
+  "domain": "training.example.test",
+  "users": [
+    "LabReader",
+    "LabOperator"
+  ],
+  "groups": {
+    "LabReaders": [
+      "LabReader"
+    ],
+    "LabOperators": [
+      "LabOperator",
+      "LabReaders"
+    ]
+  },
+  "object": "TrainingOU",
+  "allow": {
+    "LabReaders": [
+      "read"
+    ],
+    "LabOperators": [
+      "read",
+      "write"
+    ]
+  },
+  "deny": {
+    "LabReader": [
+      "write"
+    ]
+  },
+  "limit": "This is a graph for prediction. Validate actual ACL inheritance and token membership in an isolated Windows domain before claiming native AD results."
+}

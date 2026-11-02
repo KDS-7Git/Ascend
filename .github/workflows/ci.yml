@@ -19,3 +19,5 @@ jobs:
       - run: find packs/community -name '*.toml' -print0 | xargs -0 -n 1 ascend pack lint
       - run: python scripts/build_registry.py && git diff --exit-code packs/community/registry.json
       - run: python scripts/build_specialist_tracks.py --check
+      - run: python scripts/package_learning_materials.py --check
+      - run: python scripts/audit_learning_content.py --check

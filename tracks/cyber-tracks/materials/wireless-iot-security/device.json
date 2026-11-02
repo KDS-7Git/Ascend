@@ -1,0 +1,15 @@
+{
+  "model": "training-sensor-v1",
+  "owner": "Mira (fictional)",
+  "network": "isolated lab",
+  "topic": "ascend/sensor/temperature",
+  "payload": "21.5",
+  "firmware": {
+    "format": "JSON metadata model, not a bootable image",
+    "architecture": "not applicable",
+    "version": 1,
+    "signature": "missing",
+    "sha256": "not collected"
+  },
+  "constraint": "No physical hardware or radio is represented by this file."
+}

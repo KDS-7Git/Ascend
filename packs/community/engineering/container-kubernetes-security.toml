@@ -3,7 +3,7 @@
 "id" = "container-kubernetes-security"
 "title" = "Container and Kubernetes Security"
 "kind" = "proficiency"
-"version" = 1
+"version" = 2
 "source" = "ai-draft"
 "reviewed" = false
 
@@ -12,7 +12,7 @@
 
 [[level]]
 "id" = "foundations"
-"title" = "Prove the entry skills in a small lab"
+"title" = "Inspect the process inside your first training container"
 "lane" = "main"
 
 [[level]]
@@ -47,7 +47,7 @@
 
 [[level]]
 "id" = "independent-transfer"
-"title" = "Revisit the skill on a fresh problem"
+"title" = "Recheck the boundary with a specified change"
 "lane" = "main"
 
 [[level]]
@@ -69,62 +69,79 @@
 "needs" = []
 "done_when" = "Compute the exact content hash of a fresh server-generated evidence fixture and pass its check."
 "brief" = "This small exercise tests evidence integrity. Track entry background: Run a local container, identify its image and mounts, and explain processes and file permissions."
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"resource" = "https://docs.python.org/3/library/hashlib.html"
 "verify" = { "type" = "lab", "exercise" = "integrity" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "foundations-reasoning"
 "level" = "foundations"
-"title" = "Reason it through: Prove the entry skills in a small lab"
+"title" = "Reason it through: Inspect the process inside your first training container"
 "size" = "S"
 "minutes" = 10
 "needs" = ["lab-readiness"]
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Run a local container, identify its image and mounts, and explain processes and file permissions."
-"steps" = ["Work through this preparation: Run a local container, identify its image and mounts, and explain processes and file permissions.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"brief" = "Build a minimal local image and verify its runtime user."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "container-kubernetes-security:foundations" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "foundations-experiment"
 "level" = "foundations"
-"title" = "Investigate: Prove the entry skills in a small lab"
+"title" = "Inspect the process inside your first training container"
 "size" = "M"
-"minutes" = 60
+"minutes" = 30
 "needs" = ["foundations-reasoning"]
-"done_when" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/foundations-experiment.json."
-"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
-"steps" = ["Run a local container, identify its image and mounts, and explain processes and file permissions.", "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/foundations-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Build a minimal local image and verify its runtime user."
+"steps" = ["Inspect Dockerfile and service.py. The image runs the synthetic service as uid 10001; it is not an intentionally privileged container. Confirm your container engine works before starting.", "From the extracted folder, build and run an identity check. The base-image download needs internet.\n```sh\ndocker build -t ascend-notes:training .\ndocker run --rm --network none ascend-notes:training id\n```", "Record the actual uid/gid and inspect mounts with docker image inspect ascend-notes:training. Explain the difference between an image and a running container. These commands do not test network exposure.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/foundations-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/foundations-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Container tasks additionally need Docker Engine or Podman with a working local daemon and network access to pull public images. Kubernetes tasks require a disposable kind/minikube cluster and kubectl; check RAM/disk requirements before timing. Do not use a work cluster. No paid course or cloud cluster is required."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/container-kubernetes-security.zip" }]
 
 [[node]]
 "id" = "foundations-milestone"
 "level" = "foundations"
-"title" = "Apply it to a changed case: Prove the entry skills in a small lab"
+"title" = "Apply it: Inspect the process inside your first training container"
 "size" = "M"
-"minutes" = 120
+"minutes" = 30
 "needs" = ["foundations-reasoning", "foundations-experiment", "lab-readiness"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/foundations-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
-"steps" = ["Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Transfer: Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.", "Control: Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/foundations-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Build a minimal local image and verify its runtime user."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Inspect Dockerfile and service.py. The image runs the synthetic service as uid 10001; it is not an intentionally privileged container. Confirm your container engine works before starting.", "Change to test: Override the training container user with --user 10002:10002 and compare id output.", "Comparison to retain: Run with --network none and confirm identity inspection still works; network access is unnecessary for this check.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/foundations-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/foundations-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Container tasks additionally need Docker Engine or Podman with a working local daemon and network access to pull public images. Kubernetes tasks require a disposable kind/minikube cluster and kubectl; check RAM/disk requirements before timing. Do not use a work cluster. No paid course or cloud cluster is required."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/container-kubernetes-security.zip" }]
 
 [[node]]
 "id" = "recall-foundations"
 "level" = "recall-lane"
-"title" = "Return later: Prove the entry skills in a small lab"
+"title" = "Return later: Inspect the process inside your first training container"
 "size" = "S"
 "minutes" = 10
 "needs" = ["foundations-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
-"brief" = "Reconstruct the environment and entry assumptions without following the setup notes."
-"steps" = ["Reconstruct the environment and entry assumptions without following the setup notes.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"brief" = "Without opening your report, reconstruct the inputs, observed result and main limitation of inspect the process inside your first training container."
+"steps" = ["Without opening your report, reconstruct the inputs, observed result and main limitation of inspect the process inside your first training container.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "container-kubernetes-security:foundations" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "container-boundary-reasoning"
@@ -134,38 +151,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Inspect a harmless container's user, capabilities, mounts, namespaces and configured resource limits."
-"steps" = ["Work through this preparation: Inspect a harmless container's user, capabilities, mounts, namespaces and configured resource limits.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "container-kubernetes-security:container-boundary" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "container-boundary-experiment"
 "level" = "container-boundary"
-"title" = "Investigate: A container still shares a kernel"
+"title" = "Practice: A container still shares a kernel"
 "size" = "M"
 "minutes" = 60
 "needs" = ["container-boundary-reasoning"]
-"done_when" = "Run a toy service with a non-root user, dropped capabilities, no-new-privileges and a read-only root plus a bounded writable directory; explain observed failures. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/container-boundary-experiment.json."
-"brief" = "Run a toy service with a non-root user, dropped capabilities, no-new-privileges and a read-only root plus a bounded writable directory; explain observed failures."
-"steps" = ["Inspect a harmless container's user, capabilities, mounts, namespaces and configured resource limits.", "Run a toy service with a non-root user, dropped capabilities, no-new-privileges and a read-only root plus a bounded writable directory; explain observed failures.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/container-boundary-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use the downloaded Dockerfile and build ascend-notes:training. Run id with --cap-drop ALL --security-opt no-new-privileges --read-only --tmpfs /tmp:rw,size=16m --network none."
+"steps" = ["Use the downloaded Dockerfile and build ascend-notes:training. Run id with --cap-drop ALL --security-opt no-new-privileges --read-only --tmpfs /tmp:rw,size=16m --network none.", "Using python3 -c inside that same bounded container, attempt to write /app/test and /tmp/test; retain the permission/read-only failure and the successful temporary write.", "Explain the effects of uid, read-only root and tmpfs separately. The service binds container loopback, so this task does not demonstrate host reachability.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/container-boundary-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/container-boundary-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Container tasks additionally need Docker Engine or Podman with a working local daemon and network access to pull public images. Kubernetes tasks require a disposable kind/minikube cluster and kubectl; check RAM/disk requirements before timing. Do not use a work cluster. No paid course or cloud cluster is required."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/container-kubernetes-security.zip" }]
 
 [[node]]
 "id" = "container-boundary-milestone"
 "level" = "container-boundary"
-"title" = "Apply it to a changed case: A container still shares a kernel"
+"title" = "Apply it: A container still shares a kernel"
 "size" = "M"
 "minutes" = 120
 "needs" = ["container-boundary-reasoning", "container-boundary-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/container-boundary-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Run a toy service with a non-root user, dropped capabilities, no-new-privileges and a read-only root plus a bounded writable directory; explain observed failures."
-"steps" = ["Run a toy service with a non-root user, dropped capabilities, no-new-privileges and a read-only root plus a bounded writable directory; explain observed failures.", "Transfer: Remove one required write path or change its owner and predict which operation fails.", "Control: Preserve the service's intended request while showing it cannot write to an unrelated path.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/container-boundary-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use the downloaded Dockerfile and build ascend-notes:training. Run id with --cap-drop ALL --security-opt no-new-privileges --read-only --tmpfs /tmp:rw,size=16m --network none."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use the downloaded Dockerfile and build ascend-notes:training. Run id with --cap-drop ALL --security-opt no-new-privileges --read-only --tmpfs /tmp:rw,size=16m --network none.", "Change to test: Remove one required write path or change its owner and predict which operation fails.", "Comparison to retain: Preserve the service's intended request while showing it cannot write to an unrelated path.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/container-boundary-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/container-boundary-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Container tasks additionally need Docker Engine or Podman with a working local daemon and network access to pull public images. Kubernetes tasks require a disposable kind/minikube cluster and kubectl; check RAM/disk requirements before timing. Do not use a work cluster. No paid course or cloud cluster is required."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/container-kubernetes-security.zip" }]
 
 [[node]]
 "id" = "recall-container-boundary"
@@ -176,9 +204,12 @@
 "needs" = ["container-boundary-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain which risks these controls reduce and which require stronger isolation."
-"steps" = ["Explain which risks these controls reduce and which require stronger isolation.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"steps" = ["Explain which risks these controls reduce and which require stronger isolation.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "container-kubernetes-security:container-boundary" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "image-supply-chain-reasoning"
@@ -188,38 +219,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Compare a mutable tag, an image digest and the platform manifest selected for ARM64 versus AMD64."
-"steps" = ["Work through this preparation: Compare a mutable tag, an image digest and the platform manifest selected for ARM64 versus AMD64.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "container-kubernetes-security:image-supply-chain" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "image-supply-chain-experiment"
 "level" = "image-supply-chain"
-"title" = "Investigate: Know exactly which image ran"
+"title" = "Practice: Know exactly which image ran"
 "size" = "M"
 "minutes" = 60
 "needs" = ["image-supply-chain-reasoning"]
-"done_when" = "Generate an image inventory/SBOM for a toy service, pin the source image digest and record provenance, vulnerability findings and applicability limits. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/image-supply-chain-experiment.json."
-"brief" = "Generate an image inventory/SBOM for a toy service, pin the source image digest and record provenance, vulnerability findings and applicability limits."
-"steps" = ["Compare a mutable tag, an image digest and the platform manifest selected for ARM64 versus AMD64.", "Generate an image inventory/SBOM for a toy service, pin the source image digest and record provenance, vulnerability findings and applicability limits.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/image-supply-chain-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Build the Dockerfile and record docker image inspect output, including base image identity. Install a locally supported Syft release from its official documentation if using an SBOM generator."
+"steps" = ["Build the Dockerfile and record docker image inspect output, including base image identity. Install a locally supported Syft release from its official documentation if using an SBOM generator.", "Run syft ascend-notes:training -o cyclonedx-json into sbom.json. Inspect package names/versions and record tool version; a local build may not have a registry RepoDigest.", "Pin the FROM image to the actual digest you resolved, rebuild, and investigate one applicable advisory using its vendor source. If none applies, record that bounded result instead of inventing a finding.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/image-supply-chain-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/image-supply-chain-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Container tasks additionally need Docker Engine or Podman with a working local daemon and network access to pull public images. Kubernetes tasks require a disposable kind/minikube cluster and kubectl; check RAM/disk requirements before timing. Do not use a work cluster. No paid course or cloud cluster is required."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/container-kubernetes-security.zip" }]
 
 [[node]]
 "id" = "image-supply-chain-milestone"
 "level" = "image-supply-chain"
-"title" = "Apply it to a changed case: Know exactly which image ran"
+"title" = "Apply it: Know exactly which image ran"
 "size" = "M"
 "minutes" = 120
 "needs" = ["image-supply-chain-reasoning", "image-supply-chain-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/image-supply-chain-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Generate an image inventory/SBOM for a toy service, pin the source image digest and record provenance, vulnerability findings and applicability limits."
-"steps" = ["Generate an image inventory/SBOM for a toy service, pin the source image digest and record provenance, vulnerability findings and applicability limits.", "Transfer: Resolve an updated tag and identify the changed digest and dependencies before accepting it.", "Control: Include a scanner finding for an unused or unreachable component and separate presence from demonstrated exploitability.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/image-supply-chain-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Build the Dockerfile and record docker image inspect output, including base image identity. Install a locally supported Syft release from its official documentation if using an SBOM generator."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Build the Dockerfile and record docker image inspect output, including base image identity. Install a locally supported Syft release from its official documentation if using an SBOM generator.", "Change to test: Resolve an updated tag and identify the changed digest and dependencies before accepting it.", "Comparison to retain: Include a scanner finding for an unused or unreachable component and separate presence from demonstrated exploitability.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/image-supply-chain-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/image-supply-chain-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Container tasks additionally need Docker Engine or Podman with a working local daemon and network access to pull public images. Kubernetes tasks require a disposable kind/minikube cluster and kubectl; check RAM/disk requirements before timing. Do not use a work cluster. No paid course or cloud cluster is required."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/container-kubernetes-security.zip" }]
 
 [[node]]
 "id" = "recall-image-supply-chain"
@@ -230,9 +272,12 @@
 "needs" = ["image-supply-chain-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain why a matching digest gives identity but not a guarantee of safety."
-"steps" = ["Explain why a matching digest gives identity but not a guarantee of safety.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"steps" = ["Explain why a matching digest gives identity but not a guarantee of safety.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "container-kubernetes-security:image-supply-chain" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "network-separation-reasoning"
@@ -242,38 +287,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Draw the Docker networks, published ports and services in the supplied lab Compose file."
-"steps" = ["Work through this preparation: Draw the Docker networks, published ports and services in the supplied lab Compose file.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "container-kubernetes-security:network-separation" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "network-separation-experiment"
 "level" = "network-separation"
-"title" = "Investigate: Test an isolation claim"
+"title" = "Practice: Test an isolation claim"
 "size" = "M"
 "minutes" = 60
 "needs" = ["network-separation-reasoning"]
-"done_when" = "In a disposable project, verify loopback-only access, separate lab networks, resource bounds and the absence of tracker-volume or Docker-socket mounts. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/network-separation-experiment.json."
-"brief" = "In a disposable project, verify loopback-only access, separate lab networks, resource bounds and the absence of tracker-volume or Docker-socket mounts."
-"steps" = ["Draw the Docker networks, published ports and services in the supplied lab Compose file.", "In a disposable project, verify loopback-only access, separate lab networks, resource bounds and the absence of tracker-volume or Docker-socket mounts.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/network-separation-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Pull nginx:alpine for this network task; unlike service.py it listens on the container interface. Run a named disposable container with --memory 128m --cpus 0.5 --pids-limit 64 and -p 127.0.0.1:8765:80."
+"steps" = ["Pull nginx:alpine for this network task; unlike service.py it listens on the container interface. Run a named disposable container with --memory 128m --cpus 0.5 --pids-limit 64 and -p 127.0.0.1:8765:80.", "Use curl on loopback and docker inspect to verify the bound host IP, resource limits and mounts. Do not add Docker socket or tracker-volume mounts.", "Stop and remove only the named training container. Record what loopback binding shows and what it does not establish about a different host’s firewall.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/network-separation-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/network-separation-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Container tasks additionally need Docker Engine or Podman with a working local daemon and network access to pull public images. Kubernetes tasks require a disposable kind/minikube cluster and kubectl; check RAM/disk requirements before timing. Do not use a work cluster. No paid course or cloud cluster is required."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/container-kubernetes-security.zip" }]
 
 [[node]]
 "id" = "network-separation-milestone"
 "level" = "network-separation"
-"title" = "Apply it to a changed case: Test an isolation claim"
+"title" = "Apply it: Test an isolation claim"
 "size" = "M"
 "minutes" = 120
 "needs" = ["network-separation-reasoning", "network-separation-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/network-separation-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "In a disposable project, verify loopback-only access, separate lab networks, resource bounds and the absence of tracker-volume or Docker-socket mounts."
-"steps" = ["In a disposable project, verify loopback-only access, separate lab networks, resource bounds and the absence of tracker-volume or Docker-socket mounts.", "Transfer: Move the client to another lab network and predict which target it should fail to reach.", "Control: Confirm a permitted same-network request works while cross-network and outbound probes fail within bounded timeouts.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/network-separation-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Pull nginx:alpine for this network task; unlike service.py it listens on the container interface. Run a named disposable container with --memory 128m --cpus 0.5 --pids-limit 64 and -p 127.0.0.1:8765:80."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Pull nginx:alpine for this network task; unlike service.py it listens on the container interface. Run a named disposable container with --memory 128m --cpus 0.5 --pids-limit 64 and -p 127.0.0.1:8765:80.", "Change to test: Move the client to another lab network and predict which target it should fail to reach.", "Comparison to retain: Confirm a permitted same-network request works while cross-network and outbound probes fail within bounded timeouts.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/network-separation-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/network-separation-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Container tasks additionally need Docker Engine or Podman with a working local daemon and network access to pull public images. Kubernetes tasks require a disposable kind/minikube cluster and kubectl; check RAM/disk requirements before timing. Do not use a work cluster. No paid course or cloud cluster is required."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/container-kubernetes-security.zip" }]
 
 [[node]]
 "id" = "recall-network-separation"
@@ -284,9 +340,12 @@
 "needs" = ["network-separation-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain what an internal bridge blocks and why the host kernel is still shared."
-"steps" = ["Explain what an internal bridge blocks and why the host kernel is still shared.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"steps" = ["Explain what an internal bridge blocks and why the host kernel is still shared.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "container-kubernetes-security:network-separation" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "cluster-identity-reasoning"
@@ -296,38 +355,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Read a Role, RoleBinding and ServiceAccount and predict effective API actions."
-"steps" = ["Work through this preparation: Read a Role, RoleBinding and ServiceAccount and predict effective API actions.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "container-kubernetes-security:cluster-identity" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "cluster-identity-experiment"
 "level" = "cluster-identity"
-"title" = "Investigate: Give the workload only its job"
+"title" = "Practice: Give the workload only its job"
 "size" = "M"
 "minutes" = 60
 "needs" = ["cluster-identity-reasoning"]
-"done_when" = "In a disposable Kubernetes cluster, bind a limited service account to one namespace and verify allowed and denied operations with the API authorization checks. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/cluster-identity-experiment.json."
-"brief" = "In a disposable Kubernetes cluster, bind a limited service account to one namespace and verify allowed and denied operations with the API authorization checks."
-"steps" = ["Read a Role, RoleBinding and ServiceAccount and predict effective API actions.", "In a disposable Kubernetes cluster, bind a limited service account to one namespace and verify allowed and denied operations with the API authorization checks.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/cluster-identity-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Create a disposable kind/minikube cluster using the linked setup guide; verify kubectl config current-context identifies that lab. Read pod.yaml, then apply it only there."
+"steps" = ["Create a disposable kind/minikube cluster using the linked setup guide; verify kubectl config current-context identifies that lab. Read pod.yaml, then apply it only there.", "Run kubectl auth can-i list pods --as=system:serviceaccount:ascend-lab:reader -n ascend-lab; compare delete pods and a request in default namespace.", "Save actual allowed/denied results, then delete the ascend-lab namespace in that lab. These checks test API authorization, not pod network traffic.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/cluster-identity-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/cluster-identity-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Container tasks additionally need Docker Engine or Podman with a working local daemon and network access to pull public images. Kubernetes tasks require a disposable kind/minikube cluster and kubectl; check RAM/disk requirements before timing. Do not use a work cluster. No paid course or cloud cluster is required."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/container-kubernetes-security.zip" }]
 
 [[node]]
 "id" = "cluster-identity-milestone"
 "level" = "cluster-identity"
-"title" = "Apply it to a changed case: Give the workload only its job"
+"title" = "Apply it: Give the workload only its job"
 "size" = "M"
 "minutes" = 120
 "needs" = ["cluster-identity-reasoning", "cluster-identity-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/cluster-identity-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "In a disposable Kubernetes cluster, bind a limited service account to one namespace and verify allowed and denied operations with the API authorization checks."
-"steps" = ["In a disposable Kubernetes cluster, bind a limited service account to one namespace and verify allowed and denied operations with the API authorization checks.", "Transfer: Change the namespace or requested verb and predict the decision before checking.", "Control: Keep the intended read working and deny writes to unrelated secrets or namespaces.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/cluster-identity-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Create a disposable kind/minikube cluster using the linked setup guide; verify kubectl config current-context identifies that lab. Read pod.yaml, then apply it only there."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Create a disposable kind/minikube cluster using the linked setup guide; verify kubectl config current-context identifies that lab. Read pod.yaml, then apply it only there.", "Change to test: Change the namespace or requested verb and predict the decision before checking.", "Comparison to retain: Keep the intended read working and deny writes to unrelated secrets or namespaces.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/cluster-identity-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/cluster-identity-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Container tasks additionally need Docker Engine or Podman with a working local daemon and network access to pull public images. Kubernetes tasks require a disposable kind/minikube cluster and kubectl; check RAM/disk requirements before timing. Do not use a work cluster. No paid course or cloud cluster is required."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/container-kubernetes-security.zip" }]
 
 [[node]]
 "id" = "recall-cluster-identity"
@@ -338,9 +408,12 @@
 "needs" = ["cluster-identity-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Reconstruct the subject, role and binding needed for one API permission."
-"steps" = ["Reconstruct the subject, role and binding needed for one API permission.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"steps" = ["Reconstruct the subject, role and binding needed for one API permission.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "container-kubernetes-security:cluster-identity" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "cluster-network-reasoning"
@@ -350,38 +423,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Explain how labels select pods and how a NetworkPolicy-capable CNI enforces traffic rules."
-"steps" = ["Work through this preparation: Explain how labels select pods and how a NetworkPolicy-capable CNI enforces traffic rules.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "container-kubernetes-security:cluster-network" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "cluster-network-experiment"
 "level" = "cluster-network"
-"title" = "Investigate: Observe enforcement, not just YAML"
+"title" = "Practice: Observe enforcement, not just YAML"
 "size" = "M"
 "minutes" = 60
 "needs" = ["cluster-network-reasoning"]
-"done_when" = "Deploy a tiny client/server pair on an isolated test cluster, apply default-deny plus a specific allow rule, and test actual connectivity. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/cluster-network-experiment.json."
-"brief" = "Deploy a tiny client/server pair on an isolated test cluster, apply default-deny plus a specific allow rule, and test actual connectivity."
-"steps" = ["Explain how labels select pods and how a NetworkPolicy-capable CNI enforces traffic rules.", "Deploy a tiny client/server pair on an isolated test cluster, apply default-deny plus a specific allow rule, and test actual connectivity.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/cluster-network-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use a disposable cluster whose CNI supports NetworkPolicy. Create an ascend-lab namespace, an nginx server pod/service and a curl client; record the image versions."
+"steps" = ["Use a disposable cluster whose CNI supports NetworkPolicy. Create an ascend-lab namespace, an nginx server pod/service and a curl client; record the image versions.", "Confirm baseline client → server connectivity, then apply ingress default-deny. Add an allow policy selecting only the intended client label and port 80; retest.", "Keep an unrelated client as a denial control. If the CNI does not enforce NetworkPolicy, record the failed prerequisite rather than declaring isolation from YAML alone.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/cluster-network-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/cluster-network-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Container tasks additionally need Docker Engine or Podman with a working local daemon and network access to pull public images. Kubernetes tasks require a disposable kind/minikube cluster and kubectl; check RAM/disk requirements before timing. Do not use a work cluster. No paid course or cloud cluster is required."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/container-kubernetes-security.zip" }]
 
 [[node]]
 "id" = "cluster-network-milestone"
 "level" = "cluster-network"
-"title" = "Apply it to a changed case: Observe enforcement, not just YAML"
+"title" = "Apply it: Observe enforcement, not just YAML"
 "size" = "M"
 "minutes" = 120
 "needs" = ["cluster-network-reasoning", "cluster-network-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/cluster-network-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Deploy a tiny client/server pair on an isolated test cluster, apply default-deny plus a specific allow rule, and test actual connectivity."
-"steps" = ["Deploy a tiny client/server pair on an isolated test cluster, apply default-deny plus a specific allow rule, and test actual connectivity.", "Transfer: Change one pod label or allowed port and predict which connection changes.", "Control: Include a matching permitted client and an unmatched client that must be denied; report an unsupported CNI as an unmet prerequisite.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/cluster-network-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use a disposable cluster whose CNI supports NetworkPolicy. Create an ascend-lab namespace, an nginx server pod/service and a curl client; record the image versions."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use a disposable cluster whose CNI supports NetworkPolicy. Create an ascend-lab namespace, an nginx server pod/service and a curl client; record the image versions.", "Change to test: Change one pod label or allowed port and predict which connection changes.", "Comparison to retain: Include a matching permitted client and an unmatched client that must be denied; report an unsupported CNI as an unmet prerequisite.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/cluster-network-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/cluster-network-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Container tasks additionally need Docker Engine or Podman with a working local daemon and network access to pull public images. Kubernetes tasks require a disposable kind/minikube cluster and kubectl; check RAM/disk requirements before timing. Do not use a work cluster. No paid course or cloud cluster is required."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/container-kubernetes-security.zip" }]
 
 [[node]]
 "id" = "recall-cluster-network"
@@ -392,9 +476,12 @@
 "needs" = ["cluster-network-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain why a valid NetworkPolicy object can coexist with unrestricted traffic."
-"steps" = ["Explain why a valid NetworkPolicy object can coexist with unrestricted traffic.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"steps" = ["Explain why a valid NetworkPolicy object can coexist with unrestricted traffic.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "container-kubernetes-security:cluster-network" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "review-reasoning"
@@ -404,38 +491,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Inventory deployment manifests, image identity, writable paths, service account and network exposure."
-"steps" = ["Work through this preparation: Inventory deployment manifests, image identity, writable paths, service account and network exposure.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "container-kubernetes-security:review" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "review-experiment"
 "level" = "review"
-"title" = "Investigate: Review and repair a workload deployment"
+"title" = "Practice: Review and repair a workload deployment"
 "size" = "M"
 "minutes" = 60
 "needs" = ["review-reasoning"]
-"done_when" = "Review a fresh toy deployment, demonstrate one excessive permission or exposure, apply a minimal fix and retest the intended workload plus resource limits. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/review-experiment.json."
-"brief" = "Review a fresh toy deployment, demonstrate one excessive permission or exposure, apply a minimal fix and retest the intended workload plus resource limits."
-"steps" = ["Inventory deployment manifests, image identity, writable paths, service account and network exposure.", "Review a fresh toy deployment, demonstrate one excessive permission or exposure, apply a minimal fix and retest the intended workload plus resource limits.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/review-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use a copy of pod.yaml. Add an excessive pods/delete verb to its role as the deliberate configuration defect, then apply only in your disposable cluster."
+"steps" = ["Use a copy of pod.yaml. Add an excessive pods/delete verb to its role as the deliberate configuration defect, then apply only in your disposable cluster.", "Demonstrate the extra permission with kubectl auth can-i, remove it, reapply and retest list versus delete.", "Inspect namespace/context and delete only your training namespace. Preserve the before/after manifest and API results.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/review-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/review-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Container tasks additionally need Docker Engine or Podman with a working local daemon and network access to pull public images. Kubernetes tasks require a disposable kind/minikube cluster and kubectl; check RAM/disk requirements before timing. Do not use a work cluster. No paid course or cloud cluster is required."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/container-kubernetes-security.zip" }]
 
 [[node]]
 "id" = "review-milestone"
 "level" = "review"
-"title" = "Apply it to a changed case: Review and repair a workload deployment"
+"title" = "Apply it: Review and repair a workload deployment"
 "size" = "M"
 "minutes" = 120
 "needs" = ["review-reasoning", "review-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/review-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Review a fresh toy deployment, demonstrate one excessive permission or exposure, apply a minimal fix and retest the intended workload plus resource limits."
-"steps" = ["Review a fresh toy deployment, demonstrate one excessive permission or exposure, apply a minimal fix and retest the intended workload plus resource limits.", "Transfer: Change a namespace, image version or writable path and revise the controls instead of copying the old manifest.", "Control: Show an unrelated workload and legitimate client remain functional after the fix.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/review-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use a copy of pod.yaml. Add an excessive pods/delete verb to its role as the deliberate configuration defect, then apply only in your disposable cluster."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use a copy of pod.yaml. Add an excessive pods/delete verb to its role as the deliberate configuration defect, then apply only in your disposable cluster.", "Change to test: Change a namespace, image version or writable path and revise the controls instead of copying the old manifest.", "Comparison to retain: Show an unrelated workload and legitimate client remain functional after the fix.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/review-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/review-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Container tasks additionally need Docker Engine or Podman with a working local daemon and network access to pull public images. Kubernetes tasks require a disposable kind/minikube cluster and kubectl; check RAM/disk requirements before timing. Do not use a work cluster. No paid course or cloud cluster is required."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/container-kubernetes-security.zip" }]
 
 [[node]]
 "id" = "recall-review"
@@ -446,63 +544,80 @@
 "needs" = ["review-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain one runtime observation that would invalidate your review conclusion."
-"steps" = ["Explain one runtime observation that would invalidate your review conclusion.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"steps" = ["Explain one runtime observation that would invalidate your review conclusion.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "container-kubernetes-security:review" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "independent-transfer-reasoning"
 "level" = "independent-transfer"
-"title" = "Reason it through: Revisit the skill on a fresh problem"
+"title" = "Reason it through: Recheck the boundary with a specified change"
 "size" = "S"
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution."
-"steps" = ["Work through this preparation: Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"brief" = "Use the named task files for the changed case. Predict the effect before opening previous notes."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "container-kubernetes-security:independent-transfer" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "independent-transfer-experiment"
 "level" = "independent-transfer"
-"title" = "Investigate: Revisit the skill on a fresh problem"
+"title" = "Practice: Recheck the boundary with a specified change"
 "size" = "M"
 "minutes" = 60
 "needs" = ["independent-transfer-reasoning"]
-"done_when" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/independent-transfer-experiment.json."
-"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
-"steps" = ["Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/independent-transfer-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "In a disposable cluster, change the downloaded Role/RoleBinding namespace from ascend-lab to ascend-review and test the same service-account get/list/delete matrix there."
+"steps" = ["Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.", "In a disposable cluster, change the downloaded Role/RoleBinding namespace from ascend-lab to ascend-review and test the same service-account get/list/delete matrix there.", "The training service account must not gain privileges in default; delete only the new training namespace afterward.", "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/independent-transfer-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Container tasks additionally need Docker Engine or Podman with a working local daemon and network access to pull public images. Kubernetes tasks require a disposable kind/minikube cluster and kubectl; check RAM/disk requirements before timing. Do not use a work cluster. No paid course or cloud cluster is required."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/container-kubernetes-security.zip" }]
 
 [[node]]
 "id" = "independent-transfer-milestone"
 "level" = "independent-transfer"
-"title" = "Apply it to a changed case: Revisit the skill on a fresh problem"
+"title" = "Apply it: Recheck the boundary with a specified change"
 "size" = "M"
 "minutes" = 120
 "needs" = ["independent-transfer-reasoning", "independent-transfer-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/independent-transfer-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
-"steps" = ["After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Transfer: Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.", "Control: Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/independent-transfer-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "In a disposable cluster, change the downloaded Role/RoleBinding namespace from ascend-lab to ascend-review and test the same service-account get/list/delete matrix there."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.", "Change to test: Add a second case by reversing the changed condition above, predict its result and compare actual behavior.", "Comparison to retain: The training service account must not gain privileges in default; delete only the new training namespace afterward.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/independent-transfer-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Container tasks additionally need Docker Engine or Podman with a working local daemon and network access to pull public images. Kubernetes tasks require a disposable kind/minikube cluster and kubectl; check RAM/disk requirements before timing. Do not use a work cluster. No paid course or cloud cluster is required."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/container-kubernetes-security.zip" }]
 
 [[node]]
 "id" = "recall-independent-transfer"
 "level" = "recall-lane"
-"title" = "Return later: Revisit the skill on a fresh problem"
+"title" = "Return later: Recheck the boundary with a specified change"
 "size" = "S"
 "minutes" = 10
 "needs" = ["independent-transfer-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
-"brief" = "Explain what transferred, what required help and which prerequisite needs another small experiment."
-"steps" = ["Explain what transferred, what required help and which prerequisite needs another small experiment.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"brief" = "Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested."
+"steps" = ["Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "container-kubernetes-security:independent-transfer" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "quick-access-check"
@@ -512,5 +627,8 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Correctly evaluate every allow/deny decision for a fresh server-generated policy fixture."
-"resource" = "https://kubernetes.io/docs/concepts/security/application-security-checklist/"
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/create-cluster/cluster-intro/"
 "verify" = { "type" = "lab", "exercise" = "access-policy" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."

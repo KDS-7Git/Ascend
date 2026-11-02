@@ -2,7 +2,7 @@
 "id" = "defensive-security-and-detection"
 "title" = "Defensive Security & Detection"
 "kind" = "proficiency"
-"version" = 4
+"version" = 5
 "source" = "ai-draft"
 "reviewed" = false
 
@@ -69,8 +69,10 @@
 "needs" = []
 "brief" = "Use the built-in service to emit a success and a failure. Filter by your unique marker and identify the failed request among unrelated events. This grades this exercise, not your host logging configuration."
 "done_when" = "Emit both event types and submit the exact failure request ID and count for your marker. The server must verify the answer before this task completes."
-"resource" = "https://academy.hackthebox.com/path/preview/soc-analyst"
+"resource" = "https://www.freedesktop.org/software/systemd/man/latest/journalctl.html"
 "verify" = { "type" = "lab", "exercise" = "logging" }
+"resource_label" = "Free setup reference (optional)"
+"resource_note" = "Use the task instructions and your own training environment. This link is documentation, not a course purchase."
 
 [[node]]
 "id" = "host-log-readiness"
@@ -81,8 +83,10 @@
 "needs" = ["lab-readiness"]
 "brief" = "Establish the prerequisites with a small demonstration. Use a foundations lesson if you cannot yet explain the result."
 "done_when" = "Identify a Linux training host, current user/permissions, log source and timezone. Generate a harmless logger marker, locate it in the journal or configured log, and document any permission issue plus a usable supplied-log fallback."
-"resource" = "https://academy.hackthebox.com/path/preview/soc-analyst"
+"resource" = "https://www.freedesktop.org/software/systemd/man/latest/journalctl.html"
 "verify" = { "type" = "manual" }
+"resource_label" = "Free setup reference (optional)"
+"resource_note" = "Use the task instructions and your own training environment. This link is documentation, not a course purchase."
 
 [[node]]
 "level" = "logging-fundamentals"
@@ -234,11 +238,13 @@
 "title" = "Ingest a small dataset into a supported SIEM lab"
 "size" = "L"
 "needs" = []
-"done_when" = "In a supported Security Onion Import/Eval installation or a supplied hosted SIEM lab, located a known ingested training event and saved mode, hardware/platform, dataset source, event fields, and time handling in {lab_dir}/notes/securityonion-setup.md."
+"done_when" = "In a supported Security Onion Import/Eval installation using http-training.pcap, located a known ingested training event and saved mode, hardware/platform, dataset source, event fields, and time handling in {lab_dir}/notes/securityonion-setup.md."
 "resource" = "https://docs.securityonion.net/en/2.4/hardware.html"
 "verify" = { "type" = "file", "path" = "{lab_dir}/notes/securityonion-setup.md", "min_bytes" = 100 }
 "brief" = "Use the lightest supported mode that teaches ingestion and search. Security Onion itself requires x86-64, not the Pi’s ARM processor."
-"steps" = ["Check the current hardware guide: Import needs x86-64, at least 2 CPU cores and 4 GB RAM. Plan for 200 GB storage: the current first-time guide and hardware table disagree on storage. Check the chosen release; Eval requires more resources.", "Use Import on a suitable x86-64 host, or a supplied hosted SIEM training environment. A Pi can supply logs or captures; do not install Security Onion on it.", "Import a small documented PCAP or event dataset. Confirm a known event, its source, and time handling before trying to investigate."]
+"steps" = ["Exact input: http-training.pcap in the ZIP above. It contains two synthetic HTTP connections from 192.0.2.10 to 192.0.2.20, one successful page and one missing path; no attack is embedded. Import it using Security Onion so-import-pcap and inspect Zeek HTTP/connection events. See https://docs.securityonion.net/en/2.4/so-import-pcap.html for the supported import command. An absence of alerts is not a failed import.", "Check the current hardware guide: Import needs x86-64, at least 2 CPU cores and 4 GB RAM. Plan for 200 GB storage: the current first-time guide and hardware table disagree on storage. Check the chosen release; Eval requires more resources.", "Use Import on a suitable x86-64 host, using the supported installation guide. A Pi can supply logs or captures; do not install Security Onion on it.", "Import a small documented PCAP or event dataset. Confirm a known event, its source, and time handling before trying to investigate."]
+"setup" = "Use your own supported x86-64 Security Onion Import installation. Check the current official hardware guide before setup; conservatively plan for 2 CPU cores, 4 GB RAM and 200 GB disk for Import, with more for other modes. A Pi cannot run this distribution. Installation is a separate prerequisite and no hosted SIEM subscription is supplied."
+"materials" = [{ "label" = "Download synthetic HTTP capture (ZIP)", "url" = "/training/defensive-security-and-detection.zip" }]
 
 [[node]]
 "level" = "siem-basics"
@@ -271,8 +277,10 @@
 "resource" = "https://docs.securityonion.net/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/notes/siem-milestone.md", "min_bytes" = 250 }
 "brief" = "Investigate indexed security events using reproducible queries and pivots."
-"steps" = ["Before testing, record your prediction and the observation that would change your mind.", "In Security Onion Import/Eval on supported x86-64 hardware, or a supplied hosted SIEM lab, ingest/inspect a small training dataset and investigate an unfamiliar event.", "Transfer check: Pivot from an event to a second host, identity, or time interval without using a prewritten query for that pivot.", "Control check: Confirm a known benign event is also ingested; account for missing sources, time offsets, and query scope before inferring absence.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/siem-milestone.md."]
+"steps" = ["Exact input: http-training.pcap in the ZIP above. It contains two synthetic HTTP connections from 192.0.2.10 to 192.0.2.20, one successful page and one missing path; no attack is embedded. Import it using Security Onion so-import-pcap and inspect Zeek HTTP/connection events. See https://docs.securityonion.net/en/2.4/so-import-pcap.html for the supported import command. An absence of alerts is not a failed import.", "Before testing, record your prediction and the observation that would change your mind.", "In Security Onion Import/Eval on supported x86-64 hardware, using the named HTTP capture, ingest/inspect a small training dataset and investigate an unfamiliar event.", "Transfer check: Pivot from an event to a second host, identity, or time interval without using a prewritten query for that pivot.", "Control check: Confirm a known benign event is also ingested; account for missing sources, time offsets, and query scope before inferring absence.", "Explain the mechanism and one limitation in your own words. Record references and hints used. If a walkthrough was needed, save partial progress and retry a fresh changed case independently before claiming the assessment.", "Save reproducible evidence and your prediction-versus-observation comparison at {lab_dir}/notes/siem-milestone.md."]
 "hints" = ["Use the linked reference or an earlier worked example to isolate the missing concept. Then close that example and try a different input or case.", "If the result disagrees with your prediction, check the lab setup and compare a known-good control before changing several variables."]
+"setup" = "Use your own supported x86-64 Security Onion Import installation. Check the current official hardware guide before setup; conservatively plan for 2 CPU cores, 4 GB RAM and 200 GB disk for Import, with more for other modes. A Pi cannot run this distribution. Installation is a separate prerequisite and no hosted SIEM subscription is supplied."
+"materials" = [{ "label" = "Download synthetic HTTP capture (ZIP)", "url" = "/training/defensive-security-and-detection.zip" }]
 
 [[node]]
 "level" = "detection-engineering"
@@ -473,6 +481,8 @@
 "done_when" = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: From memory, explain which fields connect an authentication event to a host and time. Logged the practice date and help used; did not copy the previous write-up."
 "resource" = "https://academy.hackthebox.com/path/preview/soc-analyst"
 "verify" = { "type" = "manual" }
+"resource_label" = "Curriculum background (optional)"
+"resource_note" = "This is a return-to-your-notes exercise. The linked curriculum is optional background, not a lab assignment or a course you must buy."
 
 [[node]]
 "id" = "recall-log-analysis"
@@ -486,6 +496,8 @@
 "done_when" = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Write the core filter from memory and test it on a small changed dataset. Logged the practice date and help used; did not copy the previous write-up."
 "resource" = "https://academy.hackthebox.com/path/preview/soc-analyst"
 "verify" = { "type" = "manual" }
+"resource_label" = "Curriculum background (optional)"
+"resource_note" = "This is a return-to-your-notes exercise. The linked curriculum is optional background, not a lab assignment or a course you must buy."
 
 [[node]]
 "id" = "recall-network-monitoring"
@@ -499,6 +511,8 @@
 "done_when" = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Explain why a connection log can exist without an alert, then identify the required visibility and rule. Logged the practice date and help used; did not copy the previous write-up."
 "resource" = "https://academy.hackthebox.com/path/preview/soc-analyst"
 "verify" = { "type" = "manual" }
+"resource_label" = "Curriculum background (optional)"
+"resource_note" = "This is a return-to-your-notes exercise. The linked curriculum is optional background, not a lab assignment or a course you must buy."
 
 [[node]]
 "id" = "recall-siem-basics"
@@ -512,6 +526,8 @@
 "done_when" = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Rebuild the investigation query and explain its fields without using the saved dashboard. Logged the practice date and help used; did not copy the previous write-up."
 "resource" = "https://academy.hackthebox.com/path/preview/soc-analyst"
 "verify" = { "type" = "manual" }
+"resource_label" = "Curriculum background (optional)"
+"resource_note" = "This is a return-to-your-notes exercise. The linked curriculum is optional background, not a lab assignment or a course you must buy."
 
 [[node]]
 "id" = "recall-detection-engineering"
@@ -525,6 +541,8 @@
 "done_when" = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Explain the rule’s observable assumption from memory and design one counterexample. Logged the practice date and help used; did not copy the previous write-up."
 "resource" = "https://academy.hackthebox.com/path/preview/soc-analyst"
 "verify" = { "type" = "manual" }
+"resource_label" = "Curriculum background (optional)"
+"resource_note" = "This is a return-to-your-notes exercise. The linked curriculum is optional background, not a lab assignment or a course you must buy."
 
 [[node]]
 "id" = "recall-hardening"
@@ -538,6 +556,8 @@
 "done_when" = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Explain one hardening control, its operational tradeoff, and a positive/negative test pair. Logged the practice date and help used; did not copy the previous write-up."
 "resource" = "https://academy.hackthebox.com/path/preview/soc-analyst"
 "verify" = { "type" = "manual" }
+"resource_label" = "Curriculum background (optional)"
+"resource_note" = "This is a return-to-your-notes exercise. The linked curriculum is optional background, not a lab assignment or a course you must buy."
 
 [[node]]
 "id" = "recall-incident-response"
@@ -551,6 +571,8 @@
 "done_when" = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Explain the first response steps for a new symptom and what could be lost through an immediate reboot. Logged the practice date and help used; did not copy the previous write-up."
 "resource" = "https://academy.hackthebox.com/path/preview/soc-analyst"
 "verify" = { "type" = "manual" }
+"resource_label" = "Curriculum background (optional)"
+"resource_note" = "This is a return-to-your-notes exercise. The linked curriculum is optional background, not a lab assignment or a course you must buy."
 
 [[node]]
 "id" = "recall-capstone"
@@ -564,6 +586,8 @@
 "done_when" = "On a different day after the milestone, recorded a closed-notes attempt and a checked correction or successful changed example: Reconstruct the incident and one gap from memory, then explain how a new analyst could reproduce the key query. Logged the practice date and help used; did not copy the previous write-up."
 "resource" = "https://academy.hackthebox.com/path/preview/soc-analyst"
 "verify" = { "type" = "manual" }
+"resource_label" = "Curriculum background (optional)"
+"resource_note" = "This is a return-to-your-notes exercise. The linked curriculum is optional background, not a lab assignment or a course you must buy."
 
 [[node]]
 "level" = "mitre"

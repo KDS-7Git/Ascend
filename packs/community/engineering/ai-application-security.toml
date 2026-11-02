@@ -3,7 +3,7 @@
 "id" = "ai-application-security"
 "title" = "AI and LLM Application Security"
 "kind" = "proficiency"
-"version" = 1
+"version" = 2
 "source" = "ai-draft"
 "reviewed" = false
 
@@ -12,7 +12,7 @@
 
 [[level]]
 "id" = "foundations"
-"title" = "Prove the entry skills in a small lab"
+"title" = "Trace untrusted text into a tool action"
 "lane" = "main"
 
 [[level]]
@@ -47,7 +47,7 @@
 
 [[level]]
 "id" = "independent-transfer"
-"title" = "Revisit the skill on a fresh problem"
+"title" = "Recheck the boundary with a specified change"
 "lane" = "main"
 
 [[level]]
@@ -69,62 +69,79 @@
 "needs" = []
 "done_when" = "Compute the exact content hash of a fresh server-generated evidence fixture and pass its check."
 "brief" = "This small exercise tests evidence integrity. Track entry background: Understand HTTP, JSON, application authorization and the difference between model output and trusted program state."
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"resource" = "https://docs.python.org/3/library/hashlib.html"
 "verify" = { "type" = "lab", "exercise" = "integrity" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "foundations-reasoning"
 "level" = "foundations"
-"title" = "Reason it through: Prove the entry skills in a small lab"
+"title" = "Reason it through: Trace untrusted text into a tool action"
 "size" = "S"
 "minutes" = 10
 "needs" = ["lab-readiness"]
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Understand HTTP, JSON, application authorization and the difference between model output and trusted program state."
-"steps" = ["Work through this preparation: Understand HTTP, JSON, application authorization and the difference between model output and trusted program state.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"brief" = "See where a toy assistant must enforce authorization."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ai-application-security:foundations" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "foundations-experiment"
 "level" = "foundations"
-"title" = "Investigate: Prove the entry skills in a small lab"
+"title" = "Trace untrusted text into a tool action"
 "size" = "M"
-"minutes" = 60
+"minutes" = 30
 "needs" = ["foundations-reasoning"]
-"done_when" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/foundations-experiment.json."
-"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
-"steps" = ["Understand HTTP, JSON, application authorization and the difference between model output and trusted program state.", "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/foundations-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "See where a toy assistant must enforce authorization."
+"steps" = ["Read assistant.py. DOCS contains public, alice-note and bob-note. The mock_model selects a read action when it sees REQUEST_OTHER; this is deterministic branching, not a real language model.", "Run the two cases.\n```sh\npython3 assistant.py\n```", "Trace how text leads to a read of bob-note for user alice. Identify the component that must enforce ownership before returning private text. Record both benign and unintended results.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/foundations-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/foundations-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ai-application-security.zip" }]
 
 [[node]]
 "id" = "foundations-milestone"
 "level" = "foundations"
-"title" = "Apply it to a changed case: Prove the entry skills in a small lab"
+"title" = "Apply it: Trace untrusted text into a tool action"
 "size" = "M"
-"minutes" = 120
+"minutes" = 30
 "needs" = ["foundations-reasoning", "foundations-experiment", "lab-readiness"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/foundations-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
-"steps" = ["Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Transfer: Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.", "Control: Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/foundations-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "See where a toy assistant must enforce authorization."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Read assistant.py. DOCS contains public, alice-note and bob-note. The mock_model selects a read action when it sees REQUEST_OTHER; this is deterministic branching, not a real language model.", "Change to test: Change the target to alice-note and caller to bob in a copy, then predict the same boundary failure.", "Comparison to retain: The public training note should remain usable; blocking every output does not preserve intended behavior.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/foundations-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"resource" = "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/foundations-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ai-application-security.zip" }]
 
 [[node]]
 "id" = "recall-foundations"
 "level" = "recall-lane"
-"title" = "Return later: Prove the entry skills in a small lab"
+"title" = "Return later: Trace untrusted text into a tool action"
 "size" = "S"
 "minutes" = 10
 "needs" = ["foundations-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
-"brief" = "Reconstruct the environment and entry assumptions without following the setup notes."
-"steps" = ["Reconstruct the environment and entry assumptions without following the setup notes.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"brief" = "Without opening your report, reconstruct the inputs, observed result and main limitation of trace untrusted text into a tool action."
+"steps" = ["Without opening your report, reconstruct the inputs, observed result and main limitation of trace untrusted text into a tool action.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ai-application-security:foundations" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "boundaries-reasoning"
@@ -134,38 +151,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Draw user, retrieved-document, model, tool and data-store boundaries for a toy assistant."
-"steps" = ["Work through this preparation: Draw user, retrieved-document, model, tool and data-store boundaries for a toy assistant.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ai-application-security:boundaries" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "boundaries-experiment"
 "level" = "boundaries"
-"title" = "Investigate: Treat generated text as untrusted input"
+"title" = "Practice: Treat generated text as untrusted input"
 "size" = "M"
 "minutes" = 60
 "needs" = ["boundaries-reasoning"]
-"done_when" = "Build a threat model that identifies which component may authorize each action and where untrusted text enters. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/boundaries-experiment.json."
-"brief" = "Build a threat model that identifies which component may authorize each action and where untrusted text enters."
-"steps" = ["Draw user, retrieved-document, model, tool and data-store boundaries for a toy assistant.", "Build a threat model that identifies which component may authorize each action and where untrusted text enters.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/boundaries-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use assistant.py and DOCS. Draw user → retrieval → mock model → dispatcher → data and label each trust boundary."
+"steps" = ["Use assistant.py and DOCS. Draw user → retrieval → mock model → dispatcher → data and label each trust boundary.", "State which trusted code is allowed to authorize a document read; a returned model action is a request, not permission.", "Add a fictional external document source to the diagram and identify its text as untrusted data.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/boundaries-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/boundaries-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ai-application-security.zip" }]
 
 [[node]]
 "id" = "boundaries-milestone"
 "level" = "boundaries"
-"title" = "Apply it to a changed case: Treat generated text as untrusted input"
+"title" = "Apply it: Treat generated text as untrusted input"
 "size" = "M"
 "minutes" = 120
 "needs" = ["boundaries-reasoning", "boundaries-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/boundaries-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Build a threat model that identifies which component may authorize each action and where untrusted text enters."
-"steps" = ["Build a threat model that identifies which component may authorize each action and where untrusted text enters.", "Transfer: Add an external document source and revise the trust assumptions.", "Control: Reject the idea that a model's assertion of permission is an authorization decision.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/boundaries-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use assistant.py and DOCS. Draw user → retrieval → mock model → dispatcher → data and label each trust boundary."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use assistant.py and DOCS. Draw user → retrieval → mock model → dispatcher → data and label each trust boundary.", "Change to test: Add an external document source and revise the trust assumptions.", "Comparison to retain: Reject the idea that a model's assertion of permission is an authorization decision.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/boundaries-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"resource" = "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/boundaries-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ai-application-security.zip" }]
 
 [[node]]
 "id" = "recall-boundaries"
@@ -176,9 +204,12 @@
 "needs" = ["boundaries-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Reconstruct the tool-action boundary without referring to the system prompt."
-"steps" = ["Reconstruct the tool-action boundary without referring to the system prompt.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"steps" = ["Reconstruct the tool-action boundary without referring to the system prompt.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ai-application-security:boundaries" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "retrieval-reasoning"
@@ -188,38 +219,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Label instruction-like text inside a synthetic retrieved document as data from an untrusted source."
-"steps" = ["Work through this preparation: Label instruction-like text inside a synthetic retrieved document as data from an untrusted source.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ai-application-security:retrieval" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "retrieval-experiment"
 "level" = "retrieval"
-"title" = "Investigate: Keep a document from becoming an instruction"
+"title" = "Practice: Keep a document from becoming an instruction"
 "size" = "M"
 "minutes" = 60
 "needs" = ["retrieval-reasoning"]
-"done_when" = "In a deterministic toy pipeline, test adversarial documents and enforce authorization outside the mock model before any data access or action. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/retrieval-experiment.json."
-"brief" = "In a deterministic toy pipeline, test adversarial documents and enforce authorization outside the mock model before any data access or action."
-"steps" = ["Label instruction-like text inside a synthetic retrieved document as data from an untrusted source.", "In a deterministic toy pipeline, test adversarial documents and enforce authorization outside the mock model before any data access or action.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/retrieval-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Use REQUEST_OTHER as instruction-like document content and the public note as a benign input. Record the original mock output and dispatched result."
+"steps" = ["Use REQUEST_OTHER as instruction-like document content and the public note as a benign input. Record the original mock output and dispatched result.", "Add an ownership check before retrieve returns any text, permitting public documents and the matching owner.", "Retest both users, public data and cross-user requests. Describe why changing prompt wording would not replace this code boundary.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/retrieval-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/retrieval-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ai-application-security.zip" }]
 
 [[node]]
 "id" = "retrieval-milestone"
 "level" = "retrieval"
-"title" = "Apply it to a changed case: Keep a document from becoming an instruction"
+"title" = "Apply it: Keep a document from becoming an instruction"
 "size" = "M"
 "minutes" = 120
 "needs" = ["retrieval-reasoning", "retrieval-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/retrieval-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "In a deterministic toy pipeline, test adversarial documents and enforce authorization outside the mock model before any data access or action."
-"steps" = ["In a deterministic toy pipeline, test adversarial documents and enforce authorization outside the mock model before any data access or action.", "Transfer: Change the document wording or source label and verify the same application boundary still holds.", "Control: Keep a legitimate document answer working and deny a requested unrelated data access.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/retrieval-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Use REQUEST_OTHER as instruction-like document content and the public note as a benign input. Record the original mock output and dispatched result."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use REQUEST_OTHER as instruction-like document content and the public note as a benign input. Record the original mock output and dispatched result.", "Change to test: Change the document wording or source label and verify the same application boundary still holds.", "Comparison to retain: Keep a legitimate document answer working and deny a requested unrelated data access.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/retrieval-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"resource" = "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/retrieval-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ai-application-security.zip" }]
 
 [[node]]
 "id" = "recall-retrieval"
@@ -230,9 +272,12 @@
 "needs" = ["retrieval-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain why prompt wording alone cannot enforce a data-access policy."
-"steps" = ["Explain why prompt wording alone cannot enforce a data-access policy.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"steps" = ["Explain why prompt wording alone cannot enforce a data-access policy.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ai-application-security:retrieval" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "output-reasoning"
@@ -242,38 +287,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Identify output fields consumed by a renderer, query builder or tool dispatcher."
-"steps" = ["Work through this preparation: Identify output fields consumed by a renderer, query builder or tool dispatcher.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ai-application-security:output" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "output-experiment"
 "level" = "output"
-"title" = "Investigate: Validate what the application will execute"
+"title" = "Practice: Validate what the application will execute"
 "size" = "M"
 "minutes" = 60
 "needs" = ["output-reasoning"]
-"done_when" = "Add strict schemas and safe handling to a toy assistant's output pipeline and test malformed or unauthorized synthetic outputs. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/output-experiment.json."
-"brief" = "Add strict schemas and safe handling to a toy assistant's output pipeline and test malformed or unauthorized synthetic outputs."
-"steps" = ["Identify output fields consumed by a renderer, query builder or tool dispatcher.", "Add strict schemas and safe handling to a toy assistant's output pipeline and test malformed or unauthorized synthetic outputs.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/output-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Define a strict action schema for answer(text) and read(document), rejecting extra privileged fields, unknown actions and wrong value types."
+"steps" = ["Define a strict action schema for answer(text) and read(document), rejecting extra privileged fields, unknown actions and wrong value types.", "Test legitimate shapes, missing fields, nested unexpected data and an otherwise valid unauthorized document request.", "Enforce authorization after schema validation. Record separate schema-error and access-denied outcomes without private content.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/output-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/output-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ai-application-security.zip" }]
 
 [[node]]
 "id" = "output-milestone"
 "level" = "output"
-"title" = "Apply it to a changed case: Validate what the application will execute"
+"title" = "Apply it: Validate what the application will execute"
 "size" = "M"
 "minutes" = 120
 "needs" = ["output-reasoning", "output-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/output-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Add strict schemas and safe handling to a toy assistant's output pipeline and test malformed or unauthorized synthetic outputs."
-"steps" = ["Add strict schemas and safe handling to a toy assistant's output pipeline and test malformed or unauthorized synthetic outputs.", "Transfer: Nest a field or change output encoding and predict whether validation rejects it.", "Control: Preserve a valid allowed output while rejecting an extra privileged field.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/output-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Define a strict action schema for answer(text) and read(document), rejecting extra privileged fields, unknown actions and wrong value types."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Define a strict action schema for answer(text) and read(document), rejecting extra privileged fields, unknown actions and wrong value types.", "Change to test: Nest a field or change output encoding and predict whether validation rejects it.", "Comparison to retain: Preserve a valid allowed output while rejecting an extra privileged field.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/output-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"resource" = "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/output-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ai-application-security.zip" }]
 
 [[node]]
 "id" = "recall-output"
@@ -284,9 +340,12 @@
 "needs" = ["output-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain schema validity versus authorization of a valid action."
-"steps" = ["Explain schema validity versus authorization of a valid action.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"steps" = ["Explain schema validity versus authorization of a valid action.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ai-application-security:output" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "tools-reasoning"
@@ -296,38 +355,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Define a toy tool's allowed arguments, resources, side effects and confirmation boundary."
-"steps" = ["Work through this preparation: Define a toy tool's allowed arguments, resources, side effects and confirmation boundary.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ai-application-security:tools" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "tools-experiment"
 "level" = "tools"
-"title" = "Investigate: Give an agent a bounded capability"
+"title" = "Practice: Give an agent a bounded capability"
 "size" = "M"
 "minutes" = 60
 "needs" = ["tools-reasoning"]
-"done_when" = "Implement or test an allowlisted dispatcher with synthetic files and a mock model; verify that model output cannot expand the allowed resource set. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/tools-experiment.json."
-"brief" = "Implement or test an allowlisted dispatcher with synthetic files and a mock model; verify that model output cannot expand the allowed resource set."
-"steps" = ["Define a toy tool's allowed arguments, resources, side effects and confirmation boundary.", "Implement or test an allowlisted dispatcher with synthetic files and a mock model; verify that model output cannot expand the allowed resource set.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/tools-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Make dispatch an explicit allowlist of actions and document identifiers; use DOCS lookups rather than filesystem paths."
+"steps" = ["Make dispatch an explicit allowlist of actions and document identifiers; use DOCS lookups rather than filesystem paths.", "Try the intended public read, another user’s note, an unknown ID and a traversal-like string such as ../private.", "Check that persuasive text fields or extra output keys cannot expand allowed resources. Keep allowed answers working.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/tools-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/tools-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ai-application-security.zip" }]
 
 [[node]]
 "id" = "tools-milestone"
 "level" = "tools"
-"title" = "Apply it to a changed case: Give an agent a bounded capability"
+"title" = "Apply it: Give an agent a bounded capability"
 "size" = "M"
 "minutes" = 120
 "needs" = ["tools-reasoning", "tools-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/tools-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Implement or test an allowlisted dispatcher with synthetic files and a mock model; verify that model output cannot expand the allowed resource set."
-"steps" = ["Implement or test an allowlisted dispatcher with synthetic files and a mock model; verify that model output cannot expand the allowed resource set.", "Transfer: Change a resource identifier or attempt a second action outside the allowlist.", "Control: Permit the intended action and reject traversal-like or unrelated resource references.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/tools-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Make dispatch an explicit allowlist of actions and document identifiers; use DOCS lookups rather than filesystem paths."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Make dispatch an explicit allowlist of actions and document identifiers; use DOCS lookups rather than filesystem paths.", "Change to test: Change a resource identifier or attempt a second action outside the allowlist.", "Comparison to retain: Permit the intended action and reject traversal-like or unrelated resource references.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/tools-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"resource" = "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/tools-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ai-application-security.zip" }]
 
 [[node]]
 "id" = "recall-tools"
@@ -338,9 +408,12 @@
 "needs" = ["tools-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Reconstruct where least privilege is enforced independently of the model."
-"steps" = ["Reconstruct where least privilege is enforced independently of the model.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"steps" = ["Reconstruct where least privilege is enforced independently of the model.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ai-application-security:tools" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "data-reasoning"
@@ -350,38 +423,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Create two synthetic users with distinct document collections."
-"steps" = ["Work through this preparation: Create two synthetic users with distinct document collections.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ai-application-security:data" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "data-experiment"
 "level" = "data"
-"title" = "Investigate: Test retrieval separation between users"
+"title" = "Practice: Test retrieval separation between users"
 "size" = "M"
 "minutes" = 60
 "needs" = ["data-reasoning"]
-"done_when" = "Test retrieval filters and result handling in an owned fixture so one user's documents cannot be returned to another user. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/data-experiment.json."
-"brief" = "Test retrieval filters and result handling in an owned fixture so one user's documents cannot be returned to another user."
-"steps" = ["Create two synthetic users with distinct document collections.", "Test retrieval filters and result handling in an owned fixture so one user's documents cannot be returned to another user.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/data-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Write tests for alice, bob and public data across DOCS. Enforce ownership before exposing text to mock_model."
+"steps" = ["Write tests for alice, bob and public data across DOCS. Enforce ownership before exposing text to mock_model.", "If adding a cache for the exercise, deliberately compare a doc-only key with a user-plus-doc key under the same access checks.", "Verify no wrong-user text enters the mock input, even if a later renderer would hide the citation.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/data-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/data-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ai-application-security.zip" }]
 
 [[node]]
 "id" = "data-milestone"
 "level" = "data"
-"title" = "Apply it to a changed case: Test retrieval separation between users"
+"title" = "Apply it: Test retrieval separation between users"
 "size" = "M"
 "minutes" = 120
 "needs" = ["data-reasoning", "data-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/data-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Test retrieval filters and result handling in an owned fixture so one user's documents cannot be returned to another user."
-"steps" = ["Test retrieval filters and result handling in an owned fixture so one user's documents cannot be returned to another user.", "Transfer: Change a document ID, cache key or role and independently retest isolation.", "Control: Include a shared public document that remains legitimately accessible to both users.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/data-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Write tests for alice, bob and public data across DOCS. Enforce ownership before exposing text to mock_model."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Write tests for alice, bob and public data across DOCS. Enforce ownership before exposing text to mock_model.", "Change to test: Change a document ID, cache key or role and independently retest isolation.", "Comparison to retain: Include a shared public document that remains legitimately accessible to both users.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/data-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"resource" = "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/data-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ai-application-security.zip" }]
 
 [[node]]
 "id" = "recall-data"
@@ -392,9 +476,12 @@
 "needs" = ["data-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain why hiding a private citation after retrieval is too late to guarantee isolation."
-"steps" = ["Explain why hiding a private citation after retrieval is too late to guarantee isolation.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"steps" = ["Explain why hiding a private citation after retrieval is too late to guarantee isolation.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ai-application-security:data" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "evaluation-reasoning"
@@ -404,38 +491,49 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Define a small labeled set of benign and adversarial application-boundary cases."
-"steps" = ["Work through this preparation: Define a small labeled set of benign and adversarial application-boundary cases.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"brief" = "Use the named inputs and environment in this level’s practice task. The scenario decision is a separate conceptual check."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ai-application-security:evaluation" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "evaluation-experiment"
 "level" = "evaluation"
-"title" = "Investigate: State exactly what the evaluation measured"
+"title" = "Practice: State exactly what the evaluation measured"
 "size" = "M"
 "minutes" = 60
 "needs" = ["evaluation-reasoning"]
-"done_when" = "Run the cases against the toy system, record failures and repairs, and distinguish deterministic application tests from any real-model observations. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/evaluation-experiment.json."
-"brief" = "Run the cases against the toy system, record failures and repairs, and distinguish deterministic application tests from any real-model observations."
-"steps" = ["Define a small labeled set of benign and adversarial application-boundary cases.", "Run the cases against the toy system, record failures and repairs, and distinguish deterministic application tests from any real-model observations.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/evaluation-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Build a labeled suite covering benign answers, own/public document reads, other-user reads, unknown actions and malformed fields."
+"steps" = ["Build a labeled suite covering benign answers, own/public document reads, other-user reads, unknown actions and malformed fields.", "Run it against your fixed assistant, then add an unseen wording that still produces a forbidden action and one benign lookalike.", "Report passed/failed application properties and untested real-model behavior; a finite deterministic test suite is not proof against every prompt injection.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/evaluation-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/evaluation-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ai-application-security.zip" }]
 
 [[node]]
 "id" = "evaluation-milestone"
 "level" = "evaluation"
-"title" = "Apply it to a changed case: State exactly what the evaluation measured"
+"title" = "Apply it: State exactly what the evaluation measured"
 "size" = "M"
 "minutes" = 120
 "needs" = ["evaluation-reasoning", "evaluation-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/evaluation-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Run the cases against the toy system, record failures and repairs, and distinguish deterministic application tests from any real-model observations."
-"steps" = ["Run the cases against the toy system, record failures and repairs, and distinguish deterministic application tests from any real-model observations.", "Transfer: Add an unseen wording or tool-output shape and rerun the relevant boundary checks.", "Control: Include benign lookalikes so blocking every input cannot pass the evaluation.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/evaluation-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Build a labeled suite covering benign answers, own/public document reads, other-user reads, unknown actions and malformed fields."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Build a labeled suite covering benign answers, own/public document reads, other-user reads, unknown actions and malformed fields.", "Change to test: Add an unseen wording or tool-output shape and rerun the relevant boundary checks.", "Comparison to retain: Include benign lookalikes so blocking every input cannot pass the evaluation.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/evaluation-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"resource" = "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/evaluation-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ai-application-security.zip" }]
 
 [[node]]
 "id" = "recall-evaluation"
@@ -446,63 +544,80 @@
 "needs" = ["evaluation-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
 "brief" = "Explain why a passing finite test set does not prove universal prompt-injection resistance."
-"steps" = ["Explain why a passing finite test set does not prove universal prompt-injection resistance.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"steps" = ["Explain why a passing finite test set does not prove universal prompt-injection resistance.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ai-application-security:evaluation" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "independent-transfer-reasoning"
 "level" = "independent-transfer"
-"title" = "Reason it through: Revisit the skill on a fresh problem"
+"title" = "Reason it through: Recheck the boundary with a specified change"
 "size" = "S"
 "minutes" = 10
 "needs" = []
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution."
-"steps" = ["Work through this preparation: Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"brief" = "Use the named task files for the changed case. Predict the effect before opening previous notes."
+"steps" = ["Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ai-application-security:independent-transfer" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "independent-transfer-experiment"
 "level" = "independent-transfer"
-"title" = "Investigate: Revisit the skill on a fresh problem"
+"title" = "Practice: Recheck the boundary with a specified change"
 "size" = "M"
 "minutes" = 60
 "needs" = ["independent-transfer-reasoning"]
-"done_when" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/independent-transfer-experiment.json."
-"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
-"steps" = ["Choose one mechanism from this track and define a fresh, comparable task before opening the previous solution.", "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"done_when" = "Save the named inputs, your exact actions, observed results and the explanation requested in the final step in {lab_dir}/independent-transfer-experiment.json. Compare against the checks below before marking done; leave any required live-system test incomplete until actually performed."
+"brief" = "Change mock_model to emit an extra privileged field inside a nested output object. Add a new instruction-like phrase that requests the same forbidden document and rerun boundary checks."
+"steps" = ["Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.", "Change mock_model to emit an extra privileged field inside a nested output object. Add a new instruction-like phrase that requests the same forbidden document and rerun boundary checks.", "Keep the valid public answer and same-user retrieval working; refusing every generated output cannot pass.", "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/independent-transfer-experiment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
+"resource" = "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ai-application-security.zip" }]
 
 [[node]]
 "id" = "independent-transfer-milestone"
 "level" = "independent-transfer"
-"title" = "Apply it to a changed case: Revisit the skill on a fresh problem"
+"title" = "Apply it: Recheck the boundary with a specified change"
 "size" = "M"
 "minutes" = 120
 "needs" = ["independent-transfer-reasoning", "independent-transfer-experiment"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/independent-transfer-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits."
-"steps" = ["After a delay, attempt the fresh task and produce a reproducible evidence packet. Ask a peer to select or inspect the variation when possible; record assistance, failed hypotheses and remaining limits.", "Transfer: Change a mechanism-relevant condition, rather than only resetting the old environment, and independently predict and test the resulting behavior.", "Control: Include a contrasting case where the mechanism should not apply and a legitimate operation that should remain valid.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Your report at {lab_dir}/independent-transfer-assessment.json includes the stated changed case, comparison, prediction versus actual result and explanation. A reviewer or honest self-review must assess the reasoning; the file check does not grade it."
+"brief" = "Change mock_model to emit an extra privileged field inside a nested output object. Add a new instruction-like phrase that requests the same forbidden document and rerun boundary checks."
+"steps" = ["Use the same named files and environment as the practice task. This is an independent assessment: record your prediction before opening your earlier solution.", "Starting point: Use a fresh COPY of the relevant files from the earlier practice task. This is independent practice; keep the old report closed until you have written a prediction.", "Change to test: Add a second case by reversing the changed condition above, predict its result and compare actual behavior.", "Comparison to retain: Keep the valid public answer and same-user retrieval working; refusing every generated output cannot pass.", "Perform the changed test and preserve exact input changes, actual output and an explanation. Record any help. If the change needs an unavailable environment, save preparation as progress and leave the operational test incomplete.", "Save your own observations from the extracted lab folder. The included report.py asks for scope, setup, prediction, exact actions, actual results, a comparison, explanation, limitations and help used. It does not supply answers or overwrite an existing report.\n```sh\npython3 report.py \"{lab_dir}/independent-transfer-assessment.json\"\n```\nOn Windows use py -3 instead of python3. Review the saved JSON in a text editor. Ascend checks files on the SERVER computer: for a hosted/container deployment, place your report at the server’s configured lab path. A file saved only on your laptop is not visible to that checker. Use Challenge options → Check evidence, then Log progress → Mark as done only after reviewing the finish line. File presence does not grade reasoning or earn automatic skill XP."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"resource" = "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
 "verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance."
+"materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ai-application-security.zip" }]
 
 [[node]]
 "id" = "recall-independent-transfer"
 "level" = "recall-lane"
-"title" = "Return later: Revisit the skill on a fresh problem"
+"title" = "Return later: Recheck the boundary with a specified change"
 "size" = "S"
 "minutes" = 10
 "needs" = ["independent-transfer-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
-"brief" = "Explain what transferred, what required help and which prerequisite needs another small experiment."
-"steps" = ["Explain what transferred, what required help and which prerequisite needs another small experiment.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"brief" = "Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested."
+"steps" = ["Reconstruct why the specified input change did or did not change the outcome. State help used and what remains untested.", "Read the scenario shown in the exercise. Select one final decision, then read the explanation after submitting.", "This checks the stated decision only. The separate practice task contains the environment, materials and hands-on work."]
+"resource" = "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ai-application-security:independent-transfer" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
 "id" = "quick-access-check"
@@ -512,5 +627,8 @@
 "minutes" = 10
 "needs" = []
 "done_when" = "Correctly evaluate every allow/deny decision for a fresh server-generated policy fixture."
-"resource" = "https://genai.owasp.org/llm-top-10/"
+"resource" = "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
 "verify" = { "type" = "lab", "exercise" = "access-policy" }
+"resource_label" = "Free reference (optional)"
+"resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
