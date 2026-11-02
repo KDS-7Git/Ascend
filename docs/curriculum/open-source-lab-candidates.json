@@ -1,0 +1,657 @@
+{
+  "schema_version": 1,
+  "purpose": "Research candidates; not consumed as executable packs or runner recipes",
+  "reviewed_on": "2026-11-02",
+  "preferred_client_os": "linux",
+  "automatic_execution": false,
+  "review_scope": "Public upstream documentation, repository metadata, selected revision references, and developer/community discussions. No third-party lab execution or resource benchmark.",
+  "difficulty_basis": "Ascend prerequisite-based recommendation unless upstream difficulty is explicitly identified; not calibrated across projects",
+  "activation_requirements": [
+    "Review the exact selected exercise and applicable code, data, and image licenses",
+    "Pin source/artifact hashes, image digests, and the adapter/checker version",
+    "Validate actual Linux OS/architecture support and measure resource usage",
+    "Implement and test readiness, save, reset, destroy, and crash reconciliation",
+    "Define evidence authority and verify good, bad, incomplete, and legitimate-control cases"
+  ],
+  "candidates": [
+    {
+      "id": "linux-upskill",
+      "repository": "https://github.com/livialima/linuxupskillchallenge",
+      "kind": "curriculum",
+      "priority": "foundation-reference",
+      "levels": [
+        "starter"
+      ],
+      "prerequisites": [
+        "A disposable Linux VM and a terminal"
+      ],
+      "track_ids": [
+        "ethical-hacking-foundations",
+        "networking-for-security",
+        "home-hack-lab"
+      ],
+      "delivery": "Lessons and learner-owned Linux VM; local option documented in Day 0",
+      "fetch_strategy": "Reference or fetch selected lessons; keep the VM on the learner PC",
+      "upstream_verification": "No automatic completion checker established by the inspected README",
+      "proposed_evidence": "Local task-specific checks and notes; separate Ascend assessment if needed",
+      "license": {
+        "identifier": "CC-BY-4.0",
+        "evidence": "license-file-read",
+        "url": "https://github.com/livialima/linuxupskillchallenge/blob/master/LICENSE"
+      },
+      "reviewed_revision": null,
+      "last_push_observed": null,
+      "tested_platforms": [],
+      "limits": "Community links were read in the repository; Reddit discussions themselves were inaccessible. Resource estimates and host compatibility remain unmeasured.",
+      "sources": [
+        "https://github.com/livialima/linuxupskillchallenge/blob/master/README.md"
+      ]
+    },
+    {
+      "id": "labtainers",
+      "repository": "https://github.com/mfthomps/Labtainers",
+      "kind": "local-lab-framework-and-curriculum",
+      "priority": "first-local-framework-pilot",
+      "levels": [
+        "starter",
+        "intermediate",
+        "advanced"
+      ],
+      "upstream_difficulty": {
+        "network-basics": 1,
+        "telnetlab": 1,
+        "nmap-discovery": 2,
+        "iptables2": 2,
+        "pcap-lib": 3
+      },
+      "prerequisites": [
+        "Linux with Docker, or the upstream VM",
+        "Exercise-specific prerequisites"
+      ],
+      "track_ids": [
+        "ethical-hacking-foundations",
+        "networking-for-security",
+        "network-penetration-testing",
+        "defensive-security-and-detection",
+        "cryptography-protocol-security",
+        "reverse-engineering-and-binary-exploitation",
+        "ot-ics-security"
+      ],
+      "delivery": "Learner PC; use a local VM for framework/labs with system-level requirements",
+      "fetch_strategy": "Upstream framework pulls required lab images on first start; select named labs",
+      "upstream_verification": "checkwork for selected goals; stoplab exports .lab artifacts; gradelab reviews artifacts in a grading container. Some labs have no automated assessment; checks are not necessarily grades.",
+      "proposed_evidence": "Start with network-basics and telnetlab; adapt each checkset with its actual scope, and keep local reports distinct from trusted observations",
+      "license": {
+        "identifier": "LicenseRef-NPS-Labtainers-and-third-party-terms",
+        "evidence": "distribution-notice-read",
+        "url": "https://github.com/mfthomps/Labtainers/blob/master/docs/license.md"
+      },
+      "reviewed_revision": "26c13698619abb4c67fcf483e8720b6c6aa3d6b2",
+      "last_push_observed": "2026-11-01T16:20:01Z",
+      "tested_platforms": [],
+      "limits": "The NPS notice permits redistribution with conditions; third-party and SEED-derived exercises have separate terms. No per-lab runtime or grading audit was performed.",
+      "sources": [
+        "https://nps.edu/web/c3o/labtainer-lab-summary1",
+        "https://github.com/mfthomps/Labtainers/blob/26c13698619abb4c67fcf483e8720b6c6aa3d6b2/docs/student/labtainer-student.tex",
+        "https://github.com/mfthomps/Labtainers/blob/master/docs/instructor/labtainer-instructor.tex"
+      ]
+    },
+    {
+      "id": "vampi",
+      "repository": "https://github.com/erev0s/VAmPI",
+      "kind": "vulnerable-api",
+      "priority": "first-local-service-pilot",
+      "levels": [
+        "starter",
+        "intermediate"
+      ],
+      "prerequisites": [
+        "HTTP and JSON",
+        "Token authentication and object ownership"
+      ],
+      "track_ids": [
+        "api-security",
+        "web-application-security",
+        "secure-development-devsecops",
+        "vulnerability-research-bug-bounty"
+      ],
+      "delivery": "Reviewed local container recipe; upstream also supports a Python environment",
+      "fetch_strategy": "Fetch the pinned source or a reviewed immutable image on demand",
+      "upstream_verification": "Vulnerable/non-vulnerable mode and OpenAPI/Postman resources; no Ascend-compatible grader established",
+      "proposed_evidence": "Owner/non-owner probes and legitimate controls; optionally replay a submitted patch with server-owned tests",
+      "license": {
+        "identifier": "MIT",
+        "evidence": "license-file-read",
+        "url": "https://github.com/erev0s/VAmPI/blob/master/LICENSE"
+      },
+      "reviewed_revision": "f16052dce83f05847133ec98f01c5193a41de7d8",
+      "last_push_observed": "2026-04-07T20:02:39Z",
+      "tested_platforms": [],
+      "limits": "Source revision and README were checked; dependency resolution, image digest, Linux architectures, resource measurements, and lifecycle adapter are still required.",
+      "sources": [
+        "https://github.com/erev0s/VAmPI/blob/f16052dce83f05847133ec98f01c5193a41de7d8/README.md"
+      ]
+    },
+    {
+      "id": "restaurant-api",
+      "repository": "https://github.com/theowni/Damn-Vulnerable-RESTaurant-API-Game",
+      "kind": "api-exploitation-and-repair-game",
+      "priority": "after-service-pilot",
+      "levels": [
+        "intermediate"
+      ],
+      "prerequisites": [
+        "API testing",
+        "Python/FastAPI for repair tasks"
+      ],
+      "track_ids": [
+        "api-security",
+        "secure-development-devsecops",
+        "vulnerability-research-bug-bounty"
+      ],
+      "delivery": "Local Docker Compose with PostgreSQL",
+      "fetch_strategy": "Reviewed source revision plus selected adapter around upstream start_game.sh/start_app.sh/stop_app.sh",
+      "upstream_verification": "Interactive developer repair route and separate exploitation route documented; individual check implementation not audited",
+      "proposed_evidence": "A selected repair, independent regression/control tests, and a bounded submitted patch",
+      "license": {
+        "identifier": "GPL-3.0",
+        "evidence": "github-metadata",
+        "url": "https://github.com/theowni/Damn-Vulnerable-RESTaurant-API-Game"
+      },
+      "reviewed_revision": null,
+      "last_push_observed": "2026-07-09T21:14:09Z",
+      "tested_platforms": [],
+      "limits": "Upstream stop preserves data. Repository scripts, final deletion, exact artifact licensing, and test coverage need review before activation. Codespaces is an external service, not local execution.",
+      "sources": [
+        "https://github.com/theowni/Damn-Vulnerable-RESTaurant-API-Game/blob/main/README.md"
+      ]
+    },
+    {
+      "id": "wrongsecrets",
+      "repository": "https://github.com/OWASP/wrongsecrets",
+      "kind": "secrets-management-challenges",
+      "priority": "local-subset-after-initial-pilots",
+      "levels": [
+        "starter",
+        "intermediate",
+        "advanced"
+      ],
+      "prerequisites": [
+        "Basic application configuration",
+        "Separate Kubernetes/cloud prerequisites for those challenge groups"
+      ],
+      "track_ids": [
+        "secure-development-devsecops",
+        "cloud-security",
+        "container-kubernetes-security"
+      ],
+      "delivery": "Local Docker no-vault subset first; other environments are separate recipes",
+      "fetch_strategy": "Pull a reviewed image digest for the selected runtime profile",
+      "upstream_verification": "Challenge answers, hints, and CTF integrations are documented; local completion is learner-controlled",
+      "proposed_evidence": "Secret-location evidence and explanation of the exposure; server-side answer/repair assessment only where authored",
+      "license": {
+        "identifier": "AGPL-3.0",
+        "evidence": "license-file-read",
+        "url": "https://github.com/OWASP/wrongsecrets/blob/7144c57fb15708f9486dab83d536448302d4e51b/LICENSE"
+      },
+      "reviewed_revision": "7144c57fb15708f9486dab83d536448302d4e51b",
+      "last_push_observed": "2026-11-02T11:49:54Z",
+      "tested_platforms": [],
+      "limits": "Not all challenges run in the Docker-only profile. Desktop instructions include Docker socket access. Cloud resources and license obligations remain separate from a source link.",
+      "sources": [
+        "https://github.com/OWASP/wrongsecrets/blob/master/README.md"
+      ]
+    },
+    {
+      "id": "stratocyberlab",
+      "repository": "https://github.com/stratosphereips/stratocyberlab",
+      "kind": "local-cyber-range",
+      "priority": "optional-local-vm-range-evaluation",
+      "levels": [
+        "starter",
+        "intermediate",
+        "advanced"
+      ],
+      "prerequisites": [
+        "Docker-capable local environment",
+        "Challenge-specific skills"
+      ],
+      "track_ids": [
+        "ethical-hacking-foundations",
+        "network-penetration-testing",
+        "web-application-security",
+        "defensive-security-and-detection"
+      ],
+      "delivery": "Local range/dashboard; prefer a dedicated VM for its Docker-control boundary",
+      "fetch_strategy": "Reviewed framework checkout with on-demand challenge starts; measure base images separately",
+      "upstream_verification": "Dashboard compares submitted flags with task flags in meta.json; auto-solvers exercise challenges",
+      "proposed_evidence": "Local practice result, with separate authored assessment for stronger claims",
+      "license": {
+        "identifier": "GPL-2.0",
+        "evidence": "github-metadata",
+        "url": "https://github.com/stratosphereips/stratocyberlab"
+      },
+      "reviewed_revision": "c1093c3a4f1e808a543872a4359f1cd01613644f",
+      "last_push_observed": "2026-11-02T09:30:16Z",
+      "tested_platforms": [],
+      "limits": "Upstream estimates 3 GB disk and 2 GB spare RAM; not measured here. Dashboard/plugins may control the Docker socket. Flags and published solutions are readable locally and do not establish independent solving.",
+      "sources": [
+        "https://github.com/stratosphereips/stratocyberlab/blob/main/README.md",
+        "https://github.com/stratosphereips/stratocyberlab/blob/c1093c3a4f1e808a543872a4359f1cd01613644f/docs/development.md"
+      ]
+    },
+    {
+      "id": "security-datasets",
+      "repository": "https://github.com/OTRF/Security-Datasets",
+      "kind": "telemetry-corpus",
+      "priority": "first-local-file-pilot",
+      "levels": [
+        "starter",
+        "intermediate",
+        "advanced"
+      ],
+      "prerequisites": [
+        "Event filtering and timelines",
+        "Prepared small evidence slice for beginners"
+      ],
+      "track_ids": [
+        "soc-analyst",
+        "digital-forensics-incident-response",
+        "threat-hunting-intelligence",
+        "defensive-security-and-detection"
+      ],
+      "delivery": "Selected data files on learner PC; no full SIEM required for the initial task",
+      "fetch_strategy": "Download only individually selected, hashed artifacts",
+      "upstream_verification": "Dataset provenance and malicious/benign examples; no general learner completion grader",
+      "proposed_evidence": "Query/rule, matching event IDs, timeline, and benign control; server-owned answer rubric for a known case",
+      "license": {
+        "identifier": "MIT",
+        "evidence": "root-license-file-read-with-readme-conflict",
+        "url": "https://github.com/OTRF/Security-Datasets/blob/master/LICENSE"
+      },
+      "reviewed_revision": null,
+      "last_push_observed": "2024-03-20T20:19:19Z",
+      "tested_platforms": [],
+      "limits": "README contains both MIT and GPL statements; root LICENSE is MIT. Check chosen artifacts' notices before redistribution. Whole-corpus size is not a small-session download estimate, and no exact pilot artifact is approved yet.",
+      "sources": [
+        "https://github.com/OTRF/Security-Datasets/blob/master/README.md"
+      ]
+    },
+    {
+      "id": "evtx-samples",
+      "repository": "https://github.com/sbousseaden/EVTX-ATTACK-SAMPLES",
+      "kind": "windows-event-samples",
+      "priority": "after-file-pilot",
+      "levels": [
+        "intermediate"
+      ],
+      "prerequisites": [
+        "Windows event semantics",
+        "Filtering and evidence interpretation"
+      ],
+      "track_ids": [
+        "soc-analyst",
+        "digital-forensics-incident-response",
+        "threat-hunting-intelligence"
+      ],
+      "delivery": "Selected files on learner PC; validate a Linux-compatible EVTX parser",
+      "fetch_strategy": "Per-artifact download with hashes and notices",
+      "upstream_verification": "ATT&CK-mapped examples and a PowerShell/Winlogbeat replay script; no learner grader",
+      "proposed_evidence": "Selected-event analysis or detection rule plus independently supplied benign control",
+      "license": {
+        "identifier": "GPL-3.0",
+        "evidence": "github-metadata-and-readme-declaration",
+        "url": "https://github.com/sbousseaden/EVTX-ATTACK-SAMPLES/blob/master/LICENSE.GPL"
+      },
+      "reviewed_revision": null,
+      "last_push_observed": "2023-01-24T12:02:51Z",
+      "tested_platforms": [],
+      "limits": "The replay script is not a native Linux recipe. Attack-labelled filenames and known examples can reveal diagnoses. Stable historical samples do not describe all current attack behavior.",
+      "sources": [
+        "https://github.com/sbousseaden/EVTX-ATTACK-SAMPLES/blob/master/README.md"
+      ]
+    },
+    {
+      "id": "kc7",
+      "repository": "https://github.com/KC7-Foundation/kc7",
+      "kind": "investigation-game-and-data-generator",
+      "priority": "external-learning-reference",
+      "levels": [
+        "starter",
+        "intermediate"
+      ],
+      "prerequisites": [
+        "Prepared KQL instruction"
+      ],
+      "track_ids": [
+        "soc-analyst",
+        "threat-hunting-intelligence",
+        "digital-forensics-incident-response"
+      ],
+      "delivery": "Published game uses Azure Data Explorer; not an established offline Linux recipe",
+      "fetch_strategy": "Link to published learning modules; separately evaluate generator and selected scenario terms",
+      "upstream_verification": "Investigation game documented; no Ascend verification API or complete offline grader established",
+      "proposed_evidence": "External practice record, or a separately authored and licensed local case",
+      "license": {
+        "identifier": "Apache-2.0",
+        "evidence": "github-metadata-for-code-only",
+        "url": "https://github.com/KC7-Foundation/kc7"
+      },
+      "reviewed_revision": null,
+      "last_push_observed": "2024-07-12T02:07:58Z",
+      "tested_platforms": [],
+      "limits": "The separate KC7-Foundation/kc7_data repository had no detected license in search metadata. Do not infer its reuse terms from the generator's license or equate a clone with the hosted platform.",
+      "sources": [
+        "https://github.com/KC7-Foundation/kc7/blob/main/README.md",
+        "https://github.com/KC7-Foundation/kc7_data"
+      ]
+    },
+    {
+      "id": "bgp-labs",
+      "repository": "https://github.com/bgplab/bgplab",
+      "kind": "network-topology-curriculum",
+      "priority": "after-local-framework-pilot",
+      "levels": [
+        "intermediate",
+        "advanced"
+      ],
+      "prerequisites": [
+        "IP addressing and routing",
+        "netlab/containerlab or VM provider"
+      ],
+      "track_ids": [
+        "networking-for-security",
+        "network-penetration-testing"
+      ],
+      "delivery": "Linux PC or VM using selected FRRouting-based topologies",
+      "fetch_strategy": "Fetch selected topology/support files and required device images on demand",
+      "upstream_verification": "netlab validate runs topology assertions; no usable tests returns 2 and warnings returns 3",
+      "proposed_evidence": "Routes, sessions, allowed/denied control traffic, and exported configuration; local checks or trusted configuration replay",
+      "license": {
+        "identifier": "MIT",
+        "evidence": "license-file-read",
+        "url": "https://github.com/bgplab/bgplab/blob/master/LICENSE.md"
+      },
+      "reviewed_revision": "217fbef2cd5a2c200a3d5e56b3be5defaf1fbc67",
+      "last_push_observed": null,
+      "tested_platforms": [],
+      "limits": "ipspace/bgplab redirects to bgplab/bgplab. Validate the selected topology's test coverage. Commercial network OS images have separate licenses; no architecture or image-size benchmark was performed.",
+      "sources": [
+        "https://github.com/bgplab/bgplab/blob/master/README.md",
+        "https://netlab.tools/netlab/validate/"
+      ]
+    },
+    {
+      "id": "rpisec-mbe",
+      "repository": "https://github.com/RPISEC/MBE",
+      "kind": "binary-exploitation-course",
+      "priority": "specialist-compatibility-review",
+      "levels": [
+        "intermediate",
+        "advanced"
+      ],
+      "prerequisites": [
+        "C/C++",
+        "Assembly",
+        "Linux command line"
+      ],
+      "track_ids": [
+        "reverse-engineering-and-binary-exploitation",
+        "vulnerability-research-bug-bounty"
+      ],
+      "delivery": "Dedicated compatibility VM; original environment is Ubuntu 14.04 32-bit",
+      "fetch_strategy": "Selected source labs or separately reviewed release VM; never run upstream system setup on the everyday host",
+      "upstream_verification": "Course labs, wargame structure, and cumulative projects; no Ascend grader integrated",
+      "proposed_evidence": "Binary/version-specific observations and reproducible changed-input behavior",
+      "license": {
+        "identifier": "BSD-2-Clause",
+        "evidence": "github-metadata",
+        "url": "https://github.com/RPISEC/MBE"
+      },
+      "reviewed_revision": "200debfff3adf7beeff5e597e9ca9493b779a77e",
+      "last_push_observed": "2021-12-09T17:20:50Z",
+      "tested_platforms": [],
+      "limits": "A structured historical curriculum, not a claim of current toolchain compatibility. Kernel exercises require a distinct VM boundary.",
+      "sources": [
+        "https://github.com/RPISEC/MBE/blob/master/README.md",
+        "https://github.com/RPISEC/MBE/tree/200debfff3adf7beeff5e597e9ca9493b779a77e"
+      ]
+    },
+    {
+      "id": "cloudfoxable",
+      "repository": "https://github.com/BishopFox/cloudfoxable",
+      "kind": "aws-training-environment",
+      "priority": "optional-cloud-specialist",
+      "levels": [
+        "intermediate",
+        "advanced"
+      ],
+      "prerequisites": [
+        "AWS IAM fundamentals",
+        "Dedicated learner-controlled AWS account",
+        "Terraform"
+      ],
+      "track_ids": [
+        "cloud-security",
+        "red-team-adversary-emulation"
+      ],
+      "delivery": "Learner-owned AWS resources; launcher can run locally",
+      "fetch_strategy": "Fetch the reviewed Terraform project and enable selected modules only",
+      "upstream_verification": "Guided CTF flags; no Ascend provider attestation established",
+      "proposed_evidence": "Scope-limited cloud observations and a confirmed teardown record",
+      "license": {
+        "identifier": "MIT",
+        "evidence": "github-metadata",
+        "url": "https://github.com/BishopFox/cloudfoxable"
+      },
+      "reviewed_revision": "fc49b7f637268031515ced9fee4b643d3e68db67",
+      "last_push_observed": "2026-05-01T21:21:58Z",
+      "tested_platforms": [],
+      "limits": "Creates real potentially billable cloud infrastructure. Keep Terraform state and credentials local to the learner account; deleting the checkout is not teardown.",
+      "sources": [
+        "https://github.com/BishopFox/cloudfoxable/blob/main/README.md",
+        "https://github.com/BishopFox/cloudfoxable/tree/fc49b7f637268031515ced9fee4b643d3e68db67"
+      ]
+    },
+    {
+      "id": "kubernetes-goat",
+      "repository": "https://github.com/madhuakula/kubernetes-goat",
+      "kind": "kubernetes-security-scenarios",
+      "priority": "specialist-cluster-review",
+      "levels": [
+        "intermediate",
+        "advanced"
+      ],
+      "prerequisites": [
+        "Kubernetes and RBAC",
+        "Dedicated disposable cluster",
+        "kubectl and Helm"
+      ],
+      "track_ids": [
+        "container-kubernetes-security",
+        "cloud-security"
+      ],
+      "delivery": "Learner's dedicated Linux VM/cluster; not Ascend's application cluster",
+      "fetch_strategy": "Selected reviewed scenario resources and images; upstream setup needs review before wrapping",
+      "upstream_verification": "Scenario guide and setup/access scripts; per-task proof adapter remains to be authored",
+      "proposed_evidence": "Actual cluster enforcement and a legitimate-control test for the selected scenario",
+      "license": {
+        "identifier": "MIT",
+        "evidence": "license-file-read",
+        "url": "https://github.com/madhuakula/kubernetes-goat/blob/master/LICENSE"
+      },
+      "reviewed_revision": "723a0db478f050d173d23b4ce5044b65bce0bdd0",
+      "last_push_observed": null,
+      "tested_platforms": [],
+      "limits": "Requires cluster administration; selected scenarios may request elevated privileges. A valid manifest or running pod is not proof of the learning objective.",
+      "sources": [
+        "https://github.com/madhuakula/kubernetes-goat/blob/master/README.md",
+        "https://github.com/madhuakula/kubernetes-goat/tree/723a0db478f050d173d23b4ce5044b65bce0bdd0"
+      ]
+    },
+    {
+      "id": "mastg-playground",
+      "repository": "https://github.com/OWASP/MASTG-Hacking-Playground",
+      "kind": "mobile-training-apps",
+      "priority": "specialist-platform-and-license-review",
+      "levels": [
+        "intermediate"
+      ],
+      "prerequisites": [
+        "Android app fundamentals",
+        "Android emulator or owned test device",
+        "Compatible SDK/NDK toolchain"
+      ],
+      "track_ids": [
+        "mobile-application-security"
+      ],
+      "delivery": "Android locally on Linux; iOS remains a separate platform path",
+      "fetch_strategy": "Selected app source or reviewed APK; Kotlin app also needs the documented backend",
+      "upstream_verification": "MASTG-mapped test cases; no general learner completion verifier established",
+      "proposed_evidence": "Test-case-specific runtime observation and an explicit scope statement",
+      "license": {
+        "identifier": "GPL-3.0",
+        "evidence": "license-file-read",
+        "url": "https://github.com/OWASP/MASTG-Hacking-Playground/blob/db219a1011e6735cf0c6c08ba929a27ef40e1873/LICENSE.md"
+      },
+      "reviewed_revision": "db219a1011e6735cf0c6c08ba929a27ef40e1873",
+      "last_push_observed": null,
+      "tested_platforms": [],
+      "limits": "README includes an old tested Android Studio version. Exact app/backend licenses, current builds, APK hashes, and Linux emulator support remain unverified; no automatic packaging is approved.",
+      "sources": [
+        "https://github.com/OWASP/MASTG-Hacking-Playground/blob/master/README.md",
+        "https://github.com/OWASP/MASTG-Hacking-Playground/tree/db219a1011e6735cf0c6c08ba929a27ef40e1873"
+      ]
+    },
+    {
+      "id": "vulnerable-llm-agent",
+      "repository": "https://github.com/ReversecLabs/damn-vulnerable-llm-agent",
+      "kind": "llm-agent-training-app",
+      "priority": "specialist-model-and-budget-review",
+      "levels": [
+        "intermediate",
+        "advanced"
+      ],
+      "prerequisites": [
+        "API/tool authorization",
+        "Prompt injection concepts",
+        "Suitable local model or separately configured provider"
+      ],
+      "track_ids": [
+        "ai-application-security",
+        "api-security"
+      ],
+      "delivery": "Local app with local Ollama model or external model provider",
+      "fetch_strategy": "Pin app/dependencies and fetch only the selected model if local inference is chosen",
+      "upstream_verification": "Two documented flags and published payload solutions; no general robust learning grader established",
+      "proposed_evidence": "Observed tool/data-boundary behavior plus benign controls; record model and configuration",
+      "license": {
+        "identifier": "Apache-2.0",
+        "evidence": "github-metadata",
+        "url": "https://github.com/ReversecLabs/damn-vulnerable-llm-agent"
+      },
+      "reviewed_revision": "c0cf9a14adad76e9d6a53c41741f625334bd9971",
+      "last_push_observed": "2025-06-25T13:58:42Z",
+      "tested_platforms": [],
+      "limits": "Model weights can be much larger than the repo. Upstream warns about unreliable small-model ReAct behavior. Provider use may incur costs; published solutions limit blind-assessment claims.",
+      "sources": [
+        "https://github.com/ReversecLabs/damn-vulnerable-llm-agent/blob/main/README.md",
+        "https://github.com/ReversecLabs/damn-vulnerable-llm-agent/tree/c0cf9a14adad76e9d6a53c41741f625334bd9971"
+      ]
+    }
+  ],
+  "runtime_and_verification_references": [
+    {
+      "id": "netlab",
+      "repository": "https://github.com/ipspace/netlab",
+      "decision": "Reuse local topology lifecycle and selected validation tests; not a replacement for Ascend learning state",
+      "license_observed": "MIT text in LICENSE.md; GitHub metadata reported NOASSERTION",
+      "last_push_observed": "2026-11-02T10:01:45Z",
+      "sources": [
+        "https://netlab.tools/netlab/validate/",
+        "https://github.com/ipspace/netlab/blob/dev/README.md",
+        "https://github.com/ipspace/netlab/blob/dev/LICENSE.md"
+      ]
+    },
+    {
+      "id": "devpod",
+      "repository": "https://github.com/loft-sh/devpod",
+      "decision": "Optional later workspace provider; client-only local Docker support does not supply grading",
+      "license_observed": "MPL-2.0 from GitHub metadata",
+      "last_push_observed": "2025-11-14T06:33:38Z",
+      "sources": [
+        "https://github.com/loft-sh/devpod/blob/main/README.md"
+      ]
+    },
+    {
+      "id": "chall-manager",
+      "repository": "https://github.com/ctfer-io/chall-manager",
+      "decision": "Evaluate only when shared trusted execution is required; beta lifecycle manager with separate backend and grader requirements",
+      "license_observed": "Apache-2.0 from GitHub metadata",
+      "last_push_observed": "2026-10-30T08:39:20Z",
+      "sources": [
+        "https://github.com/ctfer-io/chall-manager/blob/main/README.md",
+        "https://github.com/ctfer-io/chall-manager/issues/1046#issuecomment-3503540087"
+      ]
+    },
+    {
+      "id": "exercism-test-runner",
+      "repository": "https://github.com/exercism/python-test-runner",
+      "decision": "Implementation reference for rerunning a small submitted solution and emitting results.json",
+      "license_observed": null,
+      "last_push_observed": null,
+      "sources": [
+        "https://github.com/exercism/python-test-runner/blob/main/README.md"
+      ]
+    }
+  ],
+  "community_sources": [
+    {
+      "url": "https://github.com/mfthomps/Labtainers/issues/87",
+      "evidence_kind": "user-report",
+      "finding": "Reported result-tag mismatch; validate the checker itself"
+    },
+    {
+      "url": "https://github.com/mfthomps/Labtainers/issues/85",
+      "evidence_kind": "user-report",
+      "finding": "Command-count feedback can miss intended work and is not a semantic grade"
+    },
+    {
+      "url": "https://github.com/ctfer-io/chall-manager/issues/1046#issuecomment-3503540087",
+      "evidence_kind": "maintainer-design-explanation",
+      "finding": "Retain failed cleanup state rather than hide possible remaining infrastructure"
+    },
+    {
+      "url": "https://github.com/ctfer-io/chall-manager/issues/1109",
+      "evidence_kind": "version-specific-user-report",
+      "finding": "Reported PID growth on v0.6.0; test repeated lifecycle cycles, not only startup"
+    },
+    {
+      "url": "https://github.com/loft-sh/devpod/issues/1949",
+      "evidence_kind": "provider-specific-user-report",
+      "finding": "Host free space need not equal workspace storage allowance"
+    },
+    {
+      "url": "https://github.com/loft-sh/devpod/issues/945",
+      "evidence_kind": "provider-feature-discussion",
+      "finding": "Persistent volume reuse needs a lifecycle contract separate from workspace recreation"
+    },
+    {
+      "url": "https://stackoverflow.com/questions/55282552/difference-between-docker-compose-down-and-ctrl-c",
+      "evidence_kind": "community-answer-cross-checked-with-current-docker-docs",
+      "finding": "Stopping and deleting containers are different operations"
+    },
+    {
+      "url": "https://security.stackexchange.com/questions/8445/securely-building-a-local-pentest-lab-in-a-vm",
+      "evidence_kind": "historical-community-discussion",
+      "finding": "Network separation and VM boundaries matter; outdated blanket safety claims are not adopted"
+    }
+  ],
+  "discovery_limits": [
+    "Reddit JSON search and RSS and Quora search returned HTTP 403; no claim of reading their discussions",
+    "Google returned a JavaScript interstitial, DuckDuckGo a bot challenge, and the inspected Bing response was not useful evidence",
+    "Some GitHub API endpoints returned 403 or network requests timed out; missing metadata is null rather than inferred",
+    "Repository metadata and source reviews do not establish that every exercise runs, fits the learner hardware, or has a trustworthy grader",
+    "All candidates still require per-exercise review and runtime validation before automatic execution"
+  ]
+}
