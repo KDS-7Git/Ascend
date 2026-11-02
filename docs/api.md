@@ -22,7 +22,7 @@ at rest. Browser tokens are session-scoped, and CLI tokens are stored with mode 
 | `POST /api/nodes/{pack:node}/mark` | `{status,note?}`; status is done/skipped/todo |
 | `POST /api/packs` | Multipart `file`: UTF-8 TOML, maximum 2 MB; lint and install |
 | `GET /api/packs` | Installed pack IDs and review/trust metadata |
-| `GET /api/packs/{id}` | Parsed pack data |
+| `GET /api/packs/{id}` | Pack metadata and preview nodes |
 | `GET /api/stats` | Derived streaks, days, freeze allowance and eight weekly minute totals |
 | `GET /api/heatmap` | Day/count values for the last 12 calendar weeks |
 | `GET /api/search?q=text` | Reverse chronological substring matches |
@@ -46,3 +46,11 @@ The node reference is `pack-id:node-id`. Omitting it uses the active mission's
 next eligible main node, falling back to its side lane. Manual completion routes
 remain explicit, even when a verifier would fail. `done --complete` logs partial
 work on verification failure, returning `completed: false` and a reason.
+
+Web overview, level and pack listings return preview nodes. Full instructions,
+downloads, hints, references, finish lines and verifier internals are omitted.
+`GET /api/challenges/{pack-id:node-id}` returns `details_available: true` only
+for an existing caller-owned session or historical completion. Ended attempts
+retain review access; `has_attempt` lets the UI offer Review attempt without
+starting a new timer. Remote `today` and `levels` follow the preview contract.
+Public source pack exports remain authoring data.

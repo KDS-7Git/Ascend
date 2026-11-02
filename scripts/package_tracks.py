@@ -35,6 +35,7 @@ def main():
         "curriculum/*.json",
         "curriculum/*.md",
         "design/ui-workspace-sources.json",
+        "design/isolated-lab-research.md",
     ]:
         for path in (ROOT / "docs").glob(pattern):
             files["docs/" + str(path.relative_to(ROOT / "docs"))] = path

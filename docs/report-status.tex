@@ -27,9 +27,13 @@ Neobrutalism UI & 155 tests passed; 74 captures; 66 axe checks with no detected 
 Challenge UX refinement & 165 tests passed; 89 captures; 76 axe checks with no detected violations. \\
 Permission scoring & 173 tests passed; 95 captures; 82 axe checks with no detected violations. \\
 Challenge guidance & 191 tests passed; local recipes, downloads and state-preserving content update verified. \\
+Challenge preview flow & 194 tests passed; preview gating, started/review access and timer restoration validated. \\
 \end{longtable}
 \subsection*{Recent recorded commits}
 \begin{verbatim}
+5ff466b Reveal challenge instructions only after an attempt starts
+64d2fad docs(curriculum): explain guided labs and verify packaged content
+  delivery
 fc9141e fix(curriculum): replace shared placeholders with scoped labs and
   real inputs
 a4a9748 fix(curriculum): make the first HTTP lab actionable and copyable
@@ -47,8 +51,5 @@ bda3d13 feat(practice): explain final permission decisions and award partial
 58df595 docs(ui): document neobrutalism and refresh visual verification
 036a86d feat(ui): introduce neobrutalism and restore visible challenge
   effects
-78950d6 docs: explain architecture, challenge lifecycle and UI
-  implementation
-729e4f2 feat(workspace): restore challenges and add calm motion
 \end{verbatim}
 \noindent Full transcripts: \texttt{docs/testing/phase-*.txt}. The implementation may have uncommitted work beyond the last validated milestone.

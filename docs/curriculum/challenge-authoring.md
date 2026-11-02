@@ -21,8 +21,13 @@ A challenge must tell the learner:
    presence/size only. An offline model cannot demonstrate operational AD, cloud,
    mobile, memory-analysis, radio or Kubernetes behavior.
 
-Use short summaries. Put full instructions in `steps`, copyable fenced commands
-inside those steps, environment details in `setup`, and downloads in `materials`.
+Before Start, show only `preview` (a short objective), duration and `requirements`
+(prerequisite tools/access/hardware/costs). Do not put file names, task commands,
+solutions, hints or full success criteria in the preview. Starting opens the full
+workspace: put instructions in `steps`, copyable fenced commands inside those
+steps, workspace preparation in `setup`, and downloads in `materials`. Ended
+attempts keep review access without restarting the timer. The public source packs
+remain inspectable; this is a learning-flow distinction, not answer secrecy.
 Use `resource_label`/`resource_note` to distinguish optional references from lab
 access. A published course syllabus can inform track coverage without becoming
 the required resource for every task in that track.

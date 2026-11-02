@@ -30,6 +30,25 @@ so undo can avoid clobbering a later change. Streaks and time statistics are der
 from entries, not independent mutable counters. File/Git evidence timestamps can
 be backdated to actual work time and are deduplicated by the existing evidence flow.
 
+\subsection{Challenge preview and started workspace}
+\path{ascend/server/presentation.py} removes instructions, downloads, hints,
+references, completion criteria and verifier internals from web overview and
+listing responses, including the current level nested in the dashboard response.
+\texttt{preview} and \texttt{requirements} are authored Node fields with the usual
+variable and series substitutions. Older packs can omit them and show a title.
+The challenge route returns full content only when the current user has a task
+session or historical completion. A direct URL cannot skip the preview; an ended
+session retains review access. Public pack exports and the standalone CLI remain
+authoring/practice tools, so this is not an anti-cheat secrecy boundary.
+
+In \path{web/app.js}, \texttt{showNode} builds either the short preview or the full
+workspace. Start creates the existing server-clock session and navigates to the
+challenge route; opening or reviewing a preview does not create a session. Reload
+and Review attempt reuse existing state. No pause or timer reset is introduced.
+API regression tests exercise nested/list responses and review access; browser
+tests cover direct links, downloads, copyable commands and timer restoration at
+mobile and desktop widths.
+
 \subsection{Security and operational assumptions}
 Every business query is user-scoped. Passwords use scrypt and server bearer tokens
 are hashed. CLI token storage uses restrictive permissions; browser tokens are

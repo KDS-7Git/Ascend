@@ -1,0 +1,14 @@
+2026-11-02: staged challenge disclosure
+Tests and browser interactions used disposable profiles only.
+Command: .venv/bin/pytest -q
+........................................................................ [ 37%]
+........................................................................ [ 74%]
+..................................................                       [100%]
+194 passed in 106.54s (0:01:46)
+
+Additional checks: generated specialist packs, material archives, curriculum audit,
+Python formatting/lint and Git whitespace checks. Browser captures at 390 and
+1440 px show the short preview and detailed workspace separately. The suite also
+covers 320 px Start interactions, reload, finished-attempt review, remote CLI and
+per-account disclosure. Saved live deployment evidence is in preview-live-update.json.
+RESULT: 194 tests passed; preview gating, started/review access and timer restoration validated.

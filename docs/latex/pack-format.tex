@@ -33,6 +33,8 @@ size = "S"
 minutes = 20
 needs = []
 done_when = "A working example saved with an explanation in my own words"
+preview = "Build a tool for organizing a small set of files."
+requirements = "Python 3 and a text editor."
 brief = "Build a small tool that solves one annoying file-management problem."
 steps = ["Choose a tiny input.", "Run the tool and compare its output with your prediction."]
 hints = ["Start with one file before handling a whole directory."]
@@ -51,15 +53,18 @@ HTTP(S) \texttt{resource}.
 Optional \texttt{brief} text introduces a concrete challenge. Optional
 \texttt{steps} and \texttt{hints} are lists of nonempty strings, with
 the same variable and series substitutions as other content. The web
-challenge sheet displays steps in order and keeps hints behind
+started challenge workspace displays steps in order and keeps hints behind
 individual disclosures. These are learning guidance, not completion
 checks; \texttt{done\_when} and the verifier still define the finish
 line. Older packs without them continue to work. Prefer a small
 observable result over a reading assignment, and set honest
 \texttt{minutes} estimates so short sessions have useful tasks.
 
-Optional \texttt{setup} states tools, environment and access/cost requirements
-before timing. \texttt{resource\_label} and \texttt{resource\_note} describe a
+Optional \texttt{preview} states a short objective before Start.
+\texttt{requirements} lists prerequisite tools, access, hardware and costs;
+exclude task files, commands, answers and detailed completion criteria. An older
+pack without these fields uses its title as the preview. Optional \texttt{setup}
+contains workspace preparation instructions displayed after Start. \texttt{resource\_label} and \texttt{resource\_note} describe a
 reference's role. \texttt{materials} contains label/URL objects for actual inputs;
 HTTP(S) and bounded \path{/training/} ZIP/JSON/CSV/TXT paths are accepted. Fenced
 code in steps is copyable text, never an automatically executed command. Older

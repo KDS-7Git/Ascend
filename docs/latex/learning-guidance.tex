@@ -33,14 +33,16 @@ in distributable installations. The intentionally incomplete notes API listens
 only on loopback and uses synthetic identities rather than real authentication.
 
 \subsection{Model and interface contract}
-Optional node fields \texttt{setup}, \texttt{resource\_label} and
+Optional node fields \texttt{preview}, \texttt{requirements}, \texttt{setup}, \texttt{resource\_label} and
 \texttt{resource\_note} are validated strings. \texttt{materials} is a list of
 objects containing a nonempty label and URL. URLs must use HTTP(S) or the bounded
 \path{/training/} asset namespace; arbitrary local paths, script URLs and path
 traversal are rejected. Older packs default to empty guidance fields.
 
-Dataclass serialization exposes the fields through the existing node APIs.
-\texttt{showNode} presents setup before starting, download links, an ordered
+The web presentation layer returns previews from overview/list endpoints and full
+guidance only from a started or historically completed challenge's workspace.
+\texttt{showNode} presents the objective and prerequisite requirements before
+Start; the started workspace reveals detailed setup, download links, an ordered
 ``What to do'' sequence and an explicitly labeled optional reference.
 \texttt{instructionBlocks} recognizes fenced code in steps and constructs DOM
 text nodes. It does not insert command text as HTML or execute it. The reusable
@@ -90,3 +92,24 @@ update, back up the database and copies, inspect active attempts and compare
 protected learner state afterward. Changed fingerprints reset review/trust and
 can invalidate unfinished generated exercises. Saved progress must not be
 silently reset as part of a wording repair.
+
+\subsection{Planned disposable terminal boundary}
+The comparison of OverTheWire, pwn.college, TryHackMe and CTFd is recorded with
+source links and limits in \path{docs/design/isolated-lab-research.md}. OverTheWire's
+public SSH model does not establish per-attempt containers. The inspected
+pwn.college source uses runc for ordinary challenges and Kata for challenges
+marked privileged; that distinction and its deployment-specific mounts matter.
+An embedded terminal renderer such as xterm.js is not an isolation boundary.
+
+The selected design separates authenticated attempt state in Ascend from an
+allowlisted runner. It requires a gVisor runtime or suitable VM boundary, no host
+mounts or secrets, bounded resources, explicit network restrictions, validated
+evidence collection and crash-safe teardown. Provisioning must finish before
+timing starts; reload must reconnect to the same attempt. Kernel, AD and hardware
+tasks require a different capability class from a small local Python lab.
+
+This terminal feature is not implemented or enabled. The inspected workstation
+has ordinary Docker runtimes, no gVisor/Kata installation, and no provisioned
+runner VM. The preview change does not launch containers or substitute a host
+shell. Administrator runtime preparation and deployed isolation/lifecycle tests
+are prerequisites for claiming that feature works securely.

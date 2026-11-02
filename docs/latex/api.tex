@@ -43,7 +43,7 @@ Required: \texttt{learned}, \texttt{next\_step}. Optional: \texttt{node\_id}, \t
 2 MB; lint and install \\
 \path|GET /api/packs| & Installed pack IDs and review/trust
 metadata \\
-\path|GET /api/packs/{id}| & Parsed pack data \\
+\path|GET /api/packs/{id}| & Pack metadata and preview nodes \\
 \path|GET /api/stats| & Derived streaks, days, freeze allowance and
 eight weekly minute totals \\
 \path|GET /api/heatmap| & Day/count values for the last 12 calendar
@@ -66,6 +66,14 @@ Telegram webhook secret header \\
 data; 404 otherwise \\
 \path|GET /api/public/{username}/badge.svg| & Opt-in SVG badge \\
 \end{longtable}
+
+Overview, level and pack listings return preview nodes. They omit full task
+instructions, materials, hints, references, completion criteria and verifier
+internals. The challenge endpoint sets \texttt{details\_available} and returns
+full guidance only for an existing caller-owned session or historical completion.
+An ended attempt retains review access. \texttt{has\_attempt} lets the interface
+offer Review attempt without starting another timer. The \texttt{today} and
+\texttt{levels} command responses follow the same preview contract.
 
 \texttt{/api/command} supports mission lifecycle, config, edit/undo,
 backfill, split, verification, and parking. It rejects client-only timer
