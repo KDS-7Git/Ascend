@@ -3,7 +3,7 @@
 "id" = "ai-application-security"
 "title" = "AI and LLM Application Security"
 "kind" = "proficiency"
-"version" = 2
+"version" = 3
 "source" = "ai-draft"
 "reviewed" = false
 
@@ -73,6 +73,8 @@
 "verify" = { "type" = "lab", "exercise" = "integrity" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Check the integrity of a small evidence sample by calculating its content hash."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -89,6 +91,8 @@
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ai-application-security:foundations" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -105,6 +109,8 @@
 "verify" = { "type" = "file", "path" = "{lab_dir}/foundations-experiment.json", "min_bytes" = 200 }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "See where a toy assistant must enforce authorization."
+"requirements" = "Python 3 and a text editor. No model, API key, account or paid tokens are required."
 "setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance."
 "materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ai-application-security.zip" }]
 
@@ -124,6 +130,8 @@
 "verify" = { "type" = "file", "path" = "{lab_dir}/foundations-assessment.json", "min_bytes" = 300 }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "See where a toy assistant must enforce authorization."
+"requirements" = "Python 3 and a text editor. No model, API key, account or paid tokens are required."
 "setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance."
 "materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ai-application-security.zip" }]
 
@@ -141,6 +149,8 @@
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ai-application-security:foundations" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -157,6 +167,8 @@
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ai-application-security:boundaries" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -173,6 +185,8 @@
 "verify" = { "type" = "file", "path" = "{lab_dir}/boundaries-experiment.json", "min_bytes" = 200 }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Build a threat model that identifies which component may authorize each action and where untrusted text enters."
+"requirements" = "Python 3 and a text editor. No model, API key, account or paid tokens are required."
 "setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance."
 "materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ai-application-security.zip" }]
 
@@ -192,6 +206,8 @@
 "verify" = { "type" = "file", "path" = "{lab_dir}/boundaries-assessment.json", "min_bytes" = 300 }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Build a threat model that identifies which component may authorize each action and where untrusted text enters."
+"requirements" = "Python 3 and a text editor. No model, API key, account or paid tokens are required."
 "setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance."
 "materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ai-application-security.zip" }]
 
@@ -209,6 +225,8 @@
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ai-application-security:boundaries" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -225,6 +243,8 @@
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ai-application-security:retrieval" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -241,6 +261,8 @@
 "verify" = { "type" = "file", "path" = "{lab_dir}/retrieval-experiment.json", "min_bytes" = 200 }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "In a deterministic toy pipeline, test adversarial documents and enforce authorization outside the mock model before any data access or action."
+"requirements" = "Python 3 and a text editor. No model, API key, account or paid tokens are required."
 "setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance."
 "materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ai-application-security.zip" }]
 
@@ -260,6 +282,8 @@
 "verify" = { "type" = "file", "path" = "{lab_dir}/retrieval-assessment.json", "min_bytes" = 300 }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "In a deterministic toy pipeline, test adversarial documents and enforce authorization outside the mock model before any data access or action."
+"requirements" = "Python 3 and a text editor. No model, API key, account or paid tokens are required."
 "setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance."
 "materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ai-application-security.zip" }]
 
@@ -277,6 +301,8 @@
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ai-application-security:retrieval" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -293,6 +319,8 @@
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ai-application-security:output" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -309,6 +337,8 @@
 "verify" = { "type" = "file", "path" = "{lab_dir}/output-experiment.json", "min_bytes" = 200 }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Add strict schemas and safe handling to a toy assistant's output pipeline and test malformed or unauthorized synthetic outputs."
+"requirements" = "Python 3 and a text editor. No model, API key, account or paid tokens are required."
 "setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance."
 "materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ai-application-security.zip" }]
 
@@ -328,6 +358,8 @@
 "verify" = { "type" = "file", "path" = "{lab_dir}/output-assessment.json", "min_bytes" = 300 }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Add strict schemas and safe handling to a toy assistant's output pipeline and test malformed or unauthorized synthetic outputs."
+"requirements" = "Python 3 and a text editor. No model, API key, account or paid tokens are required."
 "setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance."
 "materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ai-application-security.zip" }]
 
@@ -345,6 +377,8 @@
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ai-application-security:output" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -361,6 +395,8 @@
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ai-application-security:tools" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -377,6 +413,8 @@
 "verify" = { "type" = "file", "path" = "{lab_dir}/tools-experiment.json", "min_bytes" = 200 }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Implement or test an allowlisted dispatcher with synthetic files and a mock model; verify that model output cannot expand the allowed resource set."
+"requirements" = "Python 3 and a text editor. No model, API key, account or paid tokens are required."
 "setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance."
 "materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ai-application-security.zip" }]
 
@@ -396,6 +434,8 @@
 "verify" = { "type" = "file", "path" = "{lab_dir}/tools-assessment.json", "min_bytes" = 300 }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Implement or test an allowlisted dispatcher with synthetic files and a mock model; verify that model output cannot expand the allowed resource set."
+"requirements" = "Python 3 and a text editor. No model, API key, account or paid tokens are required."
 "setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance."
 "materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ai-application-security.zip" }]
 
@@ -413,6 +453,8 @@
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ai-application-security:tools" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -429,6 +471,8 @@
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ai-application-security:data" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -445,6 +489,8 @@
 "verify" = { "type" = "file", "path" = "{lab_dir}/data-experiment.json", "min_bytes" = 200 }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Test retrieval filters and result handling in an owned fixture so one user's documents cannot be returned to another user."
+"requirements" = "Python 3 and a text editor. No model, API key, account or paid tokens are required."
 "setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance."
 "materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ai-application-security.zip" }]
 
@@ -464,6 +510,8 @@
 "verify" = { "type" = "file", "path" = "{lab_dir}/data-assessment.json", "min_bytes" = 300 }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Test retrieval filters and result handling in an owned fixture so one user's documents cannot be returned to another user."
+"requirements" = "Python 3 and a text editor. No model, API key, account or paid tokens are required."
 "setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance."
 "materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ai-application-security.zip" }]
 
@@ -481,6 +529,8 @@
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ai-application-security:data" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -497,6 +547,8 @@
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ai-application-security:evaluation" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -513,6 +565,8 @@
 "verify" = { "type" = "file", "path" = "{lab_dir}/evaluation-experiment.json", "min_bytes" = 200 }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Run the cases against the toy system, record failures and repairs, and distinguish deterministic application tests from any real-model observations."
+"requirements" = "Python 3 and a text editor. No model, API key, account or paid tokens are required."
 "setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance."
 "materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ai-application-security.zip" }]
 
@@ -532,6 +586,8 @@
 "verify" = { "type" = "file", "path" = "{lab_dir}/evaluation-assessment.json", "min_bytes" = 300 }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Run the cases against the toy system, record failures and repairs, and distinguish deterministic application tests from any real-model observations."
+"requirements" = "Python 3 and a text editor. No model, API key, account or paid tokens are required."
 "setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance."
 "materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ai-application-security.zip" }]
 
@@ -549,6 +605,8 @@
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ai-application-security:evaluation" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -565,6 +623,8 @@
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ai-application-security:independent-transfer" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -581,6 +641,8 @@
 "verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-experiment.json", "min_bytes" = 200 }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Return to an earlier skill with changed conditions. Test your prediction and explain what still holds."
+"requirements" = "Python 3 and a text editor. No model, API key, account or paid tokens are required."
 "setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance."
 "materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ai-application-security.zip" }]
 
@@ -600,6 +662,8 @@
 "verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-assessment.json", "min_bytes" = 300 }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Return to an earlier skill with changed conditions. Test your prediction and explain what still holds."
+"requirements" = "Python 3 and a text editor. No model, API key, account or paid tokens are required."
 "setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance."
 "materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ai-application-security.zip" }]
 
@@ -617,6 +681,8 @@
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ai-application-security:independent-transfer" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -631,4 +697,6 @@
 "verify" = { "type" = "lab", "exercise" = "access-policy" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."

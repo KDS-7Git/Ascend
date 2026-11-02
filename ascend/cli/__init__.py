@@ -347,7 +347,10 @@ def render(args, result):
             )
         node = result.get("next")
         if node:
-            text = f"{node['id']} — {node['title']}{draft} (~{node['estimate']} min); {node['done_when']}"
+            text = f"{node['id']} — {node['title']}{draft} (~{node['estimate']} min)"
+            summary = node.get("preview") or node.get("done_when")
+            if summary:
+                text += f"; {summary}"
             if result.get("resume"):
                 text += f" | Resume: {result['resume']}"
         else:

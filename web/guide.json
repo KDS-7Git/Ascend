@@ -122,15 +122,15 @@
     {
       "id": "lessons",
       "title": "Working through a lesson",
-      "summary": "Use the finish line, hints, evidence, and notes together.",
+      "summary": "Preview the objective, then start to open the full task.",
       "blocks": [
         {
           "type": "paragraph",
-          "text": "A challenge preview shows its finish line, setup requirements and concrete steps. Named lab files are available as downloads where needed. References explain the topic and are labeled separately from the task; buying a linked course is not required for the bundled specialist exercises. Starting opens a dedicated challenge workspace."
+          "text": "Before Start, a challenge shows only its objective, estimated duration and required tools or access. Choose a session target and start when ready. The dedicated workspace then reveals the full task, downloads, commands, hints and finish line. A direct workspace link follows the same rule."
         },
         {
           "type": "paragraph",
-          "text": "Read Before you start before starting the clock. Copyable terminal blocks are commands for you to inspect and run; Ascend does not execute them. Keep the lab\u2019s actual observations and follow its stated comparison. A model or tabletop does not demonstrate a live system\u2019s behavior."
+          "text": "Required setup lists prerequisites such as a browser, Python or an isolated training environment. The detailed Workspace setup and copyable commands appear after Start. Commands are text for you to inspect and run; copying does not execute them. Buying a linked course is not required for bundled specialist exercises."
         },
         {
           "type": "paragraph",
@@ -139,8 +139,8 @@
         {
           "type": "steps",
           "items": [
-            "Read the finish line and verification label before beginning.",
-            "Choose a session target and start the timed task or verified exercise. The clock keeps running until you complete or end the session.",
+            "Read the short objective and Required setup. Arrange any necessary tools or access before starting.",
+            "Choose a session target and start the task. Read its full instructions and finish line in the workspace. The clock runs continuously until you complete or end the session.",
             "Work through the task. A hint is help with learning, not an automatic completion.",
             "Use Log progress to save what you tried and what to do next. Leave Mark as done unchecked for partial work.",
             "For hands-on exercises, enter your result and press Verify my result. Knowledge checks use Submit answer and allow one submission. External CTF tasks use Verify lab completion after the administrator refreshes the proof."
@@ -148,7 +148,7 @@
         },
         {
           "type": "paragraph",
-          "text": "Reloading the workspace restores the same exercise and its event data. Unfinished answers survive a reload in the same browser tab. From another page, use Resume challenge in the session strip. End session stops timing without completing the challenge or awarding XP."
+          "text": "Reloading the workspace restores the same exercise and its event data. Unfinished answers survive a reload in the same browser tab. From another page, use Resume challenge in the session strip. End session stops timing without completing the challenge or awarding XP. After ending, Review attempt keeps the task instructions and saved result available without restarting the timer."
         },
         {
           "type": "paragraph",

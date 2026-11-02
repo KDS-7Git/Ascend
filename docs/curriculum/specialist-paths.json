@@ -4,7 +4,7 @@
     {
       "id": "ethical-hacking-foundations",
       "title": "Ethical Hacking Foundations",
-      "version": 4,
+      "version": 5,
       "category": "Foundations",
       "aliases": [
         "ethical hacking",
@@ -51,7 +51,7 @@
             "brief": "Build a tiny web server on your own computer and see what an HTTP request returns. Use two Ubuntu/Linux terminal windows, Python 3 and curl. No paid course, account, vulnerable app or cloud lab is needed.",
             "done_when": "You observed the page response and the missing-page response, explained the address and port in your own words, saved your observations in {lab_dir}/foundations-experiment.json, and stopped your practice server.",
             "steps": [
-              "Prepare two terminal windows on the computer where you will run this lab. We will call them Terminal A and Terminal B. Start the timed task when you are ready; the commands below are for you to run, not commands Ascend runs automatically.\n\nIn Terminal A, check that both tools are available:\n```sh\npython3 --version\ncurl --version\n```\nA Python 3 version and a curl version mean you can continue. If a command is missing, use the first hint below before starting the timer.",
+              "Prepare two terminal windows on the computer where you will run this lab. We will call them Terminal A and Terminal B. Your workspace is open. Run the commands below in your terminals; Ascend does not execute them automatically.\n\nIn Terminal A, check that both tools are available:\n```sh\npython3 --version\ncurl --version\n```\nA Python 3 version and a curl version mean you can continue. If a tool is missing, end this session and use the first hint to repair your setup before continuing practice.",
               "In Terminal A, make a new temporary folder containing one page, then serve that folder on your own computer:\n```sh\nlab_site=$(mktemp -d /tmp/ascend-http.XXXXXX)\nprintf '<h1>My first lab</h1>\\n' > \"$lab_site/index.html\"\npython3 -m http.server 8765 --bind 127.0.0.1 --directory \"$lab_site\"\n```\nLeave this terminal running. A message beginning \u201cServing HTTP on 127.0.0.1\u201d means the server started. 127.0.0.1 means this computer; 8765 is the port identifying this server. No public website is involved.",
               "In Terminal B, request your page:\n```sh\ncurl --noproxy \"*\" -i http://127.0.0.1:8765/\n```\nThis sends a GET request for /. The -i option shows response headers as well as the body. Find the first HTTP line: expect status 200. Below the headers, find the page text \u201cMy first lab\u201d. Also look at Terminal A: it should log this request. Record what you actually see.",
               "In Terminal B, ask the same server for a page you did not create:\n```sh\ncurl --noproxy \"*\" -i http://127.0.0.1:8765/missing-page\n```\nExpect status 404. The server is still running and answering; this path simply has no page. Compare the two status codes and response bodies. A 404 here is an expected observation, not a failed setup.",
@@ -59,7 +59,7 @@
               "Stop your practice server: return to Terminal A and press Ctrl+C. Keep your saved report.\n\nBack in Ascend, open Challenge options \u2192 Check evidence to check that the report file is present. Then use Log progress, briefly describe what you learned, and select Mark as done when your report contains the observations and explanations above. This file check does not grade your reasoning and this task does not earn automatic XP."
             ],
             "hints": [
-              "Ubuntu/Linux setup: if Python 3 or curl is missing, install the free packages with sudo apt update followed by sudo apt install python3 curl. Do this before starting the timer. No paid course is required.",
+              "Ubuntu/Linux setup: if Python 3 or curl is missing, install the free packages with sudo apt update followed by sudo apt install python3 curl. If you need to repair setup, end the session before installing packages. No paid course is required.",
               "\u201cAddress already in use\u201d means port 8765 is occupied. Use 8766 in the server command and in BOTH curl URLs; do not stop an unrelated service.",
               "\u201cConnection refused\u201d means curl could not reach a running server at that address/port. Check Terminal A and the URL. This differs from 404, which is a response from a running server.",
               "A 200 response demonstrates that this page was served. It does not demonstrate a vulnerability, an exploit, authentication or authorization. This is the networking setup skill you will use in later security labs."
@@ -339,7 +339,7 @@
           }
         }
       ],
-      "version": 2
+      "version": 3
     },
     {
       "id": "soc-analyst",
@@ -493,7 +493,7 @@
           }
         }
       ],
-      "version": 2
+      "version": 3
     },
     {
       "id": "active-directory-security",
@@ -647,7 +647,7 @@
           }
         }
       ],
-      "version": 2
+      "version": 3
     },
     {
       "id": "cloud-security",
@@ -800,7 +800,7 @@
           }
         }
       ],
-      "version": 2
+      "version": 3
     },
     {
       "id": "container-kubernetes-security",
@@ -955,7 +955,7 @@
           }
         }
       ],
-      "version": 2
+      "version": 3
     },
     {
       "id": "secure-development-devsecops",
@@ -1104,7 +1104,7 @@
           }
         }
       ],
-      "version": 2
+      "version": 3
     },
     {
       "id": "digital-forensics-incident-response",
@@ -1256,7 +1256,7 @@
           }
         }
       ],
-      "version": 2
+      "version": 3
     },
     {
       "id": "threat-hunting-intelligence",
@@ -1408,7 +1408,7 @@
           }
         }
       ],
-      "version": 2
+      "version": 3
     },
     {
       "id": "malware-analysis",
@@ -1560,7 +1560,7 @@
           }
         }
       ],
-      "version": 2
+      "version": 3
     },
     {
       "id": "mobile-application-security",
@@ -1712,7 +1712,7 @@
           }
         }
       ],
-      "version": 2
+      "version": 3
     },
     {
       "id": "api-security",
@@ -1867,7 +1867,7 @@
           }
         }
       ],
-      "version": 2
+      "version": 3
     },
     {
       "id": "cryptography-protocol-security",
@@ -2015,7 +2015,7 @@
           }
         }
       ],
-      "version": 2
+      "version": 3
     },
     {
       "id": "wireless-iot-security",
@@ -2168,7 +2168,7 @@
           }
         }
       ],
-      "version": 2
+      "version": 3
     },
     {
       "id": "ot-ics-security",
@@ -2320,7 +2320,7 @@
           }
         }
       ],
-      "version": 2
+      "version": 3
     },
     {
       "id": "security-architecture-grc",
@@ -2470,7 +2470,7 @@
           }
         }
       ],
-      "version": 2
+      "version": 3
     },
     {
       "id": "vulnerability-management",
@@ -2622,7 +2622,7 @@
           }
         }
       ],
-      "version": 2
+      "version": 3
     },
     {
       "id": "vulnerability-research-bug-bounty",
@@ -2777,7 +2777,7 @@
           }
         }
       ],
-      "version": 2
+      "version": 3
     },
     {
       "id": "ai-application-security",
@@ -2928,7 +2928,7 @@
           }
         }
       ],
-      "version": 2
+      "version": 3
     }
   ]
 }

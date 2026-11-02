@@ -18,6 +18,8 @@ def test_challenge_guidance_is_optional_and_substitutes_variables(pack_data):
         resource_label="Free {lab} reference",
         resource_note="This reference is optional.",
         setup="Use the {lab} before starting the timer.",
+        preview="Explore the {lab}.",
+        requirements="A browser for the {lab}.",
         materials=[{"label": "Inputs for {lab}", "url": "/training/example.zip"}],
     )
     node = parse_pack(dump_toml(pack_data)).nodes[0]
@@ -27,6 +29,8 @@ def test_challenge_guidance_is_optional_and_substitutes_variables(pack_data):
     assert node.resource_label == "Free local lab reference"
     assert node.resource_note == "This reference is optional."
     assert node.setup == "Use the local lab before starting the timer."
+    assert node.preview == "Explore the local lab."
+    assert node.requirements == "A browser for the local lab."
     assert node.materials == (
         {"label": "Inputs for local lab", "url": "/training/example.zip"},
     )
@@ -39,6 +43,8 @@ def test_challenge_guidance_is_optional_and_substitutes_variables(pack_data):
         ("resource_label", 2),
         ("resource_note", ["not text"]),
         ("setup", 5),
+        ("preview", 5),
+        ("requirements", []),
         ("materials", "not a list"),
         ("steps", "not a list"),
         ("steps", [""]),

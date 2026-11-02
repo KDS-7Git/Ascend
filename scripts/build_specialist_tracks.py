@@ -30,6 +30,12 @@ def apply_lab_guide(pack, track, guide):
             resource_note="The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required.",
         )
         if node["verify"]["type"] == "lab":
+            node["preview"] = (
+                "Check the integrity of a small evidence sample by calculating its content hash."
+                if node["verify"].get("exercise") == "integrity"
+                else "Apply your understanding to a short scenario and choose the best response."
+            )
+            node["requirements"] = "A browser. No external tools or account are needed."
             node["setup"] = (
                 "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
             )
@@ -46,6 +52,10 @@ def apply_lab_guide(pack, track, guide):
             continue
         lid = node["level"]
         level = levels[lid]
+        node["preview"] = guide["previews"][lid]
+        node["requirements"] = guide.get("level_requirements", {}).get(
+            lid, guide["requirements"]
+        )
         node["setup"] = guide["setup"]
         node["materials"] = [material]
         path = (
@@ -109,6 +119,8 @@ def apply_guidance(node, guidance):
         "resource_note",
         "setup",
         "materials",
+        "preview",
+        "requirements",
     }
     if set(guidance) - allowed:
         raise ValueError(

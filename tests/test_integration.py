@@ -155,11 +155,13 @@ def test_browser_complete_flow(live_server, width, height, tmp_path):
         expect(page.get_by_text("A smaller step, perhaps.")).to_be_visible()
         page.get_by_role("button", name="Any time", exact=True).click()
         page.locator(".next-card").get_by_role("button", name="Open challenge").click()
+        expect(page.get_by_role("heading", name="Your finish line")).to_have_count(0)
+        page.get_by_role("button", name="Start timed task", exact=True).click()
         expect(page.get_by_role("heading", name="Your finish line")).to_be_visible()
         expect(page.get_by_role("link", name="Learning reference")).to_have_attribute(
             "href", "https://docs.python.org/3/"
         )
-        page.locator("#sheet").get_by_role(
+        page.locator("#challenge-content").get_by_role(
             "button", name="Log progress", exact=True
         ).click()
         page.get_by_label("What I did", exact=True).fill(
@@ -171,6 +173,7 @@ def test_browser_complete_flow(live_server, width, height, tmp_path):
         page.get_by_label("Mark as done", exact=True).check()
         page.get_by_role("button", name="Complete challenge", exact=True).click()
         expect(page.locator("#sheet")).not_to_be_visible()
+        page.get_by_role("button", name="Today", exact=True).click()
         expect(page.locator("#session-result")).to_contain_text("Challenge complete!")
         expect(page.locator("#session-result")).to_contain_text("Unlocked: Second")
         expect(page.locator(".topbar #streak")).to_have_text("1")
@@ -221,6 +224,8 @@ def test_browser_guidance_partial_work_and_failed_evidence(
         )
         page.goto(live_server)
         page.get_by_role("button", name="Open challenge", exact=True).click()
+        expect(page.locator(".challenge-steps li")).to_have_count(0)
+        page.get_by_role("button", name="Start timed task", exact=True).click()
         expect(page.locator(".challenge-steps li")).to_have_count(2)
         expect(
             page.get_by_text("Change one input at a time.", exact=True)
@@ -229,13 +234,14 @@ def test_browser_guidance_partial_work_and_failed_evidence(
         expect(
             page.get_by_text("Change one input at a time.", exact=True)
         ).to_be_visible()
-        page.locator("#sheet").get_by_role(
+        page.locator("#challenge-content").get_by_role(
             "button", name="Log progress", exact=True
         ).click()
         page.get_by_label("What I did", exact=True).fill(
             "I compared a prediction with the first observed result"
         )
         page.get_by_role("button", name="Save progress", exact=True).click()
+        page.get_by_role("button", name="Today", exact=True).click()
         expect(page.locator("#session-result")).to_contain_text("Progress saved")
         expect(page.locator(".next-card h2")).to_have_text("First task")
         page.locator(".next-card").get_by_role(
@@ -439,8 +445,8 @@ def test_dialog_feedback_stays_visible_and_returns_keyboard_focus(
         "type": "file",
         "path": str(tmp_path / "missing-proof.txt"),
     }
-    pack_data["node"][0]["brief"] = (
-        "Inspect an observed result before claiming completion. " * 30
+    pack_data["node"][0]["requirements"] = (
+        "Arrange the required local tools before starting the task. " * 30
     )
     assert (
         httpx.post(
@@ -458,11 +464,20 @@ def test_dialog_feedback_stays_visible_and_returns_keyboard_focus(
         opener = page.locator(".next-card").get_by_role("button", name="Open challenge")
         opener.click()
         page.locator(".manage-challenge > summary").click()
-        page.get_by_role("button", name="Check evidence", exact=True).click()
+        # Exercise a preview action; evidence checks require a started workspace.
+        page.route(
+            "**/api/nodes/*/mark",
+            lambda route: route.fulfill(
+                status=400,
+                content_type="application/json",
+                body='{"detail":"Challenge could not be skipped"}',
+            ),
+        )
+        page.get_by_role("button", name="Skip challenge", exact=True).click()
         feedback = page.locator("#sheet .dialog-feedback #notice")
         expect(feedback).to_be_visible()
         expect(feedback).to_have_attribute("role", "alert")
-        expect(feedback).to_contain_text("Evidence file does not exist")
+        expect(feedback).to_contain_text("Challenge could not be skipped")
         assert feedback.evaluate(
             "e => { const r=e.getBoundingClientRect(); return r.top >= 0 && r.bottom <= innerHeight && e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)); }"
         )
@@ -570,7 +585,7 @@ def test_library_rows_profile_and_guide_navigation(live_server, width, height):
         before = article.bounding_box()
         page.get_by_label("Search documentation").fill("unmatched-example-123")
         expect(page.locator("#docs-topics")).to_contain_text("No guide matches")
-        page.get_by_label("Search documentation").fill("runs continuously")
+        page.get_by_label("Search documentation").fill("reward declines gradually")
         expect(page.locator("#docs-topics a")).to_have_count(1)
         after = article.bounding_box()
         for key in ["x", "y", "width"]:
@@ -1023,6 +1038,8 @@ def test_guided_challenge_has_copyable_commands_and_free_reference(
         "resource_label",
         "resource_note",
         "setup",
+        "preview",
+        "requirements",
         "minutes",
     ]:
         pack_data["node"][0][key] = getattr(guide, key)
@@ -1042,7 +1059,19 @@ def test_guided_challenge_has_copyable_commands_and_free_reference(
         page.goto(live_server)
         page.locator(".next-card").get_by_role("button", name="Open challenge").click()
         expect(page.locator("#sheet-title")).to_have_text(guide.title)
-        expect(page.get_by_role("heading", name="Before you start")).to_be_visible()
+        expect(page.get_by_role("heading", name="Required setup")).to_be_visible()
+        expect(page.get_by_text(guide.preview, exact=True)).to_be_visible()
+        expect(page.locator("#sheet .challenge-steps")).to_have_count(0)
+        expect(page.get_by_role("button", name="Copy terminal block")).to_have_count(0)
+        expect(
+            page.get_by_role("link", name="Download this track’s lab files (ZIP)")
+        ).to_have_count(0)
+        expect(page.get_by_role("heading", name="Your finish line")).to_have_count(0)
+        page.locator("#sheet").get_by_role("button", name="Close dialog").click()
+        page.goto(live_server + "/#challenge/test-pack%3Aone")
+        expect(page.locator("#challenge-content .challenge-steps")).to_have_count(0)
+        page.get_by_role("button", name="Start timed task", exact=True).click()
+        expect(page.get_by_role("heading", name="Workspace setup")).to_be_visible()
         material = page.get_by_role(
             "link", name="Download this track’s lab files (ZIP)"
         )
@@ -1051,7 +1080,9 @@ def test_guided_challenge_has_copyable_commands_and_free_reference(
             material.click()
         assert download.value.suggested_filename == "ethical-hacking-foundations.zip"
         assert download.value.failure() is None
-        expect(page.locator("#sheet .challenge-steps .doc-code")).to_have_count(5)
+        expect(
+            page.locator("#challenge-content .challenge-steps .doc-code")
+        ).to_have_count(5)
         expect(
             page.get_by_role("link", name="Free HTTP server reference (optional)")
         ).to_have_attribute("href", guide.resource)
@@ -1061,7 +1092,6 @@ def test_guided_challenge_has_copyable_commands_and_free_reference(
             == "python3 --version\ncurl --version"
         )
         assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
-        page.get_by_role("button", name="Start timed task", exact=True).click()
         expect(
             page.locator("#challenge-content .challenge-steps .doc-code")
         ).to_have_count(5)

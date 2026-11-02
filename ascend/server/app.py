@@ -20,6 +20,7 @@ from ascend.cli import execute, parser
 from ascend.nudge import NudgeRunner
 from ascend.registry import registry_entries
 from ascend.server.auth import authenticate, login
+from ascend.server import presentation
 from ascend.storage import Database, default_home
 
 
@@ -312,13 +313,13 @@ def create_app(home=None, auth_mode=None, scheduler=True):
     def me(minutes: int | None = None, t=Depends(tracker)):
         if minutes is not None and minutes <= 0:
             raise ValueError("Minutes must be positive")
-        return t.overview(minutes)
+        return presentation.overview(t, t.overview(minutes))
 
     @app.get("/api/levels")
     def levels(pack: str | None = None, t=Depends(tracker)):
         if not pack and not (t.active_mission() or {}).get("pack_id"):
             return []
-        return t.levels(pack)
+        return presentation.levels(t, t.levels(pack))
 
     @app.post("/api/entries")
     def entry(body: Entry, t=Depends(tracker)):
@@ -333,6 +334,11 @@ def create_app(home=None, auth_mode=None, scheduler=True):
         public_node = next(n for n in level["nodes"] if n["id"] == node.id)
         sessions = t.db.rows(
             "task_sessions", "pack_id=? AND node_id=?", (pack.id, node.id)
+        )
+        public_node = (
+            {**public_node, "details_available": True, "has_attempt": True}
+            if sessions or public_node.get("status") == "done"
+            else presentation.preview(public_node)
         )
         exercise, exercise_error = None, None
         if node.verify.get("type") == "lab":
@@ -410,7 +416,13 @@ def create_app(home=None, auth_mode=None, scheduler=True):
     def pack(pack_id: str, t=Depends(tracker)):
         if not t.db.rows("packs", "id=?", (pack_id,)):
             raise HTTPException(404, "Pack not found")
-        return asdict(t.pack(pack_id))
+        result = asdict(t.pack(pack_id))
+        started = presentation.attempts(t)
+        result["nodes"] = [
+            presentation.preview({**node, "pack_id": pack_id}, started)
+            for node in result["nodes"]
+        ]
+        return result
 
     @app.get("/api/stats")
     def stats(t=Depends(tracker)):
@@ -445,7 +457,12 @@ def create_app(home=None, auth_mode=None, scheduler=True):
                         "Upload pack content; server file paths are not accepted"
                     )
                 args.target_text = body.pack_text
-        return execute(t, args)
+        result = execute(t, args)
+        if args.command in {None, "today"}:
+            return presentation.overview(t, result)
+        if args.command == "levels":
+            return presentation.levels(t, result)
+        return result
 
     web = Path(__file__).resolve().parents[2] / "web"
     if not web.is_dir():

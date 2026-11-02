@@ -61,6 +61,55 @@ def test_api_health_pack_mission_log_and_stats(client, pack_data):
     )
 
 
+def test_task_details_only_open_after_start_and_survive_end(client, pack_data):
+    pack_data["node"][0].update(
+        preview="Compare two local observations.",
+        requirements="Python 3 and a browser.",
+        brief="Detailed introduction with a named input.",
+        setup="Detailed workspace setup.",
+        steps=["Inspect the private-to-the-attempt input."],
+        hints=["A detailed hint."],
+        materials=[{"label": "Input", "url": "/training/example.zip"}],
+    )
+    client.post(
+        "/api/packs", files={"file": ("pack.toml", dump_toml(pack_data))}
+    ).raise_for_status()
+    client.post(
+        "/api/command", json={"argv": ["mission", "start", "test-pack"]}
+    ).raise_for_status()
+    nodes = [
+        client.get("/api/me").json()["next"],
+        client.get("/api/me").json()["level"]["nodes"][0],
+        client.get("/api/levels").json()[0]["nodes"][0],
+        client.get("/api/packs/test-pack").json()["nodes"][0],
+        client.get("/api/challenges/test-pack:one").json()["node"],
+        client.post("/api/command", json={"argv": ["today"]}).json()["next"],
+        client.post("/api/command", json={"argv": ["levels"]}).json()[0]["nodes"][0],
+    ]
+    for node in nodes:
+        assert node["preview"] == "Compare two local observations."
+        assert node["requirements"] == "Python 3 and a browser."
+        assert not node["details_available"]
+        assert not (
+            {"steps", "hints", "materials", "done_when", "brief", "setup", "resource"}
+            & node.keys()
+        )
+    client.post(
+        "/api/command", json={"argv": ["session", "start", "test-pack:one"]}
+    ).raise_for_status()
+    started = client.get("/api/challenges/test-pack:one").json()
+    assert started["node"]["details_available"]
+    assert started["node"]["steps"] == pack_data["node"][0]["steps"]
+    assert started["node"]["materials"] == pack_data["node"][0]["materials"]
+    client.post("/api/command", json={"argv": ["session", "end"]}).raise_for_status()
+    ended = client.get("/api/challenges/test-pack:one").json()
+    assert ended["session"]["id"] == started["session"]["id"]
+    assert ended["session"]["status"] == "finished"
+    assert ended["node"]["details_available"]
+    other = client.get("/api/challenges/test-pack:two").json()
+    assert not other["node"]["details_available"]
+
+
 def test_multi_user_isolation_and_tokens(tmp_path, pack_data):
     db = Database(tmp_path)
     create_user(db, "alice", "a strong password for testing", "Asia/Kolkata")
@@ -112,6 +161,22 @@ def test_multi_user_isolation_and_tokens(tmp_path, pack_data):
             ).status_code
             == 400
         )
+        client.post(
+            "/api/packs",
+            headers=bob,
+            files={"file": ("p.toml", dump_toml(pack_data))},
+        ).raise_for_status()
+        client.post(
+            "/api/command",
+            headers=alice,
+            json={"argv": ["session", "start", "test-pack:one"]},
+        ).raise_for_status()
+        assert client.get("/api/challenges/test-pack:one", headers=alice).json()[
+            "node"
+        ]["details_available"]
+        assert not client.get("/api/challenges/test-pack:one", headers=bob).json()[
+            "node"
+        ]["details_available"]
         db = Database(tmp_path)
         stored = [r[0] for r in db.connection.execute("SELECT token FROM api_tokens")]
         assert all(token not in stored for token in tokens)

@@ -3,7 +3,7 @@
 "id" = "ethical-hacking-foundations"
 "title" = "Ethical Hacking Foundations"
 "kind" = "proficiency"
-"version" = 4
+"version" = 5
 "source" = "ai-draft"
 "reviewed" = false
 
@@ -73,6 +73,8 @@
 "verify" = { "type" = "lab", "exercise" = "integrity" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Check the integrity of a small evidence sample by calculating its content hash."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -89,6 +91,8 @@
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:foundations" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -100,13 +104,15 @@
 "needs" = ["foundations-reasoning"]
 "done_when" = "You observed the page response and the missing-page response, explained the address and port in your own words, saved your observations in {lab_dir}/foundations-experiment.json, and stopped your practice server."
 "brief" = "Build a tiny web server on your own computer and see what an HTTP request returns. Use two Ubuntu/Linux terminal windows, Python 3 and curl. No paid course, account, vulnerable app or cloud lab is needed."
-"steps" = ["Prepare two terminal windows on the computer where you will run this lab. We will call them Terminal A and Terminal B. Start the timed task when you are ready; the commands below are for you to run, not commands Ascend runs automatically.\n\nIn Terminal A, check that both tools are available:\n```sh\npython3 --version\ncurl --version\n```\nA Python 3 version and a curl version mean you can continue. If a command is missing, use the first hint below before starting the timer.", "In Terminal A, make a new temporary folder containing one page, then serve that folder on your own computer:\n```sh\nlab_site=$(mktemp -d /tmp/ascend-http.XXXXXX)\nprintf '<h1>My first lab</h1>\\n' > \"$lab_site/index.html\"\npython3 -m http.server 8765 --bind 127.0.0.1 --directory \"$lab_site\"\n```\nLeave this terminal running. A message beginning “Serving HTTP on 127.0.0.1” means the server started. 127.0.0.1 means this computer; 8765 is the port identifying this server. No public website is involved.", "In Terminal B, request your page:\n```sh\ncurl --noproxy \"*\" -i http://127.0.0.1:8765/\n```\nThis sends a GET request for /. The -i option shows response headers as well as the body. Find the first HTTP line: expect status 200. Below the headers, find the page text “My first lab”. Also look at Terminal A: it should log this request. Record what you actually see.", "In Terminal B, ask the same server for a page you did not create:\n```sh\ncurl --noproxy \"*\" -i http://127.0.0.1:8765/missing-page\n```\nExpect status 404. The server is still running and answering; this path simply has no page. Compare the two status codes and response bodies. A 404 here is an expected observation, not a failed setup.", "Save your observations from Terminal B. Copy this whole block. It asks for your actual results and your own short explanations, then creates the JSON report at the finish-line path. It does not supply the answers or overwrite an existing report.\n```sh\npython3 -c '\nimport json\nfrom pathlib import Path\nreport = {\n    \"scope\": \"Only my own local practice server\",\n    \"target\": input(\"URL you requested: \").strip(),\n    \"home_status\": input(\"Status code for /: \").strip(),\n    \"home_body\": input(\"One line from the / response body: \").strip(),\n    \"missing_status\": input(\"Status code for /missing-page: \").strip(),\n    \"loopback_meaning\": input(\"What does 127.0.0.1 mean? \").strip(),\n    \"port_meaning\": input(\"What is the port number for? \").strip(),\n    \"comparison\": input(\"Why did the two requests give different responses? \").strip(),\n    \"limitations\": input(\"What did this lab not test? \").strip()\n}\nif not all(report.values()):\n    raise SystemExit(\"An answer was empty. No report saved; run again when ready.\")\npath = Path(\"{lab_dir}/foundations-experiment.json\").expanduser()\npath.parent.mkdir(parents=True, exist_ok=True)\nif path.exists():\n    raise SystemExit(\"A report already exists. Open it in your text editor to update it.\")\nwith path.open(\"x\") as output:\n    json.dump(report, output, indent=2)\nprint(\"Saved:\", path)\n'\n```\nIf the report already exists, open it in your text editor to review or update your notes instead of replacing it. This exercise checks the file on the computer running Ascend. For a hosted/container server, the report must be placed at that server’s configured lab path; a file saved only on your laptop will not be visible to the checker.", "Stop your practice server: return to Terminal A and press Ctrl+C. Keep your saved report.\n\nBack in Ascend, open Challenge options → Check evidence to check that the report file is present. Then use Log progress, briefly describe what you learned, and select Mark as done when your report contains the observations and explanations above. This file check does not grade your reasoning and this task does not earn automatic XP."]
+"steps" = ["Prepare two terminal windows on the computer where you will run this lab. We will call them Terminal A and Terminal B. Your workspace is open. Run the commands below in your terminals; Ascend does not execute them automatically.\n\nIn Terminal A, check that both tools are available:\n```sh\npython3 --version\ncurl --version\n```\nA Python 3 version and a curl version mean you can continue. If a tool is missing, end this session and use the first hint to repair your setup before continuing practice.", "In Terminal A, make a new temporary folder containing one page, then serve that folder on your own computer:\n```sh\nlab_site=$(mktemp -d /tmp/ascend-http.XXXXXX)\nprintf '<h1>My first lab</h1>\\n' > \"$lab_site/index.html\"\npython3 -m http.server 8765 --bind 127.0.0.1 --directory \"$lab_site\"\n```\nLeave this terminal running. A message beginning “Serving HTTP on 127.0.0.1” means the server started. 127.0.0.1 means this computer; 8765 is the port identifying this server. No public website is involved.", "In Terminal B, request your page:\n```sh\ncurl --noproxy \"*\" -i http://127.0.0.1:8765/\n```\nThis sends a GET request for /. The -i option shows response headers as well as the body. Find the first HTTP line: expect status 200. Below the headers, find the page text “My first lab”. Also look at Terminal A: it should log this request. Record what you actually see.", "In Terminal B, ask the same server for a page you did not create:\n```sh\ncurl --noproxy \"*\" -i http://127.0.0.1:8765/missing-page\n```\nExpect status 404. The server is still running and answering; this path simply has no page. Compare the two status codes and response bodies. A 404 here is an expected observation, not a failed setup.", "Save your observations from Terminal B. Copy this whole block. It asks for your actual results and your own short explanations, then creates the JSON report at the finish-line path. It does not supply the answers or overwrite an existing report.\n```sh\npython3 -c '\nimport json\nfrom pathlib import Path\nreport = {\n    \"scope\": \"Only my own local practice server\",\n    \"target\": input(\"URL you requested: \").strip(),\n    \"home_status\": input(\"Status code for /: \").strip(),\n    \"home_body\": input(\"One line from the / response body: \").strip(),\n    \"missing_status\": input(\"Status code for /missing-page: \").strip(),\n    \"loopback_meaning\": input(\"What does 127.0.0.1 mean? \").strip(),\n    \"port_meaning\": input(\"What is the port number for? \").strip(),\n    \"comparison\": input(\"Why did the two requests give different responses? \").strip(),\n    \"limitations\": input(\"What did this lab not test? \").strip()\n}\nif not all(report.values()):\n    raise SystemExit(\"An answer was empty. No report saved; run again when ready.\")\npath = Path(\"{lab_dir}/foundations-experiment.json\").expanduser()\npath.parent.mkdir(parents=True, exist_ok=True)\nif path.exists():\n    raise SystemExit(\"A report already exists. Open it in your text editor to update it.\")\nwith path.open(\"x\") as output:\n    json.dump(report, output, indent=2)\nprint(\"Saved:\", path)\n'\n```\nIf the report already exists, open it in your text editor to review or update your notes instead of replacing it. This exercise checks the file on the computer running Ascend. For a hosted/container server, the report must be placed at that server’s configured lab path; a file saved only on your laptop will not be visible to the checker.", "Stop your practice server: return to Terminal A and press Ctrl+C. Keep your saved report.\n\nBack in Ascend, open Challenge options → Check evidence to check that the report file is present. Then use Log progress, briefly describe what you learned, and select Mark as done when your report contains the observations and explanations above. This file check does not grade your reasoning and this task does not earn automatic XP."]
 "resource" = "https://docs.python.org/3/library/http.server.html#command-line-interface"
 "verify" = { "type" = "file", "path" = "{lab_dir}/foundations-experiment.json", "min_bytes" = 200 }
 "resource_label" = "Free HTTP server reference (optional)"
 "resource_note" = "The steps here are the lab. This link is optional Python documentation, not a course to buy or enrol in."
-"hints" = ["Ubuntu/Linux setup: if Python 3 or curl is missing, install the free packages with sudo apt update followed by sudo apt install python3 curl. Do this before starting the timer. No paid course is required.", "“Address already in use” means port 8765 is occupied. Use 8766 in the server command and in BOTH curl URLs; do not stop an unrelated service.", "“Connection refused” means curl could not reach a running server at that address/port. Check Terminal A and the URL. This differs from 404, which is a response from a running server.", "A 200 response demonstrates that this page was served. It does not demonstrate a vulnerability, an exploit, authentication or authorization. This is the networking setup skill you will use in later security labs."]
+"hints" = ["Ubuntu/Linux setup: if Python 3 or curl is missing, install the free packages with sudo apt update followed by sudo apt install python3 curl. If you need to repair setup, end the session before installing packages. No paid course is required.", "“Address already in use” means port 8765 is occupied. Use 8766 in the server command and in BOTH curl URLs; do not stop an unrelated service.", "“Connection refused” means curl could not reach a running server at that address/port. Check Terminal A and the URL. This differs from 404, which is a response from a running server.", "A 200 response demonstrates that this page was served. It does not demonstrate a vulnerability, an exploit, authentication or authorization. This is the networking setup skill you will use in later security labs."]
 "setup" = "Use Python 3, curl and two terminal windows on your own Ubuntu/Linux computer. This walkthrough creates its own temporary page; no course, account or downloaded app is needed. Check the tools before timing. The optional ZIP contains inputs for later tasks; do not start its service.py for this walkthrough."
+"preview" = "Observe how a local web server responds to different requests, then explain the results."
+"requirements" = "Python 3, curl and two terminal windows on Linux or WSL. No course or account is required."
 "materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ethical-hacking-foundations.zip" }]
 
 [[node]]
@@ -126,6 +132,8 @@
 "resource_label" = "Free HTTP server reference (optional)"
 "resource_note" = "The steps here are the lab. This link is optional Python documentation, not a course to buy or enrol in."
 "setup" = "Use Python 3, curl and two terminal windows on your own Ubuntu/Linux computer. This walkthrough creates its own temporary page; no course, account or downloaded app is needed. Check the tools before timing. The optional ZIP contains inputs for later tasks; do not start its service.py for this walkthrough."
+"preview" = "Observe how a local web server responds to different requests, then explain the results."
+"requirements" = "Python 3, curl and two terminal windows on Linux or WSL. No course or account is required."
 "materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ethical-hacking-foundations.zip" }]
 
 [[node]]
@@ -142,6 +150,8 @@
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:foundations" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -158,6 +168,8 @@
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:scope" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -174,6 +186,8 @@
 "verify" = { "type" = "file", "path" = "{lab_dir}/scope-experiment.json", "min_bytes" = 200 }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Write rules of engagement for a loopback training app, including allowed actions, rate limits, stop conditions, contacts and evidence handling."
+"requirements" = "Python 3, curl and two terminal windows on Linux or WSL. No course or account is required."
 "setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
 "materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ethical-hacking-foundations.zip" }]
 
@@ -193,6 +207,8 @@
 "verify" = { "type" = "file", "path" = "{lab_dir}/scope-assessment.json", "min_bytes" = 300 }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Write rules of engagement for a loopback training app, including allowed actions, rate limits, stop conditions, contacts and evidence handling."
+"requirements" = "Python 3, curl and two terminal windows on Linux or WSL. No course or account is required."
 "setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
 "materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ethical-hacking-foundations.zip" }]
 
@@ -210,6 +226,8 @@
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:scope" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -226,6 +244,8 @@
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:method" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -242,6 +262,8 @@
 "verify" = { "type" = "file", "path" = "{lab_dir}/method-experiment.json", "min_bytes" = 200 }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Inventory the disposable app, rank two vulnerability hypotheses, and run a small non-destructive check for each with sanitized request/response evidence."
+"requirements" = "Python 3, curl and two terminal windows on Linux or WSL. No course or account is required."
 "setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
 "materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ethical-hacking-foundations.zip" }]
 
@@ -261,6 +283,8 @@
 "verify" = { "type" = "file", "path" = "{lab_dir}/method-assessment.json", "min_bytes" = 300 }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Inventory the disposable app, rank two vulnerability hypotheses, and run a small non-destructive check for each with sanitized request/response evidence."
+"requirements" = "Python 3, curl and two terminal windows on Linux or WSL. No course or account is required."
 "setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
 "materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ethical-hacking-foundations.zip" }]
 
@@ -278,6 +302,8 @@
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:method" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -294,6 +320,8 @@
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:web-boundaries" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -310,6 +338,8 @@
 "verify" = { "type" = "file", "path" = "{lab_dir}/web-boundaries-experiment.json", "min_bytes" = 200 }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "In an explicitly designated authorization lesson, test an owner and a second account against the same synthetic object and explain the server-side boundary."
+"requirements" = "Python 3, curl and two terminal windows on Linux or WSL. No course or account is required."
 "setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
 "materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ethical-hacking-foundations.zip" }]
 
@@ -329,6 +359,8 @@
 "verify" = { "type" = "file", "path" = "{lab_dir}/web-boundaries-assessment.json", "min_bytes" = 300 }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "In an explicitly designated authorization lesson, test an owner and a second account against the same synthetic object and explain the server-side boundary."
+"requirements" = "Python 3, curl and two terminal windows on Linux or WSL. No course or account is required."
 "setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
 "materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ethical-hacking-foundations.zip" }]
 
@@ -346,6 +378,8 @@
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:web-boundaries" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -362,6 +396,8 @@
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:permissions" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -378,6 +414,8 @@
 "verify" = { "type" = "file", "path" = "{lab_dir}/permissions-experiment.json", "min_bytes" = 200 }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Create two local test roles or use a supplied permissions fixture, identify an overbroad grant, and repair it while recording before/after effective access."
+"requirements" = "Python 3, curl and two terminal windows on Linux or WSL. No course or account is required."
 "setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
 "materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ethical-hacking-foundations.zip" }]
 
@@ -397,6 +435,8 @@
 "verify" = { "type" = "file", "path" = "{lab_dir}/permissions-assessment.json", "min_bytes" = 300 }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Create two local test roles or use a supplied permissions fixture, identify an overbroad grant, and repair it while recording before/after effective access."
+"requirements" = "Python 3, curl and two terminal windows on Linux or WSL. No course or account is required."
 "setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
 "materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ethical-hacking-foundations.zip" }]
 
@@ -414,6 +454,8 @@
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:permissions" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -430,6 +472,8 @@
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:evidence" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -446,6 +490,8 @@
 "verify" = { "type" = "file", "path" = "{lab_dir}/evidence-experiment.json", "min_bytes" = 200 }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Write one lab finding with exact target/version, minimal steps, sanitized evidence, severity rationale and a tested local repair."
+"requirements" = "Python 3, curl and two terminal windows on Linux or WSL. No course or account is required."
 "setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
 "materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ethical-hacking-foundations.zip" }]
 
@@ -465,6 +511,8 @@
 "verify" = { "type" = "file", "path" = "{lab_dir}/evidence-assessment.json", "min_bytes" = 300 }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Write one lab finding with exact target/version, minimal steps, sanitized evidence, severity rationale and a tested local repair."
+"requirements" = "Python 3, curl and two terminal windows on Linux or WSL. No course or account is required."
 "setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
 "materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ethical-hacking-foundations.zip" }]
 
@@ -482,6 +530,8 @@
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:evidence" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -498,6 +548,8 @@
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:assessment" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -514,6 +566,8 @@
 "verify" = { "type" = "file", "path" = "{lab_dir}/assessment-experiment.json", "min_bytes" = 200 }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Perform scope confirmation, inventory, two hypothesis tests and one reproducible finding or justified negative result; deliver an executive summary and technical evidence."
+"requirements" = "Python 3, curl and two terminal windows on Linux or WSL. No course or account is required."
 "setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
 "materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ethical-hacking-foundations.zip" }]
 
@@ -533,6 +587,8 @@
 "verify" = { "type" = "file", "path" = "{lab_dir}/assessment-assessment.json", "min_bytes" = 300 }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Perform scope confirmation, inventory, two hypothesis tests and one reproducible finding or justified negative result; deliver an executive summary and technical evidence."
+"requirements" = "Python 3, curl and two terminal windows on Linux or WSL. No course or account is required."
 "setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
 "materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ethical-hacking-foundations.zip" }]
 
@@ -550,6 +606,8 @@
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:assessment" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -566,6 +624,8 @@
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:independent-transfer" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -582,6 +642,8 @@
 "verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-experiment.json", "min_bytes" = 200 }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Return to an earlier skill with changed conditions. Test your prediction and explain what still holds."
+"requirements" = "Python 3, curl and two terminal windows on Linux or WSL. No course or account is required."
 "setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
 "materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ethical-hacking-foundations.zip" }]
 
@@ -601,6 +663,8 @@
 "verify" = { "type" = "file", "path" = "{lab_dir}/independent-transfer-assessment.json", "min_bytes" = 300 }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Return to an earlier skill with changed conditions. Test your prediction and explain what still holds."
+"requirements" = "Python 3, curl and two terminal windows on Linux or WSL. No course or account is required."
 "setup" = "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication."
 "materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ethical-hacking-foundations.zip" }]
 
@@ -618,6 +682,8 @@
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:independent-transfer" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."
 
 [[node]]
@@ -632,4 +698,6 @@
 "verify" = { "type" = "lab", "exercise" = "access-policy" }
 "resource_label" = "Free reference (optional)"
 "resource_note" = "The challenge and its named lab files define the task. This reference explains the topic; buying or completing a course is not required."
+"preview" = "Apply your understanding to a short scenario and choose the best response."
+"requirements" = "A browser. No external tools or account are needed."
 "setup" = "This is an in-browser decision or micro-exercise. Its inputs appear when you start; no course, VM or external lab setup is required for this check."

@@ -8,7 +8,7 @@
         "title": "Your first local HTTP lab",
         "brief": "Serve one page on your own computer, request it with curl, then compare its successful response with a request for a page that does not exist.",
         "steps": [
-          "Prepare two terminal windows on the computer where you will run this lab. We will call them Terminal A and Terminal B. Start the timed task when you are ready; the commands below are for you to run, not commands Ascend runs automatically.\n\nIn Terminal A, check that both tools are available:\n```sh\npython3 --version\ncurl --version\n```\nA Python 3 version and a curl version mean you can continue. If a command is missing, use the first hint below before starting the timer.",
+          "Prepare two terminal windows on the computer where you will run this lab. We will call them Terminal A and Terminal B. Your workspace is open. Run the commands below in your terminals; Ascend does not execute them automatically.\n\nIn Terminal A, check that both tools are available:\n```sh\npython3 --version\ncurl --version\n```\nA Python 3 version and a curl version mean you can continue. If a tool is missing, end this session and use the first hint to repair your setup before continuing practice.",
           "In Terminal A, make a new temporary folder containing one page, then serve that folder on your own computer:\n```sh\nlab_site=$(mktemp -d /tmp/ascend-http.XXXXXX)\nprintf '<h1>My first lab</h1>\\n' > \"$lab_site/index.html\"\npython3 -m http.server 8765 --bind 127.0.0.1 --directory \"$lab_site\"\n```\nLeave this terminal running. A message beginning \u201cServing HTTP on 127.0.0.1\u201d means the server started. 127.0.0.1 means this computer; 8765 is the port identifying this server. No public website is involved.",
           "In Terminal B, request your page:\n```sh\ncurl --noproxy \"*\" -i http://127.0.0.1:8765/\n```\nThis sends a GET request for /. The -i option shows response headers as well as the body. Find the first HTTP line: expect status 200. Below the headers, find the page text \u201cMy first lab\u201d. Also look at Terminal A: it should log this request. Record what you actually see.",
           "In Terminal B, ask the same server for a page you did not create:\n```sh\ncurl --noproxy \"*\" -i http://127.0.0.1:8765/missing-page\n```\nExpect status 404. The server is still running and answering; this path simply has no page. Compare the two status codes and response bodies. A 404 here is an expected observation, not a failed setup.",
@@ -57,7 +57,19 @@
           "Bob must still read his own remaining test note; alice must not gain access to carol\u2019s note.",
           "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
         ]
-      }
+      },
+      "requirements": "Python 3, curl and two terminal windows on Linux or WSL. No course or account is required.",
+      "previews": {
+        "foundations": "Observe how a local web server responds to different requests, then explain the results.",
+        "scope": "Write rules of engagement for a loopback training app, including allowed actions, rate limits, stop conditions, contacts and evidence handling.",
+        "method": "Inventory the disposable app, rank two vulnerability hypotheses, and run a small non-destructive check for each with sanitized request/response evidence.",
+        "web-boundaries": "In an explicitly designated authorization lesson, test an owner and a second account against the same synthetic object and explain the server-side boundary.",
+        "permissions": "Create two local test roles or use a supplied permissions fixture, identify an overbroad grant, and repair it while recording before/after effective access.",
+        "evidence": "Write one lab finding with exact target/version, minimal steps, sanitized evidence, severity rationale and a tested local repair.",
+        "assessment": "Perform scope confirmation, inventory, two hypothesis tests and one reproducible finding or justified negative result; deliver an executive summary and technical evidence.",
+        "independent-transfer": "Return to an earlier skill with changed conditions. Test your prediction and explain what still holds."
+      },
+      "level_requirements": {}
     },
     "red-team-adversary-emulation": {
       "setup": "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs.",
@@ -112,7 +124,19 @@
           "Retain the creation event and confirm that missing telemetry is not evidence that the action never happened.",
           "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
         ]
-      }
+      },
+      "requirements": "Python 3 and a text editor on your own computer. No external account is required.",
+      "previews": {
+        "foundations": "Observe the difference between performing an action and collecting evidence of it.",
+        "objectives": "Author an engagement plan with rules of engagement, white-cell contacts, allowed assets, deconfliction, stop conditions and a defender measurement plan.",
+        "threat-model": "Build a small ATT&CK-aligned hypothesis from a cited threat report, specifying prerequisites, observable effects and a harmless substitute for each risky action.",
+        "telemetry": "Build a timeline joining the marker, account, process and network observations; label each missing source rather than inventing coverage.",
+        "emulation": "In a disposable authorized lab, run a reviewed marker-only micro-emulation, record setup and exact effects, then perform and verify cleanup.",
+        "purple-team": "Have a defender or second review pass classify shuffled benign and emulated events; record misses, false positives and one revised analytic.",
+        "campaign": "Run the scoped sequence in a resettable lab, measure defender visibility and response, and deliver an objective-based report with technical evidence and remediation retests.",
+        "independent-transfer": "Return to an earlier skill with changed conditions. Test your prediction and explain what still holds."
+      },
+      "level_requirements": {}
     },
     "soc-analyst": {
       "setup": "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs.",
@@ -167,7 +191,19 @@
           "Keep alice-test excluded and preserve the denied status of e11.",
           "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
         ]
-      }
+      },
+      "requirements": "Python 3 and a text editor. Synthetic logs will be provided after Start.",
+      "previews": {
+        "foundations": "Find the same user\u2019s events without confusing local time with UTC.",
+        "intake": "Triage a synthetic queue containing a login anomaly, a web alert and a harmless maintenance event; assign urgency using evidence and business context.",
+        "queries": "Build reproducible queries over a supplied dataset to trace an identity, host and source address through a bounded time window, recording missing fields.",
+        "authentication": "Investigate a provided authentication timeline, rank account misuse against benign alternatives, and identify the next discriminating evidence.",
+        "web-and-mail": "Correlate an inert phishing-style message fixture with proxy/DNS and application logs, recording user exposure separately from demonstrated execution.",
+        "response": "Write and rehearse a lab incident runbook that preserves evidence, escalates uncertainty, contains a synthetic account or endpoint, and verifies intended access afterward.",
+        "shift-handoff": "Investigate an unfamiliar small log bundle and deliver a timeline, evidence references, confidence, response decision and shift handoff with unresolved questions.",
+        "independent-transfer": "Return to an earlier skill with changed conditions. Test your prediction and explain what still holds."
+      },
+      "level_requirements": {}
     },
     "active-directory-security": {
       "setup": "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The foundations task is a static directory model. Later operational tasks require isolated Windows Server and Windows client VMs, an administrator account in YOUR training domain, DNS between those VMs and the AD PowerShell module. Windows evaluation images have time-limited licensing and substantial RAM/disk requirements. Use Microsoft Evaluation Center; no paid training course is required. A model-only result cannot complete an operational task.",
@@ -222,6 +258,21 @@
           "Normal LabReader sign-in must still work; leave other OUs untouched.",
           "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
         ]
+      },
+      "requirements": "An isolated Windows Server/client training domain, administrator access to that lab and the AD PowerShell module. Use evaluation or appropriately licensed VMs; no paid course is required.",
+      "previews": {
+        "foundations": "Predict a permission path before inspecting a real directory.",
+        "domain-model": "On a training domain, document DNS discovery, one domain join and a normal domain sign-in; preserve an architecture diagram and baseline event evidence.",
+        "auth-protocols": "Capture permitted authentication telemetry in a training domain and correlate ticket issuance or fallback with a controlled client action, without collecting real credentials.",
+        "permissions": "Trace a least-privilege violation in a supplied or owned directory graph and verify the claimed edge against native permissions before proposing a fix.",
+        "gpo-delegation": "Inspect a training GPO and a documented delegation configuration, explain their intended function and identify an overbroad grant using effective access and normal service behavior.",
+        "certificate-services": "In an isolated AD CS lab or supplied configuration exercise, map template enrollment permissions and identity settings to a concrete authentication risk; test a corrected configuration in a real lab before claiming operational completion.",
+        "assessment": "Audit the training domain's discovery, authentication, permissions and one certificate or policy boundary; deliver native evidence, impact and a verified least-privilege repair.",
+        "independent-transfer": "Return to an earlier skill with changed conditions. Test your prediction and explain what still holds."
+      },
+      "level_requirements": {
+        "foundations": "A browser and text editor for a static model. No VM, emulator or device is needed for this introductory task.",
+        "certificate-services": "An isolated Windows Server/client training domain, administrator access to that lab and the AD PowerShell module. Use evaluation or appropriately licensed VMs; no paid course is required. This task additionally requires AD Certificate Services in that isolated lab."
       }
     },
     "cloud-security": {
@@ -277,7 +328,19 @@
           "Reader read remains allowed and unknown write remains denied. State provider-specific behavior left untested.",
           "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
         ]
-      }
+      },
+      "requirements": "Python 3 and a text editor for the local model. Optional real-provider validation needs your own training account and a spending limit.",
+      "previews": {
+        "foundations": "Read a concrete access matrix without needing a cloud subscription.",
+        "shared-responsibility": "Build an asset and responsibility inventory covering account ownership, regions, exposed endpoints, audit sources and recovery responsibilities.",
+        "iam": "Build an access matrix for two synthetic roles and one resource, test it in a provider policy simulator or scoped training account, and record where the simulator lacks runtime context.",
+        "exposure": "Trace a fictional application's exposure through load balancer, workload and data storage; validate selected rules using a local model or training account and propose a minimal repair.",
+        "secrets": "Replace a toy long-lived credential with a bounded local token or a training-provider workload identity, test expiration/revocation and document remaining trust assumptions.",
+        "logging": "Investigate supplied cloud audit events around a permission change and later resource access; construct a timeline and a detection query with explicit missing sources.",
+        "assessment": "Review a fresh configuration and audit bundle, verify one identity or exposure defect in a scoped lab, apply a repair and record cleanup; use only owned training resources.",
+        "independent-transfer": "Return to an earlier skill with changed conditions. Test your prediction and explain what still holds."
+      },
+      "level_requirements": {}
     },
     "container-kubernetes-security": {
       "setup": "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Container tasks additionally need Docker Engine or Podman with a working local daemon and network access to pull public images. Kubernetes tasks require a disposable kind/minikube cluster and kubectl; check RAM/disk requirements before timing. Do not use a work cluster. No paid course or cloud cluster is required.",
@@ -332,6 +395,23 @@
           "The training service account must not gain privileges in default; delete only the new training namespace afterward.",
           "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
         ]
+      },
+      "requirements": "Docker or Podman, kubectl and a disposable Kubernetes cluster where required. Allow RAM/disk space and internet for initial image downloads; never use a work cluster.",
+      "previews": {
+        "foundations": "Build a minimal local image and verify its runtime user.",
+        "container-boundary": "Run a toy service with a non-root user, dropped capabilities, no-new-privileges and a read-only root plus a bounded writable directory; explain observed failures.",
+        "image-supply-chain": "Generate an image inventory/SBOM for a toy service, pin the source image digest and record provenance, vulnerability findings and applicability limits.",
+        "network-separation": "In a disposable project, verify loopback-only access, separate lab networks, resource bounds and the absence of tracker-volume or Docker-socket mounts.",
+        "cluster-identity": "In a disposable Kubernetes cluster, bind a limited service account to one namespace and verify allowed and denied operations with the API authorization checks.",
+        "cluster-network": "Deploy a tiny client/server pair on an isolated test cluster, apply default-deny plus a specific allow rule, and test actual connectivity.",
+        "review": "Review a fresh toy deployment, demonstrate one excessive permission or exposure, apply a minimal fix and retest the intended workload plus resource limits.",
+        "independent-transfer": "Return to an earlier skill with changed conditions. Test your prediction and explain what still holds."
+      },
+      "level_requirements": {
+        "foundations": "A working local Docker or Podman engine, terminal and space to download a public base image. No Kubernetes cluster is required for this task.",
+        "container-boundary": "A working local Docker or Podman engine, terminal and space to download a public base image. No Kubernetes cluster is required for this task.",
+        "image-supply-chain": "A working local Docker or Podman engine, terminal and space to download a public base image. No Kubernetes cluster is required for this task.",
+        "network-separation": "A working local Docker or Podman engine, terminal and space to download a public base image. No Kubernetes cluster is required for this task."
       }
     },
     "secure-development-devsecops": {
@@ -387,7 +467,19 @@
           "A valid owner update remains usable; length validation must not replace ownership checks.",
           "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
         ]
-      }
+      },
+      "requirements": "Python 3, curl, Git and a text editor. Use a new local project; no paid course is required.",
+      "previews": {
+        "foundations": "Make one real HTTP request and find its handler in source.",
+        "threat-model": "Build a threat model with three concrete abuse cases and map each to an ASVS-style testable requirement.",
+        "input-and-output": "Repair one input or output handling defect in your own code and write tests that reproduce the defect and preserve intended behavior.",
+        "authz": "Implement server-side authorization tests for owner access, cross-user access and the privileged operation; demonstrate the bug before the repair.",
+        "supply-chain": "Produce an SBOM and pinned dependency manifest, investigate one advisory's applicability, and test an update or documented mitigation.",
+        "pipeline": "Add security regression tests, a synthetic-secret check and artifact identity recording; demonstrate that each relevant bad fixture fails the gate.",
+        "release": "Deliver the toy service with passing regression tests, reproducible build inputs, deployment permissions, rollback instructions and a documented residual risk.",
+        "independent-transfer": "Return to an earlier skill with changed conditions. Test your prediction and explain what still holds."
+      },
+      "level_requirements": {}
     },
     "digital-forensics-incident-response": {
       "setup": "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The memory task additionally requires a compatible public memory image and analysis tool; its specific external download and host requirements are listed in that task. No paid course is required.",
@@ -442,6 +534,20 @@
           "Keep original evidence unchanged and retain its hashes; a conflicting record does not license deleting the earlier evidence.",
           "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
         ]
+      },
+      "requirements": "Python 3 and a text editor. Any larger external analysis environment is identified separately below.",
+      "previews": {
+        "foundations": "Preserve an authored file and distinguish content integrity from provenance.",
+        "preservation": "Create an evidence manifest with acquisition time, source, hashes, handling history and analysis-copy paths; verify the original remains unchanged after analysis.",
+        "filesystem": "Build a bounded account of file creation/modification using an analysis copy, recording filesystem semantics and tool/version assumptions.",
+        "timeline": "Correlate a small authentication, process and network evidence bundle into a timeline with confidence and source references.",
+        "memory": "On a suitable analysis host, inspect process and connection artifacts from a public training image, compare them with the provided ground truth where available, and record unsupported interpretations.",
+        "containment": "Rehearse a synthetic incident using a disposable service: preserve relevant logs, disable only the affected test identity and verify intended service behavior.",
+        "case": "Produce an evidence-indexed timeline, affected scope, alternative hypotheses, response decision and remaining uncertainty from an unfamiliar dataset.",
+        "independent-transfer": "Return to an earlier skill with changed conditions. Test your prediction and explain what still holds."
+      },
+      "level_requirements": {
+        "memory": "A compatible Volatility analysis environment and disk/RAM capacity for a public training memory image. The task provides its exact source after Start; no paid course is required."
       }
     },
     "threat-hunting-intelligence": {
@@ -497,7 +603,19 @@
           "Do not report no matches as proof that no role change occurred; preserve the known benign maintenance context.",
           "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
         ]
-      }
+      },
+      "requirements": "Python 3 and a text editor. No SIEM subscription or real incident data is needed.",
+      "previews": {
+        "foundations": "Use a small log bundle to write a testable question.",
+        "source-quality": "Produce a short intelligence note with source dates, collection limits, confidence and the concrete defender decision it informs.",
+        "behavior": "Write an ATT&CK-aligned hunt hypothesis, list needed fields and expected benign lookalikes, and define evidence that would falsify it.",
+        "queries": "Implement a reproducible hunt over synthetic telemetry and measure matches against labeled positive and benign events.",
+        "context": "Build a small evidence graph from supplied indicators and public context, assigning dates, confidence and alternative explanations to each edge.",
+        "intelligence-format": "Create and validate a minimal STIX bundle for a fictional incident using synthetic indicators, confidence and source references.",
+        "hunt-report": "Conduct the hunt, document query versions, investigated matches, negative results and coverage limits, then propose a detection or data-collection improvement.",
+        "independent-transfer": "Return to an earlier skill with changed conditions. Test your prediction and explain what still holds."
+      },
+      "level_requirements": {}
     },
     "malware-analysis": {
       "setup": "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. sample.py is readable benign Python source; no unknown malware is executed in these exercises. Python disassembly here is not native executable analysis.",
@@ -552,7 +670,19 @@
           "A hello-world file must remain a non-match. State that native binaries and unknown malware were not analyzed.",
           "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
         ]
-      }
+      },
+      "requirements": "Python 3 and a text editor. The supplied source is benign; no unknown malware will need to be executed.",
+      "previews": {
+        "foundations": "Separate source capability, file identity and actual output.",
+        "triage": "Produce a static triage sheet separating measured properties from inferred behavior and identify one next question for deeper analysis.",
+        "static-flow": "Trace the condition, data flow and effect in source and disassembly; predict two inputs before running the benign program.",
+        "behavior": "Build a behavior timeline from published or synthetic telemetry and distinguish observed effects from capabilities only suggested by static analysis.",
+        "configuration": "Write a bounded parser for a self-authored encoded configuration, validate recovered fields and preserve the original byte offsets and assumptions.",
+        "signatures": "Write a YARA or equivalent declarative rule for the training family and measure true/false matches on a documented sample set.",
+        "report": "Produce a report with static evidence, trace evidence, configuration interpretation, a bounded detection rule and explicit uncertainty; do not execute unknown malware.",
+        "independent-transfer": "Return to an earlier skill with changed conditions. Test your prediction and explain what still holds."
+      },
+      "level_requirements": {}
     },
     "mobile-application-security": {
       "setup": "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication. The foundation is static manifest reading only. Device tasks require Android Studio\u2019s free emulator (hardware virtualization and disk space) or your own Android test device, adb and a sanctioned practice APK. Use the named OWASP MASTG Hacking Playground, never a personal/banking app. A manifest file is not an installed app.",
@@ -607,6 +737,21 @@
           "The intended app workflow must still work. Without an owned build/emulator, leave the runtime task incomplete.",
           "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
         ]
+      },
+      "requirements": "Your own Android test device or Android Studio emulator, adb and a sanctioned practice app. Runtime tasks need sufficient disk space and hardware virtualization.",
+      "previews": {
+        "foundations": "Identify exposed components in a synthetic app declaration.",
+        "platform-model": "Inventory an owned practice app's manifest/entitlements, components and data flows and map two questions to MASTG tests.",
+        "local-storage": "Using an owned device/emulator and a sanctioned practice app, locate a synthetic sensitive value, document its storage/access assumptions and test a safer toy implementation.",
+        "transport": "Capture permitted training-app traffic on your own device/emulator, identify transmitted synthetic data and evaluate server identity validation under documented test settings.",
+        "components": "Test a documented component boundary with benign input and record the caller identity, required permissions and resulting app behavior.",
+        "backend": "Exercise a training app's API with two roles and verify server-side ownership checks independently of the mobile interface.",
+        "assessment": "Review a fresh practice app against selected MASTG objectives, produce reproducible findings and retest one correction in an owned build.",
+        "independent-transfer": "Return to an earlier skill with changed conditions. Test your prediction and explain what still holds."
+      },
+      "level_requirements": {
+        "foundations": "A browser and text editor for a static model. No VM, emulator or device is needed for this introductory task.",
+        "backend": "Python 3, curl and two terminal windows on your computer. No paid service or account is needed."
       }
     },
     "api-security": {
@@ -662,7 +807,19 @@
           "Bob must retain access to note 2, and changing operation order must not expose note 3.",
           "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
         ]
-      }
+      },
+      "requirements": "Python 3, curl and two terminal windows on your computer. No paid service or account is needed.",
+      "previews": {
+        "foundations": "Use two synthetic identities against one concrete note.",
+        "inventory": "Inventory an owned training API, compare its documented and observed behavior, and identify two testable boundary hypotheses.",
+        "object-authorization": "In a designated API lesson, test owner and cross-user access using recorded requests, explain the missing check and demonstrate a corrected local equivalent.",
+        "property-authorization": "Test a local API's property allowlist with a harmless administrative-flag fixture and patch overbroad binding or response exposure.",
+        "tokens": "Write or execute tests against an owned API for valid and invalid token contexts, separating signature validity from authorization.",
+        "resource-limits": "Apply explicit request-size and work limits to an owned small service, then test bounded valid and over-limit inputs without load-testing third parties.",
+        "review": "Assess an unfamiliar owned API fixture for object, property, token and workflow boundaries; deliver evidence and a tested minimal repair.",
+        "independent-transfer": "Return to an earlier skill with changed conditions. Test your prediction and explain what still holds."
+      },
+      "level_requirements": {}
     },
     "cryptography-protocol-security": {
       "setup": "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. Authenticated encryption/signature tasks use the free cryptography package in a separate virtual environment. TLS needs openssl and curl. Keep all keys and data synthetic.",
@@ -717,7 +874,19 @@
           "A fresh permitted sequence must still be accepted; reject a stale authenticated replay for the stated reason.",
           "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
         ]
-      }
+      },
+      "requirements": "Python 3 and a text editor. Later encryption/signature tasks also need a separate environment with the free cryptography package; TLS needs openssl and curl.",
+      "previews": {
+        "foundations": "See which transformations are reversible without a secret.",
+        "representations": "Implement round-trip tests for a bounded binary message and diagnose one encoding mismatch without losing bytes.",
+        "integrity": "Use a standard library to authenticate a message, test verification and record what the key ownership assumption means.",
+        "symmetric": "Encrypt and decrypt synthetic data with an established authenticated-encryption library and test tamper rejection.",
+        "public-key": "Sign and verify a synthetic document with an established library and connect the verified key to an explicit identity assumption.",
+        "tls": "Run a local TLS test service with training certificates and verify hostname, trust-chain and expiry failures without disabling validation.",
+        "review": "Review a toy protocol for replay, identity and integrity mistakes, repair one defect and provide executable regression tests.",
+        "independent-transfer": "Return to an earlier skill with changed conditions. Test your prediction and explain what still holds."
+      },
+      "level_requirements": {}
     },
     "wireless-iot-security": {
       "setup": "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. MQTT needs the free Mosquitto broker and clients installed locally. The wireless task uses the bundled synthetic capture in Wireshark; no radio adapter is required for that analysis. Actual device/firmware operations need separately owned hardware.",
@@ -772,6 +941,20 @@
           "The original temperature subscriber must retain its read and must not publish or access the humidity topic without a grant.",
           "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
         ]
+      },
+      "requirements": "Python 3 and a text editor. MQTT tasks also require the free Mosquitto broker and clients. No physical sensor is required for the local models.",
+      "previews": {
+        "foundations": "Read one concrete IoT scenario before starting a broker.",
+        "inventory": "Build a device threat model and an isolated test plan using an owned device or documented simulation.",
+        "mqtt": "Publish and receive a unique harmless marker in the isolated MQTT profile and record exact topic/payload evidence.",
+        "access": "Configure a separate owned broker with authentication and topic ACLs; verify each identity's allowed and denied operations.",
+        "wireless": "Analyze an owned or licensed training capture and explain association/security properties supported by visible frames.",
+        "firmware": "Inspect static configuration and update metadata from a supplied image, identify one concrete trust assumption and propose a testable improvement.",
+        "assessment": "Assess a small owned MQTT workflow, repair one access defect and report remaining hardware/firmware assumptions.",
+        "independent-transfer": "Return to an earlier skill with changed conditions. Test your prediction and explain what still holds."
+      },
+      "level_requirements": {
+        "wireless": "The free Wireshark application. The task supplies synthetic captures; no wireless adapter is required."
       }
     },
     "ot-ics-security": {
@@ -827,7 +1010,19 @@
           "Do not disconnect the fictional operator network merely to make an IT containment checklist pass.",
           "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
         ]
-      }
+      },
+      "requirements": "Python 3 and a text editor. These are offline simulations and tabletops; no industrial device is required.",
+      "previews": {
+        "foundations": "Separate a numeric observation from an operational conclusion.",
+        "process": "Build an asset/zone diagram and identify how loss of view, control or availability affects the simulated process.",
+        "protocol": "Use an isolated software simulator or capture to trace a benign register read and document address and data-type assumptions.",
+        "segmentation": "Model and test a small allowlist of communication paths using local fixtures or a disposable network.",
+        "monitoring": "Create a detection hypothesis for an unexpected write or new peer and evaluate it against labeled simulator traffic.",
+        "change-control": "Apply one non-disruptive simulator hardening change, preserve the baseline and verify expected readings afterward.",
+        "exercise": "Investigate a supplied OT trace and conduct a tabletop containment decision with a technical timeline and explicit safety uncertainty.",
+        "independent-transfer": "Return to an earlier skill with changed conditions. Test your prediction and explain what still holds."
+      },
+      "level_requirements": {}
     },
     "security-architecture-grc": {
       "setup": "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs.",
@@ -882,7 +1077,19 @@
           "Do not let a low-impact documentation improvement hide the unresolved recovery requirement.",
           "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
         ]
-      }
+      },
+      "requirements": "A text editor or note-taking tool. The fictional scenario will be supplied after Start.",
+      "previews": {
+        "foundations": "Identify what the service must protect and who makes its decisions.",
+        "assets": "Write a system boundary and data-flow diagram that includes outsourced services and critical business assumptions.",
+        "threats": "Create a small risk register with evidence, uncertainty, existing controls and a named decision owner.",
+        "controls": "Map selected NIST CSF outcomes to concrete controls and evidence collection for a fictional service.",
+        "architecture": "Evaluate the designs against the same threat model, operational needs and recovery requirements, then justify a bounded choice.",
+        "assurance": "Review a small evidence pack, identify stale or missing evidence and produce a remediation plan with owners and retest criteria.",
+        "review": "Deliver a concise architecture/risk review with prioritized actions, residual risks, evidence references and an accountable acceptance decision.",
+        "independent-transfer": "Return to an earlier skill with changed conditions. Test your prediction and explain what still holds."
+      },
+      "level_requirements": {}
     },
     "vulnerability-management": {
       "setup": "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs.",
@@ -937,7 +1144,19 @@
           "A smaller number of scan findings must not be reported as reduced exposure when coverage fell.",
           "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
         ]
-      }
+      },
+      "requirements": "Python 3 and a text editor. No scanning service or real vulnerability data is required.",
+      "previews": {
+        "foundations": "Separate a scan claim from evidence that the condition applies.",
+        "inventory": "Reconcile a synthetic scan inventory with deployed components and identify unknown ownership or stale records.",
+        "validation": "Validate a supplied finding against exact component/configuration evidence and classify confirmed, not applicable or insufficient evidence.",
+        "prioritization": "Prioritize a synthetic queue using exposure, business impact, exploitation evidence and an explicit SSVC-style decision path.",
+        "remediation": "Apply a patch or configuration mitigation in an owned test service and verify both the vulnerable condition and normal functionality.",
+        "exceptions": "Write a bounded exception for a fictional unpatchable service, with measurable compensating controls and a retest trigger.",
+        "program": "Produce a vulnerability-management report from a synthetic inventory, separating verified fixes, accepted risk, missing data and recurring causes.",
+        "independent-transfer": "Return to an earlier skill with changed conditions. Test your prediction and explain what still holds."
+      },
+      "level_requirements": {}
     },
     "vulnerability-research-bug-bounty": {
       "setup": "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. The service.py fixture uses curl and a second terminal. Start it with python3 service.py; it listens only on 127.0.0.1:8765. Stop it with Ctrl+C. Restart to reset its in-memory notes. X-Lab-User is a simulated identity, not real authentication.",
@@ -992,7 +1211,19 @@
           "A text-only owner update should remain valid, and a cross-user GET should now be denied.",
           "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
         ]
-      }
+      },
+      "requirements": "Python 3, curl and a text editor, with two terminal windows. All tests use your own local fixture.",
+      "previews": {
+        "foundations": "Find the smallest request pair that distinguishes intended from unintended access.",
+        "scope": "Build a research plan using only an owned training target and a clearly testable vulnerability hypothesis.",
+        "model": "Form a root-cause hypothesis from the code and design a minimal experiment that could disprove it.",
+        "fuzzing": "Write a bounded local input generator or property-based test, reproduce one failure and minimize the triggering fixture.",
+        "impact": "Demonstrate a harmless synthetic impact in an owned reproduction and document exactly which privileges and data were involved.",
+        "disclosure": "Produce a private training report with minimal reproducer, sanitized evidence and a proposed tested fix; do not submit to third parties as part of this exercise.",
+        "research": "Test the hypothesis on the new component, report positive or negative evidence, and produce a regression test and bounded generalization.",
+        "independent-transfer": "Return to an earlier skill with changed conditions. Test your prediction and explain what still holds."
+      },
+      "level_requirements": {}
     },
     "ai-application-security": {
       "setup": "Use Python 3 and a text editor on your own computer. Download the lab files below, extract into a NEW folder, and open a terminal in the folder containing report.py. No course, account or cloud spend is required. These are synthetic training inputs. assistant.py is a deterministic mock; no model, API key or paid tokens are needed. Passing these tests says nothing about universal prompt-injection resistance.",
@@ -1047,7 +1278,19 @@
           "Keep the valid public answer and same-user retrieval working; refusing every generated output cannot pass.",
           "Perform the changed case, save exact inputs and actual results, then compare with your earlier reasoning. If a peer selected the variation, record that; otherwise state that you selected it."
         ]
-      }
+      },
+      "requirements": "Python 3 and a text editor. No model, API key, account or paid tokens are required.",
+      "previews": {
+        "foundations": "See where a toy assistant must enforce authorization.",
+        "boundaries": "Build a threat model that identifies which component may authorize each action and where untrusted text enters.",
+        "retrieval": "In a deterministic toy pipeline, test adversarial documents and enforce authorization outside the mock model before any data access or action.",
+        "output": "Add strict schemas and safe handling to a toy assistant's output pipeline and test malformed or unauthorized synthetic outputs.",
+        "tools": "Implement or test an allowlisted dispatcher with synthetic files and a mock model; verify that model output cannot expand the allowed resource set.",
+        "data": "Test retrieval filters and result handling in an owned fixture so one user's documents cannot be returned to another user.",
+        "evaluation": "Run the cases against the toy system, record failures and repairs, and distinguish deterministic application tests from any real-model observations.",
+        "independent-transfer": "Return to an earlier skill with changed conditions. Test your prediction and explain what still holds."
+      },
+      "level_requirements": {}
     }
   }
 }

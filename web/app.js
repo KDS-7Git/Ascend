@@ -366,28 +366,38 @@ function showNode(node, level = levelFor(node), workspace = false, session = nul
   if (workspace) content.replaceChildren();
   content.append(el('p', `${node.milestone ? 'MILESTONE' : 'CHALLENGE'} · ~${node.estimate} MIN`, 'eyebrow'));
   const title = el(workspace ? 'h1' : 'h2', node.title); title.id = workspace ? 'challenge-title' : 'sheet-title'; content.append(title);
-  if (node.brief && !node.done_when.startsWith(node.brief)) content.append(el('p', node.brief, 'challenge-brief'));
-  const outcome = el('section', undefined, 'outcome'); outcome.append(el('h3', 'Your finish line'), el('p', node.done_when)); content.append(outcome); content.append(el('p', verificationLabel(node), 'verification-label'));
-  if (node.setup) { const setup = el('section', undefined, 'challenge-setup'); setup.append(el('h3', 'Before you start'), instructionBlocks(node.setup)); content.append(setup); }
-  if (node.materials?.length) {
-    const materials = el('ul', undefined, 'challenge-materials');
-    for (const material of node.materials) {
-      const item = el('li'), link = el('a', material.label, 'resource-link'); link.href = material.url;
-      if (material.url.startsWith('/training/')) link.download = ''; else { link.target = '_blank'; link.rel = 'noopener noreferrer'; }
-      item.append(link); materials.append(item);
+  const revealed = workspace && node.details_available;
+  if (!revealed) {
+    if (node.preview) content.append(el('p', node.preview, 'challenge-brief'));
+    if (node.requirements) {
+      const setup = el('section', undefined, 'challenge-setup');
+      setup.append(el('h3', 'Required setup'), el('p', node.requirements)); content.append(setup);
     }
-    content.append(materials);
-  }
-  if (node.steps?.length) {
-    const list = el('ol', undefined, 'challenge-steps');
-    for (const step of node.steps) { const item = el('li'); item.append(instructionBlocks(step)); list.append(item); }
-    content.append(el('h3', 'What to do'), list);
-  }
-  const link = el('a', `${node.resource_label || 'Learning reference'} ↗`, 'resource-link'); link.href = node.resource; link.target = '_blank'; link.rel = 'noopener noreferrer'; content.append(link);
-  if (node.resource_note) content.append(el('p', node.resource_note, 'field-help'));
-  if (node.hints?.length) {
-    const hints = el('section', undefined, 'challenge-hints'); hints.append(el('h3', 'A nudge if you need one'));
-    node.hints.forEach((hint, i) => { const details = el('details'); details.append(el('summary', `Hint ${i + 1}`), el('p', hint)); hints.append(details); }); content.append(hints);
+    content.append(el('p', node.has_attempt ? 'Open your attempt to review its instructions and saved progress.' : 'Start to open the task, files and instructions.', 'field-help'));
+  } else {
+    if (node.brief && !node.done_when.startsWith(node.brief)) content.append(el('p', node.brief, 'challenge-brief'));
+    const outcome = el('section', undefined, 'outcome'); outcome.append(el('h3', 'Your finish line'), el('p', node.done_when)); content.append(outcome); content.append(el('p', verificationLabel(node), 'verification-label'));
+    if (node.setup) { const setup = el('section', undefined, 'challenge-setup'); setup.append(el('h3', 'Workspace setup'), instructionBlocks(node.setup)); content.append(setup); }
+    if (node.materials?.length) {
+      const materials = el('ul', undefined, 'challenge-materials');
+      for (const material of node.materials) {
+        const item = el('li'), link = el('a', material.label, 'resource-link'); link.href = material.url;
+        if (material.url.startsWith('/training/')) link.download = ''; else { link.target = '_blank'; link.rel = 'noopener noreferrer'; }
+        item.append(link); materials.append(item);
+      }
+      content.append(materials);
+    }
+    if (node.steps?.length) {
+      const list = el('ol', undefined, 'challenge-steps');
+      for (const step of node.steps) { const item = el('li'); item.append(instructionBlocks(step)); list.append(item); }
+      content.append(el('h3', 'What to do'), list);
+    }
+    const link = el('a', `${node.resource_label || 'Learning reference'} ↗`, 'resource-link'); link.href = node.resource; link.target = '_blank'; link.rel = 'noopener noreferrer'; content.append(link);
+    if (node.resource_note) content.append(el('p', node.resource_note, 'field-help'));
+    if (node.hints?.length) {
+      const hints = el('section', undefined, 'challenge-hints'); hints.append(el('h3', 'A nudge if you need one'));
+      node.hints.forEach((hint, i) => { const details = el('details'); details.append(el('summary', `Hint ${i + 1}`), el('p', hint)); hints.append(details); }); content.append(hints);
+    }
   }
   const locked = !node.open && status === 'todo';
   if (locked) {
@@ -396,27 +406,30 @@ function showNode(node, level = levelFor(node), workspace = false, session = nul
   }
   const actions = el('div', undefined, 'dialog-actions');
   if (!locked) {
-    const target = !session ? field(content, 'task-target-minutes', 'Session target (minutes)', 'number', node.estimate) : null;
+    const target = !revealed && !node.has_attempt ? field(content, 'task-target-minutes', 'Session target (minutes)', 'number', node.estimate) : null;
     if (target) { target.min = 1; target.max = 1440; }
-    content.append(el('p', node.verify?.type === 'lab' || node.verify?.type === 'ctf' ? 'Verified completion earns up to 100 XP within the target; late rewards taper to 25 XP. Once started, the clock runs continuously. Ending a session stops timing without completion or XP.' : 'Once started, the clock runs continuously until you complete or end the session. Artifact and self-reviewed tasks do not earn automatic skill XP.', 'muted'));
-    if (!workspace || !session) actions.append(button(node.verify?.type === 'lab' ? 'Start verified exercise' : 'Start timed task', async () => {
+    if (target) content.append(el('p', 'The clock runs continuously after Start. Complete the task or end the session when you finish.', 'field-help'));
+    if (!revealed && node.has_attempt) actions.append(button('Review attempt', () => switchTab('challenge', {topic: ref}), ''));
+    else if (target) actions.append(button(node.verify?.type === 'lab' ? 'Start verified exercise' : 'Start timed task', async () => {
       if (!target.reportValidity()) return;
-      const ref = `${node.pack_id}:${node.id}`;
       await command([node.verify?.type === 'lab' ? 'lab' : 'session', 'start', ref, '--minutes', String(Number(target.value))]);
       await refreshSessions(); await switchTab('challenge', {topic: ref});
       $('#challenge-title')?.focus({preventScroll: true});
     }, ''));
-    if (node.verify?.type === 'ctf') actions.append(button('Verify lab completion', async () => { const result = await command(['check', `${node.pack_id}:${node.id}`, '--complete']); notify(result.summary, result.ok ? 'success' : 'error'); await refresh(); await refreshSessions(); if (state.tab === 'path') await renderPath(); }));
-    actions.append(button(status === 'todo' ? 'Log progress' : 'Log another practice', () => openLog(node)));
+    if (revealed) {
+      content.append(el('p', node.verify?.type === 'lab' || node.verify?.type === 'ctf' ? 'Verified completion earns up to 100 XP within the target; late rewards taper to 25 XP. Ending stops timing without completion or XP.' : 'Artifact and self-reviewed tasks do not earn automatic skill XP.', 'muted'));
+      if (node.verify?.type === 'ctf') actions.append(button('Verify lab completion', async () => { const result = await command(['check', ref, '--complete']); notify(result.summary, result.ok ? 'success' : 'error'); await refresh(); await refreshSessions(); if (state.tab === 'path') await renderPath(); }));
+      actions.append(button(status === 'todo' ? 'Log progress' : 'Log another practice', () => openLog(node)));
+    }
   }
   if (status !== 'todo') content.append(el('p', status === 'done' ? '✓ Completed. Revisit this whenever you want to practice.' : 'Skipped. You can return to this challenge at any time.', 'muted'));
   content.append(actions);
   const manage = el('details', undefined, 'manage-challenge'); manage.append(el('summary', 'Challenge options'));
-  if (node.verify?.type && node.verify.type !== 'manual') manage.append(button('Check evidence', async () => { const result = await command(['check', `${node.pack_id}:${node.id}`]); notify(result.summary, result.ok ? 'success' : 'error'); }));
+  if (revealed && node.verify?.type && node.verify.type !== 'manual') manage.append(button('Check evidence', async () => { const result = await command(['check', `${node.pack_id}:${node.id}`]); notify(result.summary, result.ok ? 'success' : 'error'); }));
   if (status === 'todo') {
     manage.append(button('Skip challenge', async () => { await api(`nodes/${node.pack_id}:${node.id}/mark`, {status: 'skipped'}); $('#sheet').close(); await refresh(); if (state.tab === 'path') await renderPath(); notify('Challenge skipped. You can return to it from your path.'); }));
     if (level && !level.open) manage.append(button('Unlock level early', async () => { await command(['unlock', level.id]); $('#sheet').close(); await refresh(); if (state.tab === 'path') await renderPath(); }));
-    if (!['lab', 'ctf'].includes(node.verify?.type)) {
+    if (revealed && !['lab', 'ctf'].includes(node.verify?.type)) {
       const parts = field(manage, 'split-parts', 'Split into smaller steps (one per line)', 'textarea');
       manage.append(button('Save smaller steps', async () => { await command(['split', `${node.pack_id}:${node.id}`, ...parts.value.split('\n').filter(Boolean)]); $('#sheet').close(); await refresh(); if (state.tab === 'path') await renderPath(); }));
     }
@@ -628,10 +641,10 @@ async function readPack(pack) {
     const nodes = data.nodes.filter(node => node.level === level.id);
     group.append(el('summary', `${level.title} · ${nodes.length} tasks`));
     const list = el('ul');
-    nodes.forEach(node => { const item = el('li'); item.append(el('h3', node.title), el('p', node.done_when)); list.append(item); });
+    nodes.forEach(node => { const item = el('li'); item.append(el('h3', node.title)); if (node.preview) item.append(el('p', node.preview)); list.append(item); });
     group.append(list); overview.append(group);
   });
-  content.append(overview, el('p', 'Reviewing a pack means you have read its tasks. It does not complete lessons or enable command execution.', 'muted'));
+  content.append(overview, el('p', 'This is the track overview. Detailed tasks open when their attempts start. Marking this overview reviewed does not complete lessons or enable command execution.', 'muted'));
   const actions = el('div', undefined, 'dialog-actions');
   const review = button(pack.reviewed ? 'Already reviewed' : 'Mark reviewed', async () => {
     await command(['pack', 'review', pack.id]); $('#sheet').close(); await renderMore(); document.getElementById(`read-pack-${pack.id}`)?.focus({preventScroll: true}); notify('Pack marked as reviewed.', 'success');

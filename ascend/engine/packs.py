@@ -45,6 +45,8 @@ class Node:
     resource_note: str = ""
     setup: str = ""
     materials: tuple[dict, ...] = ()
+    preview: str = ""
+    requirements: str = ""
 
     @property
     def estimate(self):
@@ -215,7 +217,14 @@ def parse_pack(text: str, variables=None, allowed_verifiers=None) -> Pack:
                 for key in ("milestone", "auto_complete"):
                     if type(n.get(key, False)) is not bool:
                         raise PackError(f"{key} must be boolean")
-                for key in ("brief", "resource_label", "resource_note", "setup"):
+                for key in (
+                    "brief",
+                    "resource_label",
+                    "resource_note",
+                    "setup",
+                    "preview",
+                    "requirements",
+                ):
                     if not isinstance(n.get(key, ""), str):
                         raise PackError(f"{key} must be text")
                 for key in ("steps", "hints"):
@@ -267,6 +276,8 @@ def parse_pack(text: str, variables=None, allowed_verifiers=None) -> Pack:
                         n.get("resource_note", ""),
                         n.get("setup", ""),
                         tuple(materials),
+                        n.get("preview", ""),
+                        n.get("requirements", ""),
                     )
                 )
         if not nodes:
