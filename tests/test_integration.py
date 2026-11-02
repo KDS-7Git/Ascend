@@ -1002,3 +1002,60 @@ def test_loading_screen_recovers_from_slow_response_and_missing_script(live_serv
         expect(page.locator("#app-loader")).not_to_be_visible(timeout=6500)
         expect(page.get_by_role("link", name="Reload the workspace")).to_be_visible()
         browser.close()
+
+
+@pytest.mark.parametrize("width,height", [(390, 844), (1440, 1000)])
+def test_guided_challenge_has_copyable_commands_and_free_reference(
+    live_server, pack_data, width, height
+):
+    import httpx
+    from playwright.sync_api import sync_playwright, expect
+    from ascend.engine.packs import parse_pack
+    from ascend.registry import bundled_pack_path
+
+    pack = parse_pack(bundled_pack_path("ethical-hacking-foundations").read_text())
+    guide = next(n for n in pack.nodes if n.id == "foundations-experiment")
+    for key in [
+        "title",
+        "brief",
+        "done_when",
+        "resource",
+        "resource_label",
+        "resource_note",
+        "minutes",
+    ]:
+        pack_data["node"][0][key] = getattr(guide, key)
+    pack_data["node"][0]["steps"] = list(guide.steps)
+    response = httpx.post(
+        live_server + "/api/packs",
+        files={"file": ("test.toml", dump_toml(pack_data), "text/plain")},
+    )
+    assert response.status_code == 200
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page(
+            viewport={"width": width, "height": height}, reduced_motion="reduce"
+        )
+        page.context.grant_permissions(["clipboard-read", "clipboard-write"])
+        page.goto(live_server)
+        page.locator(".next-card").get_by_role("button", name="Open challenge").click()
+        expect(page.locator("#sheet-title")).to_have_text(guide.title)
+        expect(page.locator("#sheet .challenge-steps .doc-code")).to_have_count(5)
+        expect(
+            page.get_by_role("link", name="Free HTTP server reference (optional)")
+        ).to_have_attribute("href", guide.resource)
+        page.get_by_role("button", name="Copy terminal block").first.click()
+        assert (
+            page.evaluate("navigator.clipboard.readText()")
+            == "python3 --version\ncurl --version"
+        )
+        assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+        page.get_by_role("button", name="Start timed task", exact=True).click()
+        expect(
+            page.locator("#challenge-content .challenge-steps .doc-code")
+        ).to_have_count(5)
+        expect(page.locator(".session-clock")).to_be_visible()
+        page.reload()
+        expect(page.locator("#challenge-title")).to_have_text(guide.title)
+        expect(page.locator(".session-clock")).to_be_visible()
+        browser.close()

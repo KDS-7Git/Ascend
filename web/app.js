@@ -337,6 +337,28 @@ function openLog(node) {
   });
   learned.focus();
 }
+function instructionBlocks(text) {
+  const fragment = document.createDocumentFragment();
+  const fenced = /```([\w-]*)\n([\s\S]*?)```/g;
+  let cursor = 0;
+  const prose = value => { for (const paragraph of value.trim().split(/\n\s*\n/)) if (paragraph) fragment.append(el('p', paragraph)); };
+  for (const match of text.matchAll(fenced)) {
+    prose(text.slice(cursor, match.index));
+    fragment.append(codeBlock(match[2].replace(/\n$/, ''), match[1] === 'json' ? 'JSON' : 'TERMINAL'));
+    cursor = match.index + match[0].length;
+  }
+  prose(text.slice(cursor)); return fragment;
+}
+function codeBlock(text, label = 'COMMAND LINE') {
+  const box = el('div', undefined, 'doc-code'), toolbar = el('div', undefined, 'code-toolbar');
+  const copy = button('Copy', async () => {
+    if (!navigator.clipboard) throw new Error('Copy is unavailable in this browser. Select the command text to copy it.');
+    await navigator.clipboard.writeText(text); notify('Command copied.', 'success');
+  }, 'text-button'); copy.setAttribute('aria-label', label === 'COMMAND LINE' ? 'Copy' : `Copy ${label.toLowerCase()} block`);
+  toolbar.append(el('span', label), copy);
+  const pre = el('pre'); pre.tabIndex = 0; pre.setAttribute('aria-label', `${label.toLowerCase()} block`); pre.append(el('code', text));
+  box.append(toolbar, pre); return box;
+}
 function showNode(node, level = levelFor(node), workspace = false, session = null) {
   const ref = `${node.pack_id}:${node.id}`;
   if (!workspace && [state.sessions?.active, ...(state.sessions?.paused || [])].some(item => item && `${item.pack_id}:${item.node_id}` === ref)) return switchTab('challenge', {topic: ref});
@@ -344,14 +366,15 @@ function showNode(node, level = levelFor(node), workspace = false, session = nul
   if (workspace) content.replaceChildren();
   content.append(el('p', `${node.milestone ? 'MILESTONE' : 'CHALLENGE'} · ~${node.estimate} MIN`, 'eyebrow'));
   const title = el(workspace ? 'h1' : 'h2', node.title); title.id = workspace ? 'challenge-title' : 'sheet-title'; content.append(title);
-  if (node.brief) content.append(el('p', node.brief, 'challenge-brief'));
+  if (node.brief && !node.done_when.startsWith(node.brief)) content.append(el('p', node.brief, 'challenge-brief'));
   const outcome = el('section', undefined, 'outcome'); outcome.append(el('h3', 'Your finish line'), el('p', node.done_when)); content.append(outcome); content.append(el('p', verificationLabel(node), 'verification-label'));
   if (node.steps?.length) {
     const list = el('ol', undefined, 'challenge-steps');
-    for (const step of node.steps) list.append(el('li', step));
-    content.append(el('h3', 'Try it step by step'), list);
+    for (const step of node.steps) { const item = el('li'); item.append(instructionBlocks(step)); list.append(item); }
+    content.append(el('h3', 'What to do'), list);
   }
-  const link = el('a', 'Open learning resource ↗', 'resource-link'); link.href = node.resource; link.target = '_blank'; link.rel = 'noopener noreferrer'; content.append(link);
+  const link = el('a', `${node.resource_label || 'Learning reference'} ↗`, 'resource-link'); link.href = node.resource; link.target = '_blank'; link.rel = 'noopener noreferrer'; content.append(link);
+  if (node.resource_note) content.append(el('p', node.resource_note, 'field-help'));
   if (node.hints?.length) {
     const hints = el('section', undefined, 'challenge-hints'); hints.append(el('h3', 'A nudge if you need one'));
     node.hints.forEach((hint, i) => { const details = el('details'); details.append(el('summary', `Hint ${i + 1}`), el('p', hint)); hints.append(details); }); content.append(hints);
@@ -1013,7 +1036,8 @@ function showCase(node, run) {
   }
   const notes = el('details', undefined, 'quiet-details'); notes.append(el('summary', 'Review the lesson'));
   if (node.brief) notes.append(el('p', node.brief));
-  if (node.resource) { const resource = el('a', 'Open learning resource ↗'); resource.href = node.resource; resource.target = '_blank'; resource.rel = 'noopener noreferrer'; notes.append(resource); }
+  if (node.resource) { const resource = el('a', `${node.resource_label || 'Learning reference'} ↗`); resource.href = node.resource; resource.target = '_blank'; resource.rel = 'noopener noreferrer'; notes.append(resource); }
+  if (node.resource_note) notes.append(el('p', node.resource_note, 'field-help'));
   column.append(notes);
 }
 async function browseTracks() {
@@ -1085,14 +1109,7 @@ async function renderDocs() {
       const list = el(block.type === 'steps' ? 'ol' : 'ul');
       block.items.forEach(item => list.append(el('li', item))); article.append(list);
     }
-    if (block.type === 'code') {
-      const box = el('div', undefined, 'doc-code'), toolbar = el('div', undefined, 'code-toolbar');
-      toolbar.append(el('span', 'COMMAND LINE'), button('Copy', async () => {
-        if (!navigator.clipboard) throw new Error('Copy is unavailable in this browser. Select the command text to copy it.');
-        await navigator.clipboard.writeText(block.text); notify('Command copied.', 'success');
-      }, 'text-button'));
-      const pre = el('pre'); pre.append(el('code', block.text)); box.append(toolbar, pre); article.append(box);
-    }
+    if (block.type === 'code') article.append(codeBlock(block.text));
   }
   const related = el('div', undefined, 'guide-next'); related.append(el('h2', 'Keep reading'));
   const links = el('div', undefined, 'guide-links');

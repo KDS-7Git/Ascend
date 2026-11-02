@@ -3,7 +3,7 @@
 "id" = "ethical-hacking-foundations"
 "title" = "Ethical Hacking Foundations"
 "kind" = "proficiency"
-"version" = 2
+"version" = 3
 "source" = "ai-draft"
 "reviewed" = false
 
@@ -12,7 +12,7 @@
 
 [[level]]
 "id" = "foundations"
-"title" = "Prove the entry skills in a small lab"
+"title" = "Your first local HTTP lab"
 "lane" = "main"
 
 [[level]]
@@ -69,62 +69,73 @@
 "needs" = []
 "done_when" = "Compute the exact content hash of a fresh server-generated evidence fixture and pass its check."
 "brief" = "This small exercise tests evidence integrity. Track entry background: Use a terminal, explain an IP address and HTTP request, and create a disposable local target."
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"resource" = "https://docs.python.org/3/library/hashlib.html"
 "verify" = { "type" = "lab", "exercise" = "integrity" }
+"resource_label" = "Free Python hashing reference (optional)"
+"resource_note" = "This reference is free. No course purchase or account is required."
 
 [[node]]
 "id" = "foundations-reasoning"
 "level" = "foundations"
-"title" = "Reason it through: Prove the entry skills in a small lab"
+"title" = "Reason it through: Your first local HTTP lab"
 "size" = "S"
 "minutes" = 10
 "needs" = ["lab-readiness"]
 "done_when" = "Pass the server-graded scenario decision for this concept. This checks conceptual judgment, not completion of the later hands-on exercise."
-"brief" = "Use a terminal, explain an IP address and HTTP request, and create a disposable local target."
-"steps" = ["Work through this preparation: Use a terminal, explain an IP address and HTTP request, and create a disposable local target.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"brief" = "A browser or curl sends an HTTP request to a server. The server returns a status code and a response body. You will observe both on your own computer."
+"steps" = ["Work through this preparation: A browser or curl sends an HTTP request to a server. The server returns a status code and a response body. You will observe both on your own computer.", "Open the server exercise, make your decision and check its result. Explain to yourself why the alternative fails."]
+"resource" = "https://docs.python.org/3/library/http.server.html#command-line-interface"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:foundations" }
+"resource_label" = "Free HTTP server reference (optional)"
+"resource_note" = "The steps here are the lab. This link is optional Python documentation, not a course to buy or enrol in."
 
 [[node]]
 "id" = "foundations-experiment"
 "level" = "foundations"
-"title" = "Investigate: Prove the entry skills in a small lab"
+"title" = "Serve a webpage and inspect two HTTP responses"
 "size" = "M"
-"minutes" = 60
+"minutes" = 30
 "needs" = ["foundations-reasoning"]
-"done_when" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair. Save scope, setup, commands or query, observed result and limitations in {lab_dir}/foundations-experiment.json."
-"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
-"steps" = ["Use a terminal, explain an IP address and HTTP request, and create a disposable local target.", "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Save the actual evidence; file presence is not a skill grade. If required hardware or a tenant is unavailable, record preparation and leave the hands-on task incomplete."]
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"done_when" = "You observed the page response and the missing-page response, explained the address and port in your own words, saved your observations in {lab_dir}/foundations-experiment.json, and stopped your practice server."
+"brief" = "Build a tiny web server on your own computer and see what an HTTP request returns. Use two Ubuntu/Linux terminal windows, Python 3 and curl. No paid course, account, vulnerable app or cloud lab is needed."
+"steps" = ["Prepare two terminal windows on the computer where you will run this lab. We will call them Terminal A and Terminal B. Start the timed task when you are ready; the commands below are for you to run, not commands Ascend runs automatically.\n\nIn Terminal A, check that both tools are available:\n```sh\npython3 --version\ncurl --version\n```\nA Python 3 version and a curl version mean you can continue. If a command is missing, use the first hint below before starting the timer.", "In Terminal A, make a new temporary folder containing one page, then serve that folder on your own computer:\n```sh\nlab_site=$(mktemp -d /tmp/ascend-http.XXXXXX)\nprintf '<h1>My first lab</h1>\\n' > \"$lab_site/index.html\"\npython3 -m http.server 8765 --bind 127.0.0.1 --directory \"$lab_site\"\n```\nLeave this terminal running. A message beginning “Serving HTTP on 127.0.0.1” means the server started. 127.0.0.1 means this computer; 8765 is the port identifying this server. No public website is involved.", "In Terminal B, request your page:\n```sh\ncurl --noproxy \"*\" -i http://127.0.0.1:8765/\n```\nThis sends a GET request for /. The -i option shows response headers as well as the body. Find the first HTTP line: expect status 200. Below the headers, find the page text “My first lab”. Also look at Terminal A: it should log this request. Record what you actually see.", "In Terminal B, ask the same server for a page you did not create:\n```sh\ncurl --noproxy \"*\" -i http://127.0.0.1:8765/missing-page\n```\nExpect status 404. The server is still running and answering; this path simply has no page. Compare the two status codes and response bodies. A 404 here is an expected observation, not a failed setup.", "Save your observations from Terminal B. Copy this whole block. It asks for your actual results and your own short explanations, then creates the JSON report at the finish-line path. It does not supply the answers or overwrite an existing report.\n```sh\npython3 -c '\nimport json\nfrom pathlib import Path\nreport = {\n    \"scope\": \"Only my own local practice server\",\n    \"target\": input(\"URL you requested: \").strip(),\n    \"home_status\": input(\"Status code for /: \").strip(),\n    \"home_body\": input(\"One line from the / response body: \").strip(),\n    \"missing_status\": input(\"Status code for /missing-page: \").strip(),\n    \"loopback_meaning\": input(\"What does 127.0.0.1 mean? \").strip(),\n    \"port_meaning\": input(\"What is the port number for? \").strip(),\n    \"comparison\": input(\"Why did the two requests give different responses? \").strip(),\n    \"limitations\": input(\"What did this lab not test? \").strip()\n}\nif not all(report.values()):\n    raise SystemExit(\"An answer was empty. No report saved; run again when ready.\")\npath = Path(\"{lab_dir}/foundations-experiment.json\").expanduser()\npath.parent.mkdir(parents=True, exist_ok=True)\nif path.exists():\n    raise SystemExit(\"A report already exists. Open it in your text editor to update it.\")\nwith path.open(\"x\") as output:\n    json.dump(report, output, indent=2)\nprint(\"Saved:\", path)\n'\n```\nIf the report already exists, open it in your text editor to review or update your notes instead of replacing it. This exercise checks the file on the computer running Ascend. For a hosted/container server, the report must be placed at that server’s configured lab path; a file saved only on your laptop will not be visible to the checker.", "Stop your practice server: return to Terminal A and press Ctrl+C. Keep your saved report.\n\nBack in Ascend, open Challenge options → Check evidence to check that the report file is present. Then use Log progress, briefly describe what you learned, and select Mark as done when your report contains the observations and explanations above. This file check does not grade your reasoning and this task does not earn automatic XP."]
+"resource" = "https://docs.python.org/3/library/http.server.html#command-line-interface"
 "verify" = { "type" = "file", "path" = "{lab_dir}/foundations-experiment.json", "min_bytes" = 200 }
+"resource_label" = "Free HTTP server reference (optional)"
+"resource_note" = "The steps here are the lab. This link is optional Python documentation, not a course to buy or enrol in."
+"hints" = ["Ubuntu/Linux setup: if Python 3 or curl is missing, install the free packages with sudo apt update followed by sudo apt install python3 curl. Do this before starting the timer. No paid course is required.", "“Address already in use” means port 8765 is occupied. Use 8766 in the server command and in BOTH curl URLs; do not stop an unrelated service.", "“Connection refused” means curl could not reach a running server at that address/port. Check Terminal A and the URL. This differs from 404, which is a response from a running server.", "A 200 response demonstrates that this page was served. It does not demonstrate a vulnerability, an exploit, authentication or authorization. This is the networking setup skill you will use in later security labs."]
 
 [[node]]
 "id" = "foundations-milestone"
 "level" = "foundations"
-"title" = "Apply it to a changed case: Prove the entry skills in a small lab"
+"title" = "Repeat your HTTP lab on a different port"
 "size" = "M"
-"minutes" = 120
+"minutes" = 30
 "needs" = ["foundations-reasoning", "foundations-experiment", "lab-readiness"]
 "milestone" = true
-"done_when" = "Independently demonstrate the changed case and contrasting control, explain the mechanism, record assistance and save reproducible evidence in {lab_dir}/foundations-assessment.json. A reviewer or honest self-assessment must evaluate the reasoning; this file check does not grade it."
-"brief" = "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair."
-"steps" = ["Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.", "Transfer: Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.", "Control: Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.", "Explain why the result supports the mechanism. Record untested assumptions and help used. Save the evidence packet."]
+"done_when" = "Save {lab_dir}/foundations-assessment.json with your prediction, the request on port 8766, the observed response, the stopped-server result and an explanation of how that differs from 404. Ask a reviewer or use an honest self-review; the file check does not grade your explanation."
+"brief" = "Use the same small page to check that you understand ports and the difference between a server error response and a connection failure. You can reuse your temporary page folder or recreate it from the previous lab."
+"steps" = ["Repeat the local page request on port 8766. Predict which part of the URL must change, then record the actual response. In Terminal A, reuse the folder and start: python3 -m http.server 8766 --bind 127.0.0.1 --directory \"$lab_site\". If this is a new terminal, recreate the page folder using the previous challenge first.", "In Terminal B, request the new address and record the actual response:\n```sh\ncurl --noproxy \"*\" -i http://127.0.0.1:8766/\n```\nExplain which URL component changed and why.", "Stop your local server and repeat the same request. Explain why a connection failure differs from an HTTP 404 returned by a running server.\n\nPress Ctrl+C in Terminal A. Then run in Terminal B:\n```sh\ncurl --noproxy \"*\" --max-time 3 -i http://127.0.0.1:8766/\n```\nA connection error after stopping the server is expected. There should be no HTTP status line from that stopped server.", "Save your prediction, observations and explanation from Terminal B. Answer these prompts in your own words; use “none” if you used no help. Existing reports are kept.\n```sh\npython3 -c '\nimport json\nfrom pathlib import Path\nreport = {\n    \"prediction\": input(\"Before testing, what did you expect the port change to do? \").strip(),\n    \"changed_url\": input(\"What URL did you request on port 8766? \").strip(),\n    \"running_response\": input(\"What status and body did the running server return? \").strip(),\n    \"stopped_response\": input(\"What did curl report after you stopped the server? \").strip(),\n    \"why_not_404\": input(\"Why is that different from HTTP 404? \").strip(),\n    \"help_used\": input(\"What notes or help did you use? \").strip(),\n    \"limitations\": input(\"What did this test not establish? \").strip()\n}\nif not all(report.values()):\n    raise SystemExit(\"An answer was empty. No report saved; run again when ready.\")\npath = Path(\"{lab_dir}/foundations-assessment.json\").expanduser()\npath.parent.mkdir(parents=True, exist_ok=True)\nif path.exists():\n    raise SystemExit(\"A report already exists. Open it in your text editor to update it.\")\nwith path.open(\"x\") as output:\n    json.dump(report, output, indent=2)\nprint(\"Saved:\", path)\n'\n```\nLeave the server stopped. Use Challenge options → Check evidence, then Log progress → Mark as done after reviewing your report. A reviewer or your honest self-review must assess the explanation; the file check alone cannot do that."]
 "hints" = ["Predict the outcome before testing. If a walkthrough reveals the answer, practice and try a fresh variation before claiming independent transfer."]
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"resource" = "https://docs.python.org/3/library/http.server.html#command-line-interface"
 "verify" = { "type" = "file", "path" = "{lab_dir}/foundations-assessment.json", "min_bytes" = 300 }
+"resource_label" = "Free HTTP server reference (optional)"
+"resource_note" = "The steps here are the lab. This link is optional Python documentation, not a course to buy or enrol in."
 
 [[node]]
 "id" = "recall-foundations"
 "level" = "recall-lane"
-"title" = "Return later: Prove the entry skills in a small lab"
+"title" = "Return later: Your first local HTTP lab"
 "size" = "S"
 "minutes" = 10
 "needs" = ["foundations-milestone"]
 "done_when" = "After a suggested 2–7 day delay, reconstruct the reasoning, then pass the server scenario check. The app grades the decision, not your free-form explanation or elapsed spacing."
-"brief" = "Reconstruct the environment and entry assumptions without following the setup notes."
-"steps" = ["Reconstruct the environment and entry assumptions without following the setup notes.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
-"resource" = "https://www.offsec.com/courses/pen-200/"
+"brief" = "Without opening the walkthrough, explain 127.0.0.1, a port, a GET request, HTTP 200, HTTP 404 and a connection failure."
+"steps" = ["Without opening the walkthrough, explain 127.0.0.1, a port, a GET request, HTTP 200, HTTP 404 and a connection failure.", "Try without opening your notes first, then check the scenario. Correct your explanation using the source."]
+"resource" = "https://docs.python.org/3/library/http.server.html#command-line-interface"
 "verify" = { "type" = "lab", "exercise" = "case", "case_id" = "ethical-hacking-foundations:foundations" }
+"resource_label" = "Free HTTP server reference (optional)"
+"resource_note" = "The steps here are the lab. This link is optional Python documentation, not a course to buy or enrol in."
 
 [[node]]
 "id" = "scope-reasoning"

@@ -9,6 +9,25 @@ from ascend.engine.packs import dump_toml, parse_pack
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def apply_guidance(node, guidance):
+    allowed = {
+        "title",
+        "brief",
+        "steps",
+        "hints",
+        "done_when",
+        "minutes",
+        "resource",
+        "resource_label",
+        "resource_note",
+    }
+    if set(guidance) - allowed:
+        raise ValueError(
+            "Guidance may only override learner-facing content and duration"
+        )
+    node.update(guidance)
+
+
 def outputs():
     source = json.loads((ROOT / "docs/curriculum/specialist-paths.json").read_text())
     sources = {
@@ -64,6 +83,7 @@ def outputs():
                 "verify": {"type": "lab", "exercise": "integrity"},
             }
         )
+        apply_guidance(pack["node"][-1], track.get("readiness_guidance", {}))
         for i, lv in enumerate(track["levels"]):
             lid = lv["id"]
             case_id = pid + ":" + lid
@@ -158,6 +178,15 @@ def outputs():
                     "verify": {"type": "lab", "exercise": "case", "case_id": case_id},
                 }
             )
+            for node in pack["node"]:
+                if (node["level"] == lid and node["id"] != "lab-readiness") or node[
+                    "id"
+                ] == "recall-" + lid:
+                    apply_guidance(node, lv.get("reference", {}))
+                if node["id"] == exercise:
+                    apply_guidance(node, lv.get("experiment_guidance", {}))
+                if node["id"] == milestone:
+                    apply_guidance(node, lv.get("milestone_guidance", {}))
             assessments.append(
                 {
                     "pack": pid,

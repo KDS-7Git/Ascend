@@ -15,17 +15,23 @@ def test_challenge_guidance_is_optional_and_substitutes_variables(pack_data):
         brief="Investigate the {lab}.",
         steps=["Open the {lab}.", "Compare two results."],
         hints=["Inspect one input at a time."],
+        resource_label="Free {lab} reference",
+        resource_note="This reference is optional.",
     )
     node = parse_pack(dump_toml(pack_data)).nodes[0]
     assert node.brief == "Investigate the local lab."
     assert node.steps == ("Open the local lab.", "Compare two results.")
     assert node.hints == ("Inspect one input at a time.",)
+    assert node.resource_label == "Free local lab reference"
+    assert node.resource_note == "This reference is optional."
 
 
 @pytest.mark.parametrize(
     "field,value",
     [
         ("brief", 2),
+        ("resource_label", 2),
+        ("resource_note", ["not text"]),
         ("steps", "not a list"),
         ("steps", [""]),
         ("hints", [42]),

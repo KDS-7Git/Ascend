@@ -360,6 +360,11 @@ dialog::backdrop { background: #17191488; }
 .challenge-brief { color: var(--muted); }
 .challenge-steps { padding-left: 22px; font-size: .9rem; line-height: 1.7; }
 .challenge-steps li { padding-left: 4px; margin-bottom: 12px; }
+.challenge-steps { max-width: 800px; }
+.challenge-steps li > p { margin-bottom: 10px; }
+.challenge-steps .doc-code { margin: 12px 0 16px; }
+.challenge-steps .code-toolbar { padding-block: 2px; }
+.challenge-steps pre { max-height: 360px; overflow: auto; }
 .resource-link { display: inline-flex; align-items: center; gap: 8px; font-size: .85rem; margin: 4px 0 20px; }
 .challenge-hints { margin-bottom: 20px; }
 .challenge-hints details { border-bottom: 1px solid var(--divider); font-size: .85rem; }

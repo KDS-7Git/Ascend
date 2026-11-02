@@ -4,7 +4,7 @@
     {
       "id": "ethical-hacking-foundations",
       "title": "Ethical Hacking Foundations",
-      "version": 2,
+      "version": 3,
       "category": "Foundations",
       "aliases": [
         "ethical hacking",
@@ -26,12 +26,12 @@
       "levels": [
         {
           "id": "foundations",
-          "title": "Prove the entry skills in a small lab",
-          "primer": "Use a terminal, explain an IP address and HTTP request, and create a disposable local target.",
-          "experiment": "Demonstrate each entry skill with a small owned fixture or permitted training environment. Record the actual setup, one observation per skill and any prerequisite you need to repair.",
-          "variant": "Change a relevant identity, input or environment setting and predict the effect before repeating the demonstration.",
-          "control": "Include a deliberately unmet prerequisite and distinguish setup failure from a result about the subject.",
-          "recall": "Reconstruct the environment and entry assumptions without following the setup notes.",
+          "title": "Your first local HTTP lab",
+          "primer": "A browser or curl sends an HTTP request to a server. The server returns a status code and a response body. You will observe both on your own computer.",
+          "experiment": "Serve one page on your own computer, request it with curl, then compare its successful response with a request for a page that does not exist.",
+          "variant": "Repeat the local page request on port 8766. Predict which part of the URL must change, then record the actual response.",
+          "control": "Stop your local server and repeat the same request. Explain why a connection failure differs from an HTTP 404 returned by a running server.",
+          "recall": "Without opening the walkthrough, explain 127.0.0.1, a port, a GET request, HTTP 200, HTTP 404 and a connection failure.",
           "case": {
             "prompt": "Your task is to run a test against a local training app. The app will not start. Your testing tool is installed, and its version command works.",
             "correct": "Not yet. Record that the tool is installed, then get the app running and perform the test.",
@@ -39,6 +39,43 @@
             "title": "Does setup prove completion?",
             "question": "Can you mark the practical task complete?",
             "explanation": "A version command proves only that the tool is installed. It does not show that the target app runs or that you performed the required test. Save the setup progress, repair the lab, and collect the actual test result."
+          },
+          "reference": {
+            "resource": "https://docs.python.org/3/library/http.server.html#command-line-interface",
+            "resource_label": "Free HTTP server reference (optional)",
+            "resource_note": "The steps here are the lab. This link is optional Python documentation, not a course to buy or enrol in."
+          },
+          "experiment_guidance": {
+            "title": "Serve a webpage and inspect two HTTP responses",
+            "minutes": 30,
+            "brief": "Build a tiny web server on your own computer and see what an HTTP request returns. Use two Ubuntu/Linux terminal windows, Python 3 and curl. No paid course, account, vulnerable app or cloud lab is needed.",
+            "done_when": "You observed the page response and the missing-page response, explained the address and port in your own words, saved your observations in {lab_dir}/foundations-experiment.json, and stopped your practice server.",
+            "steps": [
+              "Prepare two terminal windows on the computer where you will run this lab. We will call them Terminal A and Terminal B. Start the timed task when you are ready; the commands below are for you to run, not commands Ascend runs automatically.\n\nIn Terminal A, check that both tools are available:\n```sh\npython3 --version\ncurl --version\n```\nA Python 3 version and a curl version mean you can continue. If a command is missing, use the first hint below before starting the timer.",
+              "In Terminal A, make a new temporary folder containing one page, then serve that folder on your own computer:\n```sh\nlab_site=$(mktemp -d /tmp/ascend-http.XXXXXX)\nprintf '<h1>My first lab</h1>\\n' > \"$lab_site/index.html\"\npython3 -m http.server 8765 --bind 127.0.0.1 --directory \"$lab_site\"\n```\nLeave this terminal running. A message beginning “Serving HTTP on 127.0.0.1” means the server started. 127.0.0.1 means this computer; 8765 is the port identifying this server. No public website is involved.",
+              "In Terminal B, request your page:\n```sh\ncurl --noproxy \"*\" -i http://127.0.0.1:8765/\n```\nThis sends a GET request for /. The -i option shows response headers as well as the body. Find the first HTTP line: expect status 200. Below the headers, find the page text “My first lab”. Also look at Terminal A: it should log this request. Record what you actually see.",
+              "In Terminal B, ask the same server for a page you did not create:\n```sh\ncurl --noproxy \"*\" -i http://127.0.0.1:8765/missing-page\n```\nExpect status 404. The server is still running and answering; this path simply has no page. Compare the two status codes and response bodies. A 404 here is an expected observation, not a failed setup.",
+              "Save your observations from Terminal B. Copy this whole block. It asks for your actual results and your own short explanations, then creates the JSON report at the finish-line path. It does not supply the answers or overwrite an existing report.\n```sh\npython3 -c '\nimport json\nfrom pathlib import Path\nreport = {\n    \"scope\": \"Only my own local practice server\",\n    \"target\": input(\"URL you requested: \").strip(),\n    \"home_status\": input(\"Status code for /: \").strip(),\n    \"home_body\": input(\"One line from the / response body: \").strip(),\n    \"missing_status\": input(\"Status code for /missing-page: \").strip(),\n    \"loopback_meaning\": input(\"What does 127.0.0.1 mean? \").strip(),\n    \"port_meaning\": input(\"What is the port number for? \").strip(),\n    \"comparison\": input(\"Why did the two requests give different responses? \").strip(),\n    \"limitations\": input(\"What did this lab not test? \").strip()\n}\nif not all(report.values()):\n    raise SystemExit(\"An answer was empty. No report saved; run again when ready.\")\npath = Path(\"{lab_dir}/foundations-experiment.json\").expanduser()\npath.parent.mkdir(parents=True, exist_ok=True)\nif path.exists():\n    raise SystemExit(\"A report already exists. Open it in your text editor to update it.\")\nwith path.open(\"x\") as output:\n    json.dump(report, output, indent=2)\nprint(\"Saved:\", path)\n'\n```\nIf the report already exists, open it in your text editor to review or update your notes instead of replacing it. This exercise checks the file on the computer running Ascend. For a hosted/container server, the report must be placed at that server’s configured lab path; a file saved only on your laptop will not be visible to the checker.",
+              "Stop your practice server: return to Terminal A and press Ctrl+C. Keep your saved report.\n\nBack in Ascend, open Challenge options → Check evidence to check that the report file is present. Then use Log progress, briefly describe what you learned, and select Mark as done when your report contains the observations and explanations above. This file check does not grade your reasoning and this task does not earn automatic XP."
+            ],
+            "hints": [
+              "Ubuntu/Linux setup: if Python 3 or curl is missing, install the free packages with sudo apt update followed by sudo apt install python3 curl. Do this before starting the timer. No paid course is required.",
+              "“Address already in use” means port 8765 is occupied. Use 8766 in the server command and in BOTH curl URLs; do not stop an unrelated service.",
+              "“Connection refused” means curl could not reach a running server at that address/port. Check Terminal A and the URL. This differs from 404, which is a response from a running server.",
+              "A 200 response demonstrates that this page was served. It does not demonstrate a vulnerability, an exploit, authentication or authorization. This is the networking setup skill you will use in later security labs."
+            ]
+          },
+          "milestone_guidance": {
+            "title": "Repeat your HTTP lab on a different port",
+            "minutes": 30,
+            "brief": "Use the same small page to check that you understand ports and the difference between a server error response and a connection failure. You can reuse your temporary page folder or recreate it from the previous lab.",
+            "done_when": "Save {lab_dir}/foundations-assessment.json with your prediction, the request on port 8766, the observed response, the stopped-server result and an explanation of how that differs from 404. Ask a reviewer or use an honest self-review; the file check does not grade your explanation.",
+            "steps": [
+              "Repeat the local page request on port 8766. Predict which part of the URL must change, then record the actual response. In Terminal A, reuse the folder and start: python3 -m http.server 8766 --bind 127.0.0.1 --directory \"$lab_site\". If this is a new terminal, recreate the page folder using the previous challenge first.",
+              "In Terminal B, request the new address and record the actual response:\n```sh\ncurl --noproxy \"*\" -i http://127.0.0.1:8766/\n```\nExplain which URL component changed and why.",
+              "Stop your local server and repeat the same request. Explain why a connection failure differs from an HTTP 404 returned by a running server.\n\nPress Ctrl+C in Terminal A. Then run in Terminal B:\n```sh\ncurl --noproxy \"*\" --max-time 3 -i http://127.0.0.1:8766/\n```\nA connection error after stopping the server is expected. There should be no HTTP status line from that stopped server.",
+              "Save your prediction, observations and explanation from Terminal B. Answer these prompts in your own words; use “none” if you used no help. Existing reports are kept.\n```sh\npython3 -c '\nimport json\nfrom pathlib import Path\nreport = {\n    \"prediction\": input(\"Before testing, what did you expect the port change to do? \").strip(),\n    \"changed_url\": input(\"What URL did you request on port 8766? \").strip(),\n    \"running_response\": input(\"What status and body did the running server return? \").strip(),\n    \"stopped_response\": input(\"What did curl report after you stopped the server? \").strip(),\n    \"why_not_404\": input(\"Why is that different from HTTP 404? \").strip(),\n    \"help_used\": input(\"What notes or help did you use? \").strip(),\n    \"limitations\": input(\"What did this test not establish? \").strip()\n}\nif not all(report.values()):\n    raise SystemExit(\"An answer was empty. No report saved; run again when ready.\")\npath = Path(\"{lab_dir}/foundations-assessment.json\").expanduser()\npath.parent.mkdir(parents=True, exist_ok=True)\nif path.exists():\n    raise SystemExit(\"A report already exists. Open it in your text editor to update it.\")\nwith path.open(\"x\") as output:\n    json.dump(report, output, indent=2)\nprint(\"Saved:\", path)\n'\n```\nLeave the server stopped. Use Challenge options → Check evidence, then Log progress → Mark as done after reviewing your report. A reviewer or your honest self-review must assess the explanation; the file check alone cannot do that."
+            ]
           }
         },
         {
@@ -142,7 +179,12 @@
             "explanation": "A clean reset checks reproducibility. Transfer means adapting the skill when an input, constraint or environment changes. Predict the effect of one change, then test that prediction."
           }
         }
-      ]
+      ],
+      "readiness_guidance": {
+        "resource": "https://docs.python.org/3/library/hashlib.html",
+        "resource_label": "Free Python hashing reference (optional)",
+        "resource_note": "This reference is free. No course purchase or account is required."
+      }
     },
     {
       "id": "red-team-adversary-emulation",
