@@ -17,6 +17,7 @@ def test_built_wheel_contains_and_serves_bundled_assets(tmp_path):
             str(tmp_path),
             ".",
         ],
+        check=False,
         text=True,
         capture_output=True,
     )
@@ -33,21 +34,44 @@ def test_built_wheel_contains_and_serves_bundled_assets(tmp_path):
         assert "ascend/community/projects/home-hack-lab.toml" in archive.namelist()
         assert "ascend/community/offensive/api-security.toml" in archive.namelist()
         assert "ascend/community/README.md" in archive.namelist()
+        assert "ascend/local_labs/resources/catalog.json" in archive.namelist()
+        assert "ascend/web/local-labs.js" in archive.namelist()
         archive.extractall(tmp_path / "installed")
     code = """
 from pathlib import Path
+import hashlib
 from fastapi.testclient import TestClient
 from ascend.cli import pack_text
 from ascend.engine.packs import parse_pack
 from ascend.registry import registry_entries
 from ascend.server.app import create_app
+from ascend.local_labs.catalog import DATA, detail
+from ascend.local_labs import bgp
 
 for entry in registry_entries():
     assert parse_pack(pack_text(entry['id'])).id == entry['id']
 c = TestClient(create_app(Path('data'), scheduler=False))
 assert c.get('/').status_code == 200
 assert c.get('/app.js').status_code == 200
-assert len(c.get('/guide.json').json()['topics']) == 10
+assert any(t['id'] == 'playground' for t in c.get('/guide.json').json()['topics'])
+assert c.get('/playground.js').status_code == 200
+assert c.get('/api/playground').json()['activities']
+assert c.get('/api/lab-catalog/vampi').json()['repository'] == 'https://github.com/erev0s/VAmPI'
+assert c.get('/local-labs.js').status_code == 200
+assert c.get('/api/lab-catalog/wrongsecrets-basics').json()['runnable']
+for name in ('bgp-single-session', 'bgp-session-protection', 'bgp-prefix-filter'):
+    recipe = detail(name)
+    assert recipe['runnable']
+    assert hashlib.sha256(Path(bgp.__file__).read_bytes()).hexdigest() == recipe['adapter_sha256']
+    assert hashlib.sha256((DATA / 'bgp-launcher.txt').read_bytes()).hexdigest() == recipe['launcher_sha256']
+attempt = c.post('/api/lab-attempts', json={'recipe_id': 'bgp-export-policy', 'offline': True}).json()
+policy = {'version': 1, 'default': 'deny', 'rules': [
+    {'action': 'permit', 'prefix': attempt['assignment']['customer_prefix'], 'min_prefix': 24, 'max_prefix': 26}]}
+payload = {k: attempt[k] for k in ('nonce', 'recipe_version', 'checker_version', 'fixture_id')}
+payload['submission'] = {'files': {'policy.json': policy}}
+receipt = c.post('/api/lab-attempts/' + attempt['id'] + '/submit', json=payload).json()
+assert receipt['result']['status'] == 'pass'
+assert receipt['result']['authority'] == 'server-submission'
 assert c.get('/fonts/InterVariable.woff2').content.startswith(b'wOF2')
 assert c.get('/theme.js').status_code == 200
 assert c.get('/effects.js').status_code == 200
@@ -57,6 +81,7 @@ assert c.get('/api/packs').json()[0]['category'] == 'Offensive'
 """
     result = subprocess.run(
         [sys.executable, "-c", code],
+        check=False,
         cwd=tmp_path,
         env={**os.environ, "PYTHONPATH": str(tmp_path / "installed")},
         text=True,

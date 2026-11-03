@@ -89,6 +89,9 @@ window.AscendContext = (() => {
       toc(screen, 'In this lab'); const host = section('Keep your place');
       link(host, 'Browse Linux labs →', () => playgroundOpen('labs'));
       const anchor = el('a', 'Setup & cleanup guide →', 'context-action'); anchor.href = '#docs/linux-labs'; host.append(anchor);
+    } else if (state.tab === 'attempts') {
+      const host = section('Saved work'); link(host, 'All activity groups →', () => playgroundOpen('history'));
+      host.append(el('p', 'Each attempt keeps its own work, result and timer.', 'small muted'));
     } else if (state.tab === 'activity') {
       toc(screen, 'In this activity'); const host = section('Your workspace');
       host.append(el('p', 'Work saves as you go. Return through Saved work & history.', 'small muted'));

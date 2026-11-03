@@ -50,13 +50,37 @@ class Playground:
 
     def elapsed(self, row):
         seconds = row["elapsed_seconds"]
+        if self.strict_timer(row) and row["status"] in {"active", "saved"}:
+            return max(
+                seconds,
+                0,
+                (
+                    self.t.now() - datetime.fromisoformat(row["created_at"])
+                ).total_seconds(),
+            )
         if row["status"] == "active" and row["running_since"]:
-            seconds += max(0, (self.t.now() - datetime.fromisoformat(row["running_since"])).total_seconds())
+            seconds += max(
+                0,
+                (
+                    self.t.now() - datetime.fromisoformat(row["running_since"])
+                ).total_seconds(),
+            )
         return seconds
 
+    @staticmethod
+    def strict_timer(row):
+        return row["role"] != "example" and row["kind"] != "free"
 
-    def pause_clock(self, row):
-        self.db.update("activity_runs", "id=?", (row["id"],), elapsed_seconds=self.elapsed(row), running_since=None)
+    def pause_clock(self, row, *, finished=False):
+        if self.strict_timer(row) and not finished:
+            return
+        self.db.update(
+            "activity_runs",
+            "id=?",
+            (row["id"],),
+            elapsed_seconds=self.elapsed(row),
+            running_since=None,
+        )
 
     def event(self, run_id, kind):
         self.owned(run_id)
@@ -188,20 +212,40 @@ class Playground:
             "review": review_due(self.evidence(), self.t.day()),
         }
 
-    def foreground(self, end_scored=False):
+    def foreground(self, end_scored=False, *, resuming_id=None):
         from ascend.local_labs.attempts import Attempts
+
         Attempts(self.t).expire()
         if self.db.rows("external_lab_attempts", "status IN ('preparing','active')"):
             raise ValueError("Finish the local lab before starting Playground")
         from ascend import timing
+
         if self.db.rows("task_sessions", "status='running'"):
             if not end_scored:
-                raise ValueError("A scored track attempt is running. End scored attempt and switch to stop its clock without completion or XP. Browsing leaves it running.")
+                raise ValueError(
+                    "A scored track attempt is running. End scored attempt and switch to stop its clock without completion or XP. Browsing leaves it running."
+                )
             timing.end(self.t)
-        for row in self.db.rows("activity_runs", "status='active'"):
+        for row in self.db.rows("activity_runs", "status IN ('active','saved')"):
+            if row["id"] == resuming_id:
+                continue
+            if self.strict_timer(row):
+                if not end_scored:
+                    raise ValueError(
+                        "A timed Playground challenge is running. End scored attempt and switch before starting another activity."
+                    )
+                self.end(row["id"])
+                continue
+            if row["status"] != "active":
+                continue
             self.pause_clock(row)
             self.event(row["id"], "saved")
-        self.db.update("activity_runs", "status='active'", status="saved", updated_at=self.t.now().isoformat())
+        self.db.update(
+            "activity_runs",
+            "status='active'",
+            status="saved",
+            updated_at=self.t.now().isoformat(),
+        )
 
     def start(self, activity_id, end_scored=False, deliberate=False):
         item = catalog.get(activity_id)
@@ -294,6 +338,7 @@ class Playground:
             "difficulty": item["difficulty"],
             "result": json.loads(row["result"]) if row["result"] else None,
             "elapsed_seconds": int(self.elapsed(row)),
+            "strict_timer": self.strict_timer(row),
         }
 
     def view(self, run_id):
@@ -327,10 +372,13 @@ class Playground:
             "timer": {
                 "elapsed_seconds": int(self.elapsed(row)),
                 "target_seconds": item["minutes"] * 60,
-                "running": row["status"] == "active",
+                "running": row["status"] == "active"
+                or (self.strict_timer(row) and row["status"] == "saved"),
                 "server_time": self.t.now().isoformat(),
             },
         }
+        if self.strict_timer(row):
+            public["timer"]["strict"] = True
         if row["role"] == "example":
             from ascend.playground.guidance import REFLECTIONS, steps
 
@@ -368,14 +416,16 @@ class Playground:
         with self.db.transaction():
             row = self.owned(run_id)
             if row["status"] == "saved":
-                self.foreground(end_scored)
+                self.foreground(end_scored, resuming_id=run_id)
                 self.event(run_id, "resumed")
                 self.db.update(
                     "activity_runs",
                     "id=?",
                     (run_id,),
                     status="active",
-                    running_since=self.t.now().isoformat(),
+                    running_since=row["created_at"]
+                    if self.strict_timer(row)
+                    else self.t.now().isoformat(),
                     updated_at=self.t.now().isoformat(),
                 )
             return self.view(run_id)
@@ -391,7 +441,7 @@ class Playground:
             if row["kind"] == "free":
                 fixtures.experiment(row["family"], work.get("workspace"))
             values = {"work": json.dumps(work), "updated_at": self.t.now().isoformat()}
-            if pause and row["status"] == "active":
+            if pause and row["status"] == "active" and not self.strict_timer(row):
                 self.pause_clock(row)
                 self.event(run_id, "saved")
                 values["status"] = "saved"
@@ -566,7 +616,7 @@ class Playground:
                 points = self.award(row, fixture) if passed else 0
             work = json.loads(row["work"]) | {"answers": answers}
             if passed:
-                self.pause_clock(row)
+                self.pause_clock(row, finished=True)
             outcome = {
                 "passed": passed,
                 "xp": points,
@@ -647,7 +697,7 @@ class Playground:
         with self.db.transaction():
             row = self.owned(run_id)
             if row["status"] != "passed":
-                self.pause_clock(row)
+                self.pause_clock(row, finished=True)
                 self.db.update(
                     "activity_runs",
                     "id=?",

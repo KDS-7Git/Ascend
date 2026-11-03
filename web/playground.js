@@ -105,7 +105,7 @@ async function startPlayground(item, deliberate = false, endScored = false) {
     return;
   }
   const sessions = await command(['session', 'status']);
-  const timed = sessions.active;
+  const timed = sessions.active || (sessions.playground_active?.strict_timer && sessions.playground_active);
   if (timed && !endScored) {
     const root = openSheet('Switch activity'); root.append(el('h2', 'End scored attempt and switch'), el('p', `“${timed.title}” is still timed. Ending stops its clock without completion or XP. Its saved work and original attempt remain available.`));
     root.querySelector('h2').id = 'sheet-title';
@@ -118,8 +118,8 @@ async function startPlayground(item, deliberate = false, endScored = false) {
 async function resumePlayground(run, endScored = false) {
   await savePlaygroundDraft(true);
   const sessions = await command(['session', 'status']);
-  const timed = sessions.active;
-  if (timed && !endScored) {
+  const timed = sessions.active || (sessions.playground_active?.strict_timer && sessions.playground_active);
+  if (timed && (sessions.active || timed.id !== run.id) && !endScored) {
     const root = openSheet('Resume saved work'); root.append(el('h2', 'End scored attempt and switch'), el('p', `This ends “${timed.title}” and stops its clock without completion or XP. Your saved activity will resume with the same fixture.`));
     root.querySelector('h2').id = 'sheet-title';
     root.append(button('End scored attempt and switch', async () => { $('#sheet').close(); await resumePlayground(run, true); }, ''), button('Cancel', () => $('#sheet').close()));
@@ -147,7 +147,7 @@ function playgroundCard(item) {
   item.preparation_options.forEach(example => background.append(button(example.title, () => startPlayground(example), 'text-button')));
   if (item.role !== 'example') card.append(background);
   const actions = el('div', undefined, 'pg-actions'); actions.append(button(item.role === 'example' ? 'Study example' : item.kind === 'free' ? 'Open workspace' : 'Start challenge', () => startPlayground(item), ''));
-  if (item.saved_runs.length) actions.append(button('Resume saved work', () => resumePlayground(item.saved_runs[0])));
+  if (item.saved_runs.length) actions.append(button(item.saved_runs[0].strict_timer ? 'Return to challenge' : 'Resume saved work', () => resumePlayground(item.saved_runs[0])));
   actions.append(button(item.bookmarked ? 'Remove bookmark' : 'Bookmark', async () => {
     await api(`playground/activities/${item.id}/bookmark?enabled=${!item.bookmarked}`, {}); await renderPlayground();
   }, 'text-button'));
@@ -249,9 +249,9 @@ async function renderActivity() {
 function renderPlaygroundTimer(root, run) {
   const bar = el('div', undefined, 'pg-session-bar');
   const clock = el('div', undefined, 'pg-clock'); clock.append(el('strong', '', 'pg-clock-value'), el('span', '', 'small muted'));
-  bar.append(clock, el('p', 'Take your time. This clock does not affect XP.', 'small muted'));
-  if (run.status === 'active') bar.append(button('Pause & save', async () => { await savePlaygroundDraft(true); await renderActivity(); }));
-  else if (run.status === 'saved') bar.append(button('Resume activity', () => resumePlayground(run), ''));
+  bar.append(clock, el('p', run.timer.strict ? run.timer.running ? 'This timer keeps running when you leave. Complete or end the attempt to stop it.' : 'This attempt has ended. Its time and saved work are kept for review.' : 'Take your time. This clock does not affect XP.', `small muted${run.timer.strict ? ' pg-strict-timer-note' : ''}`));
+  if (run.status === 'active' && !run.timer.strict) bar.append(button('Pause & save', async () => { await savePlaygroundDraft(true); await renderActivity(); }));
+  else if (run.status === 'saved') bar.append(button(run.timer.strict ? 'Return to challenge' : 'Resume activity', () => resumePlayground(run), ''));
   root.append(bar);
   playgroundClock = {id:run.id, timer:run.timer, at:performance.now(), node:clock};
   tickPlaygroundClock();
@@ -261,7 +261,7 @@ function tickPlaygroundClock() {
   const {timer, at, node} = playgroundClock;
   const seconds = timer.elapsed_seconds + (timer.running ? Math.floor((performance.now() - at) / 1000) : 0);
   $('strong', node).textContent = formatTime(seconds);
-  $('span', node).textContent = `${timer.running ? 'Time practicing' : 'Clock stopped'} · about ${Math.round(timer.target_seconds / 60)} min planned`;
+  $('span', node).textContent = timer.strict ? `${timer.running ? 'Attempt time' : 'Clock stopped'} · ${Math.round(timer.target_seconds / 60)} min target${seconds > timer.target_seconds ? ' · overtime' : ''}` : `${timer.running ? 'Time practicing' : 'Clock stopped'} · about ${Math.round(timer.target_seconds / 60)} min planned`;
 }
 setInterval(tickPlaygroundClock, 1000);
 
@@ -386,7 +386,7 @@ function renderPlaygroundRun(root, run) {
       });
     });
   }
-  actions.append(button(terminal ? 'Back to saved work' : 'Save & leave', async () => { await savePlaygroundDraft(true); notify('Saved in Playground → Saved work & history. Resume from there whenever you’re ready.', 'success'); await playgroundOpen('history'); }));
+  actions.append(button(terminal ? 'Back to saved work' : 'Save & leave', async () => { await savePlaygroundDraft(true); notify(run.timer.strict && !terminal ? 'Work saved. Your challenge timer keeps running.' : 'Saved in Playground → Saved work & history. Resume from there whenever you’re ready.', 'success'); await playgroundOpen('history'); }));
   if (run.role !== 'example') actions.append(button('Save learning note', async () => {
     await savePlaygroundDraft(); await playgroundAction(run.id, 'log', {learned: notes.value, next_step: next.value}); notify('Learning note saved in your Ascend activity history.', 'success'); await refresh();
   }));
@@ -422,7 +422,7 @@ function renderPlaygroundRun(root, run) {
     help.append(button('Report an environment problem', async () => {
       const current = capture(); current.environment_problem = true;
       await playgroundAction(run.id, 'save', {data: current}); playgroundDraft = null;
-      notify('Work saved with an environment issue. No conceptual failure was recorded.', 'success'); await playgroundOpen('history');
+      notify(`Work saved with an environment issue. No conceptual failure was recorded.${run.timer.strict ? ' Your challenge timer keeps running.' : ''}`, 'success'); await playgroundOpen('history');
     }, 'text-button'));
     help.append(button('End attempt', async () => {
       await savePlaygroundDraft(); await playgroundAction(run.id, 'end'); playgroundDraft = null; await renderPlayground();

@@ -273,3 +273,106 @@ def test_older_motion_script_cannot_break_walkthrough(live_server):
         expect(page.locator('#notice[data-kind="error"]')).not_to_be_visible()
         assert not errors
         browser.close()
+
+
+@pytest.mark.parametrize("width", [390, 1440])
+def test_saved_work_groups_attempts_and_keeps_filters(live_server, tmp_path, width):
+    db = Database(tmp_path / "server")
+    tracker = Tracker(db)
+    for i in range(23):
+        run = tracker.playground.start(
+            "example-integrity" if i % 2 else "example-access"
+        )
+        if i % 3 == 0:
+            tracker.playground.submit(
+                run["id"],
+                {},
+                f"I compared the original observation to the changed condition in case {i}.",
+            )
+        if i == 0:
+            tracker.db.update("activity_runs", "id=?", (run["id"],), version=0)
+    db.close()
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page(
+            viewport={"width": width, "height": 1000}, reduced_motion="reduce"
+        )
+        page.goto(live_server + "/#playground/history")
+        expect(page.locator(".work-group-row")).to_have_count(2)
+        expect(page.locator(".work-count")).to_contain_text("23 attempts")
+        page.get_by_label("Search saved work").fill("request decisions")
+        expect(page.locator(".work-count")).to_contain_text("1 activity · 12 attempts")
+        page.get_by_label("Show", exact=True).select_option("passed")
+        expect(page.locator(".work-row")).to_have_count(1)
+        expect(page.locator('.work-row[data-status="passed"]')).to_have_count(1)
+        expect(page.locator(".work-pagination")).not_to_contain_text("Page")
+        capture(page, f"history-filtered-{width}")
+        accessibility(page)
+        page.get_by_label("Search saved work").fill("no-such-title")
+        expect(page.locator(".work-empty")).to_contain_text("No matching work")
+        page.get_by_role("button", name="Clear filters", exact=True).click()
+        expect(page.locator(".work-row")).to_have_count(2)
+        row = page.locator(".work-row").first
+        activity_id = row.get_attribute("data-activity-id")
+        row.get_by_role("button").click()
+        expect(page).to_have_url(live_server + "/#attempts/" + activity_id)
+        expect(page.locator("#attempt-group-title")).to_be_visible()
+        page.reload()
+        expect(page.locator("#attempts .work-row")).to_have_count(12)
+        expect(page.locator("#attempts .work-row").last).to_contain_text("version 0")
+        capture(page, f"attempt-group-{width}")
+        page.get_by_role("link", name="← Back to saved work", exact=True).click()
+        page.get_by_label("Search saved work").fill("request decisions")
+        page.get_by_label("Show", exact=True).select_option("passed")
+        page.locator(".work-group-row").get_by_role("button").click()
+        page.get_by_role("link", name="← Back to saved work", exact=True).click()
+        expect(page.get_by_label("Search saved work")).to_have_value(
+            "request decisions"
+        )
+        expect(page.get_by_label("Show", exact=True)).to_have_value("passed")
+        expect(page.locator(".work-group-row")).to_have_count(1)
+        page.locator(".work-group-row").get_by_role("button").click()
+        attempt = page.locator("#attempts .work-row").first
+        run_id = attempt.get_attribute("data-run-id")
+        attempt.get_by_role("button").click()
+        expect(page).to_have_url(live_server + "/#activity/" + run_id)
+        expect(page.locator("#activity-title")).to_be_visible()
+        assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+        browser.close()
+
+
+def test_saved_work_paginates_distinct_activities(live_server, tmp_path):
+    from ascend.playground.catalog import CATALOG
+
+    db = Database(tmp_path / "server")
+    tracker = Tracker(db)
+    for item in CATALOG[:12]:
+        run = tracker.playground.start(item["id"], deliberate=True, end_scored=True)
+        tracker.playground.end(run["id"])
+    tracker.playground.start(CATALOG[0]["id"], deliberate=True)
+    db.close()
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page(viewport={"width": 390, "height": 900})
+        page.goto(live_server + "/#playground/history")
+        expect(page.locator(".work-group-row")).to_have_count(10)
+        expect(page.locator(".work-count")).to_contain_text(
+            "12 activities · 13 attempts"
+        )
+        first_ids = set(
+            page.locator(".work-group-row").evaluate_all(
+                "(rows) => rows.map(row => row.dataset.activityId)"
+            )
+        )
+        page.locator(".work-pagination").get_by_role(
+            "button", name="Next", exact=True
+        ).click()
+        expect(page.locator(".work-group-row")).to_have_count(2)
+        second_ids = set(
+            page.locator(".work-group-row").evaluate_all(
+                "(rows) => rows.map(row => row.dataset.activityId)"
+            )
+        )
+        assert not first_ids & second_ids
+        expect(page.locator(".work-pagination")).to_contain_text("Page 2 of 2")
+        browser.close()

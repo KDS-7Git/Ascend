@@ -1,8 +1,8 @@
 "use strict";
 const $ = (selector, root = document) => root.querySelector(selector);
 const state = {token: sessionStorage.getItem("ascend-token"), minutes: null, overview: null, levels: [], tab: "today", account: null, guides: null, guideTopic: null, installedPacks: [], showAllPacks: false};
-const TABS = ["today", "path", "playground", "activity", "lab", "stats", "more", "docs", "profile", "challenge"];
-const TAB_NAMES = {today: "Today", path: "Learning path", playground: "Playground", activity: "Playground activity", lab: "Linux lab", stats: "Progress", more: "Tracks", docs: "Documentation", profile: "Profile", challenge: "Challenge"};
+const TABS = ["today", "path", "playground", "activity", "lab", "attempts", "stats", "more", "docs", "profile", "challenge"];
+const TAB_NAMES = {today: "Today", path: "Learning path", playground: "Playground", activity: "Playground activity", lab: "Linux lab", attempts: "Activity attempts", stats: "Progress", more: "Tracks", docs: "Documentation", profile: "Profile", challenge: "Challenge"};
 let noticeTimer;
 let challengeIntroPlayed = false;
 let challengeIntroObserver;
@@ -83,7 +83,7 @@ async function switchTab(tab, options = {}) {
   if (version !== navigationVersion) return;
   document.querySelectorAll('.screen').forEach(screen => screen.hidden = screen.id !== tab);
   document.querySelectorAll('.primary-nav [data-tab]').forEach(node => {
-    const active = node.dataset.tab === (['activity', 'lab'].includes(tab) ? 'playground' : tab);
+    const active = node.dataset.tab === (['activity', 'lab', 'attempts'].includes(tab) ? 'playground' : tab);
     node.classList.toggle('active', active);
     if (active) node.setAttribute('aria-current', 'page');
     else node.removeAttribute('aria-current');
@@ -97,7 +97,8 @@ async function switchTab(tab, options = {}) {
   if (tab === 'playground') state.playgroundRoute = options.topic || state.playgroundRoute || 'quick';
   if (tab === 'activity') state.activityRef = options.topic || state.activityRef;
   if (tab === 'lab') state.labRef = decodeURIComponent(options.topic || state.labRef || 'security-datasets');
-  const hash = tab === 'lab' ? `lab/${encodeURIComponent(state.labRef)}` : tab === 'activity' ? `activity/${state.activityRef}` : tab === 'playground' ? `playground/${state.playgroundRoute}` : tab === 'docs' ? `docs/${state.guideTopic}` : tab === 'challenge' && state.challengeRef ? `challenge/${encodeURIComponent(state.challengeRef)}` : tab;
+  if (tab === 'attempts') state.attemptGroupRef = decodeURIComponent(options.topic || state.attemptGroupRef || '');
+  const hash = tab === 'attempts' ? `attempts/${encodeURIComponent(state.attemptGroupRef)}` : tab === 'lab' ? `lab/${encodeURIComponent(state.labRef)}` : tab === 'activity' ? `activity/${state.activityRef}` : tab === 'playground' ? `playground/${state.playgroundRoute}` : tab === 'docs' ? `docs/${state.guideTopic}` : tab === 'challenge' && state.challengeRef ? `challenge/${encodeURIComponent(state.challengeRef)}` : tab;
   if (location.hash !== `#${hash}`) location.hash = hash;
   if (changed) window.scrollTo({top: 0, behavior: 'instant'});
   const screen = document.getElementById(tab);
@@ -122,10 +123,11 @@ async function switchTab(tab, options = {}) {
   if (tab === 'playground') await renderPlayground();
   if (tab === 'activity') await renderActivity();
   if (tab === 'lab') await renderLabDetail();
+  if (tab === 'attempts') await renderAttemptGroup();
   renderSessionClock();
   if (state.tab === tab && version === navigationVersion) window.AscendMotion?.enter?.(document.getElementById(tab), tab);
   } catch (error) {
-    if (version === navigationVersion && state.tab === tab && ['playground', 'activity', 'lab', 'stats'].includes(tab)) {
+    if (version === navigationVersion && state.tab === tab && ['playground', 'activity', 'lab', 'attempts', 'stats'].includes(tab)) {
       const panel = el('section', undefined, 'card empty'); panel.setAttribute('role', 'alert');
       panel.append(el('h2', 'This page could not load'), el('p', error.message), button('Try again', () => switchTab(tab, options), ''));
       $(`#${tab}-content`).replaceChildren(panel);
@@ -766,7 +768,7 @@ document.querySelectorAll("[data-icon]").forEach(node => node.append(icon(node.d
 window.addEventListener('hashchange', () => {
   const {tab, topic} = currentRoute();
   if ($('#sheet').open) $('#sheet').close();
-  if (tab !== state.tab || (tab === 'lab' && topic && decodeURIComponent(topic) !== state.labRef) || (tab === 'docs' && topic && topic !== state.guideTopic) || (tab === 'playground' && topic && topic !== state.playgroundRoute) || (tab === 'activity' && topic && topic !== state.activityRef) || (tab === 'challenge' && topic && decodeURIComponent(topic) !== state.challengeRef)) switchTab(tab, {topic}).catch(error => notify(error.message, 'error'));
+  if (tab !== state.tab || (tab === 'attempts' && topic && decodeURIComponent(topic) !== state.attemptGroupRef) || (tab === 'lab' && topic && decodeURIComponent(topic) !== state.labRef) || (tab === 'docs' && topic && topic !== state.guideTopic) || (tab === 'playground' && topic && topic !== state.playgroundRoute) || (tab === 'activity' && topic && topic !== state.activityRef) || (tab === 'challenge' && topic && decodeURIComponent(topic) !== state.challengeRef)) switchTab(tab, {topic}).catch(error => notify(error.message, 'error'));
 });
 $("#jump-current").addEventListener("click", () => jumpToLevel(currentLevel()?.id));
 document.querySelectorAll("[data-tab]").forEach(node => node.addEventListener("click", () => switchTab(node.dataset.tab).catch(error => notify(error.message, 'error'))));

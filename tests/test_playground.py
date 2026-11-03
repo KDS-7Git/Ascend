@@ -332,15 +332,20 @@ def test_examples_never_qualify_blind_mysteries_and_transfer_is_specific(tracker
     assert not t.playground.detail("room-63")["recommended_ready"]
 
 
-def test_study_during_hard_case_preserves_difficulty_and_saved_work(tracker):
+def test_study_during_hard_case_requires_ending_the_timed_attempt(tracker):
     t = tracker
     hard = t.playground.start("room-63", deliberate=True)
-    t.playground.save(hard["id"], {"notes": "Need to compare the clocks", "environment_problem": True})
+    t.playground.save(
+        hard["id"], {"notes": "Need to compare the clocks", "environment_problem": True}
+    )
     original = t.playground.owned(hard["id"])["fixture"]
-    assert t.playground.view(hard["id"])["status"] == "saved"
+    assert t.playground.view(hard["id"])["status"] == "active"
+    with pytest.raises(ValueError, match="timed Playground challenge"):
+        solve(t, "example-timeline")
+    t.playground.end(hard["id"])
     solve(t, "example-timeline")
     resumed = t.playground.resume(hard["id"])
-    assert resumed["activity"]["difficulty"] == "hard" and resumed["status"] == "active"
+    assert resumed["activity"]["difficulty"] == "hard" and resumed["status"] == "ended"
     assert resumed["checks"] == 0 and not resumed["result"]
     assert resumed["work"]["notes"] == "Need to compare the clocks"
     assert t.playground.owned(hard["id"])["fixture"] == original

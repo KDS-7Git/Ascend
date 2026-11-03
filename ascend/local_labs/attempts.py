@@ -74,7 +74,7 @@ class Attempts:
             if not offline and (
                 self.db.rows(
                     "activity_runs",
-                    "status='active'",
+                    "status='active' OR (status='saved' AND role<>'example' AND kind<>'free')",
                 )
                 or self.db.rows("task_sessions", "status='running'")
                 or self.db.rows(

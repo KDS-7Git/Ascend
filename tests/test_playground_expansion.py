@@ -125,6 +125,7 @@ def test_new_mysteries_keep_rubrics_private_and_preserve_reveals(tracker, id):
         t.playground.reveal(run["id"])
     replay = t.playground.start(id, deliberate=True)
     assert replay["familiar"]
+    t.playground.end(replay["id"])
     assert complete(t, id)["result"]["xp"] == 0
 
 

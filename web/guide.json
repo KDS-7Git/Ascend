@@ -32,7 +32,8 @@
       ],
       "related": [
         "missions",
-        "verification"
+        "verification",
+        "playground"
       ],
       "section": "Start here"
     },
@@ -56,7 +57,7 @@
             "Coming up: the task has a prerequisite or an earlier level to complete. Open it to see what is needed.",
             "Complete: the task was marked complete under its evidence rules.",
             "Skipped: you chose to move past the task. A skip is kept separate from completion and earns no milestone badge or XP.",
-            "Milestone: a task that brings a level\u2019s skills together. Its distinct diamond shape and label identify it."
+            "Milestone: a task that brings a level’s skills together. Its distinct diamond shape and label identify it."
           ]
         },
         {
@@ -134,7 +135,7 @@
         },
         {
           "type": "paragraph",
-          "text": "For JSON evidence tasks, the included report.py asks for your own observations and preserves existing reports. Run it from the extracted lab folder using the path shown in the challenge. The file checker sees the Ascend server\u2019s filesystem: a laptop-only file is not visible to a hosted or container server. There is no report upload in this workflow; place the evidence at the configured server lab path, then check it and log progress."
+          "text": "For JSON evidence tasks, the included report.py asks for your own observations and preserves existing reports. Run it from the extracted lab folder using the path shown in the challenge. The file checker sees the Ascend server’s filesystem: a laptop-only file is not visible to a hosted or container server. There is no report upload in this workflow; place the evidence at the configured server lab path, then check it and log progress."
         },
         {
           "type": "steps",
@@ -183,7 +184,7 @@
           "items": [
             "Server-verified exercise: Ascend checks the result against your current generated instance. Wrong answers do not complete the task or earn XP.",
             "Server-graded reasoning check: your scenario decision is checked. This does not grade a free-form explanation or prove that you performed a practical assessment.",
-            "Signed external lab evidence: an administrator\u2019s collector confirms named challenge results for your assigned game instance. The browser cannot simply send a solved flag.",
+            "Signed external lab evidence: an administrator’s collector confirms named challenge results for your assigned game instance. The browser cannot simply send a solved flag.",
             "Artifact check: a file exists and meets the configured checks. A person must still review whether its result and reasoning are correct.",
             "Human assessment: some explanations and changed-case demonstrations need review rather than a machine check."
           ]
@@ -194,7 +195,7 @@
         },
         {
           "type": "paragraph",
-          "text": "Permission puzzles allow one final submission. Choose Allow or Deny for every request, then press Submit decisions. The result explains each rule and gives equal partial credit for correctly classified requests: XP = the time-based reward \u00d7 correct requests \u00f7 total requests, rounded down. Four of six correct within the target earns 66 XP. Incorrect decisions earn no credit. Only all-correct results complete the task; Continue with partial result skips it while retaining earned XP. Reloading or requesting a fresh instance cannot reset your submitted result."
+          "text": "Permission puzzles allow one final submission. Choose Allow or Deny for every request, then press Submit decisions. The result explains each rule and gives equal partial credit for correctly classified requests: XP = the time-based reward × correct requests ÷ total requests, rounded down. Four of six correct within the target earns 66 XP. Incorrect decisions earn no credit. Only all-correct results complete the task; Continue with partial result skips it while retaining earned XP. Reloading or requesting a fresh instance cannot reset your submitted result."
         },
         {
           "type": "heading",
@@ -261,7 +262,7 @@
         },
         {
           "type": "paragraph",
-          "text": "For a 20-minute target, completing at 20 minutes earns 100 XP, at 30 minutes earns 75 XP, and at 40 minutes earns 50 XP. The timer cannot be paused. Completing, skipping or ending stops that task\u2019s session; later practice is unscored. Ending before verification cannot be used to preserve a higher reward. Permission puzzles multiply this time-based reward by the fraction of correct decisions, so a partial result may earn fewer than 25 XP or zero."
+          "text": "For a 20-minute target, completing at 20 minutes earns 100 XP, at 30 minutes earns 75 XP, and at 40 minutes earns 50 XP. The timer cannot be paused. Completing, skipping or ending stops that task’s session; later practice is unscored. Ending before verification cannot be used to preserve a higher reward. Permission puzzles multiply this time-based reward by the fraction of correct decisions, so a partial result may earn fewer than 25 XP or zero."
         },
         {
           "type": "paragraph",
@@ -294,7 +295,7 @@
         },
         {
           "type": "paragraph",
-          "text": "ntfy is a simple route to Android notifications. Telegram needs administrator-provided bot and chat settings. Desktop sends to the server\u2019s desktop session, which may not be your phone or laptop. Browser push requires a supported browser and a secure origin."
+          "text": "ntfy is a simple route to Android notifications. Telegram needs administrator-provided bot and chat settings. Desktop sends to the server’s desktop session, which may not be your phone or laptop. Browser push requires a supported browser and a secure origin."
         },
         {
           "type": "heading",
@@ -336,7 +337,7 @@
           "type": "list",
           "items": [
             "Timezone: search for a city timezone, such as Asia/Kolkata for India (UTC+05:30), Europe/London or UTC, then save. A city timezone also handles daylight-saving changes where applicable; a raw UTC offset is not accepted.",
-            "Preferences: choose your timezone, System/Light/Dark appearance and On/Off motion effects. Appearance choices are saved in this browser. Your device\u2019s reduced motion setting always takes priority.",
+            "Preferences: choose your timezone, System/Light/Dark appearance and On/Off motion effects. Appearance choices are saved in this browser. Your device’s reduced motion setting always takes priority.",
             "Reminders: configure notification timing and delivery.",
             "Privacy & account: choose whether to publish a streak badge. Sharing is off unless you enable it.",
             "Log out: available on authenticated servers. A single-user local server has no login session to end."
@@ -396,7 +397,7 @@
         },
         {
           "type": "paragraph",
-          "text": "The collector is an administrator tool on the Docker host. It signs a fresh observation for the learner\u2019s numeric account ID. Refresh it after solving, then press Verify lab completion within five minutes. The tracker receives a read-only receipt, not the Docker socket."
+          "text": "The collector is an administrator tool on the Docker host. It signs a fresh observation for the learner’s numeric account ID. Refresh it after solving, then press Verify lab completion within five minutes. The tracker receives a read-only receipt, not the Docker socket."
         },
         {
           "type": "heading",
@@ -421,7 +422,8 @@
       ],
       "related": [
         "verification",
-        "troubleshooting"
+        "troubleshooting",
+        "linux-labs"
       ],
       "section": "Setup & help"
     },
@@ -460,7 +462,7 @@
         },
         {
           "type": "paragraph",
-          "text": "Ask the administrator to collect a new receipt for the correct numeric account and assigned instance. Receipts expire after five minutes. A different learner\u2019s game, an unsigned file, or a missing challenge does not count."
+          "text": "Ask the administrator to collect a new receipt for the correct numeric account and assigned instance. Receipts expire after five minutes. A different learner’s game, an unsigned file, or a missing challenge does not count."
         },
         {
           "type": "heading",
@@ -492,6 +494,181 @@
         "reminders"
       ],
       "section": "Setup & help"
+    },
+    {
+      "id": "playground",
+      "title": "Playground & short practice",
+      "summary": "Keep your place in the track. Choose a short exercise, an independent investigation, or a saved workspace.",
+      "related": [
+        "missions",
+        "timers",
+        "lab-setup",
+        "linux-labs"
+      ],
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Playground is available in the main navigation with Quick practice, Challenges, Free practice, and Saved work & history. It works with an active, paused, completed, or absent mission. Today keeps the next track task visible beside a short practice recommendation."
+        },
+        {
+          "type": "heading",
+          "text": "Learn, apply, then review"
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Start a worked example in Learn with guidance. It opens on its own page with a practice clock. The first unfamiliar skill opens a three-step walkthrough automatically; use Next, Back or Skip tour. Open walkthrough is always available later.",
+            "Apply the skill in a fresh easy challenge. Relevant independent cases and changed-condition checks support harder recommendations; total XP does not establish readiness.",
+            "Your answers and notes save in your Ascend profile under Playground → Saved work & history. Each activity appears once; View attempts opens all its attempts for individual review or return. Save & leave pauses worked examples and free workspaces. Assessed challenge timers keep running. The optional return reminder is a note to your future self, not an extra task. Available hints are limited and optional; some challenges have no hints.",
+            "Solve or explicitly end an attempt before opening its full solution. Previously seen cases are familiar practice. Finite mysteries do not promise unlimited novelty."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Search and filter by duration, topic, difficulty, setup, progress and format. Bookmark favorites or use Surprise me. Optional preparation has its own estimate. A challenge never changes difficulty when you study an example. Time estimates are authored budgets awaiting learner pilots."
+        },
+        {
+          "type": "heading",
+          "text": "Experiment with real inputs"
+        },
+        {
+          "type": "paragraph",
+          "text": "The permission sandbox lets you edit policy rules and requests. The timeline sandbox lets you edit events and filters. Run experiment shows the result. Save workspace and resume from history. Reset and blank actions create new copies. After the request example, introduce a hidden policy fault into a copy, test controls and repair or reveal it. The linked HTTP lab runs separately on your own machine."
+        },
+        {
+          "type": "heading",
+          "text": "Rewards and your track"
+        },
+        {
+          "type": "paragraph",
+          "text": "Successful fresh practice earns 10 XP once per family per logical day, up to 30 practice XP per day. Practice continues after the cap. Standalone challenges award 25/50/100 XP once for easy/intermediate/hard solves. Replays and revealed achievements cannot earn another first-solve award. Available hints do not reduce XP; assistance stays in the result. Examples and workspaces do not award verified XP."
+        },
+        {
+          "type": "paragraph",
+          "text": "Verified activity completion counts toward the habit if automatic streak credit is enabled. Substantive learning notes count; page visits, timers and workspace saves alone do not. Your timezone, 04:00 day rollover and freezes still apply. Activity logs never attach themselves to the active mission. Stats separates track, practice and challenge XP."
+        },
+        {
+          "type": "paragraph",
+          "text": "Browsing leaves assessed track and Playground challenge clocks running. Starting another activity requires End scored attempt and switch, which stops the current clock without completion or XP. Its original work and result remain available. Assessed Playground timers run continuously from the original start until completion or explicit end, including time away, browser closure and server restarts. Existing activity rewards still apply. Worked examples and free workspaces can Pause & save and Resume with accumulated practice time."
+        },
+        {
+          "type": "paragraph",
+          "text": "Subjects include cybersecurity, Python and 3D fundamentals. Optional activity feedback records actual work/setup time and whether instructions were clear. Three clear, completed sessions can increase a personal time allowance; authored estimates remain the minimum. Stats shows local observations over 14 days."
+        },
+        {
+          "type": "paragraph",
+          "text": "Some long track tasks have authored checkpoints. Today can suggest a part that fits your time while retaining the full task estimate. Save checkpoint note records partial learning with a return action; it never completes the parent, unlocks a level, or changes a scored clock. Existing private packs receive checkpoints only through their normal reviewed update process."
+        },
+        {
+          "type": "code",
+          "text": "ascend practice 10\nascend playground list --kind quick --minutes 10\nascend playground start example-access\nascend playground history"
+        }
+      ]
+    },
+    {
+      "id": "linux-labs",
+      "title": "Linux labs: local & server",
+      "section": "Practice",
+      "summary": "Open a focused lab page, run locally or on a configured server, and retain your work.",
+      "related": [
+        "playground",
+        "lab-setup",
+        "verification"
+      ],
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Open Playground → Linux labs, or a track’s open-source references. Cards show a brief, level, environment and readiness. Select Open lab for full tasks, setup, commands, evidence, source and license. Each exercise has a shareable link; returning to the catalog keeps your filters."
+        },
+        {
+          "type": "heading",
+          "text": "Run in the browser on a server"
+        },
+        {
+          "type": "paragraph",
+          "text": "When a separate lab server is connected, the seven reviewed recipes offer Launch on server. Open a lab, launch it, choose an input or work file, save your edits and select Check work. API labs have a request console, while BGP labs accept exercise commands on your learner router. Server execution keeps downloads and work on the server; it does not require free disk on your laptop."
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Stop lab and Resume lab keep the same files and absolute deadline. Stopping retains your server slot.",
+            "Finish & keep work exports a result before destroying compute. Download saved work keeps a small JSON bundle.",
+            "Destroy runtime releases compute without requiring a passing submission. Retry cleanup handles retained deletion failures.",
+            "An administrator must connect the separate runner first. The planned 80 GB server starts with two active slots and a 10 GiB reserve; larger VM, cluster, cloud, emulator and model environments still need their specific setup and validation."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Checked on server means the configured runner performed the named answer rubric, policy test or live comparison. The check does not establish independent solving or every earlier action. These results award no XP and do not complete verified track milestones."
+        },
+        {
+          "type": "heading",
+          "text": "Start a reviewed recipe"
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Install the Ascend CLI on the learner’s Linux computer. Run doctor for the recipe to check available tools, platform and free space.",
+            "Start the recipe. The first download needs internet; subsequent starts reuse matching cached assets. --offline skips the Ascend server and keeps results pending until you explicitly sync.",
+            "Use the returned run ID with show. Edit the listed answers.json or policy.json in your saved work directory, then run check. Service recipes also provide a loopback browser URL.",
+            "Use stop and resume to keep the same attempt. Stop does not pause its session deadline. Use finish to export a small result and destroy its owned runtime while retaining your files."
+          ]
+        },
+        {
+          "type": "code",
+          "text": "ascend lab catalog --level starter\nascend local-lab doctor linux-audit-discovery\nascend local-lab start linux-audit-discovery --offline\nascend local-lab show RUN\nascend local-lab check RUN\nascend local-lab finish RUN\nascend local-lab sync RUN"
+        },
+        {
+          "type": "heading",
+          "text": "Available recipes"
+        },
+        {
+          "type": "list",
+          "items": [
+            "linux-audit-discovery: interpret a small Linux audit log and a separate benign control.",
+            "vampi-ownership: compare owner, other-user and anonymous API access in local Docker targets.",
+            "bgp-export-policy: write a small IPv4 export policy for an assigned customer network. It tests a policy model; it does not run a router.",
+            "wrongsecrets-basics: locate three source, configuration and environment secrets in the local WrongSecrets app. Docker is required; browser badges are temporary, while saved answers and notes survive stop/resume.",
+            "bgp-single-session, bgp-session-protection and bgp-prefix-filter: configure real FRR BGP sessions and route advertisements in private local containers. show provides vtysh connection commands; stop/resume retains configuration. The protection checker briefly changes authored external controls to observe rejection and recovery."
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "What the result means"
+        },
+        {
+          "type": "paragraph",
+          "text": "Checked on this PC is local feedback. Answer checked means the server applied its answer rubric. Submission tested (policy model) means a temporary server worker tested your submitted rules. Practice recorded (manual observations) is your own report from a separate environment. These labels do not prove every earlier action, and local-lab receipts award no XP or verified track completion. Local evidence reviewed means Ascend derived checks from submitted observations and their negative controls; the server repeats the same data checks. Local output can be altered, so hashes establish consistency rather than authenticity."
+        },
+        {
+          "type": "heading",
+          "text": "Keep work and free disk space"
+        },
+        {
+          "type": "paragraph",
+          "text": "Saved work, disposable runtime and source cache live in separate directories on your PC. finish releases runtime resources; cache --images can remove unused images acquired by Ascend. It never globally prunes Docker or deletes your notes. Run reconcile after an interrupted start or failed cleanup. If you switch ASCEND_HOME, use a matching lab directory or choose another ASCEND_LAB_HOME."
+        },
+        {
+          "type": "code",
+          "text": "ascend local-lab export RUN\nascend local-lab reconcile\nascend local-lab cache --budget-mib 0 --images"
+        },
+        {
+          "type": "heading",
+          "text": "Established and specialist environments"
+        },
+        {
+          "type": "paragraph",
+          "text": "For the eight environments needing their own VM, cluster, cloud, Android or model setup, prepare a learner-managed workspace. It downloads selected pinned references and saves a README, copyable source commands, environment.json, collector.json and artifact templates. Follow the saved upstream setup on your own computer. Preparation and evidence capture do not launch or destroy that environment."
+        },
+        {
+          "type": "code",
+          "text": "ascend local-lab prepare kubernetes-goat-rbac\nascend local-lab show RUN\nascend local-lab observe RUN service_account_permissions_observed\nascend local-lab capture RUN ARTIFACT observation.json\nascend local-lab check RUN\nascend local-lab finish RUN\nascend local-lab sync RUN"
+        },
+        {
+          "type": "paragraph",
+          "text": "Fill collector.json to select the exact Kubernetes context, emulator serial, AWS profile or FRR container. Collectors perform read-only queries; Android and AWS secret values are excluded. Repair, debugger and LLM traces can be captured from bounded JSON observations. Include the required negative controls. LLM evidence needs at least three distinct baseline and injection trials with actual tool calls. Missing evidence remains unsupported. Finish preserves all work; clean up the actual environment using its upstream plan."
+        }
+      ]
     }
   ]
 }

@@ -757,6 +757,7 @@ legend { font-weight: 550; font-size: .9rem; }
   .pg-catalog-card[data-role='lesson'] .pg-emblem { width: 36px; height: 36px; }
   .pg-catalog-card[data-role='lesson'] .pg-actions { grid-column: 1 / -1; grid-row: auto; flex-direction: row; margin-top: 12px; }
   .pg-session-bar > p { display: none; }
+  .pg-session-bar > .pg-strict-timer-note { display: block; flex-basis: 100%; font-size: .75rem; }
   .pg-session-bar { justify-content: space-between; gap: 10px; }
   .pg-clock span { max-width: 175px; font-size: .7rem; }
   .pg-answer-form, .pg-case-evidence { padding: 18px; }

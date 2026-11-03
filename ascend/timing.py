@@ -85,6 +85,7 @@ def summary(t):
                 r
                 for r in t.playground.history()
                 if r["status"] == "active"
+                or (r["strict_timer"] and r["status"] == "saved")
             ),
             None,
         ),
@@ -112,7 +113,12 @@ def start(t, reference, minutes=None):
         Attempts(t).expire()
         if t.db.rows("external_lab_attempts", "status IN ('preparing','active')"):
             raise ValueError("Finish the local lab before starting a track session")
-        if t.db.rows("activity_runs", "status='active'"):
+        activities = t.db.rows("activity_runs", "status IN ('active','saved')")
+        if any(t.playground.strict_timer(row) for row in activities):
+            raise ValueError(
+                "End the timed Playground challenge before starting a track session"
+            )
+        if any(row["status"] == "active" for row in activities):
             raise ValueError(
                 "Save the active Playground activity before starting a track session"
             )
