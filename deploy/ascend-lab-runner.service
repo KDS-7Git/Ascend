@@ -1,0 +1,29 @@
+[Unit]
+Description=Ascend private lab runner
+After=network-online.target docker.service
+Wants=network-online.target
+Requires=docker.service
+
+[Service]
+Type=simple
+User=ascend-runner
+Group=ascend-runner
+SupplementaryGroups=docker
+EnvironmentFile=/etc/ascend-runner.env
+ExecStart=/opt/ascend-runner/.venv/bin/ascend-lab-runner --home /var/lib/ascend-runner
+WorkingDirectory=/opt/ascend-runner
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=180
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/ascend-runner
+LimitNOFILE=4096
+TasksMax=256
+MemoryMax=768M
+
+[Install]
+WantedBy=multi-user.target

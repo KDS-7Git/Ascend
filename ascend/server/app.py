@@ -164,6 +164,8 @@ def create_app(home=None, auth_mode=None, scheduler=True):
     app = FastAPI(title="Ascend API", version="0.2.0", lifespan=lifespan)
     app.state.home = home
     app.state.nudge_tick = tick
+    from ascend.server.lab_runner import RunnerClient
+    app.state.lab_runner = RunnerClient()
 
     @app.middleware("http")
     async def headers(request, call_next):
@@ -176,7 +178,7 @@ def create_app(home=None, auth_mode=None, scheduler=True):
             return JSONResponse(
                 {"detail": "Cross-origin writes are not allowed"}, status_code=403
             )
-        if request.url.path.startswith("/api/lab-attempts") and request.method == "POST":
+        if request.url.path.startswith(("/api/lab-attempts", "/api/hosted-labs")) and request.method == "POST":
             # Bound the wire body too, including chunked requests without Content-Length.
             body = bytearray()
             async for chunk in request.stream():
@@ -430,6 +432,31 @@ def create_app(home=None, auth_mode=None, scheduler=True):
         from ascend.local_labs.catalog import detail
 
         return detail(lab_id)
+
+    @app.get("/api/hosted-labs/capabilities")
+    def hosted_capabilities(t=Depends(tracker)):
+        return app.state.lab_runner.capabilities()
+
+    @app.get("/api/hosted-labs/runs")
+    def hosted_runs(t=Depends(tracker)):
+        return app.state.lab_runner.runs(t)
+
+    @app.post("/api/hosted-labs/runs")
+    def hosted_start(body: LabAttemptStart, t=Depends(tracker)):
+        return app.state.lab_runner.action(t, "start", data={"recipe_id": body.recipe_id})
+
+    from ascend.local_labs.runner_protocol import Action as HostedAction
+
+    @app.post("/api/hosted-labs/runs/{run_id}/{action}")
+    def hosted_action(run_id: str, action: str, body: HostedAction, t=Depends(tracker)):
+        from ascend.local_labs.runner_protocol import ACTIONS
+        if action not in ACTIONS - {"start"}:
+            raise HTTPException(404, "Unknown server lab action")
+        return app.state.lab_runner.action(t, action, run_id, body.model_dump(exclude_none=True))
+
+    @app.get("/api/hosted-labs/runs/{run_id}/files")
+    def hosted_file(run_id: str, name: str, t=Depends(tracker)):
+        return app.state.lab_runner.file(t, run_id, name)
 
     @app.get("/api/playground")
     def activities(

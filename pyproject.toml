@@ -15,6 +15,7 @@ dependencies = []
 [project.scripts]
 ascend = "ascend.cli:main"
 ascend-server = "ascend.server.__main__:main"
+ascend-lab-runner = "ascend.local_labs.runner:main"
 
 [project.optional-dependencies]
 test = ["pytest>=8"]

@@ -1,0 +1,75 @@
+{
+  "reviewed_on": "2026-11-03",
+  "recipes": [
+    {
+      "recipe_id": "bgp-export-policy",
+      "startup_seconds": 0.281,
+      "initial_status": "fail",
+      "final_status": "pass",
+      "stop_resume_deadline_preserved": true,
+      "export_retained": true,
+      "runtime_destroyed": true
+    },
+    {
+      "recipe_id": "bgp-prefix-filter",
+      "startup_seconds": 2.855,
+      "initial_status": "fail",
+      "final_status": "pass",
+      "stop_resume_deadline_preserved": true,
+      "export_retained": true,
+      "runtime_destroyed": true
+    },
+    {
+      "recipe_id": "bgp-session-protection",
+      "startup_seconds": 2.986,
+      "initial_status": "fail",
+      "final_status": "pass",
+      "stop_resume_deadline_preserved": true,
+      "export_retained": true,
+      "runtime_destroyed": true
+    },
+    {
+      "recipe_id": "bgp-single-session",
+      "startup_seconds": 2.548,
+      "initial_status": "fail",
+      "final_status": "pass",
+      "stop_resume_deadline_preserved": true,
+      "export_retained": true,
+      "runtime_destroyed": true
+    },
+    {
+      "recipe_id": "linux-audit-discovery",
+      "startup_seconds": 0.047,
+      "initial_status": "fail",
+      "final_status": "pass",
+      "stop_resume_deadline_preserved": true,
+      "export_retained": true,
+      "runtime_destroyed": true
+    },
+    {
+      "recipe_id": "vampi-ownership",
+      "startup_seconds": 135.51,
+      "initial_status": "pass",
+      "final_status": "pass",
+      "stop_resume_deadline_preserved": true,
+      "export_retained": true,
+      "runtime_destroyed": true
+    },
+    {
+      "recipe_id": "wrongsecrets-basics",
+      "startup_seconds": 512.498,
+      "initial_status": "fail",
+      "final_status": "pass",
+      "stop_resume_deadline_preserved": true,
+      "export_retained": true,
+      "runtime_destroyed": true
+    }
+  ],
+  "real_control_plane": true,
+  "browser_widths": [
+    390,
+    1440
+  ],
+  "production_reserve_gib": 10,
+  "verification_reserve_gib": 0
+}

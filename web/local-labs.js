@@ -108,10 +108,124 @@ async function renderLabDetail() {
     const execution = labSection('Run this lab'), server = el('div', undefined, 'lab-server'); execution.append(server);
     if (recipe.runnable || recipe.evidence_reviewed) execution.append(labLocalWorkflow(recipe)); root.append(execution);
     const evidence = labSection('Evidence & saved work'); evidence.append(el('p', recipe.evidence_label || 'Learner-submitted observations'), el('p', 'Local artifacts are learner-controlled, award no XP and do not complete verified track milestones. Server checks describe only the behavior they actually observe.', 'small muted')); root.append(evidence);
+    await renderHostedLab(server, recipe);
   } else root.append(el('p', 'This reference has no integrated exercise yet. Review preparation and upstream instructions before choosing an environment.', 'card'));
   if (state.tab !== 'lab' || state.labRef !== id) return;
   const source = el('details', undefined, 'page-section lab-source'); source.append(el('summary', 'Source, requirements & verification'));
   source.append(el('p', `Preparation: ${lab.prerequisites.join('; ')}`), el('p', lab.delivery), labLink('Upstream repository', lab.repository), el('p', `License: ${lab.license.identifier}`), el('p', `Reviewed source: ${recipe?.source?.revision || lab.reviewed_revision || 'Not yet pinned for execution'}`, 'small'));
   if (recipe?.license_review) source.append(el('p', recipe.license_review, 'small'));
   source.append(el('p', lab.upstream_verification), el('p', `Research notes: ${lab.limits}`, 'small muted'), el('p', 'Levels follow prerequisites and are not calibrated across repositories.', 'small muted')); root.append(source);
+}
+
+let hostedPoll;
+const hostedDrafts = new Map();
+const hostedConsoleDrafts = new Map();
+async function renderHostedLab(root, recipe) {
+  clearTimeout(hostedPoll);
+  let capabilities;
+  try { capabilities = await api('hosted-labs/capabilities'); }
+  catch (error) {
+    root.append(el('p', error.message, 'small muted'), button('Retry server connection', () => { root.replaceChildren(); return renderHostedLab(root, recipe); }, 'text-button')); return;
+  }
+  if (!root.isConnected || state.tab !== 'lab') return;
+  if (!capabilities.configured) { root.append(el('p', 'Server labs will be available here when this installation’s server is connected. You can use the local setup below.', 'small muted')); return; }
+  if (!capabilities.recipes.includes(recipe.id)) { root.append(el('p', 'This exercise needs its own environment setup. Review the local plan below; browser launch is not available for it yet.', 'small muted')); return; }
+  const ref = state.labRef;
+  let lastSignature, lastJob;
+  const selectedFiles = new Map();
+  const current = () => root.isConnected && state.tab === 'lab' && state.labRef === ref;
+  async function submit(action, run, data = {}) {
+    const path = action === 'start' ? 'hosted-labs/runs' : `hosted-labs/runs/${run.id}/${action}`;
+    const job = await api(path, action === 'start' ? {recipe_id: recipe.id} : data);
+    lastJob = job.id; lastSignature = null; await refresh();
+  }
+  function download(value, name) {
+    const url = URL.createObjectURL(new Blob([JSON.stringify(value, null, 2)], {type: 'application/json'}));
+    const a = el('a'); a.href = url; a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+  async function draw(data) {
+    root.replaceChildren(); root.append(el('h3', 'Run on the server'));
+    const busy = data.job && ['queued', 'running'].includes(data.job.status);
+    const status = el('p', busy ? `${data.job.action === 'start' ? 'Preparing your lab' : 'Working'}… You can leave this page and return.` : 'Work in your browser. The server keeps the lab files and downloads.', 'small'); status.setAttribute('role', 'status'); root.append(status);
+    const runs = data.runs.filter(r => r.recipe_id === recipe.id);
+    const run = runs.find(r => r.status !== 'destroyed') || runs.at(-1);
+    const active = data.runs.find(r => r.status !== 'destroyed');
+    if (data.job?.status === 'failed') root.append(el('p', data.job.error, 'small lab-server-output'));
+    if (data.job?.result && data.job.run_id === run?.id && ['http', 'router', 'check'].includes(data.job.action)) {
+      root.append(el('pre', typeof data.job.result.output === 'string' ? data.job.result.output : JSON.stringify(data.job.result, null, 2), 'pg-text-evidence lab-server-output'));
+    }
+    if (!run || run.status === 'destroyed') {
+      if (active) root.append(el('p', `Your ${active.title} lab is ${active.status}. Finish or destroy it before starting another.`), labRouteLink('Open your active lab', active.recipe_id));
+      else { const start = button(run ? 'Start a new server lab' : 'Launch on server', () => submit('start'), ''); start.disabled = busy; root.append(start); }
+    }
+    if (!run) return;
+    root.append(el('p', `${run.status} · deadline ${new Date(run.expires_at * 1000).toLocaleString()}`, 'small muted'));
+    if (run.cleanup_error) root.append(el('p', run.cleanup_error, 'small'));
+    const actions = el('div', undefined, 'pg-actions');
+    const add = (label, action, data = {}) => { const b = button(label, () => submit(action, run, data), 'secondary'); b.disabled = busy; actions.append(b); };
+    if (run.status === 'ready') { add('Check work', 'check'); add('Stop lab', 'stop'); }
+    if (run.status === 'stopped') add('Resume lab', 'resume');
+    if (['ready', 'stopped'].includes(run.status)) add('Finish & keep work', 'finish');
+    if (run.status !== 'destroyed') add(run.status === 'cleanup_failed' ? 'Retry cleanup' : 'Destroy runtime', 'destroy');
+    const exportButton = button('Download saved work', async () => {
+      const files = {};
+      for (const name of run.files.filter(n => n.startsWith('work/'))) files[name] = (await api(`hosted-labs/runs/${run.id}/files?${new URLSearchParams({name})}`)).content;
+      download({run_id: run.id, recipe_id: recipe.id, result: run.result, evidence_label: run.evidence_label, files}, `${recipe.id}-${run.id}.json`);
+    }); exportButton.disabled = busy; actions.append(exportButton); root.append(actions);
+    if (run.result) root.append(el('p', `${run.evidence_label}: ${run.result.status}. No XP or verified track completion.`, 'small'));
+    if (run.files.length) {
+      const fields = el('div'); root.append(fields);
+      const file = playgroundField(fields, 'Lab file', selectedFiles.get(run.id) || run.files.find(n => n.startsWith('input/')) || run.files[0], 'text', run.files.map(n => [n, n]));
+      const editorLabel = el('label', 'File contents'); editorLabel.htmlFor = 'hosted-file-content';
+      const editor = el('textarea'); editor.id = 'hosted-file-content'; editor.spellcheck = false; editor.setAttribute('aria-describedby', 'hosted-file-help');
+      const help = el('p', '', 'small muted'); help.id = 'hosted-file-help';
+      const save = button('Save file', async () => { await submit('save', run, {name: file.value, content: editor.value}); }); save.disabled = true;
+      fields.append(editorLabel, editor, help, save);
+      let loaded;
+      async function loadFile() {
+        const name = file.value; selectedFiles.set(run.id, name); save.disabled = true;
+        const data = await api(`hosted-labs/runs/${run.id}/files?${new URLSearchParams({name})}`);
+        if (!current() || !fields.isConnected || file.value !== name) return;
+        loaded = `${run.id}/${name}`; editor.value = hostedDrafts.get(loaded) ?? data.content; editor.readOnly = !data.editable;
+        save.disabled = busy || !data.editable; help.textContent = data.editable ? 'Save your changes before checking. Unsaved edits stay in this tab.' : 'Reference or saved file · read only';
+      }
+      file.addEventListener('change', () => loadFile().catch(error => notify(error.message, 'error')));
+      editor.addEventListener('input', () => { if (loaded) hostedDrafts.set(loaded, editor.value); });
+      await loadFile();
+    }
+    if (run.status !== 'ready') return;
+    if (run.targets.length) {
+      const draft = hostedConsoleDrafts.get(run.id) || {};
+      const request = el('details'); request.open = !!draft.open; request.append(el('summary', 'Send a request to the lab')); const fields = el('div'); request.append(fields);
+      const target = playgroundField(fields, 'Lab target', draft.target || run.targets[0], 'text', run.targets.map(t => [t, t]));
+      const method = playgroundField(fields, 'HTTP method', draft.method || 'GET', 'text', ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']);
+      const path = playgroundField(fields, 'Request path', draft.path || '/', 'text');
+      const token = playgroundField(fields, 'Lab bearer token (optional)', draft.token || '', 'password'); token.autocomplete = 'off';
+      const bodyLabel = el('label', 'JSON request body (optional)'), body = el('textarea'); body.id = 'hosted-request-body'; bodyLabel.htmlFor = body.id; fields.append(bodyLabel, body);
+      body.value = draft.body || '';
+      const remember = () => hostedConsoleDrafts.set(run.id, {open: request.open, target: target.value, method: method.value, path: path.value, token: token.value, body: body.value});
+      fields.addEventListener('input', remember); request.addEventListener('toggle', remember);
+      const send = button('Send lab request', () => { remember(); return submit('http', run, {target: target.value, method: method.value, path: path.value, token: token.value, body: body.value}); }); send.disabled = busy; fields.append(send); root.append(request);
+    }
+    if (run.router) {
+      root.append(el('p', `Router AS: ${run.fixture.router_as}. Peers: ${Object.entries(run.addresses).map(([n, a]) => `${n} ${a}`).join(' · ')}`, 'small'));
+      root.append(el('p', 'Configure rtr using FRR commands. The console supports BGP inspection, neighbors, authentication and prefix lists. Use write memory to save and restart the lab’s BGP sessions against the external controls.', 'small'));
+      const label = el('label', 'Router commands (one per line)'), input = el('textarea'); input.id = 'hosted-router-commands'; label.htmlFor = input.id; input.value = hostedConsoleDrafts.get(run.id)?.commands || 'show bgp ipv4 unicast summary\nshow bgp ipv4 unicast';
+      input.addEventListener('input', () => hostedConsoleDrafts.set(run.id, {commands: input.value}));
+      const send = button('Run router commands', () => submit('router', run, {commands: input.value.split('\n').map(c => c.trim()).filter(Boolean)})); send.disabled = busy; root.append(label, input, send);
+    }
+  }
+  async function refresh() {
+    clearTimeout(hostedPoll);
+    try {
+      const data = await api('hosted-labs/runs'); if (!current()) return;
+      const signature = JSON.stringify([data.job?.id, data.job?.status, data.runs.map(r => [r.id, r.status, r.result])]);
+      if (signature !== lastSignature) { lastSignature = signature; await draw(data); }
+      if (lastJob && data.job?.id === lastJob && data.job.status === 'complete') { lastJob = null; notify('Server lab operation completed.', 'success'); }
+      if (current()) hostedPoll = setTimeout(refresh, data.job && ['queued', 'running'].includes(data.job.status) ? 1500 : 15000);
+    } catch (error) {
+      if (current()) { root.replaceChildren(el('p', error.message, 'small'), button('Retry server connection', refresh, 'text-button')); lastSignature = null; }
+    }
+  }
+  await refresh();
 }
