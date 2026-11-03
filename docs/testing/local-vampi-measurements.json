@@ -1,0 +1,104 @@
+{
+  "measured_on": "2026-11-03",
+  "platform": "linux-x86_64",
+  "image": "erev0s/vampi@sha256:7ba0b0a8a2f2a33059054b13c98e932c3102687bd3f687df8952e36575927f1b",
+  "download_bytes": 42964946,
+  "download_scope": "Pinned compressed OCI layers/config plus selected assets; shared layers may already be cached. Not a packet-level traffic measurement.",
+  "image_pulled": true,
+  "expanded_bytes": 186378942,
+  "peak_disk_bytes": 204083200,
+  "disk_scope": "Observed host filesystem delta at lifecycle checkpoints; includes Docker storage and unrelated concurrent filesystem activity. Image and volume bytes are also recorded independently.",
+  "startup_cold_seconds": 42.74391667499731,
+  "startup_warm_seconds": 2.1066893610004627,
+  "stats": [
+    {
+      "BlockIO": "0B / 254kB",
+      "CPUPerc": "0.05%",
+      "Container": "ascend-ll-89768932-fded99555793cb8a-vulnerable",
+      "ID": "f05d83804e56",
+      "MemPerc": "40.10%",
+      "MemUsage": "51.33MiB / 128MiB",
+      "Name": "ascend-ll-89768932-fded99555793cb8a-vulnerable",
+      "NetIO": "11.3kB / 6.1kB",
+      "PIDs": "2"
+    },
+    {
+      "BlockIO": "0B / 254kB",
+      "CPUPerc": "0.04%",
+      "Container": "ascend-ll-89768932-fded99555793cb8a-fixed",
+      "ID": "4ab7e5f5ee22",
+      "MemPerc": "40.23%",
+      "MemUsage": "51.49MiB / 128MiB",
+      "Name": "ascend-ll-89768932-fded99555793cb8a-fixed",
+      "NetIO": "11kB / 6.21kB",
+      "PIDs": "2"
+    },
+    {
+      "BlockIO": "0B / 0B",
+      "CPUPerc": "0.08%",
+      "Container": "ascend-ll-89768932-fded99555793cb8a-proxy",
+      "ID": "3f4fb742a572",
+      "MemPerc": "16.27%",
+      "MemUsage": "10.41MiB / 64MiB",
+      "Name": "ascend-ll-89768932-fded99555793cb8a-proxy",
+      "NetIO": "33.7kB / 24.4kB",
+      "PIDs": "3"
+    }
+  ],
+  "volumes": {
+    "vulnerable": {
+      "bytes": 24576,
+      "free_bytes": 4422443008,
+      "memory_peak_bytes": 61231104,
+      "pids_peak": 8,
+      "cpu_stat": "usage_usec 786959\nuser_usec 664122\nsystem_usec 122837\nnice_usec 0\ncore_sched.force_idle_usec 0\nnr_periods 20\nnr_throttled 12\nthrottled_usec 552200\nnr_bursts 0\nburst_usec 0\n"
+    },
+    "fixed": {
+      "bytes": 24576,
+      "free_bytes": 4422443008,
+      "memory_peak_bytes": 62111744,
+      "pids_peak": 8,
+      "cpu_stat": "usage_usec 738148\nuser_usec 629714\nsystem_usec 108434\nnice_usec 0\ncore_sched.force_idle_usec 0\nnr_periods 18\nnr_throttled 12\nthrottled_usec 563390\nnr_bursts 0\nburst_usec 0\n"
+    }
+  },
+  "proxy": {
+    "memory_peak_bytes": 17530880,
+    "pids_peak": 9
+  },
+  "peak_memory_bytes": 165818368,
+  "memory_limit_bytes": 335544320,
+  "memory_scope": "Sum of per-container cgroup memory.peak; includes the measurement process. Steady-state Docker stats are recorded separately.",
+  "cpu_limit_total": 1.25,
+  "pids_limit_total": 160,
+  "build_cache_bytes": 0,
+  "residual_owned_resources": 0,
+  "saved_work_preserved": true,
+  "scope": "Real image source audit, six comparison probes, wrong fixed configuration, loopback/non-root/limits inspection, cross-origin refusal, volume persistence through stop/resume, export/finish, missing container, busy volume failure/retry, killed companion, hard expiry and idempotent cleanup. SQLite exhaustion at the 16 MiB limit, request size bound, error for a missing target, and acquired-image cache cleanup.",
+  "cold_acquisition_and_quota_test": {
+    "startup_seconds": 42.74391667499731,
+    "image_pulled": true,
+    "observed_disk_delta_bytes": 204083200,
+    "cgroup_peak_memory_sum_bytes": 165818368,
+    "quota_failure": {
+      "book_count": 272,
+      "http_status": 500
+    },
+    "database_bytes_at_limit": 16744448,
+    "cache_cleanup": {
+      "cache_bytes": 0,
+      "removed": [
+        "e3e05b9d17e397de650aa7a9a9784cf076ba8bf566efebe88a0e24ecb2d2b92a"
+      ],
+      "protected_objects": 0,
+      "saved_work_removed": false,
+      "provider_images_removed": false,
+      "images": {
+        "removed": [
+          "erev0s/vampi@sha256:7ba0b0a8a2f2a33059054b13c98e932c3102687bd3f687df8952e36575927f1b"
+        ],
+        "retained": [],
+        "errors": []
+      }
+    }
+  }
+}

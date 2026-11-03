@@ -1,0 +1,35 @@
+{
+  "measured_on": "2026-11-03",
+  "platform": "linux-x86_64",
+  "download_bytes": 2969,
+  "expanded_bytes": 3088,
+  "peak_disk_bytes": 36677,
+  "peak_allocated_disk_bytes": 106496,
+  "startup_cold_seconds": 0.9478746790045989,
+  "startup_warm_seconds": 0.0023373609947157092,
+  "peak_memory_bytes": 11313152,
+  "worker_samples": [
+    {
+      "wall_seconds": 0.00036291699507273734,
+      "cpu_seconds": 0.023252,
+      "peak_memory_bytes": 11255808
+    },
+    {
+      "wall_seconds": 0.0004086940025445074,
+      "cpu_seconds": 0.015773999999999996,
+      "peak_memory_bytes": 11255808
+    },
+    {
+      "wall_seconds": 0.0013131949963280931,
+      "cpu_seconds": 0.030024000000000002,
+      "peak_memory_bytes": 11313152
+    }
+  ],
+  "worker_cpu_seconds_limit": 2,
+  "worker_address_space_bytes_limit": 134217728,
+  "worker_wall_seconds_limit": 5,
+  "worker_child_processes_limit": 0,
+  "persistent_processes": 0,
+  "after_prune_cache_bytes": 0,
+  "scope": "Actual pinned downloads and local prepare/check/stop/resume/export/finish/destroy/reconcile/cache lifecycle. Worker samples use correct policy and a 32-rule policy with route leaks. CPU and memory are measured inside each fresh data-only worker; no router software runs. Disk includes retained work in four disposable attempts, sampled every 5ms. Server assignment, HTTP sync, resource timeout and malformed-result handling are tested separately."
+}

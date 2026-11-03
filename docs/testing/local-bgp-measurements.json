@@ -1,0 +1,120 @@
+[
+  {
+    "recipe_id": "bgp-single-session",
+    "startup_seconds": 47.10254352300399,
+    "startup_warm_seconds": 1.6912411299999803,
+    "cycle_seconds": 62.64131628600444,
+    "metrics": {
+      "download_bytes": 20560,
+      "image_pulled": true,
+      "image_bytes": 235732466,
+      "image_compressed_bytes": 69863166,
+      "build_cache_bytes": 0,
+      "memory_limit_per_router": 134217728,
+      "cpus_per_router": 0.5,
+      "pids_per_router": 32,
+      "startup_seconds": 47.10254352300399
+    },
+    "checks": [
+      {
+        "id": "session.x1",
+        "status": "pass"
+      }
+    ],
+    "peak_memory_bytes": 34463744,
+    "peak_filesystem_delta_bytes": 244092928,
+    "measurement_scope": "Host filesystem sampled every 50 ms; unrelated activity may contribute. Memory is summed cgroup peaks including measurement execs. Images were absent at each start."
+  },
+  {
+    "recipe_id": "bgp-session-protection",
+    "startup_seconds": 75.3680995820032,
+    "startup_warm_seconds": 1.9966854699960095,
+    "cycle_seconds": 269.36063307499717,
+    "metrics": {
+      "download_bytes": 2872,
+      "image_pulled": true,
+      "image_bytes": 235732466,
+      "image_compressed_bytes": 69863166,
+      "build_cache_bytes": 0,
+      "memory_limit_per_router": 134217728,
+      "cpus_per_router": 0.5,
+      "pids_per_router": 32,
+      "startup_seconds": 75.3680995820032
+    },
+    "checks": [
+      {
+        "id": "session.x1",
+        "status": "pass"
+      },
+      {
+        "id": "prefix.x1",
+        "status": "pass"
+      },
+      {
+        "id": "session.x2",
+        "status": "pass"
+      },
+      {
+        "id": "prefix.x2",
+        "status": "pass"
+      },
+      {
+        "id": "gtsm.rejected",
+        "status": "pass"
+      },
+      {
+        "id": "md5.rejected",
+        "status": "pass"
+      }
+    ],
+    "peak_memory_bytes": 55558144,
+    "peak_filesystem_delta_bytes": 251170816,
+    "measurement_scope": "Host filesystem sampled every 50 ms; unrelated activity may contribute. Memory is summed cgroup peaks including measurement execs. Images were absent at each start."
+  },
+  {
+    "recipe_id": "bgp-prefix-filter",
+    "startup_seconds": 16.468134659000498,
+    "startup_warm_seconds": 2.3505593450026936,
+    "cycle_seconds": 52.636385952995624,
+    "metrics": {
+      "download_bytes": 2695,
+      "image_pulled": true,
+      "image_bytes": 235732466,
+      "image_compressed_bytes": 69863166,
+      "build_cache_bytes": 0,
+      "memory_limit_per_router": 134217728,
+      "cpus_per_router": 0.5,
+      "pids_per_router": 32,
+      "startup_seconds": 16.468134659000498
+    },
+    "checks": [
+      {
+        "id": "session.x1",
+        "status": "pass"
+      },
+      {
+        "id": "adv_pfx.x1",
+        "status": "pass"
+      },
+      {
+        "id": "drop_pfx.x1",
+        "status": "pass"
+      },
+      {
+        "id": "session.x2",
+        "status": "pass"
+      },
+      {
+        "id": "adv_pfx.x2",
+        "status": "pass"
+      },
+      {
+        "id": "drop_pfx.x2",
+        "status": "pass"
+      }
+    ],
+    "peak_memory_bytes": 56393728,
+    "peak_filesystem_delta_bytes": 238661632,
+    "measurement_scope": "Host filesystem sampled every 50 ms; unrelated activity may contribute. Memory is summed cgroup peaks including measurement execs. Images were absent at each start."
+  }
+]

@@ -4,7 +4,7 @@
     {
       "id": "ethical-hacking-foundations",
       "title": "Ethical Hacking Foundations",
-      "version": 5,
+      "version": 6,
       "category": "Foundations",
       "aliases": [
         "ethical hacking",
@@ -64,7 +64,23 @@
               "\u201cConnection refused\u201d means curl could not reach a running server at that address/port. Check Terminal A and the URL. This differs from 404, which is a response from a running server.",
               "A 200 response demonstrates that this page was served. It does not demonstrate a vulnerability, an exploit, authentication or authorization. This is the networking setup skill you will use in later security labs."
             ],
-            "setup": "Use Python 3, curl and two terminal windows on your own Ubuntu/Linux computer. This walkthrough creates its own temporary page; no course, account or downloaded app is needed. Check the tools before timing. The optional ZIP contains inputs for later tasks; do not start its service.py for this walkthrough."
+            "setup": "Use Python 3, curl and two terminal windows on your own Ubuntu/Linux computer. This walkthrough creates its own temporary page; no course, account or downloaded app is needed. Check the tools before timing. The optional ZIP contains inputs for later tasks; do not start its service.py for this walkthrough.",
+            "checkpoints": [
+              {
+                "id": "tools-and-address",
+                "title": "Check tools and explain the address",
+                "minutes": 10,
+                "done_when": "Check Python 3 and curl versions in your terminals. In your own words, state what 127.0.0.1 and port 8765 identify.",
+                "next_step": "Open the full task to create the temporary page and compare two responses."
+              },
+              {
+                "id": "response-notes",
+                "title": "Capture the two response observations",
+                "minutes": 10,
+                "done_when": "After following the full task setup, record both HTTP status lines and body observations in your notes. Stop the local server before leaving.",
+                "next_step": "Resume the full task to save the report at its required path and review the explanations."
+              }
+            ]
           },
           "milestone_guidance": {
             "title": "Repeat your HTTP lab on a different port",

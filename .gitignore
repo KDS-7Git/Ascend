@@ -23,3 +23,11 @@ docs/*.toc
 docker/wheelhouse/
 
 .ascend-labs/
+
+# Local development captures and machine-specific execution records.
+docs/screenshots/
+docs/testing/*.txt
+docs/testing/*-deployment.json
+docs/testing/*-implementation.md
+docs/testing/hosted-lab-cleanup.json
+docs/testing/local-development/

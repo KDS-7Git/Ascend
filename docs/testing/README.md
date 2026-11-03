@@ -1,5 +1,13 @@
 # Verification record
 
+The current Playground and Linux-lab implementation passed 417 regression tests,
+including phone/desktop challenge timing, grouped history and accessibility checks.
+All seven reviewed server-runner recipes passed real lifecycle validation.
+Reproduce environment checks with [the hosted acceptance script](../../scripts/verify_hosted_labs.py)
+and [the runner setup guide](../design/server-lab-runner.md). Source/image reviews
+and measured resource requirements are retained below; development captures, raw
+logs and machine-specific deployment inventories stay local.
+
 All implementation milestones were tested before moving to the next phase.
 Initial failing test runs are retained as `phase-*-red.txt`; these are historical
 test-first evidence, not unresolved failures.

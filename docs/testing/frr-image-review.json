@@ -1,0 +1,63 @@
+{
+  "image": "frrouting/frr@sha256:1e3a1d5335a2e8a4416b80e5195f2fc22245278e23555be6769b1ec2c52b97d9",
+  "manifest": {
+    "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+    "schemaVersion": 2,
+    "config": {
+      "mediaType": "application/vnd.docker.container.image.v1+json",
+      "digest": "sha256:4bd401df981a061148af3ffbea4ca15688aa8b2cb6dcfbc5f290dafde5eddd27",
+      "size": 2706
+    },
+    "layers": [
+      {
+        "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+        "digest": "sha256:9621f1afde84053b2f9b6ff34fc7f7460712247c01cbab483c5fa7132cf782ca",
+        "size": 2823512
+      },
+      {
+        "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+        "digest": "sha256:6306f7582a7a94670b5cb2d5e1f8dd2c44e5489026ab504172b874e57b6fa2e2",
+        "size": 119
+      },
+      {
+        "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+        "digest": "sha256:790462042e1047eb43cb8ddee235b6faecc8581d973d224eeda62296531e139b",
+        "size": 23675101
+      },
+      {
+        "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+        "digest": "sha256:19d5e49440dd8560a7e89d0cd40eaee65929b80d2951d92dcd913ce4166af9c2",
+        "size": 43359574
+      },
+      {
+        "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+        "digest": "sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1",
+        "size": 32
+      },
+      {
+        "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+        "digest": "sha256:ff9bba182ee0fe0128ba81d1a5ae3176df7578669e7f2492758379dee54a68d0",
+        "size": 1786
+      },
+      {
+        "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+        "digest": "sha256:1c78bb868fcb28fa08b9386c38ead803946ae99e1460a9a0717835dd31ae2d3f",
+        "size": 336
+      }
+    ]
+  },
+  "architecture": "linux/amd64",
+  "scope": "Pinned FRR control-plane image; selected binary/source metadata and installed packages. No whole-image reproducible-build attestation.",
+  "version": "bgpd version 8.4.1_git\nCopyright 1996-2005 Kunihiro Ishiguro, et al.\nconfigured with:\n\t'--prefix=/usr' '--sbindir=/usr/lib/frr' '--sysconfdir=/etc/frr' '--libdir=/usr/lib' '--localstatedir=/var/run/frr' '--enable-rpki' '--enable-vtysh' '--enable-multipath=64' '--enable-vty-group=frrvty' '--enable-user=frr' '--enable-group=frr' 'CC=gcc' 'CXX=g++'\n",
+  "packages": "musl-1.2.2-r7\nbusybox-1.34.1-r7\nalpine-baselayout-3.2.0-r18\nalpine-keys-2.4-r1\nca-certificates-bundle-20220614-r0\nlibcrypto1.1-1.1.1q-r0\nlibssl1.1-1.1.1q-r0\nlibretls-3.3.4-r3\nssl_client-1.34.1-r7\nzlib-1.2.12-r3\napk-tools-2.12.7-r3\nscanelf-1.3.3-r0\nmusl-utils-1.2.2-r7\nlibc-utils-0.7.2-r3\ntini-0.19.0-r0\njson-c-0.15-r1\nc-ares-1.18.1-r0\niproute2-5.15.0-r0\nlibbz2-1.0.8-r1\nfts-1.2.7-r1\nxz-libs-5.2.5-r1\nlibelf-0.185-r0\nlibmnl-1.0.4-r2\nlibnftnl-1.2.1-r0\niptables-1.8.7-r1\niproute2-tc-5.15.0-r0\niproute2-minimal-5.15.0-r0\niproute2-ss-5.15.0-r0\nexpat-2.5.0-r0\nlibffi-3.4.2-r1\ngdbm-1.22-r0\nlibgcc-10.3.1_git20211027-r0\nlibstdc++-10.3.1_git20211027-r0\nmpdecimal-2.5.1-r1\nncurses-terminfo-base-6.3_p20211120-r1\nncurses-libs-6.3_p20211120-r1\nreadline-8.1.1-r0\nsqlite-libs-3.36.0-r0\npython3-3.9.15-r0\nbash-5.1.16-r0\nlibcap-2.61-r0\nlibssh-0.9.6-r1\nrtrlib-0.8.0-r0\npcre2-10.40-r0\nlibyang-2.0.112-r0\nfrr-8.4.1_git-r0\nfrr-dbg-8.4.1_git-r0\nfrr-dev-8.4.1_git-r0\nfrr-doc-8.4.1_git-r0\n",
+  "source_revision": "70151e264bbb697a10fed711aa8c937d4f0009b1",
+  "source_tag": "frr-8.4.1",
+  "source_resolution": "git ls-remote resolved the annotated release tag; image version reports 8.4.1_git. No binary reproducible-build claim.",
+  "license": {
+    "role": "reference",
+    "path": "FRR-COPYING",
+    "url": "https://raw.githubusercontent.com/FRRouting/frr/70151e264bbb697a10fed711aa8c937d4f0009b1/COPYING",
+    "sha256": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643",
+    "bytes": 18092
+  }
+}

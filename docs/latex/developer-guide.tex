@@ -139,3 +139,163 @@ reproduces the numbered migration sources used by the running code. Migrations
 are sequential transactions over a WAL-backed database; do not open a newer
 schema with an older binary. Change shared semantics in the application layer and
 check both standalone and remote callers before release.
+
+
+\subsection{Linux local labs and bounded grading}
+\path{ascend/local_labs/catalog.py} is the separate reference and recipe catalog
+shared by tracks, the Linux labs tab and CLI. The research register is published
+with \path{scripts/build_lab_catalog.py}; packaged runtime data lives in
+\path{ascend/local_labs/resources}. Adding a reference never activates an adapter.
+Recipe activation requires immutable downloads, reviewed code, versioned checks,
+platform measurements and lifecycle evidence. The HTTP command gateway rejects
+client-only runtime operations, even on a single-user server.
+
+Migration 0011 adds account/nonce/version-bound external lab attempts and the
+foreground-session guards. Migration 0012 adds assigned policy cases. Local run
+state, download cache and saved work are separate and bound to the local profile;
+the API cannot launch the companion or read a submitted local path. The Docker
+adapters inventory resources before provisioning, verify ownership labels,
+enforce internal target networks and loopback proxies, retain failed cleanup
+state and reconcile after process interruption. Source/image eviction is scoped
+to acquired, unused objects; user work is retained.
+
+\path{ascend/local_labs/prefix_worker.py} is a fixed, data-only IPv4 policy
+checker invoked with isolated Python startup in a temporary directory. It
+accepts at most 64 KiB and 32 declarative rules, with Linux CPU, address-space,
+process, descriptor, output and wall-clock limits. The parent checks its pinned
+hash, output version and complete checkset and reaps failures. Partitioning route
+indices at every rule boundary proves equivalence over the supported policy
+language; this is not a general sandbox for executable submissions. Online cases
+are server-issued; offline case keys derive a canonical case on the server.
+Source, recipe, checker, worker hash and case bind the fixture identity.
+
+\path{ascend/local_labs/upstream.py} adapts selected Labtainers/netlab report
+semantics and strict specialist observation templates without launching those
+providers. Empty goals and unsupported/warning exits never become passing
+grades. Manual observations stay explicitly manual, including claimed environment
+hashes and model trial counts. Temporary server policy tests and local reports
+issue no track proof or reward. Consult
+\path{scripts/verify_local_file_lab.py} and \path{scripts/verify_hosted_labs.py}
+for reproducible runtime checks, and \path{docs/design/shared-lab-runner-evaluation.md} for the remaining capability
+gates and Chall-Manager evaluation.
+
+\path{ascend/local_labs/bgp.py} translates three selected BGP Labs fixtures into
+bounded, non-root FRR control-plane containers. The immutable image and source
+license are independently pinned. All capabilities are dropped, roots are read
+only, and the internal network publishes no ports. Named volumes retain router
+configuration; authored negative probes restore external controls afterward.
+The adapter and launcher hashes bind the recipe's fixture identity.
+Route checks require a stable customer/withheld-prefix control pair after
+session establishment. Protection checks reload the saved learner configuration
+before probing so earlier TTL settings cannot determine fresh-socket behavior.
+The launcher uses the original absolute expiry, including after stop/resume.
+
+\path{ascend/local_labs/workspaces.py} prepares learner-managed lab workspaces
+without reserving a foreground session or launching infrastructure.
+\path{ascend/local_labs/collectors.py} provides bounded read-only tool adapters
+with explicit provider/device/account selection and secret-value redaction.
+\path{ascend/local_labs/evidence.py} checks eleven artifact contracts, including
+paired identities, distinct objects, negative controls and repeated model trials.
+The server repeats the same data checks and never executes uploaded code.
+Artifact consistency is distinct from provenance; these receipts retain local
+authority, zero XP and no verified-track equivalence. Finished evidence workspaces
+are immutable, reset creates a separate workspace and synchronization is explicit.
+
+\subsection{Independent activity architecture}
+\path{ascend/playground/catalog.py} contains versioned definitions with stable
+reward identities, roles, skill prerequisites, preparation references, estimates,
+device/setup needs, formats and help policies. \path{ascend/playground/fixtures.py}
+keeps public evidence separate from private expected answers and debriefs. It
+reuses native access and subnet generation without calling track marking. Existing
+installed pack copies and assessment receipts are never rewritten.
+
+\path{ascend/engine/practice.py} implements pure readiness, review intervals of
+1/3/7/14 days, and recommendation ranking. Input is explicit skill evidence and
+attempt history; total XP and mission progress are not readiness inputs. Examples
+introduce skills; qualifying independent cases and transfer checks support
+readiness. A setup report is saved work, not a failed conceptual check.
+
+Migration 0008 adds user-scoped activity runs, evidence, bookmarks and reward
+records, plus an optional activity-run reference on entries. Runs retain the full
+versioned definition, fixture, meaningful fixture identity, prerequisite snapshot,
+work, checks, hints and reveal state. The public API uses explicit projections and
+never sends the private rubric before completion or authorized review. Authored
+variant exhaustion is familiar practice. Semantic fixture identities prevent
+cosmetic request renaming from creating new access cases.
+
+Migration 0009 adds accumulated elapsed time, active clock intervals, per-skill
+tour preferences, optional session feedback and local selection/resume/return
+observations. Migration files are captured when the storage module loads, so a
+running old server cannot apply a newly written schema ahead of its matching code.
+Restart the server after updating backend code. The browser explains stale-server
+responses instead of presenting raw missing-field errors.
+
+\path{ascend/playground/guidance.py} supplies authored steps only for examples.
+Tour writes never affect completion, rewards or readiness; autosaves preserve the
+server's current tour position. \path{ascend/playground/insights.py} keeps user-scoped
+feedback and a 14-day summary. Personal estimates require three distinct completed,
+clear, problem-free reports and use their 75th percentile with the authored estimate
+as a floor. Latest misses, due review, unwanted repeats and exhausted cases inform
+ranking. Examples cannot delay assessment review or establish independent mastery.
+
+Migration 0010 stores authored checkpoint completion separately, referencing its
+partial learning entry and retaining a definition snapshot. Undoing that entry
+removes its checkpoint via a foreign key. \path{ascend/checkpoints.py} requires an
+open parent and writes an ordinary partial log; it never calls marking or timing.
+Checkpoint durations describe parts, while Today retains the parent's full estimate.
+
+Starts, completion, evidence and reward writes use SQLite immediate transactions.
+Partial indexes and cross-table triggers enforce one foreground activity or track
+session. Starting Playground requires an explicit scored-session end when needed;
+starting a track requires saving the active activity. Completion is idempotent;
+ledger uniqueness enforces stable first-solve and family/day practice awards.
+Activity logs write a null mission directly rather than using the active-mission
+fallback in ordinary logging. A unique run/day entry suppresses duplicate automatic
+and manual habit events. Saved work may use last-write-wins edits; final results and
+awards remain immutable. Revealed/familiar evidence cannot demonstrate a fresh
+independent solve.
+
+The shared \texttt{Tracker.playground} service supplies local CLI, remote command
+transport and dedicated HTTP routes. \path{web/playground.js} renders catalog,
+editable workspaces, preparation, limited hints, review and result actions using
+text DOM construction. Browser drafts save to the server and use session storage
+only for unsaved fallback. The service worker includes the new script; the normal
+wheel builder copies canonical web assets and includes the Python content package.
+
+Activity URLs use \texttt{\#activity/RUN}; legacy Playground run links redirect.
+The focused page omits catalog tabs and finished track-session chrome. Examples
+have an inline keyboard-accessible walkthrough and a specific reflection prompt;
+challenges keep independent evidence questions. Assessed challenge elapsed time
+is anchored to the original creation time and continues while away, until
+completion or explicit end. Save cannot pause it. Examples and free workspaces
+retain pause/resume persistence. Existing fixed activity rewards still apply.
+History groups attempts by activity ID across versions, with individual review
+at \texttt{\#attempts/ACTIVITY}; raw API history retains every run.
+
+Run \texttt{pytest tests/test\_playground.py} for migration, ownership, reward,
+concurrency, readiness, privacy and generated-fixture checks. Run
+\path{scripts/playground_smoke.py} with Playwright for the desktop/phone flow and
+screenshots. Broader subjects, provisioned execution environments and user pilots
+for timing/readiness calibration remain follow-up work.
+
+\subsection{Account-scoped browser runner}
+\path{ascend/local_labs/hosted.py} controls reviewed adapters in separate
+account-scoped profiles. \path{ascend/local_labs/runner.py} supplies the private
+HTTP service, bounded request schema, machine authentication and restart sweep.
+\path{ascend/server/lab_runner.py} derives account scopes from the installation
+identity and authenticated account, then forwards only fixed control operations.
+The web process never creates the provider runtime and continues to reject local
+CLI operations. There is no arbitrary shell, submitted executable or target URL.
+A single worker records queued operations and outcomes; process ownership is
+locked for each runner home. Inventory precedes provisioning. Failed exports
+retain compute; failed deletions retain owned resources and capacity reservations.
+The 30-second reconciliation loop and container deadlines cover expired runs.
+
+\path{web/local-labs.js} presents compact Playground cards and a shareable
+\texttt{\#lab/ID} detail route. Recipe links, browser history and catalog filter
+retention are tested on desktop and phone. Details contain setup, commands,
+evidence, sources and the optional server workspace. Server observations are
+labelled separately from learner-controlled local results and carry no XP or
+verified track credit. Consult \path{tests/test_hosted_labs.py},
+\path{tests/test_local_lab_browser.py} and
+\path{scripts/verify_hosted_labs.py} for protocol and real deployment acceptance.

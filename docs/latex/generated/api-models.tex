@@ -1,5 +1,218 @@
 \subsection{Generated HTTP request and validation schemas}
 These schemas come from the current OpenAPI model definitions. Business rules and additional status codes are documented in the endpoint reference.
+\subsubsection{Action}
+\begin{verbatim}
+{
+  "properties": {
+    "recipe_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 100
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Recipe Id"
+    },
+    "name": {
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 256
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Name"
+    },
+    "content": {
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 262144
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Content"
+    },
+    "target": {
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 100
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Target"
+    },
+    "path": {
+      "type": "string",
+      "maxLength": 2048,
+      "title": "Path",
+      "default": "/"
+    },
+    "method": {
+      "type": "string",
+      "maxLength": 10,
+      "title": "Method",
+      "default": "GET"
+    },
+    "body": {
+      "type": "string",
+      "maxLength": 65536,
+      "title": "Body",
+      "default": ""
+    },
+    "token": {
+      "type": "string",
+      "maxLength": 4096,
+      "title": "Token",
+      "default": ""
+    },
+    "commands": {
+      "anyOf": [
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "maxItems": 40
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Commands"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object",
+  "title": "Action"
+}
+\end{verbatim}
+\subsubsection{ActivityAction}
+\begin{verbatim}
+{
+  "properties": {
+    "data": {
+      "additionalProperties": true,
+      "type": "object",
+      "title": "Data"
+    },
+    "learned": {
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 10000
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Learned"
+    },
+    "next_step": {
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 10000
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Next Step"
+    },
+    "minutes": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Minutes"
+    },
+    "end_scored": {
+      "type": "boolean",
+      "title": "End Scored",
+      "default": false
+    },
+    "reset": {
+      "type": "boolean",
+      "title": "Reset",
+      "default": false
+    },
+    "fault": {
+      "type": "boolean",
+      "title": "Fault",
+      "default": false
+    },
+    "blank": {
+      "type": "boolean",
+      "title": "Blank",
+      "default": false
+    },
+    "rule": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Rule"
+    },
+    "pause": {
+      "type": "boolean",
+      "title": "Pause",
+      "default": true
+    },
+    "step": {
+      "type": "integer",
+      "title": "Step",
+      "default": 0
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "default": "active"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object",
+  "title": "ActivityAction"
+}
+\end{verbatim}
+\subsubsection{ActivityStart}
+\begin{verbatim}
+{
+  "properties": {
+    "end_scored": {
+      "type": "boolean",
+      "title": "End Scored",
+      "default": false
+    },
+    "deliberate": {
+      "type": "boolean",
+      "title": "Deliberate",
+      "default": false
+    }
+  },
+  "additionalProperties": false,
+  "type": "object",
+  "title": "ActivityStart"
+}
+\end{verbatim}
 \subsubsection{Body\_upload\_api\_packs\_post}
 \begin{verbatim}
 {
@@ -15,6 +228,58 @@ These schemas come from the current OpenAPI model definitions. Business rules an
     "file"
   ],
   "title": "Body_upload_api_packs_post"
+}
+\end{verbatim}
+\subsubsection{Body\_upload\_evidence\_api\_challenges\_\_reference\_\_evidence\_post}
+\begin{verbatim}
+{
+  "properties": {
+    "file": {
+      "type": "string",
+      "contentMediaType": "application/octet-stream",
+      "title": "File"
+    }
+  },
+  "type": "object",
+  "required": [
+    "file"
+  ],
+  "title": "Body_upload_evidence_api_challenges__reference__evidence_post"
+}
+\end{verbatim}
+\subsubsection{ChallengeNotes}
+\begin{verbatim}
+{
+  "properties": {
+    "learned": {
+      "type": "string",
+      "maxLength": 10000,
+      "title": "Learned"
+    },
+    "next_step": {
+      "type": "string",
+      "maxLength": 4000,
+      "title": "Next Step"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0.0,
+      "title": "Revision"
+    },
+    "log_progress": {
+      "type": "boolean",
+      "title": "Log Progress",
+      "default": false
+    }
+  },
+  "additionalProperties": false,
+  "type": "object",
+  "required": [
+    "learned",
+    "next_step",
+    "revision"
+  ],
+  "title": "ChallengeNotes"
 }
 \end{verbatim}
 \subsubsection{Command}
@@ -48,6 +313,24 @@ These schemas come from the current OpenAPI model definitions. Business rules an
     "argv"
   ],
   "title": "Command"
+}
+\end{verbatim}
+\subsubsection{CompleteChallenge}
+\begin{verbatim}
+{
+  "properties": {
+    "revision": {
+      "type": "integer",
+      "minimum": 0.0,
+      "title": "Revision"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object",
+  "required": [
+    "revision"
+  ],
+  "title": "CompleteChallenge"
 }
 \end{verbatim}
 \subsubsection{Entry}
@@ -151,6 +434,135 @@ These schemas come from the current OpenAPI model definitions. Business rules an
   "title": "HTTPValidationError"
 }
 \end{verbatim}
+\subsubsection{LabAttemptStart}
+\begin{verbatim}
+{
+  "properties": {
+    "recipe_id": {
+      "type": "string",
+      "maxLength": 100,
+      "pattern": "^[a-z0-9-]+$",
+      "title": "Recipe Id"
+    },
+    "offline": {
+      "type": "boolean",
+      "title": "Offline",
+      "default": false
+    },
+    "case_key": {
+      "anyOf": [
+        {
+          "type": "integer",
+          "maximum": 65535.0,
+          "minimum": 0.0
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Case Key"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object",
+  "required": [
+    "recipe_id"
+  ],
+  "title": "LabAttemptStart"
+}
+\end{verbatim}
+\subsubsection{LabAttemptToken}
+\begin{verbatim}
+{
+  "properties": {
+    "nonce": {
+      "type": "string",
+      "maxLength": 64,
+      "minLength": 64,
+      "title": "Nonce"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object",
+  "required": [
+    "nonce"
+  ],
+  "title": "LabAttemptToken"
+}
+\end{verbatim}
+\subsubsection{LabSubmission}
+\begin{verbatim}
+{
+  "properties": {
+    "nonce": {
+      "type": "string",
+      "maxLength": 64,
+      "minLength": 64,
+      "title": "Nonce"
+    },
+    "recipe_version": {
+      "type": "string",
+      "maxLength": 100,
+      "title": "Recipe Version"
+    },
+    "checker_version": {
+      "type": "string",
+      "maxLength": 100,
+      "title": "Checker Version"
+    },
+    "fixture_id": {
+      "type": "string",
+      "maxLength": 100,
+      "title": "Fixture Id"
+    },
+    "answers": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Answers"
+    },
+    "report": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Report"
+    },
+    "submission": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Submission"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object",
+  "required": [
+    "nonce",
+    "recipe_version",
+    "checker_version",
+    "fixture_id"
+  ],
+  "title": "LabSubmission"
+}
+\end{verbatim}
 \subsubsection{Login}
 \begin{verbatim}
 {
@@ -201,6 +613,29 @@ These schemas come from the current OpenAPI model definitions. Business rules an
     "status"
   ],
   "title": "Mark"
+}
+\end{verbatim}
+\subsubsection{PracticeAgain}
+\begin{verbatim}
+{
+  "properties": {
+    "minutes": {
+      "anyOf": [
+        {
+          "type": "integer",
+          "maximum": 1440.0,
+          "minimum": 1.0
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Minutes"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object",
+  "title": "PracticeAgain"
 }
 \end{verbatim}
 \subsubsection{ValidationError}

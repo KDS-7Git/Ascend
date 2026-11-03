@@ -22,10 +22,11 @@ review, and trust do not execute lessons or provision a lab.
 
 \subsection{The daily loop in the browser}
 Today shows your active mission, main-path completion, one next challenge, and an
-optional side challenge. Choose 10 minutes, 30 minutes, two hours, or any time.
-Estimates are task estimates, not deadlines. A large task can take several logged
-sessions. If nothing fits, open its Path details and split it into smaller
-concrete steps, or choose a larger time budget.
+optional side challenge, plus a Playground recommendation. Choose 10 minutes,
+30 minutes, two hours, or any time. The next track task remains visible even when
+it exceeds your available time. Estimates are task estimates, not deadlines.
+A large task can take several ordinary progress logs. Only ordinary, unverified
+tasks can be split; verified lab/CTF finish lines remain intact.
 
 Open challenge shows a brief objective, duration, required setup and learning
 resources. Resource labels explain their role; reading a resource does not start
@@ -143,3 +144,260 @@ mode, evidence must lie in the account's allowed artifact directory. If the UI i
 stale after an upgrade, reload it; the service worker updates the shell while
 keeping API data uncached. If a lesson requires unsupported hardware, use a
 supported lab environment instead of weakening the learning objective.
+
+
+\subsection{Linux labs on your PC}
+The Linux labs tab links open-source resources to their related tracks. It shows
+where each lab runs, prerequisite skills, source and license, and the scope of
+its checks. A reference becomes runnable only after a selected recipe passes its
+review and Linux lifecycle tests. Browse the same catalog from the CLI:
+\begin{verbatim}
+ascend lab catalog --track api-security
+ascend lab catalog --level starter
+ascend lab detail vampi
+\end{verbatim}
+Repository references do not download or run anything. Track catalogs include
+the same references; local practice does not automatically complete a verified
+track milestone.
+
+The first reviewed file recipe uses a small Linux audit sample. Install Ascend
+on the learner's Linux PC and run:
+\begin{verbatim}
+ascend local-lab doctor linux-audit-discovery
+ascend local-lab start linux-audit-discovery --offline
+ascend local-lab show RUN
+# Edit the answers.json path shown for this run.
+ascend local-lab check RUN
+ascend local-lab export RUN
+ascend local-lab finish RUN
+ascend local-lab sync RUN
+ascend local-lab cache --budget-mib 128
+\end{verbatim}
+Replace RUN with the returned local run ID. Without \texttt{--offline}, a configured
+server reserves the session before setup and starts its clock only when ready.
+Client runtime commands always run on the PC, including when \texttt{--server}
+is configured. \texttt{stop} retains the environment and does not pause the
+attempt clock; \texttt{resume} returns to it. \texttt{reset} starts a new environment
+while preserving the old saved work. \texttt{destroy} discards only the selected
+runtime; \texttt{finish} exports before destroying it. If saving fails, the runtime
+is retained. \texttt{reconcile} retries failed cleanup and releases expired or
+interrupted runs. No cleanup can execute while the PC is powered off.
+
+The default cache follows \texttt{XDG\_CACHE\_HOME}; run state and saved work are
+separate under \texttt{XDG\_DATA\_HOME}. \texttt{ASCEND\_LAB\_HOME} selects an isolated
+companion profile with separate cache, state and work directories. Saved work is
+never a cache eviction target. A configured server receives only the bounded
+submission. Disconnected results remain in the work directory for a later
+\texttt{sync}; offline timing is not asserted to the server.
+The first source/image download still needs internet. \texttt{--offline} skips
+the Ascend server at start and finish; results wait for an explicit \texttt{sync}.
+
+Seven Linux x86-64 recipes are executable:
+\begin{itemize}
+\item \texttt{linux-audit-discovery} and \texttt{vampi-ownership}.
+\item \texttt{bgp-export-policy} and \texttt{wrongsecrets-basics}.
+\item \texttt{bgp-single-session}, \texttt{bgp-session-protection}
+and \texttt{bgp-prefix-filter}.
+\end{itemize}
+The service and FRR recipes require a local Linux
+Docker 28 or newer daemon. VAmPI compares owner, other-user and anonymous access.
+WrongSecrets exposes only challenges 1--3; it preserves answer files and notes,
+while upstream browser badges reset on restart. Its target has no host mounts,
+Docker socket, Vault/cloud credentials or public service port. Download budgets
+and tested requirements appear in the catalog and \texttt{doctor} output.
+
+The three FRR recipes adapt the selected BGP Labs control-plane exercises.
+Use \texttt{show RUN} for exact router addresses, AS numbers and local vtysh
+connection commands. Configure the learner router, save with \texttt{write memory},
+then check. Stop/resume retains its configuration volume. The protection checker
+reloads the saved learner-router configuration to open fresh sockets, then
+temporarily changes its authored external controls to test wrong passwords and
+TTL, then restores them and observes recovery. This is a private container
+topology without kernel routing; it does not run netlab or create a general shell
+on Ascend's server.
+
+The BGP policy recipe is an authored declarative model linked to BGP Labs. Edit
+the assigned \texttt{policy.json} to permit the customer /24 and its /25--/26
+subprefixes while denying other routes. Local checks provide feedback; after
+synchronization a temporary server worker independently checks the submitted
+policy. The receipt says ``Submission tested (policy model)'' and does not claim
+to have run a router or observed earlier local actions. The file pilot instead
+receives ``Answer checked'' when its answer matches the server rubric. All local
+lab receipts award zero XP and do not satisfy verified track milestones.
+
+For established or specialist environments, inspect the individual plan:
+\begin{verbatim}
+ascend lab plan labtainers-telnetlab
+ascend lab plan bgp-prefix-filter
+ascend lab plan kubernetes-goat-rbac
+ascend local-lab record RECIPE report.json
+ascend local-lab cache --budget-mib 0 --images
+\end{verbatim}
+The remaining eight environments have a learner-managed setup and artifact
+workflow:
+\begin{longtable}{p{0.43\textwidth}p{0.50\textwidth}}
+\textbf{Recipe} & \textbf{Local environment and evidence} \\
+\hline
+\path{labtainers-network-basics} & Labtainers VM; instructor review of observations. \\
+\path{labtainers-telnetlab} & Labtainers VM; current viewed-string goals. \\
+\path{restaurant-profile-repair} & Disposable repair environment; owner, other-user, second-object and anonymous controls. \\
+\path{kubernetes-goat-rbac} & Dedicated cluster; authorization controls, binding removal and teardown. \\
+\path{cloudfoxable-secret} & Disposable AWS profile; scoped read/deny, policy and cleanup observations. \\
+\path{mastg-android-storage} & Selected emulator; keys, permissions, ordinary-shell denial and cleanup. \\
+\path{mbe-intro-reversing} & Compatible 32-bit VM; binary identity, paired inputs/output and notes. \\
+\path{llm-agent-transactions} & Pinned model/agent environment; repeated baseline/injected trials and tool calls. \\
+\end{longtable}
+Eleven evidence profiles cover these and the three BGP exercises:
+\begin{verbatim}
+ascend local-lab prepare kubernetes-goat-rbac
+ascend local-lab show RUN
+# Follow README.md; fill environment.json and collector.json.
+ascend local-lab observe RUN service_account_permissions_observed
+# Capture a saved JSON observation when a direct collector is unsuitable.
+ascend local-lab capture RUN ARTIFACT observation.json
+ascend local-lab check RUN
+ascend local-lab finish RUN
+ascend local-lab sync RUN
+\end{verbatim}
+Preparation fetches selected pinned references and writes the complete upstream
+plan, copyable acquisition commands, templates and collector configuration.
+Run the actual environment on the learner's PC or chosen disposable provider.
+Read-only collectors target an explicit Kubernetes context, Android emulator,
+AWS profile, FRR container or Labtainers report. Repair, binary and agent traces
+can be captured from bounded JSON files. Missing controls remain unsupported;
+contradictory observations fail. Agent evidence needs at least three distinct
+baseline and injected trials, actual tool calls and consistent outcomes.
+
+Finish saves a local receipt and never destroys a learner-managed environment.
+Follow its upstream cleanup plan and retain the resource inventory. Synchronization
+repeats artifact checks under the account/attempt/version contract. ``Local evidence
+reviewed'' describes interpretation of learner-controlled artifacts, including
+negative controls; their hashes establish consistency rather than authenticity.
+The server does not claim to have observed the earlier VM, cluster or cloud.
+Use \texttt{--server URL} or \texttt{ASCEND\_SERVER} for synchronization;
+the result appears in Linux labs' result history. Saved \texttt{evidence.json}
+and \texttt{submission.json} remain available for local review.
+Plans contain source pins, prerequisites, lifecycle requirements and the report
+template; displaying one executes no command. Unvalidated VM, cluster, cloud,
+Android and LLM environments stay disabled. Imported Labtainers/netlab feedback
+remains local; manual specialist reports say ``Practice recorded (manual
+observations)''. Cloud resources require a separately selected account and cost
+scope. Full archives, VM disks, model weights, credentials and Terraform state
+stay local. Image eviction removes only unused images acquired by the companion;
+it never globally prunes Docker. If a lab directory belongs to another
+\texttt{ASCEND\_HOME}, restore that profile or select a different
+\texttt{ASCEND\_LAB\_HOME} before mutating its runs.
+
+\subsection{Playground: keep your place and choose what fits today}
+Playground is available from desktop and phone navigation, even without an active
+mission. Quick practice offers bounded exercises and separate worked examples;
+Challenges contains independent puzzles and investigations; Free practice contains
+editable permission-policy and log/timeline workspaces. Browsing, practicing and
+saving work never enroll you in another track or change curriculum completion.
+Today always retains the next main task beside its short-practice suggestion.
+
+The catalog separates Learn with guidance, Test yourself and Experiment freely.
+Subjects include cybersecurity, Python reasoning and 3D coordinates/transforms.
+Starting opens a dedicated activity page with an objective and elapsed clock.
+Filter the catalog by duration, subject, difficulty, setup, progress and format;
+search, bookmark, or choose Surprise me. Starter examples have no prerequisites.
+A preparation example takes five minutes and can fill today's session. Optional
+preparation has its own displayed estimate; it is not hidden inside the challenge
+time. Supported activities run in a browser on a phone or computer. Estimates
+are authored working-time budgets pending learner pilots, not enforced deadlines.
+
+Study example A, then apply the skill independently in a different challenge B.
+Completing an example introduces a skill but never completes its related challenge.
+Recommendations use relevant skill evidence rather than overall XP. Two distinct
+independent cases, including a changed-condition check, support a bounded increase
+in difficulty. These are limited readiness estimates, not certifications. You can
+choose a harder challenge deliberately without changing its original difficulty.
+
+Worked examples use three interactive steps with Back, Next step and Skip tour.
+The first example in an unfamiliar skill opens the walkthrough automatically;
+finishing or skipping remembers the preference for that skill. Open walkthrough
+remains available later. A reload restores the current step. Prediction feedback
+teaches the example; it is not an independent assessment. Finish example saves a
+specific takeaway in your own words. The optional return reminder is a note to
+your future self, not a required answer or another task.
+
+Answers and notes save automatically in your Ascend profile. Save \& leave pauses
+worked examples and free workspaces; assessed challenge timers keep running.
+Playground $\rightarrow$ Saved work \& history lists each activity once. View
+attempts opens all its saved attempts, including earlier versions, for individual
+review or return to the same case after a restart. No downloaded file is implied. A setup problem is
+recorded separately from conceptual failure. Optional limited hints are shown only
+where authored. Other independent cases have no hints. Full solution review is
+available after a solve or after explicitly ending the attempt. Previously seen
+cases are labeled familiar practice; finite mysteries do not promise unlimited
+novelty. Fresh generated practice and honest review remain available without a
+next-day wait. A diagnosis alone cannot pass the evidence and prediction checks.
+
+In Free practice, edit policy rules and requests or event/filter inputs and Run
+experiment. Save workspace retains your work. Duplicate, Reset into a new copy,
+and Start a blank copy preserve the original. After studying request decisions,
+you can introduce a hidden rule fault into a permission-workspace copy, investigate
+it with controls, then repair or reveal it. These workspaces execute constrained
+data operations, not arbitrary code. The separately linked HTTP lab runs on your
+own machine and requires its documented setup.
+
+Successful fresh quick practice earns 10 XP at most once per exercise family per
+logical day, capped at 30 practice XP per day. Practice remains unlimited after
+the cap. Standalone challenges have a fixed 25/50/100 XP first-solve award for
+easy/intermediate/hard content. Replays and revealed challenge achievements cannot
+earn another first-solve award. Limited hints do not reduce the authored award;
+assistance is retained in the result. Workspaces and worked examples have no
+verified XP. Stats separates track, practice and challenge contributions.
+
+Verified activity completion counts toward the habit when automatic streak credit
+is enabled. Substantive learning notes can count independently; simply opening or
+saving a workspace does not. Activity entries have an explicit run association and
+no mission association. Manual and automatic credit for one run on one logical day
+share one entry. Existing timezone, 04:00 rollover, freezes and reminders apply.
+
+Browsing during a scored track attempt leaves its clock running. Starting another
+activity requires End scored attempt and switch, which stops that clock without
+completion or XP. Its original attempt, receipt and saved evidence remain intact.
+An ended track assessment cannot be reset into a fresh scored run by Playground.
+Assessed Playground challenges also have strict continuous timers: leaving,
+saving, closing the browser and restarting the server do not pause or reset them.
+Complete or explicitly end the attempt to stop its clock. Starting another
+activity requires End scored attempt and switch. Existing activity reward rules
+apply. Worked examples and free workspaces retain Pause \& save; Resume continues
+their accumulated time. Historical practice time before the clock upgrade is not
+reconstructed.
+
+Optional feedback records working/setup minutes, clarity, difficulty and repetition.
+Three clear, completed, problem-free reports can increase your personal time
+allowance; it never falls below the authored estimate. Feedback does not award
+credit or change skill readiness. Stats summarizes local observations over 14 days.
+
+Some long track tasks have authored checkpoints. Today can suggest a short part
+while showing the full parent estimate. Save checkpoint note records substantive
+partial learning with an authored return action. It never completes or unlocks the
+parent, awards assessment XP, or stops/resets an existing scored clock. Find saved
+parts through Work on a small checkpoint in the task. Private installed packs keep
+their content until updated through the ordinary reviewed pack-update flow.
+
+\begin{verbatim}
+ascend practice 10
+ascend playground list --kind quick --minutes 10
+ascend playground detail request-decisions
+ascend playground start example-access
+ascend playground history
+ascend playground tour RUN --step 1
+ascend playground insights
+ascend checkpoint list PACK:NODE
+ascend checkpoint log PACK:NODE PART --learned "My observation" --minutes 10
+ascend playground show RUN
+ascend playground resume RUN
+ascend playground save RUN '{"notes":"Compare the controls"}'
+ascend playground submit RUN '{"r1":true,"r2":false}'
+ascend playground log RUN --learned "What the comparison showed" \
+  --next-step "Try a changed condition" --minutes 5
+\end{verbatim}
+Use the actual run ID and all field names returned by show; the abbreviated answer
+above illustrates JSON syntax only. Local and remote CLI commands use the same
+application rules as the browser. Use \texttt{--deliberate} for a manually selected
+stretch challenge and \texttt{--end-scored} only when intentionally ending the
+current track attempt. Export includes activity history alongside learning notes.

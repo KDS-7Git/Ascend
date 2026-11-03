@@ -128,3 +128,176 @@ INSERT INTO xp_awards_scored SELECT * FROM xp_awards;
 DROP TABLE xp_awards;
 ALTER TABLE xp_awards_scored RENAME TO xp_awards;
 \end{verbatim}
+\subsection{0008\_playground.sql}
+\begin{verbatim}
+CREATE TABLE activity_runs (
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    id TEXT NOT NULL,
+    activity_id TEXT NOT NULL,
+    version INTEGER NOT NULL,
+    kind TEXT NOT NULL,
+    role TEXT NOT NULL,
+    family TEXT NOT NULL,
+    reward_key TEXT NOT NULL,
+    fixture_key TEXT NOT NULL,
+    fixture TEXT NOT NULL,
+    readiness TEXT NOT NULL,
+    work TEXT NOT NULL DEFAULT '{}',
+    status TEXT NOT NULL CHECK(status IN ('active','saved','passed','ended')),
+    checks INTEGER NOT NULL DEFAULT 0,
+    hints INTEGER NOT NULL DEFAULT 0,
+    revealed INTEGER NOT NULL DEFAULT 0,
+    familiar INTEGER NOT NULL DEFAULT 0,
+    result TEXT,
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL,
+    PRIMARY KEY(user_id,id)
+);
+CREATE UNIQUE INDEX activity_foreground ON activity_runs(user_id) WHERE status='active';
+CREATE INDEX activity_history ON activity_runs(user_id,activity_id,created_at);
+CREATE TABLE activity_rewards (
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    reward_key TEXT NOT NULL,
+    run_id TEXT NOT NULL,
+    kind TEXT NOT NULL,
+    day TEXT NOT NULL,
+    points INTEGER NOT NULL,
+    PRIMARY KEY(user_id,reward_key),
+    FOREIGN KEY(user_id,run_id) REFERENCES activity_runs(user_id,id)
+);
+CREATE TABLE activity_evidence (
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    run_id TEXT NOT NULL,
+    skill TEXT NOT NULL,
+    fixture_key TEXT NOT NULL,
+    outcome TEXT NOT NULL,
+    independent INTEGER NOT NULL,
+    transfer INTEGER NOT NULL,
+    day TEXT NOT NULL,
+    PRIMARY KEY(user_id,run_id,skill),
+    FOREIGN KEY(user_id,run_id) REFERENCES activity_runs(user_id,id)
+);
+CREATE TABLE activity_bookmarks (
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    activity_id TEXT NOT NULL,
+    PRIMARY KEY(user_id,activity_id)
+);
+ALTER TABLE entries ADD COLUMN activity_run_id TEXT;
+CREATE UNIQUE INDEX activity_habit_event ON entries(user_id,activity_run_id,day) WHERE activity_run_id IS NOT NULL;
+CREATE TRIGGER activity_insert_guard BEFORE INSERT ON activity_runs
+WHEN NEW.status='active' AND EXISTS(SELECT 1 FROM task_sessions WHERE user_id=NEW.user_id AND status='running')
+BEGIN SELECT RAISE(ABORT, 'End the scored track attempt before starting an activity'); END;
+CREATE TRIGGER activity_update_guard BEFORE UPDATE OF status ON activity_runs
+WHEN NEW.status='active' AND EXISTS(SELECT 1 FROM task_sessions WHERE user_id=NEW.user_id AND status='running')
+BEGIN SELECT RAISE(ABORT, 'End the scored track attempt before resuming an activity'); END;
+CREATE TRIGGER track_insert_guard BEFORE INSERT ON task_sessions
+WHEN NEW.status='running' AND EXISTS(SELECT 1 FROM activity_runs WHERE user_id=NEW.user_id AND status='active')
+BEGIN SELECT RAISE(ABORT, 'Save the Playground activity before starting a track session'); END;
+CREATE TRIGGER track_update_guard BEFORE UPDATE OF status ON task_sessions
+WHEN NEW.status='running' AND EXISTS(SELECT 1 FROM activity_runs WHERE user_id=NEW.user_id AND status='active')
+BEGIN SELECT RAISE(ABORT, 'Save the Playground activity before resuming a track session'); END;
+\end{verbatim}
+\subsection{0009\_practice\_insights.sql}
+\begin{verbatim}
+CREATE TABLE activity_feedback (
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    run_id TEXT NOT NULL,
+    working_minutes INTEGER NOT NULL CHECK(working_minutes BETWEEN 1 AND 1440),
+    setup_minutes INTEGER NOT NULL CHECK(setup_minutes BETWEEN 0 AND 1440),
+    difficulty TEXT NOT NULL CHECK(difficulty IN ('too-easy','about-right','too-hard')),
+    clarity TEXT NOT NULL CHECK(clarity IN ('clear','unclear')),
+    repetition TEXT NOT NULL CHECK(repetition IN ('fresh','welcome-review','unwanted-repeat')),
+    environment_issue INTEGER NOT NULL DEFAULT 0,
+    note TEXT NOT NULL DEFAULT '',
+    created_at TEXT NOT NULL,
+    PRIMARY KEY(user_id,run_id),
+    FOREIGN KEY(user_id,run_id) REFERENCES activity_runs(user_id,id)
+);
+CREATE TABLE activity_events (
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    run_id TEXT NOT NULL,
+    kind TEXT NOT NULL CHECK(kind IN ('saved','resumed','returned')),
+    created_at TEXT NOT NULL,
+    PRIMARY KEY(user_id,run_id,kind),
+    FOREIGN KEY(user_id,run_id) REFERENCES activity_runs(user_id,id)
+);
+CREATE TABLE activity_selections (
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    day TEXT NOT NULL,
+    filters TEXT NOT NULL,
+    available INTEGER NOT NULL,
+    recommended INTEGER NOT NULL,
+    created_at TEXT NOT NULL,
+    PRIMARY KEY(user_id,day,filters)
+);
+ALTER TABLE activity_runs ADD COLUMN elapsed_seconds REAL NOT NULL DEFAULT 0;
+ALTER TABLE activity_runs ADD COLUMN running_since TEXT;
+UPDATE activity_runs SET running_since=strftime('%Y-%m-%dT%H:%M:%S+00:00','now') WHERE status='active';
+CREATE TABLE activity_tour_history (
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    skill TEXT NOT NULL,
+    status TEXT NOT NULL CHECK(status IN ('finished','skipped')),
+    updated_at TEXT NOT NULL,
+    PRIMARY KEY(user_id,skill)
+);
+\end{verbatim}
+\subsection{0010\_checkpoints.sql}
+\begin{verbatim}
+CREATE TABLE node_checkpoints (
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    pack_id TEXT NOT NULL,
+    node_id TEXT NOT NULL,
+    checkpoint_id TEXT NOT NULL,
+    definition TEXT NOT NULL,
+    entry_id INTEGER NOT NULL REFERENCES entries(id) ON DELETE CASCADE,
+    created_at TEXT NOT NULL,
+    PRIMARY KEY(user_id,pack_id,node_id,checkpoint_id)
+);
+\end{verbatim}
+\subsection{0011\_external\_labs.sql}
+\begin{verbatim}
+CREATE TABLE external_lab_attempts (
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    id TEXT NOT NULL,
+    recipe_id TEXT NOT NULL,
+    recipe_version TEXT NOT NULL,
+    checker_version TEXT NOT NULL,
+    fixture_id TEXT NOT NULL,
+    nonce_hash TEXT NOT NULL,
+    origin TEXT NOT NULL CHECK(origin IN ('online','offline','local')),
+    status TEXT NOT NULL CHECK(status IN ('preparing','active','imported','finished','abandoned')),
+    created_at TEXT NOT NULL,
+    expires_at TEXT NOT NULL,
+    started_at TEXT,
+    ended_at TEXT,
+    result TEXT,
+    PRIMARY KEY(user_id,id)
+);
+CREATE UNIQUE INDEX external_lab_foreground ON external_lab_attempts(user_id) WHERE status IN ('preparing','active');
+CREATE TRIGGER external_lab_insert_guard BEFORE INSERT ON external_lab_attempts
+WHEN NEW.status IN ('preparing','active') AND (
+    EXISTS(SELECT 1 FROM task_sessions WHERE user_id=NEW.user_id AND status='running') OR
+    EXISTS(SELECT 1 FROM activity_runs WHERE user_id=NEW.user_id AND status='active'))
+BEGIN SELECT RAISE(ABORT, 'Finish the active session before starting a local lab'); END;
+CREATE TRIGGER external_lab_update_guard BEFORE UPDATE OF status ON external_lab_attempts
+WHEN NEW.status IN ('preparing','active') AND (
+    EXISTS(SELECT 1 FROM task_sessions WHERE user_id=NEW.user_id AND status='running') OR
+    EXISTS(SELECT 1 FROM activity_runs WHERE user_id=NEW.user_id AND status='active'))
+BEGIN SELECT RAISE(ABORT, 'Finish the active session before resuming a local lab'); END;
+CREATE TRIGGER external_lab_track_insert_guard BEFORE INSERT ON task_sessions
+WHEN NEW.status='running' AND EXISTS(SELECT 1 FROM external_lab_attempts WHERE user_id=NEW.user_id AND status IN ('preparing','active'))
+BEGIN SELECT RAISE(ABORT, 'Finish the local lab before starting a track session'); END;
+CREATE TRIGGER external_lab_track_update_guard BEFORE UPDATE OF status ON task_sessions
+WHEN NEW.status='running' AND EXISTS(SELECT 1 FROM external_lab_attempts WHERE user_id=NEW.user_id AND status IN ('preparing','active'))
+BEGIN SELECT RAISE(ABORT, 'Finish the local lab before resuming a track session'); END;
+CREATE TRIGGER external_lab_activity_insert_guard BEFORE INSERT ON activity_runs
+WHEN NEW.status='active' AND EXISTS(SELECT 1 FROM external_lab_attempts WHERE user_id=NEW.user_id AND status IN ('preparing','active'))
+BEGIN SELECT RAISE(ABORT, 'Finish the local lab before starting Playground'); END;
+CREATE TRIGGER external_lab_activity_update_guard BEFORE UPDATE OF status ON activity_runs
+WHEN NEW.status='active' AND EXISTS(SELECT 1 FROM external_lab_attempts WHERE user_id=NEW.user_id AND status IN ('preparing','active'))
+BEGIN SELECT RAISE(ABORT, 'Finish the local lab before resuming Playground'); END;
+\end{verbatim}
+\subsection{0012\_lab\_assignments.sql}
+\begin{verbatim}
+ALTER TABLE external_lab_attempts ADD COLUMN assignment TEXT;
+\end{verbatim}

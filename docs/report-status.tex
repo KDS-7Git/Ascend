@@ -8,7 +8,7 @@ Phase 3 & 82 passed, 1 warning in 11.13s \\
 Phase 4 & 101 passed in 11.24s \\
 Engagement refresh & 109 passed in 16.79s \\
 Curriculum assurance & 120 passed in 21.99s \\
-LaTeX handbooks & 4 LaTeX documents compiled successfully; no missing glyphs, unresolved references or overflow above 1 pt. \\
+LaTeX handbooks & 7 LaTeX documents compiled successfully; no missing glyphs, unresolved references or overflow above 1 pt. \\
 Installed v3 tracks & Five tracks upgraded; history preserved; desktop/mobile checks passed. \\
 Container restore & Restore smoke passed. \\
 Compose settings & Compose configuration checks passed. \\
@@ -29,9 +29,18 @@ Permission scoring & 173 tests passed; 95 captures; 82 axe checks with no detect
 Challenge guidance & 191 tests passed; local recipes, downloads and state-preserving content update verified. \\
 Challenge preview flow & 194 tests passed; preview gating, started/review access and timer restoration validated. \\
 Pre-start resources & 6 focused tests passed; learning resources available before Start without starting timers. \\
+Independent Playground & 372 tests passed; Playground and track integration verified; live desktop/phone delivery passed. Empirical learner calibration still requires real sessions and observation. \\
+Linux local labs & 372 tests passed; four local pilots measured; VM and specialist execution remains gated. \\
+Local delivery & 372 tests passed; Playground and four local recipes delivered; live loading and phone checks passed. Eleven runtime recipes need environment validation; learner calibration needs observed use. \\
+Learner-local labs & 398 tests passed; seven runnable recipes; eight learner-managed workflows. \\
 \end{longtable}
 \subsection*{Recent recorded commits}
 \begin{verbatim}
+d3ee0a6 docs(labs): record Linux lab research and the reviewed execution
+  plan
+cacc8d7 feat(playground): add practice engines, worked examples and learning
+  checkpoints
+6be7a19 Keep learning resources accessible before starting a challenge
 b18dccf Document staged challenge flow and isolated terminal requirements
 5ff466b Reveal challenge instructions only after an attempt starts
 64d2fad docs(curriculum): explain guided labs and verify packaged content
@@ -46,10 +55,5 @@ bda3d13 feat(practice): explain final permission decisions and award partial
   credit
 9415c5b docs(ui): explain challenge lifecycle and retain responsive
   verification
-2d9ffe1 fix(ui): clarify exercise forms and restore reliable challenge
-  feedback
-1af1acf feat(challenges): record one final MCQ answer and retain session
-  outcomes
-58df595 docs(ui): document neobrutalism and refresh visual verification
 \end{verbatim}
 \noindent Full transcripts: \texttt{docs/testing/phase-*.txt}. The implementation may have uncommitted work beyond the last validated milestone.

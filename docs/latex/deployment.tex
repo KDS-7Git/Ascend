@@ -232,3 +232,40 @@ a simple Pi deployment. The base image supports arm64; this is distinct from a
 claim that every optional external training tool supports it. The local server
 can be restarted after Python changes; static asset changes are picked up on
 reload, and new pack text still has to be installed into private copies.
+
+\subsection{Browser Linux labs on a separate server runner}
+The seven reviewed Linux recipes support browser launch through a separate
+administrative runner. The main web container keeps its existing resource limits
+and receives no Docker socket. Use a dedicated Linux x86-64 Docker 28+ host or VM
+for the runner, with pinned recipe adapters and an authenticated private control
+channel. Remote URLs require HTTPS; loopback HTTP is supported for native
+processes on the same host.
+
+For the planned host with about 80 GB free, begin with two active account slots,
+a two-hour absolute deadline, no warm pool and a 10 GiB free-space reserve.
+Stopped and failed-cleanup runs keep their slot. Plan conservatively for at least
+8 GB RAM and four cores; measure the selected deployments before raising limits.
+Larger VM, cluster, cloud, emulator and model profiles retain their setup plans
+and still need concrete infrastructure and acceptance evidence.
+
+Install \path{deploy/ascend-lab-runner.service} and configure its private key
+using \path{deploy/runner.env.example}. In Ascend's private environment, set
+\texttt{ASCEND\_RUNNER\_URL}, \texttt{ASCEND\_RUNNER\_KEY} and a stable
+\texttt{ASCEND\_RUNNER\_SITE\_ID}. The main Compose file forwards these settings;
+recreate the web process after changing them. A container's loopback is not the
+host's loopback. The complete installation, capacity and acceptance procedure is
+\path{docs/design/server-lab-runner.md}.
+
+On a lab detail page, select Launch on server, edit a work file, Save file and
+Check work. The request console targets only the run's fixed HTTP services;
+the FRR console accepts a bounded set of exercise commands on the learner router.
+Stop and Resume retain the original expiry. Finish exports before teardown;
+Download saved work retains small files. Failed teardown keeps inventory and
+provides Retry cleanup. Runner checks award no XP or verified track completion.
+
+\begin{verbatim}
+.venv/bin/python scripts/verify_hosted_labs.py \
+  --record /tmp/hosted-labs.json
+.venv/bin/python scripts/verify_hosted_labs.py --all \
+  --record /tmp/hosted-labs-all.json
+\end{verbatim}

@@ -88,3 +88,104 @@ active mission\textquotesingle s next eligible main node, falling back
 to its side lane. Manual completion routes remain explicit, even when a
 verifier would fail. \texttt{done -\/-complete} logs partial work on
 verification failure, returning \texttt{completed: false} and a reason.
+
+
+\subsubsection{Local lab catalog and submissions}
+\texttt{GET /api/lab-catalog} lists the shared open-source references and reviewed
+recipes; filters are \texttt{track}, \texttt{level}, \texttt{location} and
+\texttt{search}. \texttt{GET /api/lab-catalog/\{id\}} returns a reference or recipe.
+Installed pack detail includes \texttt{lab\_references}. These routes perform no
+downloads or runtime operations.
+
+\texttt{GET/POST /api/lab-attempts} lists or creates account-scoped records.
+Creation accepts \texttt{recipe\_id} and \texttt{offline}; an optional integer
+\texttt{case\_key} from 0 to 65535 is allowed only for an offline policy import.
+The server assigns a
+nonce and the recipe/checker/fixture versions. \texttt{GET /api/lab-attempts/\{id\}}
+returns metadata without the nonce. POST actions \texttt{ready}, \texttt{abandon}
+and \texttt{submit} require the nonce; submit also requires the assigned versions.
+The HTTP body is bounded to 1 MiB, including chunked uploads. The file pilot accepts
+an explicit answer schema and evaluates its own rubric. Unknown keys, client pass
+claims, cross-account requests and replay are rejected. Local report results have
+local authority; neither these records nor server-checked answers issue existing
+track proof receipts or XP. The API accepts no local file paths or shell commands.
+
+The policy recipe accepts only \texttt{submission.files.policy.json} as a JSON
+object (64 KiB, at most 32 first-match IPv4 rules). Its fixture binds the assigned
+case, source, recipe, checker and worker hash. A fresh server-owned worker tests
+the declarative policy and returns ``Submission tested (policy model)'', with a
+canonical submission hash and counterexample on failure. This is not a live
+router or executable-code replay service. Invalid worker output cannot produce a
+pass; infrastructure errors leave the attempt retryable. Worker files are
+temporary. Manual specialist imports require the exact named observations and
+environment identifiers; those remain learner-reported, not server-verified.
+
+Prepared learner-local workspaces submit \texttt{report.evidence} with schema
+\texttt{local-artifacts-v1}, recipe/source identity, exact environment fields
+and named artifacts containing canonical SHA-256 hashes and JSON observations.
+Each observation is bounded to 64 KiB; the complete request remains bounded to
+1 MiB. The server derives the required checks and negative controls again.
+Missing observations remain unsupported; inconsistent hashes, unexpected fields
+and declared pass replacements are rejected. These receipts say ``Local evidence
+reviewed'' and retain local authority. They do not authenticate the earlier
+environment. Preparation and capture execute only in the learner's companion CLI.
+
+\subsubsection{Playground API}
+\begin{verbatim}
+GET /api/playground
+GET /api/playground/recommendations?minutes=10
+GET /api/playground/history
+GET /api/playground/insights
+POST /api/playground/selection
+GET /api/playground/activities/{id}
+POST /api/playground/activities/{id}/start
+POST /api/playground/activities/{id}/bookmark?enabled=true
+GET /api/playground/runs/{run}
+POST /api/playground/runs/{run}/{action}
+GET /api/nodes/{reference}/checkpoints
+POST /api/nodes/{reference}/checkpoints/{checkpoint}
+\end{verbatim}
+Catalog filters are domain, kind, minutes, topic, difficulty, environment, progress,
+format, search and bookmarked. Recommendations also accept comma-separated
+exclude IDs. Empty selections include named alternatives. Start accepts
+\texttt{deliberate} and \texttt{end\_scored} booleans. Run actions are resume,
+save, submit, log, experiment, copy, repair, hint, end, reveal, tour, feedback and
+returned. Save, submit and
+experiment use a JSON object in \texttt{data}; save optionally sets \texttt{pause}.
+Pause applies to examples and free workspaces. Assessed challenges ignore pause
+and retain continuous time from their original start until completion or explicit
+end. History returns individual runs; the browser groups them by activity ID
+without discarding attempts from earlier versions.
+Log/example submission use learned and optional next\_step; log also accepts minutes.
+Copy accepts reset, blank and fault; repair accepts rule. Resume/copy can explicitly
+end a scored attempt with end\_scored. Reveals require a solved or ended attempt.
+
+Tour accepts a zero-based step and status active/finished/skipped, for examples
+only. Feedback takes working\_minutes, setup\_minutes, difficulty, clarity,
+repetition, environment\_issue and note in data. Difficulty is too-easy/about-right/
+too-hard; clarity is clear/unclear; repetition is fresh/welcome-review/unwanted-repeat.
+Selection observation takes filters in data and deduplicates by user/day/filter;
+GET recommendations does not write observations. Returned records an explicit
+return-to-track action. None of these actions awards learning credit. Checkpoint
+POST accepts learned and optional minutes and saves a partial entry idempotently.
+
+Every route scopes reads and writes to the authenticated user. Runs never call
+track marking. The command endpoint also accepts \texttt{practice} and
+\texttt{playground}; remote/local behavior agrees. Stats includes XP by source,
+completed practice, solved standalone challenges and saved work. Overview always
+retains the next main track task and adds independent practice recommendations.
+
+\subsection{Separate server lab runner}
+\path|GET /api/hosted-labs/capabilities| returns configured status, enabled
+recipes and runner limits. \path|GET /api/hosted-labs/runs| returns caller-scoped
+runs and the latest asynchronous job. \path|POST /api/hosted-labs/runs| accepts
+\texttt{recipe\_id} and queues a reviewed recipe launch. The browser polls run
+status rather than holding a provisioning request open.
+\path|POST /api/hosted-labs/runs/{id}/{action}| supports check, stop, resume,
+finish, destroy, bounded save, fixed-target HTTP and restricted router commands.
+\path|GET /api/hosted-labs/runs/{id}/files?name=...| reads only selected input
+or retained work files. POST wire bodies are limited to 1 MiB; text files and
+responses to 256 KiB. A disconnected runner returns 503, leaving local workflows
+available. Account scope is selected by the authenticated web dependency; the
+browser cannot choose another scope. The provider runtime runs only in the
+separate administrative service.

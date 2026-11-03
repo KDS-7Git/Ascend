@@ -1,0 +1,17 @@
+{
+  "measured_on": "2026-11-03",
+  "platform": "linux-x86_64",
+  "download_bytes": 1797,
+  "expanded_bytes": 3463,
+  "peak_disk_bytes": 18627,
+  "peak_allocated_disk_bytes": 65536,
+  "startup_cold_seconds": 1.0490695350017631,
+  "startup_warm_seconds": 0.0015083000034792349,
+  "residual_cache_bytes": 1797,
+  "after_prune_cache_bytes": 0,
+  "peak_memory_bytes": 29556736,
+  "persistent_processes": 0,
+  "cpu_limit": null,
+  "pids_limit": null,
+  "scope": "Actual download, correct/incorrect/incomplete answers, stop, new companion instance, offline resume, export, finish, warm start, idempotent destroy and cache eviction. Disk sampled every 5ms plus lifecycle checkpoints, including retained work. Memory is /proc/self/status VmHWM for the verifier's current executable, excluding inherited pre-exec launcher peaks."
+}

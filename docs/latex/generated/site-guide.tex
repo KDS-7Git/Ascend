@@ -17,7 +17,7 @@ ascend pack install verified-security-lab
 ascend mission start verified-security-lab
 ascend lab start verified-security-lab:lab-readiness
 \end{verbatim}
-\noindent\textbf{Related guides:} Missions \& your path, Evidence \& verification\par
+\noindent\textbf{Related guides:} Missions \& your path, Evidence \& verification, Playground \& short practice\par
 \subsection{Missions \& your path}
 Keep a clear next step without losing your other interests.\par
 One mission is active at a time. In Tracks, choose a domain, then choose one of its installed tracks and select Start mission. Today recommends the next available task in that mission. Path shows its levels, prerequisites, optional practice, and milestones.\par
@@ -168,7 +168,7 @@ The public home lab includes Bandit from level 0. The collector checks SSH authe
 python3 scripts/collect_lab_proof.py bandit --owner 1 --level 0
 ascend check home-hack-lab:bandit-0 --complete
 \end{verbatim}
-\noindent\textbf{Related guides:} Evidence \& verification, When something is stuck\par
+\noindent\textbf{Related guides:} Evidence \& verification, When something is stuck, Linux labs: local \& server\par
 \subsection{When something is stuck}
 Start with the message closest to the action.\par
 \subsubsection{I cannot see an action result}
@@ -186,3 +186,87 @@ Send a test from Profile. Check the channel configuration, topic or account, not
 \subsubsection{A pack is too advanced}
 Read its entry requirements and choose a foundations track, or save partial work and return later. Installing several tracks is fine; only one mission needs your attention today.\par
 \noindent\textbf{Related guides:} Getting started, Setting up reminders\par
+\subsection{Playground \& short practice}
+Keep your place in the track. Choose a short exercise, an independent investigation, or a saved workspace.\par
+Playground is available in the main navigation with Quick practice, Challenges, Free practice, and Saved work \& history. It works with an active, paused, completed, or absent mission. Today keeps the next track task visible beside a short practice recommendation.\par
+\subsubsection{Learn, apply, then review}
+\begin{enumerate}
+\item Start a worked example in Learn with guidance. It opens on its own page with a practice clock. The first unfamiliar skill opens a three-step walkthrough automatically; use Next, Back or Skip tour. Open walkthrough is always available later.
+\item Apply the skill in a fresh easy challenge. Relevant independent cases and changed-condition checks support harder recommendations; total XP does not establish readiness.
+\item Your answers and notes save in your Ascend profile under Playground → Saved work \& history. Each activity appears once; View attempts opens all its attempts for individual review or return. Save \& leave pauses worked examples and free workspaces. Assessed challenge timers keep running. The optional return reminder is a note to your future self, not an extra task. Available hints are limited and optional; some challenges have no hints.
+\item Solve or explicitly end an attempt before opening its full solution. Previously seen cases are familiar practice. Finite mysteries do not promise unlimited novelty.
+\end{enumerate}
+Search and filter by duration, topic, difficulty, setup, progress and format. Bookmark favorites or use Surprise me. Optional preparation has its own estimate. A challenge never changes difficulty when you study an example. Time estimates are authored budgets awaiting learner pilots.\par
+\subsubsection{Experiment with real inputs}
+The permission sandbox lets you edit policy rules and requests. The timeline sandbox lets you edit events and filters. Run experiment shows the result. Save workspace and resume from history. Reset and blank actions create new copies. After the request example, introduce a hidden policy fault into a copy, test controls and repair or reveal it. The linked HTTP lab runs separately on your own machine.\par
+\subsubsection{Rewards and your track}
+Successful fresh practice earns 10 XP once per family per logical day, up to 30 practice XP per day. Practice continues after the cap. Standalone challenges award 25/50/100 XP once for easy/intermediate/hard solves. Replays and revealed achievements cannot earn another first-solve award. Available hints do not reduce XP; assistance stays in the result. Examples and workspaces do not award verified XP.\par
+Verified activity completion counts toward the habit if automatic streak credit is enabled. Substantive learning notes count; page visits, timers and workspace saves alone do not. Your timezone, 04:00 day rollover and freezes still apply. Activity logs never attach themselves to the active mission. Stats separates track, practice and challenge XP.\par
+Browsing leaves assessed track and Playground challenge clocks running. Starting another activity requires End scored attempt and switch, which stops the current clock without completion or XP. Its original work and result remain available. Assessed Playground timers run continuously from the original start until completion or explicit end, including time away, browser closure and server restarts. Existing activity rewards still apply. Worked examples and free workspaces can Pause \& save and Resume with accumulated practice time.\par
+Subjects include cybersecurity, Python and 3D fundamentals. Optional activity feedback records actual work/setup time and whether instructions were clear. Three clear, completed sessions can increase a personal time allowance; authored estimates remain the minimum. Stats shows local observations over 14 days.\par
+Some long track tasks have authored checkpoints. Today can suggest a part that fits your time while retaining the full task estimate. Save checkpoint note records partial learning with a return action; it never completes the parent, unlocks a level, or changes a scored clock. Existing private packs receive checkpoints only through their normal reviewed update process.\par
+\begin{verbatim}
+ascend practice 10
+ascend playground list --kind quick --minutes 10
+ascend playground start example-access
+ascend playground history
+\end{verbatim}
+\noindent\textbf{Related guides:} Missions \& your path, Timers \& XP, Docker \& external labs, Linux labs: local \& server\par
+\subsection{Linux labs: local \& server}
+Open a focused lab page, run locally or on a configured server, and retain your work.\par
+Open Playground → Linux labs, or a track’s open-source references. Cards show a brief, level, environment and readiness. Select Open lab for full tasks, setup, commands, evidence, source and license. Each exercise has a shareable link; returning to the catalog keeps your filters.\par
+\subsubsection{Run in the browser on a server}
+When a separate lab server is connected, the seven reviewed recipes offer Launch on server. Open a lab, launch it, choose an input or work file, save your edits and select Check work. API labs have a request console, while BGP labs accept exercise commands on your learner router. Server execution keeps downloads and work on the server; it does not require free disk on your laptop.\par
+\begin{enumerate}
+\item Stop lab and Resume lab keep the same files and absolute deadline. Stopping retains your server slot.
+\item Finish \& keep work exports a result before destroying compute. Download saved work keeps a small JSON bundle.
+\item Destroy runtime releases compute without requiring a passing submission. Retry cleanup handles retained deletion failures.
+\item An administrator must connect the separate runner first. The planned 80 GB server starts with two active slots and a 10 GiB reserve; larger VM, cluster, cloud, emulator and model environments still need their specific setup and validation.
+\end{enumerate}
+Checked on server means the configured runner performed the named answer rubric, policy test or live comparison. The check does not establish independent solving or every earlier action. These results award no XP and do not complete verified track milestones.\par
+\subsubsection{Start a reviewed recipe}
+\begin{enumerate}
+\item Install the Ascend CLI on the learner’s Linux computer. Run doctor for the recipe to check available tools, platform and free space.
+\item Start the recipe. The first download needs internet; subsequent starts reuse matching cached assets. --offline skips the Ascend server and keeps results pending until you explicitly sync.
+\item Use the returned run ID with show. Edit the listed answers.json or policy.json in your saved work directory, then run check. Service recipes also provide a loopback browser URL.
+\item Use stop and resume to keep the same attempt. Stop does not pause its session deadline. Use finish to export a small result and destroy its owned runtime while retaining your files.
+\end{enumerate}
+\begin{verbatim}
+ascend lab catalog --level starter
+ascend local-lab doctor linux-audit-discovery
+ascend local-lab start linux-audit-discovery --offline
+ascend local-lab show RUN
+ascend local-lab check RUN
+ascend local-lab finish RUN
+ascend local-lab sync RUN
+\end{verbatim}
+\subsubsection{Available recipes}
+\begin{itemize}
+\item linux-audit-discovery: interpret a small Linux audit log and a separate benign control.
+\item vampi-ownership: compare owner, other-user and anonymous API access in local Docker targets.
+\item bgp-export-policy: write a small IPv4 export policy for an assigned customer network. It tests a policy model; it does not run a router.
+\item wrongsecrets-basics: locate three source, configuration and environment secrets in the local WrongSecrets app. Docker is required; browser badges are temporary, while saved answers and notes survive stop/resume.
+\item bgp-single-session, bgp-session-protection and bgp-prefix-filter: configure real FRR BGP sessions and route advertisements in private local containers. show provides vtysh connection commands; stop/resume retains configuration. The protection checker briefly changes authored external controls to observe rejection and recovery.
+\end{itemize}
+\subsubsection{What the result means}
+Checked on this PC is local feedback. Answer checked means the server applied its answer rubric. Submission tested (policy model) means a temporary server worker tested your submitted rules. Practice recorded (manual observations) is your own report from a separate environment. These labels do not prove every earlier action, and local-lab receipts award no XP or verified track completion. Local evidence reviewed means Ascend derived checks from submitted observations and their negative controls; the server repeats the same data checks. Local output can be altered, so hashes establish consistency rather than authenticity.\par
+\subsubsection{Keep work and free disk space}
+Saved work, disposable runtime and source cache live in separate directories on your PC. finish releases runtime resources; cache --images can remove unused images acquired by Ascend. It never globally prunes Docker or deletes your notes. Run reconcile after an interrupted start or failed cleanup. If you switch ASCEND\_HOME, use a matching lab directory or choose another ASCEND\_LAB\_HOME.\par
+\begin{verbatim}
+ascend local-lab export RUN
+ascend local-lab reconcile
+ascend local-lab cache --budget-mib 0 --images
+\end{verbatim}
+\subsubsection{Established and specialist environments}
+For the eight environments needing their own VM, cluster, cloud, Android or model setup, prepare a learner-managed workspace. It downloads selected pinned references and saves a README, copyable source commands, environment.json, collector.json and artifact templates. Follow the saved upstream setup on your own computer. Preparation and evidence capture do not launch or destroy that environment.\par
+\begin{verbatim}
+ascend local-lab prepare kubernetes-goat-rbac
+ascend local-lab show RUN
+ascend local-lab observe RUN service_account_permissions_observed
+ascend local-lab capture RUN ARTIFACT observation.json
+ascend local-lab check RUN
+ascend local-lab finish RUN
+ascend local-lab sync RUN
+\end{verbatim}
+Fill collector.json to select the exact Kubernetes context, emulator serial, AWS profile or FRR container. Collectors perform read-only queries; Android and AWS secret values are excluded. Repair, debugger and LLM traces can be captured from bounded JSON observations. Include the required negative controls. LLM evidence needs at least three distinct baseline and injection trials with actual tool calls. Missing evidence remains unsupported. Finish preserves all work; clean up the actual environment using its upstream plan.\par
+\noindent\textbf{Related guides:} Playground \& short practice, Docker \& external labs, Evidence \& verification\par

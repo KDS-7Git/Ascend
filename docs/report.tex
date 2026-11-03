@@ -26,6 +26,21 @@ commits at milestones. Original documents are preserved under \texttt{docs/desig
 \input{report-status.tex}
 \input{latex/expanded-release.tex}
 \input{latex/ui-workspace.tex}
+\subsection{Independent Playground}
+The approved short-practice design is implemented through its complete Playground
+stage. Today retains the next track task alongside repeatable practice. Playground
+contains seven worked examples, eighteen practice recipes, ten standalone challenges
+and two editable browser workspaces across cybersecurity, Python and 3D reasoning.
+Dedicated activity pages provide an elapsed practice clock and example-only
+interactive walkthroughs. Skill-specific evidence and optional feedback inform recommendations;
+case fixtures, saved work, hints and reveal history survive restarts. Activity
+completion and capped rewards remain separate from curriculum completion and
+legacy scored attempts. Authored checkpoints in selected long tasks record partial
+learning without completing their parent. Desktop and phone flows, installed-wheel
+assets and focused regression tests are checked using disposable profiles. See
+\path{tests/test_playground.py} and \path{tests/test_playground_strict_timing.py}
+for reproducible activity and timing checks. Further
+learner sessions and the two-week observation window remain empirical follow-up.
 
 \section{Architecture}
 \begin{longtable}{p{0.23\textwidth}p{0.7\textwidth}}
@@ -37,7 +52,7 @@ Application layer & Shared use cases for logging, completion, missions, pack tru
 \texttt{ascend/cli} & Arguments, plain output, and an optional standard-library HTTP client. Remote mode never opens the local database. \\
 \texttt{ascend/verifiers} & Local file and command adapters, HTTP/Git checks, and explicitly trusted extensions. \\
 \texttt{ascend/server} & Optional FastAPI transport, account authentication, API contracts, static assets, and scheduled reminders. \\
-\texttt{web} & PWA: Today, Path, Stats, Tracks, Docs and a top-bar Profile page. Same API and validation as the CLI. \\
+\texttt{web} & PWA: Today, Path, Playground, Stats, Tracks, Docs and a top-bar Profile page. Same API and validation as the CLI. \\
 \texttt{ascend/nudge} & Schedule decisions separated from delivery channels. \\
 \end{longtable}
 

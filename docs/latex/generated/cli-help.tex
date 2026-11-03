@@ -2,13 +2,15 @@
 \subsubsection{ascend}
 \begin{verbatim}
 usage: ascend [-h] [--json] [--server SERVER]
-              {today,done,mission,pack,plugin,review,mark,skip,backfill,unlock,check,levels,stats,heatmap,more,parked,remind-check,park,resolve,export,config,login,edit,undo,search,split,sync,accept,nudge,install-nudge,session,lab}
+              {today,done,mission,pack,plugin,review,mark,skip,backfill,unlock,check,levels,stats,heatmap,more,parked,remind-check,park,resolve,export,config,login,edit,undo,search,split,checkpoint,sync,accept,nudge,install-nudge,session,lab,practice,playground,local-lab}
               ...
 
 One small, proof-backed step at a time
 
 positional arguments:
-  {today,done,mission,pack,plugin,review,mark,skip,backfill,unlock,check,levels,stats,heatmap,more,parked,remind-check,park,resolve,export,config,login,edit,undo,search,split,sync,accept,nudge,install-nudge,session,lab}
+  {today,done,mission,pack,plugin,review,mark,skip,backfill,unlock,check,levels,stats,heatmap,more,parked,remind-check,park,resolve,export,config,login,edit,undo,search,split,checkpoint,sync,accept,nudge,install-nudge,session,lab,practice,playground,local-lab}
+    practice            Recommend a short independent activity
+    local-lab           Run reviewed labs on this Linux PC
 
 options:
   -h, --help            show this help message and exit
@@ -424,6 +426,40 @@ positional arguments:
 options:
   -h, --help  show this help message and exit
 \end{verbatim}
+\subsubsection{ascend checkpoint}
+\begin{verbatim}
+usage: ascend checkpoint [-h] {list,log} ...
+
+positional arguments:
+  {list,log}
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend checkpoint list}
+\begin{verbatim}
+usage: ascend checkpoint list [-h] node
+
+positional arguments:
+  node
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend checkpoint log}
+\begin{verbatim}
+usage: ascend checkpoint log [-h] --learned LEARNED [--minutes MINUTES]
+                             node checkpoint
+
+positional arguments:
+  node
+  checkpoint
+
+options:
+  -h, --help         show this help message and exit
+  --learned LEARNED
+  --minutes MINUTES
+\end{verbatim}
 \subsubsection{ascend sync}
 \begin{verbatim}
 usage: ascend sync [-h]
@@ -494,13 +530,48 @@ options:
 \end{verbatim}
 \subsubsection{ascend lab}
 \begin{verbatim}
-usage: ascend lab [-h] {start,show,emit,submit} ...
+usage: ascend lab [-h] {catalog,detail,plan,start,show,emit,submit} ...
 
 positional arguments:
-  {start,show,emit,submit}
+  {catalog,detail,plan,start,show,emit,submit}
+    catalog             Browse open-source lab references and reviewed recipes
+    plan                Review upstream setup and evidence contract without
+                        executing it
 
 options:
   -h, --help            show this help message and exit
+\end{verbatim}
+\subsubsection{ascend lab catalog}
+\begin{verbatim}
+usage: ascend lab catalog [-h] [--track TRACK] [--level LEVEL]
+                          [--location LOCATION] [--search SEARCH]
+
+options:
+  -h, --help           show this help message and exit
+  --track TRACK
+  --level LEVEL
+  --location LOCATION
+  --search SEARCH
+\end{verbatim}
+\subsubsection{ascend lab detail}
+\begin{verbatim}
+usage: ascend lab detail [-h] lab_id
+
+positional arguments:
+  lab_id
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend lab plan}
+\begin{verbatim}
+usage: ascend lab plan [-h] lab_id
+
+positional arguments:
+  lab_id
+
+options:
+  -h, --help  show this help message and exit
 \end{verbatim}
 \subsubsection{ascend lab start}
 \begin{verbatim}
@@ -545,6 +616,452 @@ positional arguments:
 
 options:
   -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend practice}
+\begin{verbatim}
+usage: ascend practice [-h] [--exclude EXCLUDE] [--domain DOMAIN] [minutes]
+
+positional arguments:
+  minutes
+
+options:
+  -h, --help         show this help message and exit
+  --exclude EXCLUDE
+  --domain DOMAIN
+\end{verbatim}
+\subsubsection{ascend playground}
+\begin{verbatim}
+usage: ascend playground [-h]
+                         {list,history,insights,detail,start,show,resume,save,submit,hint,end,reveal,log,experiment,copy,repair,tour,feedback,bookmark}
+                         ...
+
+positional arguments:
+  {list,history,insights,detail,start,show,resume,save,submit,hint,end,reveal,log,experiment,copy,repair,tour,feedback,bookmark}
+
+options:
+  -h, --help            show this help message and exit
+\end{verbatim}
+\subsubsection{ascend playground list}
+\begin{verbatim}
+usage: ascend playground list [-h] [--domain DOMAIN] [--kind KIND]
+                              [--topic TOPIC] [--difficulty DIFFICULTY]
+                              [--environment ENVIRONMENT]
+                              [--progress PROGRESS] [--format FORMAT]
+                              [--search SEARCH] [--minutes MINUTES]
+                              [--bookmarked]
+
+options:
+  -h, --help            show this help message and exit
+  --domain DOMAIN
+  --kind KIND
+  --topic TOPIC
+  --difficulty DIFFICULTY
+  --environment ENVIRONMENT
+  --progress PROGRESS
+  --format FORMAT
+  --search SEARCH
+  --minutes MINUTES
+  --bookmarked
+\end{verbatim}
+\subsubsection{ascend playground history}
+\begin{verbatim}
+usage: ascend playground history [-h]
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend playground insights}
+\begin{verbatim}
+usage: ascend playground insights [-h]
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend playground detail}
+\begin{verbatim}
+usage: ascend playground detail [-h] activity
+
+positional arguments:
+  activity
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend playground start}
+\begin{verbatim}
+usage: ascend playground start [-h] [--end-scored] [--deliberate] activity
+
+positional arguments:
+  activity
+
+options:
+  -h, --help    show this help message and exit
+  --end-scored
+  --deliberate
+\end{verbatim}
+\subsubsection{ascend playground show}
+\begin{verbatim}
+usage: ascend playground show [-h] run
+
+positional arguments:
+  run
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend playground resume}
+\begin{verbatim}
+usage: ascend playground resume [-h] [--end-scored] run
+
+positional arguments:
+  run
+
+options:
+  -h, --help    show this help message and exit
+  --end-scored
+\end{verbatim}
+\subsubsection{ascend playground save}
+\begin{verbatim}
+usage: ascend playground save [-h] run data
+
+positional arguments:
+  run
+  data        JSON object
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend playground submit}
+\begin{verbatim}
+usage: ascend playground submit [-h] [--learned LEARNED]
+                                [--next-step NEXT_STEP]
+                                run data
+
+positional arguments:
+  run
+  data                  JSON object
+
+options:
+  -h, --help            show this help message and exit
+  --learned LEARNED
+  --next-step NEXT_STEP
+\end{verbatim}
+\subsubsection{ascend playground hint}
+\begin{verbatim}
+usage: ascend playground hint [-h] run
+
+positional arguments:
+  run
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend playground end}
+\begin{verbatim}
+usage: ascend playground end [-h] run
+
+positional arguments:
+  run
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend playground reveal}
+\begin{verbatim}
+usage: ascend playground reveal [-h] run
+
+positional arguments:
+  run
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend playground log}
+\begin{verbatim}
+usage: ascend playground log [-h] [--learned LEARNED] [--next-step NEXT_STEP]
+                             [--minutes MINUTES]
+                             run
+
+positional arguments:
+  run
+
+options:
+  -h, --help            show this help message and exit
+  --learned LEARNED
+  --next-step NEXT_STEP
+  --minutes MINUTES
+\end{verbatim}
+\subsubsection{ascend playground experiment}
+\begin{verbatim}
+usage: ascend playground experiment [-h] run data
+
+positional arguments:
+  run
+  data        JSON object
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend playground copy}
+\begin{verbatim}
+usage: ascend playground copy [-h] [--end-scored] [--reset] [--fault]
+                              [--blank]
+                              run
+
+positional arguments:
+  run
+
+options:
+  -h, --help    show this help message and exit
+  --end-scored
+  --reset
+  --fault
+  --blank
+\end{verbatim}
+\subsubsection{ascend playground repair}
+\begin{verbatim}
+usage: ascend playground repair [-h] run rule
+
+positional arguments:
+  run
+  rule
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend playground tour}
+\begin{verbatim}
+usage: ascend playground tour [-h] [--step STEP]
+                              [--status {active,finished,skipped}]
+                              run
+
+positional arguments:
+  run
+
+options:
+  -h, --help            show this help message and exit
+  --step STEP
+  --status {active,finished,skipped}
+\end{verbatim}
+\subsubsection{ascend playground feedback}
+\begin{verbatim}
+usage: ascend playground feedback [-h] run data
+
+positional arguments:
+  run
+  data        JSON object
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend playground bookmark}
+\begin{verbatim}
+usage: ascend playground bookmark [-h] [--remove] activity
+
+positional arguments:
+  activity
+
+options:
+  -h, --help  show this help message and exit
+  --remove
+\end{verbatim}
+\subsubsection{ascend local-lab}
+\begin{verbatim}
+usage: ascend local-lab [-h]
+                        {doctor,start,show,check,stop,resume,reset,export,finish,destroy,sync,history,reconcile,record,prepare,capture,observe,cache}
+                        ...
+
+positional arguments:
+  {doctor,start,show,check,stop,resume,reset,export,finish,destroy,sync,history,reconcile,record,prepare,capture,observe,cache}
+    record              Import bounded feedback from an externally run lab
+    prepare             Prepare pinned references and evidence capture for a
+                        learner-managed lab
+    capture             Capture one bounded artifact for a prepared local lab
+    observe             Collect one read-only observation using the
+                        workspace's explicit environment
+
+options:
+  -h, --help            show this help message and exit
+\end{verbatim}
+\subsubsection{ascend local-lab doctor}
+\begin{verbatim}
+usage: ascend local-lab doctor [-h] recipe
+
+positional arguments:
+  recipe
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend local-lab start}
+\begin{verbatim}
+usage: ascend local-lab start [-h] [--offline] [--lifetime LIFETIME] recipe
+
+positional arguments:
+  recipe
+
+options:
+  -h, --help           show this help message and exit
+  --offline            Record practice locally and sync later without a
+                       trusted timer
+  --lifetime LIFETIME  Seconds until reconciliation expires this runtime
+\end{verbatim}
+\subsubsection{ascend local-lab show}
+\begin{verbatim}
+usage: ascend local-lab show [-h] run
+
+positional arguments:
+  run
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend local-lab check}
+\begin{verbatim}
+usage: ascend local-lab check [-h] run
+
+positional arguments:
+  run
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend local-lab stop}
+\begin{verbatim}
+usage: ascend local-lab stop [-h] run
+
+positional arguments:
+  run
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend local-lab resume}
+\begin{verbatim}
+usage: ascend local-lab resume [-h] run
+
+positional arguments:
+  run
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend local-lab reset}
+\begin{verbatim}
+usage: ascend local-lab reset [-h] run
+
+positional arguments:
+  run
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend local-lab export}
+\begin{verbatim}
+usage: ascend local-lab export [-h] run
+
+positional arguments:
+  run
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend local-lab finish}
+\begin{verbatim}
+usage: ascend local-lab finish [-h] run
+
+positional arguments:
+  run
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend local-lab destroy}
+\begin{verbatim}
+usage: ascend local-lab destroy [-h] run
+
+positional arguments:
+  run
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend local-lab sync}
+\begin{verbatim}
+usage: ascend local-lab sync [-h] run
+
+positional arguments:
+  run
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend local-lab history}
+\begin{verbatim}
+usage: ascend local-lab history [-h]
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend local-lab reconcile}
+\begin{verbatim}
+usage: ascend local-lab reconcile [-h]
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend local-lab record}
+\begin{verbatim}
+usage: ascend local-lab record [-h] recipe report
+
+positional arguments:
+  recipe
+  report      Local JSON report; original lab archives remain on this PC
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend local-lab prepare}
+\begin{verbatim}
+usage: ascend local-lab prepare [-h] recipe
+
+positional arguments:
+  recipe
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend local-lab capture}
+\begin{verbatim}
+usage: ascend local-lab capture [-h] run artifact path
+
+positional arguments:
+  run
+  artifact
+  path
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend local-lab observe}
+\begin{verbatim}
+usage: ascend local-lab observe [-h] run artifact
+
+positional arguments:
+  run
+  artifact
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend local-lab cache}
+\begin{verbatim}
+usage: ascend local-lab cache [-h] [--budget-mib BUDGET_MIB] [--images]
+
+options:
+  -h, --help            show this help message and exit
+  --budget-mib BUDGET_MIB
+  --images              Also remove unused images acquired by this companion
 \end{verbatim}
 \subsubsection{ascend-server }
 \begin{verbatim}

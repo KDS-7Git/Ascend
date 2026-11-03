@@ -1,5 +1,59 @@
 \section{Workspace UI: documentation, profile and reliable feedback}
 \label{workspace-ui}
+\subsection{Current feedback, progression and page context}
+The November 2026 follow-up compares eight public learning products: Duolingo,
+TryHackMe, Hack The Box, PortSwigger Academy, OverTheWire, The Odin Project,
+Codecademy and Exercism. Source URLs, observations and limitations are in
+\path{docs/design/interaction-audit.md}. Public product pages and help articles
+were rendered; private competitor dashboards and learner outcomes were not audited.
+
+\path{web/feedback.js} builds shared status marks, titles and details with text
+DOM APIs. \path{web/feedback.css} maps outcomes to mint, amber, lavender and red
+surfaces. Icon shape and wording accompany color. Notifications, prediction
+feedback, example results and evidence checks use this treatment. Errors persist;
+dialog notices remain in the dialog. \path{web/effects.js} draws the status glyph
+and plays a short, local geometric burst for completion or a new streak. The
+caller explicitly triggers feedback after an action; restored results stay still.
+Duplicate streak events are suppressed, hidden documents do not celebrate, and
+device reduced motion overrides all decorative movement. Timer and reward logic
+is independent of motion.
+
+\path{web/playground.js} advances examples through walkthrough, takeaway and fresh
+challenge. Finishing the tour exposes the existing takeaway form immediately and
+focuses its heading, avoiding an unwanted phone keyboard. Replay is secondary and
+reuses the form, preserving its draft. A finished example places its next challenge
+action beside the saved result; reference and takeaway review remain available.
+Tour completion does not submit evidence, award XP or establish mastery.
+
+The duration controls now change Today's promoted activity. The canonical next
+track node remains unchanged in the application service. If its authored estimate
+exceeds the selected time, the browser chooses a fitting authored checkpoint,
+side task or Playground activity. An empty result asks the learner to change time;
+it never relabels a longer task. The time-fit card shares the main card's positioned
+layout so its illustration and compact label remain contained.
+
+\path{web/context-rail.js} places all screens in one responsive frame and renders
+supporting context from existing state without extra requests. At desktop widths
+of at least 1440 pixels, \path{web/context-rail.css} provides a 224--248 pixel
+column beside the working area. It contains real progress, level links, article
+headings, settings or saved-work navigation according to the screen. Article links
+scroll without overwriting the route hash; an intersection observer follows the
+current heading and is disconnected on navigation. Challenge retains its own
+notebook columns. Compact screens use the original single working column.
+
+\path{web/cursor-preview.js} supplies an optional circuit trace selected by the
+\texttt{?cursor=circuit} URL parameter. It samples a bounded five-cell history,
+uses one animation-frame update at a time and fades after idle. It is decorative,
+does not replace the pointer, and never intercepts input. The default remains the
+existing grid until the owner accepts the preview.
+
+The browser regressions in \path{tests/test_ui_feedback.py} exercise state
+handoffs, replay/reload continuity, short-session selection, responsive geometry,
+status accessibility and reduced motion. These checks include actual illustration
+containment; document-width checks alone would miss the escaped illustration
+reported during this iteration. The following subsections retain the earlier
+implementation history; their screenshots predate this follow-up.
+
 \subsection{Problems addressed}
 The previous pack list exposed technical IDs and review/trust strings as its main
 content, with the Read action on another line. Lesson actions sent their messages
@@ -231,3 +285,16 @@ finding help, using both keyboard and phone input.
 \includegraphics[width=.43\textwidth]{ui-workspace/lesson-feedback-mobile-dark.png}
 \caption{Profile on mobile and visible feedback inside a dark-mode lesson dialog. These are viewport captures, not stitched page layouts.}
 \end{figure}
+
+\subsection{Focused Linux lab catalog and detail pages}
+Linux labs use the same card grid, emblem, brief, compact metadata and bottom
+opening action as other Playground tabs. Catalog cards contain no commands,
+source audit or expanded setup. \texttt{\#lab/REFERENCE} opens one task page;
+\texttt{\#lab/RECIPE} selects an exercise and survives reload and browser history.
+Returning preserves catalog filters. Full tasks, local setup, downloads,
+saved-work commands and source requirements are inside the detail page.
+A configured separate runner adds browser launch, bounded work editing,
+checks, stop/resume, retained exports and retryable cleanup. Desktop context
+navigation links to the task and execution sections without adding a sidebar
+on phones. Keyboard navigation, empty filters, missing labs and disconnected
+runners have explicit browser coverage.

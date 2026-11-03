@@ -3,7 +3,7 @@
 Proposal dated 2026-11-02, incorporating the owner's explicit **Linux first**
 choice. Companion research: [repositories and learning paths](open-source-lab-research.md).
 This is the approved implementation plan. Current delivery and runtime evidence
-are recorded in [the implementation log](../testing/local-lab-implementation.md).
+are documented in the [runner deployment guide](server-lab-runner.md) and the source/image review records.
 The shared catalog, file/VAmPI/WrongSecrets pilots and policy submission worker are implemented;
 capability-specific work still passes the gates below before becoming executable.
 

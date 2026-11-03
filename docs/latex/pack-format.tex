@@ -122,3 +122,47 @@ set.
 stores a local 10-minute-step breakdown in SQLite; the TOML input stays
 untouched. Choose parts that together satisfy the
 parent\textquotesingle s original completion condition.
+
+
+\subsubsection{Authored checkpoints}
+A node may include up to twelve \texttt{checkpoints}, each an inline table with
+\texttt{id}, \texttt{title}, \texttt{minutes}, \texttt{done\_when} and
+\texttt{next\_step}. IDs must be unique within the node; minutes must be positive
+and shorter than the full task estimate. Author meaningful stopping points, not
+cosmetic fragments or shorter labels for a complete assessment. Saving one records
+a partial learning note and does not replace the parent's verification or unlock
+later levels. Checkpoint IDs remain stable across updates. Existing installed packs
+are not overwritten when bundled content gains checkpoints.
+
+\begin{verbatim}
+checkpoints = [{ id = "predict", title = "Predict one result",
+  minutes = 10, done_when = "Compare a prediction with one observation.",
+  next_step = "Complete the remaining cases in the parent task." }]
+\end{verbatim}
+In TOML, write an inline table on one line (the example is wrapped for print).
+
+\subsubsection{Playground content is separate from track nodes}
+Repeating optional TOML nodes does not create recurring practice. Playground's
+initial bundled catalog is authored in \path{ascend/playground/catalog.py}, with
+fixtures and evaluators in \path{ascend/playground/fixtures.py} and subject-specific
+content in \path{ascend/playground/subjects.py}. Example steps and reflection prompts
+live in \path{ascend/playground/guidance.py}. This release does
+not import activity definitions from third-party TOML packs. Additional subjects
+can extend that catalog without mission enrollment or changing stable task IDs.
+
+Each definition needs a version, independent activity ID, kind, example/challenge
+role, skill abilities, preparation references and time, honest working/setup
+estimates, device/environment needs, evidence mechanism, variant strategy, stable
+reward key and optional source-node identity. Reused assessment identities must
+keep their reward key; changing a title or version must not mint another first-solve
+award. Source-node references must also retain the original assessment reward.
+The initial Playground challenges use distinct fixtures from track assessments.
+
+Use neutral mystery IDs/titles and broad prerequisite abilities. Keep expected
+answers, diagnosis, hints and debriefs outside public discovery metadata. Author
+observable evidence, plausible contrasting or benign cases, a discriminating test
+or prediction, and a meaningful changed-condition follow-up. Free text alone is
+not automatically verified reasoning. Examples deliberately teach their own
+separate fixture. A challenge may have no hints or limited authored hints; it does
+not need a guided conversion. Finite variants must be labeled review after they
+are seen, and a solution reveal must remain associated with the same fixture.
