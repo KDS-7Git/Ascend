@@ -4,6 +4,7 @@ window.AscendMotion = (() => {
   const root = document.documentElement;
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
   const running = new Set();
+  const feedbackEvents = new WeakMap();
   let lastPage = null;
   let paused = root.dataset.motion === 'off';
 
@@ -66,6 +67,47 @@ window.AscendMotion = (() => {
     try { await animation.finished; } catch { /* Interrupted navigation. */ }
     running.delete(animation);
   }
+  function feedback(node, kind) {
+    if (!node || !enabled() || document.hidden) return;
+    const last = feedbackEvents.get(node), now = performance.now();
+    if (last?.kind === kind && now - last.at < 1000) return;
+    feedbackEvents.set(node, {kind, at: now});
+    const celebration = kind === 'complete' || kind === 'streak';
+    animate(node, celebration ? [
+      {opacity: .35, transform: 'translateY(14px) scale(.96)'},
+      {opacity: 1, transform: 'translateY(-3px) scale(1.015)', offset: .65},
+      {opacity: 1, transform: 'none'}
+    ] : [{opacity: .45, transform: 'translateY(5px)'}, {opacity: 1, transform: 'none'}], celebration ? 620 : 300);
+    if (kind === 'complete') {
+      const mark = node.querySelector('.completion-mark');
+      animate(mark, [{transform: 'rotate(-35deg) scale(.3)'}, {transform: 'rotate(8deg) scale(1.13)', offset: .7}, {transform: 'none'}], 720, 80);
+    }
+    const glyph = node.querySelector('.feedback-mark-stroke');
+    animate(glyph, [{strokeDasharray: '1', strokeDashoffset: '1'}, {strokeDasharray: '1', strokeDashoffset: '0'}], 420, 110);
+    const ring = node.querySelector('.feedback-mark');
+    animate(ring, [{transform: 'scale(.75)'}, {transform: 'scale(1.12)', offset: .6}, {transform: 'scale(1)'}], 480);
+    if (celebration) {
+      // A brief, local geometric burst. No full-screen confetti or repeating reward.
+      const origin = node.querySelector('.completion-mark, .feedback-mark, .icon');
+      if (origin) {
+        const bounds = node.getBoundingClientRect(), point = origin.getBoundingClientRect();
+        if (getComputedStyle(node).position === 'static') node.style.position = 'relative';
+        for (let i = 0; i < 6; i++) {
+          const spark = document.createElement('span'); spark.className = 'feedback-spark'; spark.setAttribute('aria-hidden', 'true');
+          spark.style.left = `${point.left - bounds.left + point.width / 2}px`;
+          spark.style.top = `${point.top - bounds.top + point.height / 2}px`;
+          node.append(spark);
+          const angle = i * Math.PI / 3, distance = 34;
+          animate(spark, [
+            {opacity: 0, transform: 'translate(-50%, -50%) scale(0)'},
+            {opacity: .85, offset: .2},
+            {opacity: 0, transform: `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) rotate(${i * 60}deg) scale(.4)`}
+          ], 680, 80);
+          setTimeout(() => spark.remove(), 800);
+        }
+      }
+    }
+  }
   document.getElementById('motion-preference').addEventListener('change', event => setPaused(event.target.value === 'off'));
   reduced.addEventListener('change', sync);
   document.addEventListener('visibilitychange', () => {
@@ -102,5 +144,5 @@ window.AscendMotion = (() => {
   document.documentElement.addEventListener('pointerleave', () => pageGrid.classList.remove('pointer-present'));
   sync();
   document.querySelector('.ambient-scene').hidden = false;
-  return {enter, leave};
+  return {enter, leave, feedback};
 })();

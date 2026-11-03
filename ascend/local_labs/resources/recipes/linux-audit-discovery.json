@@ -1,0 +1,70 @@
+{
+  "id": "linux-audit-discovery",
+  "reference_id": "security-datasets",
+  "title": "Read a Linux audit trail",
+  "version": "1",
+  "status": "reviewed",
+  "adapter": "security-audit-v1",
+  "source": {
+    "repository": "https://github.com/OTRF/Security-Datasets",
+    "revision": "d9d40ef123d2c87d5d3df28c96bcab4f0faccc87"
+  },
+  "license_review": "Pinned root LICENSE is MIT (Roberto Rodriguez); selected audit archive contains one plain log and no separate notice. README also says GPL; this conflict is disclosed. Original data is fetched from upstream on demand; only Ascend-authored instructions/control ship in the wheel.",
+  "assets": [
+    {
+      "role": "evidence",
+      "url": "https://raw.githubusercontent.com/OTRF/Security-Datasets/d9d40ef123d2c87d5d3df28c96bcab4f0faccc87/datasets/atomic/linux/discovery/host/sh_arp_cache.zip",
+      "sha256": "6527c420ed81314c1580542decb6a996e312673434e9fed2389035b06a3430b1",
+      "bytes": 714,
+      "member": "sh_arp_cache_2020-11-10074812.log",
+      "expanded_bytes": 1884,
+      "expanded_sha256": "6a938e0a94f2f26c153e4c8a37ef0df960b2cb46147407fda00d0344e8f375fc"
+    },
+    {
+      "role": "license",
+      "url": "https://raw.githubusercontent.com/OTRF/Security-Datasets/d9d40ef123d2c87d5d3df28c96bcab4f0faccc87/LICENSE",
+      "sha256": "fce88163b60d67ecabd317b75f7638233e11cbe648fe608ebbf6c10161564686",
+      "bytes": 1083
+    }
+  ],
+  "checker_version": "audit-answers-v1",
+  "fixture_id": "6a938e0a94f2f26c153e4c8a37ef0df960b2cb46147407fda00d0344e8f375fc",
+  "grading": "audit-answers-v1",
+  "evidence_label": "Answer checked (when synchronized to an Ascend server)",
+  "objective": "Identify neighbor-cache discovery and a companion filter in a real Linux audit log; exclude an authored control and distinguish observation from intent.",
+  "instructions": "Read evidence.log and benign-control.json in the runtime files listed by local-lab show. Group Linux audit records by the number after the timestamp colon. In answers.json record the discovery process event ID, executable, argv array, numeric uid, companion filter event ID, and the synthetic control ID. Set intent to insufficient-evidence if the command alone cannot establish malicious intent. Explain your observation and that limitation in at least 20 characters. check gives local feedback; export preserves a bounded submission; finish retains your work and releases runtime/cache references. The synthetic control is authored by Ascend, not OTRF. No commands in the evidence need to be executed.",
+  "answer_template": {
+    "discovery_event_id": "",
+    "executable": "",
+    "arguments": [],
+    "companion_event_id": "",
+    "uid": null,
+    "benign_event_ids": [],
+    "intent": "",
+    "explanation": ""
+  },
+  "required_tools": [],
+  "minimum_free_bytes": 1048576,
+  "tested_platforms": [
+    "linux-x86_64"
+  ],
+  "measurements": {
+    "measured_on": "2026-11-03",
+    "platform": "linux-x86_64",
+    "download_bytes": 1797,
+    "expanded_bytes": 3463,
+    "peak_disk_bytes": 18627,
+    "peak_allocated_disk_bytes": 65536,
+    "startup_cold_seconds": 1.0490695350017631,
+    "startup_warm_seconds": 0.0015083000034792349,
+    "residual_cache_bytes": 1797,
+    "after_prune_cache_bytes": 0,
+    "peak_memory_bytes": 29556736,
+    "persistent_processes": 0,
+    "cpu_limit": null,
+    "pids_limit": null,
+    "scope": "Actual download, correct/incorrect/incomplete answers, stop, new companion instance, offline resume, export, finish, warm start, idempotent destroy and cache eviction. Disk sampled every 5ms plus lifecycle checkpoints, including retained work. Memory is /proc/self/status VmHWM for the verifier's current executable, excluding inherited pre-exec launcher peaks."
+  },
+  "lifecycle_verified": true,
+  "verification_report": "docs/testing/local-lab-implementation.md"
+}

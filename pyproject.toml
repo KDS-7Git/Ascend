@@ -26,7 +26,7 @@ push = ["pywebpush>=2,<3"]
 include = ["ascend*"]
 
 [tool.setuptools.package-data]
-ascend = ["storage/migrations/*.sql", "community/*/*.toml", "community/*.json", "community/*.md", "web/*", "web/fonts/*", "labs/*.json"]
+ascend = ["storage/migrations/*.sql", "community/*/*.toml", "community/*.json", "community/*.md", "web/*", "web/fonts/*", "labs/*.json", "local_labs/resources/*.json", "local_labs/resources/*.txt", "local_labs/resources/recipes/*.json", "local_labs/resources/*/*.txt"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

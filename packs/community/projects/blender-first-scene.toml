@@ -2,7 +2,7 @@
 "id" = "blender-first-scene"
 "title" = "Create a Blender still-life scene"
 "kind" = "project"
-"version" = 1
+"version" = 2
 "source" = "ai-draft"
 "reviewed" = false
 
@@ -38,6 +38,7 @@
 
 [[node]]
 "id" = "objects"
+"checkpoints" = [{ "id" = "silhouette", "title" = "Block out one silhouette", "minutes" = 15, "done_when" = "Save a project containing one recognizable object made from simple shapes and inspect it from two viewpoints.", "next_step" = "Build two contrasting silhouettes and review all three objects together." }]
 "level" = "model"
 "title" = "Model three recognizable objects"
 "size" = "M"
@@ -58,6 +59,7 @@
 
 [[node]]
 "id" = "lighting"
+"checkpoints" = [{ "id" = "one-light", "title" = "Make a one-light comparison", "minutes" = 15, "done_when" = "Save two viewport images with one light moved between them and describe how the shadow direction changes.", "next_step" = "Refine the two lighting variations to reveal all object forms." }]
 "level" = "light"
 "title" = "Light the composition"
 "size" = "M"
@@ -78,6 +80,7 @@
 
 [[node]]
 "id" = "final"
+"checkpoints" = [{ "id" = "preview-render", "title" = "Inspect a small preview render", "minutes" = 15, "done_when" = "Save a low-resolution render and note one intentional choice and one visible issue to fix.", "next_step" = "Resolve the issue, render the final image, and explain three deliberate choices." }]
 "level" = "render"
 "title" = "Render and compare the final image"
 "size" = "M"

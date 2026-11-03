@@ -1,0 +1,80 @@
+{
+  "id": "bgp-export-policy",
+  "reference_id": "bgp-labs",
+  "title": "Design a BGP export policy",
+  "location": "local-files",
+  "version": "1",
+  "status": "reviewed",
+  "adapter": "prefix-policy-v1",
+  "source": {
+    "repository": "https://github.com/bgplab/bgplab",
+    "revision": "217fbef2cd5a2c200a3d5e56b3be5defaf1fbc67"
+  },
+  "license_review": "BGP Labs MIT notice is fetched with its pinned prefix-filter topology. The task, cases, declarative schema and checker are authored by Ascend; they model policy semantics and do not reuse router software or upstream grading claims.",
+  "assets": [
+    {
+      "role": "reference",
+      "path": "policy/3-prefix/topology.yml",
+      "url": "https://raw.githubusercontent.com/bgplab/bgplab/217fbef2cd5a2c200a3d5e56b3be5defaf1fbc67/policy/3-prefix/topology.yml",
+      "sha256": "5169f3b2392b7aae284aa90038988e5483864b251ccf54c22877ad4650b1092b",
+      "bytes": 1904
+    },
+    {
+      "role": "license",
+      "path": "LICENSE.md",
+      "url": "https://raw.githubusercontent.com/bgplab/bgplab/217fbef2cd5a2c200a3d5e56b3be5defaf1fbc67/LICENSE.md",
+      "sha256": "3e23b3fccd048328ed4dc371f8a11a404cc0174954e4f9be9b72727e9fbf8500",
+      "bytes": 1065
+    }
+  ],
+  "checker_version": "prefix-policy-v1",
+  "fixture_id": "assigned-policy-case-v1",
+  "grading": "prefix-policy-v1",
+  "worker_sha256": "53a3c7a46dc6ae49135c94f2e8e18233ab9e58fa9320569cd8302b3827929191",
+  "worker_review": "Fixed stdlib-only data worker; no submitted code or paths. Python -I -S, empty temporary working directory, minimal environment, 2 CPU seconds, 128 MiB address space, no child processes, 16 descriptors, 32 KiB per output file, 5 second wall timeout; parent caps accepted output at 16 KiB. No persistent pool. This is not a general executable-code sandbox.",
+  "evidence_label": "Submission tested (policy model), when synchronized to an Ascend server",
+  "objective": "Permit only the assigned customer aggregate and its allowed subprefixes; reject route leaks while keeping legitimate advertisements.",
+  "instructions": "Edit policy.json using the assigned /24 customer prefix in assignment.json or TASK.txt. Permit that /24 and all of its /25 and /26 subprefixes; deny every other IPv4 route, including /27 through /32, loopback, adjacent prefixes and the default route. The JSON object has version: 1, default: permit or deny, and rules: an array of at most 32 objects. Every rule has action: permit or deny, prefix: a canonical IPv4 CIDR string, min_prefix: an integer, and max_prefix: an integer. Lengths must satisfy the rule prefix length <= min_prefix <= max_prefix <= 32. Rules are evaluated in order; the first whose network contains the route and whose length range matches decides. The default applies when none match. check gives local feedback including a counterexample for a wrong policy. finish saves the single bounded policy and, when connected, submits it for independent server tests of all canonical IPv4 route prefixes. Only policy.json as a JSON object is submitted (64 KiB maximum); shell commands, router configurations, code and archives are not accepted. To practice on real routers next, see the separate BGP Labs prefix-filter plan.",
+  "required_tools": [],
+  "minimum_free_bytes": 1048576,
+  "tested_platforms": [
+    "linux-x86_64"
+  ],
+  "measurements": {
+    "measured_on": "2026-11-03",
+    "platform": "linux-x86_64",
+    "download_bytes": 2969,
+    "expanded_bytes": 3088,
+    "peak_disk_bytes": 36677,
+    "peak_allocated_disk_bytes": 106496,
+    "startup_cold_seconds": 0.9478746790045989,
+    "startup_warm_seconds": 0.0023373609947157092,
+    "peak_memory_bytes": 11313152,
+    "worker_samples": [
+      {
+        "wall_seconds": 0.00036291699507273734,
+        "cpu_seconds": 0.023252,
+        "peak_memory_bytes": 11255808
+      },
+      {
+        "wall_seconds": 0.0004086940025445074,
+        "cpu_seconds": 0.015773999999999996,
+        "peak_memory_bytes": 11255808
+      },
+      {
+        "wall_seconds": 0.0013131949963280931,
+        "cpu_seconds": 0.030024000000000002,
+        "peak_memory_bytes": 11313152
+      }
+    ],
+    "worker_cpu_seconds_limit": 2,
+    "worker_address_space_bytes_limit": 134217728,
+    "worker_wall_seconds_limit": 5,
+    "worker_child_processes_limit": 0,
+    "persistent_processes": 0,
+    "after_prune_cache_bytes": 0,
+    "scope": "Actual pinned downloads and local prepare/check/stop/resume/export/finish/destroy/reconcile/cache lifecycle. Worker samples use correct policy and a 32-rule policy with route leaks. CPU and memory are measured inside each fresh data-only worker; no router software runs. Disk includes retained work in four disposable attempts, sampled every 5ms. Server assignment, HTTP sync, resource timeout and malformed-result handling are tested separately."
+  },
+  "lifecycle_verified": true,
+  "verification_report": "docs/testing/local-lab-implementation.md"
+}

@@ -2,7 +2,7 @@
 "id" = "python-file-tool"
 "title" = "Build a Python file organizer"
 "kind" = "project"
-"version" = 1
+"version" = 2
 "source" = "ai-draft"
 "reviewed" = false
 
@@ -38,6 +38,7 @@
 
 [[node]]
 "id" = "summarize"
+"checkpoints" = [{ "id" = "counts", "title" = "Count one extension", "minutes" = 10, "done_when" = "In a disposable folder, count files with one extension and compare the output with a manual count.", "next_step" = "Extend the count to multiple extensions, sizes and an empty folder." }, { "id" = "empty-input", "title" = "Check the empty-folder case", "minutes" = 10, "done_when" = "Run the summary on an empty temporary folder and explain why the result should contain no file groups.", "next_step" = "Finish the multi-extension size totals and review the complete task." }]
 "level" = "files"
 "title" = "Summarize files by extension"
 "size" = "M"
@@ -58,6 +59,7 @@
 
 [[node]]
 "id" = "organizer"
+"checkpoints" = [{ "id" = "collision-policy", "title" = "Predict a collision safely", "minutes" = 10, "done_when" = "Create a disposable source/destination fixture with the same filename and write the expected skip decision before changing files.", "next_step" = "Implement the skip policy and test it in the disposable fixture." }, { "id" = "single-move", "title" = "Test one safe move", "minutes" = 15, "done_when" = "Move one non-conflicting disposable file, then confirm its content and that the conflicting destination was preserved.", "next_step" = "Handle the rest of the fixture and review the parent finish line." }]
 "level" = "organize"
 "title" = "Build the organizer"
 "size" = "M"
@@ -78,6 +80,7 @@
 
 [[node]]
 "id" = "release"
+"checkpoints" = [{ "id" = "dry-run-example", "title" = "Document one dry-run example", "minutes" = 15, "done_when" = "Write a README example with a disposable input listing, the command and its actual dry-run output.", "next_step" = "Check installation and execution from a clean fixture before completing the project." }]
 "level" = "deliver"
 "title" = "Demonstrate the finished tool"
 "size" = "M"

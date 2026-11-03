@@ -1,0 +1,8 @@
+{
+  "provenance": "Synthetic Ascend teaching control, MIT. Not an observed OTRF event.",
+  "context": "A learner runs id to check their own account in a disposable workstation.",
+  "events": [
+    {"id": "control-1", "executable": "/usr/bin/id", "arguments": ["id"], "uid": 1000, "expected": "account inspection, not neighbor-cache discovery"}
+  ],
+  "interpretation": "Even an arp -a record can come from legitimate administration. The observed command alone does not prove malicious intent."
+}

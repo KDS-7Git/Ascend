@@ -1,0 +1,39 @@
+.workspace-layout { max-width: var(--content-width); margin-inline: auto; }
+.workspace-primary { min-width: 0; }
+.context-rail { display: none; }
+.screen h2 { scroll-margin-top: calc(var(--header) + 100px); }
+@media (min-width: 1440px) {
+  :root { --content-width: 1440px; }
+  .workspace-layout { display: grid; grid-template-columns: minmax(0, 1fr) 224px; gap: clamp(28px, 3vw, 48px); align-items: start; }
+  .workspace-primary > .screen { max-width: none; }
+  .workspace-layout[data-context='challenge'] { grid-template-columns: minmax(0, 1fr); }
+  .context-rail { display: block; position: sticky; top: calc(var(--header) + 30px); min-width: 0; padding-left: 24px; border-left: 1px solid var(--divider); max-height: calc(100dvh - var(--header) - 70px); overflow-y: auto; scrollbar-width: thin; }
+  .workspace-layout[data-context='challenge'] .context-rail { display: none; }
+  .context-section { padding-bottom: 24px; margin-bottom: 24px; border-bottom: 1px solid var(--divider); }
+  .context-section:last-child { margin-bottom: 0; border-bottom: 0; }
+  .context-section h2 { font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+  .context-caption { font-size: .9rem; line-height: 1.65; font-weight: 650; overflow-wrap: anywhere; }
+  .context-streak { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; font-size: .8rem; margin-bottom: 24px; }
+  .context-streak .icon { color: var(--milestone); width: 28px; height: 28px; }
+  .context-streak strong { font-size: 2rem; line-height: 1; letter-spacing: -.04em; }
+  .context-progress { display: flex; align-items: center; gap: 12px; margin: 18px 0; }
+  .context-progress svg { width: 54px; height: 54px; flex-shrink: 0; }
+  .context-progress strong, .context-progress span { display: block; }
+  .context-progress strong { font-size: 1.05rem; }
+  .context-progress span { font-size: .72rem; }
+  .context-link.text-button { display: flex; justify-content: flex-start; text-align: left; padding: 8px 0; min-height: 40px; font-size: .8rem; }
+  .context-action { display: inline-block; padding-block: 8px; font-size: .8rem; }
+  .context-section nav > a { display: block; color: var(--muted); text-decoration: none; font-size: .8rem; line-height: 1.5; padding: 8px 0 8px 12px; border-left: 2px solid transparent; overflow-wrap: anywhere; }
+  .context-section nav > a[aria-current], .context-section nav > a:hover { color: var(--accent); border-color: var(--accent); }
+  .workspace-primary .node-card.next-card { padding-right: 196px; }
+  .workspace-primary .challenge-art { width: 160px; height: 132px; right: 18px; top: calc(50% - 66px); }
+  .workspace-primary .next-card h2 { font-size: clamp(1.45rem, 1.8vw, 1.85rem); }
+  .workspace-primary .today-aside > .card { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .workspace-primary .today-aside > .card > .card-actions, .workspace-primary .today-aside > .card > button { grid-column: 1; grid-row: auto; justify-self: start; }
+  .workspace-primary .docs-layout { grid-template-columns: 200px minmax(0, 1fr); gap: 28px; }
+}
+@media (min-width: 1800px) {
+  .workspace-layout { grid-template-columns: minmax(0, 1fr) 248px; }
+  .workspace-primary .node-card.next-card { padding-right: 250px; }
+  .workspace-primary .challenge-art { width: 210px; height: 172px; top: calc(50% - 86px); }
+}

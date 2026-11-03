@@ -1,7 +1,7 @@
 """Server-clock task sessions and once-per-node verification rewards."""
 
-from datetime import datetime
 import math
+from datetime import datetime
 
 
 def elapsed(t, row):
@@ -31,16 +31,24 @@ def scored_points(t, row, seconds):
 
 def describe(t, row):
     value = elapsed(t, row)
+    practice = bool(
+        t.db.setting(f"challenge-practice:{row['pack_id']}:{row['node_id']}")
+    )
     return {
         **row,
         "elapsed_seconds": int(value),
         "remaining_seconds": max(0, math.ceil(row["budget_seconds"] - value)),
-        "potential_xp": scored_points(t, row, value),
+        "potential_xp": 0 if practice else scored_points(t, row, value),
+        "practice": practice,
         "server_time": t.now().isoformat(),
     }
 
 
 def summary(t):
+    from ascend.local_labs.attempts import Attempts
+
+    Attempts(t).expire()
+    local_runs = t.db.rows("external_lab_attempts", "status IN ('preparing','active')")
     rows = t.db.rows("task_sessions", "status='running'")
     awards = t.db.rows("xp_awards")
     finished = t.db.rows(
@@ -70,7 +78,19 @@ def summary(t):
         "paused": [
             describe(t, r) for r in t.db.rows("task_sessions", "status='paused'")
         ],
-        "xp": sum(r["points"] for r in awards),
+        "xp": t.xp_totals()["total"],
+        "xp_by_source": t.xp_totals(),
+        "playground_active": next(
+            (
+                r
+                for r in t.playground.history()
+                if r["status"] == "active"
+            ),
+            None,
+        ),
+        "local_lab_active": Attempts(t).view(local_runs[0]["id"])
+        if local_runs
+        else None,
         "verified_awards": sum(
             r["evidence_kind"] != "verifier:permission-partial" for r in awards
         ),
@@ -87,6 +107,15 @@ def start(t, reference, minutes=None):
     if type(budget) is not int or not 1 <= budget <= 1440:
         raise ValueError("Session target must be 1 to 1440 minutes")
     with t.db.transaction():
+        from ascend.local_labs.attempts import Attempts
+
+        Attempts(t).expire()
+        if t.db.rows("external_lab_attempts", "status IN ('preparing','active')"):
+            raise ValueError("Finish the local lab before starting a track session")
+        if t.db.rows("activity_runs", "status='active'"):
+            raise ValueError(
+                "Save the active Playground activity before starting a track session"
+            )
         active = t.db.rows("task_sessions", "status='running'")
         if active and (active[0]["pack_id"], active[0]["node_id"]) != (
             pack.id,
@@ -155,11 +184,21 @@ def finish(t, pack, node, how):
         finished_at=t.now().isoformat(),
     )
     # Presence-only file checks and self-marking are not skill rewards.
-    if row["status"] == "running" and how in {
-        "verifier:lab",
-        "verifier:ctf",
-        "verifier:permission-partial",
-    }:
+    practice = t.db.setting(f"challenge-practice:{pack.id}:{node.id}")
+    if (
+        not practice
+        and row["status"] == "running"
+        and how
+        in {
+            "verifier:lab",
+            "verifier:ctf",
+            "verifier:permission-partial",
+        }
+    ):
+        if t.db.rows(
+            "activity_rewards", "reward_key=?", (f"track:{pack.id}:{node.id}",)
+        ):
+            return
         t.db.connection.execute(
             "INSERT OR IGNORE INTO xp_awards VALUES (?,?,?,?,?,?)",
             (

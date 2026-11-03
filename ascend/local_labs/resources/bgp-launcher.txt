@@ -1,0 +1,9 @@
+set -eu
+remaining=$((ASCEND_LAB_EXPIRES_AT - $(date +%s)))
+[ "$remaining" -gt 0 ] || exit 0
+/usr/lib/frr/bgpd -S -Z -f /etc/frr/frr.conf -i /run/frr/bgpd.pid --vty_socket /run/frr --log stdout &
+router=$!
+sleep "$remaining" &
+expiry=$!
+trap 'kill "$router" "$expiry" 2>/dev/null || true; wait || true' EXIT INT TERM
+while kill -0 "$router" 2>/dev/null && kill -0 "$expiry" 2>/dev/null; do sleep 1; done

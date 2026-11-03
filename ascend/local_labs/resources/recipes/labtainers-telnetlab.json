@@ -1,0 +1,129 @@
+{
+  "id": "labtainers-telnetlab",
+  "reference_id": "labtainers",
+  "title": "Labtainers: compare Telnet and SSH",
+  "version": "1",
+  "status": "blocked",
+  "adapter": "upstream-vm-pending",
+  "source": {
+    "repository": "https://github.com/mfthomps/Labtainers",
+    "revision": "26c13698619abb4c67fcf483e8720b6c6aa3d6b2"
+  },
+  "license_review": "NPS distribution notice plus per-image third-party licenses; selected sources linked, not redistributed.",
+  "assets": [
+    {
+      "role": "reference",
+      "path": "labs/telnetlab/instr_config/goals.config",
+      "url": "https://raw.githubusercontent.com/mfthomps/Labtainers/26c13698619abb4c67fcf483e8720b6c6aa3d6b2/labs/telnetlab/instr_config/goals.config",
+      "sha256": "87d4f61fe0ef82dc2cfe492c608623405aa27c6d004c68156d5bd309b5770a86",
+      "bytes": 326
+    },
+    {
+      "role": "reference",
+      "path": "labs/telnetlab/instr_config/results.config",
+      "url": "https://raw.githubusercontent.com/mfthomps/Labtainers/26c13698619abb4c67fcf483e8720b6c6aa3d6b2/labs/telnetlab/instr_config/results.config",
+      "sha256": "7e2e9909920d91dd2536e03aafbbdfc4d39e6742f84242845f5df53601c69687",
+      "bytes": 298
+    },
+    {
+      "role": "reference",
+      "path": "labs/telnetlab/config/start.config",
+      "url": "https://raw.githubusercontent.com/mfthomps/Labtainers/26c13698619abb4c67fcf483e8720b6c6aa3d6b2/labs/telnetlab/config/start.config",
+      "sha256": "779819fe77dc3092965f50e2a371970cb83fe691ea879987e770c199565c7f08",
+      "bytes": 661
+    },
+    {
+      "role": "reference",
+      "path": "docs/license.md",
+      "url": "https://raw.githubusercontent.com/mfthomps/Labtainers/26c13698619abb4c67fcf483e8720b6c6aa3d6b2/docs/license.md",
+      "sha256": "206193d1f339db80a9fe285abcbc541c7d5f062dd761248201fcf1696b2129e0",
+      "bytes": 2731
+    }
+  ],
+  "checker_version": "upstream-report-v1",
+  "fixture_id": "dbab8aca541767beb8daa29619ca3cbd6e26f24e8b464b41ebc66de9301c1761",
+  "grading": "upstream-report-v1",
+  "evidence_reviewed": true,
+  "check_ids": [
+    "telnetview",
+    "sshview"
+  ],
+  "check_meaning": "Current pinned goals compare the Telnet and SSH viewed-file strings. They do not grade a full packet analysis; instructor review remains separate.",
+  "evidence_label": "Checked on this PC (imported upstream feedback)",
+  "availability_reason": "Execution needs a dedicated, validated Labtainers Linux VM and pinned per-lab images. Upstream feedback can be recorded now.",
+  "integration": {
+    "acquisition": [
+      [
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "--no-checkout",
+        "https://github.com/mfthomps/Labtainers",
+        "ROOT"
+      ],
+      [
+        "git",
+        "-C",
+        "ROOT",
+        "fetch",
+        "--depth",
+        "1",
+        "origin",
+        "26c13698619abb4c67fcf483e8720b6c6aa3d6b2"
+      ],
+      [
+        "git",
+        "-C",
+        "ROOT",
+        "checkout",
+        "--detach",
+        "26c13698619abb4c67fcf483e8720b6c6aa3d6b2"
+      ]
+    ],
+    "provider": "labtainers",
+    "exercise": "telnetlab",
+    "requires_vm": true,
+    "automatic_start": false,
+    "start": [
+      "labtainer",
+      "telnetlab"
+    ],
+    "check": [
+      "checkwork"
+    ],
+    "stop": [
+      "stoplab"
+    ],
+    "reset": [
+      "labtainer",
+      "-r",
+      "telnetlab"
+    ],
+    "export": "stoplab creates the upstream .lab archive. Keep it locally for instructor gradelab; only a small JSON result is imported.",
+    "destroy": "Upstream stop preserves state. Use a dedicated disposable VM; full provider-owned destruction still needs validation."
+  },
+  "report_template": {
+    "exercise": "telnetlab",
+    "checks": [
+      {
+        "id": "telnetview",
+        "status": "unsupported"
+      },
+      {
+        "id": "sshview",
+        "status": "unsupported"
+      }
+    ]
+  },
+  "instructions": "Current pinned goals compare the Telnet and SSH viewed-file strings. They do not grade a full packet analysis; instructor review remains separate.",
+  "required_tools": [
+    "docker",
+    "labtainer",
+    "checkwork",
+    "stoplab"
+  ],
+  "tested_platforms": [],
+  "measurements": {},
+  "lifecycle_verified": false,
+  "verification_report": "docs/testing/local-lab-implementation.md"
+}

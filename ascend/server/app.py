@@ -16,6 +16,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, ConfigDict, Field
 
 from ascend.application import Tracker
+from ascend import challenge_work
 from ascend.cli import execute, parser
 from ascend.nudge import NudgeRunner
 from ascend.registry import registry_entries
@@ -52,6 +53,60 @@ class Mark(Model):
 class Command(Model):
     argv: list[str] = Field(max_length=100)
     pack_text: str | None = Field(default=None, max_length=2_000_000)
+
+
+class ChallengeNotes(Model):
+    learned: str = Field(max_length=10000)
+    next_step: str = Field(max_length=4000)
+    revision: int = Field(ge=0, strict=True)
+    log_progress: bool = False
+
+
+class CompleteChallenge(Model):
+    revision: int = Field(ge=0, strict=True)
+
+
+class PracticeAgain(Model):
+    minutes: int | None = Field(default=None, ge=1, le=1440, strict=True)
+
+
+class ActivityStart(Model):
+    end_scored: bool = False
+    deliberate: bool = False
+
+
+class ActivityAction(Model):
+    data: dict = Field(default_factory=dict)
+    learned: str | None = Field(default=None, max_length=10000)
+    next_step: str | None = Field(default=None, max_length=10000)
+    minutes: int | None = Field(default=None, strict=True)
+    end_scored: bool = False
+    reset: bool = False
+    fault: bool = False
+    blank: bool = False
+    rule: str | None = None
+    pause: bool = True
+    step: int = Field(default=0, strict=True)
+    status: str = "active"
+
+
+class LabAttemptStart(Model):
+    recipe_id: str = Field(max_length=100, pattern=r"^[a-z0-9-]+$")
+    offline: bool = Field(default=False, strict=True)
+    case_key: int | None = Field(default=None, strict=True, ge=0, le=65535)
+
+
+class LabAttemptToken(Model):
+    nonce: str = Field(min_length=64, max_length=64)
+
+
+class LabSubmission(LabAttemptToken):
+    recipe_version: str = Field(max_length=100)
+    checker_version: str = Field(max_length=100)
+    fixture_id: str = Field(max_length=100)
+    answers: dict | None = None
+    report: dict | None = None
+    submission: dict | None = None
 
 
 def create_app(home=None, auth_mode=None, scheduler=True):
@@ -121,6 +176,14 @@ def create_app(home=None, auth_mode=None, scheduler=True):
             return JSONResponse(
                 {"detail": "Cross-origin writes are not allowed"}, status_code=403
             )
+        if request.url.path.startswith("/api/lab-attempts") and request.method == "POST":
+            # Bound the wire body too, including chunked requests without Content-Length.
+            body = bytearray()
+            async for chunk in request.stream():
+                if len(body) + len(chunk) > 1_048_576:
+                    return JSONResponse({"detail": "Lab submission exceeds 1 MiB"}, status_code=413)
+                body.extend(chunk)
+            request._body = bytes(body)
         response = await call_next(request)
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["Referrer-Policy"] = "same-origin"
@@ -141,6 +204,10 @@ def create_app(home=None, auth_mode=None, scheduler=True):
     @app.exception_handler(ValueError)
     async def validation_error(request, error):
         return JSONResponse({"detail": str(error)}, status_code=400)
+
+    @app.exception_handler(challenge_work.RevisionConflict)
+    async def note_conflict(request, error):
+        return JSONResponse({"detail": str(error)}, status_code=409)
 
     @app.exception_handler(sqlite3.IntegrityError)
     async def conflict_error(request, error):
@@ -315,6 +382,168 @@ def create_app(home=None, auth_mode=None, scheduler=True):
             raise ValueError("Minutes must be positive")
         return presentation.overview(t, t.overview(minutes))
 
+    @app.get("/api/lab-catalog")
+    def lab_catalog(track: str | None = None, level: str | None = None,
+                    location: str | None = None, search: str | None = None, t=Depends(tracker)):
+        from ascend.local_labs.catalog import catalog
+
+        return catalog(track=track, level=level, location=location, search=search)
+
+    @app.get("/api/lab-attempts")
+    def lab_attempts(t=Depends(tracker)):
+        from ascend.local_labs.attempts import Attempts
+
+        return Attempts(t).history()
+
+    @app.post("/api/lab-attempts")
+    def lab_attempt_start(body: LabAttemptStart, t=Depends(tracker)):
+        from ascend.local_labs.attempts import Attempts
+
+        return Attempts(t).create(body.recipe_id, offline=body.offline, case_key=body.case_key)
+
+    @app.get("/api/lab-attempts/{attempt_id}")
+    def lab_attempt(attempt_id: str, t=Depends(tracker)):
+        from ascend.local_labs.attempts import Attempts
+
+        return Attempts(t).view(attempt_id)
+
+    @app.post("/api/lab-attempts/{attempt_id}/ready")
+    def lab_attempt_ready(attempt_id: str, body: LabAttemptToken, t=Depends(tracker)):
+        from ascend.local_labs.attempts import Attempts
+
+        return Attempts(t).ready(attempt_id, body.nonce)
+
+    @app.post("/api/lab-attempts/{attempt_id}/abandon")
+    def lab_attempt_abandon(attempt_id: str, body: LabAttemptToken, t=Depends(tracker)):
+        from ascend.local_labs.attempts import Attempts
+
+        return Attempts(t).abandon(attempt_id, body.nonce)
+
+    @app.post("/api/lab-attempts/{attempt_id}/submit")
+    def lab_attempt_submit(attempt_id: str, body: LabSubmission, t=Depends(tracker)):
+        from ascend.local_labs.attempts import Attempts
+
+        return Attempts(t).submit(attempt_id, body.model_dump(exclude_none=True))
+
+    @app.get("/api/lab-catalog/{lab_id}")
+    def lab_catalog_detail(lab_id: str, t=Depends(tracker)):
+        from ascend.local_labs.catalog import detail
+
+        return detail(lab_id)
+
+    @app.get("/api/playground")
+    def activities(
+        kind: str | None = None,
+        minutes: int | None = None,
+        topic: str | None = None,
+        difficulty: str | None = None,
+        environment: str | None = None,
+        progress: str | None = None,
+        format: str | None = None,
+        search: str = "",
+        bookmarked: bool = False,
+        domain: str | None = None,
+        t=Depends(tracker),
+    ):
+        return t.playground.list(
+            kind,
+            minutes,
+            topic,
+            difficulty,
+            environment,
+            progress,
+            format,
+            search,
+            bookmarked,
+            domain,
+        )
+
+    @app.get("/api/playground/recommendations")
+    def practice(
+        minutes: int = 10,
+        exclude: str = "",
+        kind: str = "quick",
+        topic: str | None = None,
+        difficulty: str | None = None,
+        environment: str | None = None,
+        progress: str | None = None,
+        format: str | None = None,
+        search: str = "",
+        bookmarked: bool = False,
+        domain: str | None = None,
+        t=Depends(tracker),
+    ):
+        return t.playground.recommendations(
+            minutes,
+            exclude.split(","),
+            kind=kind,
+            topic=topic,
+            difficulty=difficulty,
+            environment=environment,
+            progress=progress,
+            format=format,
+            search=search,
+            bookmarked=bookmarked,
+            domain=domain,
+        )
+
+    @app.get("/api/playground/history")
+    def activity_history(t=Depends(tracker)):
+        return t.playground.history()
+
+    @app.get("/api/playground/insights")
+    def activity_insights(t=Depends(tracker)):
+        return t.playground.insights()
+
+    @app.post("/api/playground/selection")
+    def activity_selection(body: ActivityAction, t=Depends(tracker)):
+        return t.playground.observe_selection(body.data)
+
+    @app.get("/api/playground/activities/{activity_id}")
+    def activity_detail(activity_id: str, t=Depends(tracker)):
+        return t.playground.detail(activity_id)
+
+    @app.post("/api/playground/activities/{activity_id}/start")
+    def activity_start(activity_id: str, body: ActivityStart, t=Depends(tracker)):
+        return t.playground.start(activity_id, body.end_scored, body.deliberate)
+
+    @app.post("/api/playground/activities/{activity_id}/bookmark")
+    def activity_bookmark(activity_id: str, enabled: bool = True, t=Depends(tracker)):
+        return t.playground.bookmark(activity_id, enabled)
+
+    @app.get("/api/playground/runs/{run_id}")
+    def activity_run(run_id: str, t=Depends(tracker)):
+        return t.playground.view(run_id)
+
+    @app.post("/api/playground/runs/{run_id}/{action}")
+    def activity_action(
+        run_id: str, action: str, body: ActivityAction, t=Depends(tracker)
+    ):
+        p = t.playground
+        if action == "feedback":
+            return p.feedback(run_id, body.data)
+        if action == "returned":
+            return p.event(run_id, "returned")
+        if action == "tour":
+            return p.tour(run_id, body.step, body.status)
+        if action == "resume":
+            return p.resume(run_id, body.end_scored)
+        if action == "save":
+            return p.save(run_id, body.data, body.pause)
+        if action == "submit":
+            return p.submit(run_id, body.data, body.learned, body.next_step)
+        if action == "log":
+            return p.log(run_id, body.learned, body.next_step, body.minutes)
+        if action == "experiment":
+            return p.experiment(run_id, body.data)
+        if action == "copy":
+            return p.copy(run_id, body.reset, body.fault, body.blank, body.end_scored)
+        if action == "repair":
+            return p.repair(run_id, body.rule)
+        if action in {"hint", "end", "reveal"}:
+            return getattr(p, action)(run_id)
+        raise ValueError("Unknown activity action")
+
     @app.get("/api/levels")
     def levels(pack: str | None = None, t=Depends(tracker)):
         if not pack and not (t.active_mission() or {}).get("pack_id"):
@@ -336,7 +565,11 @@ def create_app(home=None, auth_mode=None, scheduler=True):
             "task_sessions", "pack_id=? AND node_id=?", (pack.id, node.id)
         )
         public_node = (
-            {**public_node, "details_available": True, "has_attempt": True}
+            {
+                **presentation.workspace(public_node),
+                "details_available": True,
+                "has_attempt": True,
+            }
             if sessions or public_node.get("status") == "done"
             else presentation.preview(public_node)
         )
@@ -356,11 +589,76 @@ def create_app(home=None, auth_mode=None, scheduler=True):
             "session": timing.describe(t, sessions[0]) if sessions else None,
             "exercise": exercise,
             "exercise_error": exercise_error,
+            "work": challenge_work.work(t, pack, node)
+            if public_node["details_available"]
+            else None,
         }
+
+    @app.post("/api/challenges/{reference}/notes")
+    def save_challenge_notes(reference: str, body: ChallengeNotes, t=Depends(tracker)):
+        return challenge_work.save(t, reference, **body.model_dump())
+
+    @app.post("/api/challenges/{reference}/complete")
+    def complete_challenge(reference: str, body: CompleteChallenge, t=Depends(tracker)):
+        return challenge_work.complete(t, reference, body.revision)
+
+    @app.post("/api/challenges/{reference}/practice")
+    def practice_again(reference: str, body: PracticeAgain, t=Depends(tracker)):
+        return challenge_work.retry(t, reference, body.minutes)
+
+    @app.post("/api/challenges/{reference}/check")
+    def check_challenge(reference: str, t=Depends(tracker)):
+        pack, node = t.resolve_node(reference)
+        challenge_work.require_started(t, pack, node)
+        result = t.verify_node(pack, node)
+        return {"ok": result.ok, "summary": result.summary}
+
+    @app.post("/api/challenges/{reference}/evidence")
+    async def upload_evidence(
+        reference: str, file: UploadFile = File(...), t=Depends(tracker)
+    ):
+        content = await file.read(challenge_work.MAX_UPLOAD + 1)
+        if len(content) > challenge_work.MAX_UPLOAD:
+            raise HTTPException(413, "Choose an evidence file up to 8 MB")
+        return challenge_work.upload(t, reference, file.filename, content)
+
+    @app.get("/api/challenges/{reference}/evidence")
+    def download_evidence(reference: str, t=Depends(tracker)):
+        from urllib.parse import quote
+
+        pack, node = t.resolve_node(reference)
+        manifest = t.db.setting(challenge_work.key("attachment", pack, node))
+        if not manifest:
+            raise HTTPException(404, "No saved attachment")
+        content = challenge_work.read_artifact(t, pack, node, manifest)
+        return Response(
+            content,
+            media_type="application/octet-stream",
+            headers={
+                "Content-Disposition": "attachment; filename*=UTF-8''"
+                + quote(manifest["name"]),
+            },
+        )
 
     @app.get("/api/entries")
     def entries(t=Depends(tracker)):
         return t.entries()
+
+    @app.get("/api/nodes/{reference}/checkpoints")
+    def checkpoint_list(reference: str, t=Depends(tracker)):
+        from ascend import checkpoints
+
+        return checkpoints.list_for(t, reference)
+
+    @app.post("/api/nodes/{reference}/checkpoints/{checkpoint_id}")
+    def checkpoint_log(
+        reference: str, checkpoint_id: str, body: ActivityAction, t=Depends(tracker)
+    ):
+        from ascend import checkpoints
+
+        return checkpoints.record(
+            t, reference, checkpoint_id, body.learned, body.minutes
+        )
 
     @app.post("/api/nodes/{node_id}/mark")
     def mark(node_id: str, body: Mark, t=Depends(tracker)):
@@ -417,6 +715,9 @@ def create_app(home=None, auth_mode=None, scheduler=True):
         if not t.db.rows("packs", "id=?", (pack_id,)):
             raise HTTPException(404, "Pack not found")
         result = asdict(t.pack(pack_id))
+        from ascend.local_labs.catalog import catalog
+
+        result["lab_references"] = catalog(track=pack_id)
         started = presentation.attempts(t)
         result["nodes"] = [
             presentation.preview({**node, "pack_id": pack_id}, started)
@@ -442,7 +743,7 @@ def create_app(home=None, auth_mode=None, scheduler=True):
             args = parser().parse_args(body.argv)
         except SystemExit:
             raise ValueError("Invalid command arguments") from None
-        if args.command in {"login", "install-nudge", "nudge"}:
+        if args.command in {"login", "install-nudge", "nudge", "local-lab"}:
             raise ValueError("This command is local-only")
         if args.command == "config" and args.key == "server":
             raise ValueError("Server URL is a client setting")

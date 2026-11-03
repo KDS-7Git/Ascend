@@ -9,12 +9,21 @@
   <title>Ascend</title>
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" href="/icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/boot.css">
-  <script src="/theme.js"></script>
-  <link rel="stylesheet" href="/style.css">
-  <link rel="stylesheet" href="/effects.css">
-  <script src="/effects.js" defer></script>
-  <script src="/app.js" defer></script>
+  <link rel="stylesheet" href="/boot.css?v=20261103-ui3">
+  <script src="/theme.js?v=20261103-ui3"></script>
+  <link rel="stylesheet" href="/style.css?v=20261103-history8">
+  <link rel="stylesheet" href="/effects.css?v=20261103-ui3">
+  <link rel="stylesheet" href="/feedback.css?v=20261103-ui3">
+  <link rel="stylesheet" href="/context-rail.css?v=20261103-ui3">
+  <script src="/feedback.js?v=20261103-ui3" defer></script>
+  <script src="/effects.js?v=20261103-ui3" defer></script>
+  <script src="/cursor-preview.js?v=20261103-ui3" defer></script>
+  <script src="/context-rail.js?v=20261103-history8" defer></script>
+  <script src="/history-library.js?v=20261103-history8" defer></script>
+  <script src="/playground.js?v=20261103-history8" defer></script>
+  <script src="/local-labs.js?v=20261103-history8" defer></script>
+  <script src="/challenge-work.js?v=20261103-ui3" defer></script>
+  <script src="/app.js?v=20261103-history8" defer></script>
 </head>
 <body>
   <div id="app-loader" class="app-loader" role="status" aria-live="polite">
@@ -39,6 +48,7 @@
     <p class="nav-label">LEARN AT YOUR PACE</p>
     <button class="nav-item active" data-tab="today" aria-current="page"><span data-icon="sun" aria-hidden="true"></span>Today</button>
     <button class="nav-item" data-tab="path"><span data-icon="route" aria-hidden="true"></span>Path</button>
+    <button class="nav-item" data-tab="playground"><span data-icon="play" aria-hidden="true"></span>Playground</button>
     <button class="nav-item" data-tab="stats"><span data-icon="chart" aria-hidden="true"></span>Stats</button>
     <button class="nav-item" data-tab="more"><span data-icon="layers" aria-hidden="true"></span>Tracks</button>
     <button class="nav-item" data-tab="docs"><span data-icon="book" aria-hidden="true"></span>Docs</button>
@@ -71,6 +81,21 @@
     <section id="challenge" class="screen challenge-workspace" aria-labelledby="challenge-title" hidden>
       <a href="#today" class="challenge-back">← Back to Today</a>
       <div id="challenge-content"></div>
+    </section>
+    <section id="playground" class="screen" aria-labelledby="playground-heading" hidden>
+      <header class="page-header"><div><p class="eyebrow">CHOOSE SOMETHING THAT FITS TODAY</p><h1 id="playground-heading">Playground</h1><p class="muted">Keep your place in the track. Practice, investigate, or experiment.</p></div></header>
+      <nav class="playground-tabs" aria-label="Playground sections">
+        <a href="#playground/quick">Quick practice</a><a href="#playground/challenges">Challenges</a><a href="#playground/free">Free practice</a><a href="#playground/labs">Linux labs</a><a href="#playground/history">Saved work &amp; history</a>
+      </nav>
+      <div id="playground-content"></div>
+    </section>
+    <section id="lab" class="screen" aria-labelledby="lab-title" hidden>
+      <a href="#playground/labs" class="challenge-back">← Back to Linux labs</a>
+      <div id="lab-content"></div>
+    </section>
+    <section id="activity" class="screen" aria-labelledby="activity-title" hidden>
+      <a class="pg-back" href="#playground/quick">← Back to Playground</a>
+      <div id="activity-content"></div>
     </section>
     <section id="path" class="screen" aria-labelledby="path-heading" hidden>
       <header class="page-header"><div><p class="eyebrow">BUILD ON WHAT YOU KNOW</p><h1 id="path-heading">Your learning path.</h1></div><button id="jump-current" class="secondary">Jump to current level</button></header>

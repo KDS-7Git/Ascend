@@ -1,12 +1,13 @@
 "use strict";
 const $ = (selector, root = document) => root.querySelector(selector);
 const state = {token: sessionStorage.getItem("ascend-token"), minutes: null, overview: null, levels: [], tab: "today", account: null, guides: null, guideTopic: null, installedPacks: [], showAllPacks: false};
-const TABS = ["today", "path", "stats", "more", "docs", "profile", "challenge"];
-const TAB_NAMES = {today: "Today", path: "Learning path", stats: "Progress", more: "Tracks", docs: "Documentation", profile: "Profile", challenge: "Challenge"};
+const TABS = ["today", "path", "playground", "activity", "lab", "stats", "more", "docs", "profile", "challenge"];
+const TAB_NAMES = {today: "Today", path: "Learning path", playground: "Playground", activity: "Playground activity", lab: "Linux lab", stats: "Progress", more: "Tracks", docs: "Documentation", profile: "Profile", challenge: "Challenge"};
 let noticeTimer;
 let challengeIntroPlayed = false;
 let challengeIntroObserver;
 let navigationVersion = 0;
+const SERVER_UPDATE_REQUIRED = 'The running Ascend server has not loaded this update. Restart the server, then reload this page.';
 function el(tag, text, className) { const node = document.createElement(tag); if (text !== undefined) node.textContent = text; if (className) node.className = className; return node; }
 async function runAction(node, action, after) {
   if (node.getAttribute('aria-busy') === 'true') return;
@@ -27,7 +28,7 @@ function dismissNotice() {
   clearTimeout(noticeTimer);
   node.hidden = true;
 }
-function notify(message, kind = 'info') {
+function notify(message, kind = 'info', options = {}) {
   const node = $('#notice');
   // A timer reminder must not replace an unresolved action error.
   if (kind === 'reminder' && !node.hidden && node.dataset.kind === 'error') return;
@@ -40,6 +41,7 @@ function notify(message, kind = 'info') {
   $('.notice-message', node).textContent = message || 'The action could not be completed.';
   $('.notice-symbol', node).replaceChildren(icon(kind === 'success' ? 'check' : kind === 'error' ? 'warning' : 'info'));
   node.hidden = false;
+  window.AscendFeedback?.notice(node, {kind, ...options});
   clearTimeout(noticeTimer);
   // Dialog feedback and errors stay until dismissed or replaced; no reading race.
   if (!dialog && kind !== 'error') noticeTimer = setTimeout(dismissNotice, 8000);
@@ -52,7 +54,10 @@ async function api(path, body, method = "POST", interactive = true) {
   try { response = await fetch(`/api/${path}`, {...options, signal: AbortSignal.timeout(15000)}); } catch { throw new Error("The server is not responding. Check your connection and try again."); }
   if (response.status === 401) { if (interactive && !$("#login-dialog").open) $("#login-dialog").showModal(); throw new Error("Sign in to continue."); }
   const data = await response.json();
+  const route = path.split('?')[0];
+  if (response.status === 404 && /^(playground|lab-catalog|lab-attempts|hosted-labs)(\/|$)/.test(route) && data.detail === 'Not Found') throw new Error(SERVER_UPDATE_REQUIRED);
   if (!response.ok) throw new Error(typeof data.detail === "string" ? data.detail : "Please check the form fields.");
+  if (route === 'stats' && (!data.xp || !data.playground)) throw new Error(SERVER_UPDATE_REQUIRED);
   return data;
 }
 const command = argv => api("command", {argv});
@@ -61,19 +66,26 @@ function currentRoute() {
   return {tab: TABS.includes(raw) ? raw : 'today', topic: topic || null};
 }
 async function switchTab(tab, options = {}) {
+  if (tab === 'playground' && options.topic && !['quick', 'challenges', 'free', 'labs', 'history'].includes(options.topic)) tab = 'activity';
   if (!TABS.includes(tab)) return;
   const version = ++navigationVersion;
+  if (activeNotebook) {
+    try { await flushChallengeNotebook(); } catch { notify('Your unsaved notes are kept in this browser. Reconnect to save them to your account.', 'error'); }
+    if (tab !== 'challenge') activeNotebook = null;
+  }
+  if (state.tab === 'activity') await savePlaygroundDraft(tab !== 'activity' || (options.topic && options.topic !== state.activityRef));
   const previous = $('.screen:not([hidden])');
   if ($('#docs-menu').open) $('#docs-menu').close();
   if (tab === 'challenge' && $('#sheet').open) $('#sheet').close();
   const changed = state.tab !== tab;
   state.tab = tab;
-  if (changed && document.documentElement.dataset.boot !== 'loading') await window.AscendMotion?.leave(previous);
+  if (changed && document.documentElement.dataset.boot !== 'loading') await window.AscendMotion?.leave?.(previous);
   if (version !== navigationVersion) return;
   document.querySelectorAll('.screen').forEach(screen => screen.hidden = screen.id !== tab);
   document.querySelectorAll('.primary-nav [data-tab]').forEach(node => {
-    node.classList.toggle('active', node.dataset.tab === tab);
-    if (node.dataset.tab === tab) node.setAttribute('aria-current', 'page');
+    const active = node.dataset.tab === (['activity', 'lab'].includes(tab) ? 'playground' : tab);
+    node.classList.toggle('active', active);
+    if (active) node.setAttribute('aria-current', 'page');
     else node.removeAttribute('aria-current');
   });
   if (tab === 'profile') $('#profile-link').setAttribute('aria-current', 'page');
@@ -82,7 +94,10 @@ async function switchTab(tab, options = {}) {
   document.title = `${TAB_NAMES[tab]} · Ascend`;
   if (tab === 'docs') state.guideTopic = options.topic || state.guideTopic || 'getting-started';
   if (tab === 'challenge' && options.topic) state.challengeRef = decodeURIComponent(options.topic);
-  const hash = tab === 'docs' ? `docs/${state.guideTopic}` : tab === 'challenge' && state.challengeRef ? `challenge/${encodeURIComponent(state.challengeRef)}` : tab;
+  if (tab === 'playground') state.playgroundRoute = options.topic || state.playgroundRoute || 'quick';
+  if (tab === 'activity') state.activityRef = options.topic || state.activityRef;
+  if (tab === 'lab') state.labRef = decodeURIComponent(options.topic || state.labRef || 'security-datasets');
+  const hash = tab === 'lab' ? `lab/${encodeURIComponent(state.labRef)}` : tab === 'activity' ? `activity/${state.activityRef}` : tab === 'playground' ? `playground/${state.playgroundRoute}` : tab === 'docs' ? `docs/${state.guideTopic}` : tab === 'challenge' && state.challengeRef ? `challenge/${encodeURIComponent(state.challengeRef)}` : tab;
   if (location.hash !== `#${hash}`) location.hash = hash;
   if (changed) window.scrollTo({top: 0, behavior: 'instant'});
   const screen = document.getElementById(tab);
@@ -92,7 +107,7 @@ async function switchTab(tab, options = {}) {
   try {
   if (tab === 'docs') {
     await renderDocs();
-    if (state.tab === tab && version === navigationVersion) window.AscendMotion?.enter($('#docs'), `docs/${state.guideTopic}`);
+    if (state.tab === tab && version === navigationVersion) window.AscendMotion?.enter?.($('#docs'), `docs/${state.guideTopic}`);
     renderSessionClock();
     if (!state.account) refreshDocsChrome().catch(() => {});
     return;
@@ -104,10 +119,22 @@ async function switchTab(tab, options = {}) {
   if (tab === 'more') await renderMore();
   if (tab === 'profile') await renderProfile();
   if (tab === 'challenge') await renderChallenge();
+  if (tab === 'playground') await renderPlayground();
+  if (tab === 'activity') await renderActivity();
+  if (tab === 'lab') await renderLabDetail();
   renderSessionClock();
-  if (state.tab === tab && version === navigationVersion) window.AscendMotion?.enter(document.getElementById(tab), tab);
+  if (state.tab === tab && version === navigationVersion) window.AscendMotion?.enter?.(document.getElementById(tab), tab);
+  } catch (error) {
+    if (version === navigationVersion && state.tab === tab && ['playground', 'activity', 'lab', 'stats'].includes(tab)) {
+      const panel = el('section', undefined, 'card empty'); panel.setAttribute('role', 'alert');
+      panel.append(el('h2', 'This page could not load'), el('p', error.message), button('Try again', () => switchTab(tab, options), ''));
+      $(`#${tab}-content`).replaceChildren(panel);
+      return;
+    }
+    throw error;
   } finally {
     clearTimeout(loadingTimer);
+    if (version === navigationVersion) window.AscendContext?.render();
     delete screen.dataset.loading;
     screen.removeAttribute('aria-busy');
     if (version === navigationVersion) $('#route-progress').hidden = true;
@@ -162,25 +189,36 @@ function fullNode(node) { return levelFor(node)?.nodes.find(n => n.id === node.i
 let refreshVersion = 0;
 async function refresh() {
   const version = ++refreshVersion;
-  const [overview, levels, account] = await Promise.all([api('me' + (state.minutes ? `?minutes=${state.minutes}` : '')), api('levels'), api('account')]);
+  const [overview, levels, account, practice] = await Promise.all([api('me' + (state.minutes ? `?minutes=${state.minutes}` : '')), api('levels'), api('account'), api(`playground/recommendations?kind=&minutes=${state.minutes || 1440}`)]);
   if (version !== refreshVersion) return;
+  overview.practice = practice;
   if (state.overview?.mission?.id !== overview.mission?.id) $('#session-result').hidden = true;
   state.overview = overview; state.levels = levels; state.account = account;
   updateAccountChrome();
   updateStreak(overview.current_streak);
   renderMissionProgress();
   const cards = $('#today-cards'); cards.replaceChildren();
-  if (overview.next) cards.append(nodeCard(overview.next, false));
+  const limited = state.minutes && overview.next?.estimate > Number(state.minutes);
+  const fitting = limited ? timeFitChoice(overview, Number(state.minutes)) : null;
+  if (limited) cards.append(timeFitCard(overview, Number(state.minutes), fitting));
+  else if (overview.next) cards.append(nodeCard(overview.next, false));
   else {
     const main = levels.filter(lv => lv.lane === 'main').flatMap(lv => lv.nodes), p = progressOf(main);
     const finished = main.length && p.resolved === p.total;
     const empty = el('div', undefined, 'card empty'); empty.append(icon(finished ? 'flag' : 'mountain'));
-    empty.append(el('h2', !overview.mission ? 'Find your first summit.' : finished ? (p.skipped ? 'Your main path is explored.' : 'Your main path is complete!') : 'A smaller step, perhaps.'), el('p', !overview.mission ? 'Choose a track, then turn one small challenge into a real skill.' : finished ? 'Revisit a challenge, try an optional drill, or choose your next mission.' : 'No open challenge fits this time. Choose more time, or split a challenge into smaller steps from its details.'));
+    empty.append(el('h2', !overview.mission ? 'Find your first summit.' : finished ? (p.skipped ? 'Your main path is explored.' : 'Your main path is complete!') : 'Your next step is waiting.'), el('p', !overview.mission ? 'Choose a track, or start a short activity in Playground.' : finished ? 'Keep practicing in Playground or choose your next mission.' : 'Explore your path to check its prerequisites. Playground practice is available whenever you want a detour.'));
     empty.append(button(overview.mission ? 'Explore your path' : 'Choose a track', () => switchTab(overview.mission ? 'path' : 'more'), ''));
     cards.append(empty);
   }
   const aside = el('aside', undefined, 'today-aside'); aside.setAttribute('aria-label', 'More ways to keep learning');
-  if (overview.quick_win) aside.append(nodeCard(overview.quick_win, true));
+  if (fitting?.kind !== 'practice') aside.append(playgroundRecommendation(overview.practice, state.minutes ? Number(state.minutes) : null, {kind: ''}));
+  if (overview.checkpoint && fitting?.kind !== 'checkpoint') {
+    const suggestion = overview.checkpoint, part = suggestion.checkpoint;
+    const card = el('section', undefined, 'card pg-recommendation');
+    card.append(el('p', 'A SMALL PART OF YOUR TRACK', 'eyebrow'), el('h2', part.title), el('p', `${part.minutes} min checkpoint · ${suggestion.title} remains about ${suggestion.full_minutes} min in total.`, 'small muted'), button('Open checkpoint', () => openCheckpoints(suggestion.reference), ''));
+    aside.append(card);
+  }
+  if (overview.quick_win && fitting?.kind !== 'side') aside.append(nodeCard(overview.quick_win, true));
   const lv = currentLevel(), milestone = lv?.nodes.find(n => n.milestone && n.status === 'todo');
   if (milestone && milestone.id !== overview.next?.id) {
     const target = el('section', undefined, 'card summit-card');
@@ -192,6 +230,7 @@ async function refresh() {
   if (aside.childElementCount) cards.append(aside);
   playChallengeIntro();
   await refreshSessions();
+  window.AscendContext?.render();
 }
 async function playChallengeIntro() {
   challengeIntroObserver?.disconnect();
@@ -242,6 +281,44 @@ function renderMissionProgress() {
     if (done) dot.replaceChildren(icon('check')); milestones.append(dot);
   }
   info.append(milestones); banner.append(emblem, info, meta); root.append(banner);
+}
+function timeFitChoice(overview, minutes) {
+  if (overview.checkpoint?.checkpoint.minutes <= minutes) return {kind: 'checkpoint', item: overview.checkpoint.checkpoint};
+  if (overview.quick_win?.estimate <= minutes) return {kind: 'side', item: overview.quick_win};
+  const activity = overview.practice?.activities?.find(item => (item.selection_minutes || item.minutes) <= minutes);
+  return activity ? {kind: 'practice', item: activity} : null;
+}
+function timeFitCard(overview, minutes, choice, excluded = []) {
+  const card = el('article', undefined, 'card node-card next-card time-fit-card');
+  const label = el('p', undefined, 'eyebrow'); label.append(icon('bolt'), document.createTextNode(`FOR YOUR ${minutes} MINUTES`)); card.append(label);
+  const item = choice?.item;
+  card.append(el('h2', item ? compactTitle(item.title) : 'No ready task fits this time.'));
+  if (item) {
+    const duration = item.selection_minutes || item.minutes || item.estimate;
+    card.dataset.suggestedMinutes = duration;
+    const meta = el('div', undefined, 'challenge-meta');
+    meta.append(el('span', `~${duration} min`, 'pill'), el('span', choice.kind === 'checkpoint' ? 'Track checkpoint' : choice.kind === 'side' ? 'Optional track practice' : playgroundLabel(item), 'small'));
+    card.append(meta);
+  }
+  card.append(el('p', `Your next full track challenge needs about ${overview.next.estimate} minutes. ${item ? 'This activity fits your selected time.' : 'Choose more time, or come back when you’re ready.'}`, 'time-fit-note'));
+  card.append(challengeIllustration());
+  const actions = el('div', undefined, 'card-actions');
+  if (choice) {
+    const open = button(choice.kind === 'checkpoint' ? 'Open checkpoint' : choice.kind === 'side' ? 'Open challenge' : item.role === 'example' ? 'Start guided example' : 'Start practice', () => choice.kind === 'checkpoint' ? openCheckpoints(overview.checkpoint.reference) : choice.kind === 'side' ? showNode(fullNode(item), levelFor(item)) : startPlayground(item), '');
+    open.append(icon('arrow')); actions.append(open);
+    if (choice.kind === 'practice') actions.append(button('Choose another', async () => {
+      const skip = [...excluded, item.id];
+      const result = await api(`playground/recommendations?kind=&minutes=${minutes}&exclude=${encodeURIComponent(skip.join(','))}`);
+      if (!result.activities.length) { notify('You’ve seen the available suggestions. Browse all activities for more choices.'); return; }
+      card.replaceWith(timeFitCard({...overview, practice: result}, minutes, {kind: 'practice', item: result.activities[0]}, skip));
+    }, 'text-button'));
+  }
+  actions.append(button('Choose more time', () => {
+    const picker = $('.time-chips'); picker.scrollIntoView({block: 'center', behavior: 'instant'});
+    picker.querySelector(`[data-minutes="${[30, 120].find(value => value >= overview.next.estimate) || ''}"]`)?.focus({preventScroll: true});
+  }, choice ? 'text-button' : ''));
+  const browse = el('a', 'Browse activities', 'subtle-link'); browse.href = '#playground/quick'; actions.append(browse);
+  card.append(actions); return card;
 }
 function nodeCard(node, quick) {
   const card = el('article', undefined, `card node-card ${quick ? 'quick-card' : 'next-card'}${node.milestone ? ' milestone-hero' : ''}`);
@@ -301,41 +378,8 @@ function showSessionResult(node, result, previousLevels) {
   copy.append(el('p', result.completed ? `${node.title}${newlyOpen.length ? ` · Unlocked: ${newlyOpen.map(lv => lv.title).join(', ')}` : ' · One more skill put into practice.'}` : result.verification || 'Your work counts, even when the challenge takes another session.'));
   root.append(badge, copy, button('Dismiss', () => root.hidden = true, 'text-button'));
 }
-function openLog(node) {
-  const content = openSheet('Log progress'); const title = el('h2', 'Save your progress.'); title.id = 'sheet-title';
-  content.append(el('p', 'SAVE YOUR SESSION', 'eyebrow'), title, el('p', node.title, 'muted'));
-  const form = el('form');
-  const learned = field(form, 'learned', 'What I did', 'textarea'); learned.required = true; learned.minLength = 20; learned.placeholder = 'What did you try, discover, or build?';
-  const next = field(form, 'next-step', "What's next", 'text', state.overview.resume || `Continue with ${node.title}`); next.required = true;
-  const checkLabel = el('label', undefined, 'check completion-choice'); const complete = el('input'); complete.type = 'checkbox'; complete.id = 'complete';
-  checkLabel.append(complete, document.createTextNode('Mark as done')); form.append(checkLabel);
-  form.append(el('p', 'Leave unchecked to save a work-in-progress session.', 'small muted'));
-  const details = el('details'); details.append(el('summary', 'Add details'));
-  const minutes = field(details, 'minutes', 'Minutes spent', 'number'); minutes.min = '1'; minutes.max = '1440';
-  const proof = field(details, 'proof', 'Proof link or file path');
-  if (node.verify?.type && node.verify.type !== 'manual') form.append(el('p', 'Completion checks your evidence. If the check fails, your session is still saved.', 'small muted'));
-  const help = el('a', 'How completion is verified', 'subtle-link'); help.href = '#docs/verification'; form.append(help);
-  form.append(details);
-  const error = el('p', '', 'error'); error.setAttribute('role', 'alert'); error.hidden = true;
-  const submit = el('button', 'Save progress'); form.append(error, submit); content.append(form);
-  complete.addEventListener('change', () => submit.textContent = complete.checked ? 'Complete challenge' : 'Save progress');
-  form.addEventListener('submit', async event => {
-    event.preventDefault(); submit.disabled = true;
-    const previousLevels = state.levels;
-    let saved = false;
-    try {
-      const result = await api('entries', {learned: learned.value, next_step: next.value, proof: proof.value || null, minutes: minutes.value ? Number(minutes.value) : null, node_id: `${node.pack_id}:${node.id}`, complete: complete.checked});
-      saved = true; $('#sheet').close();
-      await refresh(); if (state.tab === 'path') await renderPath();
-      if (state.tab === 'challenge') await renderChallenge();
-      showSessionResult(node, result, previousLevels);
-      notify(result.completed ? '✓ Challenge complete. Your path has moved forward.' : result.verification ? `Session saved. ${result.verification}` : '✓ Your progress is saved.');
-    } catch (err) {
-      if (saved) notify('Your session was saved, but the view could not refresh. Reload to see your progress.');
-      else { error.textContent = err.message; error.hidden = false; }
-    } finally { submit.disabled = false; }
-  });
-  learned.focus();
+async function openLog(node) {
+  await openChallengeNotes(node);
 }
 function instructionBlocks(text) {
   const fragment = document.createDocumentFragment();
@@ -411,6 +455,7 @@ function showNode(node, level = levelFor(node), workspace = false, session = nul
     content.append(el('p', missing.length ? `First complete: ${missing.map(n => n.title).join(', ')}.` : 'This challenge opens after the previous level’s milestone.', 'lock-note'));
   }
   const actions = el('div', undefined, 'dialog-actions');
+  if (!locked && node.checkpoints?.length) actions.append(button('Work on a small checkpoint', () => openCheckpoints(ref)));
   if (!locked) {
     const target = !revealed && !node.has_attempt ? field(content, 'task-target-minutes', 'Session target (minutes)', 'number', node.estimate) : null;
     if (target) { target.min = 1; target.max = 1440; }
@@ -421,17 +466,13 @@ function showNode(node, level = levelFor(node), workspace = false, session = nul
       await command([node.verify?.type === 'lab' ? 'lab' : 'session', 'start', ref, '--minutes', String(Number(target.value))]);
       await refreshSessions(); await switchTab('challenge', {topic: ref});
       $('#challenge-title')?.focus({preventScroll: true});
+      window.AscendMotion?.feedback?.($('#task-session'), 'start');
     }, ''));
-    if (revealed) {
-      content.append(el('p', node.verify?.type === 'lab' || node.verify?.type === 'ctf' ? 'Verified completion earns up to 100 XP within the target; late rewards taper to 25 XP. Ending stops timing without completion or XP.' : 'Artifact and self-reviewed tasks do not earn automatic skill XP.', 'muted'));
-      if (node.verify?.type === 'ctf') actions.append(button('Verify lab completion', async () => { const result = await command(['check', ref, '--complete']); notify(result.summary, result.ok ? 'success' : 'error'); await refresh(); await refreshSessions(); if (state.tab === 'path') await renderPath(); }));
-      actions.append(button(status === 'todo' ? 'Log progress' : 'Log another practice', () => openLog(node)));
-    }
+
   }
   if (status !== 'todo') content.append(el('p', status === 'done' ? '✓ Completed. Revisit this whenever you want to practice.' : 'Skipped. You can return to this challenge at any time.', 'muted'));
   content.append(actions);
   const manage = el('details', undefined, 'manage-challenge'); manage.append(el('summary', 'Challenge options'));
-  if (revealed && node.verify?.type && node.verify.type !== 'manual') manage.append(button('Check evidence', async () => { const result = await command(['check', `${node.pack_id}:${node.id}`]); notify(result.summary, result.ok ? 'success' : 'error'); }));
   if (status === 'todo') {
     manage.append(button('Skip challenge', async () => { await api(`nodes/${node.pack_id}:${node.id}/mark`, {status: 'skipped'}); $('#sheet').close(); await refresh(); if (state.tab === 'path') await renderPath(); notify('Challenge skipped. You can return to it from your path.'); }));
     if (level && !level.open) manage.append(button('Unlock level early', async () => { await command(['unlock', level.id]); $('#sheet').close(); await refresh(); if (state.tab === 'path') await renderPath(); }));
@@ -441,6 +482,28 @@ function showNode(node, level = levelFor(node), workspace = false, session = nul
     }
   } else manage.append(button('Reopen challenge', async () => { await api(`nodes/${node.pack_id}:${node.id}/mark`, {status:'todo'}); $('#sheet').close(); await refresh(); if (state.tab === 'path') await renderPath(); }));
   content.append(manage);
+}
+async function openCheckpoints(reference) {
+  const data = await api(`nodes/${encodeURIComponent(reference)}/checkpoints`);
+  const root = openSheet('Track checkpoints'); const title = el('h2', data.title); title.id = 'sheet-title';
+  root.append(title, el('p', `Full task: about ${data.full_minutes} minutes. Choose a useful stopping point below. Saving a checkpoint records partial learning; complete the parent task separately.`, 'muted'));
+  if (state.sessions?.active) root.append(el('p', 'Your existing scored session clock is still running. Saving a checkpoint does not pause or reset it.', 'small'));
+  for (const part of data.checkpoints) {
+    const section = el('section', undefined, 'pg-reference'); section.append(el('h3', `${part.saved ? '✓ ' : ''}${part.title} · ${part.minutes} min`), el('p', part.done_when));
+    if (part.saved) section.append(el('p', 'Partial learning saved. The parent task keeps its own finish line.', 'small muted'));
+    else {
+      const form = el('form');
+      const learned = playgroundField(form, 'What did you observe or learn?', '', 'textarea'); learned.required = true; learned.minLength = 20;
+      const minutes = playgroundField(form, 'Minutes spent (optional)', '', 'number'); minutes.min = 1; minutes.max = 1440;
+      form.append(el('p', `When you return: ${part.next_step}`, 'small muted'));
+      const submit = el('button', 'Save checkpoint note'); form.append(submit);
+      form.addEventListener('submit', event => { event.preventDefault(); runAction(submit, async () => {
+        await api(`nodes/${encodeURIComponent(reference)}/checkpoints/${part.id}`, {learned:learned.value, minutes:minutes.value ? Number(minutes.value) : null});
+        await refresh(); await openCheckpoints(reference); notify('Checkpoint saved as partial progress. Find it in this task and your learning log.', 'success');
+      }); }); section.append(form);
+    }
+    root.append(section);
+  }
 }
 function jumpToLevel(id) {
   const target = document.getElementById(`level-${id}`);
@@ -477,10 +540,14 @@ async function renderPath() {
     for (const node of level.nodes) { const status = node.status === 'todo' ? node.open ? 'ready' : 'locked' : node.status; strip.append(button(`${node.title} · ${status}`, () => showNode(node, level))); }
     anytime.append(strip); root.append(anytime);
   }
+  if (state.overview.mission?.pack_id) {
+    const refs = await api(`lab-catalog?track=${encodeURIComponent(state.overview.mission.pack_id)}`);
+    const section = trackLabReferences(refs); if (section) root.append(section);
+  }
 }
 
 async function renderStats() {
-  const [stats, days, levels, session] = await Promise.all([api('stats'), api('heatmap'), api('levels'), command(['session', 'status'])]);
+  const [stats, days, levels, session, practice] = await Promise.all([api('stats'), api('heatmap'), api('levels'), command(['session', 'status']), api('playground/insights')]);
   const root = $('#stats-content'); root.replaceChildren();
   updateStreak(stats.current_streak);
   const summary = el('section', undefined, 'stats-summary'); summary.setAttribute('aria-label', 'Progress summary');
@@ -498,6 +565,9 @@ async function renderStats() {
   const note = el('p', `${stats.freeze_available} ${stats.freeze_available === 1 ? 'freeze' : 'freezes'} available this week · ${session.verified_awards} verified ${session.verified_awards === 1 ? 'task' : 'tasks'}. `, 'small muted');
   const xpHelp = el('a', 'How XP works'); xpHelp.href = '#docs/timers'; note.append(xpHelp);
   summary.append(metrics, note); root.append(summary);
+  root.append(el('p', `XP contributions: track ${stats.xp.track} · practice ${stats.xp.practice} · standalone challenges ${stats.xp.challenge}. Playground activity does not advance the path.`, 'muted'));
+  root.append(el('p', `${stats.playground.practice_completed} practice exercises completed · ${stats.playground.challenges_solved} standalone challenges solved · ${stats.playground.saved_work} saved activities`, 'small'));
+  const insights = el('details', undefined, 'pg-reference'); insights.append(el('summary', 'Practice over the last 14 days'), el('p', `${practice.resumed} activities resumed · ${practice.returned} returns to the track · ${practice.runs_with_hints} activities with hints · ${practice.revealed_runs} solution reviews`), el('p', `${practice.queries_with_ready_choices} of ${practice.selection_queries} observed filter selections offered a ready activity. ${practice.feedback_reports} feedback reports: ${practice.unclear_reports} unclear, ${practice.unwanted_repeats} unwanted repeats, ${practice.environment_issues} technical problems.`, 'small'), el('p', 'These are local usage observations, not measures of mastery. Time estimates stay authored until at least three clear, completed sessions provide personal pace data.', 'small muted')); root.append(insights);
   const plots = el('div', undefined, 'page-section stats-plots');
   const calendar = el('section'); calendar.append(el('h2', 'Your last 12 weeks'), el('p', 'Each square is a learning day.', 'muted small'));
   const calendarArea = el('div', undefined, 'stats-chart-area'), heat = el('div', undefined, 'heatmap');
@@ -527,10 +597,12 @@ async function renderStats() {
   root.append(achievements);
 }
 function updateStreak(days) {
+  const previous = Number.parseInt($('#streak').textContent, 10);
   $('#streak').textContent = days;
   const label = `View streak stats: ${days} ${days === 1 ? 'day' : 'days'}`;
   $('#streak-link').setAttribute('aria-label', label);
   $('#streak-link').title = label;
+  if (Number.isFinite(previous) && days > previous) window.AscendMotion?.feedback?.($('#streak-link'), 'streak');
 }
 function updateAccountChrome() {
   if (!state.account) return;
@@ -694,7 +766,7 @@ document.querySelectorAll("[data-icon]").forEach(node => node.append(icon(node.d
 window.addEventListener('hashchange', () => {
   const {tab, topic} = currentRoute();
   if ($('#sheet').open) $('#sheet').close();
-  if (tab !== state.tab || (tab === 'docs' && topic && topic !== state.guideTopic) || (tab === 'challenge' && topic && decodeURIComponent(topic) !== state.challengeRef)) switchTab(tab, {topic}).catch(error => notify(error.message, 'error'));
+  if (tab !== state.tab || (tab === 'lab' && topic && decodeURIComponent(topic) !== state.labRef) || (tab === 'docs' && topic && topic !== state.guideTopic) || (tab === 'playground' && topic && topic !== state.playgroundRoute) || (tab === 'activity' && topic && topic !== state.activityRef) || (tab === 'challenge' && topic && decodeURIComponent(topic) !== state.challengeRef)) switchTab(tab, {topic}).catch(error => notify(error.message, 'error'));
 });
 $("#jump-current").addEventListener("click", () => jumpToLevel(currentLevel()?.id));
 document.querySelectorAll("[data-tab]").forEach(node => node.addEventListener("click", () => switchTab(node.dataset.tab).catch(error => notify(error.message, 'error'))));
@@ -796,12 +868,22 @@ async function refreshSessions() {
 }
 function renderSessionClock() {
   const root = $('#task-session'); if (!root || !state.sessions) return;
+  const lab = state.sessions.local_lab_active;
+  if (lab) {
+    const key = `local-lab-${lab.id}`;
+    root.hidden = false; root.dataset.state = 'running';
+    if (root.dataset.session !== key) {
+      root.dataset.session = key; root.replaceChildren(el('span', 'Local lab', 'session-label'), el('strong', lab.recipe_id), sessionButton('View lab session', 'View lab', () => playgroundOpen('labs'), ''));
+    }
+    return;
+  }
   const current = state.sessions.active;
+  if (state.tab === 'activity' && !current) { root.hidden = true; delete root.dataset.session; return; }
   const recent = state.sessions.recent;
   const renderKey = `${state.tab}:${state.challengeRef || ''}:` + (current ? `active-${current.id}` : `paused-${state.sessions.paused.map(r => r.id).join('-')}:recent-${recent?.id}-${recent?.outcome}`);
   const changed = root.dataset.session !== renderKey;
   if (changed) { root.replaceChildren(); root.dataset.session = renderKey; }
-  root.hidden = !current && !state.sessions.paused.length && !recent;
+  root.hidden = !current && !state.sessions.paused.length;
   root.dataset.state = current ? 'running' : 'finished';
   if (current) {
     const elapsed = current.elapsed_seconds + Math.floor((performance.now() - state.sessionFetched) / 1000);
@@ -810,16 +892,16 @@ function renderSessionClock() {
       const title = el('strong', compactTitle(current.title)); title.title = current.title;
       const clock = el('span', undefined, 'session-clock');
       clock.append(el('span', '', 'clock-value'), el('small', 'elapsed / target', 'clock-caption'));
-      root.append(el('span', 'In progress', 'session-label'), title, clock);
+      root.append(el('span', current.practice ? 'Practice' : 'In progress', 'session-label'), title, clock);
       const ref = `${current.pack_id}:${current.node_id}`;
       if (state.tab !== 'challenge' || state.challengeRef !== ref) root.append(sessionButton('Resume challenge', 'Resume', () => switchTab('challenge', {topic: ref}), ''));
-      root.append(sessionButton('End session', 'End', endTaskSession, 'secondary'));
+      root.append(sessionButton('Finish session', 'Finish', endTaskSession, 'secondary'));
     }
     const clock = root.querySelector('.session-clock');
     clock.querySelector('.clock-value').textContent = `${formatTime(elapsed)} / ${formatTime(current.budget_seconds)}`;
     clock.querySelector('.clock-caption').textContent = remaining ? 'elapsed / target' : 'elapsed / target · overtime';
     const checkpoint = elapsed >= current.budget_seconds ? 2 : elapsed >= current.budget_seconds * .75 ? 1 : 0;
-    const key = `ascend-session-notice-${current.id}`;
+    const key = `ascend-session-notice-${current.id}-${current.running_since}`;
     if (checkpoint > Number(sessionStorage.getItem(key) || 0)) {
       sessionStorage.setItem(key, String(checkpoint));
       notify(checkpoint === 2 ? 'Your target time has elapsed. Verified completion still earns XP.' : 'Three quarters of your planned session has elapsed.', 'reminder');
@@ -829,12 +911,8 @@ function renderSessionClock() {
     const ref = `${saved.pack_id}:${saved.node_id}`;
     root.append(el('strong', `Previous session: ${saved.title}`));
     if (state.tab !== 'challenge' || state.challengeRef !== ref) root.append(button('Resume challenge', () => switchTab('challenge', {topic: ref}), ''));
-    root.append(button('End session', endTaskSession, 'secondary'));
-  } else if (changed && recent) {
-    const label = recent.outcome === 'completed' ? 'Completed' : recent.outcome === 'partial' ? 'Decisions recorded' : recent.outcome === 'incorrect' ? 'Answer recorded' : 'Session ended';
-    root.append(el('strong', label), el('span', `${formatTime(recent.elapsed_seconds)} / ${formatTime(recent.budget_seconds)} used${recent.xp_earned ? ` · +${recent.xp_earned} XP` : ' · No XP earned'}`, 'small muted'));
-    const ref = `${recent.pack_id}:${recent.node_id}`;
-    if (state.tab !== 'challenge' || state.challengeRef !== ref) root.append(button('Review last attempt', () => switchTab('challenge', {topic: ref}), 'text-button'));
+    root.append(button('Finish session', endTaskSession, 'secondary'));
+
   }
 }
 function sessionButton(label, compact, action, className) {
@@ -844,14 +922,14 @@ function sessionButton(label, compact, action, className) {
 }
 function formatTime(seconds) { return `${Math.floor(seconds / 60)}:${String(Math.floor(seconds) % 60).padStart(2, '0')}`; }
 async function endTaskSession() {
-  await command(['session', 'end']); await refreshSessions();
-  if (state.tab === 'challenge') await renderChallenge();
-  notify('Session ended. The challenge was not completed and no XP was awarded.', 'info');
+  await prepareToEndChallenge();
 }
 function verificationLabel(node) {
   return node.verify?.type === 'lab' ? (node.verify.exercise === 'case' ? 'Server-graded reasoning check' : 'Server-verified exercise') : node.verify?.type === 'ctf' ? 'Signed external lab evidence' : node.verify?.type === 'file' ? 'Artifact check · reasoning needs review' : 'Evidence review required';
 }
 async function renderChallenge() {
+  try { await flushChallengeNotebook(); } catch { /* Draft recovery stays available. */ }
+  activeNotebook = null;
   const saved = state.sessions?.active || state.sessions?.paused.at(-1);
   const ref = state.challengeRef || (saved ? `${saved.pack_id}:${saved.node_id}` : null);
   const content = $('#challenge-content');
@@ -872,9 +950,7 @@ async function renderChallenge() {
         await command(['lab', 'start', ref]); await refreshSessions(); await renderChallenge();
       }, ''));
     }
-    if (['finished', 'paused'].includes(data.session?.status) && !data.exercise?.passed && !data.exercise?.terminal) {
-      $('#challenge-title').after(el('p', data.session.status === 'paused' ? 'This earlier paused session is available for unscored practice. You can end it from the session bar.' : 'Session ended. You can continue practicing, but this ended attempt will not earn XP.', 'muted'));
-    }
+    mountChallengeNotebook(data);
     $('#challenge-title').tabIndex = -1;
   } catch (error) {
     content.replaceChildren(heading, el('p', error.message, 'error'), button('Try again', renderChallenge));
@@ -936,6 +1012,7 @@ function showLab(node, run) {
       const choices = el('div', undefined, 'decision-choices');
       const feedback = policy && run.feedback?.find(item => item.id === key);
       if (terminal && feedback) {
+        if (feedback.correct !== null) group.dataset.correct = feedback.correct;
         const outcome = el('div', undefined, 'decision-outcome');
         const decision = feedback.allowed ? 'Allow' : 'Deny';
         outcome.append(el('strong', `${feedback.correct === null ? 'Decision' : feedback.correct ? 'Correct' : 'Incorrect'} · ${decision}`));
@@ -984,7 +1061,8 @@ function showLab(node, run) {
         try { sessionStorage.removeItem(draftKey); } catch { /* No stored draft. */ }
         await refresh(); await refreshSessions();
         if (state.tab === 'challenge' && state.challengeRef === `${node.pack_id}:${node.id}`) {
-          showLab(node, checked.exercise); $('#policy-result')?.focus();
+          await renderChallenge(); $('#policy-result')?.focus();
+          if (checked.completed) showChallengeCelebration('Decisions complete!', 'Your result is recorded and your track is ready for the next step.');
         }
         return;
       }
@@ -995,10 +1073,8 @@ function showLab(node, run) {
         form.querySelectorAll('input, button').forEach(input => input.disabled = true);
         try { sessionStorage.removeItem(draftKey); } catch { /* No stored draft. */ }
         await refresh(); await refreshSessions();
-        if (state.tab === 'challenge') {
-          result.append(document.createElement('br'), button('Continue learning', () => switchTab('today'), ''));
-        }
         if (state.tab === 'path') await renderPath();
+        if (state.tab === 'challenge') showChallengeCelebration('Challenge complete!', `${gained > 0 ? `+${gained} XP earned. ` : ''}Your evidence is recorded. Continue with the next task.`);
       } else submit.disabled = false;
     } catch (error) { result.textContent = error.message; submit.disabled = false; }
   });
@@ -1036,6 +1112,7 @@ function showCase(node, run) {
   form.append(group); column.append(form);
   const status = el('div', undefined, 'case-feedback'); status.setAttribute('role', 'status');
   if (terminal) {
+    status.dataset.feedback = run.passed ? 'success' : 'warning';
     status.append(el('h2', run.passed ? 'Correct. Check complete.' : 'Answer recorded. No XP earned.'));
     if (run.feedback?.explanation) status.append(el('p', run.feedback.explanation));
     status.append(button(run.passed ? 'Continue learning' : 'Continue without XP', async () => {
@@ -1059,6 +1136,7 @@ function showCase(node, run) {
           feedback?.scrollIntoView({block: 'nearest', behavior: 'instant'});
           if (feedback) { feedback.tabIndex = -1; feedback.focus({preventScroll: true}); }
         }
+        if (checked.completed) showChallengeCelebration('Knowledge check complete!', 'Your answer is recorded. Continue with the next task.');
         if (!checked.terminal && !checked.completed) status.textContent = checked.summary;
       });
     });
@@ -1070,7 +1148,7 @@ function showCase(node, run) {
   column.append(notes);
 }
 async function browseTracks() {
-  const [catalog, installed] = await Promise.all([command(['pack', 'registry']), api('packs')]);
+  const [catalog, installed, labs] = await Promise.all([command(['pack', 'registry']), api('packs'), api('lab-catalog')]);
   const installedIds = new Set(installed.map(p => p.id));
   const content = openSheet('Track catalog'), title = el('h2', 'Find your next track'); title.id = 'sheet-title';
   content.append(title, el('p', 'Explore a subject or role. Installing a track keeps your current mission in place.', 'muted'));
@@ -1100,6 +1178,8 @@ async function browseTracks() {
         if (pack.limits) details.append(el('p', pack.limits));
         card.append(details);
       }
+      const references = trackLabReferences(labs.filter(lab => lab.track_ids.includes(pack.id)));
+      if (references) card.append(references);
       list.append(card);
     }
     if (!matches.length) list.append(el('p', 'No tracks match. Try a broader subject or choose All subjects.', 'muted'));

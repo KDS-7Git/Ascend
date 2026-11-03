@@ -1,0 +1,143 @@
+{
+  "id": "mbe-intro-reversing",
+  "reference_id": "rpisec-mbe",
+  "title": "RPISEC MBE: introductory reversing in a VM",
+  "location": "local-vm",
+  "version": "1",
+  "status": "blocked",
+  "adapter": "specialist-pending",
+  "source": {
+    "repository": "https://github.com/RPISEC/MBE",
+    "revision": "200debfff3adf7beeff5e597e9ca9493b779a77e"
+  },
+  "license_review": "Code is BSD-2-Clause; lecture slides use CC BY-NC 4.0. This plan references code/VM setup only and does not redistribute slides.",
+  "assets": [
+    {
+      "role": "reference",
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/RPISEC/MBE/200debfff3adf7beeff5e597e9ca9493b779a77e/LICENSE",
+      "sha256": "1fc921c2182a603445cdbdec05ed1794134e6fa9578bb9c660a48c7f1af62f59",
+      "bytes": 1293
+    },
+    {
+      "role": "reference",
+      "path": "src/lab01/CMakeLists.txt",
+      "url": "https://raw.githubusercontent.com/RPISEC/MBE/200debfff3adf7beeff5e597e9ca9493b779a77e/src/lab01/CMakeLists.txt",
+      "sha256": "5f73e652b636de373a7922c10954e81213e0a4badf894e2ceda7e6bd55e84eb8",
+      "bytes": 152
+    }
+  ],
+  "checker_version": "specialist-observations-v1",
+  "fixture_id": "dd79046ef8d490ccd12ebedae4de846f425429d177f07a47865f2bba9117bc4b",
+  "grading": "upstream-report-v1",
+  "evidence_reviewed": true,
+  "check_ids": [
+    "lab_identity_recorded",
+    "binary_behavior_observed",
+    "negative_input_observed",
+    "notes_exported"
+  ],
+  "check_meaning": "Record behavior and an incorrect-input comparison for the introductory binary under the selected lab account. A local account/password or whoami result is learner-controlled evidence; the plan does not claim a trusted exploitation grade.",
+  "evidence_label": "Practice recorded (manual observations)",
+  "availability_reason": "The original wargame requires a separate VM with matching 32-bit environment. The README warns its system setup script must not run on a personal host. VM artifact checksum, image compatibility and snapshot/teardown measurements are pending.",
+  "environment_fields": [
+    "source_revision",
+    "vm_image_sha256",
+    "guest_os",
+    "binary_sha256"
+  ],
+  "digest_environment_fields": [
+    "vm_image_sha256",
+    "binary_sha256"
+  ],
+  "capability": {
+    "class": "vm",
+    "automatic_execution": false,
+    "measured": false,
+    "external_resources": false,
+    "runtime_acceptance": [
+      "Reviewed VM archive hash, expanded size and guest architecture",
+      "Provider-owned VM/disk inventory and isolated network",
+      "Known correct/incorrect input observations",
+      "Guest reset, host interruption, export and complete disk teardown",
+      "Measured cold/warm disk and RAM/CPU use"
+    ]
+  },
+  "integration": {
+    "provider": "specialist-observations",
+    "exercise": "src/lab01",
+    "automatic_start": false,
+    "acquisition": [
+      [
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "--no-checkout",
+        "https://github.com/RPISEC/MBE",
+        "ROOT"
+      ],
+      [
+        "git",
+        "-C",
+        "ROOT",
+        "fetch",
+        "--depth",
+        "1",
+        "origin",
+        "200debfff3adf7beeff5e597e9ca9493b779a77e"
+      ],
+      [
+        "git",
+        "-C",
+        "ROOT",
+        "checkout",
+        "--detach",
+        "200debfff3adf7beeff5e597e9ca9493b779a77e"
+      ]
+    ],
+    "working_directory": "ROOT",
+    "start": "Import a checksum-reviewed original VM into a dedicated Linux VM provider; start lab01 using its documented lab1C account. Never run setup_wargame.sh on the host.",
+    "check": "Use the guest debugger to compare the expected binary behavior and a deliberately incorrect input; record tool and binary versions.",
+    "stop": "Use the selected VM provider to power off or suspend the same VM; retain its disk and exported notes for resume.",
+    "reset": "Export work before discarding the owned environment and restoring its reviewed baseline. No reset is automated until lifecycle acceptance passes.",
+    "export": "Keep notes and scripts separate from the VM disk. Full disk snapshots stay on the learner PC.",
+    "destroy": "Remove only the dedicated VM and owned scratch disks after exporting work. Provider-specific VM IDs and a restore-tested baseline are prerequisites to automation."
+  },
+  "report_template": {
+    "exercise": "src/lab01",
+    "environment": {
+      "source_revision": "200debfff3adf7beeff5e597e9ca9493b779a77e",
+      "vm_image_sha256": "",
+      "guest_os": "",
+      "binary_sha256": ""
+    },
+    "checks": [
+      {
+        "id": "lab_identity_recorded",
+        "status": "unsupported"
+      },
+      {
+        "id": "binary_behavior_observed",
+        "status": "unsupported"
+      },
+      {
+        "id": "negative_input_observed",
+        "status": "unsupported"
+      },
+      {
+        "id": "notes_exported",
+        "status": "unsupported"
+      }
+    ]
+  },
+  "instructions": "Record behavior and an incorrect-input comparison for the introductory binary under the selected lab account. A local account/password or whoami result is learner-controlled evidence; the plan does not claim a trusted exploitation grade. Use lab plan for requirements and the exact report template. Imports are manual practice observations and never enable runtime execution.",
+  "required_tools": [
+    "qemu-system-i386",
+    "ssh",
+    "gdb"
+  ],
+  "tested_platforms": [],
+  "measurements": {},
+  "lifecycle_verified": false,
+  "verification_report": "docs/testing/local-lab-implementation.md"
+}

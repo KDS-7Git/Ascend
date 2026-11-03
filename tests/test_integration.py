@@ -16,6 +16,48 @@ from ascend.engine.packs import dump_toml
 from ascend.storage import Database
 
 
+def test_browser_saves_authored_checkpoint_without_completing_task(
+    live_server, tmp_path, pack_data
+):
+    from playwright.sync_api import expect, sync_playwright
+
+    pack_data["node"][0]["checkpoints"] = [
+        {
+            "id": "compare",
+            "title": "Compare one observation",
+            "minutes": 10,
+            "done_when": "Write down one expected result and compare it with your actual observation.",
+            "next_step": "Finish the remaining observations in the parent task.",
+        }
+    ]
+    db = Database(tmp_path / "server")
+    t = Tracker(db)
+    t.install_pack(dump_toml(pack_data))
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page(viewport={"width": 390, "height": 844})
+        page.goto(live_server)
+        page.get_by_role("button", name="10 min", exact=True).click()
+        page.get_by_role("button", name="Open checkpoint", exact=True).click()
+        page.get_by_label("What did you observe or learn?", exact=True).fill(
+            "The control and the changed input produced different responses."
+        )
+        page.get_by_label("Minutes spent (optional)", exact=True).fill("8")
+        page.get_by_role("button", name="Save checkpoint note", exact=True).click()
+        expect(
+            page.get_by_text(
+                "Partial learning saved. The parent task keeps its own finish line.",
+                exact=True,
+            )
+        ).to_be_visible()
+        assert not t.states("test-pack").get("one")
+        assert not t.db.rows("task_sessions")
+        assert t.entries()[0]["minutes"] == 8
+        assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+        browser.close()
+    db.close()
+
+
 @pytest.fixture
 def live_server(tmp_path, pack_data):
     home = tmp_path / "server"
@@ -152,7 +194,11 @@ def test_browser_complete_flow(live_server, width, height, tmp_path):
         expect(page.locator(".quick-card h2")).to_have_text("Small task")
         assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
         page.get_by_role("button", name="10 min", exact=True).click()
-        expect(page.get_by_text("A smaller step, perhaps.")).to_be_visible()
+        expect(page.locator(".time-fit-card")).to_be_visible()
+        assert int(page.locator(".time-fit-card").get_attribute("data-suggested-minutes")) <= 10
+        expect(
+            page.get_by_role("button", name="Start guided example", exact=True)
+        ).to_be_visible()
         page.get_by_role("button", name="Any time", exact=True).click()
         page.locator(".next-card").get_by_role("button", name="Open challenge").click()
         expect(page.get_by_role("heading", name="Your finish line")).to_have_count(0)
@@ -164,21 +210,18 @@ def test_browser_complete_flow(live_server, width, height, tmp_path):
         expect(page.get_by_role("link", name="Learning reference")).to_have_attribute(
             "href", "https://docs.python.org/3/"
         )
-        page.locator("#challenge-content").get_by_role(
-            "button", name="Log progress", exact=True
+        page.locator(".lab-toolbar").get_by_role(
+            "button", name="Notes & evidence", exact=True
         ).click()
-        page.get_by_label("What I did", exact=True).fill(
+        page.get_by_label("Your notes", exact=True).fill(
             "I tested this example and explained why it worked"
         )
-        page.get_by_label("What's next", exact=True).fill("Try the second exercise")
-        page.get_by_text("Add details", exact=True).click()
-        page.get_by_label("Minutes spent", exact=True).fill("15")
-        page.get_by_label("Mark as done", exact=True).check()
-        page.get_by_role("button", name="Complete challenge", exact=True).click()
+        page.get_by_label("Next step", exact=True).fill("Try the second exercise")
+        page.locator(".notebook-complete").click()
         expect(page.locator("#sheet")).not_to_be_visible()
+        expect(page.locator(".lab-celebration")).to_contain_text("Lab complete!")
         page.get_by_role("button", name="Today", exact=True).click()
-        expect(page.locator("#session-result")).to_contain_text("Challenge complete!")
-        expect(page.locator("#session-result")).to_contain_text("Unlocked: Second")
+        expect(page.locator(".next-card h2")).to_have_text("Second task")
         expect(page.locator(".topbar #streak")).to_have_text("1")
         page.get_by_role("button", name="Path", exact=True).click()
         expect(page.locator(".path-node.done")).to_have_count(1)
@@ -237,32 +280,32 @@ def test_browser_guidance_partial_work_and_failed_evidence(
         expect(
             page.get_by_text("Change one input at a time.", exact=True)
         ).to_be_visible()
-        page.locator("#challenge-content").get_by_role(
-            "button", name="Log progress", exact=True
+        page.locator(".lab-toolbar").get_by_role(
+            "button", name="Notes & evidence", exact=True
         ).click()
-        page.get_by_label("What I did", exact=True).fill(
+        page.get_by_label("Your notes", exact=True).fill(
             "I compared a prediction with the first observed result"
         )
         page.get_by_role("button", name="Save progress", exact=True).click()
+        expect(page.locator(".notebook-status")).to_have_text("Progress saved")
         page.get_by_role("button", name="Today", exact=True).click()
-        expect(page.locator("#session-result")).to_contain_text("Progress saved")
         expect(page.locator(".next-card h2")).to_have_text("First task")
         page.locator(".next-card").get_by_role(
             "button", name="Log progress", exact=True
         ).click()
-        page.get_by_label("What I did", exact=True).fill(
+        expect(page.get_by_label("Your notes", exact=True)).to_have_value("I compared a prediction with the first observed result")
+        page.get_by_label("Your notes", exact=True).fill(
             "I tried another input but have not saved the evidence file"
         )
-        page.get_by_label("Mark as done", exact=True).check()
-        page.get_by_role("button", name="Complete challenge", exact=True).click()
-        expect(page.locator("#session-result")).to_contain_text(
+        page.locator(".notebook-complete").click()
+        expect(page.locator("#notice")).to_contain_text(
             "Evidence file does not exist"
         )
-        expect(page.locator("#session-result")).not_to_have_class(
-            "session-result completed"
-        )
+        expect(page.locator(".lab-celebration")).to_have_count(0)
+        page.get_by_role("button", name="Today", exact=True).click()
         expect(page.locator(".next-card h2")).to_have_text("First task")
-        assert len(httpx.get(live_server + "/api/entries").json()) == 2
+        assert len(httpx.get(live_server + "/api/entries").json()) == 1
+        assert httpx.get(live_server + "/api/challenges/test-pack:one").json()["node"]["status"] == "todo"
         page.get_by_role("button", name="Path", exact=True).click()
         page.locator("#level-second > summary").click()
         page.locator(".path-node.locked").click()
@@ -418,11 +461,12 @@ def test_browser_timed_task_can_only_end_without_awarding_completion(live_server
         expect(page.locator("#sheet")).not_to_be_visible()
         expect(page.get_by_role("heading", name="Your finish line")).to_be_visible()
         page.reload()
-        page.get_by_role("button", name="End session", exact=True).click()
-        expect(page.locator("#task-session")).to_contain_text("Session ended")
+        page.get_by_role("button", name="Finish session", exact=True).click()
+        page.get_by_role("button", name="End session without completing", exact=True).click()
+        expect(page.locator("#task-session")).not_to_be_visible()
         expect(
-            page.get_by_role("button", name="End session", exact=True)
-        ).to_have_count(0)
+            page.get_by_role("button", name="End session without completing", exact=True)
+        ).not_to_be_visible()
         expect(page.locator("#challenge-content")).to_contain_text("Session ended")
         state = httpx.get(live_server + "/api/challenges/test-pack:one").json()
         assert state["session"]["status"] == "finished"
@@ -432,7 +476,7 @@ def test_browser_timed_task_can_only_end_without_awarding_completion(live_server
         ).json()
         assert session["active"] is None and session["xp"] == 0
         page.reload()
-        expect(page.locator("#task-session")).to_contain_text("Session ended")
+        expect(page.locator("#task-session")).not_to_be_visible()
         expect(page.locator("#challenge-content")).to_contain_text("Session ended")
         browser.close()
 
@@ -881,13 +925,17 @@ def test_mcq_has_one_submission_clear_result_and_persistent_timer(
         expect(
             page.get_by_role("button", name="Submit answer", exact=True)
         ).to_have_count(0)
-        expect(page.locator("#task-session")).to_contain_text("Answer recorded")
+        expect(page.locator("#task-session")).to_be_hidden()
         page.reload()
         expect(wrong).to_be_checked()
         expect(wrong).to_be_disabled()
         expect(page.locator(".case-feedback")).to_contain_text("No XP earned")
         page.get_by_role("button", name="Stats", exact=True).click()
-        page.get_by_role("button", name="Review last attempt", exact=True).click()
+        page.get_by_role("button", name="Today", exact=True).click()
+        page.locator(".next-card").get_by_role(
+            "button", name="Open challenge", exact=True
+        ).click()
+        page.get_by_role("button", name="Review attempt", exact=True).click()
         expect(page.locator(".case-feedback")).to_be_visible()
         page.get_by_role("button", name="Continue without XP", exact=True).click()
         expect(page).to_have_url(live_server + "/#today")
@@ -1015,7 +1063,7 @@ def test_loading_screen_recovers_from_slow_response_and_missing_script(live_serv
         page.reload()
         expect(page.locator(".next-card")).to_be_visible()
         expect(page.locator("#app-loader")).not_to_be_visible()
-        page.route("**/app.js", lambda route: route.abort())
+        page.route("**/app.js*", lambda route: route.abort())
         page.reload()
         expect(page.locator("#app-loader")).not_to_be_visible(timeout=6500)
         expect(page.get_by_role("link", name="Reload the workspace")).to_be_visible()
@@ -1125,4 +1173,68 @@ def test_guided_challenge_has_copyable_commands_and_free_reference(
         page.reload()
         expect(page.locator("#challenge-title")).to_have_text(guide.title)
         expect(page.locator(".session-clock")).to_be_visible()
+        browser.close()
+
+
+def test_browser_explains_stale_server_and_recovers_after_retry(live_server):
+    from playwright.sync_api import expect, sync_playwright
+
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch()
+        page = browser.new_page()
+        errors = []
+        page.on("pageerror", lambda error: errors.append(str(error)))
+
+        def missing_playground(route):
+            route.fulfill(status=404, json={"detail": "Not Found"})
+
+        old_stats_data = page.request.get(live_server + "/api/stats").json()
+        old_stats_data.pop("xp")
+        old_stats_data.pop("playground")
+
+        def old_stats(route):
+            route.fulfill(status=200, json=old_stats_data)
+
+        page.route("**/api/playground**", missing_playground)
+        page.route("**/api/stats", old_stats)
+        page.goto(live_server + "/#playground/quick")
+        message = "The running Ascend server has not loaded this update. Restart the server, then reload this page."
+        for tab in (
+            "Quick practice",
+            "Challenges",
+            "Free practice",
+            "Saved work & history",
+        ):
+            page.get_by_role("link", name=tab, exact=True).click()
+            expect(page.locator("#playground-content")).to_contain_text(message)
+            expect(
+                page.get_by_role("button", name="Try again", exact=True)
+            ).to_be_visible()
+            expect(page.locator("#playground-content")).not_to_contain_text("Not Found")
+        page.get_by_role("button", name="Stats", exact=True).click()
+        expect(page.locator("#stats-content")).to_contain_text(message)
+        expect(page.locator("#stats-content")).not_to_contain_text("undefined")
+        page.unroute("**/api/stats", old_stats)
+        page.unroute("**/api/playground**", missing_playground)
+        page.get_by_role("button", name="Try again", exact=True).click()
+        expect(page.locator("#stats-content")).to_contain_text(
+            "XP contributions: track 0"
+        )
+        page.get_by_role("button", name="Playground", exact=True).click()
+        page.get_by_role("link", name="Quick practice", exact=True).click()
+        expect(page.locator(".pg-catalog-card").first).to_be_visible()
+        # Static assets can update before either Linux-lab API is loaded.
+        for endpoint in ("lab-catalog", "lab-attempts"):
+            page.get_by_role("link", name="Quick practice", exact=True).click()
+            expect(page.locator(".pg-catalog-card").first).to_be_visible()
+            pattern = f"**/api/{endpoint}"
+            page.route(pattern, missing_playground)
+            page.get_by_role("link", name="Linux labs", exact=True).click()
+            expect(page.locator("#playground-content")).to_contain_text(message)
+            expect(page.locator("#playground-content")).not_to_contain_text("Not Found")
+            page.unroute(pattern, missing_playground)
+            page.get_by_role("button", name="Try again", exact=True).click()
+            expect(page.get_by_role("heading", name="Linux labs", exact=True)).to_be_visible()
+            expect(page.locator(".pg-lab")).to_have_count(15)
+        assert not errors
         browser.close()

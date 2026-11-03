@@ -1,0 +1,117 @@
+{
+  "id": "labtainers-network-basics",
+  "reference_id": "labtainers",
+  "title": "Labtainers: network basics",
+  "version": "1",
+  "status": "blocked",
+  "adapter": "upstream-vm-pending",
+  "source": {
+    "repository": "https://github.com/mfthomps/Labtainers",
+    "revision": "26c13698619abb4c67fcf483e8720b6c6aa3d6b2"
+  },
+  "license_review": "NPS distribution notice plus per-image third-party licenses; selected sources linked, not redistributed.",
+  "assets": [
+    {
+      "role": "reference",
+      "path": "labs/network-basics/instr_config/goals.config",
+      "url": "https://raw.githubusercontent.com/mfthomps/Labtainers/26c13698619abb4c67fcf483e8720b6c6aa3d6b2/labs/network-basics/instr_config/goals.config",
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "bytes": 1
+    },
+    {
+      "role": "reference",
+      "path": "labs/network-basics/instr_config/results.config",
+      "url": "https://raw.githubusercontent.com/mfthomps/Labtainers/26c13698619abb4c67fcf483e8720b6c6aa3d6b2/labs/network-basics/instr_config/results.config",
+      "sha256": "bb37f130bbb789000d0db773b006854e8b59d4acb9ad501d003e80849c4561bf",
+      "bytes": 183
+    },
+    {
+      "role": "reference",
+      "path": "labs/network-basics/config/start.config",
+      "url": "https://raw.githubusercontent.com/mfthomps/Labtainers/26c13698619abb4c67fcf483e8720b6c6aa3d6b2/labs/network-basics/config/start.config",
+      "sha256": "6a711749fe6d9b0b6305f7ff459318df5ff0ca6e092f0b117a53e4e1fe7ca1d8",
+      "bytes": 289
+    },
+    {
+      "role": "reference",
+      "path": "docs/license.md",
+      "url": "https://raw.githubusercontent.com/mfthomps/Labtainers/26c13698619abb4c67fcf483e8720b6c6aa3d6b2/docs/license.md",
+      "sha256": "206193d1f339db80a9fe285abcbc541c7d5f062dd761248201fcf1696b2129e0",
+      "bytes": 2731
+    }
+  ],
+  "checker_version": "upstream-report-v1",
+  "fixture_id": "6f2602f14391dc2947199528494aa0e33b01322b87ed05dc2f20815a8f917d7d",
+  "grading": "upstream-report-v1",
+  "evidence_reviewed": true,
+  "check_ids": [],
+  "check_meaning": "The current goals.config is empty; result expressions for SSH/tcpdump and ARP do not constitute an automatic grade.",
+  "evidence_label": "Checked on this PC (imported upstream feedback)",
+  "availability_reason": "Execution needs a dedicated, validated Labtainers Linux VM and pinned per-lab images. Upstream feedback can be recorded now.",
+  "integration": {
+    "acquisition": [
+      [
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "--no-checkout",
+        "https://github.com/mfthomps/Labtainers",
+        "ROOT"
+      ],
+      [
+        "git",
+        "-C",
+        "ROOT",
+        "fetch",
+        "--depth",
+        "1",
+        "origin",
+        "26c13698619abb4c67fcf483e8720b6c6aa3d6b2"
+      ],
+      [
+        "git",
+        "-C",
+        "ROOT",
+        "checkout",
+        "--detach",
+        "26c13698619abb4c67fcf483e8720b6c6aa3d6b2"
+      ]
+    ],
+    "provider": "labtainers",
+    "exercise": "network-basics",
+    "requires_vm": true,
+    "automatic_start": false,
+    "start": [
+      "labtainer",
+      "network-basics"
+    ],
+    "check": [
+      "checkwork"
+    ],
+    "stop": [
+      "stoplab"
+    ],
+    "reset": [
+      "labtainer",
+      "-r",
+      "network-basics"
+    ],
+    "export": "stoplab creates the upstream .lab archive. Keep it locally for instructor gradelab; only a small JSON result is imported.",
+    "destroy": "Upstream stop preserves state. Use a dedicated disposable VM; full provider-owned destruction still needs validation."
+  },
+  "report_template": {
+    "exercise": "network-basics",
+    "checks": []
+  },
+  "instructions": "The current goals.config is empty; result expressions for SSH/tcpdump and ARP do not constitute an automatic grade.",
+  "required_tools": [
+    "docker",
+    "labtainer",
+    "checkwork",
+    "stoplab"
+  ],
+  "tested_platforms": [],
+  "measurements": {},
+  "lifecycle_verified": false,
+  "verification_report": "docs/testing/local-lab-implementation.md"
+}

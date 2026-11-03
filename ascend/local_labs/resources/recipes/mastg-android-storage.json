@@ -1,0 +1,171 @@
+{
+  "id": "mastg-android-storage",
+  "reference_id": "mastg-playground",
+  "title": "MASTG Android: observe local secret storage",
+  "location": "local-vm",
+  "version": "1",
+  "status": "blocked",
+  "adapter": "specialist-pending",
+  "source": {
+    "repository": "https://github.com/OWASP/MASTG-Hacking-Playground",
+    "revision": "db219a1011e6735cf0c6c08ba929a27ef40e1873"
+  },
+  "license_review": "Root LICENSE.md is GPL-3.0; bundled libraries have their own notices. Java Android subset only; iOS is outside Linux-first scope.",
+  "assets": [
+    {
+      "role": "reference",
+      "path": "LICENSE.md",
+      "url": "https://raw.githubusercontent.com/OWASP/MASTG-Hacking-Playground/db219a1011e6735cf0c6c08ba929a27ef40e1873/LICENSE.md",
+      "sha256": "589ed823e9a84c56feb95ac58e7cf384626b9cbf4fda2a907bc36e103de1bad2",
+      "bytes": 35141
+    },
+    {
+      "role": "reference",
+      "path": "Android/MSTG-Android-Java-App/app/build.gradle",
+      "url": "https://raw.githubusercontent.com/OWASP/MASTG-Hacking-Playground/db219a1011e6735cf0c6c08ba929a27ef40e1873/Android/MSTG-Android-Java-App/app/build.gradle",
+      "sha256": "706d932c2bbdf6f3c7bf6e5d0dae9f3ec72f32b3b44d43591ff6d40ccc063ac8",
+      "bytes": 2683
+    },
+    {
+      "role": "reference",
+      "path": "Android/MSTG-Android-Java-App/app/src/main/AndroidManifest.xml",
+      "url": "https://raw.githubusercontent.com/OWASP/MASTG-Hacking-Playground/db219a1011e6735cf0c6c08ba929a27ef40e1873/Android/MSTG-Android-Java-App/app/src/main/AndroidManifest.xml",
+      "sha256": "0d8d17a25202ec95811d9fe51527d760af2a49a39b3aea973d12d79919e41f72",
+      "bytes": 10908
+    },
+    {
+      "role": "reference",
+      "path": "Android/MSTG-Android-Java-App/app/src/main/java/sg/vp/owasp_mobile/OMTG_Android/OMTG_DATAST_001_SharedPreferences.java",
+      "url": "https://raw.githubusercontent.com/OWASP/MASTG-Hacking-Playground/db219a1011e6735cf0c6c08ba929a27ef40e1873/Android/MSTG-Android-Java-App/app/src/main/java/sg/vp/owasp_mobile/OMTG_Android/OMTG_DATAST_001_SharedPreferences.java",
+      "sha256": "012ea086cf1520881a0782aa105eece66d8d5f8cfffe8f4a4e6d42028357dac8",
+      "bytes": 988
+    }
+  ],
+  "checker_version": "specialist-observations-v1",
+  "fixture_id": "8151f6ff8583aee2263270849b7bf61e2057f4a262faf5b98b1a9d480b361569",
+  "grading": "upstream-report-v1",
+  "evidence_reviewed": true,
+  "check_ids": [
+    "app_preferences_created",
+    "private_storage_observed",
+    "ordinary_app_access_denied",
+    "test_app_data_removed"
+  ],
+  "check_meaning": "The selected Activity stores credentials using MODE_PRIVATE SharedPreferences. It is not world-readable storage merely because it contains a secret. Distinguish inspection through an authorized debugger/rooted emulator from what another ordinary app can read.",
+  "evidence_label": "Practice recorded (manual observations)",
+  "availability_reason": "Needs an explicitly selected disposable Android emulator and a reviewed APK/toolchain. This old Java app declares compile SDK 26, build tools 27.0.3 and target SDK 28; a present adb binary does not validate installation or storage access.",
+  "environment_fields": [
+    "source_revision",
+    "android_api",
+    "emulator_image_sha256",
+    "apk_sha256"
+  ],
+  "digest_environment_fields": [
+    "emulator_image_sha256",
+    "apk_sha256"
+  ],
+  "capability": {
+    "class": "mobile",
+    "automatic_execution": false,
+    "measured": false,
+    "external_resources": false,
+    "runtime_acceptance": [
+      "Pinned SDK/Gradle/JDK and APK digest",
+      "Explicit emulator serial and system-image digest",
+      "App startup and private-storage/ordinary-app controls",
+      "Stop/reset/export and emulator cleanup without another device being touched",
+      "Cold/warm SDK/APK/image disk and emulator RAM/CPU measurements"
+    ]
+  },
+  "integration": {
+    "provider": "specialist-observations",
+    "exercise": "Android/SharedPreferences",
+    "automatic_start": false,
+    "acquisition": [
+      [
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "--no-checkout",
+        "https://github.com/OWASP/MASTG-Hacking-Playground",
+        "ROOT"
+      ],
+      [
+        "git",
+        "-C",
+        "ROOT",
+        "fetch",
+        "--depth",
+        "1",
+        "origin",
+        "db219a1011e6735cf0c6c08ba929a27ef40e1873"
+      ],
+      [
+        "git",
+        "-C",
+        "ROOT",
+        "checkout",
+        "--detach",
+        "db219a1011e6735cf0c6c08ba929a27ef40e1873"
+      ]
+    ],
+    "working_directory": "ROOT",
+    "start": "Build and hash the selected Java APK in a pinned toolchain; install only on the explicitly selected LAB_EMULATOR and open SharedPreferences from the app menu.",
+    "check": "Observe the stored values with authorized emulator/debug access and compare an ordinary app access attempt. Keep screenshots and device state locally.",
+    "stop": [
+      "adb",
+      "-s",
+      "LAB_EMULATOR",
+      "shell",
+      "am",
+      "force-stop",
+      "sg.vp.owasp_mobile.omtg_android"
+    ],
+    "reset": "Export work before discarding the owned environment and restoring its reviewed baseline. No reset is automated until lifecycle acceptance passes.",
+    "export": "Save a short report and any necessary screenshots before resetting/uninstalling the test app. Do not upload the emulator disk.",
+    "destroy": [
+      "adb",
+      "-s",
+      "LAB_EMULATOR",
+      "uninstall",
+      "sg.vp.owasp_mobile.omtg_android"
+    ]
+  },
+  "report_template": {
+    "exercise": "Android/SharedPreferences",
+    "environment": {
+      "source_revision": "db219a1011e6735cf0c6c08ba929a27ef40e1873",
+      "android_api": "",
+      "emulator_image_sha256": "",
+      "apk_sha256": ""
+    },
+    "checks": [
+      {
+        "id": "app_preferences_created",
+        "status": "unsupported"
+      },
+      {
+        "id": "private_storage_observed",
+        "status": "unsupported"
+      },
+      {
+        "id": "ordinary_app_access_denied",
+        "status": "unsupported"
+      },
+      {
+        "id": "test_app_data_removed",
+        "status": "unsupported"
+      }
+    ]
+  },
+  "instructions": "The selected Activity stores credentials using MODE_PRIVATE SharedPreferences. It is not world-readable storage merely because it contains a secret. Distinguish inspection through an authorized debugger/rooted emulator from what another ordinary app can read. Use lab plan for requirements and the exact report template. Imports are manual practice observations and never enable runtime execution.",
+  "required_tools": [
+    "adb",
+    "emulator",
+    "java"
+  ],
+  "tested_platforms": [],
+  "measurements": {},
+  "lifecycle_verified": false,
+  "verification_report": "docs/testing/local-lab-implementation.md"
+}

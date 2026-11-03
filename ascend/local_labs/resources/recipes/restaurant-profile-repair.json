@@ -1,0 +1,136 @@
+{
+  "id": "restaurant-profile-repair",
+  "reference_id": "restaurant-api",
+  "title": "RESTaurant: profile ownership repair",
+  "version": "1",
+  "status": "blocked",
+  "adapter": "upstream-vm-pending",
+  "source": {
+    "repository": "https://github.com/theowni/Damn-Vulnerable-RESTaurant-API-Game",
+    "revision": "d32d09972aec7830f5f1d4a5d274cac7aae7eb82"
+  },
+  "license_review": "GPL-3.0 license read; selected sources linked, not redistributed.",
+  "assets": [
+    {
+      "role": "reference",
+      "path": "docker-compose.yml",
+      "url": "https://raw.githubusercontent.com/theowni/Damn-Vulnerable-RESTaurant-API-Game/d32d09972aec7830f5f1d4a5d274cac7aae7eb82/docker-compose.yml",
+      "sha256": "6fb19f710499330e3cb4702ff8f1e7003b22747b8c68f9ecf2bdcdd6f9e37468",
+      "bytes": 929
+    },
+    {
+      "role": "reference",
+      "path": "Dockerfile",
+      "url": "https://raw.githubusercontent.com/theowni/Damn-Vulnerable-RESTaurant-API-Game/d32d09972aec7830f5f1d4a5d274cac7aae7eb82/Dockerfile",
+      "sha256": "34ab447a7f14db93c9a2200a8514b81938ac02fba1032a6a2801a5b9c885f898",
+      "bytes": 835
+    },
+    {
+      "role": "reference",
+      "path": "app/game.py",
+      "url": "https://raw.githubusercontent.com/theowni/Damn-Vulnerable-RESTaurant-API-Game/d32d09972aec7830f5f1d4a5d274cac7aae7eb82/app/game.py",
+      "sha256": "d554cf863c593e5b0ae3db8e8d137a6aa75f70bb2f9d8b8d4ea4b923b223b183",
+      "bytes": 10520
+    },
+    {
+      "role": "reference",
+      "path": "app/tests/vulns/level_2_unrestricted_profile_update_IDOR.py",
+      "url": "https://raw.githubusercontent.com/theowni/Damn-Vulnerable-RESTaurant-API-Game/d32d09972aec7830f5f1d4a5d274cac7aae7eb82/app/tests/vulns/level_2_unrestricted_profile_update_IDOR.py",
+      "sha256": "e0c14ea9b9c0e07c47c17cbb628784e7f548f7d359c663dea7a17bb526b0c05e",
+      "bytes": 1577
+    },
+    {
+      "role": "reference",
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/theowni/Damn-Vulnerable-RESTaurant-API-Game/d32d09972aec7830f5f1d4a5d274cac7aae7eb82/LICENSE",
+      "sha256": "8b1ba204bb69a0ade2bfcf65ef294a920f6bb361b317dba43c7ef29d96332b9b",
+      "bytes": 35148
+    }
+  ],
+  "checker_version": "upstream-report-v1",
+  "fixture_id": "81ce7e13636015efd920ff1da594e4cc6c29cdddc26f56681c8945adb6f078a8",
+  "grading": "upstream-report-v1",
+  "evidence_reviewed": true,
+  "check_ids": [
+    "owner_update_allowed",
+    "cross_user_update_denied",
+    "changed_object_owner_allowed",
+    "anonymous_denied"
+  ],
+  "check_meaning": "These selected repair observations require permitted owner changes, rejected cross-user changes, a changed-object control, and anonymous denial. Upstream exploitation-test failure alone is insufficient.",
+  "evidence_label": "Checked on this PC (imported upstream feedback)",
+  "availability_reason": "The upstream environment includes privileged containers, SYS_ADMIN and RCE exercises. Automatic execution stays disabled until a dedicated VM and its cleanup are validated.",
+  "integration": {
+    "acquisition": [
+      [
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "--no-checkout",
+        "https://github.com/theowni/Damn-Vulnerable-RESTaurant-API-Game",
+        "ROOT"
+      ],
+      [
+        "git",
+        "-C",
+        "ROOT",
+        "fetch",
+        "--depth",
+        "1",
+        "origin",
+        "d32d09972aec7830f5f1d4a5d274cac7aae7eb82"
+      ],
+      [
+        "git",
+        "-C",
+        "ROOT",
+        "checkout",
+        "--detach",
+        "d32d09972aec7830f5f1d4a5d274cac7aae7eb82"
+      ]
+    ],
+    "provider": "restaurant",
+    "exercise": "level_2_unrestricted_profile_update_IDOR",
+    "requires_vm": true,
+    "automatic_start": false,
+    "start": [
+      "./start_game.sh"
+    ],
+    "check": "The upstream game runs exploitation tests and the unit suite. A pytest exit code alone is not an Ascend repair grade.",
+    "stop": [
+      "./stop_app.sh"
+    ],
+    "reset": "Recreate disposable VM state after exporting the patch; upstream stop preserves PostgreSQL volume data.",
+    "export": "Save the small patch and named owner/other-user/changed-object/anonymous observations locally.",
+    "destroy": "The upstream Compose file uses privileged:true, SYS_ADMIN, a source bind mount and an unpinned PostgreSQL tag. Dedicated-VM cleanup and selected repair replay remain unvalidated."
+  },
+  "report_template": {
+    "exercise": "level_2_unrestricted_profile_update_IDOR",
+    "checks": [
+      {
+        "id": "owner_update_allowed",
+        "status": "unsupported"
+      },
+      {
+        "id": "cross_user_update_denied",
+        "status": "unsupported"
+      },
+      {
+        "id": "changed_object_owner_allowed",
+        "status": "unsupported"
+      },
+      {
+        "id": "anonymous_denied",
+        "status": "unsupported"
+      }
+    ]
+  },
+  "instructions": "These selected repair observations require permitted owner changes, rejected cross-user changes, a changed-object control, and anonymous denial. Upstream exploitation-test failure alone is insufficient.",
+  "required_tools": [
+    "docker"
+  ],
+  "tested_platforms": [],
+  "measurements": {},
+  "lifecycle_verified": false,
+  "verification_report": "docs/testing/local-lab-implementation.md"
+}

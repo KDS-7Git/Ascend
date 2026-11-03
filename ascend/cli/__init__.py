@@ -94,6 +94,16 @@ def parser():
     split = sub.add_parser("split")
     split.add_argument("node")
     split.add_argument("steps", nargs="+")
+    checkpoint = sub.add_parser("checkpoint").add_subparsers(
+        dest="action", required=True
+    )
+    for name in ("list", "log"):
+        child = checkpoint.add_parser(name)
+        child.add_argument("node")
+        if name == "log":
+            child.add_argument("checkpoint")
+            child.add_argument("--learned", required=True)
+            child.add_argument("--minutes", type=int)
     sub.add_parser("sync")
     sub.add_parser("accept")
     sub.add_parser("nudge")
@@ -110,6 +120,12 @@ def parser():
     )
     sessions.add_parser("status")
     labs = sub.add_parser("lab").add_subparsers(dest="action", required=True)
+    catalog = labs.add_parser("catalog", help="Browse open-source lab references and reviewed recipes")
+    for name in ("track", "level", "location", "search"):
+        catalog.add_argument("--" + name)
+    detail = labs.add_parser("detail")
+    detail.add_argument("lab_id")
+    labs.add_parser("plan", help="Review upstream setup and evidence contract without executing it").add_argument("lab_id")
     begin = labs.add_parser("start")
     begin.add_argument("node")
     begin.add_argument("--fresh", action="store_true")
@@ -122,6 +138,77 @@ def parser():
     submit = labs.add_parser("submit")
     submit.add_argument("instance")
     submit.add_argument("answers", help="JSON answer object; no code is executed")
+    practice = sub.add_parser("practice", help="Recommend a short independent activity")
+    practice.add_argument("minutes", type=int, nargs="?", default=10)
+    practice.add_argument("--exclude", action="append", default=[])
+    practice.add_argument("--domain")
+    playground = sub.add_parser("playground").add_subparsers(
+        dest="action", required=True
+    )
+    listing = playground.add_parser("list")
+    for key in (
+        "domain",
+        "kind",
+        "topic",
+        "difficulty",
+        "environment",
+        "progress",
+        "format",
+        "search",
+    ):
+        listing.add_argument("--" + key)
+    listing.add_argument("--minutes", type=int)
+    listing.add_argument("--bookmarked", action="store_true")
+    playground.add_parser("history")
+    playground.add_parser("insights")
+    detail = playground.add_parser("detail")
+    detail.add_argument("activity")
+    begin = playground.add_parser("start")
+    begin.add_argument("activity")
+    begin.add_argument("--end-scored", action="store_true")
+    begin.add_argument("--deliberate", action="store_true")
+    for action in (
+        "show",
+        "resume",
+        "save",
+        "submit",
+        "hint",
+        "end",
+        "reveal",
+        "log",
+        "experiment",
+        "copy",
+        "repair",
+        "tour",
+        "feedback",
+    ):
+        child = playground.add_parser(action)
+        child.add_argument("run")
+        if action == "tour":
+            child.add_argument("--step", type=int, default=0)
+            child.add_argument(
+                "--status", choices=("active", "finished", "skipped"), default="active"
+            )
+        if action in {"save", "submit", "experiment", "feedback"}:
+            child.add_argument("data", help="JSON object")
+        if action in {"log", "submit"}:
+            child.add_argument("--learned")
+            child.add_argument("--next-step")
+        if action == "log":
+            child.add_argument("--minutes", type=int)
+        if action in {"resume", "copy"}:
+            child.add_argument("--end-scored", action="store_true")
+        if action == "copy":
+            for flag in ("reset", "fault", "blank"):
+                child.add_argument("--" + flag, action="store_true")
+        if action == "repair":
+            child.add_argument("rule")
+    bookmark = playground.add_parser("bookmark")
+    bookmark.add_argument("activity")
+    bookmark.add_argument("--remove", action="store_true")
+    from ascend.local_labs.cli import add_parser
+
+    add_parser(sub)
     return p
 
 
@@ -145,6 +232,73 @@ def pack_text(target):
 
 def execute(tracker, args):
     command = args.command
+    if command == "local-lab":
+        from ascend.local_labs.cli import execute as execute_local
+
+        return execute_local(tracker, args)
+    if command == "checkpoint":
+        from ascend import checkpoints
+
+        return (
+            checkpoints.list_for(tracker, args.node)
+            if args.action == "list"
+            else checkpoints.record(
+                tracker, args.node, args.checkpoint, args.learned, args.minutes
+            )
+        )
+    if command == "practice":
+        return tracker.playground.recommendations(
+            args.minutes, args.exclude, domain=args.domain
+        )
+    if command == "playground":
+        p, action = tracker.playground, args.action
+        if action == "insights":
+            return p.insights()
+        if action == "tour":
+            return p.tour(args.run, args.step, args.status)
+        if action == "list":
+            return p.list(
+                **{
+                    key: getattr(args, key)
+                    for key in (
+                        "domain",
+                        "kind",
+                        "topic",
+                        "difficulty",
+                        "environment",
+                        "progress",
+                        "format",
+                        "search",
+                        "minutes",
+                        "bookmarked",
+                    )
+                }
+            )
+        if action == "history":
+            return p.history()
+        if action == "detail":
+            return p.detail(args.activity)
+        if action == "start":
+            return p.start(args.activity, args.end_scored, args.deliberate)
+        if action == "bookmark":
+            return p.bookmark(args.activity, not args.remove)
+        if action == "resume":
+            return p.resume(args.run, args.end_scored)
+        if action == "copy":
+            return p.copy(args.run, args.reset, args.fault, args.blank, args.end_scored)
+        if action == "log":
+            return p.log(args.run, args.learned, args.next_step, args.minutes)
+        if action == "repair":
+            return p.repair(args.run, args.rule)
+        if action in {"save", "submit", "experiment", "feedback"}:
+            try:
+                data = json.loads(args.data)
+            except json.JSONDecodeError:
+                raise ValueError("Data must be a JSON object") from None
+            if action == "submit":
+                return p.submit(args.run, data, args.learned, args.next_step)
+            return getattr(p, action)(args.run, data)
+        return getattr(p, "view" if action == "show" else action)(args.run)
     if command == "session":
         from ascend import timing
 
@@ -152,6 +306,16 @@ def execute(tracker, args):
             return timing.start(tracker, args.node, args.minutes)
         return timing.end(tracker) if args.action == "end" else timing.summary(tracker)
     if command == "lab":
+        if args.action == "plan":
+            from ascend.local_labs.upstream import plan
+
+            return plan(args.lab_id)
+        if args.action in {"catalog", "detail"}:
+            from ascend.local_labs.catalog import catalog, detail
+
+            return detail(args.lab_id) if args.action == "detail" else catalog(
+                **{name: getattr(args, name) for name in ("track", "level", "location", "search")}
+            )
         from ascend import labs
 
         if args.action == "start":
@@ -334,6 +498,10 @@ def bar(done, total):
 def render(args, result):
     if args.json:
         return json.dumps(result, indent=2, default=str)
+    if args.command == "local-lab":
+        from ascend.local_labs.cli import render as render_local
+
+        return render_local(result)
     if args.command in {None, "today"}:
         mission = result["mission"]
         draft = " [draft]" if result.get("draft") else ""
@@ -360,13 +528,23 @@ def render(args, result):
                 else None
             )
         lines.append(
-            f"Next    : {text or 'No step fits or remains open; try ascend split or ascend levels'}"
+            f"Next    : {text or 'No track step remains open; browse ascend levels or ascend playground list'}"
         )
         quick = result.get("quick_win")
         if quick:
             lines.append(
                 f"Quick win: {quick['id']} — {quick['title']}{draft} (~{quick['estimate']} min)"
             )
+        practice = result.get("practice", {}).get("activities", [])
+        suggestion = (
+            f"Practice: {practice[0]['title']} ({practice[0]['minutes']} min); ascend playground start {practice[0]['id']}"
+            if practice
+            else "Practice: no activity fits this duration; try ascend practice 5"
+        )
+        if quick:
+            lines[-1] += " | " + suggestion
+        else:
+            lines.append(suggestion)
         lines.append(
             f"Streak  : {result['current_streak']} days (best {result['best_streak']}) · freeze available: {result['freeze_available']}"
         )
@@ -435,6 +613,10 @@ def main(argv=None):
             if not url:
                 raise ValueError("Supply a server URL")
             result = login(url)
+        elif args.command == "local-lab":
+            db = Database()
+            args.local_server = server
+            result = execute(Tracker(db), args)
         elif server:
             data = {"argv": argv}
             if args.command == "pack" and args.action in {
@@ -455,6 +637,8 @@ def main(argv=None):
             print(f"Exported {args.path}")
         else:
             print(render(args, result))
+        if args.command == "local-lab" and isinstance(result, dict):
+            return {"fail": 1, "error": 2, "cleanup_failed": 2, "unsupported": 3}.get(result.get("status"), 0)
         return (
             1
             if args.command == "pack"

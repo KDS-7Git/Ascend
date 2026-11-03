@@ -47,6 +47,7 @@ class Node:
     materials: tuple[dict, ...] = ()
     preview: str = ""
     requirements: str = ""
+    checkpoints: tuple[dict, ...] = ()
 
     @property
     def estimate(self):
@@ -251,6 +252,42 @@ def parse_pack(text: str, variables=None, allowed_verifiers=None) -> Pack:
                         raise PackError(
                             "Materials must use HTTP(S) or a bundled /training/ path"
                         )
+                checkpoints = n.get("checkpoints", [])
+                if not isinstance(checkpoints, list) or len(checkpoints) > 12:
+                    raise PackError(
+                        "checkpoints must be a list of at most 12 authored parts"
+                    )
+                checkpoint_ids = set()
+                for checkpoint in checkpoints:
+                    if not isinstance(checkpoint, dict) or set(checkpoint) != {
+                        "id",
+                        "title",
+                        "minutes",
+                        "done_when",
+                        "next_step",
+                    }:
+                        raise PackError(
+                            "Each checkpoint needs id, title, minutes, done_when and next_step"
+                        )
+                    cid = _required(checkpoint, "id")
+                    if not IDENTIFIER.fullmatch(cid) or cid in checkpoint_ids:
+                        raise PackError(
+                            "Checkpoint IDs must be unique within their task"
+                        )
+                    checkpoint_ids.add(cid)
+                    for key in ("title", "done_when", "next_step"):
+                        _required(checkpoint, key)
+                    if len(checkpoint["done_when"]) < 15:
+                        raise PackError(
+                            "Checkpoint finish line must describe meaningful partial work"
+                        )
+                    duration = checkpoint["minutes"]
+                    if type(duration) is not int or not 1 <= duration < (
+                        minutes or SIZE_MIN[n["size"]]
+                    ):
+                        raise PackError(
+                            "Checkpoint minutes must be positive and shorter than the full task"
+                        )
                 nodes.append(
                     Node(
                         nid,
@@ -278,6 +315,7 @@ def parse_pack(text: str, variables=None, allowed_verifiers=None) -> Pack:
                         tuple(materials),
                         n.get("preview", ""),
                         n.get("requirements", ""),
+                        tuple(checkpoints),
                     )
                 )
         if not nodes:

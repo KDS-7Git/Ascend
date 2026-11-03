@@ -27,6 +27,12 @@ class Tracker:
     def now(self):
         return self.clock()
 
+    @property
+    def playground(self):
+        from ascend.playground import Playground
+
+        return Playground(self)
+
     def day(self, now=None):
         return logical_date(
             now or self.now(),
@@ -241,26 +247,38 @@ class Tracker:
             "next": None,
             "quick_win": None,
             "level": None,
+            "checkpoint": None,
             **stats,
+            "practice": self.playground.recommendations(max_minutes or 10),
         }
         recent = self.entries()
-        result["resume"] = recent[-1]["next_step"] if recent else None
+        track_entries = [e for e in recent if not e.get("activity_run_id")]
+        result["resume"] = track_entries[-1]["next_step"] if track_entries else None
         if mission and mission["pack_id"]:
             pack = self.pack(mission["pack_id"])
             row = self.db.rows("packs", "id=?", (pack.id,))[0]
             result["draft"] = pack.source == "ai-draft" and not row["reviewed"]
             lanes = {lv.id: lv.lane for lv in pack.levels}
-            for n in self.candidates(pack, max_minutes):
+            for n in self.candidates(pack):
                 key = "next" if lanes[n.level] == "main" else "quick_win"
+                if (
+                    key == "quick_win"
+                    and max_minutes is not None
+                    and n.estimate > max_minutes
+                ):
+                    continue
                 if result[key] is None:
                     result[key] = {
                         **asdict(n),
                         "estimate": n.estimate,
                         "pack_id": pack.id,
                     }
-            if max_minutes is not None and result["next"] is None:
-                result["next"], result["quick_win"] = result["quick_win"], None
             if result["next"]:
+                from ascend import checkpoints
+
+                result["checkpoint"] = checkpoints.recommend(
+                    self, f"{pack.id}:{result['next']['id']}", max_minutes
+                )
                 result["level"] = next(
                     lv
                     for lv in self.levels(pack.id)
@@ -374,6 +392,12 @@ class Tracker:
 
     def verify_node(self, pack, node):
         vtype = node.verify.get("type", "manual")
+        if vtype == "file":
+            from ascend.challenge_work import uploaded_verification
+
+            uploaded = uploaded_verification(self, pack, node)
+            if uploaded is not None:
+                return uploaded
         if vtype == "lab":
             from ascend.labs import verify
 
@@ -634,6 +658,36 @@ class Tracker:
             "minutes_this_week": weeks[-1]["minutes"],
             "weeks": weeks,
             "minutes_by_level": minutes_by_level,
+            "xp": self.xp_totals(),
+            "playground": {
+                "practice_completed": len(
+                    self.db.rows(
+                        "activity_runs",
+                        "kind='quick' AND role='challenge' AND status='passed'",
+                    )
+                ),
+                "challenges_solved": len(
+                    {
+                        r["reward_key"]
+                        for r in self.db.rows(
+                            "activity_runs", "kind='challenge' AND status='passed'"
+                        )
+                    }
+                ),
+                "saved_work": len(self.db.rows("activity_runs", "status='saved'")),
+            },
+        }
+
+    def xp_totals(self):
+        track = sum(r["points"] for r in self.db.rows("xp_awards"))
+        rewards = self.db.rows("activity_rewards")
+        practice = sum(r["points"] for r in rewards if r["kind"] == "quick")
+        challenge = sum(r["points"] for r in rewards if r["kind"] == "challenge")
+        return {
+            "track": track,
+            "practice": practice,
+            "challenge": challenge,
+            "total": track + practice + challenge,
         }
 
     def heatmap(self):
@@ -669,6 +723,11 @@ class Tracker:
             + "\n".join(
                 f"- {e['day']} | {escape(e['learned'])} | Next: {escape(e['next_step'])} | Proof: {escape(e['proof'])}"
                 for e in self.entries()
+            )
+            + "\n\n## Playground activity\n\n"
+            + "\n".join(
+                f"- {escape(r['updated_at'])} | {escape(r['title'])} | {r['kind']} | {r['status']} | Run: {r['id']}"
+                for r in self.playground.history()
             )
             + "\n"
         )
@@ -784,7 +843,7 @@ class Tracker:
         pack, node = self.resolve_node(reference)
         if node.verify.get("type") in {"lab", "ctf"}:
             raise ValueError(
-                "Verified exercises cannot be completed by splitting; pause the session or save partial progress"
+                "Verified exercises cannot be completed by splitting; save partial progress or end the scored session"
             )
         if (
             node.id in self.states(pack.id)

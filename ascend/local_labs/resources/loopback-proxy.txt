@@ -1,0 +1,80 @@
+"""Fixed-destination local lab proxy. No CONNECT or caller-selected destinations."""
+import http.client
+import http.server
+import json
+import os
+import threading
+import time
+from urllib.parse import urlsplit
+
+targets = json.loads(os.environ['ASCEND_TARGETS'])
+
+class Handler(http.server.BaseHTTPRequestHandler):
+    protocol_version = 'HTTP/1.1'
+    server_version = 'AscendLocalProxy/1'
+
+    def log_message(self, *args):
+        pass
+
+    def reject(self, code, message):
+        data = json.dumps({'error': message}).encode()
+        self.send_response(code)
+        self.send_header('Content-Type', 'application/json')
+        self.send_header('Content-Length', str(len(data)))
+        self.send_header('Connection', 'close')
+        self.end_headers()
+        self.wfile.write(data)
+        self.close_connection = True
+
+    def forward(self):
+        self.connection.settimeout(10)
+        origin = self.headers.get('Origin')
+        if self.headers.get('Sec-Fetch-Site') == 'cross-site' or (origin and urlsplit(origin).netloc != self.headers.get('Host')):
+            return self.reject(403, 'Cross-origin lab access is not allowed')
+        if not self.path.startswith('/') or self.path.startswith('//') or self.headers.get('Transfer-Encoding'):
+            return self.reject(400, 'Unsupported local request')
+        try:
+            size = int(self.headers.get('Content-Length', '0'))
+        except ValueError:
+            return self.reject(400, 'Invalid content length')
+        if not 0 <= size <= 65536:
+            return self.reject(413, 'Lab request exceeds 64 KiB')
+        target = targets[str(self.server.server_port)]
+        connection = http.client.HTTPConnection(target, 5000, timeout=10)
+        try:
+            body = self.rfile.read(size) if size else None
+            if body is not None and len(body) != size:
+                return self.reject(400, 'Incomplete body')
+            headers = {name: self.headers[name] for name in ['Authorization', 'Content-Type', 'Accept'] if self.headers.get(name)}
+            connection.request(self.command, self.path, body, headers)
+            response = connection.getresponse()
+            limit = 4 * 1024 * 1024 if self.path.startswith('/ui/') else 128 * 1024
+            data = response.read(limit + 1)
+            if len(data) > limit:
+                return self.reject(502, 'Lab response exceeds its size limit')
+            self.send_response(response.status)
+            self.send_header('Content-Type', response.getheader('Content-Type', 'application/octet-stream'))
+            self.send_header('Content-Length', str(len(data)))
+            self.send_header('X-Content-Type-Options', 'nosniff')
+            self.send_header('Cache-Control', 'no-store')
+            location = response.getheader('Location')
+            if location:
+                parts = urlsplit(location)
+                if not parts.netloc or parts.hostname == target:
+                    self.send_header('Location', parts.path + ('?' + parts.query if parts.query else ''))
+            self.end_headers()
+            if self.command != 'HEAD':
+                self.wfile.write(data)
+        except (OSError, http.client.HTTPException):
+            self.reject(502, 'Local target is not ready')
+        finally:
+            connection.close()
+
+    do_GET = do_POST = do_PUT = do_DELETE = do_PATCH = do_HEAD = do_OPTIONS = forward
+
+for port in targets:
+    server = http.server.ThreadingHTTPServer(('0.0.0.0', int(port)), Handler)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+while time.time() < float(os.environ['ASCEND_LAB_EXPIRES']):
+    time.sleep(.5)
+os._exit(0)

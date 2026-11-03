@@ -3,7 +3,7 @@
 "id" = "ethical-hacking-foundations"
 "title" = "Ethical Hacking Foundations"
 "kind" = "proficiency"
-"version" = 5
+"version" = 6
 "source" = "ai-draft"
 "reviewed" = false
 
@@ -111,6 +111,7 @@
 "resource_note" = "The steps here are the lab. This link is optional Python documentation, not a course to buy or enrol in."
 "hints" = ["Ubuntu/Linux setup: if Python 3 or curl is missing, install the free packages with sudo apt update followed by sudo apt install python3 curl. If you need to repair setup, end the session before installing packages. No paid course is required.", "“Address already in use” means port 8765 is occupied. Use 8766 in the server command and in BOTH curl URLs; do not stop an unrelated service.", "“Connection refused” means curl could not reach a running server at that address/port. Check Terminal A and the URL. This differs from 404, which is a response from a running server.", "A 200 response demonstrates that this page was served. It does not demonstrate a vulnerability, an exploit, authentication or authorization. This is the networking setup skill you will use in later security labs."]
 "setup" = "Use Python 3, curl and two terminal windows on your own Ubuntu/Linux computer. This walkthrough creates its own temporary page; no course, account or downloaded app is needed. Check the tools before timing. The optional ZIP contains inputs for later tasks; do not start its service.py for this walkthrough."
+"checkpoints" = [{ "id" = "tools-and-address", "title" = "Check tools and explain the address", "minutes" = 10, "done_when" = "Check Python 3 and curl versions in your terminals. In your own words, state what 127.0.0.1 and port 8765 identify.", "next_step" = "Open the full task to create the temporary page and compare two responses." }, { "id" = "response-notes", "title" = "Capture the two response observations", "minutes" = 10, "done_when" = "After following the full task setup, record both HTTP status lines and body observations in your notes. Stop the local server before leaving.", "next_step" = "Resume the full task to save the report at its required path and review the explanations." }]
 "preview" = "Observe how a local web server responds to different requests, then explain the results."
 "requirements" = "Python 3, curl and two terminal windows on Linux or WSL. No course or account is required."
 "materials" = [{ "label" = "Download this track’s lab files (ZIP)", "url" = "/training/ethical-hacking-foundations.zip" }]

@@ -1,0 +1,20 @@
+import os
+import threading
+import time
+from config import vuln_app, db
+from sqlalchemy import event
+
+vuln_app.app.config['MAX_CONTENT_LENGTH'] = 65536
+with vuln_app.app.app_context():
+    def bound_database(connection, record):
+        connection.execute('PRAGMA max_page_count=4096')
+    event.listen(db.engine, 'connect', bound_database)
+
+def deadline():
+    while True:
+        if time.time() >= float(os.environ['ASCEND_LAB_EXPIRES']):
+            os._exit(0)
+        time.sleep(1)
+
+threading.Thread(target=deadline, daemon=True).start()
+vuln_app.app.run(host='0.0.0.0', port=5000, debug=False, use_reloader=False, threaded=False)

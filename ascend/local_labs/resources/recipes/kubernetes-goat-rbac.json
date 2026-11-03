@@ -1,0 +1,163 @@
+{
+  "id": "kubernetes-goat-rbac",
+  "reference_id": "kubernetes-goat",
+  "title": "Kubernetes Goat: inspect excessive RBAC",
+  "location": "local-cluster",
+  "version": "1",
+  "status": "blocked",
+  "adapter": "specialist-pending",
+  "source": {
+    "repository": "https://github.com/madhuakula/kubernetes-goat",
+    "revision": "723a0db478f050d173d23b4ce5044b65bce0bdd0"
+  },
+  "license_review": "MIT; the selected setup and license were read.",
+  "assets": [
+    {
+      "role": "reference",
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/madhuakula/kubernetes-goat/723a0db478f050d173d23b4ce5044b65bce0bdd0/LICENSE",
+      "sha256": "56471e3a81b29117aef1e3b18ea0ba572bb633adffb30ee7e0d494cb67db7a10",
+      "bytes": 1068
+    },
+    {
+      "role": "reference",
+      "path": "scenarios/insecure-rbac/setup.yaml",
+      "url": "https://raw.githubusercontent.com/madhuakula/kubernetes-goat/723a0db478f050d173d23b4ce5044b65bce0bdd0/scenarios/insecure-rbac/setup.yaml",
+      "sha256": "ed0593d3ac33b261f742326688a47184e3120c2f67213e8e007b80b966ce5149",
+      "bytes": 361
+    },
+    {
+      "role": "reference",
+      "path": "platforms/kind-setup/kind-cluster-setup.yaml",
+      "url": "https://raw.githubusercontent.com/madhuakula/kubernetes-goat/723a0db478f050d173d23b4ce5044b65bce0bdd0/platforms/kind-setup/kind-cluster-setup.yaml",
+      "sha256": "35cd4f1f2fb43f450ebe773d1362dc3fffe04c9fbc0a1860338669c6edcf92a2",
+      "bytes": 80
+    }
+  ],
+  "checker_version": "specialist-observations-v1",
+  "fixture_id": "8c68e0b2443fa21af78f281ad1743845cd83657909bfaa82e7fa1958c0fbf940",
+  "grading": "upstream-report-v1",
+  "evidence_reviewed": true,
+  "check_ids": [
+    "service_account_permissions_observed",
+    "restricted_account_control_observed",
+    "cluster_role_binding_removed",
+    "cluster_teardown_recorded"
+  ],
+  "check_meaning": "The checklist records an observation of the selected cluster-admin binding, an independent restricted-account comparison, and cleanup. A running pod or successful apply is not a security result.",
+  "evidence_label": "Practice recorded (manual observations)",
+  "availability_reason": "Requires a dedicated disposable cluster and pinned node images/toolchain. The selected manifest binds kube-system/superadmin to cluster-admin, so namespace isolation alone is insufficient. No cluster or owned cluster teardown has been validated here.",
+  "environment_fields": [
+    "source_revision",
+    "kubernetes_version",
+    "node_image_sha256",
+    "cluster_inventory_sha256"
+  ],
+  "digest_environment_fields": [
+    "node_image_sha256",
+    "cluster_inventory_sha256"
+  ],
+  "capability": {
+    "class": "cluster",
+    "automatic_execution": false,
+    "measured": false,
+    "external_resources": false,
+    "runtime_acceptance": [
+      "Pinned kind/node image and kubectl versions",
+      "Dedicated cluster identity, no host or shared cluster use",
+      "Positive and negative authorization controls",
+      "Interrupted provisioning and complete cluster/object teardown",
+      "Cold/warm disk, RAM/CPU and PID measurements"
+    ]
+  },
+  "integration": {
+    "provider": "specialist-observations",
+    "exercise": "scenarios/insecure-rbac",
+    "automatic_start": false,
+    "acquisition": [
+      [
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "--no-checkout",
+        "https://github.com/madhuakula/kubernetes-goat",
+        "ROOT"
+      ],
+      [
+        "git",
+        "-C",
+        "ROOT",
+        "fetch",
+        "--depth",
+        "1",
+        "origin",
+        "723a0db478f050d173d23b4ce5044b65bce0bdd0"
+      ],
+      [
+        "git",
+        "-C",
+        "ROOT",
+        "checkout",
+        "--detach",
+        "723a0db478f050d173d23b4ce5044b65bce0bdd0"
+      ]
+    ],
+    "working_directory": "ROOT",
+    "start": [
+      "kubectl",
+      "--context=DEDICATED-LAB",
+      "apply",
+      "-f",
+      "ROOT/scenarios/insecure-rbac/setup.yaml"
+    ],
+    "check": [
+      "kubectl",
+      "--context=DEDICATED-LAB",
+      "auth",
+      "can-i",
+      "--list",
+      "--as=system:serviceaccount:kube-system:superadmin"
+    ],
+    "stop": "Save reports and the exact object inventory; stopping one pod does not remove the ClusterRoleBinding.",
+    "reset": "Export work before discarding the owned environment and restoring its reviewed baseline. No reset is automated until lifecycle acceptance passes.",
+    "export": "Keep kubectl authorization observations, the restricted-account control and owned cluster inventory locally.",
+    "destroy": "After checking ownership, delete the selected binding and service account, then the dedicated cluster. A future adapter must track cluster identity and all created objects before it may execute."
+  },
+  "report_template": {
+    "exercise": "scenarios/insecure-rbac",
+    "environment": {
+      "source_revision": "723a0db478f050d173d23b4ce5044b65bce0bdd0",
+      "kubernetes_version": "",
+      "node_image_sha256": "",
+      "cluster_inventory_sha256": ""
+    },
+    "checks": [
+      {
+        "id": "service_account_permissions_observed",
+        "status": "unsupported"
+      },
+      {
+        "id": "restricted_account_control_observed",
+        "status": "unsupported"
+      },
+      {
+        "id": "cluster_role_binding_removed",
+        "status": "unsupported"
+      },
+      {
+        "id": "cluster_teardown_recorded",
+        "status": "unsupported"
+      }
+    ]
+  },
+  "instructions": "The checklist records an observation of the selected cluster-admin binding, an independent restricted-account comparison, and cleanup. A running pod or successful apply is not a security result. Use lab plan for requirements and the exact report template. Imports are manual practice observations and never enable runtime execution.",
+  "required_tools": [
+    "kubectl",
+    "kind",
+    "docker"
+  ],
+  "tested_platforms": [],
+  "measurements": {},
+  "lifecycle_verified": false,
+  "verification_report": "docs/testing/local-lab-implementation.md"
+}

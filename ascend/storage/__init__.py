@@ -7,6 +7,16 @@ import os
 import sqlite3
 
 TABLES = {
+    "external_lab_attempts",
+    "node_checkpoints",
+    "activity_feedback",
+    "activity_events",
+    "activity_selections",
+    "activity_tour_history",
+    "activity_runs",
+    "activity_rewards",
+    "activity_evidence",
+    "activity_bookmarks",
     "permission_attempts",
     "case_attempts",
     "lab_runs",
@@ -25,6 +35,10 @@ TABLES = {
     "push_subscriptions",
     "telegram_updates",
 }
+
+# A running server must use the schema shipped with its loaded Python code.
+# New migration files become eligible on restart, along with the new routes.
+MIGRATIONS = tuple(sorted((Path(__file__).parent / "migrations").glob("[0-9]*.sql")))
 
 
 def default_home():
@@ -52,7 +66,7 @@ class Database:
         self.connection.execute(
             "CREATE TABLE IF NOT EXISTS schema_version (version INTEGER NOT NULL)"
         )
-        for path in sorted((Path(__file__).parent / "migrations").glob("[0-9]*.sql")):
+        for path in MIGRATIONS:
             version = int(path.name.split("_")[0])
             with self.transaction():
                 row = self.connection.execute(

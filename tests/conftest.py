@@ -7,6 +7,39 @@ from ascend.storage import Database
 
 
 @pytest.fixture
+def remove_playground_schema():
+    """Reconstruct a pre-Playground database for legacy migration tests."""
+
+    def remove(db):
+        for row in db.connection.execute("SELECT name FROM sqlite_master WHERE type='trigger' AND name LIKE 'external_lab_%'").fetchall():
+            db.connection.execute(f'DROP TRIGGER "{row[0]}"')
+        db.connection.execute("DROP TABLE IF EXISTS external_lab_attempts")
+        for name in (
+            "activity_insert_guard",
+            "activity_update_guard",
+            "track_insert_guard",
+            "track_update_guard",
+        ):
+            db.connection.execute(f"DROP TRIGGER IF EXISTS {name}")
+        for name in (
+            "node_checkpoints",
+            "activity_feedback",
+            "activity_events",
+            "activity_selections",
+            "activity_tour_history",
+            "activity_rewards",
+            "activity_evidence",
+            "activity_bookmarks",
+            "activity_runs",
+        ):
+            db.connection.execute(f"DROP TABLE {name}")
+        db.connection.execute("DROP INDEX activity_habit_event")
+        db.connection.execute("ALTER TABLE entries DROP COLUMN activity_run_id")
+
+    return remove
+
+
+@pytest.fixture
 def now():
     return datetime(2026, 11, 5, 12, tzinfo=timezone.utc)
 

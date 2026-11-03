@@ -307,7 +307,7 @@ def test_mcq_concurrent_submissions_record_only_the_first_decision(tracker, pack
 
 
 def test_legacy_mcq_migration_preserves_progress_and_locks_recorded_result(
-    tracker, pack_data
+    tracker, pack_data, remove_playground_schema
 ):
     run, correct = start_case(tracker, pack_data)
     labs.submit(tracker, run["id"], {"choice": correct})
@@ -318,6 +318,7 @@ def test_legacy_mcq_migration_preserves_progress_and_locks_recorded_result(
     tracker.db.connection.execute("DROP TABLE case_attempts")
     tracker.db.connection.execute("DROP TABLE permission_attempts")
     tracker.db.connection.execute("UPDATE schema_version SET version=5")
+    remove_playground_schema(tracker.db)
     tracker.db.migrate()
     assert all(tracker.db.rows(name) == rows for name, rows in protected.items())
     restored = labs.current(tracker, "one")
@@ -427,7 +428,9 @@ def test_permission_concurrency_and_account_boundaries(tracker, pack_data, tmp_p
     assert len(tracker.db.rows("xp_awards")) == 1
 
 
-def test_permission_migration_preserves_existing_completion_and_xp(tracker, pack_data):
+def test_permission_migration_preserves_existing_completion_and_xp(
+    tracker, pack_data, remove_playground_schema
+):
     run = exercise(tracker, pack_data, "access-policy")
     labs.submit(tracker, run["id"], answers(run))
     protected = {
@@ -436,6 +439,7 @@ def test_permission_migration_preserves_existing_completion_and_xp(tracker, pack
     }
     tracker.db.connection.execute("DROP TABLE permission_attempts")
     tracker.db.connection.execute("UPDATE schema_version SET version=6")
+    remove_playground_schema(tracker.db)
     tracker.db.migrate()
     assert all(tracker.db.rows(name) == rows for name, rows in protected.items())
     receipt = labs.current(tracker, "one")

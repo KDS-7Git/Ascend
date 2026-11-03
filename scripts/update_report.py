@@ -1,9 +1,9 @@
 """Refresh the LaTeX status section from retained pytest output and Git history."""
 
-from pathlib import Path
 import re
 import subprocess
 import textwrap
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -47,6 +47,10 @@ milestones += [
     ("Challenge guidance", "challenge-guidance.txt"),
     ("Challenge preview flow", "challenge-preview.txt"),
     ("Pre-start resources", "learning-reference-preview.txt"),
+    ("Independent Playground", "playground-verification.txt"),
+    ("Linux local labs", "local-lab-regression.txt"),
+    ("Local delivery", "chat-completion-verification.txt"),
+    ("Learner-local labs", "learner-local-verification.txt"),
 ]
 for milestone, filename in milestones:
     path = ROOT / "docs/testing" / filename

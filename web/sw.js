@@ -1,13 +1,15 @@
 "use strict";
-const CACHE = "ascend-shell-v10";
-const SHELL = ["/", "/boot.css", "/style.css", "/effects.css", "/app.js", "/effects.js", "/icon.svg", "/manifest.webmanifest", "/theme.js", "/guide.json", "/fonts/InterVariable.woff2"];
+const CACHE = "ascend-shell-v23";
+const SHELL = ["/", "/boot.css", "/style.css", "/effects.css", "/feedback.css", "/feedback.js", "/cursor-preview.js", "/context-rail.js", "/context-rail.css", "/app.js", "/challenge-work.js", "/playground.js", "/history-library.js", "/local-labs.js", "/effects.js", "/icon.svg", "/manifest.webmanifest", "/theme.js", "/guide.json", "/fonts/InterVariable.woff2"];
 self.addEventListener("install", event => event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL)).then(() => self.skipWaiting())));
 self.addEventListener("activate", event => event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key !== CACHE).map(key => caches.delete(key)))).then(() => self.clients.claim())));
 self.addEventListener("fetch", event => {
   const url = new URL(event.request.url);
   if (event.request.method !== "GET" || url.origin !== self.location.origin || url.pathname.startsWith("/api/")) return;
   if (!SHELL.includes(url.pathname)) return;
-  event.respondWith(fetch(event.request).then(response => { if (response.ok) { const copy = response.clone(); caches.open(CACHE).then(cache => cache.put(event.request, copy)); } return response; }).catch(() => caches.match(event.request)));
+  // Avoid pairing a newly loaded screen with an older HTTP-cached script.
+  // Normalize versioned asset URLs for the existing offline shell.
+  event.respondWith(fetch(event.request, {cache: 'no-store'}).then(response => { if (response.ok) { const copy = response.clone(); caches.open(CACHE).then(cache => cache.put(url.pathname, copy)); } return response; }).catch(() => caches.match(url.pathname)));
 });
 self.addEventListener("push", event => {
   let payload = {title: "Ascend", body: "One small step is enough.", url: "/"};

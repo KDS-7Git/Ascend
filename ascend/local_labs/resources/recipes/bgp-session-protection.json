@@ -1,0 +1,174 @@
+{
+  "id": "bgp-session-protection",
+  "reference_id": "bgp-labs",
+  "title": "BGP Labs: protect BGP sessions",
+  "version": "3",
+  "status": "reviewed",
+  "adapter": "frr-bgp-v1",
+  "source": {
+    "repository": "https://github.com/bgplab/bgplab",
+    "revision": "217fbef2cd5a2c200a3d5e56b3be5defaf1fbc67"
+  },
+  "license_review": "BGP Labs uses MIT. FRR uses GPL-2.0-or-later; its source release and COPYING are linked and pinned separately from the image digest.",
+  "assets": [
+    {
+      "role": "reference",
+      "path": "basic/6-protect/topology.yml",
+      "url": "https://raw.githubusercontent.com/bgplab/bgplab/217fbef2cd5a2c200a3d5e56b3be5defaf1fbc67/basic/6-protect/topology.yml",
+      "sha256": "8a64f1bff2523260b955b180c1dfcb10519f13d22d3f8f0c50407b041ef3b41c",
+      "bytes": 2298
+    },
+    {
+      "role": "reference",
+      "path": "basic/6-protect/validate.yml",
+      "url": "https://raw.githubusercontent.com/bgplab/bgplab/217fbef2cd5a2c200a3d5e56b3be5defaf1fbc67/basic/6-protect/validate.yml",
+      "sha256": "bcd051d394672b737babb31ea080d9d7cb70fb4a0562910d27084a5e7a8dd5e3",
+      "bytes": 574
+    },
+    {
+      "role": "reference",
+      "path": "LICENSE.md",
+      "url": "https://raw.githubusercontent.com/bgplab/bgplab/217fbef2cd5a2c200a3d5e56b3be5defaf1fbc67/LICENSE.md",
+      "sha256": "3e23b3fccd048328ed4dc371f8a11a404cc0174954e4f9be9b72727e9fbf8500",
+      "bytes": 1065
+    },
+    {
+      "role": "reference",
+      "path": "FRR-COPYING",
+      "url": "https://raw.githubusercontent.com/FRRouting/frr/70151e264bbb697a10fed711aa8c937d4f0009b1/COPYING",
+      "sha256": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643",
+      "bytes": 18092
+    }
+  ],
+  "checker_version": "frr-bgp-v1",
+  "fixture_id": "a5f3fc1b57b538093f152f528a3e33cd06fae8138f82ddd4ca72b3f73f145f1c",
+  "grading": "local-report-v1",
+  "evidence_reviewed": true,
+  "check_ids": [
+    "session.x1",
+    "session.x2",
+    "prefix.x1",
+    "prefix.x2",
+    "gtsm.rejected",
+    "md5.rejected"
+  ],
+  "check_meaning": "Upstream checks session establishment and the customer prefix on x1/x2. They do not independently prove GTSM or password rejection; additional negative probes are required for that claim.",
+  "evidence_label": "Checked on this PC (live BGP observations)",
+  "availability_reason": "Reviewed FRR control-plane adaptation for local Linux x86-64 Docker.",
+  "integration": {
+    "acquisition": [
+      [
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "--no-checkout",
+        "https://github.com/bgplab/bgplab",
+        "ROOT"
+      ],
+      [
+        "git",
+        "-C",
+        "ROOT",
+        "fetch",
+        "--depth",
+        "1",
+        "origin",
+        "217fbef2cd5a2c200a3d5e56b3be5defaf1fbc67"
+      ],
+      [
+        "git",
+        "-C",
+        "ROOT",
+        "checkout",
+        "--detach",
+        "217fbef2cd5a2c200a3d5e56b3be5defaf1fbc67"
+      ]
+    ],
+    "provider": "netlab",
+    "exercise": "basic/6-protect",
+    "requires_vm": true,
+    "automatic_start": false,
+    "working_directory": "ROOT/basic/6-protect",
+    "start": [
+      "netlab",
+      "up"
+    ],
+    "check": [
+      "netlab",
+      "validate"
+    ],
+    "stop": "netlab down destroys topology compute; collect configuration before stopping.",
+    "reset": [
+      "netlab",
+      "down"
+    ],
+    "export": [
+      "netlab",
+      "collect"
+    ],
+    "destroy": [
+      "netlab",
+      "down"
+    ],
+    "support_files": "Keep repository defaults.yml and plugins; copying only topology.yml is insufficient.",
+    "version_requirement": "This selected topology requires netlab 26.06 or newer (the single-session task declares 25.12.03). Exact netlab/containerlab/FRR image pins and VM lifecycle measurements are pending.",
+    "runtime_provider": "frr-bgp-v1"
+  },
+  "report_template": {
+    "exercise": "basic/6-protect",
+    "checks": [
+      {
+        "id": "session.x1",
+        "status": "unsupported"
+      },
+      {
+        "id": "session.x2",
+        "status": "unsupported"
+      },
+      {
+        "id": "prefix.x1",
+        "status": "unsupported"
+      },
+      {
+        "id": "prefix.x2",
+        "status": "unsupported"
+      }
+    ],
+    "exit_code": 2
+  },
+  "instructions": "This is a control-plane adaptation of the pinned BGP Labs exercise using FRR 8.4.1. Run local-lab show RUN to see router addresses, AS numbers and exact local vtysh connection commands. Configure rtr, use show bgp ipv4 unicast summary and show bgp ipv4 unicast to investigate, then run local-lab check RUN. Save changes with write memory. Stop/resume retains the configuration; reset creates a new attempt. It does not configure kernel forwarding or run netlab. Protection checks save and reload the learner router and authored external controls to apply TTL settings to fresh sockets. An interrupted probe is restored before the next check; the original expiry is retained.",
+  "required_tools": [
+    "docker"
+  ],
+  "tested_platforms": [
+    "linux-x86_64"
+  ],
+  "measurements": {
+    "download_bytes": 69885195,
+    "download_scope": "Pinned compressed OCI layers/config plus selected sources and licenses; shared cache may reduce downloads. Not a wire-traffic measurement.",
+    "expanded_bytes": 235754495,
+    "peak_disk_bytes": 251170816,
+    "startup_cold_seconds": 75.3680995820032,
+    "startup_warm_seconds": 1.9966854699960095,
+    "peak_memory_bytes": 55558144,
+    "build_cache_bytes": 0,
+    "memory_limit_total": 402653184,
+    "cpu_limit_total": 1.5,
+    "pids_limit_total": 96,
+    "scope": "Host filesystem sampled every 50 ms; unrelated activity may contribute. Memory is summed cgroup peaks including measurement execs. Images were absent at each start. Memory peaks were read after the final resume/check; cgroup restarts reset earlier epochs, so this is not a full-cycle memory maximum. Warm startup excludes route convergence and checking. Reviewed resource limits were inspected in every container."
+  },
+  "lifecycle_verified": true,
+  "verification_report": "docs/testing/learner-local-implementation.md",
+  "location": "local-container",
+  "image": {
+    "reference": "frrouting/frr@sha256:1e3a1d5335a2e8a4416b80e5195f2fc22245278e23555be6769b1ec2c52b97d9",
+    "compressed_bytes": 69863166
+  },
+  "adapter_sha256": "73fa7bc026d61e6134964bb435ca34db664425bea8607e86be6abd6eeac38fc1",
+  "launcher_sha256": "45e52c903b0808f593ee8e01b3d2abf6afe3a41e6e69833aa4b90766f1ac5a49",
+  "minimum_free_bytes": 536870912,
+  "minimum_provider_memory_bytes": 536870912,
+  "image_source_audit": "docs/testing/frr-image-review.json",
+  "frr_source_revision": "70151e264bbb697a10fed711aa8c937d4f0009b1",
+  "objective": "Protect BGP sessions with GTSM and a password, then compare acceptance, rejection and recovery."
+}

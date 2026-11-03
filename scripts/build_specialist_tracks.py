@@ -121,6 +121,7 @@ def apply_guidance(node, guidance):
         "materials",
         "preview",
         "requirements",
+        "checkpoints",
     }
     if set(guidance) - allowed:
         raise ValueError(
