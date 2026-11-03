@@ -1,0 +1,707 @@
+{
+  "reviewed_on": "2026-11-03",
+  "method": "Public first-party documentation and product-page review using ordinary HTTP retrieval. No signed-in flow or competitor lab execution. Source bodies are not reproduced in this repository.",
+  "platform_count": 8,
+  "scope": "Job/interview preparation versus interest-led learning, experienced entry, sustained practitioner practice, adaptation, and environment delivery.",
+  "confirmed_capacity": {
+    "max_hosted_labs": 2,
+    "alternatives": [
+      "browser practice",
+      "learner-local practice"
+    ],
+    "host_planning_ram_gb": 8,
+    "host_planning_cpu_cores": 4,
+    "host_planning_disk_gb": 80,
+    "capacity_status": "User-confirmed planning baseline, not measured deployed spare capacity."
+  },
+  "sources": [
+    {
+      "id": "PS1",
+      "platform": "PortSwigger Web Security Academy",
+      "url": "https://portswigger.net/web-security/getting-started",
+      "resolved_url": "https://portswigger.net/web-security/getting-started",
+      "title": "Getting started with the Web Security Academy",
+      "returned_html_title": "Getting started | Web Security Academy - PortSwigger",
+      "retrieved_at": "2026-11-03T07:18:57.121672+00:00",
+      "http_status": 200,
+      "response_sha256": "1b2a5206df431adaef59e7f9ffaf4d16872cf3749cba306c7e52d9cad2af5e7d",
+      "scope": "public first-party documentation or product page; no signed-in testing",
+      "supports": [
+        "Topic learning, hands-on labs, and progress provide an independent learning route."
+      ]
+    },
+    {
+      "id": "PS2",
+      "platform": "PortSwigger Web Security Academy",
+      "url": "https://portswigger.net/web-security/certification/how-to-prepare",
+      "resolved_url": "https://portswigger.net/web-security/certification/how-to-prepare",
+      "title": "How to prepare for the Burp Suite Certified Practitioner exam",
+      "returned_html_title": "How to prepare for the Burp Suite Certified Practitioner exam | Web Security Academy - PortSwigger",
+      "retrieved_at": "2026-11-03T07:18:57.122482+00:00",
+      "http_status": 200,
+      "response_sha256": "517f78fed7bb5afda5b8a6e74be08b7485872feb9932ded781d013c707689b8c",
+      "scope": "public first-party documentation or product page; no signed-in testing",
+      "supports": [
+        "Separate preparation guidance for fundamental and extensively experienced learners.",
+        "Experienced route samples a practitioner lab per topic without solutions, selected core labs, five mysteries, and a practice exam."
+      ]
+    },
+    {
+      "id": "PS3",
+      "platform": "PortSwigger Web Security Academy",
+      "url": "https://portswigger.net/web-security/mystery-lab-challenge",
+      "resolved_url": "https://portswigger.net/web-security/mystery-lab-challenge",
+      "title": "Mystery lab challenge",
+      "returned_html_title": "Mystery lab challenge | Web Security Academy - PortSwigger",
+      "retrieved_at": "2026-11-03T07:18:57.122930+00:00",
+      "http_status": 200,
+      "response_sha256": "4a9124c0827385e77e9bd85a507ff59bdd2fb777291f87ff137714dcb4412634",
+      "scope": "public first-party documentation or product page; no signed-in testing",
+      "supports": [
+        "Mystery labs conceal title and description to exercise reconnaissance and discovery."
+      ]
+    },
+    {
+      "id": "TH1",
+      "platform": "TryHackMe",
+      "url": "https://help.tryhackme.com/en/articles/6611846-room-difficulty-levels",
+      "resolved_url": "https://help.tryhackme.com/en/articles/6611846-room-difficulty-levels",
+      "title": "Room difficulty levels",
+      "returned_html_title": "Room difficulty levels | TryHackMe Customer Hub",
+      "retrieved_at": "2026-11-03T07:18:57.124158+00:00",
+      "http_status": 200,
+      "response_sha256": "ed501e44ae82ba89f7f110e870a5d2b92868d51d31ddff3e724952337de18140",
+      "scope": "public first-party documentation or product page; no signed-in testing",
+      "supports": [
+        "Difficulty filters span beginner/easy, intermediate, and advanced/insane.",
+        "Walkthrough and challenge rooms have different instructional purposes."
+      ]
+    },
+    {
+      "id": "TH2",
+      "platform": "TryHackMe",
+      "url": "https://help.tryhackme.com/en/articles/10632551-big-changes-on-tryhackme-retired-three-learning-paths",
+      "resolved_url": "https://help.tryhackme.com/en/articles/10632551-big-changes-on-tryhackme-retired-three-learning-paths",
+      "title": "Retired and replacement learning paths",
+      "returned_html_title": "Big Changes on TryHackMe: Retired Three Learning Paths | TryHackMe Customer Hub",
+      "retrieved_at": "2026-11-03T07:26:43.553903+00:00",
+      "http_status": 200,
+      "response_sha256": "043916e1591864e45ef8eb9029fe80bcbf44115c2e1c3850baefefd23fe639f8",
+      "scope": "public first-party documentation or product page; no signed-in testing",
+      "supports": [
+        "Documentation identifies Cyber Security 101 and SOC Level 1/2 as replacement paths and describes retirement effects."
+      ]
+    },
+    {
+      "id": "TH3",
+      "platform": "TryHackMe",
+      "url": "https://help.tryhackme.com/en/articles/10625001-is-sal1-right-for-me",
+      "resolved_url": "https://help.tryhackme.com/en/articles/10625001-is-sal1-right-for-me",
+      "title": "Is SAL1 Right For Me?",
+      "returned_html_title": "Is SAL1 Right For Me? | TryHackMe Customer Hub",
+      "retrieved_at": "2026-11-03T07:26:43.552880+00:00",
+      "http_status": 200,
+      "response_sha256": "38424a93e6e2665544b5934e4fc2d4dfecfc251e117574aaef51e00ab7ef6dd9",
+      "scope": "public first-party documentation or product page; no signed-in testing",
+      "supports": [
+        "SAL1 is presented for entry-level security analysts, students, career switchers, and early-career learners."
+      ]
+    },
+    {
+      "id": "TH4",
+      "platform": "TryHackMe",
+      "url": "https://help.tryhackme.com/en/articles/14345338-how-your-capability-score-is-calculated",
+      "resolved_url": "https://help.tryhackme.com/en/articles/14345338-how-your-capability-score-is-calculated",
+      "title": "How Your Capability Score is Calculated",
+      "returned_html_title": "How Your Capability Score is Calculated | TryHackMe Customer Hub",
+      "retrieved_at": "2026-11-03T07:26:43.553472+00:00",
+      "http_status": 200,
+      "response_sha256": "de1a08d10ea4841609cae447528e306f7a19fe6260e798ad7d60c4a134ced760",
+      "scope": "public first-party documentation or product page; no signed-in testing",
+      "supports": [
+        "Capability Score combines a room-completion baseline with consistency, relevance, versatility, and depth.",
+        "The documented activity and baseline decay do not establish automatic task-difficulty adaptation."
+      ]
+    },
+    {
+      "id": "TH5",
+      "platform": "TryHackMe",
+      "url": "https://help.tryhackme.com/en/articles/6721845-the-attackbox-explained",
+      "resolved_url": "https://help.tryhackme.com/en/articles/6721845-the-attackbox-explained",
+      "title": "The AttackBox Explained",
+      "returned_html_title": "The AttackBox Explained | TryHackMe Customer Hub",
+      "retrieved_at": "2026-11-03T07:26:43.554431+00:00",
+      "http_status": 200,
+      "response_sha256": "e2ad015e23443bc038edad3ef7854ba1efb629606227089802f357f8f93efd03",
+      "scope": "public first-party documentation or product page; no signed-in testing",
+      "supports": [
+        "AttackBox is a browser-accessible cloud workstation, separate from attached target machines.",
+        "Free workstation usage is time-limited; learner-machine VPN and a paid persistent workstation are described."
+      ]
+    },
+    {
+      "id": "HT1",
+      "platform": "Hack The Box",
+      "url": "https://academy.hackthebox.com/",
+      "resolved_url": "https://academy.hackthebox.com/",
+      "title": "HTB Academy: Job Role Paths and Skill Paths",
+      "returned_html_title": "Best Online Cybersecurity Courses & Certifications | HTB Academy",
+      "retrieved_at": "2026-11-03T07:18:58.847394+00:00",
+      "http_status": 200,
+      "response_sha256": "c037cee55c5cd021485f3485e8bc8b8b7fbda41c1e3dabfdef553084284f9a63",
+      "scope": "public first-party documentation or product page; no signed-in testing",
+      "supports": [
+        "Academy explicitly distinguishes Job Role Paths from Skill Paths.",
+        "The public catalog includes beginner-to-advanced modules and certification-oriented training."
+      ]
+    },
+    {
+      "id": "HT2",
+      "platform": "Hack The Box",
+      "url": "https://help.hackthebox.com/en/articles/5185436-how-to-play-challenges",
+      "resolved_url": "https://help.hackthebox.com/en/articles/5185436-how-to-play-challenges",
+      "title": "How to Play Challenges",
+      "returned_html_title": "How to Play Challenges | Hack The Box Help Center",
+      "retrieved_at": "2026-11-03T07:18:57.859585+00:00",
+      "http_status": 200,
+      "response_sha256": "8cffeb1177242a29dea8c897818160414ecbd41d2867b07316c77d1c0e8422bf",
+      "scope": "public first-party documentation or product page; no signed-in testing",
+      "supports": [
+        "Challenge filters, active/retired states, releases, and community submissions are documented.",
+        "Some challenges use downloaded files, others Docker targets; active challenge walkthroughs are restricted."
+      ]
+    },
+    {
+      "id": "HT3",
+      "platform": "Hack The Box",
+      "url": "https://help.hackthebox.com/en/articles/7041927-introduction-to-htb-seasons",
+      "resolved_url": "https://help.hackthebox.com/en/articles/7041927-introduction-to-htb-seasons",
+      "title": "Introduction to HTB Seasons",
+      "returned_html_title": "Introduction to HTB Seasons | Hack The Box Help Center",
+      "retrieved_at": "2026-11-03T07:26:44.474581+00:00",
+      "http_status": 200,
+      "response_sha256": "da60df3347b9c097095fec74e398e41255b823a4a1c1756e022f5868cb646573",
+      "scope": "public first-party documentation or product page; no signed-in testing",
+      "supports": [
+        "Seasons documents 13-week competitions, weekly machines, and a seven-day seasonal scoring window.",
+        "The article explicitly limits Seasons to Machines rather than all Challenge types."
+      ]
+    },
+    {
+      "id": "HT4",
+      "platform": "Hack The Box",
+      "url": "https://help.hackthebox.com/en/articles/8117054-guided-mode-on-htb-labs",
+      "resolved_url": "https://help.hackthebox.com/en/articles/8117054-guided-mode-on-htb-labs",
+      "title": "Guided Mode on HTB Labs",
+      "returned_html_title": "Guided Mode on HTB Labs | Hack The Box Help Center",
+      "retrieved_at": "2026-11-03T07:18:58.850937+00:00",
+      "http_status": 200,
+      "response_sha256": "7c80c2459bd0ee8ae780b713094e7681e695ea4f6f02b8f21f91ebdced5e12e5",
+      "scope": "public first-party documentation or product page; no signed-in testing",
+      "supports": [
+        "Guided Mode is optional and limited to specific machines.",
+        "Guided tasks and hints can be enabled during a session; hints do not reduce platform points."
+      ]
+    },
+    {
+      "id": "HT5",
+      "platform": "Hack The Box",
+      "url": "https://help.hackthebox.com/en/articles/5185470-how-to-play-pro-labs",
+      "resolved_url": "https://help.hackthebox.com/en/articles/5185470-how-to-play-pro-labs",
+      "title": "How to Play Pro Labs",
+      "returned_html_title": "How to Play Pro Labs | Hack The Box Help Center",
+      "retrieved_at": "2026-11-03T07:26:44.742301+00:00",
+      "http_status": 200,
+      "response_sha256": "9b553fe7ac2d018600891ae92a20131177c323164829e0a0540347ddc8609bd0",
+      "scope": "public first-party documentation or product page; no signed-in testing",
+      "supports": [
+        "Pro Labs describes realistic enclosed corporate networks for a range of experienced practitioners and hobbyists."
+      ]
+    },
+    {
+      "id": "HR1",
+      "platform": "HackerRank",
+      "url": "https://www.hackerrank.com/interview/preparation-kits",
+      "resolved_url": "https://www.hackerrank.com/interview/preparation-kits",
+      "title": "Interview Preparation Kits",
+      "returned_html_title": "Preparation Kits | HackerRank",
+      "retrieved_at": "2026-11-03T07:26:46.043203+00:00",
+      "http_status": 200,
+      "response_sha256": "468e2faaa702bc0e509457d58b578515ea802e6498290ec86bf56a8842473a78",
+      "scope": "public first-party documentation or product page; no signed-in testing",
+      "supports": [
+        "Interview-preparation kits have one-week, one-month, and three-month horizons.",
+        "The inspected cards list 21, 54, and 104 challenges and zero mock tests despite introductory mock-test wording."
+      ]
+    },
+    {
+      "id": "HR2",
+      "platform": "HackerRank",
+      "url": "https://www.hackerrank.com/skills-verification",
+      "resolved_url": "https://www.hackerrank.com/skills-verification",
+      "title": "Certification Tests",
+      "returned_html_title": "HackerRank",
+      "retrieved_at": "2026-11-03T07:26:46.164401+00:00",
+      "http_status": 200,
+      "response_sha256": "cec57cf9dc56fc3c2435276787a59416f07fc5c745088e202c5b84edfb3364ec",
+      "scope": "public first-party documentation or product page; no signed-in testing",
+      "supports": [
+        "Certification tests are presented by skill/level and by role as profile evidence for peers and employers."
+      ]
+    },
+    {
+      "id": "HR3",
+      "platform": "HackerRank",
+      "url": "https://www.hackerrank.com/domains/algorithms",
+      "resolved_url": "https://www.hackerrank.com/domains/algorithms",
+      "title": "Solve Algorithms",
+      "returned_html_title": "Solve Algorithms | HackerRank",
+      "retrieved_at": "2026-11-03T07:28:06.571536+00:00",
+      "http_status": 200,
+      "response_sha256": "e495f42ab526caacd67cfce095db1f221973b2c8867079371bf2f30286190cfa",
+      "scope": "public first-party documentation or product page; no signed-in testing",
+      "supports": [
+        "Algorithm practice provides skill, difficulty, status, and subdomain filters."
+      ]
+    },
+    {
+      "id": "HR4",
+      "platform": "HackerRank",
+      "url": "https://www.hackerrank.com/scoring",
+      "resolved_url": "https://www.hackerrank.com/scoring",
+      "title": "Scoring Documentation",
+      "returned_html_title": "Scoring | HackerRank",
+      "retrieved_at": "2026-11-03T07:28:06.570550+00:00",
+      "http_status": 200,
+      "response_sha256": "c0beb2f5efc474dd235f08f1ac87bc7b35bfe2065bc5e972ce570617cdfeaf31",
+      "scope": "public first-party documentation or product page; no signed-in testing",
+      "supports": [
+        "Documentation distinguishes practice points, domain rankings, Elo-based rated contests, and test-case-based scoring.",
+        "Editorial unlock can affect progress credit; this is not evidence of adaptive question selection."
+      ]
+    },
+    {
+      "id": "HR5",
+      "platform": "HackerRank",
+      "url": "https://www.hackerrank.com/contests",
+      "resolved_url": "https://www.hackerrank.com/contests",
+      "title": "Contests",
+      "returned_html_title": "Contests | HackerRank",
+      "retrieved_at": "2026-11-03T07:28:06.569607+00:00",
+      "http_status": 200,
+      "response_sha256": "2a8b6126e8e905f7dfdc5c08d91a03ad9a53ed2aa62147b44f6e09678cefb53a",
+      "scope": "public first-party documentation or product page; no signed-in testing",
+      "supports": [
+        "The live contest page features upcoming and archived hackathons; a weekly rated algorithm-contest cadence was not established."
+      ]
+    },
+    {
+      "id": "HR6",
+      "platform": "HackerRank",
+      "url": "https://www.hackerrank.com/environment",
+      "resolved_url": "https://support.hackerrank.com/articles/6693750503-execution-environment",
+      "title": "Execution Environment; redirects to HackerRank Knowledge Base",
+      "returned_html_title": "Execution Environment | HackerRank Knowledge Base",
+      "retrieved_at": "2026-11-03T07:28:06.570993+00:00",
+      "http_status": 200,
+      "response_sha256": "ad99ccc036f7f6b194fec33dc0bd6186234abe366b50fd18fadee0bc7d957211",
+      "scope": "public first-party documentation or product page; no signed-in testing",
+      "supports": [
+        "Execution documentation publishes submission size and language-specific time/memory limits.",
+        "This supports bounded execution as a delivery pattern; Ascend cannot inherit the provider isolation or capacity guarantees."
+      ]
+    },
+    {
+      "id": "CW1",
+      "platform": "Codewars",
+      "url": "https://docs.codewars.com/getting-started/finding-kata/",
+      "resolved_url": "https://docs.codewars.com/getting-started/finding-kata/",
+      "title": "Finding Kata",
+      "returned_html_title": "Finding Kata | The Codewars Docs",
+      "retrieved_at": "2026-11-03T07:18:59.194573+00:00",
+      "http_status": 200,
+      "response_sha256": "3b271a6bb0715c0828270e89d01f96ecfb34106216dd27e17b0dda252a2523e3",
+      "scope": "public first-party documentation or product page; no signed-in testing",
+      "supports": [
+        "Trainer offers Fundamentals for newer developers and Rank Up for experienced developers.",
+        "Recommendations may be skipped; catalog filters support difficulty, topics, and previously completed tasks."
+      ]
+    },
+    {
+      "id": "CW2",
+      "platform": "Codewars",
+      "url": "https://docs.codewars.com/gamification/ranks/",
+      "resolved_url": "https://docs.codewars.com/gamification/ranks/",
+      "title": "Ranks",
+      "returned_html_title": "Ranks | The Codewars Docs",
+      "retrieved_at": "2026-11-03T07:18:59.261243+00:00",
+      "http_status": 200,
+      "response_sha256": "26ce6fcb197757038033c34dc1174b3bd4ec3e54683238e05551a991243eeef4",
+      "scope": "public first-party documentation or product page; no signed-in testing",
+      "supports": [
+        "Ranks exist overall and per language; harder kata yield more rank credit.",
+        "Overall kata credit is not awarded repeatedly for the same kata."
+      ]
+    },
+    {
+      "id": "CW3",
+      "platform": "Codewars",
+      "url": "https://docs.codewars.com/getting-started/solutions",
+      "resolved_url": "https://docs.codewars.com/getting-started/solutions/",
+      "title": "Viewing Solutions",
+      "returned_html_title": "Viewing Solutions | The Codewars Docs",
+      "retrieved_at": "2026-11-03T07:26:45.238786+00:00",
+      "http_status": 200,
+      "response_sha256": "fe9cea8e024d72a49567613f2eb2041e76b036acd25920ce75ed150957885b16",
+      "scope": "public first-party documentation or product page; no signed-in testing",
+      "supports": [
+        "Accepted solutions can be discussed and voted best practices or clever."
+      ]
+    },
+    {
+      "id": "CW4",
+      "platform": "Codewars",
+      "url": "https://docs.codewars.com/authoring",
+      "resolved_url": "https://docs.codewars.com/authoring/",
+      "title": "Authoring Content",
+      "returned_html_title": "Authoring Content | The Codewars Docs",
+      "retrieved_at": "2026-11-03T07:26:45.265761+00:00",
+      "http_status": 200,
+      "response_sha256": "044613d6f7d805eb7135f783e8ad3ac242f77b0e2d3daa325dc4a70886000f40",
+      "scope": "public first-party documentation or product page; no signed-in testing",
+      "supports": [
+        "Community authoring/translation involves requirements, test suites, documentation, and review."
+      ]
+    },
+    {
+      "id": "EX1",
+      "platform": "Exercism",
+      "url": "https://exercism.org/tracks/python",
+      "resolved_url": "https://exercism.org/tracks/python",
+      "title": "Python on Exercism",
+      "returned_html_title": "Python on Exercism",
+      "retrieved_at": "2026-11-03T07:18:59.269360+00:00",
+      "http_status": 200,
+      "response_sha256": "77738435dfef069e9e2bb3efdc815a3efd5b789fc20fbb6b1f7bafac3aea07f3",
+      "scope": "public first-party documentation or product page; no signed-in testing",
+      "supports": [
+        "Python track combines concepts, practice, and mentoring to develop fluency."
+      ]
+    },
+    {
+      "id": "EX2",
+      "platform": "Exercism",
+      "url": "https://exercism.org/docs/building/product/unlocking-exercises",
+      "resolved_url": "https://exercism.org/docs/building/product/unlocking-exercises",
+      "title": "Unlocking Exercises and Learning/Practice Mode",
+      "returned_html_title": "Unlocking Exercises | Exercism's Docs",
+      "retrieved_at": "2026-11-03T07:28:06.572045+00:00",
+      "http_status": 200,
+      "response_sha256": "7225e21c33a383c5e876b56b10f77db5b4b2f20380c65ba833a42e3b5d19d9d8",
+      "scope": "public first-party documentation or product page; no signed-in testing",
+      "supports": [
+        "Learning Mode progressively unlocks exercises; Practice Mode unlocks all exercises.",
+        "Switching modes is documented and mentoring remains available in either."
+      ]
+    },
+    {
+      "id": "EX3",
+      "platform": "Exercism",
+      "url": "https://exercism.org/mentoring",
+      "resolved_url": "https://exercism.org/mentoring",
+      "title": "Mentoring on Exercism",
+      "returned_html_title": "Exercism",
+      "retrieved_at": "2026-11-03T07:18:59.648594+00:00",
+      "http_status": 200,
+      "response_sha256": "391ac8d1d5f51c8dc750fedfa0266f3951a2be3d94a6e51a2fcdbcc520acfcbf",
+      "scope": "public first-party documentation or product page; no signed-in testing",
+      "supports": [
+        "Mentoring is presented as a contribution route that reinforces knowledge and communication."
+      ]
+    },
+    {
+      "id": "EX4",
+      "platform": "Exercism",
+      "url": "https://exercism.org/docs/using/getting-started",
+      "resolved_url": "https://exercism.org/docs/using/getting-started",
+      "title": "Getting Started",
+      "returned_html_title": "Getting Started | Exercism's Docs",
+      "retrieved_at": "2026-11-03T07:26:45.182600+00:00",
+      "http_status": 200,
+      "response_sha256": "732f2d600b70c6c88fa05e5057a937d50d5389b26d142a3d4c690bb6831296fc",
+      "scope": "public first-party documentation or product page; no signed-in testing",
+      "supports": [
+        "Users can learn, mentor, or contribute; progressive exercise unlocking is described."
+      ]
+    },
+    {
+      "id": "EX5",
+      "platform": "Exercism",
+      "url": "https://exercism.org/docs/using/solving-exercises/working-locally",
+      "resolved_url": "https://exercism.org/docs/using/solving-exercises/working-locally",
+      "title": "Working Locally",
+      "returned_html_title": "Working Locally | Exercism's Docs",
+      "retrieved_at": "2026-11-03T07:26:45.203021+00:00",
+      "http_status": 200,
+      "response_sha256": "52bfefef213d01fe99e859b62e76aa868ac571380e6ef9b51e9751fb8578af62",
+      "scope": "public first-party documentation or product page; no signed-in testing",
+      "supports": [
+        "CLI downloads exercise instructions, tests, stubs, and optional hints for local work, then submits solution files."
+      ]
+    },
+    {
+      "id": "DC1",
+      "platform": "DataCamp",
+      "url": "https://www.datacamp.com/signal",
+      "resolved_url": "https://www.datacamp.com/signal",
+      "title": "DataCamp Signal",
+      "returned_html_title": "DataCamp Signal | Data Science Assessments",
+      "retrieved_at": "2026-11-03T07:19:00.140726+00:00",
+      "http_status": 200,
+      "response_sha256": "a40497b9c0d17b076d2639e2272add8b8c4c900772064aedd86f6b581c8c8bcc",
+      "scope": "public first-party documentation or product page; no signed-in testing",
+      "supports": [
+        "Signal explicitly adjusts question difficulty to learner performance.",
+        "Assessment results lead to personalised learning recommendations, mistake review, and reassessment."
+      ]
+    },
+    {
+      "id": "DC2",
+      "platform": "DataCamp",
+      "url": "https://www.datacamp.com/tracks/career",
+      "resolved_url": "https://www.datacamp.com/tracks/career",
+      "title": "Career tracks and comparison with skill tracks",
+      "returned_html_title": "Career-building data science learning paths | DataCamp",
+      "retrieved_at": "2026-11-03T07:19:00.293474+00:00",
+      "http_status": 200,
+      "response_sha256": "f660bc2cee3207fdc99c2dc03338bfbe643dc4bef42a413f6143b15b2fca64d5",
+      "scope": "public first-party documentation or product page; no signed-in testing",
+      "supports": [
+        "Career tracks cover role-oriented skill sets; shorter skill tracks target narrower expertise.",
+        "Browser delivery and statements of accomplishment are described; client-only computation is not established."
+      ]
+    },
+    {
+      "id": "DC3",
+      "platform": "DataCamp",
+      "url": "https://www.datacamp.com/resources/whitepapers/datacamp-signal",
+      "resolved_url": "https://www.datacamp.com/resources/whitepapers/datacamp-signal",
+      "title": "DataCamp Signal whitepaper landing page",
+      "returned_html_title": "DataCamp Signal: An Effective Tool for Data Skill Assessment | DataCamp",
+      "retrieved_at": "2026-11-03T07:26:45.868474+00:00",
+      "http_status": 200,
+      "response_sha256": "746e16ebc8e5707e68ca8c7ff793dbb5e4cd068ae37c8135384f8e0e661e6321",
+      "scope": "public first-party documentation or product page; no signed-in testing",
+      "supports": [
+        "The public landing page describes Signal as adaptive testing and psychometrics.",
+        "The actual whitepaper was not downloaded or audited."
+      ]
+    },
+    {
+      "id": "DU1",
+      "platform": "Duolingo",
+      "url": "https://blog.duolingo.com/partial-credit-improvements-to-duolingos-placement-test/",
+      "resolved_url": "https://blog.duolingo.com/partial-credit-improvements-to-duolingos-placement-test/",
+      "title": "Placement test engineering, 2018",
+      "returned_html_title": "Duolingo Blog",
+      "retrieved_at": "2026-11-03T07:26:43.551306+00:00",
+      "http_status": 200,
+      "response_sha256": "a2775788386e02764ba840444c1df16f8e2cb24fe49d04bd67abf27f608d03aa",
+      "scope": "historical first-party engineering explanation; current deployment not verified",
+      "supports": [
+        "Historical engineering article explains adaptive starting-level assessment and partial-credit experiments."
+      ]
+    },
+    {
+      "id": "DU2",
+      "platform": "Duolingo",
+      "url": "https://blog.duolingo.com/learning-how-to-help-you-learn-introducing-birdbrain/",
+      "resolved_url": "https://blog.duolingo.com/learning-how-to-help-you-learn-introducing-birdbrain/",
+      "title": "Introducing Birdbrain, 2020",
+      "returned_html_title": "Duolingo Blog",
+      "retrieved_at": "2026-11-03T07:18:59.802585+00:00",
+      "http_status": 200,
+      "response_sha256": "40aeb4ca4fa7db1aea9492a128921c2223792df5803652465e40e704a84a94e9",
+      "scope": "historical first-party engineering explanation; current deployment not verified",
+      "supports": [
+        "Historical Birdbrain article describes estimates of learner ability and exercise difficulty used in lesson construction.",
+        "Reported internal learning/engagement improvements were not independently validated in this audit."
+      ]
+    },
+    {
+      "id": "DU3",
+      "platform": "Duolingo",
+      "url": "https://blog.duolingo.com/keeping-you-at-the-frontier-of-learning-with-adaptive-lessons/",
+      "resolved_url": "https://blog.duolingo.com/keeping-you-at-the-frontier-of-learning-with-adaptive-lessons/",
+      "title": "Adaptive lessons, 2020",
+      "returned_html_title": "Duolingo Blog",
+      "retrieved_at": "2026-11-03T07:26:43.552111+00:00",
+      "http_status": 200,
+      "response_sha256": "d6fd5ec9d720a7753e5d862c0f5af93e89b8b0ba0e8676d6581a4406e2dfa188",
+      "scope": "historical first-party engineering explanation; current deployment not verified",
+      "supports": [
+        "Historical product/engineering article describes increasing later exercise difficulty within lessons and practice."
+      ]
+    },
+    {
+      "id": "DU4",
+      "platform": "Duolingo",
+      "url": "https://blog.duolingo.com/guide-to-duolingo-practice-hub/",
+      "resolved_url": "https://blog.duolingo.com/guide-to-duolingo-practice-hub/",
+      "title": "Practice tab, February 2026",
+      "returned_html_title": "The Duolingo Practice Tab Is Free for Learners",
+      "retrieved_at": "2026-11-03T07:19:00.019978+00:00",
+      "http_status": 200,
+      "response_sha256": "b858f5bb34f38a29a75ef19db03ae4a0cb5f5a09fdab03816f2960a090d1f9a1",
+      "scope": "public first-party documentation or product page; no signed-in testing",
+      "supports": [
+        "February 2026 product article documents free mistakes, words, speaking, and listening practice on iOS/Android.",
+        "Other practice content and session review depend on course and subscription."
+      ]
+    }
+  ],
+  "access_limits": [
+    {
+      "url": "https://leetcode.com/contest/",
+      "final_url": "https://leetcode.com/contest/",
+      "status": 403,
+      "retrieved_at": "2026-11-03T07:18:59.037297+00:00"
+    },
+    {
+      "url": "https://tryhackme.com/paths",
+      "final_url": "https://tryhackme.com/paths",
+      "status": 429,
+      "retrieved_at": "2026-11-03T07:18:57.125083+00:00"
+    },
+    {
+      "url": "https://support.datacamp.com/hc/en-us/articles/360023859774-What-is-DataCamp-Signal",
+      "final_url": "https://support.datacamp.com/en-us/articles/17598954-what-are-datacamp-signal-assessments",
+      "status": 404,
+      "retrieved_at": "2026-11-03T07:26:45.627754+00:00"
+    },
+    {
+      "url": "https://www.datacamp.com/blog/adaptive-assessments",
+      "final_url": "https://www.datacamp.com/blog/adaptive-assessments",
+      "status": 404,
+      "retrieved_at": "2026-11-03T07:22:11.582588+00:00"
+    },
+    {
+      "url": "https://www.datacamp.com/projects",
+      "final_url": "https://www.datacamp.com/projects",
+      "status": 403,
+      "retrieved_at": "2026-11-03T07:28:06.981527+00:00"
+    },
+    {
+      "url": "https://support.leetcode.com/api/v2/help_center/en-us/articles/search.json?query=interview",
+      "final_url": "https://support.leetcode.com/api/v2/help_center/en-us/articles/search.json?query=interview",
+      "status": 404,
+      "retrieved_at": "2026-11-03T07:22:11.048760+00:00"
+    },
+    {
+      "url": "https://support.leetcode.com/hc/en-us",
+      "final_url": "https://support.leetcode.com/hc/en-us",
+      "status": 403,
+      "retrieved_at": "2026-11-03T07:22:11.049296+00:00"
+    },
+    {
+      "url": "https://www.datacamp.com/tracks/skill",
+      "final_url": "https://www.datacamp.com/tracks/skill",
+      "status": 403,
+      "retrieved_at": "2026-11-03T07:28:06.572544+00:00"
+    },
+    {
+      "url": "https://leetcode.com/studyplan/",
+      "final_url": "https://leetcode.com/studyplan/",
+      "status": 403,
+      "retrieved_at": "2026-11-03T07:18:58.999414+00:00"
+    }
+  ],
+  "repository_snapshot": {
+    "captured_at": "2026-11-03T07:38:38.018959+00:00",
+    "working_tree_status": "Shared uncommitted workspace; another session is actively editing. Hashes identify the inspected files rather than asserting a repository-wide commit.",
+    "catalog_counts": {
+      "total": 37,
+      "worked_examples": 7,
+      "other_quick_activities": 18,
+      "standalone_challenges": 10,
+      "free_workspaces": 2,
+      "easy": 28,
+      "intermediate": 8,
+      "hard": 1
+    },
+    "files": [
+      {
+        "path": "ascend/engine/practice.py",
+        "sha256": "b2e3ef3a346ce83c00cad287632ef1709431f3b9b3b001614503dc93a84f36cf"
+      },
+      {
+        "path": "ascend/playground/catalog.py",
+        "sha256": "42c1c6f70b8cc9c514f7648d0d68c725ed598823a81b493a8ab7202bad7cf447"
+      },
+      {
+        "path": "ascend/playground/__init__.py",
+        "sha256": "44fe69cf3daf006ae8407285db40b05f3c63ba1d8166cc294255c6ade3100878"
+      },
+      {
+        "path": "ascend/local_labs/hosted.py",
+        "sha256": "1fe414923bc47b73e16f5e643fc74d80cfc85f93f6ee0937f6fdd2160d972434"
+      },
+      {
+        "path": "ascend/local_labs/vampi.py",
+        "sha256": "2d01fa220c5754a8f975a265b2b50c5635e7e37866f3dfefae860d769dd39736"
+      },
+      {
+        "path": "ascend/local_labs/wrongsecrets.py",
+        "sha256": "37b018db8d6f309d2f77a516927dae103609f2736c822d6d1ea15aadd7f9306c"
+      },
+      {
+        "path": "ascend/local_labs/bgp.py",
+        "sha256": "73fa7bc026d61e6134964bb435ca34db664425bea8607e86be6abd6eeac38fc1"
+      },
+      {
+        "path": "docker/docker-compose.yml",
+        "sha256": "159529e425ded3218346e3e6377cd1dd3bde6d3e87a1a3241e392201a34dc768"
+      },
+      {
+        "path": "deploy/ascend-lab-runner.service",
+        "sha256": "6657e652a3585899508cfe96df9f4d9d09ec9441ff3e0516e007ca6508763700"
+      },
+      {
+        "path": "deploy/runner.env.example",
+        "sha256": "69c159547cdd95086a5e2e0b3110f757ec2b9d95a2903a2312a2f9d1b5b385d1"
+      },
+      {
+        "path": "docs/design/server-lab-runner.md",
+        "sha256": "1c7aa35f00367b2e8335e7c304a037d6ba0c6748881a351ecba2d97fbe094fe4"
+      },
+      {
+        "path": "docs/design/shared-lab-runner-evaluation.md",
+        "sha256": "963396b73f7dcbaa6ebbe657c461ef414dd502962f82948c5c57ad3d33baab9b"
+      },
+      {
+        "path": "scripts/verify_bgp_labs.py",
+        "sha256": "8f1f63924a01dad2f04fb08a31b72e8852fbb0318f1ad76bfde7b1420ec15222"
+      },
+      {
+        "path": "docs/testing/local-prefix-measurements.json",
+        "sha256": "5556fd5de38336856ed7bdf62cabf9398a66382618e7fb0790d7cc3df8ba36e0"
+      },
+      {
+        "path": "docs/testing/local-vampi-measurements.json",
+        "sha256": "69f98c9731b871a710330daafc1fe7c71fec4fc2fe80aaf71cd18846de63c4ab"
+      },
+      {
+        "path": "docs/testing/local-wrongsecrets-measurements.json",
+        "sha256": "0f8131d0863cba9dc79029b77b0c9eeeda5482e5e9d0b407013cc4986df9e786"
+      },
+      {
+        "path": "docs/testing/local-bgp-measurements.json",
+        "sha256": "750a57a482f26bb8e94cfb15fc9cf84f65f09bc434fbd1e57f0f10832bfac4c4"
+      },
+      {
+        "path": "docs/testing/hosted-lab-measurements.json",
+        "sha256": "7e1e7d17e79051a725f4bc46991b9da6cdb5c507c92f3b8adcdfe2740a98ecda"
+      }
+    ]
+  }
+}
