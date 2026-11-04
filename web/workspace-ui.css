@@ -9,7 +9,7 @@
   --control-radius:5px;
   --interaction-fill:#fff0b1; --interaction-ink:#292620; --interaction-muted:#5b4c28;
   --radius:7px; --rail:224px; --content-width:1320px;
-  --workspace-grid-size:28px; --workspace-grid:#9d92751c; --workspace-contour:#7d775a; --workspace-glow:#fbefd3;
+  --workspace-grid-size:28px; --workspace-grid:#9d927501; --workspace-contour:#7d775a; --workspace-glow:#fbefd3;
 }
 :root[data-workspace-theme='dark'] {
   --bg:#111622; --surface:#1d2434; --text:#f5f0ff; --muted:#bdc4d7;
@@ -17,7 +17,7 @@
   --soft:#393052; --mint:#233f3d; --peach:#563c2f; --hover:#293146;
   --success:#a9ebc9; --success-bg:#233f3d; --shadow:#080d18;
   --error:#ffb8ae; --error-bg:#513738; --milestone:#f5ce78; --milestone-bg:#463c24;
-  --workspace-grid:#c7ccff08; --workspace-contour:#9a9ad3; --workspace-glow:#25213a;
+  --workspace-grid:#c7ccff01; --workspace-contour:#9a9ad3; --workspace-glow:#25213a;
   --interaction-fill:#f5ce47; --interaction-ink:#28251e; --interaction-muted:#51451f;
 }
 body {
@@ -94,7 +94,7 @@ button:focus-visible,a:focus-visible,summary:focus-visible { outline-color:var(-
 .time-chips button[aria-pressed='true'] { background:var(--action); color:var(--on-action); }
 #today-cards>.next-card { isolation:isolate; overflow:hidden; min-height:306px; padding:30px 225px 30px 28px; background:var(--soft); border:2px solid var(--line); box-shadow:6px 6px 0 var(--shadow); margin:0 0 25px; }
 #today-cards>.next-card::before {
-  content:''; position:absolute; inset:0; z-index:-1;
+  content:''; position:absolute; inset:0; z-index:-1; opacity:.025;
   background-image:
     repeating-linear-gradient(to bottom,#6f558715 var(--paper-grid-y,0px) calc(var(--paper-grid-y,0px) + var(--paper-grid-line-y,1px)),transparent calc(var(--paper-grid-y,0px) + var(--paper-grid-line-y,1px)) calc(var(--paper-grid-y,0px) + var(--paper-grid-size-y,var(--workspace-grid-size)))),
     repeating-linear-gradient(to right,#6f558715 var(--paper-grid-x,0px) calc(var(--paper-grid-x,0px) + var(--paper-grid-line-x,1px)),transparent calc(var(--paper-grid-x,0px) + var(--paper-grid-line-x,1px)) calc(var(--paper-grid-x,0px) + var(--paper-grid-size-x,var(--workspace-grid-size))));
