@@ -1,0 +1,23 @@
+{
+  "artifact": "motion-preview.webm",
+  "viewport": {
+    "width": 1365,
+    "height": 900
+  },
+  "motion": "enabled; finite effects recorded without screenshot animation freezing",
+  "sequence": [
+    "Today entrance and companion greeting",
+    "CTA hover and press",
+    "Dedicated challenge start and correct result",
+    "Result replay without additional reward",
+    "Small correct-answer acknowledgment",
+    "Named track milestone with medal and bounded particles",
+    "Milestone replay without additional reward",
+    "DevOps path, dark appearance, Today night layers"
+  ],
+  "errors": [],
+  "limits": [
+    "Sample browser state only; this is not a production assessment recording.",
+    "The recording demonstrates motion when enabled. The live preview still honors OS reduced motion and its own off switch."
+  ]
+}

@@ -1,0 +1,1935 @@
+{
+  "reviewed_on": "2026-11-03",
+  "method": "Public Chromium desktop/mobile observation plus first-party documentation. No accounts created, purchases, competitor lab starts, or messages. Browser access errors are distinct from readable HTTP source retrieval.",
+  "viewports": [
+    {
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "platforms": [
+    "PortSwigger",
+    "TryHackMe",
+    "Hack The Box",
+    "HackerRank",
+    "Codewars",
+    "Exercism",
+    "DataCamp",
+    "Duolingo"
+  ],
+  "direct_product_visual_coverage": [
+    "PortSwigger",
+    "TryHackMe",
+    "Hack The Box Academy",
+    "Codewars",
+    "Exercism",
+    "Duolingo"
+  ],
+  "browser_blocked": [
+    "HackerRank training page",
+    "DataCamp career-track page"
+  ],
+  "sources": [
+    {
+      "id": "O-PS",
+      "url": "https://portswigger.net/web-security",
+      "resolved_url": "https://portswigger.net/web-security",
+      "title": "Public Academy page, browser observed 2026-11-03",
+      "retrieved_at": "2026-11-03T08:11:43.964177+00:00",
+      "http_status": 200,
+      "evidence_type": "direct public browser observation",
+      "limitation": "Public page only; browser observations and screenshot hashes are recorded separately."
+    },
+    {
+      "id": "O-TH",
+      "url": "https://tryhackme.com/",
+      "resolved_url": "https://tryhackme.com/",
+      "title": "Public homepage and experience filters, browser observed 2026-11-03",
+      "retrieved_at": "2026-11-03T08:12:40.261726+00:00",
+      "http_status": 200,
+      "evidence_type": "direct public browser observation",
+      "limitation": "Public page only; browser observations and screenshot hashes are recorded separately."
+    },
+    {
+      "id": "PS-PREP",
+      "url": "https://portswigger.net/web-security/certification/how-to-prepare",
+      "resolved_url": "https://portswigger.net/web-security/certification/how-to-prepare",
+      "title": "Certification preparation and experienced route",
+      "retrieved_at": "2026-11-03T07:18:57.122482+00:00",
+      "http_status": 200,
+      "response_sha256": "517f78fed7bb5afda5b8a6e74be08b7485872feb9932ded781d013c707689b8c",
+      "evidence_type": "public first-party documentation/product page",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "TH-POINTS",
+      "url": "https://help.tryhackme.com/en/articles/6563910-points-explained",
+      "resolved_url": "https://help.tryhackme.com/en/articles/6563910-points-explained",
+      "title": "Points Explained",
+      "retrieved_at": "2026-11-03T08:15:05.787955+00:00",
+      "http_status": 200,
+      "response_sha256": "643ab2ae7917bb74d16b02cd941c79d1e0ce376da00f345ca2e373bfcacd2c3e",
+      "evidence_type": "public first-party documentation/product page",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "TH-LEVELS",
+      "url": "https://help.tryhackme.com/en/articles/6496044-what-are-levels-on-tryhackme",
+      "resolved_url": "https://help.tryhackme.com/en/articles/6496044-what-are-levels-on-tryhackme",
+      "title": "What Are Levels on TryHackMe",
+      "retrieved_at": "2026-11-03T08:15:05.788878+00:00",
+      "http_status": 200,
+      "response_sha256": "0b3a4565d9d56c89cc316652fcbc0b7160afab7b02b8eb43bb55ca2179e01a0c",
+      "evidence_type": "public first-party documentation/product page",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "TH-LEAGUES",
+      "url": "https://help.tryhackme.com/en/articles/10517530-how-leagues-work",
+      "resolved_url": "https://help.tryhackme.com/en/articles/10517530-how-leagues-work",
+      "title": "How Leagues Work",
+      "retrieved_at": "2026-11-03T08:15:05.789463+00:00",
+      "http_status": 200,
+      "response_sha256": "abd1879903a1bd83f7c34b7d5260d67f3096a17cd12c3e935ebfb20573930c98",
+      "evidence_type": "public first-party documentation/product page",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "TH-TEAMS",
+      "url": "https://help.tryhackme.com/en/articles/10364234-teams-explained",
+      "resolved_url": "https://help.tryhackme.com/en/articles/10364234-teams-explained",
+      "title": "Teams explained",
+      "retrieved_at": "2026-11-03T08:15:05.789813+00:00",
+      "http_status": 200,
+      "response_sha256": "7e2f520094bcef35e049275fc12b46c1056234726c788f80d426676efd120d26",
+      "evidence_type": "public first-party documentation/product page",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "TH-LICENSES",
+      "url": "https://help.tryhackme.com/en/articles/8486133-preserve-points-when-migrating-between-b2b-and-edu-licenses",
+      "resolved_url": "https://help.tryhackme.com/en/articles/8486133-preserve-points-when-migrating-between-b2b-and-edu-licenses",
+      "title": "Preserve Points When Migrating Between B2B and EDU Licenses",
+      "retrieved_at": "2026-11-03T08:15:07.243338+00:00",
+      "http_status": 200,
+      "response_sha256": "cee3b39fbf0c2ecad91d09113c54bee5551c670a3d894dc47325a55fd60af16c",
+      "evidence_type": "public first-party documentation/product page",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "HT-ACADEMY",
+      "url": "https://help.hackthebox.com/en/articles/12256202-introduction-to-htb-academy",
+      "resolved_url": "https://help.hackthebox.com/en/articles/12256202-introduction-to-htb-academy",
+      "title": "Introduction to HTB Academy",
+      "retrieved_at": "2026-11-03T08:15:07.295811+00:00",
+      "http_status": 200,
+      "response_sha256": "671ebf0ae401259f9a4f8a2b5f56ef49f3bcac5e6080d6188eaff31c6b934fe0",
+      "evidence_type": "public first-party documentation/product page",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "HT-MODULES",
+      "url": "https://help.hackthebox.com/en/articles/12741910-academy-modules-paths",
+      "resolved_url": "https://help.hackthebox.com/en/articles/12741910-academy-modules-paths",
+      "title": "Academy Modules & Paths",
+      "retrieved_at": "2026-11-03T08:15:07.300300+00:00",
+      "http_status": 200,
+      "response_sha256": "97d32aaaf9e0c3c20908dbff95638790a46d99ada4474169abd55a137e4fe4ff",
+      "evidence_type": "public first-party documentation/product page",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "HT-CHALLENGES",
+      "url": "https://help.hackthebox.com/en/articles/5185436-how-to-play-challenges",
+      "resolved_url": "https://help.hackthebox.com/en/articles/5185436-how-to-play-challenges",
+      "title": "How to Play Challenges",
+      "retrieved_at": "2026-11-03T07:18:57.859585+00:00",
+      "http_status": 200,
+      "response_sha256": "8cffeb1177242a29dea8c897818160414ecbd41d2867b07316c77d1c0e8422bf",
+      "evidence_type": "public first-party documentation/product page",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "HT-SEASONS",
+      "url": "https://help.hackthebox.com/en/articles/7041927-introduction-to-htb-seasons",
+      "resolved_url": "https://help.hackthebox.com/en/articles/7041927-introduction-to-htb-seasons",
+      "title": "Introduction to HTB Seasons",
+      "retrieved_at": "2026-11-03T07:26:44.474581+00:00",
+      "http_status": 200,
+      "response_sha256": "da60df3347b9c097095fec74e398e41255b823a4a1c1756e022f5868cb646573",
+      "evidence_type": "public first-party documentation/product page",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "HR-PREP",
+      "url": "https://www.hackerrank.com/interview/preparation-kits",
+      "resolved_url": "https://www.hackerrank.com/interview/preparation-kits",
+      "title": "Interview Preparation Kits",
+      "retrieved_at": "2026-11-03T07:26:46.043203+00:00",
+      "http_status": 200,
+      "response_sha256": "468e2faaa702bc0e509457d58b578515ea802e6498290ec86bf56a8842473a78",
+      "evidence_type": "public first-party documentation/product page",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "HR-PRACTICE",
+      "url": "https://www.hackerrank.com/domains/algorithms",
+      "resolved_url": "https://www.hackerrank.com/domains/algorithms",
+      "title": "Algorithm practice filters",
+      "retrieved_at": "2026-11-03T07:28:06.571536+00:00",
+      "http_status": 200,
+      "response_sha256": "e495f42ab526caacd67cfce095db1f221973b2c8867079371bf2f30286190cfa",
+      "evidence_type": "public first-party documentation/product page",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "HR-SCORE",
+      "url": "https://www.hackerrank.com/scoring",
+      "resolved_url": "https://www.hackerrank.com/scoring",
+      "title": "Scoring Documentation",
+      "retrieved_at": "2026-11-03T07:28:06.570550+00:00",
+      "http_status": 200,
+      "response_sha256": "c0beb2f5efc474dd235f08f1ac87bc7b35bfe2065bc5e972ce570617cdfeaf31",
+      "evidence_type": "public first-party documentation/product page",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "HR-CONTEST",
+      "url": "https://www.hackerrank.com/contests",
+      "resolved_url": "https://www.hackerrank.com/contests",
+      "title": "Current contest listing",
+      "retrieved_at": "2026-11-03T07:28:06.569607+00:00",
+      "http_status": 200,
+      "response_sha256": "2a8b6126e8e905f7dfdc5c08d91a03ad9a53ed2aa62147b44f6e09678cefb53a",
+      "evidence_type": "public first-party documentation/product page",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "CW-TRAIN",
+      "url": "https://docs.codewars.com/getting-started/finding-kata/",
+      "resolved_url": "https://docs.codewars.com/getting-started/finding-kata/",
+      "title": "Finding Kata",
+      "retrieved_at": "2026-11-03T07:18:59.194573+00:00",
+      "http_status": 200,
+      "response_sha256": "3b271a6bb0715c0828270e89d01f96ecfb34106216dd27e17b0dda252a2523e3",
+      "evidence_type": "public first-party documentation/product page",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "CW-SOLVED",
+      "url": "https://docs.codewars.com/getting-started/kata-solved/",
+      "resolved_url": "https://docs.codewars.com/getting-started/kata-solved/",
+      "title": "After Solving a Kata",
+      "retrieved_at": "2026-11-03T08:15:08.781489+00:00",
+      "http_status": 200,
+      "response_sha256": "65730938a8662b475e29e6630576a9673ffa948c47ae2d79ba0ea3530e22a247",
+      "evidence_type": "public first-party documentation/product page",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "CW-RANK",
+      "url": "https://docs.codewars.com/gamification/ranks/",
+      "resolved_url": "https://docs.codewars.com/gamification/ranks/",
+      "title": "Ranks",
+      "retrieved_at": "2026-11-03T07:18:59.261243+00:00",
+      "http_status": 200,
+      "response_sha256": "26ce6fcb197757038033c34dc1174b3bd4ec3e54683238e05551a991243eeef4",
+      "evidence_type": "public first-party documentation/product page",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "CW-HONOR",
+      "url": "https://docs.codewars.com/gamification/honor/",
+      "resolved_url": "https://docs.codewars.com/gamification/honor/",
+      "title": "Honor",
+      "retrieved_at": "2026-11-03T08:11:47.416876+00:00",
+      "http_status": 200,
+      "response_sha256": "4dac5fe0fd2fa6074767612b24b0a22368e2b4cf2b0bed627b781a5fdb2270cc",
+      "evidence_type": "public first-party documentation/product page",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "CW-AUTHOR",
+      "url": "https://docs.codewars.com/authoring",
+      "resolved_url": "https://docs.codewars.com/authoring/",
+      "title": "Authoring Content",
+      "retrieved_at": "2026-11-03T07:26:45.265761+00:00",
+      "http_status": 200,
+      "response_sha256": "044613d6f7d805eb7135f783e8ad3ac242f77b0e2d3daa325dc4a70886000f40",
+      "evidence_type": "public first-party documentation/product page",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "EX-REPUTATION",
+      "url": "https://exercism.org/docs/using/product/reputation",
+      "resolved_url": "https://exercism.org/docs/using/product/reputation",
+      "title": "Reputation",
+      "retrieved_at": "2026-11-03T08:11:47.616760+00:00",
+      "http_status": 200,
+      "response_sha256": "8a2047ebf40ed12059040f6005a73471f70f7ce327c399a0e91692e12c876b9c",
+      "evidence_type": "public first-party documentation/product page",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "EX-MODE",
+      "url": "https://exercism.org/docs/building/product/unlocking-exercises",
+      "resolved_url": "https://exercism.org/docs/building/product/unlocking-exercises",
+      "title": "Learning and Practice Mode",
+      "retrieved_at": "2026-11-03T07:28:06.572045+00:00",
+      "http_status": 200,
+      "response_sha256": "7225e21c33a383c5e876b56b10f77db5b4b2f20380c65ba833a42e3b5d19d9d8",
+      "evidence_type": "public first-party documentation/product page",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "EX-MENTOR",
+      "url": "https://exercism.org/mentoring",
+      "resolved_url": "https://exercism.org/mentoring",
+      "title": "Mentoring",
+      "retrieved_at": "2026-11-03T07:18:59.648594+00:00",
+      "http_status": 200,
+      "response_sha256": "391ac8d1d5f51c8dc750fedfa0266f3951a2be3d94a6e51a2fcdbcc520acfcbf",
+      "evidence_type": "public first-party documentation/product page",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "EX-TEAMS",
+      "url": "https://exercism.org/docs/using/editions/teams",
+      "resolved_url": "https://exercism.org/docs/using/editions/teams",
+      "title": "Teams Edition; contains stale shutdown/relaunch notice",
+      "retrieved_at": "2026-11-03T08:15:08.302090+00:00",
+      "http_status": 200,
+      "response_sha256": "56a458d67c03a904b309b18aab297eb3ce47915dd40df604d57ba6801bbe94eb",
+      "evidence_type": "public first-party documentation/product page",
+      "limitation": "Contains a stale shutdown/relaunch-in-2023 notice; no current team-product availability established."
+    },
+    {
+      "id": "DC-TRACKS",
+      "url": "https://www.datacamp.com/tracks/career",
+      "resolved_url": "https://www.datacamp.com/tracks/career",
+      "title": "Career and skill track comparison",
+      "retrieved_at": "2026-11-03T07:19:00.293474+00:00",
+      "http_status": 200,
+      "response_sha256": "f660bc2cee3207fdc99c2dc03338bfbe643dc4bef42a413f6143b15b2fca64d5",
+      "evidence_type": "public first-party documentation/product page",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "DC-SIGNAL",
+      "url": "https://www.datacamp.com/signal",
+      "resolved_url": "https://www.datacamp.com/signal",
+      "title": "Adaptive assessment and recommendations",
+      "retrieved_at": "2026-11-03T07:19:00.140726+00:00",
+      "http_status": 200,
+      "response_sha256": "a40497b9c0d17b076d2639e2272add8b8c4c900772064aedd86f6b581c8c8bcc",
+      "evidence_type": "public first-party documentation/product page",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "DC-XP",
+      "url": "https://support.datacamp.com/en-us/articles/17598880-understanding-xp-and-progress-on-datacamp",
+      "resolved_url": "https://support.datacamp.com/en-us/articles/17598880-understanding-xp-and-progress-on-datacamp",
+      "title": "Understanding XP and Progress on DataCamp",
+      "retrieved_at": "2026-11-03T08:15:07.330900+00:00",
+      "http_status": 200,
+      "response_sha256": "da2253b8dab717436b0e638777a3958d539be839aaa36127520b6f1b882edb1c",
+      "evidence_type": "public first-party documentation/product page",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "DC-FINISH",
+      "url": "https://support.datacamp.com/en-us/articles/17598980-will-i-receive-a-grade-or-bonus-xp-when-i-finish-a-course",
+      "resolved_url": "https://support.datacamp.com/en-us/articles/17598980-will-i-receive-a-grade-or-bonus-xp-when-i-finish-a-course",
+      "title": "Course completion and XP",
+      "retrieved_at": "2026-11-03T08:15:07.894648+00:00",
+      "http_status": 200,
+      "response_sha256": "6189e6a40e1676d22ab8605e8cf35f874b435946a64707d7bc5e99084a3cfb5f",
+      "evidence_type": "public first-party documentation/product page",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "DC-CURRENCY",
+      "url": "https://support.datacamp.com/en-us/articles/17598975-can-i-use-xp-to-redeem-datacamp-content",
+      "resolved_url": "https://support.datacamp.com/en-us/articles/17598975-can-i-use-xp-to-redeem-datacamp-content",
+      "title": "XP cannot redeem content",
+      "retrieved_at": "2026-11-03T08:27:18.790739+00:00",
+      "http_status": 200,
+      "response_sha256": "a3f2198af84b10779ff71d9bf07df7172f97a7b6cc7a78849078a6c9a40558a2",
+      "evidence_type": "public first-party documentation/product page",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "DC-TEAM",
+      "url": "https://support.datacamp.com/en-us/articles/17599134-why-is-there-a-difference-between-the-xp-on-a-member-s-profile-page-vs-the-xp-on-my-organization-leaderboard",
+      "resolved_url": "https://support.datacamp.com/en-us/articles/17599134-why-is-there-a-difference-between-the-xp-on-a-member-s-profile-page-vs-the-xp-on-my-organization-leaderboard",
+      "title": "Personal versus organisation XP totals",
+      "retrieved_at": "2026-11-03T08:15:08.082417+00:00",
+      "http_status": 200,
+      "response_sha256": "db11e7dd751014e9a482589dc1a33bf4e23509d0ea2a4f0428d1539181ad0757",
+      "evidence_type": "public first-party documentation/product page",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "DU-MOTION",
+      "url": "https://blog.duolingo.com/streak-milestone-design-animation/",
+      "resolved_url": "https://blog.duolingo.com/streak-milestone-design-animation/",
+      "title": "Streak milestone animation design",
+      "retrieved_at": "2026-11-03T08:11:44.744186+00:00",
+      "http_status": 200,
+      "response_sha256": "a168508ac36d087dfc9e78d54cfd392bb3e322f328212eda8293e72c5e75593d",
+      "evidence_type": "historical first-party design/product explanation",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "DU-CHARACTER",
+      "url": "https://blog.duolingo.com/duolingo-art-intern-animation-case-study/",
+      "resolved_url": "https://blog.duolingo.com/duolingo-art-intern-animation-case-study/",
+      "title": "Character animation production case study, 2023",
+      "retrieved_at": "2026-11-03T08:11:44.745017+00:00",
+      "http_status": 200,
+      "response_sha256": "125ec5809e0a93848dc82f9eb78193c8a15d124156544185b0456896f15a2d8a",
+      "evidence_type": "historical first-party design/product explanation",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "DU-LEAGUES",
+      "url": "https://blog.duolingo.com/duolingo-leagues-leaderboards/",
+      "resolved_url": "https://blog.duolingo.com/duolingo-leagues-leaderboards/",
+      "title": "League and privacy explanation, 2023",
+      "retrieved_at": "2026-11-03T08:11:44.745610+00:00",
+      "http_status": 200,
+      "response_sha256": "b39c953bab8fe421e4148ea1a70f7edec925539afe3c55301910a6d5931f3fca",
+      "evidence_type": "historical first-party design/product explanation",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "DU-QUESTS",
+      "url": "https://blog.duolingo.com/friends-quests/",
+      "resolved_url": "https://blog.duolingo.com/friends-quests/",
+      "title": "Friends Quests",
+      "retrieved_at": "2026-11-03T08:11:44.746298+00:00",
+      "http_status": 200,
+      "response_sha256": "3ed1e68fdf3c9592fcffca89cae280505e2b1ced533fc79e2beb96c825db426c",
+      "evidence_type": "historical first-party design/product explanation",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "DU-FAMILY",
+      "url": "https://blog.duolingo.com/plus-family-plan/",
+      "resolved_url": "https://blog.duolingo.com/plus-family-plan/",
+      "title": "Separate accounts under a family plan; historical article",
+      "retrieved_at": "2026-11-03T08:11:46.028308+00:00",
+      "http_status": 200,
+      "response_sha256": "331d9c990c0765613411320fcaba12776026ad1a5381d7efc1e6ce21481035cb",
+      "evidence_type": "historical first-party design/product explanation",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "DU-PRACTICE",
+      "url": "https://blog.duolingo.com/guide-to-duolingo-practice-hub/",
+      "resolved_url": "https://blog.duolingo.com/guide-to-duolingo-practice-hub/",
+      "title": "Practice tab, February 2026",
+      "retrieved_at": "2026-11-03T07:19:00.019978+00:00",
+      "http_status": 200,
+      "response_sha256": "b858f5bb34f38a29a75ef19db03ae4a0cb5f5a09fdab03816f2960a090d1f9a1",
+      "evidence_type": "public first-party documentation/product page",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    },
+    {
+      "id": "DU-OUTAGE",
+      "url": "https://blog.duolingo.com/protecting-streaks-from-site-issues/",
+      "resolved_url": "https://blog.duolingo.com/protecting-streaks-from-site-issues/",
+      "title": "Protecting streaks from site issues",
+      "retrieved_at": "2026-11-03T08:27:41.090783+00:00",
+      "http_status": 200,
+      "response_sha256": "2b58b17049db2e153fce7e3fc67ecea2016b1f531d09117d1b8bb0e06f057354",
+      "evidence_type": "historical first-party design/product explanation",
+      "limitation": "No authenticated completion/account flow personally exercised."
+    }
+  ],
+  "browser_observations": [
+    {
+      "site": "portswigger",
+      "url": "https://portswigger.net/web-security",
+      "captured_at": "2026-11-03T08:11:43.964177+00:00",
+      "status": 200,
+      "final_url": "https://portswigger.net/web-security",
+      "title": "Web Security Academy: Free Online Training from PortSwigger",
+      "body_style": {
+        "color": "rgb(51, 51, 50)",
+        "background": "rgb(255, 255, 255)",
+        "font": "Arial, Helvetica, sans-serif",
+        "fontSize": "16px",
+        "border": "0px none rgb(51, 51, 50)",
+        "borderRadius": "0px",
+        "boxShadow": "none",
+        "transform": "none",
+        "transitionProperty": "all",
+        "transitionDuration": "0s",
+        "animationName": "none",
+        "animationDuration": "0s"
+      },
+      "headings": [
+        {
+          "text": "Free, online web security training from the creators of Burp Suite",
+          "font": "Arial, Helvetica, sans-serif",
+          "size": "28px",
+          "weight": "500",
+          "color": "rgb(51, 51, 50)"
+        },
+        {
+          "text": "New labs: AI-powered scanner vulnerabilities",
+          "font": "Arial, Helvetica, sans-serif",
+          "size": "32px",
+          "weight": "700",
+          "color": "rgb(0, 19, 80)"
+        },
+        {
+          "text": "Learning materials and labs",
+          "font": "Arial, Helvetica, sans-serif",
+          "size": "33.1776px",
+          "weight": "500",
+          "color": "rgb(255, 102, 51)"
+        },
+        {
+          "text": "Up-to-the-minute learning resources",
+          "font": "Arial, Helvetica, sans-serif",
+          "size": "33.1776px",
+          "weight": "500",
+          "color": "rgb(255, 102, 51)"
+        },
+        {
+          "text": "Satisfy your curiosity - safely and legally",
+          "font": "Arial, Helvetica, sans-serif",
+          "size": "33.1776px",
+          "weight": "500",
+          "color": "rgb(255, 102, 51)"
+        },
+        {
+          "text": "Hack like the pros do",
+          "font": "Arial, Helvetica, sans-serif",
+          "size": "33.1776px",
+          "weight": "500",
+          "color": "rgb(255, 102, 51)"
+        },
+        {
+          "text": "Web security training built for humans, not robots",
+          "font": "Arial, Helvetica, sans-serif",
+          "size": "33.1776px",
+          "weight": "500",
+          "color": "rgb(255, 102, 51)"
+        },
+        {
+          "text": "Track your progress, win cool swag",
+          "font": "Arial, Helvetica, sans-serif",
+          "size": "33.1776px",
+          "weight": "500",
+          "color": "rgb(255, 102, 51)"
+        },
+        {
+          "text": "All topics",
+          "font": "Arial, Helvetica, sans-serif",
+          "size": "33.1776px",
+          "weight": "500",
+          "color": "rgb(51, 51, 50)"
+        }
+      ],
+      "running_animations": [],
+      "desktop_screenshot": "docs/screenshots/platform-ui-audit/portswigger-1440.png",
+      "mobile_screenshot": "docs/screenshots/platform-ui-audit/portswigger-390.png",
+      "observation_kind": "public page and responsive capture",
+      "captured_text_excerpt_sha256": "829e1e61324eaebb994dfd6267aaa6f42c1e23f953d9183c3fc2f22cd8ddc15a"
+    },
+    {
+      "site": "htb",
+      "url": "https://academy.hackthebox.com/",
+      "captured_at": "2026-11-03T08:11:48.068367+00:00",
+      "status": 200,
+      "final_url": "https://academy.hackthebox.com/",
+      "title": "Best Online Cybersecurity Courses & Certifications | HTB Academy",
+      "body_style": {
+        "color": "rgb(164, 177, 205)",
+        "background": "rgb(17, 25, 39)",
+        "font": "neue-haas-unica, sans-serif",
+        "fontSize": "10px",
+        "border": "0px none rgb(164, 177, 205)",
+        "borderRadius": "0px",
+        "boxShadow": "none",
+        "transform": "none",
+        "transitionProperty": "all",
+        "transitionDuration": "0s",
+        "animationName": "none",
+        "animationDuration": "0s"
+      },
+      "headings": [
+        {
+          "text": "Your cybersecurity journey starts here.",
+          "font": "neue-haas-unica, sans-serif",
+          "size": "72px",
+          "weight": "800",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "text": "Get certified with HTB",
+          "font": "neue-haas-unica, sans-serif",
+          "size": "32px",
+          "weight": "800",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "text": "Master new skills",
+          "font": "neue-haas-unica, sans-serif",
+          "size": "32px",
+          "weight": "800",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "text": "Why HTB Academy",
+          "font": "neue-haas-unica, sans-serif",
+          "size": "42px",
+          "weight": "800",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "text": "Guided Courses",
+          "font": "neue-haas-unica, sans-serif",
+          "size": "24px",
+          "weight": "600",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "text": "In-browser Pentesting VM",
+          "font": "neue-haas-unica, sans-serif",
+          "size": "24px",
+          "weight": "600",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "text": "Highly Practical",
+          "font": "neue-haas-unica, sans-serif",
+          "size": "24px",
+          "weight": "600",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "text": "Get Certified",
+          "font": "neue-haas-unica, sans-serif",
+          "size": "24px",
+          "weight": "600",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "text": "Unlimited & Online",
+          "font": "neue-haas-unica, sans-serif",
+          "size": "24px",
+          "weight": "600",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "text": "Job & Skill Paths",
+          "font": "neue-haas-unica, sans-serif",
+          "size": "24px",
+          "weight": "600",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "text": "Get ΗΤΒ certified",
+          "font": "neue-haas-unica, sans-serif",
+          "size": "64px",
+          "weight": "800",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "text": "HTB Certified Offensive AI Expert",
+          "font": "neue-haas-unica, sans-serif",
+          "size": "14px",
+          "weight": "400",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "text": "HTB Certified Detection Engineering Principal",
+          "font": "neue-haas-unica, sans-serif",
+          "size": "14px",
+          "weight": "400",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "text": "HTB Certified Junior Cybersecurity Associate",
+          "font": "neue-haas-unica, sans-serif",
+          "size": "14px",
+          "weight": "400",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "text": "HTB Certified Penetration Testing Specialist",
+          "font": "neue-haas-unica, sans-serif",
+          "size": "14px",
+          "weight": "400",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "text": "HTB Certified Web Exploitation Specialist",
+          "font": "neue-haas-unica, sans-serif",
+          "size": "14px",
+          "weight": "400",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "text": "HTB Certified Defensive Security Analyst",
+          "font": "neue-haas-unica, sans-serif",
+          "size": "14px",
+          "weight": "400",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "text": "HTB Certified Web Exploitation Expert",
+          "font": "neue-haas-unica, sans-serif",
+          "size": "14px",
+          "weight": "400",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "text": "HTB Certified Active Directory Pentesting Expert",
+          "font": "neue-haas-unica, sans-serif",
+          "size": "14px",
+          "weight": "400",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "text": "HTB Certified Wi-Fi Pentesting Expert",
+          "font": "neue-haas-unica, sans-serif",
+          "size": "14px",
+          "weight": "400",
+          "color": "rgb(255, 255, 255)"
+        }
+      ],
+      "running_animations": [
+        {
+          "name": "fadeInUp",
+          "duration": 1000,
+          "iterations": 1,
+          "tag": "DIV",
+          "className": "row justify-content-center effect-animated effect-animatedFadeInUp effect-fadeInUp"
+        },
+        {
+          "name": "fadeInUp",
+          "duration": 1000,
+          "iterations": 1,
+          "tag": "DIV",
+          "className": "row justify-content-center mb-32 effect-animated effect-animatedFadeInUp effect-fadeInUp"
+        },
+        {
+          "name": "fadeInUp",
+          "duration": 1000,
+          "iterations": 1,
+          "tag": "DIV",
+          "className": "row justify-content-center effect-animated effect-animatedFadeInUp effect-fadeInUp"
+        },
+        {
+          "name": "fadeInUp",
+          "duration": 1000,
+          "iterations": 1,
+          "tag": "DIV",
+          "className": "row effect-animated effect-animatedFadeInUp effect-fadeInUp"
+        },
+        {
+          "name": "shiftPosition",
+          "duration": 9000,
+          "iterations": "infinite",
+          "tag": "DIV",
+          "className": "container bg-gray bg-gradient-animated rounded-lg py-40"
+        },
+        {
+          "name": "topToBottom",
+          "duration": 15000,
+          "iterations": "infinite",
+          "tag": "SPAN",
+          "className": ""
+        },
+        {
+          "name": "topToBottom",
+          "duration": 15000,
+          "iterations": "infinite",
+          "tag": "SPAN",
+          "className": ""
+        },
+        {
+          "name": "topToBottom",
+          "duration": 15000,
+          "iterations": "infinite",
+          "tag": "SPAN",
+          "className": ""
+        }
+      ],
+      "desktop_screenshot": "docs/screenshots/platform-ui-audit/htb-1440.png",
+      "mobile_screenshot": "docs/screenshots/platform-ui-audit/htb-390.png",
+      "observation_kind": "public page and responsive capture",
+      "captured_text_excerpt_sha256": "6d81aa0f22c599cb9e83330dd328723400d80baa0ee4ba46d0638150e8954867"
+    },
+    {
+      "site": "duolingo",
+      "url": "https://www.duolingo.com/",
+      "captured_at": "2026-11-03T08:11:54.356901+00:00",
+      "status": 200,
+      "final_url": "https://www.duolingo.com/",
+      "title": "Duolingo - The world’s most popular way to learn",
+      "body_style": {
+        "color": "rgb(60, 60, 60)",
+        "background": "rgb(255, 255, 255)",
+        "font": "sans-serif",
+        "fontSize": "17px",
+        "border": "0px none rgb(60, 60, 60)",
+        "borderRadius": "0px",
+        "boxShadow": "none",
+        "transform": "none",
+        "transitionProperty": "all",
+        "transitionDuration": "0s",
+        "animationName": "none",
+        "animationDuration": "0s"
+      },
+      "headings": [
+        {
+          "text": "The most fun way to learn languages, chess, and more!",
+          "font": "duolingo-sans, sans-serif",
+          "size": "32px",
+          "weight": "700",
+          "color": "rgb(75, 75, 75)"
+        },
+        {
+          "text": "free. fun. effective.",
+          "font": "feather, sans-serif",
+          "size": "48px",
+          "weight": "700",
+          "color": "rgb(88, 204, 2)"
+        },
+        {
+          "text": "backed by science",
+          "font": "feather, sans-serif",
+          "size": "48px",
+          "weight": "700",
+          "color": "rgb(88, 204, 2)"
+        },
+        {
+          "text": "stay motivated",
+          "font": "feather, sans-serif",
+          "size": "48px",
+          "weight": "700",
+          "color": "rgb(88, 204, 2)"
+        },
+        {
+          "text": "personalized learning",
+          "font": "feather, sans-serif",
+          "size": "48px",
+          "weight": "700",
+          "color": "rgb(88, 204, 2)"
+        },
+        {
+          "text": "learn anytime, anywhere",
+          "font": "feather, sans-serif",
+          "size": "64px",
+          "weight": "700",
+          "color": "rgb(4, 44, 96)"
+        },
+        {
+          "text": "duolingo english test",
+          "font": "feather, sans-serif",
+          "size": "48px",
+          "weight": "700",
+          "color": "rgb(88, 204, 2)"
+        },
+        {
+          "text": "learn a language with duolingo",
+          "font": "feather, sans-serif",
+          "size": "64px",
+          "weight": "700",
+          "color": "rgb(88, 204, 2)"
+        }
+      ],
+      "running_animations": [
+        {
+          "name": null,
+          "duration": 300,
+          "iterations": 1,
+          "tag": "DIV",
+          "className": "_1ATOC _1Fnem"
+        },
+        {
+          "name": null,
+          "duration": 300,
+          "iterations": 1,
+          "tag": "DIV",
+          "className": "_1ATOC _2zxQ8"
+        }
+      ],
+      "desktop_screenshot": "docs/screenshots/platform-ui-audit/duolingo-1440.png",
+      "mobile_screenshot": "docs/screenshots/platform-ui-audit/duolingo-390.png",
+      "observation_kind": "public page and responsive capture",
+      "captured_text_excerpt_sha256": "33ffd9a0d731a3b619da6c98271695760599c9a4632ce3fff74e49f93d076850"
+    },
+    {
+      "site": "exercism",
+      "url": "https://exercism.org/tracks/python",
+      "captured_at": "2026-11-03T08:11:59.740930+00:00",
+      "status": 200,
+      "final_url": "https://exercism.org/tracks/python",
+      "title": "Python on Exercism",
+      "body_style": {
+        "color": "rgb(63, 58, 90)",
+        "background": "rgb(251, 252, 254)",
+        "font": "Poppins, PoppinsInitial, sans-serif",
+        "fontSize": "14px",
+        "border": "0px solid rgb(63, 58, 90)",
+        "borderRadius": "0px",
+        "boxShadow": "none",
+        "transform": "none",
+        "transitionProperty": "all",
+        "transitionDuration": "0s",
+        "animationName": "none",
+        "animationDuration": "0s"
+      },
+      "headings": [
+        {
+          "text": "Want to learn and master Python?",
+          "font": "Poppins, PoppinsInitial, sans-serif",
+          "size": "39px",
+          "weight": "700",
+          "color": "rgb(19, 11, 67)"
+        },
+        {
+          "text": "About Python",
+          "font": "Poppins, PoppinsInitial, sans-serif",
+          "size": "31px",
+          "weight": "700",
+          "color": "rgb(19, 11, 67)"
+        },
+        {
+          "text": "146 coding exercises for Python on Exercism. From Matching Brackets to Bank Account.",
+          "font": "Poppins, PoppinsInitial, sans-serif",
+          "size": "31px",
+          "weight": "700",
+          "color": "rgb(19, 11, 67)"
+        },
+        {
+          "text": "Matching Brackets",
+          "font": "Poppins, PoppinsInitial, sans-serif",
+          "size": "18px",
+          "weight": "600",
+          "color": "rgb(19, 11, 67)"
+        },
+        {
+          "text": "Raindrops",
+          "font": "Poppins, PoppinsInitial, sans-serif",
+          "size": "18px",
+          "weight": "600",
+          "color": "rgb(19, 11, 67)"
+        },
+        {
+          "text": "Bank Account",
+          "font": "Poppins, PoppinsInitial, sans-serif",
+          "size": "18px",
+          "weight": "600",
+          "color": "rgb(19, 11, 67)"
+        },
+        {
+          "text": "Key Features of Python",
+          "font": "Poppins, PoppinsInitial, sans-serif",
+          "size": "31px",
+          "weight": "700",
+          "color": "rgb(19, 11, 67)"
+        },
+        {
+          "text": "Batteries Included",
+          "font": "Poppins, PoppinsInitial, sans-serif",
+          "size": "20px",
+          "weight": "600",
+          "color": "rgb(19, 11, 67)"
+        },
+        {
+          "text": "Easy",
+          "font": "Poppins, PoppinsInitial, sans-serif",
+          "size": "20px",
+          "weight": "600",
+          "color": "rgb(19, 11, 67)"
+        },
+        {
+          "text": "Extensible",
+          "font": "Poppins, PoppinsInitial, sans-serif",
+          "size": "20px",
+          "weight": "600",
+          "color": "rgb(19, 11, 67)"
+        },
+        {
+          "text": "Flexible",
+          "font": "Poppins, PoppinsInitial, sans-serif",
+          "size": "20px",
+          "weight": "600",
+          "color": "rgb(19, 11, 67)"
+        },
+        {
+          "text": "Multi-paradigm",
+          "font": "Poppins, PoppinsInitial, sans-serif",
+          "size": "20px",
+          "weight": "600",
+          "color": "rgb(19, 11, 67)"
+        },
+        {
+          "text": "Ubiquitous",
+          "font": "Poppins, PoppinsInitial, sans-serif",
+          "size": "20px",
+          "weight": "600",
+          "color": "rgb(19, 11, 67)"
+        },
+        {
+          "text": "A taste of the concepts you'll cover",
+          "font": "Poppins, PoppinsInitial, sans-serif",
+          "size": "31px",
+          "weight": "700",
+          "color": "rgb(19, 11, 67)"
+        },
+        {
+          "text": "Get mentored the Python way",
+          "font": "Poppins, PoppinsInitial, sans-serif",
+          "size": "31px",
+          "weight": "700",
+          "color": "rgb(19, 11, 67)"
+        },
+        {
+          "text": "Community-sourced Python exercises",
+          "font": "Poppins, PoppinsInitial, sans-serif",
+          "size": "31px",
+          "weight": "700",
+          "color": "rgb(19, 11, 67)"
+        },
+        {
+          "text": "Get started with the Python track",
+          "font": "Poppins, PoppinsInitial, sans-serif",
+          "size": "24px",
+          "weight": "600",
+          "color": "rgb(19, 11, 67)"
+        },
+        {
+          "text": "Code practice and mentorship for everyone",
+          "font": "Poppins, PoppinsInitial, sans-serif",
+          "size": "24px",
+          "weight": "600",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "text": "Editions",
+          "font": "Poppins, PoppinsInitial, sans-serif",
+          "size": "16px",
+          "weight": "700",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "text": "About",
+          "font": "Poppins, PoppinsInitial, sans-serif",
+          "size": "16px",
+          "weight": "700",
+          "color": "rgb(255, 255, 255)"
+        }
+      ],
+      "running_animations": [],
+      "desktop_screenshot": "docs/screenshots/platform-ui-audit/exercism-1440.png",
+      "mobile_screenshot": "docs/screenshots/platform-ui-audit/exercism-390.png",
+      "observation_kind": "public page and responsive capture",
+      "captured_text_excerpt_sha256": "81f429286473936fa3c6197dd2663fbe833ec4866bed1f49548f37a6ebe7bd55"
+    },
+    {
+      "site": "codewars",
+      "url": "https://www.codewars.com/",
+      "captured_at": "2026-11-03T08:12:04.134246+00:00",
+      "error": "Page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www.codewars.com/\", waiting until \"domcontentloaded\"\n",
+      "observation_kind": "public page and responsive capture",
+      "captured_text_excerpt_sha256": null
+    },
+    {
+      "site": "hackerrank",
+      "url": "https://www.hackerrank.com/interview/preparation-kits",
+      "captured_at": "2026-11-03T08:12:34.181005+00:00",
+      "status": 403,
+      "final_url": "https://www.hackerrank.com/interview/preparation-kits",
+      "title": "Access Denied",
+      "body_style": {
+        "color": "rgb(0, 0, 0)",
+        "background": "rgba(0, 0, 0, 0)",
+        "font": "\"Times New Roman\"",
+        "fontSize": "16px",
+        "border": "0px none rgb(0, 0, 0)",
+        "borderRadius": "0px",
+        "boxShadow": "none",
+        "transform": "none",
+        "transitionProperty": "all",
+        "transitionDuration": "0s",
+        "animationName": "none",
+        "animationDuration": "0s"
+      },
+      "headings": [
+        {
+          "text": "Access Denied",
+          "font": "\"Times New Roman\"",
+          "size": "32px",
+          "weight": "700",
+          "color": "rgb(0, 0, 0)"
+        }
+      ],
+      "running_animations": [],
+      "desktop_screenshot": "docs/screenshots/platform-ui-audit/hackerrank-1440.png",
+      "mobile_screenshot": "docs/screenshots/platform-ui-audit/hackerrank-390.png",
+      "observation_kind": "public page and responsive capture",
+      "captured_text_excerpt_sha256": "9f67ac4110cabe1eb82fe6b26fbd9402533f41ef07791d2dc38c8f6a01c3c830"
+    },
+    {
+      "site": "datacamp",
+      "url": "https://www.datacamp.com/tracks/career",
+      "captured_at": "2026-11-03T08:12:37.075135+00:00",
+      "status": 403,
+      "final_url": "https://www.datacamp.com/tracks/career",
+      "title": "Just a moment...",
+      "body_style": {
+        "color": "rgb(49, 49, 49)",
+        "background": "rgba(0, 0, 0, 0)",
+        "font": "system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+        "fontSize": "16px",
+        "border": "0px none rgb(49, 49, 49)",
+        "borderRadius": "0px",
+        "boxShadow": "none",
+        "transform": "none",
+        "transitionProperty": "all",
+        "transitionDuration": "0s",
+        "animationName": "none",
+        "animationDuration": "0s"
+      },
+      "headings": [
+        {
+          "text": "www.datacamp.com",
+          "font": "system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+          "size": "40px",
+          "weight": "600",
+          "color": "rgb(49, 49, 49)"
+        },
+        {
+          "text": "Performing security verification",
+          "font": "system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+          "size": "24px",
+          "weight": "600",
+          "color": "rgb(49, 49, 49)"
+        }
+      ],
+      "running_animations": [
+        {
+          "name": "lds-ring",
+          "duration": 1200,
+          "iterations": "infinite",
+          "tag": "DIV",
+          "className": ""
+        },
+        {
+          "name": "lds-ring",
+          "duration": 1200,
+          "iterations": "infinite",
+          "tag": "DIV",
+          "className": ""
+        },
+        {
+          "name": "lds-ring",
+          "duration": 1200,
+          "iterations": "infinite",
+          "tag": "DIV",
+          "className": ""
+        },
+        {
+          "name": "lds-ring",
+          "duration": 1200,
+          "iterations": "infinite",
+          "tag": "DIV",
+          "className": ""
+        }
+      ],
+      "desktop_screenshot": "docs/screenshots/platform-ui-audit/datacamp-1440.png",
+      "mobile_screenshot": "docs/screenshots/platform-ui-audit/datacamp-390.png",
+      "observation_kind": "public page and responsive capture",
+      "captured_text_excerpt_sha256": "144469e545cfa7adc7241e12b96d586a23f6f502ce15fdb73b13eb0c20d8a624"
+    },
+    {
+      "site": "tryhackme",
+      "url": "https://tryhackme.com/",
+      "captured_at": "2026-11-03T08:12:40.261726+00:00",
+      "status": 200,
+      "final_url": "https://tryhackme.com/",
+      "title": "Learn Cyber Security | TryHackMe Cyber Training",
+      "body_style": {
+        "color": "rgb(0, 0, 0)",
+        "background": "rgb(249, 249, 251)",
+        "font": "\"Source Sans Pro\", sans-serif",
+        "fontSize": "10px",
+        "border": "0px none rgb(0, 0, 0)",
+        "borderRadius": "0px",
+        "boxShadow": "none",
+        "transform": "none",
+        "transitionProperty": "all",
+        "transitionDuration": "0s",
+        "animationName": "none",
+        "animationDuration": "0s"
+      },
+      "headings": [
+        {
+          "text": "Anyone can learn cyber security with TryHackMe",
+          "font": "Ubuntu",
+          "size": "54px",
+          "weight": "500",
+          "color": "rgb(249, 249, 251)"
+        },
+        {
+          "text": "Go from wherever you are to the role you want",
+          "font": "Ubuntu",
+          "size": "36px",
+          "weight": "500",
+          "color": "rgb(21, 28, 43)"
+        },
+        {
+          "text": "Cyber Security 101",
+          "font": "Ubuntu",
+          "size": "16px",
+          "weight": "500",
+          "color": "rgb(21, 28, 43)"
+        },
+        {
+          "text": "Jr Penetration Tester",
+          "font": "Ubuntu",
+          "size": "16px",
+          "weight": "500",
+          "color": "rgb(21, 28, 43)"
+        },
+        {
+          "text": "SOC Level 1",
+          "font": "Ubuntu",
+          "size": "16px",
+          "weight": "500",
+          "color": "rgb(21, 28, 43)"
+        },
+        {
+          "text": "AI Security",
+          "font": "Ubuntu",
+          "size": "16px",
+          "weight": "500",
+          "color": "rgb(21, 28, 43)"
+        },
+        {
+          "text": "Pre Security",
+          "font": "Ubuntu",
+          "size": "16px",
+          "weight": "500",
+          "color": "rgb(21, 28, 43)"
+        },
+        {
+          "text": "CompTIA Pentest+",
+          "font": "Ubuntu",
+          "size": "16px",
+          "weight": "500",
+          "color": "rgb(21, 28, 43)"
+        },
+        {
+          "text": "Offensive Pentesting",
+          "font": "Ubuntu",
+          "size": "16px",
+          "weight": "500",
+          "color": "rgb(21, 28, 43)"
+        },
+        {
+          "text": "Advanced Endpoint Investigations",
+          "font": "Ubuntu",
+          "size": "16px",
+          "weight": "500",
+          "color": "rgb(21, 28, 43)"
+        },
+        {
+          "text": "Defending Azure",
+          "font": "Ubuntu",
+          "size": "16px",
+          "weight": "500",
+          "color": "rgb(21, 28, 43)"
+        },
+        {
+          "text": "Web Application Pentesting",
+          "font": "Ubuntu",
+          "size": "16px",
+          "weight": "500",
+          "color": "rgb(21, 28, 43)"
+        },
+        {
+          "text": "Web Application Red Teaming",
+          "font": "Ubuntu",
+          "size": "16px",
+          "weight": "500",
+          "color": "rgb(21, 28, 43)"
+        },
+        {
+          "text": "Red Teaming",
+          "font": "Ubuntu",
+          "size": "16px",
+          "weight": "500",
+          "color": "rgb(21, 28, 43)"
+        },
+        {
+          "text": "Security Engineer",
+          "font": "Ubuntu",
+          "size": "16px",
+          "weight": "500",
+          "color": "rgb(21, 28, 43)"
+        },
+        {
+          "text": "DevSecOps",
+          "font": "Ubuntu",
+          "size": "16px",
+          "weight": "500",
+          "color": "rgb(21, 28, 43)"
+        },
+        {
+          "text": "Real-world offensive & defensivecyber security training",
+          "font": "Ubuntu",
+          "size": "36px",
+          "weight": "500",
+          "color": "rgb(21, 28, 43)"
+        },
+        {
+          "text": "Cyber security learning that students love",
+          "font": "Ubuntu",
+          "size": "40px",
+          "weight": "500",
+          "color": "rgb(255, 255, 255)"
+        },
+        {
+          "text": "Learning",
+          "font": "Ubuntu",
+          "size": "24px",
+          "weight": "500",
+          "color": "rgb(249, 249, 251)"
+        },
+        {
+          "text": "Resources",
+          "font": "Ubuntu",
+          "size": "24px",
+          "weight": "500",
+          "color": "rgb(249, 249, 251)"
+        }
+      ],
+      "running_animations": [
+        {
+          "name": "cJxUxE",
+          "duration": 10000,
+          "iterations": "infinite",
+          "tag": "svg",
+          "className": "[object SVGAnimatedString]"
+        }
+      ],
+      "desktop_screenshot": "docs/screenshots/platform-ui-audit/tryhackme-1440.png",
+      "mobile_screenshot": "docs/screenshots/platform-ui-audit/tryhackme-390.png",
+      "observation_kind": "public page and responsive capture",
+      "captured_text_excerpt_sha256": "7ecf360ec969a00747661a51f69f8562315cb22120321af5d43478e308cfce43"
+    },
+    {
+      "site": "duolingo",
+      "url": "https://www.duolingo.com/",
+      "captured_at": "2026-11-03T08:17:40.006721+00:00",
+      "status": 200,
+      "final_url": "https://www.duolingo.com/",
+      "title": "Duolingo - The world’s most popular way to learn",
+      "rest_style": {
+        "tag": "A",
+        "text": "Get started",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "",
+        "borderBottom": "4px solid rgba(0, 0, 0, 0)",
+        "borderRadius": "12px",
+        "boxShadow": "none",
+        "transform": "matrix(1, 0, 0, 1, 0, 0)",
+        "outline": "rgb(255, 255, 255) none 3px",
+        "transitionProperty": "all",
+        "transitionDuration": "0s",
+        "animationName": "none",
+        "animationDuration": "0s"
+      },
+      "hover_style": {
+        "tag": "A",
+        "text": "Get started",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "",
+        "borderBottom": "4px solid rgba(0, 0, 0, 0)",
+        "borderRadius": "12px",
+        "boxShadow": "none",
+        "transform": "matrix(1, 0, 0, 1, 0, 0)",
+        "outline": "rgb(255, 255, 255) none 3px",
+        "transitionProperty": "all",
+        "transitionDuration": "0s",
+        "animationName": "none",
+        "animationDuration": "0s"
+      },
+      "pressed_style": {
+        "tag": "A",
+        "text": "Get started",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "",
+        "borderBottom": "4px solid rgba(0, 0, 0, 0)",
+        "borderRadius": "12px",
+        "boxShadow": "none",
+        "transform": "matrix(1, 0, 0, 1, 0, 4)",
+        "outline": "rgb(255, 255, 255) none 3px",
+        "transitionProperty": "all",
+        "transitionDuration": "0s",
+        "animationName": "none",
+        "animationDuration": "0s"
+      },
+      "focus_style": {
+        "tag": "A",
+        "text": "Get started",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "",
+        "borderBottom": "4px solid rgba(0, 0, 0, 0)",
+        "borderRadius": "12px",
+        "boxShadow": "none",
+        "transform": "matrix(1, 0, 0, 1, 0, 0)",
+        "outline": "rgb(255, 255, 255) none 3px",
+        "transitionProperty": "all",
+        "transitionDuration": "0s",
+        "animationName": "none",
+        "animationDuration": "0s"
+      },
+      "error": "Locator.click: Timeout 4000ms exceeded.\nCall log:\n  - waiting for get_by_role(\"button\", name=re.compile(r\"get started\", re.IGNORECASE)).first\n",
+      "observation_kind": "sampled hover, press, and navigation",
+      "captured_text_excerpt_sha256": null
+    },
+    {
+      "site": "htb",
+      "url": "https://academy.hackthebox.com/",
+      "captured_at": "2026-11-03T08:17:48.027479+00:00",
+      "status": 200,
+      "final_url": "https://academy.hackthebox.com/",
+      "title": "Best Online Cybersecurity Courses & Certifications | HTB Academy",
+      "rest_style": {
+        "tag": "A",
+        "text": "Start for Free",
+        "color": "rgb(20, 29, 43)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(20, 29, 43)",
+        "borderBottom": "0px none rgb(20, 29, 43)",
+        "borderRadius": "0px",
+        "boxShadow": "none",
+        "transform": "none",
+        "outline": "rgb(20, 29, 43) none 3px",
+        "transitionProperty": "all",
+        "transitionDuration": "0s",
+        "animationName": "none",
+        "animationDuration": "0s"
+      },
+      "hover_style": {
+        "tag": "A",
+        "text": "Start for Free",
+        "color": "rgb(20, 29, 43)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(20, 29, 43)",
+        "borderBottom": "0px none rgb(20, 29, 43)",
+        "borderRadius": "0px",
+        "boxShadow": "none",
+        "transform": "none",
+        "outline": "rgb(20, 29, 43) none 3px",
+        "transitionProperty": "all",
+        "transitionDuration": "0s",
+        "animationName": "none",
+        "animationDuration": "0s"
+      },
+      "pressed_style": {
+        "tag": "A",
+        "text": "Start for Free",
+        "color": "rgb(20, 29, 43)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(20, 29, 43)",
+        "borderBottom": "0px none rgb(20, 29, 43)",
+        "borderRadius": "0px",
+        "boxShadow": "none",
+        "transform": "none",
+        "outline": "rgb(20, 29, 43) none 3px",
+        "transitionProperty": "all",
+        "transitionDuration": "0s",
+        "animationName": "none",
+        "animationDuration": "0s"
+      },
+      "focus_style": {
+        "tag": "A",
+        "text": "Start for Free",
+        "color": "rgb(20, 29, 43)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(20, 29, 43)",
+        "borderBottom": "0px none rgb(20, 29, 43)",
+        "borderRadius": "0px",
+        "boxShadow": "none",
+        "transform": "none",
+        "outline": "rgb(20, 29, 43) none 3px",
+        "transitionProperty": "all",
+        "transitionDuration": "0s",
+        "animationName": "none",
+        "animationDuration": "0s"
+      },
+      "after_click_url": "https://academy.hackthebox.com/#pills-skill-paths-tab",
+      "after_click_selected": [
+        "SKILL PATHS",
+        "GENERAL",
+        "1"
+      ],
+      "observation_kind": "sampled hover, press, and navigation",
+      "captured_text_excerpt_sha256": "6d81aa0f22c599cb9e83330dd328723400d80baa0ee4ba46d0638150e8954867"
+    },
+    {
+      "site": "exercism",
+      "url": "https://exercism.org/tracks/python",
+      "captured_at": "2026-11-03T08:17:53.382765+00:00",
+      "status": 200,
+      "final_url": "https://exercism.org/tracks/python",
+      "title": "Python on Exercism",
+      "after_click_url": "https://exercism.org/tracks/python/exercises",
+      "after_click_selected": [],
+      "observation_kind": "sampled hover, press, and navigation",
+      "captured_text_excerpt_sha256": "9bac6e2e8c2bc88a5d9980c2ace1a6c11e42e461ceac174605846874480ed645"
+    },
+    {
+      "site": "portswigger",
+      "url": "https://portswigger.net/web-security",
+      "captured_at": "2026-11-03T08:17:57.593540+00:00",
+      "status": 200,
+      "final_url": "https://portswigger.net/web-security",
+      "title": "Web Security Academy: Free Online Training from PortSwigger",
+      "rest_style": {
+        "tag": "A",
+        "text": "Login",
+        "color": "rgb(255, 102, 51)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "1px solid rgb(255, 102, 51)",
+        "borderBottom": "1px solid rgb(255, 102, 51)",
+        "borderRadius": "0px",
+        "boxShadow": "none",
+        "transform": "none",
+        "outline": "rgb(255, 102, 51) none 3px",
+        "transitionProperty": "all",
+        "transitionDuration": "0s",
+        "animationName": "none",
+        "animationDuration": "0s"
+      },
+      "hover_style": {
+        "tag": "A",
+        "text": "Login",
+        "color": "rgb(255, 102, 51)",
+        "background": "rgb(51, 51, 50)",
+        "border": "1px solid rgb(51, 51, 50)",
+        "borderBottom": "1px solid rgb(51, 51, 50)",
+        "borderRadius": "0px",
+        "boxShadow": "none",
+        "transform": "none",
+        "outline": "rgb(255, 102, 51) none 3px",
+        "transitionProperty": "background-color, color",
+        "transitionDuration": "0.2s, 0.2s",
+        "animationName": "none",
+        "animationDuration": "0s"
+      },
+      "pressed_style": {
+        "tag": "A",
+        "text": "Login",
+        "color": "rgb(255, 102, 51)",
+        "background": "rgb(51, 51, 50)",
+        "border": "1px solid rgb(51, 51, 50)",
+        "borderBottom": "1px solid rgb(51, 51, 50)",
+        "borderRadius": "0px",
+        "boxShadow": "none",
+        "transform": "none",
+        "outline": "rgb(255, 102, 51) none 3px",
+        "transitionProperty": "background-color, color",
+        "transitionDuration": "0.2s, 0.2s",
+        "animationName": "none",
+        "animationDuration": "0s"
+      },
+      "focus_style": {
+        "tag": "A",
+        "text": "Login",
+        "color": "rgb(255, 102, 51)",
+        "background": "rgba(51, 51, 50, 0.78)",
+        "border": "1px solid rgb(255, 102, 51)",
+        "borderBottom": "1px solid rgb(255, 102, 51)",
+        "borderRadius": "0px",
+        "boxShadow": "none",
+        "transform": "none",
+        "outline": "rgb(255, 102, 51) none 3px",
+        "transitionProperty": "all",
+        "transitionDuration": "0s",
+        "animationName": "none",
+        "animationDuration": "0s"
+      },
+      "after_click_url": "https://portswigger.net/web-security/all-labs",
+      "after_click_selected": [],
+      "observation_kind": "sampled hover, press, and navigation",
+      "captured_text_excerpt_sha256": "a365783a84bd478c55008e8cd1f4046ca282243ce0400e90184151a0a5374f32"
+    },
+    {
+      "site": "tryhackme",
+      "url": "https://tryhackme.com/",
+      "captured_at": "2026-11-03T08:18:03.158024+00:00",
+      "status": 200,
+      "final_url": "https://tryhackme.com/",
+      "title": "Learn Cyber Security | TryHackMe Cyber Training",
+      "rest_style": {
+        "tag": "BUTTON",
+        "text": "Join for FREE",
+        "color": "rgb(21, 28, 43)",
+        "background": "rgb(163, 234, 42)",
+        "border": "1px solid rgb(163, 234, 42)",
+        "borderBottom": "1px solid rgb(163, 234, 42)",
+        "borderRadius": "5px",
+        "boxShadow": "none",
+        "transform": "none",
+        "outline": "rgb(21, 28, 43) none 3px",
+        "transitionProperty": "all",
+        "transitionDuration": "0.2s",
+        "animationName": "none",
+        "animationDuration": "0s"
+      },
+      "hover_style": {
+        "tag": "BUTTON",
+        "text": "Join for FREE",
+        "color": "rgb(249, 249, 251)",
+        "background": "rgba(163, 234, 42, 0.3)",
+        "border": "1px solid rgb(163, 234, 42)",
+        "borderBottom": "1px solid rgb(163, 234, 42)",
+        "borderRadius": "5px",
+        "boxShadow": "none",
+        "transform": "none",
+        "outline": "rgb(249, 249, 251) none 3px",
+        "transitionProperty": "all",
+        "transitionDuration": "0.2s",
+        "animationName": "none",
+        "animationDuration": "0s"
+      },
+      "pressed_style": {
+        "tag": "BUTTON",
+        "text": "Join for FREE",
+        "color": "rgb(249, 249, 251)",
+        "background": "rgba(163, 234, 42, 0.3)",
+        "border": "1px solid rgb(163, 234, 42)",
+        "borderBottom": "1px solid rgb(163, 234, 42)",
+        "borderRadius": "5px",
+        "boxShadow": "none",
+        "transform": "none",
+        "outline": "rgb(249, 249, 251) none 3px",
+        "transitionProperty": "all",
+        "transitionDuration": "0.2s",
+        "animationName": "none",
+        "animationDuration": "0s"
+      },
+      "focus_style": {
+        "tag": "BUTTON",
+        "text": "Join for FREE",
+        "color": "rgb(246, 246, 248)",
+        "background": "rgba(163, 234, 42, 0.31)",
+        "border": "1px solid rgb(163, 234, 42)",
+        "borderBottom": "1px solid rgb(163, 234, 42)",
+        "borderRadius": "5px",
+        "boxShadow": "none",
+        "transform": "none",
+        "outline": "rgb(246, 246, 248) none 3px",
+        "transitionProperty": "all",
+        "transitionDuration": "0.2s",
+        "animationName": "none",
+        "animationDuration": "0s"
+      },
+      "after_click_url": "https://tryhackme.com/",
+      "after_click_selected": [
+        "Already know the basics",
+        "All",
+        "Exercises in every lesson"
+      ],
+      "observation_kind": "sampled hover, press, and navigation",
+      "captured_text_excerpt_sha256": "ed830614ff40db9ff6900bcc48e0ead60c7894603091051bf4ae64699da4f766"
+    },
+    {
+      "site": "codewars",
+      "url": "https://www.codewars.com/",
+      "captured_at": "2026-11-03T08:18:08.524100+00:00",
+      "status": 200,
+      "final_url": "https://www.codewars.com/",
+      "title": "Codewars - Achieve mastery through coding practice and developer mentorship",
+      "rest_style": {
+        "tag": "A",
+        "text": "Get Started",
+        "color": "rgb(22, 23, 27)",
+        "background": "rgb(255, 77, 77)",
+        "border": "0px none rgb(22, 23, 27)",
+        "borderBottom": "0px none rgb(22, 23, 27)",
+        "borderRadius": "4px",
+        "boxShadow": "none",
+        "transform": "none",
+        "outline": "rgb(22, 23, 27) none 3px",
+        "transitionProperty": "opacity",
+        "transitionDuration": "0.2s",
+        "animationName": "none",
+        "animationDuration": "0s"
+      },
+      "hover_style": {
+        "tag": "A",
+        "text": "Get Started",
+        "color": "rgb(22, 23, 27)",
+        "background": "rgb(255, 77, 77)",
+        "border": "0px none rgb(22, 23, 27)",
+        "borderBottom": "0px none rgb(22, 23, 27)",
+        "borderRadius": "4px",
+        "boxShadow": "none",
+        "transform": "none",
+        "outline": "rgb(22, 23, 27) none 0px",
+        "transitionProperty": "opacity",
+        "transitionDuration": "0.2s",
+        "animationName": "none",
+        "animationDuration": "0s"
+      },
+      "pressed_style": {
+        "tag": "A",
+        "text": "Get Started",
+        "color": "rgb(22, 23, 27)",
+        "background": "rgb(255, 77, 77)",
+        "border": "0px none rgb(22, 23, 27)",
+        "borderBottom": "0px none rgb(22, 23, 27)",
+        "borderRadius": "4px",
+        "boxShadow": "none",
+        "transform": "none",
+        "outline": "rgb(22, 23, 27) none 0px",
+        "transitionProperty": "opacity",
+        "transitionDuration": "0.2s",
+        "animationName": "none",
+        "animationDuration": "0s"
+      },
+      "focus_style": {
+        "tag": "A",
+        "text": "Get Started",
+        "color": "rgb(22, 23, 27)",
+        "background": "rgb(255, 77, 77)",
+        "border": "0px none rgb(22, 23, 27)",
+        "borderBottom": "0px none rgb(22, 23, 27)",
+        "borderRadius": "4px",
+        "boxShadow": "none",
+        "transform": "none",
+        "outline": "rgb(22, 23, 27) none 3px",
+        "transitionProperty": "opacity",
+        "transitionDuration": "0.2s",
+        "animationName": "none",
+        "animationDuration": "0s"
+      },
+      "after_click_url": "https://www.codewars.com/",
+      "after_click_selected": [],
+      "observation_kind": "sampled hover, press, and navigation",
+      "captured_text_excerpt_sha256": "208993206957901d8ffadc52d550c8b619256b3f8d9b60c1a7b86ad38ffeddba"
+    },
+    {
+      "site": "duolingo",
+      "url": "https://www.duolingo.com/",
+      "observed_at": "2026-11-03T08:27:17.967773+00:00",
+      "action": "Clicked Get started; stopped before creating account",
+      "final_url": "https://www.duolingo.com/register",
+      "status": 200,
+      "title": "Learning Goal - Duolingo",
+      "observation_kind": "public onboarding or lab brief",
+      "captured_text_excerpt_sha256": "005c51f86d6a95e514fa2f7dd14e6d38ee03f4bf81bf2a1a45f98e4a653c114a"
+    },
+    {
+      "site": "portswigger",
+      "url": "https://portswigger.net/web-security/sql-injection/lab-retrieve-hidden-data",
+      "observed_at": "2026-11-03T08:27:20.846933+00:00",
+      "action": "Read a public lab brief; did not access or start target",
+      "final_url": "https://portswigger.net/web-security/sql-injection/lab-retrieve-hidden-data",
+      "status": 200,
+      "title": "Lab: SQL injection vulnerability in WHERE clause allowing retrieval of hidden data | Web Security Academy",
+      "observation_kind": "public onboarding or lab brief",
+      "captured_text_excerpt_sha256": "1b7fd577ac84f082205fc71c2b2b029441113fabba6656861639b11c7d4e1689"
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "docs/screenshots/platform-ui-audit/codewars-390.png",
+      "bytes": 193177,
+      "sha256": "db3a1fb6dcb36d7aa98696c5d61319af29868b5bec8f6ef32589f9f41608551b",
+      "scope": "public product page or sampled interaction; research reference only"
+    },
+    {
+      "path": "docs/screenshots/platform-ui-audit/codewars-focus.png",
+      "bytes": 907628,
+      "sha256": "4278271202be9fe199589f8c10be47fc3f11185d9af642d0a1cd1f9c19b53f7e",
+      "scope": "public product page or sampled interaction; research reference only"
+    },
+    {
+      "path": "docs/screenshots/platform-ui-audit/codewars-interaction.png",
+      "bytes": 877943,
+      "sha256": "bbc504954aaad10719e0b51e2323b8fe7540142f78fe098bc407438ef1901013",
+      "scope": "public product page or sampled interaction; research reference only"
+    },
+    {
+      "path": "docs/screenshots/platform-ui-audit/datacamp-1440.png",
+      "bytes": 37552,
+      "sha256": "1f0d051c48c867c5526bb76cc861139b63e18037a50275cbf0a68d7d2fb92e9b",
+      "scope": "access-block evidence, not product UI"
+    },
+    {
+      "path": "docs/screenshots/platform-ui-audit/datacamp-390.png",
+      "bytes": 30167,
+      "sha256": "dbfe5546e9ea066434da44db128bb0f2a00c25ca7f87fc841a532cf21bc55082",
+      "scope": "access-block evidence, not product UI"
+    },
+    {
+      "path": "docs/screenshots/platform-ui-audit/duolingo-1440.png",
+      "bytes": 53795,
+      "sha256": "748128b60514132d526c6f7ab0aba81b0643b2f40069ae66d811f23ec896f008",
+      "scope": "public product page or sampled interaction; research reference only"
+    },
+    {
+      "path": "docs/screenshots/platform-ui-audit/duolingo-390.png",
+      "bytes": 37939,
+      "sha256": "164ae111aee586e14716e68df3c79f7aa7ca8f335c8f5849188c3a83159c5b07",
+      "scope": "public product page or sampled interaction; research reference only"
+    },
+    {
+      "path": "docs/screenshots/platform-ui-audit/duolingo-focus.png",
+      "bytes": 44574,
+      "sha256": "04d985cfc6365fc92b9dec7736183b1efec9b23997452d4e4b85c4a0ea764109",
+      "scope": "public product page or sampled interaction; research reference only"
+    },
+    {
+      "path": "docs/screenshots/platform-ui-audit/duolingo-onboarding.png",
+      "bytes": 55378,
+      "sha256": "855d083b6f52105883ecae2b33a79ec80f7c2a6139be74c433e99e973594299e",
+      "scope": "public product page or sampled interaction; research reference only"
+    },
+    {
+      "path": "docs/screenshots/platform-ui-audit/exercism-1440.png",
+      "bytes": 442167,
+      "sha256": "919d9eaa2573e14303a26ed46a20f31828aad2535e7978fb69ee201395606132",
+      "scope": "public product page or sampled interaction; research reference only"
+    },
+    {
+      "path": "docs/screenshots/platform-ui-audit/exercism-390.png",
+      "bytes": 83671,
+      "sha256": "c12c7002c681d394260bcf51babd77772045013f84bdc73f63aadb1e685d2631",
+      "scope": "public product page or sampled interaction; research reference only"
+    },
+    {
+      "path": "docs/screenshots/platform-ui-audit/exercism-interaction.png",
+      "bytes": 140540,
+      "sha256": "af37f16151c48c12d67ba752c400299af48702520163b4477c571598ca83627d",
+      "scope": "public product page or sampled interaction; research reference only"
+    },
+    {
+      "path": "docs/screenshots/platform-ui-audit/hackerrank-1440.png",
+      "bytes": 26205,
+      "sha256": "7b440f19aa5d171a22e1f6e84f8f9647cc2e97922994dee658bd767c15908add",
+      "scope": "access-block evidence, not product UI"
+    },
+    {
+      "path": "docs/screenshots/platform-ui-audit/hackerrank-390.png",
+      "bytes": 21271,
+      "sha256": "e1800f90f4a675a31aabe9504ed811d03d986eafbc9cfc2e10f5b8c914599ff7",
+      "scope": "access-block evidence, not product UI"
+    },
+    {
+      "path": "docs/screenshots/platform-ui-audit/htb-1440.png",
+      "bytes": 629200,
+      "sha256": "8e78e46140f83ae5bad5b2bbbc53ec73389baee7609d4518217914d7d89d94fb",
+      "scope": "public product page or sampled interaction; research reference only"
+    },
+    {
+      "path": "docs/screenshots/platform-ui-audit/htb-390.png",
+      "bytes": 126648,
+      "sha256": "ec6c07375ec3a3cf0b9c84571860bf477dd9d46378c12b95ebf07e89f424c908",
+      "scope": "public product page or sampled interaction; research reference only"
+    },
+    {
+      "path": "docs/screenshots/platform-ui-audit/htb-focus.png",
+      "bytes": 658918,
+      "sha256": "39e3a8f43647dff3a844b6e4b85a52ad0127d7c7f77a6cd21660d4281af8c7b1",
+      "scope": "public product page or sampled interaction; research reference only"
+    },
+    {
+      "path": "docs/screenshots/platform-ui-audit/htb-interaction.png",
+      "bytes": 303490,
+      "sha256": "8fcf5aece34c958da6985e10d4ca3d9f900ae92d0f35e5949f125a82766b3f67",
+      "scope": "public product page or sampled interaction; research reference only"
+    },
+    {
+      "path": "docs/screenshots/platform-ui-audit/portswigger-1440.png",
+      "bytes": 306772,
+      "sha256": "b0858f054d33aee129386a23f7da5a402dd41b11d915ccb30b911e4c7ee28f10",
+      "scope": "public product page or sampled interaction; research reference only"
+    },
+    {
+      "path": "docs/screenshots/platform-ui-audit/portswigger-390.png",
+      "bytes": 64403,
+      "sha256": "a812492a10352fb1f9e26cb2a738326d6f656d42efa8bdf3f48a1a1c337ce83d",
+      "scope": "public product page or sampled interaction; research reference only"
+    },
+    {
+      "path": "docs/screenshots/platform-ui-audit/portswigger-focus.png",
+      "bytes": 306399,
+      "sha256": "d25cc1688d2e2ce01322e29ce654d2659f24707de269a9c9ccf748edaf767fd3",
+      "scope": "public product page or sampled interaction; research reference only"
+    },
+    {
+      "path": "docs/screenshots/platform-ui-audit/portswigger-interaction.png",
+      "bytes": 145801,
+      "sha256": "7997961f57d0cae4c804537489f8cf8840c125bda5319f8a7c004de1fd8b334b",
+      "scope": "public product page or sampled interaction; research reference only"
+    },
+    {
+      "path": "docs/screenshots/platform-ui-audit/portswigger-lab-brief.png",
+      "bytes": 155396,
+      "sha256": "680b268f633c7193ab4041694af9829bfcefaebff798da89ad1d2ee38bcf0d51",
+      "scope": "public product page or sampled interaction; research reference only"
+    },
+    {
+      "path": "docs/screenshots/platform-ui-audit/tryhackme-1440.png",
+      "bytes": 279606,
+      "sha256": "0f973b7b57b64e9c9074a8edce09264b3d70ebb66fc46f7dac69031fac516fc1",
+      "scope": "public product page or sampled interaction; research reference only"
+    },
+    {
+      "path": "docs/screenshots/platform-ui-audit/tryhackme-390.png",
+      "bytes": 72285,
+      "sha256": "be01a0d33e5845f4aa4b8d841464788e411b790ba38a99ceea64dd1bd82e33cd",
+      "scope": "public product page or sampled interaction; research reference only"
+    },
+    {
+      "path": "docs/screenshots/platform-ui-audit/tryhackme-focus.png",
+      "bytes": 557940,
+      "sha256": "81b859b44ea6be9ddd3bc4acc0e84597ee9eb965e20f87ebd3404e7430642811",
+      "scope": "public product page or sampled interaction; research reference only"
+    },
+    {
+      "path": "docs/screenshots/platform-ui-audit/tryhackme-interaction.png",
+      "bytes": 179341,
+      "sha256": "2d85f1b508bb21cb187815b419606d7b92102e9d373ff097a9489982cb20d260",
+      "scope": "public product page or sampled interaction; research reference only"
+    }
+  ],
+  "additional_source_access_limits": [
+    {
+      "url": "https://docs.codewars.com/community/clans/",
+      "status": 404,
+      "retrieved_at": "2026-11-03T08:15:08.568649+00:00"
+    }
+  ],
+  "limitations": [
+    "Signed-in reward, milestone, account-switch, and organisation workflows were documented rather than comprehensively operated.",
+    "Programmatic focus samples are not a full keyboard audit.",
+    "Computed animation inventories do not include every canvas/video/JavaScript effect.",
+    "Old Duolingo and Exercism Teams articles are labelled historical/stale; pricing and availability are not inferred from them.",
+    "Competitor artwork is research evidence, not licensed assets for Ascend."
+  ]
+}

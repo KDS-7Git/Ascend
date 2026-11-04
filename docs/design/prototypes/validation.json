@@ -1,0 +1,855 @@
+{
+  "artifact": "Ascend experience design prototype",
+  "reviewed_at": "2026-11-03T08:59:10.101478+00:00",
+  "scope": "Standalone sample-data prototype. No production service, real user account, hosted runtime, or external website used by these final checks.",
+  "current_source_sha256": {
+    "html": "dfea178c9350727ba9b1e210d09f716a36778ac52450a196e717489e6403316a",
+    "css": "f766ff86bce06810156b7ac41c12e4db83a59c436f0d94f5ed9b676e0c072e7c",
+    "js": "385d7fae55e72841eaffa2e3c193eb7c7869f9b1bafec3dc6638b5c0dd87e793"
+  },
+  "previous_behavior_review": {
+    "evidence_file": "../../screenshots/ascend-ui-redesign-audit/prototype-review/observations.json",
+    "evidence_sha256": "50bc2c4b0af0b886e117f0c830a99b58867ab454ca5f7068f7d9ca85a3e24d04",
+    "method": "Isolated Chromium contexts against a disposable localhost static server. No Ascend service, live account, or runtime used.",
+    "reviewed_source_sha256": {
+      "html": "dfea178c9350727ba9b1e210d09f716a36778ac52450a196e717489e6403316a",
+      "css": "82d7980e5a9b39cf26693f4436e3c3f00d9d33d8b7aecde3817fa4d0640ecbd3",
+      "js": "385d7fae55e72841eaffa2e3c193eb7c7869f9b1bafec3dc6638b5c0dd87e793"
+    },
+    "html_and_javascript_unchanged": true,
+    "later_change": "CSS form boundaries and header-control touch targets adjusted; final layout and capture checks below use the current CSS.",
+    "flows": [
+      {
+        "name": "tour-and-accounts",
+        "result": {
+          "account_notes_isolated": true,
+          "tour_skip_and_reopen": true,
+          "per_account_tour_seen": true,
+          "notes_survive_reload": true,
+          "download_contains_correct_account": true,
+          "goals_isolated": true,
+          "xp": {
+            "mira": 1240,
+            "arun": 640
+          }
+        },
+        "completed": true
+      },
+      {
+        "name": "queue-lifecycle",
+        "result": {
+          "queue_lifecycle": true,
+          "survives_reload": true,
+          "runtime_reward_zero": true,
+          "second_account_isolated": true,
+          "offer_expires_without_runtime": true,
+          "cancel_releases_reservation": true
+        },
+        "completed": true
+      },
+      {
+        "name": "search-accessibility",
+        "result": {
+          "search_routes_and_filter": true,
+          "skip_link_before": "From commit to confidence.",
+          "skip_link_after": "From commit to confidence.",
+          "skip_link_preserves_page": true,
+          "dark_theme": "dark",
+          "reduced_motion_animations": [],
+          "focus": "main"
+        },
+        "completed": true
+      },
+      {
+        "name": "blocked-storage",
+        "result": {
+          "save_status_when_write_fails": "Kept in this open tab only. Browser storage failed; download a copy before closing.",
+          "note_after_reload": "",
+          "save_failure_disclosed": true
+        },
+        "completed": true
+      },
+      {
+        "name": "mobile-layout",
+        "result": [
+          {
+            "route": "today",
+            "innerWidth": 390,
+            "scrollWidth": 390,
+            "overflow": []
+          },
+          {
+            "route": "playground",
+            "innerWidth": 390,
+            "scrollWidth": 390,
+            "overflow": [
+              {
+                "tag": "BUTTON",
+                "cls": "chip",
+                "right": 404
+              }
+            ]
+          },
+          {
+            "route": "devops",
+            "innerWidth": 390,
+            "scrollWidth": 390,
+            "overflow": []
+          },
+          {
+            "route": "example",
+            "innerWidth": 390,
+            "scrollWidth": 390,
+            "overflow": []
+          },
+          {
+            "route": "queue",
+            "innerWidth": 390,
+            "scrollWidth": 390,
+            "overflow": []
+          },
+          {
+            "route": "work",
+            "innerWidth": 390,
+            "scrollWidth": 390,
+            "overflow": []
+          },
+          {
+            "route": "progress",
+            "innerWidth": 390,
+            "scrollWidth": 390,
+            "overflow": []
+          }
+        ],
+        "completed": true
+      },
+      {
+        "name": "challenge-results",
+        "result": {
+          "brief_hides_evidence": true,
+          "clock_starts_and_survives_navigation": true,
+          "wrong_answer_no_xp": true,
+          "success_updates_diagram_status": true,
+          "duplicate_submit_no_xp": true,
+          "reloading_no_duplicate_xp": true,
+          "second_learner_no_mixed_notes_or_rewards": true
+        },
+        "completed": true
+      },
+      {
+        "name": "foreground-conflicts",
+        "result": {
+          "hosted_blocks_example": true,
+          "explicit_release_opens_example": true,
+          "active_challenge_blocks_claim": true,
+          "ending_attempt_awards_nothing": true,
+          "offered_lab_claims_after_end": true,
+          "hosted_blocks_challenge": true,
+          "explicit_release_opens_challenge": true
+        },
+        "completed": true
+      },
+      {
+        "name": "focused-mobile-tour",
+        "result": {
+          "one_evidence_panel_per_step": true,
+          "announces_each_step": true,
+          "targets": [
+            {
+              "step": 1,
+              "scrollY": 0,
+              "targetTop": 662.5625,
+              "targetBottom": 913.75,
+              "viewport": 844,
+              "visible": true
+            },
+            {
+              "step": 2,
+              "scrollY": 0,
+              "targetTop": 680.671875,
+              "targetBottom": 968.828125,
+              "viewport": 844,
+              "visible": true
+            },
+            {
+              "step": 3,
+              "scrollY": 0,
+              "targetTop": 680.671875,
+              "targetBottom": 902.265625,
+              "viewport": 844,
+              "visible": true
+            }
+          ],
+          "finish_restores_all_steps": true
+        },
+        "completed": true
+      }
+    ],
+    "js_errors": [],
+    "static_server_stopped": true
+  },
+  "final_review": {
+    "method": "Isolated headless Chromium contexts opening file:// with repository-local assets; screenshots disable animations for stable capture.",
+    "browser_version": "156.0.8078.4",
+    "layout_checks": [
+      {
+        "viewport": 360,
+        "document": 360,
+        "body": 360,
+        "heading": "Make something work\nin the real world.",
+        "route": "today",
+        "state": "default",
+        "width": 360,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 360,
+        "document": 360,
+        "body": 360,
+        "heading": "Your practice, your way.",
+        "route": "playground",
+        "state": "default",
+        "width": 360,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 360,
+        "document": 360,
+        "body": 360,
+        "heading": "From commit to confidence.",
+        "route": "devops",
+        "state": "default",
+        "width": 360,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 360,
+        "document": 360,
+        "body": 360,
+        "heading": "The release is running.\nWhy are users seeing 502?",
+        "route": "challenge",
+        "state": "default",
+        "width": 360,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 360,
+        "document": 360,
+        "body": 360,
+        "heading": "Follow a request.\nFind the broken connection.",
+        "route": "example",
+        "state": "default",
+        "width": 360,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 360,
+        "document": 360,
+        "body": 360,
+        "heading": "A place to try it for real.",
+        "route": "queue",
+        "state": "default",
+        "width": 360,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 360,
+        "document": 360,
+        "body": 360,
+        "heading": "Pick up the thread.",
+        "route": "work",
+        "state": "default",
+        "width": 360,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 360,
+        "document": 360,
+        "body": 360,
+        "heading": "See what is getting stronger.",
+        "route": "progress",
+        "state": "default",
+        "width": 360,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 390,
+        "document": 390,
+        "body": 390,
+        "heading": "Make something work\nin the real world.",
+        "route": "today",
+        "state": "default",
+        "width": 390,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 390,
+        "document": 390,
+        "body": 390,
+        "heading": "Your practice, your way.",
+        "route": "playground",
+        "state": "default",
+        "width": 390,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 390,
+        "document": 390,
+        "body": 390,
+        "heading": "From commit to confidence.",
+        "route": "devops",
+        "state": "default",
+        "width": 390,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 390,
+        "document": 390,
+        "body": 390,
+        "heading": "The release is running.\nWhy are users seeing 502?",
+        "route": "challenge",
+        "state": "default",
+        "width": 390,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 390,
+        "document": 390,
+        "body": 390,
+        "heading": "Follow a request.\nFind the broken connection.",
+        "route": "example",
+        "state": "default",
+        "width": 390,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 390,
+        "document": 390,
+        "body": 390,
+        "heading": "A place to try it for real.",
+        "route": "queue",
+        "state": "default",
+        "width": 390,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 390,
+        "document": 390,
+        "body": 390,
+        "heading": "Pick up the thread.",
+        "route": "work",
+        "state": "default",
+        "width": 390,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 390,
+        "document": 390,
+        "body": 390,
+        "heading": "See what is getting stronger.",
+        "route": "progress",
+        "state": "default",
+        "width": 390,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 768,
+        "document": 768,
+        "body": 768,
+        "heading": "Make something work\nin the real world.",
+        "route": "today",
+        "state": "default",
+        "width": 768,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 768,
+        "document": 768,
+        "body": 768,
+        "heading": "Your practice, your way.",
+        "route": "playground",
+        "state": "default",
+        "width": 768,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 768,
+        "document": 768,
+        "body": 768,
+        "heading": "From commit to confidence.",
+        "route": "devops",
+        "state": "default",
+        "width": 768,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 768,
+        "document": 768,
+        "body": 768,
+        "heading": "The release is running.\nWhy are users seeing 502?",
+        "route": "challenge",
+        "state": "default",
+        "width": 768,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 768,
+        "document": 768,
+        "body": 768,
+        "heading": "Follow a request.\nFind the broken connection.",
+        "route": "example",
+        "state": "default",
+        "width": 768,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 768,
+        "document": 768,
+        "body": 768,
+        "heading": "A place to try it for real.",
+        "route": "queue",
+        "state": "default",
+        "width": 768,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 768,
+        "document": 768,
+        "body": 768,
+        "heading": "Pick up the thread.",
+        "route": "work",
+        "state": "default",
+        "width": 768,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 768,
+        "document": 768,
+        "body": 768,
+        "heading": "See what is getting stronger.",
+        "route": "progress",
+        "state": "default",
+        "width": 768,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 1440,
+        "document": 1440,
+        "body": 1440,
+        "heading": "Make something work\nin the real world.",
+        "route": "today",
+        "state": "default",
+        "width": 1440,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 1440,
+        "document": 1440,
+        "body": 1440,
+        "heading": "Your practice, your way.",
+        "route": "playground",
+        "state": "default",
+        "width": 1440,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 1440,
+        "document": 1440,
+        "body": 1440,
+        "heading": "From commit to confidence.",
+        "route": "devops",
+        "state": "default",
+        "width": 1440,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 1440,
+        "document": 1440,
+        "body": 1440,
+        "heading": "The release is running.\nWhy are users seeing 502?",
+        "route": "challenge",
+        "state": "default",
+        "width": 1440,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 1440,
+        "document": 1440,
+        "body": 1440,
+        "heading": "Follow a request.\nFind the broken connection.",
+        "route": "example",
+        "state": "default",
+        "width": 1440,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 1440,
+        "document": 1440,
+        "body": 1440,
+        "heading": "A place to try it for real.",
+        "route": "queue",
+        "state": "default",
+        "width": 1440,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 1440,
+        "document": 1440,
+        "body": 1440,
+        "heading": "Pick up the thread.",
+        "route": "work",
+        "state": "default",
+        "width": 1440,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 1440,
+        "document": 1440,
+        "body": 1440,
+        "heading": "See what is getting stronger.",
+        "route": "progress",
+        "state": "default",
+        "width": 1440,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 1440,
+        "document": 1440,
+        "body": 1440,
+        "heading": "The release is running.\nWhy are users seeing 502?",
+        "route": "challenge",
+        "state": "active",
+        "width": 1440,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 1440,
+        "document": 1440,
+        "body": 1440,
+        "heading": "The release is running.\nWhy are users seeing 502?",
+        "route": "challenge",
+        "state": "passed",
+        "width": 1440,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 390,
+        "document": 390,
+        "body": 390,
+        "heading": "The release is running.\nWhy are users seeing 502?",
+        "route": "challenge",
+        "state": "active",
+        "width": 390,
+        "no_horizontal_document_overflow": true
+      },
+      {
+        "viewport": 360,
+        "document": 360,
+        "body": 360,
+        "heading": "The release is running.\nWhy are users seeing 502?",
+        "route": "challenge",
+        "state": "active",
+        "width": 360,
+        "no_horizontal_document_overflow": true
+      }
+    ],
+    "header_touch_targets": [
+      {
+        "viewport": 360,
+        "selector": "#search-button",
+        "width": 44,
+        "height": 44
+      },
+      {
+        "viewport": 360,
+        "selector": "#account-button",
+        "width": 44,
+        "height": 44
+      },
+      {
+        "viewport": 390,
+        "selector": "#search-button",
+        "width": 44,
+        "height": 44
+      },
+      {
+        "viewport": 390,
+        "selector": "#account-button",
+        "width": 44,
+        "height": 44
+      }
+    ],
+    "scenarios": [
+      {
+        "name": "challenge-current-source-smoke",
+        "passed": true,
+        "checks": [
+          "explicit start",
+          "active workbench",
+          "wrong answer no XP",
+          "correct result 50 XP",
+          "result and note survive reload",
+          "no duplicated XP on reload"
+        ]
+      },
+      {
+        "name": "final-phone-workbench",
+        "passed": true,
+        "checks": [
+          "first example tour shows only its current evidence",
+          "active challenge fits 390 and 360 CSS pixels"
+        ]
+      },
+      {
+        "name": "os-reduced-motion-with-dark-theme",
+        "passed": true,
+        "result": {
+          "preference": true,
+          "theme": "dark",
+          "motion": "off",
+          "activeAnimations": 0
+        }
+      },
+      {
+        "name": "settled-capture-review",
+        "passed": true,
+        "checks": [
+          "active challenge capture shows nonzero original clock",
+          "temporary status toast closes before selected captures"
+        ],
+        "active_clock_at_capture": "00:05",
+        "js_errors": []
+      }
+    ],
+    "screenshots": [
+      {
+        "file": "previews/today-desktop.png",
+        "route": "today",
+        "state": "default",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "full_page": true,
+        "sha256": "31dc986217c73061fc6ad9985c6b11d9058f5345661eb1faac72d39f2193cd59",
+        "bytes": 171250
+      },
+      {
+        "file": "previews/playground-desktop.png",
+        "route": "playground",
+        "state": "default",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "full_page": true,
+        "sha256": "748b959d80bdcf78bc2c684cb3b99610d7c58125f23003ff7c4fb8d4e015a5d0",
+        "bytes": 132717
+      },
+      {
+        "file": "previews/devops-desktop.png",
+        "route": "devops",
+        "state": "default",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "full_page": true,
+        "sha256": "72c4c8a6f45204163a0abc921624ed85b08be16cc9993a651dfec3b4e364aedd",
+        "bytes": 205603
+      },
+      {
+        "file": "previews/challenge-desktop.png",
+        "route": "challenge",
+        "state": "active",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "full_page": true,
+        "sha256": "032494e148e4223ffafe2da5e1c840e2d3e27f260251ce0bed0979f940721cab",
+        "bytes": 187929,
+        "capture_note": "Captured after temporary status toast closed naturally."
+      },
+      {
+        "file": "previews/challenge-passed-desktop.png",
+        "route": "challenge",
+        "state": "passed",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "full_page": true,
+        "sha256": "3f79cd15ce1a29defcaeb2de2626aaef0b97c4de4eeb12afbe079cbd9a97ca58",
+        "bytes": 209356,
+        "capture_note": "Captured after temporary status toast closed naturally."
+      },
+      {
+        "file": "previews/queue-desktop.png",
+        "route": "queue",
+        "state": "offered",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "full_page": true,
+        "sha256": "355e2d5d7160245bef601e0d95a46683398e287afb986933e041d5e23fbd2adc",
+        "bytes": 106005,
+        "capture_note": "Captured after temporary status toast closed naturally."
+      },
+      {
+        "file": "previews/milestone-desktop.png",
+        "route": "progress",
+        "state": "milestone preview dialog",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "full_page": true,
+        "sha256": "ab16ee215120826a332d18a5537679de92a7739d430956bf440ef8506d543496",
+        "bytes": 152637
+      },
+      {
+        "file": "previews/today-dark-desktop.png",
+        "route": "today",
+        "state": "dark appearance, sample challenge previously passed",
+        "viewport": {
+          "width": 1440,
+          "height": 1000
+        },
+        "full_page": true,
+        "sha256": "02027fe322701fccacc1d9d9d9f55122153e55fd437016a9f455e54a6b72a76b",
+        "bytes": 171358
+      },
+      {
+        "file": "previews/today-mobile.png",
+        "route": "today",
+        "state": "default",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "full_page": true,
+        "sha256": "09df8965dab877728ee0c65965df0edf9ce78c56abd79a544d1108e31fad90ca",
+        "bytes": 125133
+      },
+      {
+        "file": "previews/playground-mobile.png",
+        "route": "playground",
+        "state": "default",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "full_page": true,
+        "sha256": "559fb6784dcaf058ac9ee9fd40f8b1f3490b1feaadf0f594f2c8b5c56eab2276",
+        "bytes": 85078
+      },
+      {
+        "file": "previews/example-mobile.png",
+        "route": "example",
+        "state": "first auto-opened tour step",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "full_page": true,
+        "sha256": "f235b76590deaba3ae21b87a12ce8f5a773fc637a3e0a009a8a4a0fe4b6abae5",
+        "bytes": 80515
+      }
+    ],
+    "js_errors": [],
+    "failed_asset_requests": [],
+    "external_http_requests": [],
+    "browser_closed": true,
+    "server_started": false
+  },
+  "representative_contrast_calculations": [
+    {
+      "pair": "light main text / canvas",
+      "foreground": "#243C33",
+      "background": "#F5F6F0",
+      "ratio": 10.92,
+      "minimum_checked": 4.5
+    },
+    {
+      "pair": "light muted text / surface",
+      "foreground": "#637168",
+      "background": "#FFFEFA",
+      "ratio": 5.08,
+      "minimum_checked": 4.5
+    },
+    {
+      "pair": "light primary button",
+      "foreground": "#FFFFFF",
+      "background": "#214F3C",
+      "ratio": 9.34,
+      "minimum_checked": 4.5
+    },
+    {
+      "pair": "light success",
+      "foreground": "#2F714E",
+      "background": "#E5F1E6",
+      "ratio": 5.03,
+      "minimum_checked": 4.5
+    },
+    {
+      "pair": "light error",
+      "foreground": "#9D452C",
+      "background": "#FFF0E7",
+      "ratio": 5.68,
+      "minimum_checked": 4.5
+    },
+    {
+      "pair": "light teaching",
+      "foreground": "#64488E",
+      "background": "#EDE8F9",
+      "ratio": 6.12,
+      "minimum_checked": 4.5
+    },
+    {
+      "pair": "dark main text / canvas",
+      "foreground": "#EBEEE1",
+      "background": "#17271F",
+      "ratio": 13.26,
+      "minimum_checked": 4.5
+    },
+    {
+      "pair": "dark muted text / surface",
+      "foreground": "#B1BDAE",
+      "background": "#1E3027",
+      "ratio": 7.14,
+      "minimum_checked": 4.5
+    },
+    {
+      "pair": "dark error",
+      "foreground": "#F2B28F",
+      "background": "#452F25",
+      "ratio": 6.84,
+      "minimum_checked": 4.5
+    },
+    {
+      "pair": "light form boundary / surface",
+      "foreground": "#758374",
+      "background": "#FFFEFA",
+      "ratio": 3.96,
+      "minimum_checked": 3
+    },
+    {
+      "pair": "dark form boundary / surface",
+      "foreground": "#829680",
+      "background": "#1E3027",
+      "ratio": 4.39,
+      "minimum_checked": 3
+    }
+  ],
+  "limitations": [
+    "The earlier full behaviour review applies to the unchanged HTML/JavaScript and its recorded CSS; the final review checks the subsequent CSS/layout adjustments.",
+    "Screenshots are selected sample states, not evidence of every learner or production event.",
+    "A scrollable catalog-filter row may extend inside its own scroller without causing document overflow.",
+    "Viewport checks are browser emulation, not physical-device or full screen-reader testing.",
+    "Sampled contrast is not a complete WCAG conformance audit.",
+    "Real authentication, server persistence, concurrency, authoritative grading/rewards, runtime isolation/capacity, and learner difficulty/time calibration remain production implementation gates.",
+    "Original audit captures under docs/screenshots are Git-ignored by existing repository policy; the copied flow results and selected previews in this directory are durable design artifacts."
+  ]
+}

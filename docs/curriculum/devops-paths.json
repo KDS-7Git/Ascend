@@ -1,0 +1,851 @@
+{
+  "format": 1,
+  "title": "Sequential DevOps practical tracks",
+  "authored_on": "2026-11-03",
+  "source_design": "docs/design/devops-track-design.md",
+  "status": "Implemented draft teaching content; individual external/privileged runtime variants need learner-owned environments and separate execution records.",
+  "sequencing": "recommended_after is advisory. Existing Ascend level unlock supports experienced entry; no cross-track completion requirement is introduced.",
+  "evidence": "All operational milestones use manual review. Supplied executable checks validate named local behaviour, not automatic learner mastery.",
+  "tracks": [
+    {
+      "id": "devops-service-foundations",
+      "title": "DevOps 1: Service & Deployment Foundations",
+      "order": 1,
+      "description": "Take Relay from a local process to a versioned service, private edge, guest deployment and container.",
+      "entry": "Start here if processes, HTTP, Linux service operation or deployment boundaries are new.",
+      "background": "Basic file/editor use. A guided Linux guest setup is available through the Infrastructure VM track; Python, shell and networking are explained as used.",
+      "limits": "Local tools and owned Linux guests. No cloud subscription required. Public exposure and physical hardware are optional later variants; manual operational completion is not an automatic verified skill result.",
+      "recommended_after": [],
+      "aliases": [
+        "deployment basics",
+        "Linux service",
+        "reverse proxy",
+        "Docker",
+        "SSH"
+      ],
+      "levels": [
+        {
+          "id": "request-path",
+          "title": "Trace a real request",
+          "preview": "Trace a real HTTP request and distinguish a stopped service, a missing route and the wrong release.",
+          "concepts": "A port belongs to a listening process. DNS/address selection, transport connection, HTTP status, readiness and release identity are separate observations. A 200 from the wrong release is still a failed deployment.",
+          "requirements": "Python 3.11+ and two terminals on your PC; no account or VM needed.",
+          "resource": "https://developer.mozilla.org/en-US/docs/Web/HTTP",
+          "practice_minutes": 60,
+          "milestone_minutes": 120,
+          "steps": [
+            "Extract the ZIP into its own folder. Terminal A stays open while the service runs. The startup record gives the actual database location. Only synthetic notes belong here.",
+            "```sh\npython3 shared/relay.py --host 127.0.0.1 --port 8000 --data work/relay.sqlite --release v1\n```",
+            "In Terminal B, predict each response before checking it. The explicit write creates one sample update and verifies replay/conflict handling.",
+            "```sh\npython3 shared/check_service.py --url http://127.0.0.1:8000 --expect-release v1 --write\n```",
+            "Compare the working URL with port 8001 (where you have started nothing) and /not-an-endpoint. Connection refusal and HTTP 404 come from different layers.",
+            "```sh\ncurl -i http://127.0.0.1:8000/version\ncurl -i http://127.0.0.1:8001/version\ncurl -i http://127.0.0.1:8000/not-an-endpoint\n```"
+          ],
+          "independent": [
+            "Start a second owned Relay process on port 8002 with --release v2 and a different data path. Both /health endpoints should work.",
+            "A client expects v2 but still uses the first URL. Diagnose with release evidence, update the client address, and retain the before/after results.",
+            "Stop only your two foreground services with Ctrl+C and rerun one check to distinguish a stopped process from an HTTP failure."
+          ],
+          "evidence": "A request trace identifies the process/address, three distinct failure types and the correct version; actual update and replay results are retained.",
+          "capabilities": [
+            "http-request-path",
+            "release-observation"
+          ],
+          "original_design_levels": [
+            1
+          ]
+        },
+        {
+          "id": "linux-shell",
+          "title": "Use the Linux shell and service files",
+          "preview": "Use paths, permissions and process observations to repair a small Linux service.",
+          "concepts": "Quoting, paths, permissions, pipes, redirection, exit status and process signals explain why a service starts in one terminal but fails elsewhere. Use a disposable Linux guest for OS operations; owning a terminal does not grant host administration.",
+          "requirements": "Python 3.11+; Linux VM or Linux PC for POSIX permission/process commands.",
+          "resource": "https://docs.python.org/3/tutorial/",
+          "practice_minutes": 60,
+          "milestone_minutes": 120,
+          "steps": [
+            "Read shared/README.md. In your extracted folder create named working locations, and keep terminal output separate from application state.",
+            "```sh\nmkdir -p work notes\npython3 --version\npwd\nls -la shared\npython3 shared/relay.py --help > notes/relay-help.txt\n```",
+            "Start Relay in Terminal A using a data path containing a space; quote it. Observe the process and listener from Terminal B.",
+            "```sh\npython3 shared/relay.py --data 'work/first service/relay.sqlite' --release shell-v1\n```",
+            "```sh\nps -ef | grep '[r]elay.py'\nss -ltnp\npython3 shared/check_service.py --expect-release shell-v1\n```",
+            "While the service is stopped, create a new synthetic token file with restricted permissions and inspect its owner. Do not copy a real key into the archive.",
+            "```sh\nmkdir -p secrets\nprintf '%s\\n' 'synthetic-first-token' > secrets/write-token.txt\nchmod 600 secrets/write-token.txt\nls -l secrets/write-token.txt\n```"
+          ],
+          "independent": [
+            "On the owned Linux guest, create an unwritable exercise directory and try using it as a new database location. Record the actual permission error.",
+            "Repair ownership or the selected path for the intended service user; do not use chmod 777 or run the application as host root.",
+            "Demonstrate that quoting preserves one path argument and that the valid service still responds after the repair."
+          ],
+          "evidence": "The learner explains actual stdout/stderr and exit behaviour, repairs a file/identity fault with narrow permissions, and proves the legitimate path works.",
+          "capabilities": [
+            "shell-process-files",
+            "least-privilege-files"
+          ],
+          "original_design_levels": [
+            2
+          ]
+        },
+        {
+          "id": "versioned-artifact",
+          "title": "Build a versioned artifact",
+          "preview": "Build an identifiable release and detect a changed artifact before deployment.",
+          "concepts": "Source revision, immutable build output, runtime configuration and persistent data serve different purposes. A checksum detects an artifact change; it does not authenticate who produced it.",
+          "requirements": "Python 3.11+; Git for the source-history portion.",
+          "resource": "https://git-scm.com/book/en/v2",
+          "practice_minutes": 60,
+          "milestone_minutes": 120,
+          "steps": [
+            "Initialize a separate learning repository in the extracted track folder if needed. Copy gitignore.example to .gitignore before recording source; leave keys, databases and notes untracked.",
+            "```sh\ngit init\ncp gitignore.example .gitignore\ngit add shared Dockerfile configs .gitignore\ngit status\n```",
+            "Commit using your chosen local identity, then record the resulting commit ID. Build two copies with the same source and revision; the manifests should match.",
+            "```sh\ngit -c user.name='Relay Learner' -c user.email='learner@example.invalid' commit -m 'Start Relay lab'\npython3 shared/release.py build --source shared/relay.py --out work/releases/v1 --release v1 --revision \"$(git rev-parse HEAD)\"\npython3 shared/release.py build --source shared/relay.py --out work/releases/v1-copy --release v1 --revision \"$(git rev-parse HEAD)\"\ndiff work/releases/v1/manifest.json work/releases/v1-copy/manifest.json\n```",
+            "Inspect the manifest, select the artifact, and run the selected release in a terminal. Configuration and data stay outside the artifact.",
+            "```sh\npython3 shared/release.py verify --artifact work/releases/v1\npython3 shared/release.py select --artifact work/releases/v1 --state work/current.json\npython3 shared/release.py serve --state work/current.json -- --port 8000 --data work/runtime.sqlite\n```"
+          ],
+          "independent": [
+            "Copy the v1 artifact to a new scratch directory, alter its relay.py and run the verifier: it must fail.",
+            "Build a genuinely new v2 artifact from the intended source revision rather than editing a released directory in place.",
+            "Show both artifact digests, the selected release and the HTTP version. Explain why a manifest hash alone is not provenance."
+          ],
+          "evidence": "Two identical inputs produce identical manifests; a modified artifact is rejected; v2 has a traceable source/release identity and separate runtime state.",
+          "capabilities": [
+            "artifact-identity",
+            "git-release"
+          ],
+          "original_design_levels": [
+            3
+          ]
+        },
+        {
+          "id": "service-lifecycle",
+          "title": "Operate a persistent Linux service",
+          "preview": "Keep a service running across process failure and a guest reboot while preserving its data.",
+          "concepts": "systemd owns a process lifecycle, identity, working directory and restart policy. Liveness, readiness and durable data differ. Restart=on-failure is not an availability guarantee when the host loses power.",
+          "requirements": "An owned Debian/Ubuntu-class Linux guest with systemd, Python and sudo; guest console recovery available.",
+          "resource": "https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html",
+          "practice_minutes": 90,
+          "milestone_minutes": 120,
+          "steps": [
+            "Perform the following only inside your disposable guest, after copying the extracted track there. Inspect configs/relay.service; it uses DynamicUser and StateDirectory to avoid a permanent privileged application user.",
+            "```sh\nsudo install -d /opt/ascend-relay/shared\nsudo install -m 0644 shared/relay.py /opt/ascend-relay/shared/relay.py\nsudo install -m 0644 configs/relay.service /etc/systemd/system/ascend-relay.service\nsudo systemctl daemon-reload\nsudo systemctl enable --now ascend-relay\n```",
+            "Check lifecycle and application state independently. Record the service user and its actual data path.",
+            "```sh\nsystemctl status ascend-relay --no-pager\nsystemctl show ascend-relay -p MainPID -p User -p StateDirectory\njournalctl -u ascend-relay -n 20 --no-pager\npython3 shared/check_service.py --expect-release service-v1 --write\n```",
+            "Stop just the owned process through systemd's signal interface, observe recovery, then deliberately stop the unit. A requested stop should remain stopped.",
+            "```sh\nsudo systemctl kill --signal=SIGKILL --kill-whom=main ascend-relay\nsleep 3\nsystemctl is-active ascend-relay\nsudo systemctl stop ascend-relay\nsystemctl is-active ascend-relay\n```",
+            "Start it again, reboot the owned guest through its normal controls, reconnect and verify that the saved synthetic update survives. Do not reboot the shared Ascend server."
+          ],
+          "independent": [
+            "Introduce a wrong ExecStart path in a copied unit installed only in the guest; inspect the failure and journal before repairing it.",
+            "Recover the intended unit, confirm process identity/readiness/version and prove the earlier update remains.",
+            "Disable and remove only ascend-relay when finished, or explicitly retain it for the next guest deployment task."
+          ],
+          "evidence": "A process failure recovers, a deliberate stop remains stopped, reboot restores the service, and required state survives; wrong configuration is diagnosed from observed evidence.",
+          "capabilities": [
+            "systemd-lifecycle",
+            "state-survival"
+          ],
+          "original_design_levels": [
+            4
+          ]
+        },
+        {
+          "id": "edge-tls",
+          "title": "Reach a service through an edge",
+          "preview": "Route requests through a private edge and prove TLS name and trust behaviour.",
+          "concepts": "The reverse proxy has its own listener and upstream. TLS authenticates a hostname under a trusted CA; trust failure and name mismatch are different. A working process can remain unreachable through an incorrect edge route.",
+          "requirements": "Python 3.11+ for the local proxy; Caddy and OpenSSL for the real TLS extension.",
+          "resource": "https://caddyserver.com/docs/caddyfile/directives/reverse_proxy",
+          "practice_minutes": 60,
+          "milestone_minutes": 120,
+          "steps": [
+            "Start a fresh Relay v1 on port 8000 in Terminal A using the following command. Terminal B will run the edge; Terminal C will run the clients.",
+            "```sh\npython3 shared/relay.py --port 8000 --data work/edge.sqlite --release v1\n```",
+            "```sh\npython3 shared/edge.py --config configs/route.json --port 9000\n```",
+            "```sh\ncurl -i http://127.0.0.1:8000/version\ncurl -i http://127.0.0.1:9000/version\n```",
+            "Stop the teaching edge. Run the equivalent Caddy configuration and compare behaviour. Keep Caddy's listener and origin private to this machine.",
+            "```sh\ncaddy validate --config configs/Caddyfile --adapter caddyfile\ncaddy run --config configs/Caddyfile --adapter caddyfile\n```",
+            "Stop that Caddy process before the TLS extension. Generate a temporary lab certificate, then run the supplied TLS edge. This certificate is trusted only by the following client invocation.",
+            "```sh\nmkdir -p work\nopenssl req -x509 -newkey rsa:2048 -nodes -days 1 -keyout work/key.pem -out work/cert.pem -subj '/CN=localhost' -addext 'subjectAltName=DNS:localhost'\ncaddy run --config configs/Caddyfile.tls --adapter caddyfile\n```",
+            "```sh\npython3 shared/check_service.py --url https://localhost:9443 --ca-file work/cert.pem --expect-release v1\ncurl --cacert work/cert.pem https://127.0.0.1:9443/version\n```"
+          ],
+          "independent": [
+            "Use route-fault.json with the teaching edge, record the 502 and the still-working direct backend, then repair the route in a working copy.",
+            "For the real TLS edge, show a trusted correct-name success, an untrusted-CA rejection and a wrong-name rejection without -k.",
+            "Explain what additional DNS/router/public-address conditions would be needed for an Internet deployment; the loopback exercise does not prove those."
+          ],
+          "evidence": "Direct and edge observations locate a routing fault, legitimate controls survive the repair, and TLS trust/name negative controls reject as expected.",
+          "capabilities": [
+            "reverse-proxy",
+            "tls-name-trust"
+          ],
+          "original_design_levels": [
+            5
+          ]
+        },
+        {
+          "id": "ssh-deployment",
+          "title": "Deploy to an owned remote guest",
+          "preview": "Deploy to an owned guest and reach its private service through authenticated SSH access.",
+          "concepts": "SSH gives a route and authenticated access to a guest OS; it does not grant hypervisor administration. Host keys identify the server. Copying an artifact, starting a process and publishing a website are separate operations.",
+          "requirements": "Owned Linux guest reachable by SSH, verified host-key fingerprint and an SSH client. A local VM is sufficient.",
+          "resource": "https://man.openbsd.org/ssh",
+          "practice_minutes": 60,
+          "milestone_minutes": 120,
+          "steps": [
+            "Copy configs/ssh_config.example to a working file, replace its documentation address/user with your owned guest, and choose a dedicated key. Verify its public host-key fingerprint through the guest console before accepting it.",
+            "```sh\nmkdir -p work\ncp configs/ssh_config.example work/ssh_config\nssh -F work/ssh_config relay-lab\n```",
+            "On the guest, prepare a private learning folder; from your PC copy only the reviewed shared tools and service materials. Keep synthetic credentials out of the artifact.",
+            "```sh\nssh -F work/ssh_config relay-lab 'mkdir -p ascend-relay-lab'\nscp -F work/ssh_config -r shared configs relay-lab:ascend-relay-lab/\n```",
+            "Inside the guest, use the service-lifecycle procedure, or start this foreground equivalent from ascend-relay-lab: python3 shared/relay.py --data work/relay.sqlite --release service-v1. Keep that guest terminal open. From a separate PC terminal, forward one private service port.",
+            "```sh\nssh -F work/ssh_config -N -L 127.0.0.1:18000:127.0.0.1:8000 relay-lab\n```",
+            "```sh\npython3 shared/check_service.py --url http://127.0.0.1:18000 --expect-release service-v1\n```"
+          ],
+          "independent": [
+            "Create an access failure by using the wrong forwarded destination port in a separate client command. Diagnose it while the guest service remains healthy.",
+            "Recover access without disabling host verification or exposing guest administration publicly.",
+            "Record guest identity, artifact/version, private route and console recovery path; close the forwarding process and confirm access ends."
+          ],
+          "evidence": "The intended guest and release are reached through a scoped authenticated path; a wrong destination is diagnosed and forwarding cleanup is observed.",
+          "capabilities": [
+            "ssh-host-identity",
+            "remote-deployment"
+          ],
+          "original_design_levels": [
+            5
+          ]
+        },
+        {
+          "id": "container-runtime",
+          "title": "Package and recreate a container",
+          "preview": "Build a runtime image and prove which data survives container replacement.",
+          "concepts": "An image is an artifact; a container is a running instance; a volume owns persistent state. Port publishing and the process's internal bind are separate. A tag can move, so record the actual image identity.",
+          "requirements": "Owned Docker/Podman-capable Linux environment; sufficient space for a Python base image. No public registry publication required.",
+          "resource": "https://docs.docker.com/get-started/",
+          "practice_minutes": 60,
+          "milestone_minutes": 120,
+          "steps": [
+            "Inspect Dockerfile and .dockerignore. Resolve the selected base image and retain its digest; this initial fixture accepts an explicit PYTHON_IMAGE build argument.",
+            "```sh\ndocker pull python:3.12-slim\ndocker image inspect python:3.12-slim --format '{{json .RepoDigests}}'\ndocker build -t ascend-relay:v1 .\ndocker image inspect ascend-relay:v1 --format '{{.Id}}'\n```",
+            "Ensure your earlier port-8000 process is stopped, then start the named Compose project. Its published port binds loopback, its application is unprivileged, and its named volume stores state.",
+            "```sh\ndocker compose -p ascend-devops-foundation up -d --build\npython3 shared/check_service.py --expect-release compose-v1 --write\ndocker compose -p ascend-devops-foundation ps\n```",
+            "Recreate only the service and verify the update still exists. Stopping a project keeps its data volume by default.",
+            "```sh\ndocker compose -p ascend-devops-foundation up -d --force-recreate\ncurl http://127.0.0.1:8000/api/updates\ndocker compose -p ascend-devops-foundation down\n```"
+          ],
+          "independent": [
+            "Run a disposable container without the persistent volume, create a synthetic update, remove/recreate that container, and observe the loss.",
+            "Restore the declared volume-based deployment and show why its state survives a container replacement.",
+            "Record the resolved base/image identities and all owned containers/volumes. Remove a data volume only after retaining the required backup."
+          ],
+          "evidence": "Image identity, process identity, port policy and state ownership are observed; the disposable-state negative case differs from the durable deployment.",
+          "capabilities": [
+            "container-artifact-runtime",
+            "volume-lifecycle"
+          ],
+          "original_design_levels": [
+            6
+          ]
+        },
+        {
+          "id": "foundation-capstone",
+          "title": "Recover a complete deployment",
+          "preview": "Reproduce a complete deployment and recover its release, route and saved data.",
+          "concepts": "A reliable explanation connects client, edge, process, release and data rather than stopping at a green status. A fresh target is a stronger replay than the terminal where the original setup happened.",
+          "requirements": "The local tools and owned guest/container route used in this track.",
+          "resource": "https://sre.google/workbook/implementing-slos/",
+          "practice_minutes": 120,
+          "milestone_minutes": 180,
+          "steps": [
+            "Use a fresh local process first; the owned-guest extension can use its systemd data path. From the track root, build/select an identifiable artifact and start it in Terminal A.",
+            "```sh\npython3 shared/release.py build --source shared/relay.py --out work/foundation-artifact --release foundation-v1 --revision local-capstone\npython3 shared/release.py select --artifact work/foundation-artifact --state work/foundation-current.json\npython3 shared/release.py serve --state work/foundation-current.json -- --port 8000 --data work/foundation.sqlite\n```",
+            "In Terminal B start the supplied teaching edge; in Terminal C require the intended release directly and through the edge. Write one synthetic update directly, since the teaching edge is GET-only.",
+            "```sh\npython3 shared/edge.py --config configs/route.json --port 9000\n```",
+            "```sh\npython3 shared/check_service.py --expect-release foundation-v1 --write\npython3 shared/check_service.py --url http://127.0.0.1:9000 --expect-release foundation-v1\npython3 shared/backup.py create --source work/foundation.sqlite --destination backups/foundation.sqlite\n```",
+            "Record the update ID, artifact identity and actual state path. Stop only the teaching edge, then restart it using configs/route-fault.json. Diagnose the failure with direct and edge observations before repairing the route in a working copy.",
+            "Write a handover with the actual release, start/stop commands, restore-to-new-path command, access method, save locations and known limits. A guest variant must inspect its actual /var/lib/ascend-relay state location instead of copying the local work path."
+          ],
+          "independent": [
+            "Recreate the service on a new disposable data/target path and restore the required synthetic data.",
+            "Introduce a second cause: an old but healthy release or an unavailable data path. Recover the expected user behaviour and version.",
+            "Have a fresh terminal or reviewer follow the handover; confirm intended cleanup without deleting unrelated guests, volumes or files."
+          ],
+          "evidence": "A fresh target reproduces the correct release and retained data; the learner diagnoses two distinct faults and provides a usable runbook.",
+          "capabilities": [
+            "deployment-recovery",
+            "operational-handover"
+          ],
+          "original_design_levels": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            13
+          ]
+        }
+      ]
+    },
+    {
+      "id": "devops-delivery-automation",
+      "title": "DevOps 2: Delivery & Infrastructure Automation",
+      "order": 2,
+      "description": "Test every change, promote the same artifact, and recreate owned infrastructure with explicit trust and cleanup.",
+      "entry": "Enter after you can run, inspect and recover a small service; prior equivalent practice is valid.",
+      "background": "Git/file/terminal basics, service/version/state distinctions, and owned Docker or Linux guests for operational tasks.",
+      "limits": "Local rehearsal works without a paid account. Real CI needs a learner-owned repository; Terraform/OpenTofu and Ansible act only on the chosen learner environment. No shared server execution or automatic cloud spending.",
+      "recommended_after": [
+        "devops-service-foundations"
+      ],
+      "aliases": [
+        "CI/CD",
+        "GitHub Actions",
+        "OpenTofu",
+        "Ansible",
+        "release pipeline"
+      ],
+      "levels": [
+        {
+          "id": "change-test",
+          "title": "Make a change fail usefully",
+          "preview": "Make a behavioural regression fail a meaningful test, then repair the source.",
+          "concepts": "A test is useful when an incorrect behaviour fails for the intended reason. Source edits and generated release files must be kept separate. Do not make a failing test green by removing its assertion.",
+          "requirements": "Python 3.11+ and Git in an extracted learning repository.",
+          "resource": "https://git-scm.com/book/en/v2",
+          "practice_minutes": 60,
+          "milestone_minutes": 120,
+          "steps": [
+            "Read gitignore.example and initialize an isolated learning repository in the extracted folder if you do not already have one. Record the original shared files before the experiment. Run the reference checks: they create temporary loopback services and verify actual response, data, release and recovery behaviour.",
+            "```sh\npython3 shared/selfcheck.py\n```",
+            "In a working source copy, change the unknown-endpoint response from 404 to 200. Predict which control will fail, rerun the selfchecks, and retain the actual failure.",
+            "Restore the correct behaviour through Git or your saved source copy. Add a new control not already present, such as rejecting a missing message field, and make an intentional regression prove that control fails for the intended reason.",
+            "```sh\ngit diff -- shared/relay.py shared/selfcheck.py\npython3 shared/selfcheck.py\n```"
+          ],
+          "independent": [
+            "Introduce a different behavioural regression: accept a reused idempotency key with different content or permit a write on the read-only route.",
+            "Show a test that fails before the repair and passes afterward while the ordinary write still works.",
+            "Record the commit/revision and the failing/passing control, not only an overall success message."
+          ],
+          "evidence": "An intended wrong behaviour is detected; the legitimate control stays covered and the source change is traceable.",
+          "capabilities": [
+            "behavioural-tests",
+            "change-review"
+          ],
+          "original_design_levels": [
+            3,
+            7
+          ]
+        },
+        {
+          "id": "real-ci",
+          "title": "Run checks in a real CI workflow",
+          "preview": "Connect a real CI run to its source revision and the artifact it produced.",
+          "concepts": "A CI runner executes code with a specific identity and permissions. A passing local command is preparation; a CI run records the revision and environment that actually executed it.",
+          "requirements": "Python/Git locally; a learner-owned GitHub repository and its current Actions allowance are required for real CI completion. Local rehearsal is available as partial preparation.",
+          "resource": "https://docs.github.com/en/actions",
+          "practice_minutes": 90,
+          "milestone_minutes": 120,
+          "steps": [
+            "Start with the local rehearsal and inspect configs/workflow.yml. It grants only contents:read, receives no deployment secrets and uploads a source artifact after tests.",
+            "```sh\npython3 shared/selfcheck.py\nmkdir -p .github/workflows\ncp configs/workflow.yml .github/workflows/relay.yml\n```",
+            "In your own repository, commit the reviewed workflow/shared files and push using your chosen credentials. Check repository visibility and Actions allowance first. Record the run URL, revision and artifact identity from the actual workflow.",
+            "Send a deliberately failing source change to that same learning repository. Confirm the test job fails and the upload step does not produce a promotable artifact for that failed job.",
+            "If no repository/account is available, run the same commands locally and record this as a local rehearsal; leave the external CI observation outstanding."
+          ],
+          "independent": [
+            "Make a corrected revision pass in CI and download its named artifact into a new directory.",
+            "Verify its manifest using shared/release.py and compare the manifest revision with the actual run's commit.",
+            "Reject a passing artifact from another revision when the release task expects the newly tested change."
+          ],
+          "evidence": "The real-variant record links passing/failing CI runs to commits and artifacts; local-only work is labelled as rehearsal rather than a hosted CI receipt.",
+          "capabilities": [
+            "ci-revision-evidence",
+            "artifact-retention"
+          ],
+          "original_design_levels": [
+            7
+          ]
+        },
+        {
+          "id": "image-identity",
+          "title": "Build and identify a runtime image",
+          "preview": "Follow source, base and runtime image identities through an actual container build.",
+          "concepts": "OCI tags name references; digests identify image content. Source artifact identity, base image identity and built image identity each answer a different question. Registry access is a separate capability.",
+          "requirements": "Owned Docker environment; optional learner-owned registry namespace for publication.",
+          "resource": "https://docs.docker.com/get-started/",
+          "practice_minutes": 60,
+          "milestone_minutes": 120,
+          "steps": [
+            "Build and verify a source artifact, then copy its verified entrypoint into a fresh minimal build context. This ties the image bytes to the artifact, rather than building an unrelated working-tree copy. Record the resolved base reference and image ID.",
+            "```sh\npython3 shared/release.py build --source shared/relay.py --out work/ci-artifact --release image-v1 --revision local-reviewed\npython3 shared/release.py verify --artifact work/ci-artifact\nmkdir -p work/image-context/shared\ncp work/ci-artifact/relay.py work/image-context/shared/relay.py\ncp Dockerfile work/image-context/Dockerfile\ncmp work/ci-artifact/relay.py work/image-context/shared/relay.py\ndocker pull python:3.12-slim\ndocker image inspect python:3.12-slim --format '{{json .RepoDigests}}'\ndocker build -t ascend-relay:v1 work/image-context\ndocker image inspect ascend-relay:v1 --format '{{.Id}}'\n```",
+            "For a repeatable rebuild, replace the mutable PYTHON_IMAGE default with the actual repo@sha256 digest you just inspected using docker build --build-arg PYTHON_IMAGE=YOUR_RECORDED_BASE_REFERENCE. Keep the Dockerfile and that reference with the image record.",
+            "Run the image under a disposable name and loopback port. Compare runtime /version with the image metadata and configuration.",
+            "```sh\ndocker run --rm --name ascend-relay-image -p 127.0.0.1:18000:8000 ascend-relay:v1\n```",
+            "```sh\npython3 shared/check_service.py --url http://127.0.0.1:18000 --expect-release container-v1\n```",
+            "For the registry variant, authenticate only to your owned namespace, push the chosen image, record its repository digest, then pull/run that exact digest in another disposable environment. Keep registry secrets out of the notebook."
+          ],
+          "independent": [
+            "Build a second image under a different tag, move a familiar tag to it, and show that the familiar name is not content identity.",
+            "Use the recorded digest/ID to select the intended image and verify the correct source/runtime combination.",
+            "Show that publication/pull evidence exists only when a real registry operation occurred."
+          ],
+          "evidence": "The learner distinguishes source, base, image and runtime identity; a moved-tag negative case cannot silently replace the intended release.",
+          "capabilities": [
+            "oci-image-identity",
+            "registry-lifecycle"
+          ],
+          "original_design_levels": [
+            6,
+            7
+          ]
+        },
+        {
+          "id": "promotion-rollback",
+          "title": "Promote one artifact and roll it back",
+          "preview": "Activate a tested release, detect the wrong version and restore the earlier artifact.",
+          "concepts": "Delivery selects a tested artifact; deployment makes it active. Changing the pointer does not change already running code. Stateless rollback does not undo an incompatible data migration.",
+          "requirements": "Python 3.11+ and two terminals; optional owned staging guest.",
+          "resource": "https://docs.github.com/en/actions",
+          "practice_minutes": 60,
+          "milestone_minutes": 120,
+          "steps": [
+            "Build v1 and v2 artifacts from known source revisions. Select v1 and start the selected service in Terminal A.",
+            "```sh\npython3 shared/release.py build --source shared/relay.py --out work/releases/v1 --release v1 --revision reviewed-a\npython3 shared/release.py build --source shared/relay.py --out work/releases/v2 --release v2 --revision reviewed-b\npython3 shared/release.py select --artifact work/releases/v1 --state work/current.json\npython3 shared/release.py serve --state work/current.json -- --data work/state.sqlite --port 8000\n```",
+            "Check v1, then change the selected pointer from Terminal B. Observe that the running process still reports v1 until deliberately restarted.",
+            "```sh\npython3 shared/release.py select --artifact work/releases/v2 --state work/current.json\npython3 shared/check_service.py --expect-release v1\n```",
+            "Restart the selected service and require v2. Treat an unexpected response as a failed release; restore the v1 selection and restart to recover.",
+            "```sh\npython3 shared/release.py select --artifact work/releases/v1 --state work/current.json\n```",
+            "Inspect fixtures/pipeline.json. Explain why its selected failed commit is not eligible for release, then compare that reasoning with your real test/artifact records."
+          ],
+          "independent": [
+            "Modify a copy of a built artifact after its manifest was written; selection must reject it without changing the current pointer.",
+            "Create a synthetic update before a restart/promotion and verify its continued presence afterward.",
+            "Explain how an incompatible database migration would change this rollback procedure; do not claim the code pointer reverses data changes."
+          ],
+          "evidence": "Only a verified artifact is selected; process activation is observed independently; recovery returns the correct version and preserves the required data.",
+          "capabilities": [
+            "immutable-promotion",
+            "rollback-boundary"
+          ],
+          "original_design_levels": [
+            8
+          ]
+        },
+        {
+          "id": "iac-plan-apply",
+          "title": "Provision owned infrastructure with OpenTofu",
+          "preview": "Create a small owned deployment from a reviewed infrastructure plan and reconcile drift.",
+          "concepts": "Desired configuration, a plan, applied resources and state are distinct. A plan can replace or destroy resources even when it appears to be a small edit. Provider plugins act with the learner's permissions.",
+          "requirements": "Owned local Docker daemon, OpenTofu 1.6+ and network access for the reviewed Docker provider. Do not point this at Ascend's daemon.",
+          "resource": "https://opentofu.org/docs/intro/core-workflow/",
+          "practice_minutes": 90,
+          "milestone_minutes": 120,
+          "steps": [
+            "Build the local Relay image and record its exact image ID. Inspect configs/tofu/main.tf: it creates a named lab network, volume and container with a loopback publication.",
+            "```sh\ndocker build -t ascend-relay:v1 .\ndocker image inspect ascend-relay:v1 --format '{{.Id}}'\ncd configs/tofu\ntofu init\n```",
+            "Replace the example image ID below with your observed sha256 ID. Inspect the plan before applying it; retain .terraform.lock.hcl with the reviewed source, while state stays private.",
+            "```sh\ntofu plan -var='relay_image_id=sha256:REPLACE_WITH_LOCAL_IMAGE_ID' -out=reviewed.plan\ntofu show reviewed.plan\ntofu apply reviewed.plan\n```",
+            "From the track root, run the following version/write check. Change the release variable in a new reviewed plan and inspect whether replacement is required before applying. Keep a backup before any operation that could remove the owned data volume.",
+            "```sh\ncd ../..\npython3 shared/check_service.py --url http://127.0.0.1:18000 --expect-release tofu-v1 --write\n```",
+            "Inspect the actual named container/network/volume and compare with tofu state list. A saved plan alone is not evidence of provisioned infrastructure."
+          ],
+          "independent": [
+            "Change or remove the owned container outside OpenTofu, then inspect refresh/plan output before reconciling.",
+            "Reject a plan that would destroy data you have not backed up. Retain a valid backup before the final reviewed tofu destroy.",
+            "After destruction, inspect actual owned resources rather than assuming a zero exit code accounted for every leftover."
+          ],
+          "evidence": "Plan, applied inventory and observed service agree; drift is detected; restoration or teardown follows an explicit data/ownership decision.",
+          "capabilities": [
+            "iac-plan-state-drift",
+            "owned-resource-accounting"
+          ],
+          "original_design_levels": [
+            9
+          ]
+        },
+        {
+          "id": "ansible-configuration",
+          "title": "Configure an owned guest idempotently",
+          "preview": "Apply repeatable guest configuration and recover a drifted service.",
+          "concepts": "Infrastructure creates resources; configuration management establishes software/service state. Idempotence concerns the specified desired state, not whether a command prints changed=0 after ignoring failures.",
+          "requirements": "Owned Debian/Ubuntu-class guest, verified SSH identity, sudo within that guest and Ansible on the learner PC.",
+          "resource": "https://docs.ansible.com/ansible/latest/getting_started/",
+          "practice_minutes": 90,
+          "milestone_minutes": 120,
+          "steps": [
+            "Edit the documentation address/user in configs/ansible/inventory.ini for one owned guest. Inspect the inventory and exact target before any playbook run.",
+            "```sh\nansible-inventory -i configs/ansible/inventory.ini --graph\nansible relay_targets -i configs/ansible/inventory.ini --limit relay1 -m ping\n```",
+            "Read the playbook and service template. Run in check/diff mode, then apply only to that guest. Do not publish inventory credentials or raw facts containing private data.",
+            "```sh\nansible-playbook -i configs/ansible/inventory.ini configs/ansible/playbook.yml --limit relay1 --check --diff\nansible-playbook -i configs/ansible/inventory.ini configs/ansible/playbook.yml --limit relay1\n```",
+            "Run the same playbook again and inspect actual service state. Reach the private service through the guest SSH forwarding route from the first track.",
+            "```sh\nansible-playbook -i configs/ansible/inventory.ini configs/ansible/playbook.yml --limit relay1\nssh -N -L 127.0.0.1:18000:127.0.0.1:8000 YOUR_OWN_GUEST\n```",
+            "```sh\npython3 shared/check_service.py --url http://127.0.0.1:18000 --expect-release ansible-v1\n```"
+          ],
+          "independent": [
+            "Introduce drift in the owned unit's release/configuration and rerun the playbook to recover the intended state.",
+            "Add a second owned guest only when your local memory envelope permits it; target one guest and demonstrate the other is unchanged.",
+            "Explain the check-mode limits and prove the service actually responds after convergence."
+          ],
+          "evidence": "The intended configuration is applied and a repeated run is idempotent; a drifted service recovers without mutating an unrelated target.",
+          "capabilities": [
+            "configuration-idempotence",
+            "inventory-scope"
+          ],
+          "original_design_levels": [
+            9
+          ]
+        },
+        {
+          "id": "pipeline-trust",
+          "title": "Separate build identity from deployment authority",
+          "preview": "Require both a passing change and the intended identity before a release is eligible.",
+          "concepts": "An untrusted pull request executes code. Repository permissions, secret release conditions and OIDC trust policies decide what that code can access. A green test is not permission to deploy.",
+          "requirements": "A local copy of the supplied workflow and fixture; owned CI/cloud accounts only for the optional real identity extension.",
+          "resource": "https://docs.github.com/en/actions/security-for-github-actions/security-hardening-your-deployments/about-security-hardening-with-openid-connect",
+          "practice_minutes": 60,
+          "milestone_minutes": 120,
+          "steps": [
+            "Inspect the workflow's events and permissions. Identify why the test job does not need a deployment credential or write access to repository content.",
+            "```sh\ncat configs/workflow.yml\ncat fixtures/pipeline.json\n```",
+            "Execute the readable local policy gate against the authored fixture. The initial selection points to a failed change; an explicitly selected passing/trusted change should be allowed. This evaluates supplied facts and does not authenticate a real CI identity.\n```sh\npython3 tools/pipeline_policy.py fixtures/pipeline.json --expected-revision commit-a\npython3 tools/pipeline_policy.py fixtures/pipeline.json --expected-revision commit-a --candidate commit-a --artifact sha256:aaa\npython3 tools/pipeline_policy.py fixtures/pipeline.json --expected-revision commit-c --candidate commit-c --artifact sha256:ccc\n```",
+            "Construct a release decision table using fixture commit-a, commit-b and commit-c. A candidate must satisfy the expected revision/artifact, passing tests and the intended trust boundary.",
+            "In your owned repository, observe a fork/untrusted-change workflow without adding deployment secrets; record its event, permissions and run revision. Provider OIDC is an extension: use that provider's real policy tools to test issuer, audience, repository/ref/environment and token lifetime. A provider-free policy experiment proves only the local decision rule.",
+            "Pin reviewed action commit SHAs and retain their upstream release references before treating the workflow as a production policy. The provided tagged action versions are a readable starter."
+          ],
+          "independent": [
+            "Change one claim or trust condition in a copied policy/fixture and show why the candidate becomes ineligible even though tests passed.",
+            "For a real OIDC variant, retain the denied/allowed provider observations without exposing tokens. With no provider, explicitly retain policy analysis as analysis only.",
+            "Explain why echoing a secret, giving pull requests broad write permissions or using a shared privileged runner would break the boundary."
+          ],
+          "evidence": "The learner distinguishes test success from deployment authority and demonstrates or accurately scopes both an allowed and a denied identity path.",
+          "capabilities": [
+            "ci-trust-boundary",
+            "workload-identity"
+          ],
+          "original_design_levels": [
+            7,
+            11
+          ]
+        },
+        {
+          "id": "delivery-capstone",
+          "title": "Recreate the release path",
+          "preview": "Recreate an identifiable release on a clean target and recover a failed activation.",
+          "concepts": "A useful pipeline can reproduce a clean target, choose the tested immutable artifact and recover a failed activation. Its inventory, secrets and data ownership must remain understandable.",
+          "requirements": "The owned local/container or guest environment used in this track; real CI variant requires the learner's repository.",
+          "resource": "https://sre.google/workbook/implementing-slos/",
+          "practice_minutes": 120,
+          "milestone_minutes": 180,
+          "steps": [
+            "Choose the local Docker/OpenTofu route or the owned guest/Ansible route. Record the actual source \u2192 test \u2192 artifact \u2192 target chain and separate credentials.",
+            "Create a fresh target, deploy a verified artifact, observe the required version and add one synthetic update.",
+            "Introduce a faulty release decision or configuration, detect it with the appropriate service/version control, and recover using the recorded earlier artifact.",
+            "Retain the exact plan/configuration, CI or local run identity, artifact hash, current runtime observations and a cleanup inventory in your notebook/runbook."
+          ],
+          "independent": [
+            "Have a fresh terminal or reviewer reproduce the target from the runbook without reusing an unexplained existing container/guest.",
+            "Use an old but healthy artifact as the incident; the correct version check must catch it.",
+            "Restore the expected version and data, then either retain the target explicitly or destroy only the owned resources with evidence."
+          ],
+          "evidence": "A clean target reproduces the release and fails/recover controls correctly; the handover explains identity, state, trust and remaining external limits.",
+          "capabilities": [
+            "delivery-reproducibility",
+            "release-incident-recovery"
+          ],
+          "original_design_levels": [
+            7,
+            8,
+            9,
+            13
+          ]
+        }
+      ]
+    },
+    {
+      "id": "devops-reliability-orchestration",
+      "title": "DevOps 3: Reliability, Recovery & Orchestration",
+      "order": 3,
+      "description": "Measure useful service behaviour, control overload, restore data, and operate a small Kubernetes deployment.",
+      "entry": "Enter when you can deploy and trace a versioned service and have used an owned Linux/container environment.",
+      "background": "Service/network/state basics; delivery practices from track 2 or equivalent prior work. Kubernetes uses a separate local-cluster budget.",
+      "limits": "Most checks run locally. A VM/cluster, real monitoring binary and optional CI account are needed for their corresponding operational outcomes. Same-PC replicas do not prove physical high availability.",
+      "recommended_after": [
+        "devops-service-foundations",
+        "devops-delivery-automation"
+      ],
+      "aliases": [
+        "SRE",
+        "observability",
+        "backup restore",
+        "Kubernetes",
+        "capacity"
+      ],
+      "levels": [
+        {
+          "id": "service-signals",
+          "title": "Measure service signals and an SLO",
+          "preview": "Measure traffic, latency, errors and saturation without hiding failed work.",
+          "concepts": "Latency, traffic, errors and saturation describe different aspects of service behaviour. Count failed/dropped work in the denominator; a lower average after rejecting most traffic is not improved capacity.",
+          "requirements": "Python 3.11+; optional Prometheus/Grafana installed on the learner PC for live monitoring.",
+          "resource": "https://sre.google/workbook/implementing-slos/",
+          "practice_minutes": 60,
+          "milestone_minutes": 120,
+          "steps": [
+            "Inspect the recorded baseline and incident CSV fixtures. Both contain 50 attempted requests in the stated 60-second window. Predict which thresholds fail.",
+            "```sh\npython3 shared/analyze.py fixtures/baseline.csv --window-seconds 60\npython3 shared/analyze.py fixtures/incident.csv --window-seconds 60\n```",
+            "Start a real v1 Relay in Terminal A, then inspect /metrics before and after several checks in Terminal B. The counter names distinguish responses, active connections and admission rejections.",
+            "```sh\npython3 shared/relay.py --data work/signals.sqlite --release v1\n```",
+            "```sh\ncurl http://127.0.0.1:8000/metrics\npython3 shared/check_service.py --expect-release v1\ncurl http://127.0.0.1:8000/metrics\n```",
+            "For the live extension, start a local Prometheus with short bounded retention. The supplied target expects Relay on the same host; use the correct actual address if you choose another topology.",
+            "```sh\nprometheus --config.file=configs/prometheus.yml --storage.tsdb.path=work/prometheus --storage.tsdb.retention.time=1h --storage.tsdb.retention.size=128MB --web.listen-address=127.0.0.1:9090\n```",
+            "Query rate(relay_admission_rejected_total[1m]) and target up. Optionally import configs/grafana-dashboard.json into your own local Grafana and select the actual datasource."
+          ],
+          "independent": [
+            "Change the measurement window or omit failed requests in a scratch calculation and show why the claim changes misleadingly.",
+            "Generate a few deliberate failures against your own service, observe the actual counters, and state what remains unmeasured by these simple signals.",
+            "Define an SLI numerator/denominator/window and a proposed objective justified for this lab, not a universal business promise."
+          ],
+          "evidence": "Correct calculations include all attempts and units; live metrics are distinct from recorded datasets; the learner rejects a misleading green/low-CPU conclusion.",
+          "capabilities": [
+            "sli-slo-accounting",
+            "observability-signals"
+          ],
+          "original_design_levels": [
+            10
+          ]
+        },
+        {
+          "id": "bounded-capacity",
+          "title": "Bound concurrency and compare workloads",
+          "preview": "Compare controlled workloads and explain how concurrency limits change useful throughput.",
+          "concepts": "Concurrency is work in progress; parallelism is simultaneous execution. Worker/pool/queue limits and CPU quota describe different boundaries. A closed client slows its offered work when the service slows.",
+          "requirements": "Python 3.11+ and owned local target; optional k6 CLI for the fixed-arrival comparison.",
+          "resource": "https://grafana.com/docs/k6/latest/using-k6/scenarios/concepts/open-vs-closed/",
+          "practice_minutes": 60,
+          "milestone_minutes": 120,
+          "steps": [
+            "Start an isolated service with a short simulated dependency delay and small worker limit. It remains a local experiment, not a stress test of the shared Ascend machine.",
+            "```sh\npython3 shared/relay.py --port 8000 --data work/load.sqlite --release load-v1 --workers 2 --delay-ms 120\n```",
+            "Run a bounded client experiment and record its printed actual window. Use that window when analyzing the CSV rather than inventing a duration.",
+            "```sh\npython3 shared/probe_load.py --clients 4 --requests 24 --output notes/load-two-workers.csv\n```",
+            "Use the window_seconds printed by that run: python3 shared/analyze.py notes/load-two-workers.csv --window-seconds YOUR_OBSERVED_SECONDS. The default objectives are illustrative; rejected work may correctly make this overload experiment exit with status 1.",
+            "Repeat with one controlled change, such as --workers 1 or --delay-ms 250, using a new output filename. Inspect successful, rejected and failed work plus response durations.",
+            "With k6 installed, run the supplied low-rate ten-second fixed-arrival exercise and record dropped_iterations as well as latency/errors.",
+            "```sh\nk6 run configs/k6.js\n```"
+          ],
+          "independent": [
+            "Keep workload/dataset/client placement fixed while changing one worker or queue boundary. Explain both any improvement and any increased rejection.",
+            "Calculate a first CPU/memory/network budget from observed inputs and reserves. Do not use p95 in Little's Law or claim users-per-GB.",
+            "Recover normal work after the overload and verify the actual state/response controls still pass."
+          ],
+          "evidence": "The comparison counts all work, identifies the limiting boundary, preserves correctness and states the measurement scope and generator limits.",
+          "capabilities": [
+            "bounded-admission",
+            "workload-capacity"
+          ],
+          "original_design_levels": [
+            10
+          ]
+        },
+        {
+          "id": "secret-and-artifact",
+          "title": "Rotate a secret and verify an artifact",
+          "preview": "Revoke a write credential and distinguish artifact integrity from signer trust.",
+          "concepts": "Credentials grant authority and must be revocable; artifact digests detect content changes but do not establish who signed them. Store secrets outside release artifacts and restrict their local permissions.",
+          "requirements": "Python 3.11+; OpenSSL for the local signature exercise; only synthetic credentials.",
+          "resource": "https://docs.github.com/en/actions/security-for-github-actions/security-hardening-your-deployments/about-security-hardening-with-openid-connect",
+          "practice_minutes": 60,
+          "milestone_minutes": 120,
+          "steps": [
+            "Create a synthetic token file and start a fresh service using it. Run an authenticated write check, then attempt the same write without credentials.",
+            "```sh\nmkdir -p secrets work notes\nprintf '%s\\n' 'synthetic-old-token' > secrets/write-token.txt\nchmod 600 secrets/write-token.txt\npython3 shared/relay.py --data work/secret.sqlite --release secret-v1 --token-file secrets/write-token.txt\n```",
+            "```sh\npython3 shared/check_service.py --expect-release secret-v1 --write --token-file secrets/write-token.txt\npython3 shared/check_service.py --expect-release secret-v1 --write\n```",
+            "Save a separate old-client token file, replace the server token file with a new synthetic value, and show that the old client fails while the new client succeeds. Never paste actual tokens into the notebook.",
+            "Build a source artifact and use a temporary local signing key to sign its manifest. Keep the signature outside the immutable artifact directory.",
+            "```sh\npython3 shared/release.py build --source shared/relay.py --out work/signed-artifact --release signed-v1 --revision local-reviewed\nopenssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out secrets/signing.pem\nopenssl pkey -in secrets/signing.pem -pubout -out notes/signer-public.pem\nopenssl dgst -sha256 -sign secrets/signing.pem -out notes/manifest.sig work/signed-artifact/manifest.json\nopenssl dgst -sha256 -verify notes/signer-public.pem -signature notes/manifest.sig work/signed-artifact/manifest.json\n```"
+          ],
+          "independent": [
+            "Change a copied manifest and verify the signature rejection. Verify that an untrusted replacement public key cannot establish the intended signer merely because it verifies some signature.",
+            "Rotate the synthetic write token without restarting the application, then prove revoked/new client behaviour.",
+            "Explain where a real CI workload identity or signature provenance policy would add assurance beyond this local self-controlled key."
+          ],
+          "evidence": "Old credentials are denied, current legitimate writes work, and altered content fails signature/digest controls with accurately scoped signer trust.",
+          "capabilities": [
+            "secret-rotation",
+            "artifact-authenticity"
+          ],
+          "original_design_levels": [
+            11
+          ]
+        },
+        {
+          "id": "consistent-recovery",
+          "title": "Restore consistent data and report loss",
+          "preview": "Restore a consistent snapshot into a clean service and measure the data lost.",
+          "concepts": "A snapshot is useful when it restores the required records into a clean target. SQLite's backup API produces a consistent snapshot; a live file copy can omit WAL state. RPO and RTO describe data loss and recovery time.",
+          "requirements": "Python 3.11+ and a running owned Relay service with synthetic data.",
+          "resource": "https://www.sqlite.org/backup.html",
+          "practice_minutes": 60,
+          "milestone_minutes": 120,
+          "steps": [
+            "Start a dedicated stateful service and add a named synthetic update. Record its ID and the clock time before the backup.",
+            "```sh\npython3 shared/relay.py --data work/recovery.sqlite --release recovery-v1\n```",
+            "```sh\npython3 shared/check_service.py --expect-release recovery-v1 --write\npython3 shared/backup.py create --source work/recovery.sqlite --destination backups/before-incident.sqlite\n```",
+            "Write another update after the snapshot while the service is still running; retain the new ID.",
+            "```sh\npython3 shared/check_service.py --expect-release recovery-v1 --write\n```",
+            "Now stop the original service with Ctrl+C. Restore into a new path; the helper refuses to overwrite an existing database.\n```sh\npython3 shared/backup.py restore --source backups/before-incident.sqlite --destination restored/relay.sqlite\npython3 shared/backup.py inspect --source restored/relay.sqlite\n```",
+            "Start a new service using restored/relay.sqlite while the original is stopped. Compare IDs, record counts and logical-record hashes, including the deliberately lost later write.",
+            "```sh\npython3 shared/relay.py --data restored/relay.sqlite --release recovered-v1\n```"
+          ],
+          "independent": [
+            "Create a damaged copy of a backup, inspect its failure, and preserve the original known-good snapshot.",
+            "Recover into another fresh path and report observed recovery time and the exact missing writes against your stated objective.",
+            "Place a backup on a separate device/host if available. Otherwise explain the unresolved common-disk failure domain."
+          ],
+          "evidence": "A clean service uses restored data while the original is stopped; integrity/count/hash controls pass and data loss/recovery time are honestly measured.",
+          "capabilities": [
+            "backup-consistency",
+            "rpo-rto"
+          ],
+          "original_design_levels": [
+            11
+          ]
+        },
+        {
+          "id": "kubernetes-basics",
+          "title": "Deploy a small Kubernetes workload",
+          "preview": "Operate a small local Kubernetes service and diagnose endpoint selection.",
+          "concepts": "A controller reconciles declared state; a Service selects endpoints by labels. Pod readiness controls routing eligibility. Container image identity and guest/host boundaries still matter.",
+          "requirements": "Owned local Docker environment, kind and kubectl; budget roughly 4\u20136 GiB for this sequential cluster lab and inspect actual use.",
+          "resource": "https://kind.sigs.k8s.io/docs/user/quick-start/",
+          "practice_minutes": 90,
+          "milestone_minutes": 120,
+          "steps": [
+            "Stop conflicting local deployments. Check kind get clusters first; if ascend-relay already exists, identify its owner and choose an unused lab name or intentionally resume your own cluster. The commands below assume this is a new, distinctly named learner-owned cluster.",
+            "```sh\ndocker build -t ascend-relay:v1 .\nkind create cluster --name ascend-relay\nkind load docker-image ascend-relay:v1 --name ascend-relay\nkubectl --context kind-ascend-relay apply -f configs/namespace.yaml\n```",
+            "Inspect deployment.yaml before applying. It runs two read-only replicas with bounded resources and an ephemeral scratch volume; it is not a writable replicated SQLite design.",
+            "```sh\nkubectl --context kind-ascend-relay apply -f configs/deployment.yaml -f configs/service.yaml\nkubectl --context kind-ascend-relay -n ascend-relay rollout status deployment/relay --timeout=120s\nkubectl --context kind-ascend-relay -n ascend-relay get pods,service,endpoints\n```",
+            "Keep a port-forward in one terminal and verify the actual service from another.",
+            "```sh\nkubectl --context kind-ascend-relay -n ascend-relay port-forward service/relay 18000:80\n```",
+            "```sh\npython3 shared/check_service.py --url http://127.0.0.1:18000 --expect-release k8s-v1\n```"
+          ],
+          "independent": [
+            "Apply service-fault.yaml. Observe running pods but an empty/mismatched endpoint selection. Diagnose and restore the intended selector.",
+            "Demonstrate that writes are rejected by the read-only workload; this is expected, not a database outage.",
+            "Retain the actual context/namespace/image/endpoint observations and owned-cluster cleanup command.",
+            "When the next rollout lesson and your evidence are complete, remove only this owned cluster with kind delete cluster --name ascend-relay. Inspect kind get clusters and retained Docker images afterward; deleting a cluster is not a generic image-prune operation."
+          ],
+          "evidence": "A real cluster serves the expected version; readiness/selection and read-only controls are demonstrated without claiming physical HA.",
+          "capabilities": [
+            "kubernetes-controller-service",
+            "cluster-scope"
+          ],
+          "original_design_levels": [
+            12
+          ]
+        },
+        {
+          "id": "rollout-and-permissions",
+          "title": "Recover a rollout and inspect permissions",
+          "preview": "Recover an unhealthy rollout and observe allowed and denied API permissions.",
+          "concepts": "A Deployment revision, ready endpoints and image availability determine a rollout. Kubernetes permissions must be checked against the API, not inferred from a UI button. A namespaced role does not grant host administration.",
+          "requirements": "The owned kind cluster from the preceding lesson; kubectl permissions for that lab.",
+          "resource": "https://kubernetes.io/docs/tutorials/kubernetes-basics/",
+          "practice_minutes": 90,
+          "milestone_minutes": 120,
+          "steps": [
+            "Record the current working revision and readiness. Cause a scoped image failure by selecting an unavailable local image; imagePullPolicy Never makes the failure visible without pulling arbitrary content.",
+            "```sh\nkubectl --context kind-ascend-relay -n ascend-relay rollout history deployment/relay\nkubectl --context kind-ascend-relay -n ascend-relay set image deployment/relay relay=ascend-relay:missing\nkubectl --context kind-ascend-relay -n ascend-relay get pods\nkubectl --context kind-ascend-relay -n ascend-relay describe deployment relay\n```",
+            "Recover the recorded good revision and require ready endpoints again.",
+            "```sh\nkubectl --context kind-ascend-relay -n ascend-relay rollout undo deployment/relay\nkubectl --context kind-ascend-relay -n ascend-relay rollout status deployment/relay --timeout=120s\n```",
+            "Create a scoped observer service account and bind the provided read-only role only in this namespace. Use the lab administrator's impersonation capability to check intended permissions.",
+            "```sh\nkubectl --context kind-ascend-relay -n ascend-relay create serviceaccount observer\nkubectl --context kind-ascend-relay apply -f configs/read-only-role.yaml\nkubectl --context kind-ascend-relay -n ascend-relay create rolebinding observer --role=observer --serviceaccount=ascend-relay:observer\nkubectl --context kind-ascend-relay -n ascend-relay auth can-i get pods --as=system:serviceaccount:ascend-relay:observer\nkubectl --context kind-ascend-relay -n ascend-relay auth can-i delete deployments --as=system:serviceaccount:ascend-relay:observer\n```"
+          ],
+          "independent": [
+            "Change a readiness path in an owned copied manifest, observe why running containers are not sufficient, and repair that fault independently from the image case.",
+            "Verify the observer cannot read another namespace's private resources or mutate this deployment; keep credentials out of evidence.",
+            "Recheck the intended application/version after recovery and identify which authorization result was actually observed."
+          ],
+          "evidence": "A failed rollout is recovered, correct ready endpoints return, and allowed/denied API permissions are observed in the declared lab scope.",
+          "capabilities": [
+            "kubernetes-rollout-recovery",
+            "rbac-boundary"
+          ],
+          "original_design_levels": [
+            12,
+            11
+          ]
+        },
+        {
+          "id": "operating-budget",
+          "title": "Operate within a resource and storage budget",
+          "preview": "Measure resource use and recover from an explicitly bounded resource failure.",
+          "concepts": "Memory, CPU quota, write volume, retained metrics, image cache and free space are independent constraints. A 16-core desktop with 16 GB RAM is not an unlimited cluster; a microSD server needs controlled writes and recovery.",
+          "requirements": "Owned Linux VM/container environment; physical Pi/spare host optional. No disk-pressure test on the shared server.",
+          "resource": "https://prometheus.io/docs/prometheus/latest/getting_started/",
+          "practice_minutes": 60,
+          "milestone_minutes": 120,
+          "steps": [
+            "Inventory only the lab's processes/containers/volumes and record host reserve. Use OS tools and the actual resource controls before proposing more replicas.",
+            "```sh\ndf -h\ndf -i\ndocker system df\ndocker stats --no-stream\n```",
+            "Review the supplied container/Pod memory and CPU limits. Record whether the chosen boundary is a quota, weight, request or maximum, and inspect actual events when a bounded owned workload exceeds it.",
+            "For a concrete memory-bound experiment, first confirm ascend-relay-budget is an unused container name. The following container has no network or persistent volume and an explicit 48 MiB cap; it attempts one 80 MiB allocation. An unsupported memory controller or swap setting is a setup failure to diagnose, not evidence that the limit worked.\n```sh\ndocker run --name ascend-relay-budget --memory 48m --memory-swap 48m --cpus 0.25 --network none python:3.12-slim python -c \"sample = bytearray(80 * 1024 * 1024); print(len(sample))\"\ndocker inspect ascend-relay-budget --format 'OOMKilled={{.State.OOMKilled}} ExitCode={{.State.ExitCode}}'\ndocker rm ascend-relay-budget\n```",
+            "Keep logs and Prometheus retention bounded on the learner PC. For a systemd guest, inspect its journal usage and configure a guest-local retention policy after retaining required evidence.",
+            "```sh\njournalctl --disk-usage\nsystemctl show ascend-relay -p MemoryMax -p TasksMax\n```",
+            "When available, run the same service on a supported Pi or spare PC. Record uname -m, actual memory, power/cooling and storage observations, with the same release and workload. The advantage is an independent, always-on physical host; a VM on your PC covers software practice without buying hardware, but does not measure flash endurance or a separate power failure."
+          ],
+          "independent": [
+            "Change one budget in an owned disposable workload and diagnose the resulting throttle, rejection or failure using observed counters rather than guessed hardware capacity.",
+            "Restore the valid budget, verify service/data recovery and list the images/volumes still intentionally retained.",
+            "Plan a later SSD/RAM/second-host upgrade around the measured constraint, preserving the existing runbook and earlier skill evidence."
+          ],
+          "evidence": "The learner accounts for aggregate resources and writes, demonstrates bounded failure/recovery, and distinguishes PC models from physical-device measurements.",
+          "capabilities": [
+            "resource-budgeting",
+            "constrained-operations"
+          ],
+          "original_design_levels": [
+            10,
+            11
+          ]
+        },
+        {
+          "id": "operational-capstone",
+          "title": "Ship, observe and recover the complete service",
+          "preview": "Ship, measure and recover an identifiable service with a reproducible handover.",
+          "concepts": "A capstone combines artifact identity, appropriate access, service health, state recovery, permissions and a handover that another person can reproduce. Passing a single endpoint check does not satisfy the whole operation.",
+          "requirements": "An owned guest/container target or the separately qualified Kubernetes route; real learner-owned CI if claiming a hosted pipeline.",
+          "resource": "https://sre.google/workbook/implementing-slos/",
+          "practice_minutes": 120,
+          "milestone_minutes": 180,
+          "steps": [
+            "Select a VM/container deployment route or the stateless Kubernetes route and state its evidence limits. Build/test an identifiable release through the previous track's actual pipeline or clearly labelled local rehearsal.",
+            "Deploy it, record the current route/version, and verify the relevant read/write or read-only controls. Retain a consistent snapshot for the stateful route.",
+            "Define a modest workload and service objective, observe actual results, then introduce a fresh incident: old healthy artifact, denied credential, route failure, readiness error or lost active data.",
+            "Recover the expected behaviour and required data, measure the result, and hand over a runbook with artifact, access, configuration, resource, backup and cleanup details."
+          ],
+          "independent": [
+            "Use a fresh target or a fresh reviewer to reproduce the deployment and required restoration without relying on unexplained pre-existing state.",
+            "Demonstrate one correct denial as well as success, and state remaining public-network, hardware, provider or scale assumptions.",
+            "Delete only the owned cluster/resources when finished, or explicitly retain the chosen service and its ongoing resource responsibilities."
+          ],
+          "evidence": "The actual release, detection, recovery, state/permission controls and handover all work within the stated environment; local/physical/public claims remain distinct.",
+          "capabilities": [
+            "integrated-operations",
+            "incident-handover"
+          ],
+          "original_design_levels": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13
+          ]
+        }
+      ]
+    }
+  ]
+}

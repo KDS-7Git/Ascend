@@ -1,0 +1,16 @@
+{
+  "tool": "Caddy",
+  "version": "v2.11.7",
+  "release_url": "https://github.com/caddyserver/caddy/releases/tag/v2.11.7",
+  "retrieved_at": "2026-11-03T09:46:01.868358+00:00",
+  "asset_url": "https://github.com/caddyserver/caddy/releases/download/v2.11.7/caddy_2.11.7_linux_amd64.tar.gz",
+  "asset_bytes": 18113754,
+  "asset_sha256": "727b91701a392de6ebc5027509f548bf39979e5216340d0faed8fa5e69c84f8b",
+  "asset_sha512": "a7a433a1b133efc3c8d10eb0b99d52a24b5ef5c322dc77f5282182b1c0402139ab83f3a99f0c52409df77d20123fb0b523edad8a66d8f5e49136197bf61ef0e7",
+  "checksums_url": "https://github.com/caddyserver/caddy/releases/download/v2.11.7/caddy_2.11.7_checksums.txt",
+  "checksums_sha256": "5d27b76b95f496638d79208c55250317b8755fd9e90005f7466aa32956944a90",
+  "binary_sha256": "678ade3bfc088749c81a681adc603333ee0bb023b6a6cfe3c0f58bef8ff854e9",
+  "validation": "Archive SHA-256 matched GitHub release API digest; SHA-512 matched the release checksum file. Release signature was not independently verified.",
+  "api_requested_url": "https://api.github.com/repos/caddyserver/caddy/releases/latest",
+  "observed_release_published_at": "2026-10-03T05:58:33Z"
+}

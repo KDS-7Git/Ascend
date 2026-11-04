@@ -1,0 +1,536 @@
+{
+  "reviewed_on": "2026-11-03",
+  "completed_at": "2026-11-03T09:46:58.483211+00:00",
+  "scope": "Official technical evidence for a practical Local to Internet / Internet Services and Operations track.",
+  "source_count": 29,
+  "method": "Read-only HTTPS retrieval of first-party product/OS/manual/standard/project documentation, inspected text, canonical redirect resolution, response SHA-256. Raw retrieval caches are temporary research material. No paid account, cloud provisioning, public tunnel, VPN configuration, outgoing email, or root-network change was performed.",
+  "evidence_status": "Documentary support for a proposed curriculum. Mechanism observations and actual lab execution must be tracked separately.",
+  "sources": [
+    {
+      "id": "CF1",
+      "title": "Cloudflare Tunnel overview",
+      "url": "https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/",
+      "retrieved_at": "2026-11-03T09:34:42.074467+00:00",
+      "http_status": 200,
+      "resolved_url": "https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/",
+      "response_sha256": "6ca7d23028d04861be1fe15f822edea0aaca74cd8ac0f325feab1d47fe0e8d3d",
+      "bytes": 292620,
+      "text_characters": 19754,
+      "evidence_type": "first-party documentation retrieved over HTTPS; no external exercise executed",
+      "supports": [
+        "cloudflared establishes outbound connections and can connect origins without public routable IP addresses.",
+        "The inspected page distinguishes private networking/Zero Trust documentation from public publishing."
+      ],
+      "limitation": "Documents mechanism or configuration, not successful execution of an Ascend lab or a particular learner network."
+    },
+    {
+      "id": "CF2",
+      "title": "TryCloudflare Quick Tunnels",
+      "url": "https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/do-more-with-tunnels/trycloudflare/",
+      "retrieved_at": "2026-11-03T09:34:42.075393+00:00",
+      "http_status": 200,
+      "resolved_url": "https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/",
+      "response_sha256": "c7025592c3f8f9e2a52a43af6c6dd95788ad4ba8f92f834d2b058960881577b1",
+      "bytes": 114912,
+      "text_characters": 4642,
+      "evidence_type": "first-party documentation retrieved over HTTPS; no external exercise executed",
+      "supports": [
+        "Quick Tunnels need no Cloudflare account/domain and provide temporary trycloudflare.com URLs.",
+        "No uptime guarantee, 200 in-flight requests, no SSE, and changing hostname on recreation are documented."
+      ],
+      "limitation": "Documents mechanism or configuration, not successful execution of an Ascend lab or a particular learner network."
+    },
+    {
+      "id": "CF3",
+      "title": "Cloudflare Tunnel routing",
+      "url": "https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/routing-to-tunnel/",
+      "retrieved_at": "2026-11-03T09:34:42.075988+00:00",
+      "http_status": 200,
+      "resolved_url": "https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/routing-to-tunnel/",
+      "response_sha256": "d7a34e7b88b5664d49334bdc2d4e44c18b73b8807792bd74e47f70506a8510b6",
+      "bytes": 279149,
+      "text_characters": 17992,
+      "evidence_type": "first-party documentation retrieved over HTTPS; no external exercise executed",
+      "supports": [
+        "Published application routes map a public hostname to a private origin through a tunnel.",
+        "A paid Access plan is not required merely to publish an application; Access policy seats are separate.",
+        "The inspected page references separate Spectrum routing for TCP/UDP; it is not evidence that these capabilities belong to the normal free HTTP route."
+      ],
+      "limitation": "Documents mechanism or configuration, not successful execution of an Ascend lab or a particular learner network."
+    },
+    {
+      "id": "CF4",
+      "title": "Cloudflare Tunnel supported protocols",
+      "url": "https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/routing-to-tunnel/protocols/",
+      "retrieved_at": "2026-11-03T09:34:42.076697+00:00",
+      "http_status": 200,
+      "resolved_url": "https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/routing-to-tunnel/protocols/",
+      "response_sha256": "95dbec5e1491dbb5fb8b0b94e99680de6937481f690ad8d19ebda351aac38aae",
+      "bytes": 282763,
+      "text_characters": 19149,
+      "evidence_type": "first-party documentation retrieved over HTTPS; no external exercise executed",
+      "supports": [
+        "Documented non-HTTP published routes require client-side cloudflared.",
+        "TCP and SSH are streamed over WebSocket; long-lived connections refer to Client-to-Tunnel.",
+        "IPv6 literals in service URLs require brackets."
+      ],
+      "limitation": "Documents mechanism or configuration, not successful execution of an Ascend lab or a particular learner network."
+    },
+    {
+      "id": "CF5",
+      "title": "Cloudflare Tunnel firewall requirements",
+      "url": "https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/configure-tunnels/tunnel-with-firewall/",
+      "retrieved_at": "2026-11-03T09:34:42.077275+00:00",
+      "http_status": 200,
+      "resolved_url": "https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/configure-tunnels/tunnel-with-firewall/",
+      "response_sha256": "19374e1058444f86747f2642edbbfce78b5afcbf9eefbfdbc20d3999de42dcb6",
+      "bytes": 344607,
+      "text_characters": 28403,
+      "evidence_type": "first-party documentation retrieved over HTTPS; no external exercise executed",
+      "supports": [
+        "Tunnel operation requires outbound port 7844 using UDP/QUIC or TCP/HTTP2 and allowed destination ranges.",
+        "Port 443 enables some optional features; unrestricted outbound access is not assumed."
+      ],
+      "limitation": "Documents mechanism or configuration, not successful execution of an Ascend lab or a particular learner network."
+    },
+    {
+      "id": "WG1",
+      "title": "WireGuard quick start",
+      "url": "https://www.wireguard.com/quickstart/",
+      "retrieved_at": "2026-11-03T09:34:42.077665+00:00",
+      "http_status": 200,
+      "resolved_url": "https://www.wireguard.com/quickstart/",
+      "response_sha256": "a6eaa9cc05e624223887464735fd9deaf5d421ef98e0145bdc67e4b5b1b29a26",
+      "bytes": 14329,
+      "text_characters": 5502,
+      "evidence_type": "first-party documentation retrieved over HTTPS; no external exercise executed",
+      "supports": [
+        "WireGuard peer/interface configuration and key exchange are documented.",
+        "PersistentKeepalive is useful in particular NAT/firewall situations and is optional."
+      ],
+      "limitation": "Documents mechanism or configuration, not successful execution of an Ascend lab or a particular learner network."
+    },
+    {
+      "id": "TS1",
+      "title": "Tailscale connection types",
+      "url": "https://tailscale.com/kb/1257/connection-types",
+      "retrieved_at": "2026-11-03T09:34:42.078065+00:00",
+      "http_status": 200,
+      "resolved_url": "https://tailscale.com/docs/reference/connection-types",
+      "response_sha256": "d0f2910f587b07ab75ba80c3efa9da2ebb662d8832843faa717e525d19b9cf37",
+      "bytes": 265385,
+      "text_characters": 21020,
+      "evidence_type": "first-party documentation retrieved over HTTPS; no external exercise executed",
+      "supports": [
+        "Tailscale supports direct UDP, DERP-relayed, and peer-relayed connections with end-to-end encryption.",
+        "Actual connection type affects latency and throughput; direct connectivity is not guaranteed."
+      ],
+      "limitation": "Documents mechanism or configuration, not successful execution of an Ascend lab or a particular learner network."
+    },
+    {
+      "id": "TS2",
+      "title": "Tailscale plans and pricing",
+      "url": "https://tailscale.com/pricing",
+      "retrieved_at": "2026-11-03T09:34:42.078509+00:00",
+      "http_status": 200,
+      "resolved_url": "https://tailscale.com/pricing",
+      "response_sha256": "824231923d0eba6f6b70743c387433811de5882ab6bb252951c09528c592340d",
+      "bytes": 539490,
+      "text_characters": 31658,
+      "evidence_type": "first-party documentation retrieved over HTTPS; no external exercise executed",
+      "supports": [
+        "Current Personal pricing lists zero dollars, up to six users, unlimited user devices, up to three ACL groups, and up to fifty tagged resources to start.",
+        "Plan limits and eligibility must be checked for the intended account/use case; no permanent free-service guarantee is inferred."
+      ],
+      "limitation": "Point-in-time provider documentation; recheck before publishing a dependent lesson. No live account entitlement, billing, delivery, or quota behaviour was tested."
+    },
+    {
+      "id": "HS1",
+      "title": "Headscale documentation overview",
+      "url": "https://headscale.net/stable/",
+      "retrieved_at": "2026-11-03T09:40:23.471091+00:00",
+      "prior_attempt": {
+        "url": "https://headscale.net/stable/about/",
+        "error": "HTTP Error 404: Not Found"
+      },
+      "http_status": 200,
+      "resolved_url": "https://headscale.net/stable/",
+      "response_sha256": "a7b50ba3501a62c429bdce452cb747bcb8a06de6584a00e6aebf58fdc2bcb433",
+      "bytes": 32457,
+      "text_characters": 1849,
+      "evidence_type": "first-party documentation retrieved over HTTPS; no external exercise executed",
+      "supports": [
+        "Headscale is an open-source self-hosted Tailscale control-server implementation.",
+        "The documented intended scope is a single tailnet for personal or small open-source organisation use."
+      ],
+      "limitation": "Documents mechanism or configuration, not successful execution of an Ascend lab or a particular learner network."
+    },
+    {
+      "id": "SS1",
+      "title": "OpenSSH client configuration manual",
+      "url": "https://man.openbsd.org/ssh_config",
+      "retrieved_at": "2026-11-03T09:34:43.606442+00:00",
+      "http_status": 200,
+      "resolved_url": "https://man.openbsd.org/ssh_config",
+      "response_sha256": "27b86744bdf4423258f63169042e114a3376e34d7ace5dbce6034483356d79ea",
+      "bytes": 117307,
+      "text_characters": 67216,
+      "evidence_type": "first-party documentation retrieved over HTTPS; no external exercise executed",
+      "supports": [
+        "OpenSSH client configuration documents local, remote, dynamic forwarding, jump hosts, host verification, and keepalive behaviour.",
+        "ExitOnForwardFailure covers listener setup failure, not every failure of the ultimate forwarded application."
+      ],
+      "limitation": "Documents mechanism or configuration, not successful execution of an Ascend lab or a particular learner network."
+    },
+    {
+      "id": "SS2",
+      "title": "OpenSSH server configuration manual",
+      "url": "https://man.openbsd.org/sshd_config",
+      "retrieved_at": "2026-11-03T09:34:43.768113+00:00",
+      "http_status": 200,
+      "resolved_url": "https://man.openbsd.org/sshd_config",
+      "response_sha256": "6cc8d8cd0b6a092323904f5d5a318cb93d5fbee5ed7d68434d7ad0ca01861e9f",
+      "bytes": 113990,
+      "text_characters": 62562,
+      "evidence_type": "first-party documentation retrieved over HTTPS; no external exercise executed",
+      "supports": [
+        "Reverse forwards bind to loopback by default; GatewayPorts controls wider binding.",
+        "PermitListen, PermitOpen, AllowTcpForwarding and shell-access boundaries are distinct controls."
+      ],
+      "limitation": "Documents mechanism or configuration, not successful execution of an Ascend lab or a particular learner network."
+    },
+    {
+      "id": "VP1",
+      "title": "Ubuntu Server OpenSSH service documentation",
+      "url": "https://documentation.ubuntu.com/server/how-to/security/openssh-server/",
+      "retrieved_at": "2026-11-03T09:40:23.472173+00:00",
+      "prior_attempt": {
+        "url": "https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu",
+        "resolved_url": "https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu",
+        "http_status": 200,
+        "response_sha256": "0662d7353e468d3bdcf8d495427fc048966ebd650fbd4c8ac1fcdc205a2cea29"
+      },
+      "http_status": 200,
+      "resolved_url": "https://ubuntu.com/server/docs/how-to/security/openssh-server/",
+      "response_sha256": "bbf02025f3fa2d781a7047a9686b14c51490a9f3493e0be62b6202785b726148",
+      "bytes": 92109,
+      "text_characters": 14842,
+      "evidence_type": "first-party documentation retrieved over HTTPS; no external exercise executed",
+      "supports": [
+        "Ubuntu documents installing/configuring OpenSSH, creating and deploying keys, and validating sshd configuration before restart.",
+        "The earlier DigitalOcean tutorial URL returned a landing page without usable SSH/firewall instructions, so this canonical OS guide supplies the source."
+      ],
+      "limitation": "Documents mechanism or configuration, not successful execution of an Ascend lab or a particular learner network."
+    },
+    {
+      "id": "DN1",
+      "title": "Cloudflare proxied DNS records",
+      "url": "https://developers.cloudflare.com/dns/manage-dns-records/reference/proxied-dns-records/",
+      "retrieved_at": "2026-11-03T09:34:43.991270+00:00",
+      "http_status": 200,
+      "resolved_url": "https://developers.cloudflare.com/dns/proxy-status/",
+      "response_sha256": "1d3013a1b2150397d77e6cac6df2a73f50758ec4778017f0a0e303835d973c6c",
+      "bytes": 162179,
+      "text_characters": 12093,
+      "evidence_type": "first-party documentation retrieved over HTTPS; no external exercise executed",
+      "supports": [
+        "DNS-only and proxied DNS records return different destination paths and have different supported application behaviour."
+      ],
+      "limitation": "Documents mechanism or configuration, not successful execution of an Ascend lab or a particular learner network."
+    },
+    {
+      "id": "TL1",
+      "title": "Lets Encrypt challenge types",
+      "url": "https://letsencrypt.org/docs/challenge-types/",
+      "retrieved_at": "2026-11-03T09:34:44.381434+00:00",
+      "http_status": 200,
+      "resolved_url": "https://letsencrypt.org/docs/challenge-types/",
+      "response_sha256": "fe2730f1614eb5dbeba7d14cadecba8535d032c00caf9c7d79451a0f9a134b7c",
+      "bytes": 34029,
+      "text_characters": 8018,
+      "evidence_type": "first-party documentation retrieved over HTTPS; no external exercise executed",
+      "supports": [
+        "ACME HTTP-01 uses port 80; DNS-01 uses TXT records and supports wildcards.",
+        "DNS challenge validation and actual service reachability are distinct."
+      ],
+      "limitation": "Documents mechanism or configuration, not successful execution of an Ascend lab or a particular learner network."
+    },
+    {
+      "id": "GH1",
+      "title": "GitHub Pages limits",
+      "url": "https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits",
+      "retrieved_at": "2026-11-03T09:34:44.558693+00:00",
+      "http_status": 200,
+      "resolved_url": "https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits",
+      "response_sha256": "09b43f9782a0f6ef577953d199bb7cd02be5df29c33eeee9e297c04e45c4295c",
+      "bytes": 88783,
+      "text_characters": 4021,
+      "evidence_type": "first-party documentation retrieved over HTTPS; no external exercise executed",
+      "supports": [
+        "Published GitHub Pages sites have a 1 GB size limit and a soft 100 GB/month bandwidth limit.",
+        "Pages documents limitations on commercial/SaaS use and other platform limits."
+      ],
+      "limitation": "Point-in-time provider documentation; recheck before publishing a dependent lesson. No live account entitlement, billing, delivery, or quota behaviour was tested."
+    },
+    {
+      "id": "PG1",
+      "title": "Cloudflare Pages limits",
+      "url": "https://developers.cloudflare.com/pages/platform/limits/",
+      "retrieved_at": "2026-11-03T09:34:44.660242+00:00",
+      "http_status": 200,
+      "resolved_url": "https://developers.cloudflare.com/pages/platform/limits/",
+      "response_sha256": "35fa06a1de82f8e3f040350db1cd6fb039cbd2de97ec7578212d9d7afa6b000c",
+      "bytes": 129607,
+      "text_characters": 7029,
+      "evidence_type": "first-party documentation retrieved over HTTPS; no external exercise executed",
+      "supports": [
+        "Cloudflare Pages Free lists 500 builds/month, one concurrent build, and a 20-minute build timeout.",
+        "Maximum individual asset size is 25 MiB; Pages Functions consume Workers quotas."
+      ],
+      "limitation": "Point-in-time provider documentation; recheck before publishing a dependent lesson. No live account entitlement, billing, delivery, or quota behaviour was tested."
+    },
+    {
+      "id": "WK1",
+      "title": "Cloudflare Workers limits",
+      "url": "https://developers.cloudflare.com/workers/platform/limits/",
+      "retrieved_at": "2026-11-03T09:34:44.841086+00:00",
+      "http_status": 200,
+      "resolved_url": "https://developers.cloudflare.com/workers/platform/limits/",
+      "response_sha256": "a3479f848719c30e052ec8d898d2081199539396a6b77dcbb4c6339b9f2f608d",
+      "bytes": 251517,
+      "text_characters": 26815,
+      "evidence_type": "first-party documentation retrieved over HTTPS; no external exercise executed",
+      "supports": [
+        "Workers Free limits currently list 100000 requests/day, 10 ms CPU time, 128 MB memory, and six simultaneous outgoing connections per request.",
+        "CPU and wall-time limits differ and depend on invocation type."
+      ],
+      "limitation": "Point-in-time provider documentation; recheck before publishing a dependent lesson. No live account entitlement, billing, delivery, or quota behaviour was tested."
+    },
+    {
+      "id": "RD1",
+      "title": "Render free instances",
+      "url": "https://render.com/docs/free",
+      "retrieved_at": "2026-11-03T09:34:44.943593+00:00",
+      "http_status": 200,
+      "resolved_url": "https://render.com/docs/free",
+      "response_sha256": "a5d3423d1cdeae37b54864fe17cd24131136c816317c80322a3a756c78d6cbfa",
+      "bytes": 384116,
+      "text_characters": 11727,
+      "evidence_type": "first-party documentation retrieved over HTTPS; no external exercise executed",
+      "supports": [
+        "Free Render web services sleep after 15 minutes without inbound traffic and take about a minute to wake.",
+        "Free allocation is 750 service hours per workspace/month; files are ephemeral and free Postgres expires after 30 days.",
+        "Free services cannot send SMTP traffic on ports 25, 465 or 587; port 25 is blocked for all services."
+      ],
+      "limitation": "Point-in-time provider documentation; recheck before publishing a dependent lesson. No live account entitlement, billing, delivery, or quota behaviour was tested."
+    },
+    {
+      "id": "MP1",
+      "title": "Mailpit documentation",
+      "url": "https://mailpit.axllent.org/docs/",
+      "retrieved_at": "2026-11-03T09:34:45.259657+00:00",
+      "http_status": 200,
+      "resolved_url": "https://mailpit.axllent.org/docs/",
+      "response_sha256": "38dd72f8e3e78d491226dab25607eb1e9bc288abd7380534b2c1f10c869ed1cf",
+      "bytes": 12005,
+      "text_characters": 2446,
+      "evidence_type": "first-party documentation retrieved over HTTPS; no external exercise executed",
+      "supports": [
+        "Mailpit captures development SMTP messages, provides a viewer, and exposes an API for tests.",
+        "A mail-capture tool is not evidence of a complete public MTA/IMAP service."
+      ],
+      "limitation": "Documents mechanism or configuration, not successful execution of an Ascend lab or a particular learner network."
+    },
+    {
+      "id": "MS1",
+      "title": "Docker Mailserver introduction and components",
+      "url": "https://docker-mailserver.github.io/docker-mailserver/latest/introduction/",
+      "retrieved_at": "2026-11-03T09:40:23.472658+00:00",
+      "prior_attempt": {
+        "url": "https://docker-mailserver.github.io/docker-mailserver/latest/usage/requirements/",
+        "error": "HTTP Error 404: Not Found"
+      },
+      "http_status": 200,
+      "resolved_url": "https://docker-mailserver.github.io/docker-mailserver/latest/introduction/",
+      "response_sha256": "fca74e8757d199513604726536ed3571adc84a6a8c1234a1011986c062b8c888",
+      "bytes": 77262,
+      "text_characters": 17747,
+      "evidence_type": "first-party documentation retrieved over HTTPS; no external exercise executed",
+      "supports": [
+        "Docker Mailserver explains the specialised components and protocols of an email system.",
+        "Submission, transfer, storage, retrieval, and transport security are separate concepts."
+      ],
+      "limitation": "Documents mechanism or configuration, not successful execution of an Ascend lab or a particular learner network."
+    },
+    {
+      "id": "MS2",
+      "title": "Docker Mailserver basic installation",
+      "url": "https://docker-mailserver.github.io/docker-mailserver/latest/examples/tutorials/basic-installation/",
+      "retrieved_at": "2026-11-03T09:40:23.473002+00:00",
+      "prior_attempt": {
+        "url": "https://docker-mailserver.github.io/docker-mailserver/latest/usage/misc/",
+        "error": "HTTP Error 404: Not Found"
+      },
+      "http_status": 200,
+      "resolved_url": "https://docker-mailserver.github.io/docker-mailserver/latest/examples/tutorials/basic-installation/",
+      "response_sha256": "173933a2b753a6241ef422b60bd503404078bdd0db11c9919e1cb5a80ac06076",
+      "bytes": 75367,
+      "text_characters": 10359,
+      "evidence_type": "first-party documentation retrieved over HTTPS; no external exercise executed",
+      "supports": [
+        "Docker Mailserver provides an explicit example with SMTP/IMAP ports and persistent mail, state, logs and configuration.",
+        "Optional scanner and other service components affect the actual exercise composition; no hardware minimum is inferred."
+      ],
+      "limitation": "Documents mechanism or configuration, not successful execution of an Ascend lab or a particular learner network."
+    },
+    {
+      "id": "GM1",
+      "title": "Google email sender guidelines",
+      "url": "https://support.google.com/a/answer/81126",
+      "retrieved_at": "2026-11-03T09:34:45.367575+00:00",
+      "http_status": 200,
+      "resolved_url": "https://support.google.com/mail/answer/81126?visit_id=639292952859542334-2539338352&rd=1",
+      "response_sha256": "3a14141766a31df160a1b20a7e3acb015b6353dcb515b51c17f2ad1bd9ad9bea",
+      "bytes": 1652298,
+      "text_characters": 26932,
+      "evidence_type": "first-party documentation retrieved over HTTPS; no external exercise executed",
+      "supports": [
+        "Google requires SPF or DKIM, valid forward/reverse DNS, TLS and other conditions for ordinary senders.",
+        "Bulk-sender conditions additionally require SPF and DKIM plus DMARC and other requirements.",
+        "Receiver policies affect acceptance; successful local SMTP does not prove inbox delivery."
+      ],
+      "limitation": "Documents mechanism or configuration, not successful execution of an Ascend lab or a particular learner network."
+    },
+    {
+      "id": "NA1",
+      "title": "RFC 6598 shared address space for carrier-grade NAT",
+      "url": "https://www.rfc-editor.org/rfc/rfc6598",
+      "retrieved_at": "2026-11-03T09:34:45.669128+00:00",
+      "http_status": 200,
+      "resolved_url": "https://www.rfc-editor.org/info/rfc6598/",
+      "response_sha256": "8041143eb8930bac2d84a541a28815d78e84e55c54eb835f04d407d71e941c7d",
+      "bytes": 185368,
+      "text_characters": 21881,
+      "evidence_type": "first-party documentation retrieved over HTTPS; no external exercise executed",
+      "supports": [
+        "RFC 6598 defines 100.64.0.0/10 as shared address space used for carrier-grade NAT."
+      ],
+      "limitation": "Documents mechanism or configuration, not successful execution of an Ascend lab or a particular learner network."
+    },
+    {
+      "id": "VP2",
+      "title": "DigitalOcean SMTP restrictions",
+      "url": "https://docs.digitalocean.com/support/why-is-smtp-blocked/",
+      "retrieved_at": "2026-11-03T09:34:46.232048+00:00",
+      "http_status": 200,
+      "resolved_url": "https://docs.digitalocean.com/support/why-is-smtp-blocked/",
+      "response_sha256": "f0a85dbcd7b33bc5f4eb7b4fbdafe18d75e29c9fe14ae632e2bf0cb89a6f5ece",
+      "bytes": 43077,
+      "text_characters": 2406,
+      "evidence_type": "first-party documentation retrieved over HTTPS; no external exercise executed",
+      "supports": [
+        "DigitalOcean currently documents SMTP ports 25, 465, and 587 blocked by default on Droplets, including traffic using Reserved IP addresses."
+      ],
+      "limitation": "Point-in-time provider documentation; recheck before publishing a dependent lesson. No live account entitlement, billing, delivery, or quota behaviour was tested."
+    },
+    {
+      "id": "TS3",
+      "title": "Tailscale subnet routers",
+      "url": "https://tailscale.com/kb/1019/subnets",
+      "retrieved_at": "2026-11-03T09:40:23.473724+00:00",
+      "http_status": 200,
+      "resolved_url": "https://tailscale.com/docs/features/subnet-routers",
+      "response_sha256": "f839175255df8130deaa3e511f048ad8320ff69ea5e8b9a805b8d877bf04da52",
+      "bytes": 345361,
+      "text_characters": 27986,
+      "evidence_type": "first-party documentation retrieved over HTTPS; no external exercise executed",
+      "supports": [
+        "Subnet routers advertise approved selected routes; SNAT is enabled by default.",
+        "Subnet routing is distinct from advertising/using default routes through an exit node."
+      ],
+      "limitation": "Documents mechanism or configuration, not successful execution of an Ascend lab or a particular learner network."
+    },
+    {
+      "id": "TS4",
+      "title": "Tailscale exit nodes",
+      "url": "https://tailscale.com/kb/1103/exit-nodes",
+      "retrieved_at": "2026-11-03T09:40:23.474457+00:00",
+      "http_status": 200,
+      "resolved_url": "https://tailscale.com/docs/features/exit-nodes",
+      "response_sha256": "d591dc5b6325c19d0f389774a19c62627d879763ca2cc9b87a929670057279df",
+      "bytes": 320303,
+      "text_characters": 19005,
+      "evidence_type": "first-party documentation retrieved over HTTPS; no external exercise executed",
+      "supports": [
+        "Exit nodes route Internet/default-route traffic and must be explicitly configured/selected.",
+        "Local LAN access while using an exit node is a configurable choice."
+      ],
+      "limitation": "Documents mechanism or configuration, not successful execution of an Ascend lab or a particular learner network."
+    },
+    {
+      "id": "FR1",
+      "title": "frp overview",
+      "url": "https://gofrp.org/en/docs/overview/",
+      "retrieved_at": "2026-11-03T09:40:24.298873+00:00",
+      "http_status": 200,
+      "resolved_url": "https://gofrp.org/en/docs/overview/",
+      "response_sha256": "7f33cb9aac3857931c2f92cb89f437aa2fb016dcc1c871796b0166e2bb37e110",
+      "bytes": 42722,
+      "text_characters": 3114,
+      "evidence_type": "first-party documentation retrieved over HTTPS; no external exercise executed",
+      "supports": [
+        "frp supports reverse proxying of intranet TCP, UDP, HTTP and HTTPS through public-IP nodes, plus optional P2P-related mechanisms.",
+        "A self-hosted public relay is an external network/infrastructure dependency."
+      ],
+      "limitation": "Documents mechanism or configuration, not successful execution of an Ascend lab or a particular learner network."
+    },
+    {
+      "id": "RA1",
+      "title": "rathole project README",
+      "url": "https://raw.githubusercontent.com/rapiz1/rathole/main/README.md",
+      "retrieved_at": "2026-11-03T09:40:24.312906+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/rapiz1/rathole/main/README.md",
+      "response_sha256": "2eda155efc4e105933137ce2a2d61ac6e197e2772b36e5083f77e4c14e4d98fe",
+      "bytes": 11232,
+      "text_characters": 11224,
+      "evidence_type": "first-party documentation retrieved over HTTPS; no external exercise executed",
+      "supports": [
+        "rathole documents exposing services behind NAT via a public-IP server.",
+        "Per-service tokens, TCP/UDP services, and optional Noise/TLS transport are documented.",
+        "Project performance and resource claims were not independently benchmarked."
+      ],
+      "limitation": "Project README, not a comparative independent benchmark; optional transport security must be explicitly configured."
+    },
+    {
+      "id": "GH2",
+      "title": "About GitHub Pages",
+      "url": "https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages",
+      "retrieved_at": "2026-11-03T09:40:24.476356+00:00",
+      "http_status": 200,
+      "resolved_url": "https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages",
+      "response_sha256": "1b7081d33fdb971d906784ce6c1325b51be305755c27f0074fc4fba888520b37",
+      "bytes": 94264,
+      "text_characters": 3234,
+      "evidence_type": "first-party documentation retrieved over HTTPS; no external exercise executed",
+      "supports": [
+        "GitHub Pages is static hosting for HTML/CSS/JavaScript.",
+        "GitHub Free supports public-repository Pages; other repository visibility/plan combinations have different availability."
+      ],
+      "limitation": "Point-in-time provider documentation; recheck before publishing a dependent lesson. No live account entitlement, billing, delivery, or quota behaviour was tested."
+    }
+  ],
+  "access_limits": [
+    "Old Headscale /stable/about/ returned 404; the current /stable/ overview was read instead.",
+    "Old Docker Mailserver /latest/usage/requirements/ and /latest/usage/misc/ URLs returned 404; current introduction and basic-installation pages were read instead.",
+    "DigitalOcean initial-server-setup pages resolved to a short landing page without the expected SSH/firewall instructions; Ubuntu Server OpenSSH documentation replaced that curricular citation.",
+    "Several Cloudflare, Tailscale, GitHub and RFC pages redirected to current canonical paths; original and resolved URLs are retained.",
+    "Authenticated dashboards, account eligibility, current invoices, provider port exceptions, and external deliverability were not tested."
+  ],
+  "curriculum_limits": [
+    "No universal minimum RAM/CPU allocation for all VPN, VPS, tunnel, or mail configurations is established by these sources.",
+    "Proposed tasks require pinned-version positive/negative controls, hardware/network variants, and learner pilots before course-wide validation claims.",
+    "Provider free allowances, domain ownership, electricity, reachable IPs/relays, and hardware acquisition are separate constraints.",
+    "Browser/trace analysis can establish reasoning but does not substitute for an unperformed physical, privileged-network, or public-provider operation."
+  ]
+}

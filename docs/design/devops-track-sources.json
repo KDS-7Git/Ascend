@@ -1,0 +1,334 @@
+{
+  "reviewed_on": "2026-11-03",
+  "scope": "Practical DevOps curriculum, teaching progression, deployment/recovery lab design, bounded environment delivery, and Ascend integration.",
+  "status": "Research and design only; no pack installed, external lab executed, repository created, or infrastructure provisioned.",
+  "method": "Ordinary public first-party HTTP/documentation/syllabus review. No paid course attendance, signed-in platform audit, or independent validation of marketing outcomes.",
+  "source_count": 18,
+  "sources": [
+    {
+      "id": "DK1",
+      "url": "https://kodekloud.com/learning-path/devops",
+      "resolved_url": "https://kodekloud.com/learning-path/devops",
+      "title": "KodeKloud DevOps learning path",
+      "retrieved_at": "2026-11-03T08:08:44.068063+00:00",
+      "http_status": 200,
+      "response_sha256": "c806ba519e97b3952fea157b35eedc4e268f88dec244f2a3b2f3a6bf870e715d",
+      "supports": [
+        "Public path sequences foundations, scripting, Git, CI, containers, orchestration, automation, and observability.",
+        "Topic and role paths, hands-on challenges, and readiness checks are linked; logged-in Engineer task mechanics were not inspected."
+      ]
+    },
+    {
+      "id": "DK2",
+      "url": "https://www.techworld-with-nana.com/devops-bootcamp",
+      "resolved_url": "https://www.techworld-with-nana.com/devops-bootcamp",
+      "title": "TechWorld with Nana: public DevOps syllabus",
+      "retrieved_at": "2026-11-03T08:08:46.375705+00:00",
+      "http_status": 200,
+      "response_sha256": "01f507ae1a212abc6a002aa16b1bdb4a5c0e677281c749159600533c9714b200",
+      "supports": [
+        "Public syllabus combines manual build/package work with later integrated CI/CD, infrastructure, container, and monitoring projects.",
+        "Employment and income claims in the marketing page were not independently validated."
+      ]
+    },
+    {
+      "id": "KL1",
+      "url": "https://killercoda.com/about",
+      "resolved_url": "https://killercoda.com/about",
+      "title": "Killercoda environments and membership",
+      "retrieved_at": "2026-11-03T08:08:44.069428+00:00",
+      "http_status": 200,
+      "response_sha256": "93c492da2a4829e4c9bffd588a691f9aed8f6a31becd9e41a8b0a16739292c74",
+      "supports": [
+        "Interactive Linux/Kubernetes scenarios are accessed in a browser.",
+        "The page explicitly says interactive environments use VMs for stronger isolation; finite session and concurrency allowances vary by membership."
+      ]
+    },
+    {
+      "id": "KL2",
+      "url": "https://killercoda.com/creators",
+      "resolved_url": "https://killercoda.com/creators",
+      "title": "Killercoda creator documentation",
+      "retrieved_at": "2026-11-03T08:12:49.101129+00:00",
+      "http_status": 200,
+      "response_sha256": "3595e1efc9d24e42ab453e6b5321c0fb340a2d1033ab2567e36580517a96d06b",
+      "supports": [
+        "Scenarios are Git-based and synchronise on push.",
+        "Step definitions can use verification scripts triggered by CHECK; this does not establish tamper-proof independent learner evidence."
+      ]
+    },
+    {
+      "id": "DO1",
+      "url": "https://docs.docker.com/get-started/workshop/",
+      "resolved_url": "https://docs.docker.com/get-started/tutorials/run-an-app/",
+      "title": "Docker: build and share a containerized application; redirects to current tutorial",
+      "retrieved_at": "2026-11-03T08:08:44.069826+00:00",
+      "http_status": 200,
+      "response_sha256": "51b419a9b6e4e960c766d796907a91fbcf01df057c86fdb5010f16de220635a5",
+      "supports": [
+        "Tutorial progresses through running an image, Compose, building, publishing, and cleanup.",
+        "It distinguishes images from containers and lists account/tool prerequisites."
+      ]
+    },
+    {
+      "id": "GH1",
+      "url": "https://raw.githubusercontent.com/skills/hello-github-actions/main/README.md",
+      "resolved_url": "https://raw.githubusercontent.com/skills/hello-github-actions/main/README.md",
+      "title": "GitHub Skills: Hello GitHub Actions",
+      "retrieved_at": "2026-11-03T08:15:03.406070+00:00",
+      "http_status": 200,
+      "response_sha256": "99c759c86fd9764b59334e25fd602a9c5862cfa324c563034c1a36b83e56780e",
+      "supports": [
+        "Exercise explicitly states audience, prerequisites, expected output, and steps for a workflow in a learner-owned repository.",
+        "Public/private visibility and Actions usage are relevant account requirements."
+      ]
+    },
+    {
+      "id": "GH2",
+      "url": "https://raw.githubusercontent.com/skills/test-with-actions/main/README.md",
+      "resolved_url": "https://raw.githubusercontent.com/skills/test-with-actions/main/README.md",
+      "title": "GitHub Skills: Test with Actions",
+      "retrieved_at": "2026-11-03T08:15:03.406988+00:00",
+      "http_status": 200,
+      "response_sha256": "2a79597f606af924e3694ddc96b167c13070291562ac6834d3667abd8f0e89d9",
+      "supports": [
+        "Exercise teaches a test workflow, a failed test, and enforcing passing checks before merging."
+      ]
+    },
+    {
+      "id": "GH3",
+      "url": "https://raw.githubusercontent.com/skills/publish-packages/main/README.md",
+      "resolved_url": "https://raw.githubusercontent.com/skills/publish-packages/main/README.md",
+      "title": "GitHub Skills: Publish Docker Images",
+      "retrieved_at": "2026-11-03T08:15:03.407590+00:00",
+      "http_status": 200,
+      "response_sha256": "23914a755f372ba06458ec360e78089b24961fbc2721521b7c7ddbca5d1d5a70",
+      "supports": [
+        "Exercise teaches building/publishing Docker images to GitHub Container Registry and versioning through changes, pull requests, and releases."
+      ]
+    },
+    {
+      "id": "GH4",
+      "url": "https://docs.github.com/en/actions/deployment/targeting-different-environments/managing-environments-for-deployment",
+      "resolved_url": "https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/manage-environments",
+      "title": "GitHub: deployment environments; redirects to current documentation",
+      "retrieved_at": "2026-11-03T08:12:49.662013+00:00",
+      "http_status": 200,
+      "response_sha256": "ae6ff4c9c4702a92c6bf262aaa62b6265c220cbf2eb0cc7c91bbf3de25252b81",
+      "supports": [
+        "Deployment environments can have protection rules and environment secrets.",
+        "Available protections depend on repository visibility and product plan."
+      ]
+    },
+    {
+      "id": "GH5",
+      "url": "https://docs.github.com/en/actions/security-for-github-actions/security-hardening-your-deployments/about-security-hardening-with-openid-connect",
+      "resolved_url": "https://docs.github.com/en/actions/concepts/security/openid-connect",
+      "title": "GitHub: OpenID Connect; redirects to current documentation",
+      "retrieved_at": "2026-11-03T08:12:49.734656+00:00",
+      "http_status": 200,
+      "response_sha256": "66101f18aa248ecf9f024e498cb9ef9b1571e2f01f0ccccc796d09d1b87690c1",
+      "supports": [
+        "OIDC exchanges short-lived tokens with a cloud provider and requires a configured trust relationship and workflow permissions."
+      ]
+    },
+    {
+      "id": "KU1",
+      "url": "https://kubernetes.io/docs/tutorials/kubernetes-basics/",
+      "resolved_url": "https://kubernetes.io/docs/tutorials/kubernetes-basics/",
+      "title": "Kubernetes Basics",
+      "retrieved_at": "2026-11-03T08:08:44.070151+00:00",
+      "http_status": 200,
+      "response_sha256": "a887a8c8071dbdb0a5da8ceefc027dc4c263e925a3a06656d6d9a61130200ab2",
+      "supports": [
+        "Kubernetes Basics presents background plus modules to create, deploy, explore, expose, scale, and update an application.",
+        "Actual practice-cluster setup is a separate prerequisite."
+      ]
+    },
+    {
+      "id": "KU2",
+      "url": "https://kind.sigs.k8s.io/docs/user/quick-start/",
+      "resolved_url": "https://kind.sigs.k8s.io/docs/user/quick-start/",
+      "title": "kind Quick Start",
+      "retrieved_at": "2026-11-03T08:15:03.408149+00:00",
+      "http_status": 200,
+      "response_sha256": "6dffa74f79ef093d818e1c651868ebb541199f1eca037952310aa141c6963947",
+      "supports": [
+        "kind supplies a local Kubernetes cluster workflow with explicit cluster creation and deletion."
+      ]
+    },
+    {
+      "id": "TF1",
+      "url": "https://developer.hashicorp.com/terraform/tutorials/docker-get-started",
+      "resolved_url": "https://developer.hashicorp.com/terraform/tutorials/docker-get-started",
+      "title": "Terraform: Docker getting-started tutorials",
+      "retrieved_at": "2026-11-03T08:12:49.101553+00:00",
+      "http_status": 200,
+      "response_sha256": "f25324aa1d7bbe76d7867553cb1eb3fd82d21b1b6e3997fdd94dfd04612e0902",
+      "supports": [
+        "The Docker getting-started path teaches build, change, and destroy operations plus variables, outputs, and state concepts."
+      ]
+    },
+    {
+      "id": "OT1",
+      "url": "https://opentofu.org/docs/intro/",
+      "resolved_url": "https://opentofu.org/docs/intro/",
+      "title": "OpenTofu introduction and workflow",
+      "retrieved_at": "2026-11-03T08:08:45.616020+00:00",
+      "http_status": 200,
+      "response_sha256": "a2784fb1ad52aa7a5419f3fc0a9afb74dd53eaa153b6899cca7edd7ae75ec9b9",
+      "supports": [
+        "OpenTofu documents write, plan, apply, provider APIs, resource dependencies, state, and reusable configurations."
+      ]
+    },
+    {
+      "id": "AN1",
+      "url": "https://docs.ansible.com/ansible/latest/getting_started/index.html",
+      "resolved_url": "https://docs.ansible.com/projects/ansible/latest/getting_started/index.html",
+      "title": "Ansible: getting started; redirects to current documentation",
+      "retrieved_at": "2026-11-03T08:12:50.687842+00:00",
+      "http_status": 200,
+      "response_sha256": "bd823f5bf726627a4a265a554fa0d55c82edd8efb8bfcc083ae489caf35c84ea",
+      "supports": [
+        "Ansible introduces a control node, inventory, managed nodes, and playbooks."
+      ]
+    },
+    {
+      "id": "PM1",
+      "url": "https://prometheus.io/docs/introduction/first_steps/",
+      "resolved_url": "https://prometheus.io/docs/introduction/first_steps/",
+      "title": "First steps with Prometheus",
+      "retrieved_at": "2026-11-03T08:12:49.948063+00:00",
+      "http_status": 200,
+      "response_sha256": "93e1541df51ea20a9d8fb412e8d79ea4c4f8424b94133d23c0cb4ef0c7d5b938",
+      "supports": [
+        "Prometheus first steps uses configuration, scrape targets, and queries rather than only a dashboard screenshot."
+      ]
+    },
+    {
+      "id": "SR1",
+      "url": "https://sre.google/workbook/implementing-slos/",
+      "resolved_url": "https://sre.google/workbook/implementing-slos/",
+      "title": "Google SRE Workbook: Implementing SLOs",
+      "retrieved_at": "2026-11-03T08:12:49.101900+00:00",
+      "http_status": 200,
+      "response_sha256": "1b02c7f3f640d92ca4357ba3e088fdbd6766274118afac934bede95ea9ea23e9",
+      "supports": [
+        "SLO guidance connects specific measurable indicators and time windows to reliability/engineering decisions."
+      ]
+    },
+    {
+      "id": "SR2",
+      "url": "https://sre.google/workbook/incident-response/",
+      "resolved_url": "https://sre.google/workbook/incident-response/",
+      "title": "Google SRE Workbook: Incident Response",
+      "retrieved_at": "2026-11-03T08:12:49.102336+00:00",
+      "http_status": 200,
+      "response_sha256": "11894e848cfccc52f073e998815027e7ea56915ca3e16d53df20eb7d28ab7184",
+      "supports": [
+        "Incident response guidance covers practiced coordination, recovery, and learning through postmortems."
+      ]
+    }
+  ],
+  "access_limits": [
+    {
+      "url": "https://kodekloud.com/kodekloud-engine",
+      "final_url": "https://kodekloud.com/kodekloud-engine",
+      "status": 404,
+      "retrieved_at": "2026-11-03T08:08:44.068995+00:00",
+      "limitation": "Not used as evidence for account-only teaching mechanics; HTTP status alone is insufficient. The fetched page is an error, JavaScript/redirect shell, or replacement general documentation page."
+    },
+    {
+      "url": "https://engineer.kodekloud.com/practice",
+      "final_url": "https://engineer.kodekloud.com/",
+      "status": 200,
+      "retrieved_at": "2026-11-03T08:12:49.100481+00:00",
+      "limitation": "Not used as evidence for account-only teaching mechanics; HTTP status alone is insufficient. The fetched page is an error, JavaScript/redirect shell, or replacement general documentation page."
+    },
+    {
+      "url": "https://skills.github.com/",
+      "final_url": "https://skills.github.com/",
+      "status": 200,
+      "retrieved_at": "2026-11-03T08:08:44.070565+00:00",
+      "limitation": "Not used as evidence for account-only teaching mechanics; HTTP status alone is insufficient. The fetched page is an error, JavaScript/redirect shell, or replacement general documentation page."
+    },
+    {
+      "url": "https://learn.github.com/skills",
+      "final_url": "https://learn.github.com/skills",
+      "status": 200,
+      "retrieved_at": "2026-11-03T08:12:49.099495+00:00",
+      "limitation": "Not used as evidence for account-only teaching mechanics; HTTP status alone is insufficient. The fetched page is an error, JavaScript/redirect shell, or replacement general documentation page."
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/training/paths/evolve-your-devops-practices/",
+      "final_url": "https://learn.microsoft.com/en-us/azure/devops/get-started/?view=azure-devops",
+      "status": 200,
+      "retrieved_at": "2026-11-03T08:08:46.339204+00:00",
+      "limitation": "Not used as evidence for account-only teaching mechanics; HTTP status alone is insufficient. The fetched page is an error, JavaScript/redirect shell, or replacement general documentation page."
+    }
+  ],
+  "confirmed_host_planning_baseline": {
+    "max_hosted_labs": 2,
+    "ram_gb": 8,
+    "cpu_cores": 4,
+    "disk_gb": 80,
+    "status": "Planning constraints, not measured capacity."
+  },
+  "curriculum": {
+    "reference_app": "Relay",
+    "main_levels": 13,
+    "estimated_work_hours": [
+      84,
+      111
+    ],
+    "estimate_status": "Authoring estimate to validate; excludes unpredictable environment acquisition, accounts, and substantial remediation.",
+    "proposed_candidate_recipes": 9,
+    "runtime_status": "All DevOps recipes proposed; no new runnable adapters were created."
+  },
+  "repository_snapshot": {
+    "captured_at": "2026-11-03T08:24:21.219586+00:00",
+    "note": "Shared uncommitted workspace; hashes identify reviewed source contracts.",
+    "files": [
+      {
+        "path": "ascend/engine/packs.py",
+        "sha256": "5a7b41d16e1c20e0243a15f25cc0a7e69a9aa33e2a018582bf0bf9748a7d6f86"
+      },
+      {
+        "path": "docs/pack-format.md",
+        "sha256": "7a6a5a4210a3cffb7ba6fc996169261abe0b02a1560743a36954efce12667b08"
+      },
+      {
+        "path": "ascend/local_labs/catalog.py",
+        "sha256": "b37d7bf663878ff2686822f63f486717a139556618e280ee71bdb187bf0dd656"
+      },
+      {
+        "path": "ascend/local_labs/hosted.py",
+        "sha256": "1fe414923bc47b73e16f5e643fc74d80cfc85f93f6ee0937f6fdd2160d972434"
+      },
+      {
+        "path": "ascend/local_labs/attempts.py",
+        "sha256": "266bbfda84d5d5b071eff77d81e447814ae537a010255d3221d6c0feb32412ae"
+      },
+      {
+        "path": "scripts/build_registry.py",
+        "sha256": "f0ffdae89f027520fac92e51dac5f2df12f963d3e1000dfd1e957f582137ee3a"
+      },
+      {
+        "path": "scripts/package_learning_materials.py",
+        "sha256": "c715a67d51aeb572fe4ba62ebb3d469226bb207ae46aecb0f5bf9b84bb0e470b"
+      },
+      {
+        "path": "docs/design/server-lab-runner.md",
+        "sha256": "1c7aa35f00367b2e8335e7c304a037d6ba0c6748881a351ecba2d97fbe094fe4"
+      },
+      {
+        "path": "docs/design/local-lab-execution-plan.md",
+        "sha256": "b9534caaafba5f523a086833d18405813d2f6623f832d38f5d970ff9d4b61fb3"
+      },
+      {
+        "path": "docs/curriculum/challenge-authoring.md",
+        "sha256": "b90140c2cc34832fe643c1672bb535bf8e31ece20de04a2ad7478f2a4485ff1e"
+      }
+    ]
+  }
+}

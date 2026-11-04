@@ -1,0 +1,407 @@
+{
+  "reviewed_on": "2026-11-03",
+  "generated_at": "2026-11-03T09:49:07.132330+00:00",
+  "scope": "Public curriculum, lesson, scenario and tutorial audit for Ascend Local to Internet / practical Internet services operations.",
+  "platforms": [
+    "KodeKloud",
+    "TechWorld with Nana",
+    "Linux Upskill Challenge",
+    "SadServers",
+    "Killercoda",
+    "Cisco Networking Academy",
+    "Linux Foundation",
+    "DigitalOcean Community"
+  ],
+  "platform_count": 8,
+  "substantive_platform_content_inspected_count": 7,
+  "limited_metadata_platforms": [
+    "Cisco Networking Academy"
+  ],
+  "source_count": 15,
+  "methods": [
+    "Retrieved first-party public HTML with Python urllib; retained response SHA-256 and metadata.",
+    "Inspected public source text; for four DigitalOcean tutorials also loaded the pages in isolated Chromium and read the rendered article bodies.",
+    "Attempted Chromium access to Cisco Networking Basics; only the title/navigation was available in the sampled session.",
+    "No accounts created, courses purchased, external lab sessions started, infrastructure provisioned, or messages sent."
+  ],
+  "sources": [
+    {
+      "id": "CISCO1",
+      "platform": "Cisco Networking Academy",
+      "url": "https://www.netacad.com/courses/networking-basics?courseLang=en-US",
+      "retrieved_at": "2026-11-03T09:34:27.649383+00:00",
+      "http_status": 200,
+      "resolved_url": "https://www.netacad.com/courses/networking-basics?courseLang=en-US",
+      "response_sha256": "fa3392a8b1dc99f65f6161d01ed8de01fe58cf3f9c409eb0548e82e042594f1d",
+      "response_bytes": 5880,
+      "title": "Free Computer Networking Course by Cisco: Start Learning Now",
+      "evidence_status": "limited course metadata and navigation only",
+      "supports": [
+        "The official route and title advertising a free Networking Basics course were retrieved."
+      ],
+      "limitations": [
+        "The initial response contained a JavaScript shell.",
+        "The Chromium visit rendered navigation but no substantive course text.",
+        "No course outline, Packet Tracer exercises, hardware alternative, download entitlement, or assessment claim is supported by this retrieval."
+      ],
+      "rendered_document": {
+        "requested_url": "https://www.netacad.com/courses/networking-basics?courseLang=en-US",
+        "visited_at": "2026-11-03T09:37:53.124501+00:00",
+        "status": 200,
+        "resolved_url": "https://www.netacad.com/courses/networking-basics?courseLang=en-US",
+        "title": "Free Computer Networking Course by Cisco: Start Learning Now",
+        "text_chars": 125,
+        "text_sha256": "846040a11ccd96a3b226f5d06991c1eff878ce5725deae88e229f33e3c86bd1a"
+      }
+    },
+    {
+      "id": "DO1",
+      "platform": "DigitalOcean Community",
+      "url": "https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-22-04",
+      "retrieved_at": "2026-11-03T09:34:27.874204+00:00",
+      "http_status": 200,
+      "resolved_url": "https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu",
+      "response_sha256": "0662d7353e468d3bdcf8d495427fc048966ebd650fbd4c8ac1fcdc205a2cea29",
+      "response_bytes": 270669,
+      "title": "Initial Server Setup with Ubuntu | DigitalOcean",
+      "evidence_status": "rendered operational tutorial inspected",
+      "supports": [
+        "The tutorial configures a new server with a non-root sudo user, SSH keys, and a firewall.",
+        "It requires validating the new account and SSH access before closing the original session.",
+        "The article describes applicability to cloud VMs, VPS, and bare-metal servers."
+      ],
+      "limitations": [
+        "Commands were not run in this audit.",
+        "The requested Ubuntu 22.04 URL redirects to a generic Ubuntu guide; use recorded versions and reference tests rather than assuming all future releases.",
+        "The initial HTML text extraction did not expose the article body; the substantive review used rendered text."
+      ],
+      "rendered_document": {
+        "requested_url": "https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-22-04",
+        "visited_at": "2026-11-03T09:37:53.126308+00:00",
+        "status": 200,
+        "resolved_url": "https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu",
+        "title": "Initial Server Setup with Ubuntu | DigitalOcean",
+        "text_chars": 24960,
+        "text_sha256": "da08014e21e43a0365be34d13e07bcfb78c330f11b47f234621cd134a7a10102"
+      }
+    },
+    {
+      "id": "DO2",
+      "platform": "DigitalOcean Community",
+      "url": "https://www.digitalocean.com/community/tutorials/how-to-set-up-wireguard-on-ubuntu-22-04",
+      "retrieved_at": "2026-11-03T09:34:27.889040+00:00",
+      "http_status": 200,
+      "resolved_url": "https://www.digitalocean.com/community/tutorials/how-to-set-up-wireguard-on-ubuntu-22-04",
+      "response_sha256": "c34cbd071550c9ae92dd32a66231a97a9bd17e02d1837d7166c6ad6348a7eb7a",
+      "response_bytes": 312251,
+      "title": "How To Set Up WireGuard on Ubuntu 22.04 | DigitalOcean",
+      "evidence_status": "rendered operational tutorial inspected",
+      "supports": [
+        "The tutorial configures a WireGuard server and peer, IPv4/IPv6 address ranges, keys, network/firewall behaviour, and optional Internet gateway routing.",
+        "The client may be the learner's local machine, a remote server, or a mobile device.",
+        "The page explicitly cautions that provider bandwidth overages can cost money."
+      ],
+      "limitations": [
+        "No VPN, route, or firewall was configured.",
+        "A named Ubuntu-version tutorial needs reference testing on the chosen guest/host versions.",
+        "The article body was reviewed after Chromium rendering."
+      ],
+      "rendered_document": {
+        "requested_url": "https://www.digitalocean.com/community/tutorials/how-to-set-up-wireguard-on-ubuntu-22-04",
+        "visited_at": "2026-11-03T09:37:53.127133+00:00",
+        "status": 200,
+        "resolved_url": "https://www.digitalocean.com/community/tutorials/how-to-set-up-wireguard-on-ubuntu-22-04",
+        "title": "How To Set Up WireGuard on Ubuntu 22.04 | DigitalOcean",
+        "text_chars": 56318,
+        "text_sha256": "0c02e93d37034992db0d402c81b1aba436174006b7ddff7db2739dbd89789b76"
+      }
+    },
+    {
+      "id": "DO3",
+      "platform": "DigitalOcean Community",
+      "url": "https://www.digitalocean.com/community/tutorials/an-introduction-to-haproxy-and-load-balancing-concepts",
+      "retrieved_at": "2026-11-03T09:34:28.128987+00:00",
+      "http_status": 200,
+      "resolved_url": "https://www.digitalocean.com/community/tutorials/an-introduction-to-haproxy-and-load-balancing-concepts",
+      "response_sha256": "d9fb934a8e77042616a260cd6f9055a9b48362f2594558732f77063613ea0c8c",
+      "response_bytes": 251215,
+      "title": "An Introduction to HAProxy and Load Balancing Concepts | DigitalOcean",
+      "evidence_status": "rendered conceptual/tutorial article inspected",
+      "supports": [
+        "The article describes HAProxy frontends/backends, L4/L7 routing, balancing algorithms, sticky sessions, health checks, and HA.",
+        "It identifies a single load balancer as a possible single point of failure even when backends are redundant."
+      ],
+      "limitations": [
+        "The examples were not executed or benchmarked.",
+        "A conceptual load-balancing article does not establish a complete concurrency/capacity curriculum.",
+        "The article body was reviewed after Chromium rendering."
+      ],
+      "rendered_document": {
+        "requested_url": "https://www.digitalocean.com/community/tutorials/an-introduction-to-haproxy-and-load-balancing-concepts",
+        "visited_at": "2026-11-03T09:37:57.823555+00:00",
+        "status": 200,
+        "resolved_url": "https://www.digitalocean.com/community/tutorials/an-introduction-to-haproxy-and-load-balancing-concepts",
+        "title": "An Introduction to HAProxy and Load Balancing Concepts | DigitalOcean",
+        "text_chars": 22273,
+        "text_sha256": "4813241bb9010a59c1f3705209c7dbfa34c86b6b4ca5e2fb763ab54f0f79b0a3"
+      }
+    },
+    {
+      "id": "DO4",
+      "platform": "DigitalOcean Community",
+      "url": "https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-postfix-on-ubuntu-20-04",
+      "retrieved_at": "2026-11-03T09:34:28.195123+00:00",
+      "http_status": 200,
+      "resolved_url": "https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-postfix-on-ubuntu-20-04",
+      "response_sha256": "40804223bfd1c65ba298349c372427491e56e03b2693cfaf988a061d471f6aeb",
+      "response_bytes": 315803,
+      "title": "How To Install and Configure Postfix on Ubuntu | DigitalOcean",
+      "evidence_status": "rendered operational tutorial inspected",
+      "supports": [
+        "The article teaches foundational Postfix MTA setup and testing with a mail client.",
+        "It explicitly says the exercise yields bare-bones mail functionality, not a full-featured email server.",
+        "It discusses domain/DNS configuration and operational delivery complications."
+      ],
+      "limitations": [
+        "No email was sent and no mail server deployed.",
+        "The tutorial alone cannot establish full mailbox service, reliable public deliverability, or safe long-term operation.",
+        "Specific technical/provider assertions need primary-product verification and reference tests.",
+        "The article body was reviewed after Chromium rendering."
+      ],
+      "rendered_document": {
+        "requested_url": "https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-postfix-on-ubuntu-20-04",
+        "visited_at": "2026-11-03T09:37:58.425507+00:00",
+        "status": 200,
+        "resolved_url": "https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-postfix-on-ubuntu-20-04",
+        "title": "How To Install and Configure Postfix on Ubuntu | DigitalOcean",
+        "text_chars": 72701,
+        "text_sha256": "efb842b9797291306e64f56daabaeba87acf567620f3e240d1506cec9fe176c1"
+      }
+    },
+    {
+      "id": "KILL1",
+      "platform": "Killercoda",
+      "url": "https://killercoda.com/about",
+      "retrieved_at": "2026-11-03T09:34:26.531436+00:00",
+      "http_status": 200,
+      "resolved_url": "https://killercoda.com/about",
+      "response_sha256": "93c492da2a4829e4c9bffd588a691f9aed8f6a31becd9e41a8b0a16739292c74",
+      "response_bytes": 40320,
+      "title": "About Killercoda | Interactive Environments",
+      "evidence_status": "public platform documentation inspected",
+      "supports": [
+        "Interactive Linux/Kubernetes scenarios run in the browser.",
+        "The technology description explicitly identifies disposable VMs for interactive-environment isolation.",
+        "Free and paid membership have different finite session/concurrency/queue allowances."
+      ],
+      "limitations": [
+        "No scenario was allocated.",
+        "Advertised usage counts and membership limits are provider statements at retrieval time.",
+        "This is not evidence that Ascend can safely host arbitrary administration work in its existing fixed container adapters."
+      ]
+    },
+    {
+      "id": "KILL2",
+      "platform": "Killercoda",
+      "url": "https://killercoda.com/creators",
+      "retrieved_at": "2026-11-03T09:34:26.535352+00:00",
+      "http_status": 200,
+      "resolved_url": "https://killercoda.com/creators",
+      "response_sha256": "3595e1efc9d24e42ab453e6b5321c0fb340a2d1033ab2567e36580517a96d06b",
+      "response_bytes": 57796,
+      "title": "Creator Documentation | Killercoda",
+      "evidence_status": "public scenario-authoring documentation inspected",
+      "supports": [
+        "Scenarios are authored in Git using JSON, Markdown, and scripts and synchronize on push.",
+        "An optional step verification script runs when CHECK is pressed and succeeds with exit code zero.",
+        "Scenario groups and differing environment images are documented."
+      ],
+      "limitations": [
+        "No scenario was authored/published or run.",
+        "A step check alone does not establish independent assessment authority or complete tamper resistance."
+      ]
+    },
+    {
+      "id": "KK1",
+      "platform": "KodeKloud",
+      "url": "https://kodekloud.com/learning-path/devops",
+      "retrieved_at": "2026-11-03T09:34:25.556971+00:00",
+      "http_status": 200,
+      "resolved_url": "https://kodekloud.com/learning-path/devops",
+      "response_sha256": "a08787986d78401b00d4fae3b4751e18014ce7a5a3648080959c9ebc667c19e3",
+      "response_bytes": 192445,
+      "title": "DevOps Roadmap & Learning Path | Kodekloud",
+      "evidence_status": "public syllabus inspected",
+      "supports": [
+        "The path lists Linux, VirtualBox/Vagrant networking, IPs and ports, Apache, and SSL/TLS as prerequisites before scripting, Git, CI, containers, orchestration, IaC, and monitoring.",
+        "Topic and role paths and a hands-on readiness test are linked."
+      ],
+      "limitations": [
+        "The readiness test and enrolled labs were not run.",
+        "The prerequisite topic names do not establish a complete hypervisor administration or multi-tenant VM-hosting curriculum.",
+        "Free offers in navigation do not establish free access to the complete path."
+      ]
+    },
+    {
+      "id": "LF1",
+      "platform": "Linux Foundation",
+      "url": "https://training.linuxfoundation.org/training/introduction-to-devops-and-site-reliability-engineering-lfs162/",
+      "retrieved_at": "2026-11-03T09:34:27.873682+00:00",
+      "http_status": 200,
+      "resolved_url": "https://training.linuxfoundation.org/training/introduction-to-devops-and-site-reliability-engineering-lfs162/",
+      "response_sha256": "a46ca5aaddf2568fc0d7d15b734032300b7a90d5f883fc6f18a12e37b1210a99",
+      "response_bytes": 221536,
+      "title": "Introduction to DevOps and Site Reliability Engineering (LFS162) - Linux Foundation - Education",
+      "evidence_status": "public outline and prerequisites inspected",
+      "supports": [
+        "LFS162 covers DevOps/SRE, cloud, containers, IaC, CI/CD, and observability.",
+        "The prerequisite list includes intermediate Linux, networking, scripting, security, virtualization, and administration knowledge.",
+        "The reviewed page lists zero-price enrolment and a 4GB RAM/2vCPU minimum laptop configuration for this course."
+      ],
+      "limitations": [
+        "The reviewer did not enrol or complete a lab.",
+        "Its minimum laptop specification is not a benchmark for Ascend's full track or VM-host workloads.",
+        "The public outline does not establish complete tunnel/mail or hypervisor administration practice."
+      ]
+    },
+    {
+      "id": "LUC1",
+      "platform": "Linux Upskill Challenge",
+      "url": "https://linuxupskillchallenge.org/",
+      "retrieved_at": "2026-11-03T09:34:25.558484+00:00",
+      "http_status": 200,
+      "resolved_url": "https://linuxupskillchallenge.org/",
+      "response_sha256": "9552825279f5ecdd6ba1224258f3682eedee260c6d97637b681898d8267e9177",
+      "response_bytes": 44435,
+      "title": "Linux Upskill Challenge - Linux Upskill Challenge",
+      "evidence_status": "public curriculum and lesson index inspected",
+      "supports": [
+        "The course describes free/open learning material without a required subscription or registration.",
+        "Its Linux administration sequence includes SSH, packages, services, permissions, networking/firewalls, scheduling, file transfer, archiving, source builds, log rotation, and scripting."
+      ],
+      "limitations": [
+        "No entire-course reference run was performed.",
+        "The source does not provide a measured microSD or full Ascend-track resource budget."
+      ]
+    },
+    {
+      "id": "LUC2",
+      "platform": "Linux Upskill Challenge",
+      "url": "https://linuxupskillchallenge.org/09/",
+      "retrieved_at": "2026-11-03T09:39:38.456383+00:00",
+      "http_status": 200,
+      "resolved_url": "https://linuxupskillchallenge.org/09/",
+      "response_sha256": "ce11f312de3d18dd6952f8abafd632298fcafeca1939fc946b75f3e0c65e22b0",
+      "response_bytes": 54081,
+      "title": "Day 9 — Diving into networking — Linux Upskill Challenge",
+      "evidence_status": "public operational lesson inspected",
+      "supports": [
+        "The networking lesson inspects listeners, changes firewall reachability, tests the effect, and restores access while preserving SSH.",
+        "The lesson links independent SadServers troubleshooting cases after instruction."
+      ],
+      "limitations": [
+        "No firewall was changed during this audit.",
+        "Ascend should refine broad exposure/security wording: all-interface binding alone does not establish public Internet reachability.",
+        "Published commands and illustrative outputs require version-specific reference testing before adoption."
+      ]
+    },
+    {
+      "id": "NANA1",
+      "platform": "TechWorld with Nana",
+      "url": "https://www.techworld-with-nana.com/devops-bootcamp",
+      "retrieved_at": "2026-11-03T09:34:25.557901+00:00",
+      "http_status": 200,
+      "resolved_url": "https://www.techworld-with-nana.com/devops-bootcamp",
+      "response_sha256": "ad80d490ef0ecbc108aa415d51eea555d964f841fdd75f63cf3f88338bd50927",
+      "response_bytes": 274795,
+      "title": "Best DevOps Bootcamp | TechWorld with Nana",
+      "evidence_status": "public syllabus and project descriptions inspected",
+      "supports": [
+        "Build/package work is taught manually before later automation.",
+        "Projects combine CI, registries, Docker, cloud VMs, Kubernetes, IaC, observability, and application recovery.",
+        "The commercial page describes independent exercises and cloud costs in addition to course cost."
+      ],
+      "limitations": [
+        "Paid classes and projects were not taken.",
+        "Marketing, salary, graduate-outcome, and production-grade claims were not independently validated.",
+        "Cloud credits and free-tier examples on the page need current provider validation before reuse."
+      ]
+    },
+    {
+      "id": "SAD1",
+      "platform": "SadServers",
+      "url": "https://sadservers.com/scenarios",
+      "retrieved_at": "2026-11-03T09:34:25.559499+00:00",
+      "http_status": 200,
+      "resolved_url": "https://sadservers.com/scenarios",
+      "response_sha256": "79e19f6dfd325f6748f9b6fc24780855a559fb818927419feee24ed0b09be292",
+      "response_bytes": 444838,
+      "title": "SadServers: Linux, DevOps & SRE Labs | Interview & Hiring Assessment",
+      "evidence_status": "public scenario catalog inspected",
+      "supports": [
+        "The catalog covers Linux/networking/DNS/storage/SSH, web servers, databases, containers, infrastructure, and observability.",
+        "Scenario entries expose difficulty, time, access, task type, and a test when applicable.",
+        "The Saint John scenario requires stopping a log writer while retaining the log file; exploratory activities without scored checks also exist."
+      ],
+      "limitations": [
+        "No VM scenario was started or solved.",
+        "Availability and entitlement vary by scenario.",
+        "Published checker descriptions do not independently prove the whole grading system or learner transfer."
+      ]
+    },
+    {
+      "id": "SAD2",
+      "platform": "SadServers",
+      "url": "https://sadservers.com/faq",
+      "retrieved_at": "2026-11-03T09:34:25.560272+00:00",
+      "http_status": 200,
+      "resolved_url": "https://sadservers.com/faq",
+      "response_sha256": "202f17caa1ddf02f5d3bf6533177ddd7a2d7d3a99f989b134b67a7f17c0f5f5b",
+      "response_bytes": 263304,
+      "title": "FAQ | SadServers",
+      "evidence_status": "public product and scenario FAQ inspected",
+      "supports": [
+        "The platform documents real VMs, browser terminal access, clues, automated checks, and account progress.",
+        "Root access varies by scenario; direct SSH/CLI access is documented for eligible paid plans.",
+        "The FAQ describes inspecting/running a scenario check script and says modifying that script causes validation failure."
+      ],
+      "limitations": [
+        "Account, paid-plan, direct-SSH, and checker behaviour were not exercised.",
+        "The documented tamper check was not independently audited."
+      ]
+    },
+    {
+      "id": "LUC3",
+      "platform": "Linux Upskill Challenge",
+      "url": "https://linuxupskillchallenge.org/00/",
+      "resolved_url": "https://linuxupskillchallenge.org/00/",
+      "title": "Day 0 — Get Your Own Server — Linux Upskill Challenge",
+      "retrieved_at": "2026-11-03T09:44:02.117820+00:00",
+      "http_status": 200,
+      "response_sha256": "f97c49146b2c10debecc8494e55dcd7af335d0f8340cedc3d96919132d9007ab",
+      "response_bytes": 47841,
+      "evidence_status": "public environment/prerequisite guide inspected",
+      "supports": [
+        "The guide explicitly allows local servers/VMs, WSL/VirtualBox, or other available hardware when cloud hosting is unsuitable.",
+        "The environment must support package updates/installation and remote SSH access; the source says most course commands work the same regardless of VM location.",
+        "A rented VPS is explained as a VM using part of a physical host."
+      ],
+      "limitations": [
+        "No individual VM, VPS, or physical device was created.",
+        "Using a local VM does not automatically verify Internet routing or physical-device behaviour.",
+        "No complete VM-host administration, resizing, quota, or multi-user control plane is established by this guide."
+      ]
+    }
+  ],
+  "browser_visit_count": 5,
+  "substantive_rendered_tutorial_count": 4,
+  "browser_closed": true,
+  "limitations": [
+    "This audit supports curriculum design and narrow claims about the inspected public material; it is not evidence that the reviewer completed the courses.",
+    "No claim of educational efficacy, independent skill transfer, job readiness, or production reliability is established by the providers' marketing or testimonials.",
+    "Coverage gaps mean not established in this selected sample, not an exhaustive claim that the platform has no such material.",
+    "HTTP 200 does not establish accessible course content; Cisco is deliberately marked metadata-only.",
+    "Current free-tier, pricing, account and hardware capabilities must be rechecked before learners rely on them.",
+    "Temporary retrieval files remained outside the repository; this ledger contains citations, hashes and paraphrased findings, not copied third-party lessons."
+  ]
+}

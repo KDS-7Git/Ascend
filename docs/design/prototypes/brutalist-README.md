@@ -1,0 +1,39 @@
+# Ascend UI review — revision 03
+
+Open [the interactive preview](ascend-brutalist-ui.html). This revision preserves the approved light palette, layout, and neobrutalist character while addressing mobile density, visible motion, milestone clarity, and dark appearance. It is still a separate proposal; the production UI and [original living UI prototype](ascend-living-ui.html) are unchanged.
+
+[Watch the motion recording](brutalist-previews/motion-preview.webm) — approximately 16 seconds. It shows actual page/companion entrances, hover and press feedback, a challenge result, the small answer acknowledgment, the medal celebration and replay, and dark appearance. The recording uses sample data with motion enabled. [Recording details](brutalist-previews/motion-recording.json).
+
+Review these views:
+
+- [Compact phone viewport](brutalist-previews/today-mobile-viewport.png) and [desktop Today](brutalist-previews/today-desktop.png).
+- [Layered dark desktop](brutalist-previews/today-dark-desktop.png), [dark phone](brutalist-previews/today-dark-mobile.png), and [quieter dark workbench](brutalist-previews/challenge-dark-desktop.png).
+- [Named milestone on desktop](brutalist-previews/milestone-desktop.png) and [phone](brutalist-previews/milestone-mobile.png).
+- [Small answer feedback](brutalist-previews/answer-feedback-desktop.png) and [challenge receipt](brutalist-previews/challenge-passed-desktop.png).
+- [Playground](brutalist-previews/playground-desktop.png), [learning paths](brutalist-previews/paths-desktop.png), and [worked-example step two](brutalist-previews/example-step-two-mobile.png).
+
+The recommendation card was 422 px tall at 390 px width. It is now approximately 226 px tall. The companion has a compact place beside the task; the primary action and worked-example shortcut remain visible. Both alternative activity cards now fit above the fixed phone navigation. The old [phone capture](brutalist-previews/before-mobile-viewport.png) and [before/after measurements](brutalist-previews/revision-03-review.json) are retained for comparison.
+
+Motion previously felt absent because the initial render disabled its entrance, the normal route transition moved only 5 px over 200 ms, and the companion's gesture depended on hovering. The review screenshots also intentionally finished animations before capture. None of those static images could demonstrate movement. The reviewer's device preference was not known; it was not assumed to be off.
+
+The top review control now reports **Motion on**, **Motion off**, or **Reduced motion**. Open **Review & replay** for the effective-setting explanation and **Replay Today & companion**. The account menu contains Expressive motion; device reduced-motion preferences always take priority. Replay controls remain usable when motion is disabled and present the same final meaning without movement. Every proposed effect is finite. The dark backdrop has layered cyan/violet ribbons and reflective edges; its entrance settles, and workbench routes lower its intensity.
+
+The three feedback levels are separate:
+
+1. **Correct answer:** **Review & replay → Replay a correct answer** shows a compact check and acknowledgment. This demonstration adds no rewards.
+2. **Completed challenge:** **Try a challenge result → Start challenge** reveals the task. Select the private address `10.20.0.8:8000` while preserving its access policy, then **Check my repair**. The receipt gives the passed conditions, one-time 50 scored XP, and separate Practice points. **Replay result** changes presentation only.
+3. **Track milestone:** **Preview a milestone** shows the original gold Deployment Builder medal, violet ribbons, mint service/check motif, companion, and bounded particles. The text names **DevOps Foundations**, its 8-level completion, sample evidence, and **Delivery Automation** as the next track. **Replay celebration**, close, Escape, and **See the DevOps path** are available immediately. This is explicitly hypothetical assessed track history: the single sample challenge does not complete a track or earn this demonstration badge. The milestone adds no extra XP or Practice points.
+
+The sample Practice points policy matches the planned learning rewards: 5 points per distinct meaningful activity per learning day, up to 30. Completing the worked example, submitting a valid repair attempt (including an incorrect answer), or explicitly recording a useful learning note qualifies. Draft autosave, starting activities, and animation replay add none. Notes need at least 20 characters before **Record learning note**; the preview cannot assess the educational quality of arbitrary text. These points are distinct from the challenge's scored XP. Examples and simulated hosted checks award no scored XP.
+
+A challenge has its own workbench, reveals evidence after Start, and preserves its original timer when you leave and return. The worked example automatically opens its three-step walkthrough on each sample learner's first visit, offers Skip tour, and can be reopened. Notes identify where they are saved, appear in My work, and can be downloaded. The simulated hosted queue has explicit offer, claim, foreground-work conflict, and release states.
+
+The account menu switches between Mira and Arun, keeping their sample notes, rewards, and progress separate. **Review & replay → Reset all sample progress** restores both learners. Storage uses the separate key `ascend-brutalist-preview-v1`; it does not alter the original prototype's data or real Ascend accounts. Browser-storage failure is disclosed as open-tab-only work with a download available.
+
+This pass re-read the [platform UI/motion audit](../platform-ui-motion-audit.md) and directly compared its saved public screenshots. [Exercism's mobile track](../../screenshots/platform-ui-audit/exercism-390.png) keeps its compact identity and About/Learn/Practice tabs above the hero. [HTB Academy](../../screenshots/platform-ui-audit/htb-1440.png) demonstrates layered navy surfaces, concentrated action color, and bounded illustrations. [TryHackMe's mobile landing page](../../screenshots/platform-ui-audit/tryhackme-390.png) shows how a stacked acquisition hero and transient overlay consume a small viewport. Ascend's daily practice layout brings usable choices into the first screen. The existing audit also records Duolingo's raised-button press response. These observations inform the adaptation; no competitor artwork is included, and authenticated competitor completion transitions were not personally exercised in this pass.
+
+All accounts, curriculum cards, grading, progress, rewards, and queue events are simulations. Nothing authenticates a user, provisions a lab, submits an assessment, or contacts a server. The 9 Infrastructure and 3 DevOps tracks represent the intended domain structure; their real curriculum is implemented separately.
+
+The preview uses local HTML, CSS, JavaScript, SVG illustrations, fonts, and an icon. Its stylesheet imports the unchanged `ascend-living-ui.css`, then supplies this direction's visual and interaction rules. Keep those files together. Font and favicon paths resolve from the repository's `web/` directory. If local-file assets are restricted by your browser, serve the repository root with a local static server and open `/docs/design/prototypes/ascend-brutalist-ui.html`. Refresh an already-open preview to load revision 03.
+
+[Validation](brutalist-previews/validation.json) records current source hashes, light/dark route checks at 360, 390, 768, and 1440 px, interaction checks, actual animation samples, and errors. It covers this isolated Chromium preview, including mobile visibility, reduced/off motion, duplicate-safe reward demonstrations, walkthroughs, notes, account separation, queue behavior, and storage limitations. This is not full accessibility certification, a cross-browser audit, or a production load/integration test.

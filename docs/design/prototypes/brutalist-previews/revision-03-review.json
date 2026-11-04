@@ -1,0 +1,63 @@
+{
+  "revision": "03",
+  "comparison_method": "Re-read the existing 2026-11-03 public-page audit and directly inspected its stored mobile/desktop screenshots; no authenticated competitor transitions claimed.",
+  "before": {
+    "motion": "on",
+    "osReduced": false,
+    "firstPageAnimation": "none",
+    "heroHeight": 422,
+    "heroTop": 288.25,
+    "firstAlternativeTop": 791.25,
+    "navTop": 775.9375
+  },
+  "references": [
+    {
+      "platform": "Exercism",
+      "url": "https://exercism.org/tracks/python",
+      "capture": "../../screenshots/platform-ui-audit/exercism-390.png",
+      "observed": "Compact persistent track identity and About/Learn/Practice tabs before the hero."
+    },
+    {
+      "platform": "HTB Academy",
+      "url": "https://academy.hackthebox.com/",
+      "capture": "../../screenshots/platform-ui-audit/htb-1440.png",
+      "observed": "Layered navy surfaces, concentrated lime actions, and bounded illustrative identity."
+    },
+    {
+      "platform": "TryHackMe",
+      "url": "https://tryhackme.com/",
+      "capture": "../../screenshots/platform-ui-audit/tryhackme-390.png",
+      "observed": "Mobile acquisition hero stacks actions above illustration; a large cookie overlay covers the lower viewport."
+    },
+    {
+      "platform": "Duolingo",
+      "url": "https://www.duolingo.com/",
+      "capture": "../../screenshots/platform-ui-audit/duolingo-1440.png",
+      "observed": "Existing audit measured a 4px downward Get Started press; completion animations were not directly triggered."
+    }
+  ],
+  "motion_diagnosis": [
+    "First render set the page animation to none.",
+    "Routine route animation was 200ms with only a 5px translation.",
+    "Companion wave ran only on hover; blink was disabled, so touch users saw little.",
+    "Previous screenshots were captured with animations disabled and cannot demonstrate motion.",
+    "OS reduced-motion and device-off intentionally suppress animation; user browser preference is unknown."
+  ],
+  "after": {
+    "heroHeight": 225.8125,
+    "heroTop": 221.3125,
+    "alternatives": [
+      {
+        "top": 520.125,
+        "bottom": 662.125
+      },
+      {
+        "top": 520.125,
+        "bottom": 662.125
+      }
+    ],
+    "navTop": 775.9375
+  },
+  "validation": "validation.json",
+  "recording": "motion-preview.webm"
+}

@@ -1,0 +1,256 @@
+{
+  "reviewed_on": "2026-11-03",
+  "completed_at": "2026-11-03T10:01:14.015193+00:00",
+  "scope": "Focused documentary audit of virtualization management architecture, roles, resource controls and learner/operator interaction patterns.",
+  "platforms": [
+    "Proxmox VE",
+    "Incus",
+    "OpenStack Nova and Horizon",
+    "Cockpit Machines and libvirt"
+  ],
+  "source_count": 12,
+  "method": "Read-only HTTPS retrieval, inspection of first-party text and project README, canonical/meta redirect resolution, and response SHA-256 recording. No platform installations, logins, VM provisioning, management-API mutation, backup restoration, or host/network changes were performed.",
+  "sources": [
+    {
+      "id": "PV1",
+      "title": "Proxmox VE Administration Guide",
+      "url": "https://pve.proxmox.com/pve-docs/pve-admin-guide.html",
+      "retrieved_at": "2026-11-03T09:52:39.817720+00:00",
+      "http_status": 200,
+      "resolved_url": "https://pve.proxmox.com/pve-docs/pve-admin-guide.html",
+      "response_sha256": "80735a3c9ab497c5e6a147e891f6cdc4625793cce3bba5d0d966d4946dfdcd37",
+      "bytes": 4013836,
+      "text_characters": 1117071,
+      "evidence_type": "first-party documentation/project source retrieved and read; no authenticated product operation executed",
+      "supports": [
+        "Proxmox VE documents QEMU/KVM and container management, browser interface, roles/ACLs, API tokens, resource pools, templates/cloud-init, network/storage management, task identifiers/logs and backup/restore.",
+        "Privilege-separated API-token permissions intersect token and user permissions.",
+        "The guide identifies an AGPLv3 licence and currently lists x86_64 plus aarch64 on NVIDIA Grace Hopper/Vera as supported host architectures; this does not establish Raspberry Pi support.",
+        "Resource-pool permission grouping alone is not evidence of the specific aggregate tenant quota policy proposed for the course."
+      ],
+      "limitation": "Moving documentation/reference version; pin and exercise the chosen release before using it as a course execution contract."
+    },
+    {
+      "id": "PV2",
+      "title": "Proxmox VE package repositories",
+      "url": "https://pve.proxmox.com/wiki/Package_Repositories",
+      "retrieved_at": "2026-11-03T09:52:39.818432+00:00",
+      "http_status": 200,
+      "resolved_url": "https://pve.proxmox.com/wiki/Package_Repositories",
+      "response_sha256": "00fc921202c5db2fc01c686891a1d3f0c8e4dafb5d3a9493a5e8e54743db3bc1",
+      "bytes": 88689,
+      "text_characters": 15312,
+      "evidence_type": "first-party documentation/project source retrieved and read; no authenticated product operation executed",
+      "supports": [
+        "The enterprise repository requires a subscription and is recommended by the project for stronger testing/validation.",
+        "The no-subscription repository is available without a subscription key and is documented for testing/non-production use."
+      ],
+      "limitation": "Moving documentation/reference version; pin and exercise the chosen release before using it as a course execution contract."
+    },
+    {
+      "id": "IC1",
+      "title": "Incus documentation overview",
+      "url": "https://linuxcontainers.org/incus/docs/main/",
+      "retrieved_at": "2026-11-03T09:52:39.819141+00:00",
+      "http_status": 200,
+      "resolved_url": "https://linuxcontainers.org/incus/docs/main/",
+      "response_sha256": "e717c5e8f9a32ea249508b49509d401b7d5803ae64f4d7f5ed44b2f93e6ee196",
+      "bytes": 45077,
+      "text_characters": 5332,
+      "evidence_type": "first-party documentation/project source retrieved and read; no authenticated product operation executed",
+      "supports": [
+        "Incus is a Linux system-container and virtual-machine manager built around a REST API.",
+        "The project explicitly identifies its licence as Apache 2.",
+        "Full local daemon/socket access can permit actions equivalent to host-root access; UI restrictions cannot replace daemon permissions."
+      ],
+      "limitation": "Moving documentation/reference version; pin and exercise the chosen release before using it as a course execution contract."
+    },
+    {
+      "id": "IC2",
+      "title": "Incus projects",
+      "url": "https://linuxcontainers.org/incus/docs/main/explanation/projects/",
+      "retrieved_at": "2026-11-03T09:52:39.819751+00:00",
+      "http_status": 200,
+      "resolved_url": "https://linuxcontainers.org/incus/docs/main/explanation/projects/",
+      "response_sha256": "b83ba6ae2237708ded47ae3d7c881447af4091205232304b57047a383c953ca9",
+      "bytes": 50626,
+      "text_characters": 8200,
+      "evidence_type": "first-party documentation/project source retrieved and read; no authenticated product operation executed",
+      "supports": [
+        "Projects isolate instances and optionally images/profiles/networks/storage.",
+        "Confined projects and restricted certificates support multiple users, including laboratory use.",
+        "Full incus-admin access differs from a confined project and can grant host-root-equivalent capabilities."
+      ],
+      "limitation": "Moving documentation/reference version; pin and exercise the chosen release before using it as a course execution contract."
+    },
+    {
+      "id": "IC3",
+      "title": "Incus requirements",
+      "url": "https://linuxcontainers.org/incus/docs/main/requirements/",
+      "retrieved_at": "2026-11-03T09:52:39.822621+00:00",
+      "http_status": 200,
+      "resolved_url": "https://linuxcontainers.org/incus/docs/main/requirements/",
+      "response_sha256": "d69e794d701ca3a781669107fa3ab5c90b0589bcb6050fde89a28c6ce182e457",
+      "bytes": 49151,
+      "text_characters": 5040,
+      "evidence_type": "first-party documentation/project source retrieved and read; no authenticated product operation executed",
+      "supports": [
+        "Current main/development requirements list kernel 6.12 and QEMU 8.2 for VMs.",
+        "Build-tool/RAM guidance differs from daemon/guest/workload runtime requirements and must not be generalised to all supported Incus releases."
+      ],
+      "limitation": "Moving documentation/reference version; pin and exercise the chosen release before using it as a course execution contract."
+    },
+    {
+      "id": "IC4",
+      "title": "Incus project configuration",
+      "url": "https://linuxcontainers.org/incus/docs/main/reference/projects/",
+      "retrieved_at": "2026-11-03T09:55:41.799911+00:00",
+      "prior_attempt": {
+        "url": "https://raw.githubusercontent.com/lxc/incus/main/COPYING",
+        "http_status": 200,
+        "resolved_url": "https://raw.githubusercontent.com/lxc/incus/main/COPYING",
+        "response_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+        "text_characters": 11358
+      },
+      "http_status": 200,
+      "resolved_url": "https://linuxcontainers.org/incus/docs/main/reference/projects/",
+      "response_sha256": "8f12135d0e924e1f75ac1fe975c9a1936a63b34b513bdac81fbb3f27fbb653d6",
+      "bytes": 130522,
+      "text_characters": 19695,
+      "evidence_type": "first-party documentation/project source retrieved and read; no authenticated product operation executed",
+      "supports": [
+        "Project limits can bound CPU, memory, disk and instance/VM counts; restricted settings control sensitive features.",
+        "Many aggregate resource limits sum configured per-instance allocations rather than observed instantaneous consumption.",
+        "Disk accounting includes applicable instance/custom volumes and images."
+      ],
+      "limitation": "Moving documentation/reference version; pin and exercise the chosen release before using it as a course execution contract."
+    },
+    {
+      "id": "OS1",
+      "title": "OpenStack Nova architecture",
+      "url": "https://docs.openstack.org/nova/latest/admin/architecture.html",
+      "retrieved_at": "2026-11-03T09:52:40.367532+00:00",
+      "http_status": 200,
+      "resolved_url": "https://docs.openstack.org/nova/latest/admin/architecture.html",
+      "response_sha256": "bccf794bb87cd152e0d3d3e286b76b745847eb76082ca7a05d258fe86eaf0b0d",
+      "bytes": 41418,
+      "text_characters": 14305,
+      "evidence_type": "first-party documentation/project source retrieved and read; no authenticated product operation executed",
+      "supports": [
+        "Nova architecture separates API, scheduling/compute and resource tracking responsibilities and integrates images, networking, projects/roles and optional persistent block storage.",
+        "Operating the cloud requires multiple service responsibilities; the document is not a small-host sizing benchmark."
+      ],
+      "limitation": "Moving documentation/reference version; pin and exercise the chosen release before using it as a course execution contract."
+    },
+    {
+      "id": "OS2",
+      "title": "OpenStack Horizon launch and manage instances",
+      "url": "https://docs.openstack.org/horizon/latest/user/launch-instances.html",
+      "retrieved_at": "2026-11-03T09:52:44.422312+00:00",
+      "http_status": 200,
+      "resolved_url": "https://docs.openstack.org/horizon/latest/user/launch-instances.html",
+      "response_sha256": "7de5dd4e22aec2f2239c84f4eeaaba63b28bd9c11792feeaf37f3d3c15a66f3f",
+      "bytes": 40579,
+      "text_characters": 10826,
+      "evidence_type": "first-party documentation/project source retrieved and read; no authenticated product operation executed",
+      "supports": [
+        "Horizon launch flow includes project, image/source, flavor, network, security groups, keys and configuration.",
+        "Instance views expose status, task, power state and addresses; console and lifecycle actions support diagnosis.",
+        "Networking and security rules affect guest reachability separately from instance creation."
+      ],
+      "limitation": "Moving documentation/reference version; pin and exercise the chosen release before using it as a course execution contract."
+    },
+    {
+      "id": "OS3",
+      "title": "OpenStack Nova quotas",
+      "url": "https://docs.openstack.org/nova/latest/admin/quotas.html",
+      "retrieved_at": "2026-11-03T09:52:45.466624+00:00",
+      "http_status": 200,
+      "resolved_url": "https://docs.openstack.org/nova/latest/admin/quotas.html",
+      "response_sha256": "40a5017a2739a5427cd5387641a25d14ad1a4b9f1e599edfaa1d7e7f7d691d38",
+      "bytes": 48604,
+      "text_characters": 12532,
+      "evidence_type": "first-party documentation/project source retrieved and read; no authenticated product operation executed",
+      "supports": [
+        "OpenStack quotas are operational limits for resources such as instances, cores and RAM.",
+        "Quota mechanisms and drivers evolve by release, including unified limits; course configurations need version pinning."
+      ],
+      "limitation": "Moving documentation/reference version; pin and exercise the chosen release before using it as a course execution contract."
+    },
+    {
+      "id": "CP1",
+      "title": "Cockpit application catalog",
+      "url": "https://cockpit-project.org/applications.html",
+      "retrieved_at": "2026-11-03T09:55:41.798582+00:00",
+      "prior_attempt": {
+        "url": "https://cockpit-project.org/guide/latest/feature-virtualmachines.html",
+        "error": "HTTP Error 404: Not Found"
+      },
+      "http_status": 200,
+      "resolved_url": "https://cockpit-project.org/applications.html",
+      "response_sha256": "df33d78033a860161e0de1b7c9a61f107912bf927dee8db78e40daeb41ca42c9",
+      "bytes": 45167,
+      "text_characters": 13722,
+      "evidence_type": "first-party documentation/project source retrieved and read; no authenticated product operation executed",
+      "supports": [
+        "The Cockpit application catalog identifies cockpit-machines for creating, running and managing virtual machines.",
+        "The listing is product documentation, not a walkthrough of a signed-in installation."
+      ],
+      "limitation": "Moving documentation/reference version; pin and exercise the chosen release before using it as a course execution contract."
+    },
+    {
+      "id": "CP2",
+      "title": "Cockpit privileges and permissions",
+      "url": "https://docs.cockpit-project.org/cockpit-guide/latest/guide/privileges.html",
+      "retrieved_at": "2026-11-03T09:55:41.799445+00:00",
+      "prior_attempt": {
+        "url": "https://cockpit-project.org/guide/latest/privileges.html",
+        "http_status": 200,
+        "resolved_url": "https://cockpit-project.org/guide/latest/privileges.html",
+        "response_sha256": "22d5260202767a944ee43153bd2abb1abf1544e7be448e5382308a46fc57d1cd",
+        "text_characters": 0
+      },
+      "http_status": 200,
+      "resolved_url": "https://docs.cockpit-project.org/cockpit-guide/latest/guide/privileges.html",
+      "response_sha256": "b8a20f35dd5cf398b2b2de25bccfd1d8e9711f3135f269cd9359785fe29bf36b",
+      "bytes": 19984,
+      "text_characters": 3312,
+      "evidence_type": "first-party documentation/project source retrieved and read; no authenticated product operation executed",
+      "supports": [
+        "Cockpit generally uses OS-user privileges and may escalate through polkit or sudo.",
+        "Backend privilege configuration determines capabilities, not merely the visibility of a web control."
+      ],
+      "limitation": "Moving documentation/reference version; pin and exercise the chosen release before using it as a course execution contract."
+    },
+    {
+      "id": "CP3",
+      "title": "Cockpit Machines project README",
+      "url": "https://raw.githubusercontent.com/cockpit-project/cockpit-machines/main/README.md",
+      "retrieved_at": "2026-11-03T09:52:46.403208+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/cockpit-project/cockpit-machines/main/README.md",
+      "response_sha256": "cce5a5e16594fcb0a54020ab37e87d11aa4dfbf6a206e3219a012439289ccd52",
+      "bytes": 2508,
+      "text_characters": 2508,
+      "evidence_type": "first-party documentation/project source retrieved and read; no authenticated product operation executed",
+      "supports": [
+        "The official cockpit-machines README identifies libvirt-dbus for enumeration/status/lifecycle operations and virt-install/virt-xml for creation/definition changes.",
+        "Installed-version feature coverage and backend permissions require actual validation; this README does not establish a tenant quota portal."
+      ],
+      "limitation": "Moving documentation/reference version; pin and exercise the chosen release before using it as a course execution contract."
+    }
+  ],
+  "access_limits": [
+    "The guessed Cockpit feature-virtualmachines guide URL returned 404; the official application catalog and project README were used for supported capability claims.",
+    "The old Cockpit privileges URL returned an HTML meta redirect without substantive page text. Its canonical target on docs.cockpit-project.org was retrieved and inspected.",
+    "The Incus COPYING file was also retrieved during research; the referenced overview already explicitly states Apache 2 licensing, so the final fourth Incus reference covers project limits instead.",
+    "Current latest/main documentation can describe capabilities or requirements that differ from an installed or LTS release.",
+    "Public documentation does not identify which hypervisor a particular institution uses, prove all UI behaviour, demonstrate live permission enforcement, or establish hardware capacity."
+  ],
+  "validation_scope": [
+    "Four comparison rows and proposed practical acceptance checks; no product comparison benchmark.",
+    "Guest SSH, guest-root permissions, VM API ownership and hypervisor/host administrator authority are distinct.",
+    "Proxmox pool grouping, Incus project limits, OpenStack quotas and Cockpit OS privileges are compared on their documented terms rather than treated as equivalent tenant systems.",
+    "Real host allocation, rollback, isolation, quota race, cleanup and restore behaviour remains a version-pinned lab implementation gate."
+  ]
+}

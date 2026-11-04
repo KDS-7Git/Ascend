@@ -1,0 +1,171 @@
+{
+  "status": "passed within the stated scope",
+  "reviewed_at": "2026-11-03T10:25:27.080403+00:00",
+  "scope": "Research/design artifacts and a narrow local execution proof; not full curriculum, production application, public deployment, hypervisor, device or learner validation.",
+  "documentation": {
+    "markdown_files_checked": 8,
+    "local_links_and_anchors_checked": 59,
+    "tables_checked": 59,
+    "source_counts": {
+      "local-to-internet-platform-sources.json": 15,
+      "local-to-internet-connectivity-sources.json": 29,
+      "local-to-internet-capacity-sources.json": 28,
+      "virtualization-control-plane-sources.json": 12
+    },
+    "source_entries": 84,
+    "distinct_requested_source_urls": 82,
+    "provenance_and_citation_checks": true,
+    "errors": []
+  },
+  "curriculum": {
+    "tracks": 9,
+    "main_levels": 72,
+    "unique_ids": true,
+    "all_practical_fields_match_master": true,
+    "advisory_order_acyclic": true,
+    "ordering_is_not_a_whole_track_gate": true,
+    "beginner_environment_bootstrap_explicit": true,
+    "core_hours": [
+      212,
+      324
+    ],
+    "all_tracks_hours": [
+      248,
+      380
+    ],
+    "hours_are_unpiloted_author_estimates": true
+  },
+  "local_proof": {
+    "source_sha256": "d8fbf6486f0dc4b3bdb8b6a2630e876ef6aedadf5d0cd4c20b1b5fe27468fba8",
+    "tool": "Caddy v2.11.7",
+    "runs": [
+      {
+        "file": "labs/local-to-internet/evidence.json",
+        "sha256": "41278b65d771428d883f52aa8dcee80460655af2817190d66045f30d794085ed",
+        "checks_passed": 10,
+        "workers": 2,
+        "burst_clients": 12,
+        "observed_admission": {
+          "status_counts": {
+            "503": 10,
+            "200": 2
+          },
+          "peak_application_work": 2,
+          "configured_slots": 2
+        },
+        "source_hash_matches": true,
+        "tool_hash_matches": true,
+        "cleanup_confirmed": true
+      },
+      {
+        "file": "labs/local-to-internet/evidence-one-slot.json",
+        "sha256": "d9227d3142e2e7b0d49d4254ac7d018cfc4e7fcaf1209a9c6962a9a42212046a",
+        "checks_passed": 10,
+        "workers": 1,
+        "burst_clients": 12,
+        "observed_admission": {
+          "status_counts": {
+            "200": 1,
+            "503": 11
+          },
+          "peak_application_work": 1,
+          "configured_slots": 1
+        },
+        "source_hash_matches": true,
+        "tool_hash_matches": true,
+        "cleanup_confirmed": true
+      }
+    ],
+    "application_suite_run": false,
+    "reason": "No production application code was changed; execution checks apply to the standalone reference lab."
+  },
+  "reviews": {
+    "method": "Two assisting-agent read-only technical/pedagogical reviews, plus root validation; no human learner pilot.",
+    "addressed": [
+      "Explicit shell/package foundations and ungraded starter Linux environment.",
+      "Recommended ordering separate from capability-based entry gates.",
+      "Explicit Caddy listener binding checked in adapted configuration and Linux child-owned sockets.",
+      "In-flight request confirmed active while readiness exclusion was observed.",
+      "Bounded work released before executor shutdown on failure.",
+      "Owned startup, reservation and cleanup handling reviewed.",
+      "Single-host, public-network, physical-device and capacity evidence boundaries stated."
+    ]
+  },
+  "artifacts": {
+    "infrastructure-internet-domain-design.md": {
+      "bytes": 72061,
+      "sha256": "44ad0ba390d297e64f723432830021f58e0fd1b458f969c06048874f7f44aada"
+    },
+    "local-to-internet-platform-audit.md": {
+      "bytes": 19693,
+      "sha256": "398306e6e3688f9d2642423a98c36b492bba6529a61cf03aa80120dc0f74300b"
+    },
+    "local-to-internet-connectivity-notes.md": {
+      "bytes": 35090,
+      "sha256": "6c39a05baf868b18adada7a25d54b0c0fe2e5c0e670bcb424018b18c34ec90d2"
+    },
+    "local-to-internet-capacity-labs.md": {
+      "bytes": 46820,
+      "sha256": "66bb0faa63e755055cbb2b698b454b18763f8c15db8c3cd22a945297a47207fd"
+    },
+    "virtualization-control-plane-audit.md": {
+      "bytes": 16238,
+      "sha256": "f6cb8ba09d8caa553c5a6265d32788225d11042b7a5de14e5f8d2241599c134d"
+    },
+    "labs/local-to-internet/README.md": {
+      "bytes": 5842,
+      "sha256": "9071bfc20a777a5d094cbbcc82e8e24c84c540c02be37badbf110ba66b23b53d"
+    },
+    "devops-track-design.md": {
+      "bytes": 45389,
+      "sha256": "67f22ffc4293c261f8fe7b41dc64a74c0e55d3b4e6c10ee8d2d02871a4535d16"
+    },
+    "ascend-experience-redesign.md": {
+      "bytes": 39978,
+      "sha256": "9a1c803606483a231d9cebcd2ae3849505652d3a2b83bd66919a1ba4b3b3cd87"
+    },
+    "local-to-internet-platform-sources.json": {
+      "bytes": 22753,
+      "sha256": "c632eb9f5cc99487ca472a130e0c733fa6a88fc823fd12291e552cab38cda57b"
+    },
+    "local-to-internet-connectivity-sources.json": {
+      "bytes": 31410,
+      "sha256": "14ab84f1d4c38c998bb29ae04c985f751b9bf2d56aa01c7d7421758a0f4193d9"
+    },
+    "local-to-internet-capacity-sources.json": {
+      "bytes": 28990,
+      "sha256": "dc87252c609c1b0e5a9bbb4d010cab20a32647dae50ff6ddce65cda396e218d8"
+    },
+    "virtualization-control-plane-sources.json": {
+      "bytes": 16109,
+      "sha256": "4bef34b4692684934824feb59ddb57a70e5a10eb0e292929d6d60eb53dcfcb6b"
+    },
+    "infrastructure-internet-curriculum.json": {
+      "bytes": 66762,
+      "sha256": "698b51fa3792354e964589cfcf1a44c5097c8d863ae42cec1371541f41945b92"
+    },
+    "labs/local-to-internet/lab.py": {
+      "bytes": 20319,
+      "sha256": "d8fbf6486f0dc4b3bdb8b6a2630e876ef6aedadf5d0cd4c20b1b5fe27468fba8"
+    },
+    "labs/local-to-internet/tool-provenance.json": {
+      "bytes": 1154,
+      "sha256": "a5a6f4c243b4e556db6f787dcf95f3857daff347967a733cbb5da556e16a4acc"
+    },
+    "labs/local-to-internet/evidence.json": {
+      "bytes": 3790,
+      "sha256": "41278b65d771428d883f52aa8dcee80460655af2817190d66045f30d794085ed"
+    },
+    "labs/local-to-internet/evidence-one-slot.json": {
+      "bytes": 3790,
+      "sha256": "d9227d3142e2e7b0d49d4254ac7d018cfc4e7fcaf1209a9c6962a9a42212046a"
+    }
+  },
+  "remaining_validation": [
+    "Implement each full lesson with pinned inputs and positive/negative/lifecycle reference runs.",
+    "Test advertised host OS, ARM/Pi and virtualization variants on actual supported environments.",
+    "Verify real public DNS/tunnel/VPN/mail/VM-platform routes and permissions where advertised.",
+    "Measure aggregate runtime/disk/network use on the chosen device and shared-host configuration.",
+    "Pilot with beginners and practitioners; validate clarity, transfer and timing rather than inferring outcomes from XP."
+  ]
+}

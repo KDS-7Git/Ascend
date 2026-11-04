@@ -1,0 +1,134 @@
+{
+  "recorded_at": "2026-11-03T10:20:05.848682+00:00",
+  "source_sha256": "d8fbf6486f0dc4b3bdb8b6a2630e876ef6aedadf5d0cd4c20b1b5fe27468fba8",
+  "scope": "Local HTTP/TLS/routing/readiness/application-admission proof only.",
+  "environment": {
+    "os": "Linux",
+    "architecture": "x86_64",
+    "python": "3.12.3",
+    "visible_logical_cpus": 16
+  },
+  "caddy_version": "v2.11.7 h1:yj0Y4fYZGPkSvibBJ1sTWE33xC0fxztVyXEW5iIdUT4=",
+  "caddy_binary_sha256": "678ade3bfc088749c81a681adc603333ee0bb023b6a6cfe3c0f58bef8ff854e9",
+  "parameters": {
+    "workers_per_sample_app": 1,
+    "burst_clients": 12,
+    "simulated_dependency_ms": 120
+  },
+  "checks": [
+    {
+      "name": "explicit-listener-bindings",
+      "passed": true,
+      "evidence": {
+        "adapted_listeners": [
+          "127.0.0.1:44455",
+          "127.0.0.1:51919"
+        ],
+        "linux_owned_live_listeners": [
+          "127.0.0.1:44455",
+          "127.0.0.1:51919"
+        ]
+      }
+    },
+    {
+      "name": "direct-service-and-reverse-proxy",
+      "passed": true,
+      "evidence": {
+        "status": 200,
+        "bind": "loopback only"
+      }
+    },
+    {
+      "name": "explicit-round-robin",
+      "passed": true,
+      "evidence": {
+        "requests": 8,
+        "node_counts": {
+          "app-a": 4,
+          "app-b": 4
+        }
+      }
+    },
+    {
+      "name": "incorrect-upstream-negative-control",
+      "passed": true,
+      "evidence": {
+        "status": 502,
+        "repair_control": 200
+      }
+    },
+    {
+      "name": "tls-trust-and-name-controls",
+      "passed": true,
+      "evidence": {
+        "trusted_status": 200,
+        "rejected": [
+          "untrusted-ca",
+          "wrong-name"
+        ],
+        "machine_trust_store_changed": false
+      }
+    },
+    {
+      "name": "readiness-and-inflight-completion",
+      "passed": true,
+      "evidence": {
+        "new_balanced_requests": "app-a",
+        "existing_request": "app-b still active when exclusion was observed, then completed 200",
+        "scope": "The explicit /slow-b test route bypasses balancing; only new balanced traffic is excluded."
+      }
+    },
+    {
+      "name": "readiness-recovery",
+      "passed": true,
+      "evidence": {
+        "healthy_backends": 2
+      }
+    },
+    {
+      "name": "bounded-work-and-overload-rejection",
+      "passed": true,
+      "evidence": {
+        "status_counts": {
+          "200": 1,
+          "503": 11
+        },
+        "peak_application_work": 1,
+        "configured_slots": 1
+      }
+    },
+    {
+      "name": "post-overload-recovery",
+      "passed": true,
+      "evidence": {
+        "status": 200,
+        "active_work_after": 0
+      }
+    },
+    {
+      "name": "owned-process-and-file-cleanup",
+      "passed": true,
+      "evidence": {
+        "child_stopped": true,
+        "listeners_closed": 4,
+        "temporary_certificate_and_config_removed": true
+      }
+    }
+  ],
+  "limitations": [
+    "These sample services share one host, storage, power and uplink; this does not establish host high availability.",
+    "The semaphore bounds application work only; this is not a global bound on accepted TCP connections or HTTP server threads.",
+    "The burst uses bounded client threads and an imposed I/O wait; it is not an arrival-rate capacity benchmark or a learner study.",
+    "TLS uses a temporary certificate trusted by this client only; public DNS, ACME issuance, WAN access, VPN, SSH, mail and VM administration are not exercised.",
+    "Observed process memory is for this run on the recorded host, not a recommended Raspberry Pi or shared-runner capacity."
+  ],
+  "observed_caddy_memory": {
+    "VmHWM": "61252 kB",
+    "VmRSS": "61252 kB"
+  },
+  "sample_app_peer_disconnects": {
+    "app-a": 0,
+    "app-b": 0
+  },
+  "all_passed": true
+}

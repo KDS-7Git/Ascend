@@ -1,0 +1,1187 @@
+{
+  "schema": "ascend-design/infrastructure-internet-curriculum-v1",
+  "status": "Authored domain design; no production packs, automatic verifiers or VM provisioning are installed by this artifact.",
+  "reviewed_on": "2026-11-03",
+  "domain": {
+    "proposed_id": "infrastructure-internet-operations",
+    "title": "Infrastructure & Internet Operations",
+    "journey": "Local to Internet",
+    "description": "Practical Linux, virtualization, hosting, private access, delivery, mail, performance and resilient operations."
+  },
+  "learner_entry": {
+    "beginner": "Start at track 1; short explanation, worked operation, changed-condition repair, then an independent build.",
+    "practitioner": "Use optional practical capability checks or directly select a matching independent task; no compulsory beginner tour.",
+    "intent": "Job preparation and interest-led learning share technical evidence; portfolio/handover emphasis and exploration choices differ.",
+    "credit": "Shared DevOps capabilities require explicit evidence/receipt bindings; presentation links alone neither complete nodes nor duplicate XP.",
+    "bootstrap": "Before track 1, provide an ungraded, host-specific guide to a supported prepared Linux guest or existing owned/assigned Linux environment. Teach file paths, terminal/console access and the machine boundary. Full host administration is learned in track 2; setup time is tracked separately."
+  },
+  "estimates": {
+    "basis": "Author estimates of active learning and practice, not measured completion times; exclude hardware acquisition, provider approval, large downloads and unusual remediation.",
+    "tracks_1_to_8_hours": [
+      212,
+      324
+    ],
+    "all_nine_tracks_hours": [
+      248,
+      380
+    ],
+    "initial_support": "Local Linux is the first intended execution target; other architectures and hosts need recipe-level replay before a tested badge."
+  },
+  "hardware": {
+    "small_server": {
+      "logical_cpu_planning_count": 4,
+      "ram_gb": [
+        4,
+        8
+      ],
+      "physical_storage_gb": [
+        100,
+        120
+      ],
+      "storage": "microSD; usable free space and endurance are separate constraints"
+    },
+    "learner_pc": {
+      "cpu_description": "approximately 16 cores as supplied; inspect actual topology",
+      "ram_gb": 16,
+      "free_ssd_gb_at_least": 200,
+      "initial_lab_memory_gib_target": 8
+    },
+    "shared_runner": {
+      "max_simultaneous_hosted_labs": 2,
+      "status": "Prior authorization retained. This domain's guest VMs, arbitrary build work and public services are learner-owned; new hosted adapters still require review and measurements."
+    }
+  },
+  "lesson_contract": [
+    "predict the mechanism",
+    "perform the worked operation",
+    "observe named positive and negative controls",
+    "repair a changed fixture",
+    "build or transfer independently",
+    "record artifacts, save location and evidence scope",
+    "recover or remove owned resources"
+  ],
+  "evidence_labels": [
+    "documented reference",
+    "local artifact/explanation",
+    "learner-local observed report",
+    "reviewed or trusted task observation",
+    "external public reachability",
+    "physical-device observation"
+  ],
+  "tracks": [
+    {
+      "id": "io-linux-network",
+      "title": "Linux & Network Foundations",
+      "hours": [
+        28,
+        40
+      ],
+      "outcome": "Explain a request path and operate a small Linux service using observations.",
+      "environment": "Local processes first; one disposable Linux VM for services and networking.",
+      "levels": [
+        {
+          "id": "io-linux-network-01",
+          "title": "Follow a real request",
+          "concepts": "Processes, sockets, client/server, addresses and ports.",
+          "guided_lab": "Run the supplied service, call it with curl, and correlate one request with its process and log.",
+          "independent_failure_or_transfer": "Diagnose a wrong port and a stopped process from a changed fixture.",
+          "milestone_evidence": "Record the address, listening process, response and the observation that distinguishes each failure.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": []
+        },
+        {
+          "id": "io-linux-network-02",
+          "title": "Own files, processes and permissions",
+          "concepts": "Shell command structure, quoting, variables, pipes/redirection, stdout/stderr, paths, users/groups, environment, exit codes and signals.",
+          "guided_lab": "Trace command output and errors, then run the service as an unprivileged user and inspect its working directory and open files.",
+          "independent_failure_or_transfer": "Repair a permission or environment fault without broadening unrelated access.",
+          "milestone_evidence": "The legitimate service works; another lab user still cannot read its synthetic secret.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-linux-network-01"
+          ]
+        },
+        {
+          "id": "io-linux-network-03",
+          "title": "Connect a local network",
+          "concepts": "Subnets, DHCP, ARP/neighbor discovery, routes, loopback and bind addresses.",
+          "guided_lab": "Connect a client and server using a disposable virtual network; then try a second owned device if available.",
+          "independent_failure_or_transfer": "Find a wrong subnet, guest-Wi-Fi isolation or loopback-only binding.",
+          "milestone_evidence": "A route/interface map and both successful and deliberately blocked probes explain the result.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-linux-network-02"
+          ]
+        },
+        {
+          "id": "io-linux-network-04",
+          "title": "Resolve names deliberately",
+          "concepts": "Stub/recursive/authoritative DNS, records, TTL, cache and split DNS.",
+          "guided_lab": "Use an isolated DNS fixture and inspect answers, authority and caching with dig.",
+          "independent_failure_or_transfer": "Repair a stale or wrong answer while distinguishing hosts-file substitution from DNS.",
+          "milestone_evidence": "The correct authority and address are observed; bypassing DNS is identified as a diagnostic only.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-linux-network-03"
+          ]
+        },
+        {
+          "id": "io-linux-network-05",
+          "title": "Read transport and application failures",
+          "concepts": "TCP, UDP, HTTP, TLS, connections, timeouts and certificate names.",
+          "guided_lab": "Compare connection refusal, timeout, HTTP error and certificate rejection on owned endpoints.",
+          "independent_failure_or_transfer": "Locate a failing layer from a fresh set of observations.",
+          "milestone_evidence": "Explain why ping or a successful TCP connection alone does not prove a working website.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-linux-network-04"
+          ]
+        },
+        {
+          "id": "io-linux-network-06",
+          "title": "Cross network boundaries",
+          "concepts": "NAT, forwarding, CGNAT, IPv4/IPv6, firewall paths and hairpin access.",
+          "guided_lab": "Model an inner and outer network with VMs or namespaces; compare address and route observations.",
+          "independent_failure_or_transfer": "Choose a viable inbound or outbound-relay path when the origin lacks a reachable address.",
+          "milestone_evidence": "Identify every required routing/firewall/relay authority; a virtual outer network is labelled simulated WAN.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-linux-network-05"
+          ]
+        },
+        {
+          "id": "io-linux-network-07",
+          "title": "Keep a service running",
+          "concepts": "Package repositories, updates, service installation, systemd, boot, users, health/readiness and durable state.",
+          "guided_lab": "Create a service unit in a disposable guest and test restart and guest reboot.",
+          "independent_failure_or_transfer": "Repair a restart loop caused by a bad path or configuration.",
+          "milestone_evidence": "Correct version and state survive reboot; invalid configuration remains observable.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-linux-network-06"
+          ]
+        },
+        {
+          "id": "io-linux-network-08",
+          "title": "Recover your first service",
+          "concepts": "Diagnosis, evidence, least-change repair and handover.",
+          "guided_lab": "Follow a worked service outage, then build a small request-path runbook.",
+          "independent_failure_or_transfer": "Recover a fresh fault involving two of DNS, process, binding or permissions.",
+          "milestone_evidence": "A fresh client reproduces the working result and the negative access control still holds.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-linux-network-07"
+          ]
+        }
+      ],
+      "order": 1,
+      "kind": "proficiency",
+      "main_level_count": 8,
+      "route": "core domain offering; paths may be chosen by goal and prerequisite capability",
+      "recommended_after": []
+    },
+    {
+      "id": "io-vm-administration",
+      "title": "Virtual Machines & Host Administration",
+      "hours": [
+        28,
+        44
+      ],
+      "outcome": "Create, host, resize, recover and administer guest machines from an owned hypervisor.",
+      "environment": "Linux KVM/QEMU with libvirt; VM/WSL/other-host alternatives require their stated virtualization support.",
+      "levels": [
+        {
+          "id": "io-vm-administration-01",
+          "title": "Understand the host and guest",
+          "concepts": "Hardware virtualization, hypervisor, guest kernel, emulation, containers and nested virtualization.",
+          "guided_lab": "Inventory CPU architecture, virtualization support and available memory/storage; select a supported hypervisor route.",
+          "independent_failure_or_transfer": "Explain a machine where SSH works but no desktop VM application is visible.",
+          "milestone_evidence": "Identify the host control plane and guest boundary; SSH alone is not used to identify a vendor.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": []
+        },
+        {
+          "id": "io-vm-administration-02",
+          "title": "Create a machine from a known image",
+          "concepts": "Cloud images, checksums, virtual disks, firmware, cloud-init and console access.",
+          "guided_lab": "Create a guest with a unique name, key and network identity using libvirt tooling.",
+          "independent_failure_or_transfer": "Recover failed first boot or an incorrect cloud-init setup using the guest console.",
+          "milestone_evidence": "The guest boots, reports the expected image, and is accessible through the intended identity.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-vm-administration-01"
+          ]
+        },
+        {
+          "id": "io-vm-administration-03",
+          "title": "Build virtual networks",
+          "concepts": "NAT, bridge, routed networks, virtual switches, DHCP and host/guest firewalls.",
+          "guided_lab": "Connect a service guest and a client guest; compare NAT and a supported bridged/routed setup.",
+          "independent_failure_or_transfer": "Fix an unreachable SSH or HTTP service without exposing every guest port.",
+          "milestone_evidence": "Record host, guest and outer-network probes; Wi-Fi bridge limitations are acknowledged.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-vm-administration-02"
+          ]
+        },
+        {
+          "id": "io-vm-administration-04",
+          "title": "Administer through SSH and console",
+          "concepts": "Host authority, guest sudo, host keys, key-based access, jump hosts and rescue console.",
+          "guided_lab": "Reach a private guest through a bastion and use host tools to inspect its lifecycle.",
+          "independent_failure_or_transfer": "Recover a guest SSH lockout through the owned console.",
+          "milestone_evidence": "Guest access and hypervisor administration use distinct credentials and permissions.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-vm-administration-03"
+          ]
+        },
+        {
+          "id": "io-vm-administration-05",
+          "title": "Host websites inside guests",
+          "concepts": "Guest process, private address, edge proxy, TLS and public-routing boundaries.",
+          "guided_lab": "Run Relay inside a VM and route a host/edge URL to its private service address.",
+          "independent_failure_or_transfer": "Diagnose a working guest service that the edge cannot reach.",
+          "milestone_evidence": "Versioned HTTP evidence follows client \u2192 edge \u2192 guest; direct access policy is tested separately.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-vm-administration-04"
+          ]
+        },
+        {
+          "id": "io-vm-administration-06",
+          "title": "Change CPU, memory and storage",
+          "concepts": "Configured/current resources, quotas, balloon/hotplug support, virtual disk versus filesystem.",
+          "guided_lab": "Resize an owned guest using a supported shutdown or live procedure, then grow its partition/filesystem where required.",
+          "independent_failure_or_transfer": "Explain a larger virtual disk that has not increased filesystem space.",
+          "milestone_evidence": "Host and guest observations agree; data remains intact; unsupported hot changes are not faked.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-vm-administration-05"
+          ]
+        },
+        {
+          "id": "io-vm-administration-07",
+          "title": "Clone and recover machines",
+          "concepts": "Templates, unique identities, snapshots, image chains, independent backup and restore.",
+          "guided_lab": "Create two guests from a template and restore one from a separately retained backup.",
+          "independent_failure_or_transfer": "Find a duplicated identity or a snapshot dependent on a missing parent image.",
+          "milestone_evidence": "Fresh guests have unique identities; restored data works without the original active disk.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-vm-administration-06"
+          ]
+        },
+        {
+          "id": "io-vm-administration-08",
+          "title": "Operate a small guest fleet",
+          "concepts": "Inventory, lifecycle, resource limits, autostart, failed jobs and console recovery.",
+          "guided_lab": "Manage a service guest, client guest and optional utility guest through virsh or an existing management UI.",
+          "independent_failure_or_transfer": "Handle a failed start or exhausted lab allocation while protecting host headroom.",
+          "milestone_evidence": "Inventory matches reality; only owned guests change; guest website and recovery checks pass.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-vm-administration-07"
+          ]
+        }
+      ],
+      "order": 2,
+      "kind": "proficiency",
+      "main_level_count": 8,
+      "route": "core domain offering; paths may be chosen by goal and prerequisite capability",
+      "recommended_after": [
+        "io-linux-network"
+      ]
+    },
+    {
+      "id": "io-public-hosting",
+      "title": "Web Hosting & Public Deployment",
+      "hours": [
+        24,
+        36
+      ],
+      "outcome": "Publish an appropriate service and explain its DNS, transport, cost and availability dependencies.",
+      "environment": "Local Linux/VM plus optional learner-selected external hostname/account/network.",
+      "levels": [
+        {
+          "id": "io-public-hosting-01",
+          "title": "Choose the hosting model",
+          "concepts": "Static assets, dynamic requests, build output, runtime, state and platform contracts.",
+          "guided_lab": "Publish a static build locally and run a dynamic service; compare what each requires.",
+          "independent_failure_or_transfer": "Choose a deployment target for a site that needs server-side processing.",
+          "milestone_evidence": "A static host is not claimed to execute an unsupported server or persist runtime data.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": []
+        },
+        {
+          "id": "io-public-hosting-02",
+          "title": "Put an edge in front",
+          "concepts": "Reverse proxy, upstream address, headers, TLS termination, trust and names.",
+          "guided_lab": "Run the real local Caddy lab and inspect the generated route and certificate controls.",
+          "independent_failure_or_transfer": "Fix a changed upstream/name mismatch while preserving the intended boundary.",
+          "milestone_evidence": "Correct HTTP/TLS controls pass; wrong upstream, trust and name controls fail for the expected reasons.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-public-hosting-01"
+          ]
+        },
+        {
+          "id": "io-public-hosting-03",
+          "title": "Own a name and certificate",
+          "concepts": "DNS delegation, A/AAAA/CNAME, TTL, ACME, HTTP/DNS challenges and renewal.",
+          "guided_lab": "Use local DNS/TLS fixtures, then a supported public hostname/certificate variant when available.",
+          "independent_failure_or_transfer": "Repair a bad AAAA, stale answer or renewal prerequisite.",
+          "milestone_evidence": "Public claims include an external lookup and verification; locally trusted certificates remain labelled local.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-public-hosting-02"
+          ]
+        },
+        {
+          "id": "io-public-hosting-04",
+          "title": "Serve from home or a VPS",
+          "concepts": "Public/private addresses, router forwarding, CGNAT, IPv6, DNS and continuous operation.",
+          "guided_lab": "Deploy to a guest/spare machine and test an owned external client path or simulated outer network.",
+          "independent_failure_or_transfer": "Select a workable route when router control or public inbound access is unavailable.",
+          "milestone_evidence": "Record each boundary, who controls it, and whether outside-internet reachability was actually tested.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-public-hosting-03"
+          ]
+        },
+        {
+          "id": "io-public-hosting-05",
+          "title": "Publish a free static site",
+          "concepts": "Build pipelines, provider subdomains, repository visibility, paths and usage limits.",
+          "guided_lab": "Deploy synthetic public content through a current eligible free static route such as GitHub Pages.",
+          "independent_failure_or_transfer": "Fix an asset/base-path or build-output failure.",
+          "milestone_evidence": "The published URL serves the expected build; account, visibility and provider limits are recorded.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-public-hosting-04"
+          ]
+        },
+        {
+          "id": "io-public-hosting-06",
+          "title": "Try free dynamic hosting",
+          "concepts": "Execution compatibility, quotas, cold starts, runtime storage and database lifetime.",
+          "guided_lab": "Deploy a compatible small endpoint on a current free offering; keep an equivalent local route.",
+          "independent_failure_or_transfer": "Diagnose a sleeping service or disappearing local runtime data.",
+          "milestone_evidence": "Cold-start and persistence behaviour are observed; free-tier constraints are stated with date.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-public-hosting-05"
+          ]
+        },
+        {
+          "id": "io-public-hosting-07",
+          "title": "Publish through cloudflared",
+          "concepts": "Outbound connector, Quick versus named tunnels, public HTTP routes, Access and restart.",
+          "guided_lab": "Compare a temporary Quick Tunnel with a named route when the learner has the required account/domain.",
+          "independent_failure_or_transfer": "Recover a wrong origin route or blocked connector transport; restrict a private application.",
+          "milestone_evidence": "The URL, authentication policy and origin lifetime are independently checked; a tunnel is not treated as hosting.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-public-hosting-06"
+          ]
+        },
+        {
+          "id": "io-public-hosting-08",
+          "title": "Diagnose a public deployment",
+          "concepts": "LAN versus external clients, certificate/DNS state, origin availability and revocation.",
+          "guided_lab": "Maintain a deployment record and test a second owned network when available.",
+          "independent_failure_or_transfer": "Recover a mixed DNS/origin/access failure and remove the intended public route.",
+          "milestone_evidence": "Evidence distinguishes LAN, simulated WAN and real internet; cleanup and retained work are explicit.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-public-hosting-07"
+          ]
+        }
+      ],
+      "order": 3,
+      "kind": "proficiency",
+      "main_level_count": 8,
+      "route": "core domain offering; paths may be chosen by goal and prerequisite capability",
+      "recommended_after": [
+        "io-linux-network",
+        "io-vm-administration"
+      ]
+    },
+    {
+      "id": "io-private-access",
+      "title": "Private Networks, SSH & Tunnels",
+      "hours": [
+        24,
+        38
+      ],
+      "outcome": "Choose, configure and diagnose private access and tunnels with clear trust and routing boundaries.",
+      "environment": "Two local guests or network namespaces; optional phone, Pi, router or reachable relay.",
+      "levels": [
+        {
+          "id": "io-private-access-01",
+          "title": "Establish remote identity",
+          "concepts": "SSH host verification, user keys, agents, revocation and least privilege.",
+          "guided_lab": "Create distinct lab identities and verify the remote host before logging in.",
+          "independent_failure_or_transfer": "Replace a revoked key while preserving legitimate access and console recovery.",
+          "milestone_evidence": "Wrong host identity and revoked credentials are rejected for the intended reasons.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": []
+        },
+        {
+          "id": "io-private-access-02",
+          "title": "Forward a local service",
+          "concepts": "SSH -L, listener binding, destination perspective and access restrictions.",
+          "guided_lab": "Reach a private guest service through an authenticated local forward.",
+          "independent_failure_or_transfer": "Correct a destination resolved on the wrong side of the SSH connection.",
+          "milestone_evidence": "Only the intended local listener and destination are available; closing SSH removes the forward.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-private-access-01"
+          ]
+        },
+        {
+          "id": "io-private-access-03",
+          "title": "Reverse and dynamically forward",
+          "concepts": "SSH -R/-D, SOCKS, GatewayPorts, relay reachability and connection lifetime.",
+          "guided_lab": "Build loopback-bound reverse forwarding and a separate SOCKS experiment on owned guests.",
+          "independent_failure_or_transfer": "Diagnose a CGNAT origin whose relay or listener is unreachable.",
+          "milestone_evidence": "Direction and binding are explained; a public reverse route requires a reachable, authorized relay.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-private-access-02"
+          ]
+        },
+        {
+          "id": "io-private-access-04",
+          "title": "Build a WireGuard network",
+          "concepts": "Keys, peers, UDP, routes, AllowedIPs, forwarding and MTU.",
+          "guided_lab": "Connect two guests, then optionally a phone or Pi; test only the chosen routes.",
+          "independent_failure_or_transfer": "Repair a bad AllowedIPs/route/MTU fixture and revoke one peer.",
+          "milestone_evidence": "Intended traffic passes; an unlisted route or revoked peer fails without breaking the legitimate path.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-private-access-03"
+          ]
+        },
+        {
+          "id": "io-private-access-05",
+          "title": "Compare managed and self-hosted coordination",
+          "concepts": "Tailscale, Headscale, coordination, direct data paths, NAT traversal and relays.",
+          "guided_lab": "Join a supported managed lab network or an owned Headscale lab; inspect actual connection paths.",
+          "independent_failure_or_transfer": "Explain relay use and an offline peer without assuming every connection is direct.",
+          "milestone_evidence": "Document account/control-plane dependencies, peer access and the measured path.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-private-access-04"
+          ]
+        },
+        {
+          "id": "io-private-access-06",
+          "title": "Use subnet and exit nodes",
+          "concepts": "Subnet routing, internet egress, split DNS, forwarding and route approval.",
+          "guided_lab": "Expose one private lab subnet, then separately test a scoped exit-node exercise.",
+          "independent_failure_or_transfer": "Fix a DNS/route conflict or unintended egress path.",
+          "milestone_evidence": "Private-subnet access and internet egress are demonstrated as different capabilities.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-private-access-05"
+          ]
+        },
+        {
+          "id": "io-private-access-07",
+          "title": "Reach private services through Cloudflare",
+          "concepts": "Public HTTP versus client-assisted TCP/SSH and private network access.",
+          "guided_lab": "Compare a public browser route with the documented client-assisted private access path.",
+          "independent_failure_or_transfer": "Diagnose a missing client, denied identity or unavailable outbound transport.",
+          "milestone_evidence": "Protocol, client and identity requirements are explicit; normal HTTP Tunnel is not presented as public SMTP.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-private-access-06"
+          ]
+        },
+        {
+          "id": "io-private-access-08",
+          "title": "Build and compare a custom relay",
+          "concepts": "SSH versus frp/rathole, authentication, framing, flow control, reconnects and allowlisted targets.",
+          "guided_lab": "Configure an owned self-hosted relay; optionally implement a bounded educational relay over standard TLS.",
+          "independent_failure_or_transfer": "Test disconnect, denied target and oversized-frame cases against the supplied lab contract.",
+          "milestone_evidence": "A reachable relay and approved targets are required; handwritten crypto and an unaudited public open proxy are excluded.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-private-access-07"
+          ]
+        }
+      ],
+      "order": 4,
+      "kind": "proficiency",
+      "main_level_count": 8,
+      "route": "core domain offering; paths may be chosen by goal and prerequisite capability",
+      "recommended_after": [
+        "io-linux-network",
+        "io-public-hosting"
+      ]
+    },
+    {
+      "id": "io-delivery-automation",
+      "title": "Delivery & Infrastructure Automation",
+      "hours": [
+        28,
+        42
+      ],
+      "outcome": "Reproduce a service and its infrastructure, promote a tested release, and recover a bad change.",
+      "environment": "Local Linux guests and source repository; optional learner-owned CI/registry account.",
+      "levels": [
+        {
+          "id": "io-delivery-automation-01",
+          "title": "Build an identifiable release",
+          "concepts": "Git, dependency inputs, tests, artifact checksums and configuration.",
+          "guided_lab": "Build Relay from a known revision and retain a manifest.",
+          "independent_failure_or_transfer": "Detect a runtime that differs from the tested artifact.",
+          "milestone_evidence": "Source, tests and deployed artifact identity form one traceable release record.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": []
+        },
+        {
+          "id": "io-delivery-automation-02",
+          "title": "Package the runtime",
+          "concepts": "Containers versus VMs, images, layers, users, networks and volumes.",
+          "guided_lab": "Run an immutable image locally and in the service VM.",
+          "independent_failure_or_transfer": "Recover a recreation that lost data or changed runtime identity.",
+          "milestone_evidence": "State and version controls pass; building a container is not confused with provisioning a VM.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-delivery-automation-01"
+          ]
+        },
+        {
+          "id": "io-delivery-automation-03",
+          "title": "Compose a small service",
+          "concepts": "Compose, dependencies, readiness, secrets, logs and owned cleanup.",
+          "guided_lab": "Run edge, application and state components with explicit data locations.",
+          "independent_failure_or_transfer": "Repair a dependency-order or configuration failure.",
+          "milestone_evidence": "All components become ready; only the lab's resources are removed during cleanup.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-delivery-automation-02"
+          ]
+        },
+        {
+          "id": "io-delivery-automation-04",
+          "title": "Automate checks in CI",
+          "concepts": "Triggers, runner identity, permissions, caches, artifacts and secret boundaries.",
+          "guided_lab": "Run a failing and passing change in a learner-owned CI project or equivalent local pipeline rehearsal.",
+          "independent_failure_or_transfer": "Prevent an untrusted or failing change from accessing deployment credentials.",
+          "milestone_evidence": "Actual CI receipts and local rehearsal reports are labelled separately.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-delivery-automation-03"
+          ]
+        },
+        {
+          "id": "io-delivery-automation-05",
+          "title": "Promote and roll back",
+          "concepts": "Staging, immutable promotion, release gates, concurrent releases and data compatibility.",
+          "guided_lab": "Promote one tested artifact and recover a seeded stateless regression.",
+          "independent_failure_or_transfer": "Explain why code rollback cannot undo an incompatible database change.",
+          "milestone_evidence": "Version and user-behaviour checks pass; retained state matches the task's contract.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-delivery-automation-04"
+          ]
+        },
+        {
+          "id": "io-delivery-automation-06",
+          "title": "Declare infrastructure",
+          "concepts": "OpenTofu/provider boundary, plan/apply, state, drift and destruction.",
+          "guided_lab": "Provision owned local VM resources with a reviewed provider and inspect its state.",
+          "independent_failure_or_transfer": "Reject or correct a plan that replaces the wrong resource.",
+          "milestone_evidence": "Plan, applied inventory and teardown agree; state containing secrets is not publicly submitted.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-delivery-automation-05"
+          ]
+        },
+        {
+          "id": "io-delivery-automation-07",
+          "title": "Configure a fleet",
+          "concepts": "Ansible inventory, idempotence, privilege scope, secret handling and change limits.",
+          "guided_lab": "Configure two owned guests and run the same playbook again.",
+          "independent_failure_or_transfer": "Repair drift without altering a guest outside the inventory.",
+          "milestone_evidence": "The second run has the intended idempotent result and unrelated guests remain unchanged.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-delivery-automation-06"
+          ]
+        },
+        {
+          "id": "io-delivery-automation-08",
+          "title": "Recreate and recover the delivery path",
+          "concepts": "Automation, release evidence, infrastructure ownership and runbooks.",
+          "guided_lab": "Rebuild a clean target and deploy the same release using the recorded procedure.",
+          "independent_failure_or_transfer": "Recover a failed deployment or expired synthetic credential.",
+          "milestone_evidence": "Another clean environment can reproduce the result; all residual owned resources are accounted for.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-delivery-automation-07"
+          ]
+        }
+      ],
+      "order": 5,
+      "kind": "proficiency",
+      "main_level_count": 8,
+      "route": "core domain offering; paths may be chosen by goal and prerequisite capability",
+      "recommended_after": [
+        "io-vm-administration",
+        "io-public-hosting"
+      ]
+    },
+    {
+      "id": "io-mail-state",
+      "title": "Mail & Stateful Self-Hosting",
+      "hours": [
+        28,
+        44
+      ],
+      "outcome": "Operate a local mail system and stateful service, and assess the extra requirements for reliable public mail.",
+      "environment": "Isolated Linux guests/containers using synthetic mail; public-mail variant has separate domain/IP/provider requirements.",
+      "levels": [
+        {
+          "id": "io-mail-state-01",
+          "title": "Follow a message",
+          "concepts": "Application submission, SMTP envelope, headers, queues and delivery versus receipt.",
+          "guided_lab": "Send synthetic application mail to local Mailpit and inspect its envelope and content.",
+          "independent_failure_or_transfer": "Find a wrong recipient/envelope or application configuration.",
+          "milestone_evidence": "Mail capture is demonstrated without claiming an internet mail server or external delivery.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": []
+        },
+        {
+          "id": "io-mail-state-02",
+          "title": "Run SMTP between owned hosts",
+          "concepts": "Postfix, domains, relaying policy, ports, queues and rejection.",
+          "guided_lab": "Deliver synthetic messages between isolated lab MTAs using reserved test domains.",
+          "independent_failure_or_transfer": "Reject unauthorized relay while preserving legitimate lab delivery.",
+          "milestone_evidence": "Accepted, queued, delivered and rejected messages have the correct evidence.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-mail-state-01"
+          ]
+        },
+        {
+          "id": "io-mail-state-03",
+          "title": "Provide authenticated mailbox access",
+          "concepts": "Dovecot/IMAP, submission, TLS, credentials, mailbox storage and service roles.",
+          "guided_lab": "Read an owned mailbox and submit through the intended authenticated endpoint.",
+          "independent_failure_or_transfer": "Reject a wrong name, credential or unauthenticated relay attempt.",
+          "milestone_evidence": "Submission and mailbox access work independently; port roles and TLS controls are correct.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-mail-state-02"
+          ]
+        },
+        {
+          "id": "io-mail-state-04",
+          "title": "Authenticate sender domains",
+          "concepts": "MX, SPF, DKIM, DMARC, alignment, signing and verification.",
+          "guided_lab": "Use local DNS/message fixtures and real signing/verification on synthetic messages.",
+          "independent_failure_or_transfer": "Detect a bad signature or misaligned identity without treating SPF as encryption.",
+          "milestone_evidence": "The learner explains and observes each check; local DNS fixtures do not assert public delegation.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-mail-state-03"
+          ]
+        },
+        {
+          "id": "io-mail-state-05",
+          "title": "Assess a public mail deployment",
+          "concepts": "Domain control, reachable IP, PTR authority, port policy, reputation and provider terms.",
+          "guided_lab": "Inspect an eligible learner environment and build a go/no-go record; use a full local equivalent otherwise.",
+          "independent_failure_or_transfer": "Identify blocked SMTP or an unavailable PTR change before claiming deployability.",
+          "milestone_evidence": "Public requirements are substantiated; an HTTP tunnel or free software alone is not accepted.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-mail-state-04"
+          ]
+        },
+        {
+          "id": "io-mail-state-06",
+          "title": "Operate queues and delivery",
+          "concepts": "Retries, bounces, throttling, blocklists, reputation, relay options and monitoring.",
+          "guided_lab": "Diagnose synthetic queued/bounced mail; perform the public variant only with owned consenting endpoints.",
+          "independent_failure_or_transfer": "Recover a stalled queue or a rejected delivery with the correct cause.",
+          "milestone_evidence": "Local transport and real external deliverability have separate evidence and limits.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-mail-state-05"
+          ]
+        },
+        {
+          "id": "io-mail-state-07",
+          "title": "Keep state consistent",
+          "concepts": "SQLite/PostgreSQL roles, transactions, one-writer limits, mail storage and backup consistency.",
+          "guided_lab": "Back up the sample application/mail state and restore into a clean target.",
+          "independent_failure_or_transfer": "Detect an inconsistent backup or a multi-writer design that exceeds its database guarantees.",
+          "milestone_evidence": "Restored records and messages are checked; a shared disk or copied WAL is not called replicated HA.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-mail-state-06"
+          ]
+        },
+        {
+          "id": "io-mail-state-08",
+          "title": "Recover a mail service",
+          "concepts": "Secrets, independent restore, relay controls, retained data and operating cost.",
+          "guided_lab": "Recover the local mail service from a fresh failure and document any public-service dependencies.",
+          "independent_failure_or_transfer": "Rotate credentials and reject relay after restoration while legitimate delivery continues.",
+          "milestone_evidence": "The runbook reproduces data and access controls; public-mail readiness stays separately labelled.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-mail-state-07"
+          ]
+        }
+      ],
+      "order": 6,
+      "kind": "proficiency",
+      "main_level_count": 8,
+      "route": "core domain offering; paths may be chosen by goal and prerequisite capability",
+      "recommended_after": [
+        "io-public-hosting",
+        "io-delivery-automation"
+      ]
+    },
+    {
+      "id": "io-traffic-capacity",
+      "title": "Traffic, Concurrency & Capacity",
+      "hours": [
+        28,
+        44
+      ],
+      "outcome": "Measure a workload, identify bottlenecks, protect service boundaries and justify a deployment size.",
+      "environment": "Bounded load against owned local services; larger load or external targets require their own declared budget.",
+      "levels": [
+        {
+          "id": "io-traffic-capacity-01",
+          "title": "Define the workload",
+          "concepts": "Requests, users, arrival rate, concurrency, response sizes, latency distributions and SLOs.",
+          "guided_lab": "Record a baseline workload with a fixed dataset and clear measurement boundaries.",
+          "independent_failure_or_transfer": "Reject a misleading average or a claimed user capacity without a workload.",
+          "milestone_evidence": "Success/error/latency measures include units, time window, workload and client placement.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": []
+        },
+        {
+          "id": "io-traffic-capacity-02",
+          "title": "Balance service traffic",
+          "concepts": "Caddy/HAProxy/NGINX, balancing algorithms, active/passive checks, readiness and draining.",
+          "guided_lab": "Run two service instances behind an explicitly configured balancer.",
+          "independent_failure_or_transfer": "Remove a ready target from new traffic while an existing request finishes.",
+          "milestone_evidence": "Distribution, failed-target handling and recovery are observed; the edge remains a single failure point.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-traffic-capacity-01"
+          ]
+        },
+        {
+          "id": "io-traffic-capacity-03",
+          "title": "Manage state across replicas",
+          "concepts": "Sessions, shared state, sticky routing, streaming, WebSockets and retryable writes.",
+          "guided_lab": "Compare stateless version requests with a stateful operation through two instances.",
+          "independent_failure_or_transfer": "Diagnose a lost session or duplicated write during node changes.",
+          "milestone_evidence": "State/idempotency controls hold; stickiness is not presented as a replacement for data design.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-traffic-capacity-02"
+          ]
+        },
+        {
+          "id": "io-traffic-capacity-04",
+          "title": "Choose concurrency deliberately",
+          "concepts": "I/O versus CPU work, threads, processes, async tasks, worker memory and pools.",
+          "guided_lab": "Compare a bounded I/O fixture with a CPU-bound fixture inside the declared lab allocation.",
+          "independent_failure_or_transfer": "Find why adding workers increases latency or memory without improving useful work.",
+          "milestone_evidence": "The chosen worker model is supported by measurements and a resource boundary.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-traffic-capacity-03"
+          ]
+        },
+        {
+          "id": "io-traffic-capacity-05",
+          "title": "Apply backpressure",
+          "concepts": "Bounded queues, semaphores, timeouts, pool limits, retries, cancellation and fairness.",
+          "guided_lab": "Run a controlled overload with explicit admission limits and recovery.",
+          "independent_failure_or_transfer": "Repair retry amplification or queue growth using changed constraints.",
+          "milestone_evidence": "Rejected, timed-out and completed work are all counted; admitted work and queue memory stay bounded.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-traffic-capacity-04"
+          ]
+        },
+        {
+          "id": "io-traffic-capacity-06",
+          "title": "Generate meaningful load",
+          "concepts": "k6 open/closed models, coordinated omission, dropped iterations, warmup and generator limits.",
+          "guided_lab": "Run short capped tests against owned targets using both workload models.",
+          "independent_failure_or_transfer": "Explain a test that lowers offered load as the server slows.",
+          "milestone_evidence": "Actual offered load, successful throughput, errors and dropped work accompany latency.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-traffic-capacity-05"
+          ]
+        },
+        {
+          "id": "io-traffic-capacity-07",
+          "title": "Estimate resources",
+          "concepts": "CPU service time, memory working sets, disk capacity/IOPS, bandwidth and Little's Law.",
+          "guided_lab": "Build a sizing worksheet from measured components, reserves and an explicit workload.",
+          "independent_failure_or_transfer": "Find a limit caused by uplink, disk or pool size despite spare CPU.",
+          "milestone_evidence": "Predictions state units and assumptions, then are compared with a bounded validation run.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-traffic-capacity-06"
+          ]
+        },
+        {
+          "id": "io-traffic-capacity-08",
+          "title": "Optimize and verify",
+          "concepts": "Profiles, indexing, caching, batching, compression, limits and cost tradeoffs.",
+          "guided_lab": "Change one bottleneck, rerun the same workload and retain the before/after record.",
+          "independent_failure_or_transfer": "Reject an apparent gain caused by changed error accounting or an easier workload.",
+          "milestone_evidence": "Improvement preserves correctness and target SLOs; no universal users-per-GB claim is made.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-traffic-capacity-07"
+          ]
+        }
+      ],
+      "order": 7,
+      "kind": "proficiency",
+      "main_level_count": 8,
+      "route": "core domain offering; paths may be chosen by goal and prerequisite capability",
+      "recommended_after": [
+        "io-public-hosting",
+        "io-delivery-automation"
+      ]
+    },
+    {
+      "id": "io-resilient-hardware",
+      "title": "Resilient Operations & Efficient Hardware",
+      "hours": [
+        24,
+        36
+      ],
+      "outcome": "Operate within a small machine's limits, recover data and migrate the same service as resources improve.",
+      "environment": "Small guest/resource profile on a PC; optional Pi, spare PC, SSD, second backup device and power equipment.",
+      "levels": [
+        {
+          "id": "io-resilient-hardware-01",
+          "title": "Keep an owned service available",
+          "concepts": "Boot, restart, time synchronization, readiness, monitoring location and failure domains.",
+          "guided_lab": "Reboot a disposable service guest and verify version, state and startup.",
+          "independent_failure_or_transfer": "Diagnose a service that works only while the terminal is open.",
+          "milestone_evidence": "Recovery is observed; same-host monitoring is not treated as proof that a powered-off host can alert.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": []
+        },
+        {
+          "id": "io-resilient-hardware-02",
+          "title": "Bound operational data",
+          "concepts": "Log rotation, journal quotas, metrics cardinality, retention and disk headroom.",
+          "guided_lab": "Set per-lab log/metrics limits and inspect their effects on a generated small dataset.",
+          "independent_failure_or_transfer": "Fix unbounded growth without deleting the entire machine's logs or masking errors.",
+          "milestone_evidence": "Retention and available-space controls are measured; compaction and temporary storage have room.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-resilient-hardware-01"
+          ]
+        },
+        {
+          "id": "io-resilient-hardware-03",
+          "title": "Restore independent data",
+          "concepts": "Backup consistency, independent copies, restore drills, RPO/RTO and retention.",
+          "guided_lab": "Restore into a clean guest from a separately retained copy.",
+          "independent_failure_or_transfer": "Recover from a lost active disk and check required records against stated objectives.",
+          "milestone_evidence": "Observed data loss and recovery time are reported; a same-disk snapshot is labelled dependent.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-resilient-hardware-02"
+          ]
+        },
+        {
+          "id": "io-resilient-hardware-04",
+          "title": "Operate on microSD",
+          "concepts": "Write volume, flash endurance, swap pressure, tmpfs, durable state and SSD migration.",
+          "guided_lab": "Use a bounded VM profile to compare logging/write policies; repeat selected observations on a Pi if available.",
+          "independent_failure_or_transfer": "Recover a full lab data volume and choose what may safely be ephemeral.",
+          "milestone_evidence": "Durable data survives; reduced writes do not erase needed evidence or rely on unbounded RAM.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-resilient-hardware-03"
+          ]
+        },
+        {
+          "id": "io-resilient-hardware-05",
+          "title": "Use physical devices well",
+          "concepts": "Pi/ARM images, headless boot, power, cooling, Ethernet, USB storage and sleep behaviour.",
+          "guided_lab": "Move the same service to a compatible Pi/spare PC, or validate portability in the stated PC route.",
+          "independent_failure_or_transfer": "Diagnose an architecture, boot, USB-power or thermal issue from an authored fixture.",
+          "milestone_evidence": "Physical results are recorded when hardware exists; emulation is not labelled a power/thermal test.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-resilient-hardware-04"
+          ]
+        },
+        {
+          "id": "io-resilient-hardware-06",
+          "title": "Enforce and observe resource budgets",
+          "concepts": "cgroups, CPU weight/quota, memory high/max, OOM, I/O and reservations.",
+          "guided_lab": "Apply limits only to owned guests/cgroups and observe bounded failures.",
+          "independent_failure_or_transfer": "Distinguish CPU throttling, memory pressure and slow storage.",
+          "milestone_evidence": "The host retains headroom and the learner accounts for every active/starting resource.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-resilient-hardware-05"
+          ]
+        },
+        {
+          "id": "io-resilient-hardware-07",
+          "title": "Recover connectivity and services",
+          "concepts": "DNS/tunnel expiry, WAN loss, credentials, restart policy and incident communication.",
+          "guided_lab": "Exercise a local network/credential fault, then an owned physical failure where available.",
+          "independent_failure_or_transfer": "Recover without turning a private service into an uncontrolled public endpoint.",
+          "milestone_evidence": "Access and data controls still hold after recovery; downtime and remaining dependencies are stated.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-resilient-hardware-06"
+          ]
+        },
+        {
+          "id": "io-resilient-hardware-08",
+          "title": "Migrate without restarting the learning path",
+          "concepts": "SSD/RAM upgrades, separate hosts, service placement and runbooks.",
+          "guided_lab": "Migrate Relay and its verified state to a fresh guest or stronger device.",
+          "independent_failure_or_transfer": "Handle a changed address/storage layout and validate old and new ownership.",
+          "milestone_evidence": "The same artifacts and evidence carry forward; a second process on one host is not called host HA.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-resilient-hardware-07"
+          ]
+        }
+      ],
+      "order": 8,
+      "kind": "proficiency",
+      "main_level_count": 8,
+      "route": "core domain offering; paths may be chosen by goal and prerequisite capability",
+      "recommended_after": [
+        "io-vm-administration",
+        "io-delivery-automation",
+        "io-traffic-capacity"
+      ]
+    },
+    {
+      "id": "io-private-cloud-platform",
+      "title": "Private Cloud & Platform Engineering",
+      "hours": [
+        36,
+        56
+      ],
+      "outcome": "Operate a small college-style VM service using an existing control plane, with scoped roles and honest failure boundaries.",
+      "environment": "Later track: PC lab for control-plane behaviour; spare/dedicated hosts for physical isolation and migration claims.",
+      "levels": [
+        {
+          "id": "io-private-cloud-platform-01",
+          "title": "Read an existing control plane",
+          "concepts": "libvirt/Cockpit, Proxmox, Incus and OpenStack responsibilities; VM versus cloud API.",
+          "guided_lab": "Trace guest creation in one supported existing platform from UI/API to hypervisor and virtual network.",
+          "independent_failure_or_transfer": "Explain why guest SSH works without a desktop hypervisor application.",
+          "milestone_evidence": "Host, control-plane and guest components are mapped; vendor identity is not inferred from SSH.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": []
+        },
+        {
+          "id": "io-private-cloud-platform-02",
+          "title": "Offer reproducible guest templates",
+          "concepts": "Images, cloud-init, identity, flavors, resource profiles and image lifecycle.",
+          "guided_lab": "Publish a small internal catalog of reviewed templates in the owned lab platform.",
+          "independent_failure_or_transfer": "Repair duplicated identity or stale initialization data.",
+          "milestone_evidence": "Each guest has unique credentials/identity and the selected resource/network profile.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-private-cloud-platform-01"
+          ]
+        },
+        {
+          "id": "io-private-cloud-platform-03",
+          "title": "Separate learner and operator roles",
+          "concepts": "Projects, memberships, API identities, ownership, quotas and audit records.",
+          "guided_lab": "Use two sample learner identities and an operator in the local platform.",
+          "independent_failure_or_transfer": "Attempt a cross-project read/resize using the wrong identity.",
+          "milestone_evidence": "Server-side permission checks deny the action; front-end hiding is not counted as authorization.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-private-cloud-platform-02"
+          ]
+        },
+        {
+          "id": "io-private-cloud-platform-04",
+          "title": "Handle lifecycle and resizing jobs",
+          "concepts": "Queued operations, states, locking, host observations, reconciliation and failed jobs.",
+          "guided_lab": "Create/start/stop/resize a guest and inspect the platform's job and inventory state.",
+          "independent_failure_or_transfer": "Recover a failed provisioning or partial resize operation.",
+          "milestone_evidence": "Requested, applied and guest-observed resources agree; reservations are retained until cleanup is confirmed.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-private-cloud-platform-03"
+          ]
+        },
+        {
+          "id": "io-private-cloud-platform-05",
+          "title": "Publish a guest service",
+          "concepts": "Floating/routed/bridged addresses, reverse proxy, guest perimeter and private access.",
+          "guided_lab": "Give a learner guest a website route and a separate administration path.",
+          "independent_failure_or_transfer": "Repair a failed route without granting host administration to the guest user.",
+          "milestone_evidence": "Website reachability, private management and cross-guest isolation have separate controls.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-private-cloud-platform-04"
+          ]
+        },
+        {
+          "id": "io-private-cloud-platform-06",
+          "title": "Move and recover guests",
+          "concepts": "Backups, storage reachability, CPU compatibility, offline/live migration and physical failure domains.",
+          "guided_lab": "Restore or migrate between supported lab hypervisors; use a second physical host for physical-failure evidence.",
+          "independent_failure_or_transfer": "Explain or recover a migration blocked by storage, CPU or network prerequisites.",
+          "milestone_evidence": "Guest data and identity survive; same-PC nested hosts are labelled logical migration only.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-private-cloud-platform-05"
+          ]
+        },
+        {
+          "id": "io-private-cloud-platform-07",
+          "title": "Compare orchestration layers",
+          "concepts": "VM lifecycle, container orchestration, Kubernetes requests/limits, scheduler and storage boundaries.",
+          "guided_lab": "Deploy Relay's stateless mode in a small separate cluster lab and compare its control loop with VM management.",
+          "independent_failure_or_transfer": "Recover a selector/readiness or resource-allocation fault.",
+          "milestone_evidence": "Actual observations distinguish a process, container, guest VM and orchestration control plane.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-private-cloud-platform-06"
+          ]
+        },
+        {
+          "id": "io-private-cloud-platform-08",
+          "title": "Run the college-style capstone",
+          "concepts": "Template \u2192 assigned guest \u2192 SSH \u2192 hosted site \u2192 measured load \u2192 resize \u2192 recovery \u2192 release.",
+          "guided_lab": "Operate two learner guests through the selected existing control plane and hand over a reproducible runbook.",
+          "independent_failure_or_transfer": "Inject a failed resize, denied cross-learner operation or lost active disk.",
+          "milestone_evidence": "Correct ownership, resource accounting, service/data recovery and confirmed cleanup all pass.",
+          "main": true,
+          "authoring_status": "designed; full runnable lesson and evaluator require implementation",
+          "suggested_after": [
+            "io-private-cloud-platform-07"
+          ]
+        }
+      ],
+      "order": 9,
+      "kind": "proficiency",
+      "main_level_count": 8,
+      "route": "included advanced continuation",
+      "recommended_after": [
+        "io-vm-administration",
+        "io-private-access",
+        "io-delivery-automation",
+        "io-traffic-capacity",
+        "io-resilient-hardware"
+      ]
+    }
+  ],
+  "supporting_documents": [
+    "local-to-internet-platform-audit.md",
+    "local-to-internet-connectivity-notes.md",
+    "local-to-internet-capacity-labs.md",
+    "virtualization-control-plane-audit.md",
+    "devops-track-design.md"
+  ],
+  "proof": {
+    "path": "labs/local-to-internet/README.md",
+    "scope": "Narrow real-Caddy loopback experiment. It does not establish public/VPN/mail/VM/device capability or teaching effectiveness."
+  },
+  "sequencing_contract": {
+    "recommended_after": "Advisory track order only; never interpreted as mandatory whole-track completion. Entry is based on sampled prerequisite capabilities or valid existing evidence.",
+    "suggested_after": "Advisory within-track teaching order; equivalent prior evidence or practical placement can satisfy the relevant prerequisite.",
+    "production_authoring_gate": "Map each executable lesson and environment variant to explicit versioned capability prerequisites before building progression rules."
+  }
+}

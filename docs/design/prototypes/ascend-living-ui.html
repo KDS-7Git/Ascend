@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Ascend — experience design prototype</title>
+  <link rel="icon" href="../../../web/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="ascend-living-ui.css">
+  <script src="ascend-living-ui.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="preview-bar" aria-label="Design review controls">
+    <span><strong>DESIGN PREVIEW</strong><span class="preview-note"> Sample accounts and simulated results. No server connection.</span></span>
+    <button id="review-button" class="preview-control" aria-haspopup="dialog">Explore the interactions <span aria-hidden="true">↗</span></button>
+  </div>
+  <aside class="sidebar">
+    <a href="#today" class="brand"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="m5 24 8-15 5 9 3-5 6 11H5Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="m10 15 3 2 3-2" fill="none" stroke="currentColor" stroke-width="2"/></svg></span>ascend<span class="brand-dot">.</span></a>
+    <p class="nav-caption">YOUR WORKSPACE</p>
+    <nav aria-label="Main navigation" id="desktop-nav"></nav>
+    <a href="#devops" class="sidebar-track"><span class="mini-icon" data-icon="layers"></span><span><small>YOUR ACTIVE TRACK</small><strong>DevOps foundations</strong><span class="track-line"><span></span></span><small>Chapter 5 of 13</small></span></a>
+    <div class="sidebar-bottom"><span class="tiny-mountain" aria-hidden="true">△</span><p>A little more capable.<br>Every time you return.</p><button class="quiet help-open"><span data-icon="book"></span>How this preview works</button></div>
+  </aside>
+  <header class="topbar">
+    <a href="#today" class="mobile-brand" aria-label="Ascend home">a<span>↗</span></a>
+    <div class="breadcrumb" id="breadcrumb">Your workspace <span>/</span> Today</div>
+    <div class="top-actions">
+      <button class="icon-button" id="search-button" aria-label="Find an activity" aria-haspopup="dialog"><span data-icon="search"></span></button>
+      <button class="xp-button" id="xp-button" aria-label="View XP and its meaning"><span data-icon="spark"></span><span id="xp-total">1,240</span><small>XP</small></button>
+      <button class="account-button" id="account-button" aria-haspopup="dialog" aria-label="Account and display preferences"><span class="avatar" id="avatar">M</span><span class="account-name" id="account-name">Mira</span><span class="account-chevron" aria-hidden="true">⌄</span></button>
+    </div>
+  </header>
+  <main id="main" tabindex="-1"></main>
+  <nav class="mobile-nav" aria-label="Mobile navigation" id="mobile-nav"></nav>
+  <div id="tour-announcement" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <dialog id="account-dialog" aria-labelledby="account-title">
+    <div class="dialog-heading"><div><p class="eyebrow">MAKE YOURSELF AT HOME</p><h2 id="account-title">Your workspace</h2></div><button class="icon-button close-dialog" aria-label="Close account settings"><span data-icon="close"></span></button></div>
+    <p class="muted">These are separate sample learners. Their notes, progress, and goal choices stay separate in this preview.</p>
+    <label for="learner-select">Sample learner</label><select id="learner-select"><option value="mira">Mira · prepares for a job</option><option value="arun">Arun · explores interests</option></select>
+    <label for="goal-select">What brings you here?</label><select id="goal-select"><option value="career">Prepare for a job</option><option value="explore">Explore my interests</option><option value="both">A bit of both</option></select>
+    <div class="settings-row"><div><strong>Dark appearance</strong><span class="muted">A quieter palette for evening work.</span></div><button id="theme-toggle" class="switch" role="switch" aria-checked="false" aria-label="Dark appearance"><span></span></button></div>
+    <div class="settings-row"><div><strong>Expressive motion</strong><span class="muted" id="motion-help">Short, purposeful transitions and reactions.</span></div><button id="motion-toggle" class="switch" role="switch" aria-checked="true" aria-label="Expressive motion"><span></span></button></div>
+    <p class="fine-print">Device reduced-motion preferences always take priority. The prototype stores no credentials and changes no real account.</p>
+  </dialog>
+  <dialog id="review-dialog" aria-labelledby="review-title">
+    <div class="dialog-heading"><div><p class="eyebrow">INTERACTION STUDY</p><h2 id="review-title">Try the whole journey.</h2></div><button class="icon-button close-dialog" aria-label="Close interaction guide"><span data-icon="close"></span></button></div>
+    <p>Use Today, Playground, the DevOps path, and My work. Start a challenge to see the separate workbench. Try an incorrect repair, then inspect the evidence and check another.</p>
+    <div class="review-actions"><button class="secondary" id="preview-example">Try a worked example</button><button class="secondary" id="preview-queue">Preview occupied lab slots</button><button class="secondary" id="preview-milestone">Preview a milestone</button></div>
+    <p class="muted">The example has a skippable three-step tour. The queue advances only when you choose “Simulate a slot becoming free.” Successful checks show a receipt and a one-time sample award. Theme, motion, and sample-account controls are in the profile menu.</p>
+    <p class="fine-print">This is a design artifact. Its evidence checks, XP, persistence, account switching, and lab lifecycle are simulations. Current hosted Ascend labs award zero XP; this preview's 50 XP applies only to its simulated standalone browser challenge. The DevOps curriculum and new UI require implementation.</p>
+    <button class="quiet" id="reset-preview">Reset all sample progress</button>
+  </dialog>
+  <dialog id="search-dialog" aria-labelledby="search-title">
+    <div class="dialog-heading"><h2 id="search-title">Find your next activity</h2><button class="icon-button close-dialog" aria-label="Close search"><span data-icon="close"></span></button></div>
+    <label class="sr-only" for="activity-search">Search activities</label><input id="activity-search" type="search" placeholder="Try deployment, example, or DevOps…" autocomplete="off">
+    <div id="search-results" class="search-results"></div>
+  </dialog>
+  <dialog id="milestone-dialog" class="milestone-dialog" aria-labelledby="milestone-title">
+    <button class="icon-button close-dialog milestone-close" aria-label="Close milestone"><span data-icon="close"></span></button>
+    <div id="milestone-art" class="milestone-art" aria-hidden="true"></div>
+    <p class="eyebrow">MILESTONE PREVIEW</p><h2 id="milestone-title">A release you can rely on.</h2>
+    <p>You connected the service, checked its health, and kept a record another person could follow.</p>
+    <div class="earned-stamp"><span data-icon="flag"></span><span><strong>Reliable release</strong><small>Sample chapter achievement</small></span></div>
+    <p class="muted">Next, make the same release reproducible with containers.</p><button class="primary" id="milestone-next">Explore the next chapter <span data-icon="arrow"></span></button>
+    <p class="fine-print">Demonstration only. Opening this preview does not award additional XP.</p>
+  </dialog>
+</body>
+</html>

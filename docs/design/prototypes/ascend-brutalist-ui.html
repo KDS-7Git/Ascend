@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Ascend — neobrutalist field lab preview</title>
+  <link rel="icon" href="../../../web/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="ascend-brutalist-ui.css">
+  <script src="ascend-brutalist-ui.js" defer></script>
+</head>
+<body>
+  <svg class="landscape-backdrop" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs><pattern id="paper-crosses" width="80" height="80" patternUnits="userSpaceOnUse"><path d="M38 40h4m-2-2v4" class="map-stroke"/></pattern></defs>
+    <rect width="1600" height="1000" fill="url(#paper-crosses)"/>
+    <g class="terrain-contours"><path d="M810-50c100 130 120 190 280 165s160 140 420 100 260 180 160 320"/><path d="M880-50c60 110 110 160 240 145s155 125 390 90 240 170 150 320"/><path d="M950-50c35 95 80 115 200 125s120 110 340 90 230 160 145 300"/><path d="M1020-50c25 70 75 100 170 110s105 80 285 80 200 150 135 270"/>
+    <path d="M-150 640c200-90 140 160 330 100s330 100 425 240"/><path d="M-150 685c190-90 145 150 330 100s300 80 370 220"/><path d="M-150 730c185-80 145 140 330 90s265 60 320 190"/></g>
+    <g class="terrain-markers"><circle cx="1430" cy="94" r="68"/><path d="m1350 804 80-135 90 152H1320l30-17Z"/><path d="m1343 891 34-60 40 70h-83l9-10Z"/></g>
+  </svg>
+  <div class="night-atmosphere" aria-hidden="true">
+    <svg class="night-ribbons" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="night-flow" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#40d7bd" stop-opacity=".02"/><stop offset=".48" stop-color="#6986ff" stop-opacity=".25"/><stop offset=".8" stop-color="#d68fff" stop-opacity=".35"/><stop offset="1" stop-color="#fff4d4" stop-opacity=".04"/></linearGradient>
+        <linearGradient id="night-edge" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#c3b0ff" stop-opacity=".02"/><stop offset=".55" stop-color="#d5bbff" stop-opacity=".42"/><stop offset="1" stop-color="#6ae6d5" stop-opacity=".07"/></linearGradient>
+      </defs>
+      <path d="M-170 1070C100 1090 680 510 1090 350S1570 460 1770-90" fill="none" stroke="url(#night-flow)" stroke-width="190"/>
+      <path d="M-170 975C100 995 680 415 1090 255S1570 365 1770-185" fill="none" stroke="url(#night-edge)" stroke-width="2"/>
+      <path d="M530-110C850 155 1260-20 1460 195S1310 670 1750 780" fill="none" stroke="url(#night-flow)" stroke-width="78"/>
+      <path d="M530-149C850 116 1260-59 1460 156S1310 631 1750 741" fill="none" stroke="url(#night-edge)" stroke-width="1.5"/>
+    </svg>
+  </div>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="preview-bar" aria-label="Design review controls">
+    <span><strong>DESIGN REVIEW · 03</strong><span class="preview-note"> Sample accounts and simulated results. No server connection.</span></span>
+    <button id="review-button" class="preview-control" aria-haspopup="dialog"><span id="motion-indicator">Motion on</span> · Review &amp; replay <span aria-hidden="true">↗</span></button>
+  </div>
+  <aside class="sidebar">
+    <a href="#today" class="brand"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="m5 24 8-15 5 9 3-5 6 11H5Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="m10 15 3 2 3-2" fill="none" stroke="currentColor" stroke-width="2"/></svg></span>ascend<span class="brand-dot">.</span></a>
+    <p class="nav-caption">YOUR WORKSPACE</p>
+    <nav aria-label="Main navigation" id="desktop-nav"></nav>
+    <a href="#devops" class="sidebar-track"><span class="mini-icon" data-icon="layers"></span><span><small>YOUR ACTIVE TRACK</small><strong>DevOps · Foundations</strong><span class="track-line"><span></span></span><small>Level 5 of 8</small></span></a>
+    <div class="sidebar-bottom"><span class="tiny-mountain" aria-hidden="true">△</span><p>A little more capable.<br>Every time you return.</p><button class="quiet help-open"><span data-icon="book"></span>How this preview works</button></div>
+  </aside>
+  <header class="topbar">
+    <a href="#today" class="mobile-brand" aria-label="Ascend home">a<span>↗</span></a>
+    <div class="breadcrumb" id="breadcrumb">Your workspace <span>/</span> Today</div>
+    <div class="top-actions">
+      <button class="icon-button" id="search-button" aria-label="Find an activity" aria-haspopup="dialog"><span data-icon="search"></span></button>
+      <button class="xp-button" id="xp-button" aria-label="View XP and its meaning"><span data-icon="spark"></span><span id="xp-total">1,240</span><small>XP</small></button>
+      <button class="account-button" id="account-button" aria-haspopup="dialog" aria-label="Account and display preferences"><span class="avatar" id="avatar">M</span><span class="account-name" id="account-name">Mira</span><span class="account-chevron" aria-hidden="true">⌄</span></button>
+    </div>
+  </header>
+  <main id="main" tabindex="-1"></main>
+  <nav class="mobile-nav" aria-label="Mobile navigation" id="mobile-nav"></nav>
+  <div id="tour-announcement" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <dialog id="account-dialog" aria-labelledby="account-title">
+    <div class="dialog-heading"><div><p class="eyebrow">MAKE YOURSELF AT HOME</p><h2 id="account-title">Your workspace</h2></div><button class="icon-button close-dialog" aria-label="Close account settings"><span data-icon="close"></span></button></div>
+    <p class="muted">These are separate sample learners. Their notes, progress, and goal choices stay separate in this preview.</p>
+    <label for="learner-select">Sample learner</label><select id="learner-select"><option value="mira">Mira · prepares for a job</option><option value="arun">Arun · explores interests</option></select>
+    <label for="goal-select">What brings you here?</label><select id="goal-select"><option value="career">Prepare for a job</option><option value="explore">Explore my interests</option><option value="both">A bit of both</option></select>
+    <div class="settings-row"><div><strong>Dark appearance</strong><span class="muted">A quieter palette for evening work.</span></div><button id="theme-toggle" class="switch" role="switch" aria-checked="false" aria-label="Dark appearance"><span></span></button></div>
+    <div class="settings-row"><div><strong>Expressive motion</strong><span class="muted" id="motion-help">Short, purposeful transitions and reactions.</span></div><button id="motion-toggle" class="switch" role="switch" aria-checked="true" aria-label="Expressive motion"><span></span></button></div>
+    <p class="fine-print">Device reduced-motion preferences always take priority. The prototype stores no credentials and changes no real account.</p>
+  </dialog>
+  <dialog id="review-dialog" aria-labelledby="review-title">
+    <div class="dialog-heading"><div><p class="eyebrow">INTERACTION STUDY</p><h2 id="review-title">Motion &amp; feedback.</h2></div><button class="icon-button close-dialog" aria-label="Close interaction guide"><span data-icon="close"></span></button></div>
+    <div class="motion-review"><p id="motion-status" role="status">Motion is on.</p><p>Open the live preview to see movement. Still screenshots cannot show transitions, press feedback, or the companion's greeting.</p><div class="review-actions"><button class="primary" id="preview-page">Replay Today &amp; companion <span data-icon="arrow"></span></button><button class="quiet" id="preview-preferences">Motion settings</button></div><p class="fine-print">Hover or focus a card; press a button. Each response finishes and settles. The workbench stays still while you read.</p></div>
+    <div class="feedback-review"><p class="eyebrow">THREE MOMENTS, THREE LEVELS OF FEEDBACK</p><div class="review-actions"><button class="secondary" id="preview-answer">Replay a correct answer</button><button class="secondary" id="preview-challenge">Try a challenge result</button><button class="secondary" id="preview-milestone">Preview a milestone</button></div><div id="answer-feedback" role="status" aria-live="polite" hidden></div><p class="fine-print">Replaying an effect adds no rewards. Meaningful practice earns separate Practice points. Scored XP follows a successful assessment; a milestone marks a named achievement.</p></div>
+    <div class="review-actions"><button class="secondary" id="preview-example">Try a worked example</button><button class="secondary" id="preview-queue">Preview occupied lab slots</button></div>
+    <details class="preview-explainer"><summary>What this preview simulates</summary><p>The example has a skippable three-step tour. The hosted queue advances only when you simulate a free slot. Accounts, checks, rewards, notes, and runtime events use sample data. Nothing connects to a server.</p><p>Practice points: 5 per distinct meaningful activity per sample learning day, up to 30. Completing an example, submitting a repair, or explicitly recording a useful note qualifies. Drafts, launches, and replays do not. The browser challenge awards 50 XP once; examples and hosted checks award no scored XP.</p><p>A milestone preview illustrates a hypothetical assessed track completion. It does not claim that the one sample challenge completes a whole track. The production interface remains unchanged.</p></details>
+    <button class="quiet" id="reset-preview">Reset all sample progress</button>
+  </dialog>
+  <dialog id="search-dialog" aria-labelledby="search-title">
+    <div class="dialog-heading"><h2 id="search-title">Find your next activity</h2><button class="icon-button close-dialog" aria-label="Close search"><span data-icon="close"></span></button></div>
+    <label class="sr-only" for="activity-search">Search activities</label><input id="activity-search" type="search" placeholder="Try deployment, example, or DevOps…" autocomplete="off">
+    <div id="search-results" class="search-results"></div>
+  </dialog>
+  <dialog id="milestone-dialog" class="milestone-dialog" aria-labelledby="milestone-title">
+    <button class="icon-button close-dialog milestone-close" aria-label="Close milestone"><span data-icon="close"></span></button>
+    <div class="milestone-sparks" id="milestone-sparks" aria-hidden="true"></div><div id="milestone-art" class="milestone-art" aria-hidden="true"></div>
+    <p class="eyebrow">SAMPLE TRACK MILESTONE · ASSESSED</p><h2 id="milestone-title">DevOps Foundations,<br>completed.</h2>
+    <p class="milestone-story">From a running process to a repeatable release. You built, deployed, checked, and recovered Relay.</p>
+    <div class="earned-stamp"><span data-icon="flag"></span><span><strong>Deployment Builder</strong><small>8 of 8 levels · Sample achievement</small></span></div>
+    <ul class="milestone-evidence"><li><span data-icon="check"></span>Release runs and responds to health checks</li><li><span data-icon="check"></span>Private app access stays behind the edge</li><li><span data-icon="check"></span>Recovery steps and release evidence retained</li></ul>
+    <p class="milestone-next-copy"><strong>Next: Delivery Automation.</strong><br>Turn your repeatable release into a tested pipeline.</p>
+    <div class="milestone-actions"><button class="primary" id="milestone-next">See the DevOps path <span data-icon="arrow"></span></button><button class="quiet" id="replay-milestone">Replay celebration <span aria-hidden="true">↻</span></button></div>
+    <p class="fine-print">Hypothetical track history, not earned by this preview. No extra XP or Practice points are added.</p>
+  </dialog>
+</body>
+</html>

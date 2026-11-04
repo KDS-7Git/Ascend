@@ -1,0 +1,555 @@
+{
+  "reviewed_on": "2026-11-03",
+  "prepared_at": "2026-11-03T10:00:31.023924+00:00",
+  "scope": "Infrastructure & Internet Operations: capacity, resource controls, hardware alternatives and core VM host administration.",
+  "status": "Research and lab design; no physical-device, hypervisor, load-capacity, storage-stress, or production benchmark executed by this review.",
+  "method": "Fetched first-party public documentation and official hardware PDFs/official repository sources; read relevant sections. HTTP status, resolved URL and SHA-256 capture each retrieved response. Source support does not prove the proposed learning outcomes or hardware fit.",
+  "source_count": 28,
+  "sources": [
+    {
+      "id": "CG1",
+      "title": "Linux cgroup v2",
+      "url": "https://docs.kernel.org/admin-guide/cgroup-v2.html",
+      "retrieved_at": "2026-11-03T09:35:34.008418+00:00",
+      "http_status": 200,
+      "resolved_url": "https://docs.kernel.org/admin-guide/cgroup-v2.html",
+      "response_sha256": "9c7ea0827bdc8cf0007b26acac105111c210cea7a34b9b00e7e07ad17805165d",
+      "publisher": "Linux kernel project",
+      "evidence_type": "First-party public documentation inspected; no course lab executed by this source review.",
+      "supports": [
+        "cgroup v2 separates CPU weight from CPU bandwidth limits.",
+        "Memory high/max/events and pressure accounting support controlled resource experiments; they do not guarantee dedicated cores or unlimited reclaim."
+      ]
+    },
+    {
+      "id": "LB1",
+      "title": "Caddy reverse proxy",
+      "url": "https://caddyserver.com/docs/caddyfile/directives/reverse_proxy",
+      "retrieved_at": "2026-11-03T09:35:34.009472+00:00",
+      "http_status": 200,
+      "resolved_url": "https://caddyserver.com/docs/caddyfile/directives/reverse_proxy",
+      "response_sha256": "b8d8fbf613a10628911c21f2c933eff3598926249fbacc9181d20b150d7e0e86",
+      "publisher": "Caddy project",
+      "evidence_type": "First-party public documentation inspected; no course lab executed by this source review.",
+      "supports": [
+        "Caddy reverse_proxy documents selectable load-balancing policies and defaults, active/passive health checks and upstream handling.",
+        "A lab should explicitly configure its policy and readiness behaviour, then observe the actual request result."
+      ]
+    },
+    {
+      "id": "LB2",
+      "title": "NGINX upstream module",
+      "url": "https://nginx.org/en/docs/http/ngx_http_upstream_module.html",
+      "retrieved_at": "2026-11-03T09:35:34.010188+00:00",
+      "http_status": 200,
+      "resolved_url": "https://nginx.org/en/docs/http/ngx_http_upstream_module.html",
+      "response_sha256": "adce94e6886895f81d7281ac99e81311e3089cb7fa4b21838fcf098f097de3e3",
+      "publisher": "NGINX",
+      "evidence_type": "First-party public documentation inspected; no course lab executed by this source review.",
+      "supports": [
+        "NGINX upstream configuration describes weighted round-robin, least connections, failure parameters, connection limits, and edition/version-specific features."
+      ]
+    },
+    {
+      "id": "K61",
+      "title": "k6 open and closed models",
+      "url": "https://grafana.com/docs/k6/latest/using-k6/scenarios/concepts/open-vs-closed/",
+      "retrieved_at": "2026-11-03T09:35:34.010593+00:00",
+      "http_status": 200,
+      "resolved_url": "https://grafana.com/docs/k6/latest/using-k6/scenarios/concepts/open-vs-closed/",
+      "response_sha256": "9ab8d8e67711f61ca5b559684d1560deee587f99fe9d13648e724b9d59b73c69",
+      "publisher": "Grafana k6",
+      "evidence_type": "First-party public documentation inspected; no course lab executed by this source review.",
+      "supports": [
+        "Closed-user iterations and open arrival-rate execution answer different load questions.",
+        "A closed test may reduce its arrival rate when the service becomes slower; documentation discusses coordinated omission."
+      ]
+    },
+    {
+      "id": "K62",
+      "title": "k6 dropped iterations",
+      "url": "https://grafana.com/docs/k6/latest/using-k6/scenarios/concepts/dropped-iterations/",
+      "retrieved_at": "2026-11-03T09:35:34.011366+00:00",
+      "http_status": 200,
+      "resolved_url": "https://grafana.com/docs/k6/latest/using-k6/scenarios/concepts/dropped-iterations/",
+      "response_sha256": "c4ed060e76447a4b0d7765f1b9c03d62e182574609d710690c8b9b4f0d3acc78",
+      "publisher": "Grafana k6",
+      "evidence_type": "First-party public documentation inspected; no course lab executed by this source review.",
+      "supports": [
+        "Dropped iterations must be interpreted alongside VU allocation and the system response time; configured arrival rate is not proof of delivered work."
+      ]
+    },
+    {
+      "id": "SR1",
+      "title": "Google SRE handling overload",
+      "url": "https://sre.google/sre-book/handling-overload/",
+      "retrieved_at": "2026-11-03T09:35:34.919752+00:00",
+      "http_status": 200,
+      "resolved_url": "https://sre.google/sre-book/handling-overload/",
+      "response_sha256": "945d15db67ad15a7f5e75833f8c0d014c8dc61d57909f7a3abd48459ad12cc9e",
+      "publisher": "Google SRE",
+      "evidence_type": "First-party public documentation inspected; no course lab executed by this source review.",
+      "supports": [
+        "A service should handle overload deliberately and protect useful admitted work.",
+        "Retry policy, client behaviour and dependency layers influence overload amplification."
+      ]
+    },
+    {
+      "id": "SR2",
+      "title": "Google SRE monitoring distributed systems",
+      "url": "https://sre.google/sre-book/monitoring-distributed-systems/",
+      "retrieved_at": "2026-11-03T09:35:35.883712+00:00",
+      "http_status": 200,
+      "resolved_url": "https://sre.google/sre-book/monitoring-distributed-systems/",
+      "response_sha256": "3117d94aca6d7422db18b210a4142718388523a4ea2082df539ffe9a8c4c2a75",
+      "publisher": "Google SRE",
+      "evidence_type": "First-party public documentation inspected; no course lab executed by this source review.",
+      "supports": [
+        "Latency, traffic, errors and saturation are distinct service-monitoring signals."
+      ]
+    },
+    {
+      "id": "USE1",
+      "title": "Brendan Gregg USE Method",
+      "url": "https://www.brendangregg.com/usemethod.html",
+      "retrieved_at": "2026-11-03T09:35:35.884252+00:00",
+      "http_status": 200,
+      "resolved_url": "https://www.brendangregg.com/usemethod.html",
+      "response_sha256": "9a08f590bbbd2a071312486bbbafab2fb840adc26e935541b61fae18879d7707",
+      "publisher": "Brendan Gregg, methodology author",
+      "evidence_type": "First-party public documentation inspected; no course lab executed by this source review.",
+      "supports": [
+        "The author documents the Utilization, Saturation and Errors method for finding resource bottlenecks."
+      ]
+    },
+    {
+      "id": "PM1",
+      "title": "Prometheus storage",
+      "url": "https://prometheus.io/docs/prometheus/latest/storage/",
+      "retrieved_at": "2026-11-03T09:35:36.178171+00:00",
+      "http_status": 200,
+      "resolved_url": "https://prometheus.io/docs/prometheus/latest/storage/",
+      "response_sha256": "3aad0ee65fd60c591f8df83ef92401fae24fd14848e67908b80ae1f6296f9253",
+      "publisher": "Prometheus project",
+      "evidence_type": "First-party public documentation inspected; no course lab executed by this source review.",
+      "supports": [
+        "Prometheus local storage includes blocks, WAL/head data and compaction behaviour.",
+        "Time/size retention and additional compaction headroom are necessary; compressed bytes per sample alone are not a whole-process budget."
+      ]
+    },
+    {
+      "id": "JR1",
+      "title": "systemd journald configuration",
+      "url": "https://www.freedesktop.org/software/systemd/man/latest/journald.conf.html",
+      "retrieved_at": "2026-11-03T09:35:36.334478+00:00",
+      "http_status": 200,
+      "resolved_url": "https://www.freedesktop.org/software/systemd/man/latest/journald.conf.html",
+      "response_sha256": "b4a9b53e3e53dc5384bfffeb777218ced4c91712b0222b71405146ab470bc340",
+      "publisher": "systemd project",
+      "evidence_type": "First-party public documentation inspected; no course lab executed by this source review.",
+      "supports": [
+        "journald offers persistent/volatile storage modes, maximum-use and keep-free limits.",
+        "Log storage behaviour has retention, disk and memory tradeoffs."
+      ]
+    },
+    {
+      "id": "SQ1",
+      "title": "SQLite write ahead logging",
+      "url": "https://www.sqlite.org/wal.html",
+      "retrieved_at": "2026-11-03T09:35:36.577818+00:00",
+      "http_status": 200,
+      "resolved_url": "https://www.sqlite.org/wal.html",
+      "response_sha256": "f3467b530b883d4a00574fe1a898b3d121ed72764ae28cf66941080ac0badb9e",
+      "publisher": "SQLite project",
+      "evidence_type": "First-party public documentation inspected; no course lab executed by this source review.",
+      "supports": [
+        "SQLite WAL supports concurrent readers with one writer and requires same-machine shared-memory semantics.",
+        "A long reader can delay checkpoint progress; WAL is not a multi-host replicated database."
+      ]
+    },
+    {
+      "id": "PG1",
+      "title": "PostgreSQL resource consumption",
+      "url": "https://www.postgresql.org/docs/current/runtime-config-resource.html",
+      "retrieved_at": "2026-11-03T09:35:36.874574+00:00",
+      "http_status": 200,
+      "resolved_url": "https://www.postgresql.org/docs/current/runtime-config-resource.html",
+      "response_sha256": "081f3dab6822d1d2be83d86b41c11f11a37cfa5b6b557cb554193fc43b2c2812",
+      "publisher": "PostgreSQL project",
+      "evidence_type": "First-party public documentation inspected; no course lab executed by this source review.",
+      "supports": [
+        "PostgreSQL work_mem applies per query operation/session and can multiply under concurrency.",
+        "Database memory allocations must be understood together with OS cache, pool and parallel-work behaviour."
+      ]
+    },
+    {
+      "id": "WS1",
+      "title": "Microsoft advanced WSL configuration",
+      "url": "https://learn.microsoft.com/en-us/windows/wsl/wsl-config",
+      "retrieved_at": "2026-11-03T09:35:37.541660+00:00",
+      "http_status": 200,
+      "resolved_url": "https://learn.microsoft.com/en-us/windows/wsl/wsl-config",
+      "response_sha256": "0eb34ed3e9a9d87226134178318fcd9683b54be44d730be17a43c9ec4cbe77b2",
+      "publisher": "Microsoft",
+      "evidence_type": "First-party public documentation inspected; no course lab executed by this source review.",
+      "supports": [
+        "WSL2 has host-configured memory, logical-processor, swap and networking behaviour; its available resources differ from physical host resources."
+      ]
+    },
+    {
+      "id": "MP1",
+      "title": "Docker multi-platform builds",
+      "url": "https://docs.docker.com/build/building/multi-platform/",
+      "retrieved_at": "2026-11-03T09:39:10.368496+00:00",
+      "http_status": 200,
+      "resolved_url": "https://docs.docker.com/build/building/multi-platform/",
+      "response_sha256": "6eac9dc3a7c850ea987ca12cfec82b6591555cf350a65d034633eb140b4b6849",
+      "publisher": "Docker",
+      "evidence_type": "First-party public documentation inspected; no course lab executed by this source review.",
+      "supports": [
+        "Cross-platform container builds can use emulation, native nodes or cross compilation.",
+        "QEMU emulation can be much slower for compilation and compression, so it does not establish native performance."
+      ]
+    },
+    {
+      "id": "RP4",
+      "title": "Raspberry Pi 4 product brief",
+      "url": "https://datasheets.raspberrypi.com/rpi4/raspberry-pi-4-product-brief.pdf",
+      "retrieved_at": "2026-11-03T09:39:10.370055+00:00",
+      "http_status": 200,
+      "resolved_url": "https://pip-assets.raspberrypi.com/categories/545-raspberry-pi-4-model-b/documents/RP-008344-DS-7-raspberry-pi-4-product-brief.pdf",
+      "response_sha256": "7e18898418a47cdbab2f6184ae93fbe6e4943c45475cecbe1db8eb11d32f4328",
+      "publisher": "Raspberry Pi Ltd",
+      "evidence_type": "First-party public documentation inspected; no course lab executed by this source review.",
+      "supports": [
+        "Current official Pi 4 product brief documents CPU/RAM choices, Ethernet, USB, microSD and power requirements.",
+        "Product specifications are not measurements of the proposed course workload."
+      ]
+    },
+    {
+      "id": "RP5",
+      "title": "Raspberry Pi 5 product brief",
+      "url": "https://datasheets.raspberrypi.com/rpi5/raspberry-pi-5-product-brief.pdf",
+      "retrieved_at": "2026-11-03T09:39:10.369457+00:00",
+      "http_status": 200,
+      "resolved_url": "https://pip-assets.raspberrypi.com/categories/892-raspberry-pi-5/documents/RP-008348-DS-10-raspberry-pi-5-product-brief.pdf",
+      "response_sha256": "f1ca525452e6fa4e9592a6705e41fb811bf12709d0605fd7cc2099c1b25534f3",
+      "publisher": "Raspberry Pi Ltd",
+      "evidence_type": "First-party public documentation inspected; no course lab executed by this source review.",
+      "supports": [
+        "Current official Pi 5 product brief documents ARM CPU, RAM variants, USB/PCIe interfaces and power requirements.",
+        "A compatible adapter/power/cooling configuration is part of the whole device profile."
+      ]
+    },
+    {
+      "id": "RPP",
+      "title": "Raspberry Pi power supplies",
+      "url": "https://raw.githubusercontent.com/raspberrypi/documentation/master/documentation/asciidoc/computers/raspberry-pi/power-supplies.adoc",
+      "retrieved_at": "2026-11-03T09:43:05.573305+00:00",
+      "source_repository": "https://github.com/raspberrypi/documentation",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/raspberrypi/documentation/master/documentation/asciidoc/computers/raspberry-pi/power-supplies.adoc",
+      "response_sha256": "32fd0edd672d696f7de11d278c807da3f15e511978270a924d8c93a3933656af",
+      "publisher": "Raspberry Pi Ltd",
+      "evidence_type": "First-party public documentation inspected; no course lab executed by this source review.",
+      "supports": [
+        "Official Raspberry Pi power guidance varies by model and connected peripherals.",
+        "Pi 5 downstream USB power allowance differs with compatible supply capability.",
+        "Historical manufacturer current measurements have an explicit historical test setup; they are not Ascend measurements."
+      ],
+      "access_note": "Official documentation source used because the public Raspberry Pi HTML documentation returned HTTP 403 in this environment."
+    },
+    {
+      "id": "RPF",
+      "title": "Raspberry Pi frequency management",
+      "url": "https://raw.githubusercontent.com/raspberrypi/documentation/master/documentation/asciidoc/computers/raspberry-pi/frequency-management.adoc",
+      "retrieved_at": "2026-11-03T09:43:44.789388+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/raspberrypi/documentation/master/documentation/asciidoc/computers/raspberry-pi/frequency-management.adoc",
+      "response_sha256": "ff35776a75fa86e1c047cf74b7287b9f3ade0044f08ee0367b3873135b006bc5",
+      "publisher": "Raspberry Pi Ltd",
+      "evidence_type": "First-party public documentation inspected; no course lab executed by this source review.",
+      "supports": [
+        "Official Raspberry Pi documentation explains thermal throttling, frequency management, temperature observation and cooling."
+      ],
+      "access_note": "Official documentation source used because the public Raspberry Pi HTML documentation returned HTTP 403 in this environment."
+    },
+    {
+      "id": "RPS",
+      "title": "Raspberry Pi SD cards",
+      "url": "https://raw.githubusercontent.com/raspberrypi/documentation/master/documentation/asciidoc/accessories/sd-cards/about.adoc",
+      "retrieved_at": "2026-11-03T09:43:05.574883+00:00",
+      "source_repository": "https://github.com/raspberrypi/documentation",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/raspberrypi/documentation/master/documentation/asciidoc/accessories/sd-cards/about.adoc",
+      "response_sha256": "858620bd6a002e463275da30ea7956c1040ad98495a17ece5b4021cc27792e50",
+      "publisher": "Raspberry Pi Ltd",
+      "evidence_type": "First-party public documentation inspected; no course lab executed by this source review.",
+      "supports": [
+        "Official Raspberry Pi SD-card material describes storage-interface/performance effects and card capability classes.",
+        "Published card performance is not a statement about every card endurance or the proposed service benchmark."
+      ],
+      "access_note": "Official documentation source used because the public Raspberry Pi HTML documentation returned HTTP 403 in this environment."
+    },
+    {
+      "id": "RPU",
+      "title": "Raspberry Pi USB mass-storage boot",
+      "url": "https://raw.githubusercontent.com/raspberrypi/documentation/master/documentation/asciidoc/computers/raspberry-pi/boot-msd.adoc",
+      "retrieved_at": "2026-11-03T09:43:44.789764+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/raspberrypi/documentation/master/documentation/asciidoc/computers/raspberry-pi/boot-msd.adoc",
+      "response_sha256": "cf79fc0f9b5dcddb372bfef57b5eb03e474d274bfc6b6569a7196aaf637d8902",
+      "publisher": "Raspberry Pi Ltd",
+      "evidence_type": "First-party public documentation inspected; no course lab executed by this source review.",
+      "supports": [
+        "USB mass-storage boot depends on model, firmware/boot configuration, enclosure compatibility and peripheral power."
+      ],
+      "access_note": "Official documentation source used because the public Raspberry Pi HTML documentation returned HTTP 403 in this environment."
+    },
+    {
+      "id": "RPZ",
+      "title": "Raspberry Pi Zero models",
+      "url": "https://raw.githubusercontent.com/raspberrypi/documentation/master/documentation/asciidoc/computers/zero/zero-models.adoc",
+      "resolved_url": "https://raw.githubusercontent.com/raspberrypi/documentation/master/documentation/asciidoc/computers/zero/zero-models.adoc",
+      "http_status": 200,
+      "retrieved_at": "2026-11-03T09:45:34.540908+00:00",
+      "response_sha256": "927faa6fdd07102cc17089dac849563cf0bb44b4e44e1e707e8bae7b95ab1b20",
+      "publisher": "Raspberry Pi Ltd",
+      "evidence_type": "First-party public documentation inspected; no course lab executed by this source review.",
+      "supports": [
+        "Official Zero model documentation distinguishes original single-core 32-bit Zero hardware from quad-core 64-bit Zero 2 W, with 512 MB memory and limited ports."
+      ],
+      "access_note": "Official documentation source used because the public Raspberry Pi HTML documentation returned HTTP 403 in this environment."
+    },
+    {
+      "id": "OW1",
+      "title": "OpenWrt minimum hardware requirements",
+      "url": "https://openwrt.org/supported_devices",
+      "retrieved_at": "2026-11-03T09:43:44.790097+00:00",
+      "http_status": 200,
+      "resolved_url": "https://openwrt.org/supported_devices",
+      "response_sha256": "13d43ef64336d12488b2257c881ae451b332f541f85a75b1249e696871296580",
+      "publisher": "OpenWrt project",
+      "evidence_type": "First-party public documentation inspected; no course lab executed by this source review.",
+      "supports": [
+        "OpenWrt supported-device guidance requires exact hardware/version support and attention to limited flash/RAM."
+      ]
+    },
+    {
+      "id": "VM1",
+      "title": "libvirt virsh command reference",
+      "url": "https://libvirt.org/manpages/virsh.html",
+      "retrieved_at": "2026-11-03T09:50:14.489492+00:00",
+      "http_status": 200,
+      "resolved_url": "https://libvirt.org/manpages/virsh.html",
+      "response_sha256": "01d02dbf11c59e9fadc3e5a62f68af1226ee3662d743b907dffd511d7411aea4",
+      "publisher": "libvirt project",
+      "evidence_type": "First-party public documentation inspected; no course lab executed by this source review.",
+      "supports": [
+        "virsh exposes guest lifecycle, CPU, memory, storage, network and live/persistent configuration operations.",
+        "Live memory changes may use ballooning and CPU changes have guest/hypervisor/maxima constraints."
+      ]
+    },
+    {
+      "id": "VM2",
+      "title": "libvirt domain XML",
+      "url": "https://libvirt.org/formatdomain.html",
+      "retrieved_at": "2026-11-03T09:50:14.490453+00:00",
+      "http_status": 200,
+      "resolved_url": "https://libvirt.org/formatdomain.html",
+      "response_sha256": "fbfd6b007d2a4b79459794224499b676a6256ce4acff524656a2f8e14daaab89",
+      "publisher": "libvirt project",
+      "evidence_type": "First-party public documentation inspected; no course lab executed by this source review.",
+      "supports": [
+        "libvirt domain XML distinguishes vCPU topology/maxima, boot/current/max memory and optional hotplug/balloon devices.",
+        "Hypervisor configuration must be checked against guest-visible state and actual driver support."
+      ]
+    },
+    {
+      "id": "VM3",
+      "title": "libvirt virtual network definition",
+      "url": "https://www.libvirt.org/formatnetwork.html",
+      "canonical_documentation_url": "https://libvirt.org/formatnetwork.html",
+      "retrieved_at": "2026-11-03T09:57:05.158287+00:00",
+      "http_status": 200,
+      "resolved_url": "https://www.libvirt.org/formatnetwork.html",
+      "response_sha256": "eaff7e5751f5ba0b6a0c529f191bcc1e2fe8df7463136d0bcd3bc0b13e621d2a",
+      "publisher": "libvirt project",
+      "evidence_type": "First-party public documentation inspected; no course lab executed by this source review.",
+      "supports": [
+        "libvirt network definitions distinguish isolated, NAT, routed and bridge modes and their addressing/forwarding configuration."
+      ]
+    },
+    {
+      "id": "CI1",
+      "title": "cloud-init NoCloud datasource",
+      "url": "https://cloudinit.readthedocs.io/en/latest/reference/datasources/nocloud.html",
+      "retrieved_at": "2026-11-03T09:50:14.491432+00:00",
+      "http_status": 200,
+      "resolved_url": "https://docs.cloud-init.io/en/latest/reference/datasources/nocloud.html",
+      "response_sha256": "fd65085d4e142b8e3747782bf7650f1dadcdf2375b982e5742f41ad904580878",
+      "publisher": "cloud-init project",
+      "evidence_type": "First-party public documentation inspected; no course lab executed by this source review.",
+      "supports": [
+        "NoCloud supports per-instance metadata/user-data and several ways to supply a local seed.",
+        "Instance identity and resulting first-boot configuration must be verified in the cloned guest."
+      ]
+    },
+    {
+      "id": "PV1",
+      "title": "Proxmox VE administration guide",
+      "url": "https://pve.proxmox.com/pve-docs/pve-admin-guide.html",
+      "retrieved_at": "2026-11-03T09:50:14.491818+00:00",
+      "http_status": 200,
+      "resolved_url": "https://pve.proxmox.com/pve-docs/pve-admin-guide.html",
+      "response_sha256": "80735a3c9ab497c5e6a147e891f6cdc4625793cce3bba5d0d966d4946dfdcd37",
+      "publisher": "Proxmox",
+      "evidence_type": "First-party public documentation inspected; no course lab executed by this source review.",
+      "supports": [
+        "Proxmox VE provides a host management UI/CLI/API, permissions, storage/network and backup features.",
+        "Host hardware/OS requirements and guest allocations are cumulative; supported architecture must be checked for the selected release."
+      ]
+    },
+    {
+      "id": "CK1",
+      "title": "Cockpit Machines",
+      "url": "https://raw.githubusercontent.com/cockpit-project/cockpit-machines/main/README.md",
+      "retrieved_at": "2026-11-03T09:50:18.404454+00:00",
+      "http_status": 200,
+      "resolved_url": "https://raw.githubusercontent.com/cockpit-project/cockpit-machines/main/README.md",
+      "response_sha256": "cce5a5e16594fcb0a54020ab37e87d11aa4dfbf6a206e3219a012439289ccd52",
+      "publisher": "Cockpit project",
+      "evidence_type": "First-party public documentation inspected; no course lab executed by this source review.",
+      "supports": [
+        "The official Cockpit Machines project documents a VM UI backed by libvirt-related tooling and virt-install/virt-xml."
+      ]
+    }
+  ],
+  "access_limits": [
+    {
+      "id": "RP1",
+      "title": "Raspberry Pi storage documentation",
+      "url": "https://www.raspberrypi.com/documentation/computers/raspberry-pi.html",
+      "retrieved_at": "2026-11-03T09:35:38.514947+00:00",
+      "access_error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "id": "RPG",
+      "title": "Raspberry Pi documentation source tree",
+      "url": "https://api.github.com/repos/raspberrypi/documentation/git/trees/develop?recursive=1",
+      "retrieved_at": "2026-11-03T09:39:10.370958+00:00",
+      "access_error": "HTTP Error 404: Not Found"
+    },
+    {
+      "id": "RP0",
+      "title": "Raspberry Pi Zero 2 W brief",
+      "url": "https://datasheets.raspberrypi.com/zero2/raspberry-pi-zero-2-w-brief.pdf",
+      "retrieved_at": "2026-11-03T09:39:10.370574+00:00",
+      "access_error": "HTTP Error 404: Not Found"
+    },
+    {
+      "id": "RP0",
+      "title": "Raspberry Pi Zero 2 W product brief",
+      "url": "https://datasheets.raspberrypi.com/zero2/raspberry-pi-zero-2-w-product-brief.pdf",
+      "retrieved_at": "2026-11-03T09:40:13.181189+00:00",
+      "access_error": "HTTP Error 404: Not Found"
+    },
+    {
+      "id": "VM3",
+      "title": "libvirt network XML",
+      "url": "https://libvirt.org/formatnetwork.html",
+      "retrieved_at": "2026-11-03T09:50:14.490849+00:00",
+      "access_error": "<urlopen error _ssl.c:983: The handshake operation timed out>"
+    },
+    {
+      "id": "VM3",
+      "title": "libvirt network XML",
+      "url": "https://libvirt.org/formatnetwork.html",
+      "retrieved_at": "2026-11-03T09:52:31.422829+00:00",
+      "access_error": "<urlopen error _ssl.c:983: The handshake operation timed out>"
+    }
+  ],
+  "proposed_lab_cards": {
+    "vm_host_administration": [
+      "V0",
+      "V1",
+      "V2",
+      "V3",
+      "V4",
+      "V5",
+      "V6",
+      "V7"
+    ],
+    "capacity_and_recovery": [
+      "C0",
+      "C1",
+      "C2",
+      "C3",
+      "C4",
+      "C5",
+      "C6",
+      "C7",
+      "C8",
+      "C9",
+      "C10"
+    ]
+  },
+  "proposed_resource_envelopes": {
+    "status": "Unmeasured design envelopes, to validate on each concrete recipe and learner environment.",
+    "small_server_4_gib": {
+      "deployment_cap_mib": 1024,
+      "short_check_allowance_mib": 256,
+      "os_existing_services_cache_planning_mib": 1792,
+      "uncommitted_headroom_mib": 1024
+    },
+    "pc_16_gib": {
+      "all_lab_workloads_cap_mib": 8192,
+      "host_os_browser_editor_planning_mib": 6144,
+      "transient_headroom_mib": 2048,
+      "initial_service_vcpus": 4,
+      "exercise_disk_footprint_gib": [
+        60,
+        80
+      ]
+    },
+    "first_vm_pair": {
+      "service": {
+        "ram_mib": 2048,
+        "vcpus": 2,
+        "virtual_disk_capacity_gib": 16
+      },
+      "client": {
+        "ram_mib": 1024,
+        "vcpus": 1,
+        "virtual_disk_capacity_gib": 8
+      },
+      "notes": "Virtual capacities are not host-space reservations. Include QEMU overhead, observers, snapshots and actual disk allocation."
+    },
+    "shared_ascend_hosted_lab_limit": 2,
+    "proposed_small_target_free_space_reserve": "max(10 GiB, 20% of usable filesystem), subject to recipe validation and stricter existing reservations."
+  },
+  "hardware_coverage": [
+    "Existing PC processes",
+    "Linux VMs",
+    "WSL2 and macOS VM caveats",
+    "Pi 4",
+    "Pi 5",
+    "Pi Zero/Zero W/Zero 2 W",
+    "Old laptop/mini PC",
+    "OpenWrt-supported spare router",
+    "Managed switch",
+    "USB Ethernet",
+    "USB SSD and supported NVMe adapter",
+    "UPS or explicitly supported battery system",
+    "External backup disk/NAS"
+  ],
+  "limitations": [
+    "All resource figures are proposed starting envelopes; no visitor-rate, Pi-wattage or storage-endurance promise is inferred.",
+    "One-PC multi-VM results share physical power, storage and uplink and do not establish host HA.",
+    "Published product capabilities are version/model dependent; match exact hardware, OS and architecture.",
+    "VM hotplug, memory balloon, nesting and networking require a tested host/guest/driver recipe; no blanket compatibility is claimed.",
+    "Course effectiveness, effort, accessibility, troubleshooting quality and hardware fit require implemented reference labs and learner pilots.",
+    "Local learner reports do not automatically become trusted Ascend assessment receipts.",
+    "Some initial guessed source URLs or connections failed; usable official replacements are listed in sources."
+  ]
+}
