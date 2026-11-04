@@ -14,23 +14,38 @@ async function savePlaygroundDraft(pause = false) {
   clearTimeout(playgroundSaveTimer);
   const draft = playgroundDraft;
   if (!draft) return;
-  const work = draft.capture();
-  if ((pause && draft.status === 'active') || JSON.stringify(work) !== draft.saved) {
-    await playgroundAction(draft.id, 'save', {data: work, pause});
-    draft.saved = JSON.stringify(work);
-    try { sessionStorage.removeItem(draft.key); } catch { /* Server save is authoritative. */ }
-  }
-  if (pause) playgroundDraft = null;
+  // Preserve request order when autosave and an explicit save overlap. Capture
+  // each queued save when it starts so it includes edits made while waiting.
+  const pending = (draft.pending || Promise.resolve()).catch(() => {}).then(async () => {
+    const work = JSON.stringify(draft.capture());
+    if ((pause && draft.status === 'active') || work !== draft.saved) {
+      const saved = await playgroundAction(draft.id, 'save', {data: JSON.parse(work), pause});
+      draft.saved = work; draft.updatedAt = saved.updated_at; draft.status = saved.status;
+      const latest = JSON.stringify(draft.capture());
+      try {
+        if (latest === work) sessionStorage.removeItem(draft.key);
+        else sessionStorage.setItem(draft.key, JSON.stringify({work: JSON.parse(latest), updated_at: draft.updatedAt}));
+      } catch { /* Server save remains authoritative; newer edits stay in the editor. */ }
+    }
+    if (pause && playgroundDraft === draft) { draft.events.abort(); playgroundDraft = null; }
+  });
+  draft.pending = pending;
+  await pending;
 }
 function rememberPlayground(root, run, capture) {
   const key = `ascend-playground-${state.account?.username || 'local'}-${run.id}`;
-  playgroundDraft = {id: run.id, status:run.status, key, capture, saved: run.local_draft_restored ? '' : JSON.stringify(capture())};
-  root.addEventListener('input', () => {
+  playgroundDraft?.events.abort();
+  const draft = {id: run.id, status:run.status, key, capture, updatedAt:run.updated_at, events:new AbortController(), saved: run.local_draft_restored ? '' : JSON.stringify(capture())};
+  playgroundDraft = draft;
+  const changed = () => {
+    if (playgroundDraft !== draft) return;
     const status = $('#pg-save-status'); if (status) status.textContent = 'Saving your work…';
-    try { sessionStorage.setItem(key, JSON.stringify({work: capture(), updated_at: run.updated_at})); } catch { /* Server save remains available. */ }
+    try { sessionStorage.setItem(key, JSON.stringify({work: capture(), updated_at: draft.updatedAt})); } catch { /* Server save remains available. */ }
     clearTimeout(playgroundSaveTimer);
-    playgroundSaveTimer = setTimeout(() => savePlaygroundDraft().then(() => { if (status) status.textContent = 'Saved in Playground → Saved work & history'; }).catch(error => { if (status) status.textContent = 'Not synced — draft kept in this tab'; notify(`Draft is kept in this tab. ${error.message}`, 'error'); }), 800);
-  });
+    playgroundSaveTimer = setTimeout(() => savePlaygroundDraft().then(() => { if (status && playgroundDraft === draft && JSON.stringify(capture()) === draft.saved) status.textContent = 'Saved in Playground → Saved work & history'; }).catch(error => { if (status) status.textContent = 'Not synced — draft kept in this tab'; notify(`Draft is kept in this tab. ${error.message}`, 'error'); }), 800);
+  };
+  root.addEventListener('input', changed, {signal:draft.events.signal});
+  root.addEventListener('change', changed, {signal:draft.events.signal});
 }
 function playgroundLocalWork(run) {
   try {
@@ -156,7 +171,7 @@ function playgroundCard(item) {
 async function renderPlayground() {
   if (state.tab === 'activity') return renderActivity();
   const version = ++playgroundRenderVersion;
-  clearTimeout(playgroundSaveTimer); playgroundDraft = null;
+  clearTimeout(playgroundSaveTimer); playgroundDraft?.events.abort(); playgroundDraft = null;
   const route = state.playgroundRoute || 'quick';
   const root = $('#playground-content'); root.replaceChildren();
   document.querySelectorAll('.playground-tabs a').forEach(a => {
@@ -237,7 +252,7 @@ async function renderPlayground() {
 
 async function renderActivity() {
   const version = ++playgroundRenderVersion;
-  clearTimeout(playgroundSaveTimer); playgroundDraft = null;
+  clearTimeout(playgroundSaveTimer); playgroundDraft?.events.abort(); playgroundDraft = null;
   const root = $('#activity-content'); root.replaceChildren();
   const run = await api(`playground/runs/${encodeURIComponent(state.activityRef)}`);
   if (version !== playgroundRenderVersion || state.tab !== 'activity') return;
@@ -283,6 +298,7 @@ function renderPlaygroundTour(root, run, form) {
     heading.focus({preventScroll: true}); host.scrollIntoView({block: 'start', behavior: 'instant'});
   };
   const draw = (focus = false) => {
+    window.AscendRewards?.dismissAnswer();
     host.replaceChildren();
     host.classList.toggle('pg-tour-review', terminal && !active);
     form.hidden = active;
@@ -313,8 +329,14 @@ function renderPlaygroundTour(root, run, form) {
       const explanation = el('div', undefined, 'pg-prediction-feedback'); explanation.setAttribute('role', 'status');
       lesson.choices.forEach((choice, index) => choices.append(button(choice, () => {
         choices.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.textContent === choice)));
-        AscendFeedback.set(explanation, {kind: index === lesson.answer ? 'success' : 'warning', title: index === lesson.answer ? 'That’s right.' : 'Let’s work through it.', message: lesson.explanation, compact: true});
-        window.AscendMotion?.feedback?.(explanation, index === lesson.answer ? 'success' : 'info');
+        if (index === lesson.answer) {
+          window.AscendRewards?.inlineAnswer(explanation, {title: 'That’s right.', explanation: lesson.explanation});
+          window.AscendRewards?.answer({account: state.account?.username, receiptId: `prediction:${run.id}:${current}`, message: 'Open “Why this answer?” for the reasoning.'});
+        } else {
+          window.AscendRewards?.dismissAnswer(); explanation.classList.remove('answer-inline-result');
+          AscendFeedback.set(explanation, {kind: 'warning', title: 'Let’s work through it.', message: lesson.explanation, compact: true});
+          window.AscendMotion?.feedback?.(explanation, 'info');
+        }
       })));
       host.append(choices, explanation);
     }
@@ -374,21 +396,28 @@ function renderPlaygroundRun(root, run) {
     const submit = el('button', run.role === 'example' ? 'Finish example' : 'Check evidence'); actions.append(submit);
     form.addEventListener('submit', e => {
       e.preventDefault(); runAction(submit, async () => {
+        const account = state.account?.username;
         await savePlaygroundDraft();
         const result = await playgroundAction(run.id, 'submit', {data: capture().answers, learned: notes.value, next_step: next.value});
-        playgroundDraft = null;
+        if (state.account?.username !== account) return;
+        playgroundDraft?.events.abort(); playgroundDraft = null;
         await refresh(); await renderPlayground();
+        if (state.account?.username !== account || state.tab !== 'activity' || state.activityRef !== run.id) return;
         const feedback = $('#activity-content .pg-completion');
         if (feedback) {
           feedback.tabIndex = -1; feedback.focus({preventScroll: true}); feedback.scrollIntoView({block: 'start', behavior: 'instant'});
-          window.AscendMotion?.feedback?.(feedback, result.result.passed ? 'complete' : 'info');
+          if (result.result.passed && run.kind === 'quick' && run.role !== 'example') window.AscendRewards?.answer({account, receiptId: `playground-complete:${run.id}`, xp: result.result.xp, practice: result.result.practice_reward?.newly_awarded ? result.result.practice_reward : null});
+          else if (result.result.passed) window.AscendRewards?.play(feedback, {account, receiptId: `playground-complete:${run.id}`});
+          else window.AscendMotion?.feedback?.(feedback, 'info');
         } else notify(result.result.message, result.result.passed ? 'success' : 'error');
       });
     });
   }
   actions.append(button(terminal ? 'Back to saved work' : 'Save & leave', async () => { await savePlaygroundDraft(true); notify(run.timer.strict && !terminal ? 'Work saved. Your challenge timer keeps running.' : 'Saved in Playground → Saved work & history. Resume from there whenever you’re ready.', 'success'); await playgroundOpen('history'); }));
   if (run.role !== 'example') actions.append(button('Save learning note', async () => {
-    await savePlaygroundDraft(); await playgroundAction(run.id, 'log', {learned: notes.value, next_step: next.value}); notify('Learning note saved in your Ascend activity history.', 'success'); await refresh();
+    await savePlaygroundDraft(); const saved = await playgroundAction(run.id, 'log', {learned: notes.value, next_step: next.value});
+    const credit = saved.practice_reward?.newly_awarded ? window.AscendRewards?.practiceText(saved.practice_reward) : '';
+    notify(`Learning note saved in your Ascend activity history.${credit ? ` ${credit}.` : ''}`, 'success'); await refresh();
   }));
   form.append(actions);
   if (run.role === 'example') {
@@ -400,15 +429,20 @@ function renderPlaygroundRun(root, run) {
   } else root.append(form);
   if (run.activity.topic === 'integrity' || run.activity.difficulty === 'hard') renderPlaygroundCalculator(root);
   if (run.result) {
-    const result = AscendFeedback.create({kind: run.result.passed ? 'success' : 'warning', label: run.result.passed ? 'PROGRESS SAVED' : 'EVIDENCE CHECK', title: run.result.passed ? run.role === 'example' ? 'Example complete. Put it into practice.' : 'Activity complete' : 'Keep investigating', message: run.role === 'example' && run.result.passed ? 'Your takeaway is saved. Apply what you learned in a fresh challenge.' : `${run.result.message}${run.result.xp ? ` +${run.result.xp} XP.` : ''}`});
+    const result = AscendFeedback.create({kind: run.result.passed ? 'success' : 'warning', label: run.result.passed ? 'PROGRESS SAVED' : 'EVIDENCE CHECK', title: run.result.passed ? run.role === 'example' ? 'Example complete. Put it into practice.' : run.kind === 'quick' ? 'Practice complete!' : 'Challenge complete!' : 'Keep investigating', message: run.role === 'example' && run.result.passed ? 'Your takeaway is saved. Apply what you learned in a fresh challenge.' : run.result.message});
     result.classList.add('pg-result', 'pg-completion');
+    if (run.kind === 'quick' && run.role !== 'example' && run.result.passed) {
+      window.AscendRewards?.inlineAnswer(result, {title: 'Correct. Practice complete!', explanation: run.debrief || run.result.message, xp: run.result.xp, practice: run.result.practice_reward});
+      if (run.solution && result.querySelector('.answer-explanation')) playgroundData(result.querySelector('.answer-explanation'), run.solution);
+    } else window.AscendRewards?.decorate(result, {kind: run.role === 'example' ? 'example' : run.kind === 'quick' || !run.result.passed ? 'answer' : 'challenge', xp: run.role === 'example' ? null : run.result.xp, practice: run.result.practice_reward, receiptId: `playground-complete:${run.id}`, positive: run.result.passed, evidence: run.role === 'example' ? 'Practice points for your saved takeaway.' : run.result.passed ? 'The supplied evidence checks passed. Your result is saved in Playground.' : 'Practice credit recognizes the submitted work. Review the failing evidence before trying again.'});
     if (terminal && run.followup) {
       const next = el('div', undefined, 'pg-actions');
       const proceed = button(run.role === 'example' ? 'Try a separate challenge' : 'Try the changed case', async () => { await savePlaygroundDraft(); await startPlayground(await api(`playground/activities/${run.followup}`)); }, ''); proceed.append(icon('arrow')); next.append(proceed); $('.feedback-copy', result).append(next);
+      if (run.role !== 'example' && run.kind !== 'quick') window.AscendRewards?.addReplay(result, next);
     }
     if (run.result.passed) title.after(result); else form.before(result);
   }
-  if (run.debrief && run.role !== 'example') {
+  if (run.debrief && run.role !== 'example' && !(run.kind === 'quick' && run.result?.passed)) {
     const debrief = el('section', undefined, 'card pg-result'); debrief.append(el('h3', 'Why the evidence fits'), el('p', run.debrief));
     if (run.solution) playgroundData(debrief, run.solution); root.append(debrief);
   }
@@ -512,12 +546,17 @@ function renderPlaygroundWorkspace(root, run, work) {
   experiment.disabled = !editable; root.append(experiment, observations);
   const actions = el('div', undefined, 'pg-actions');
   actions.append(button('Save workspace', async () => { await savePlaygroundDraft(true); notify('Workspace saved. Resume it from Saved work & history.', 'success'); await playgroundOpen('history'); }, ''));
-  actions.append(button('Save learning log', async () => { await savePlaygroundDraft(); await playgroundAction(run.id, 'log', {learned: notes.value, next_step: next.value}); await refresh(); notify('Learning log saved.', 'success'); }));
+  actions.append(button('Save learning log', async () => {
+    await savePlaygroundDraft(); const saved = await playgroundAction(run.id, 'log', {learned: notes.value, next_step: next.value}); await refresh();
+    const credit = saved.practice_reward?.newly_awarded ? window.AscendRewards?.practiceText(saved.practice_reward) : '';
+    notify(`Learning log saved.${credit ? ` ${credit}.` : ''}`, 'success');
+  }));
   const copy = async options => {
     await savePlaygroundDraft(true);
     const sessions = await command(['session', 'status']);
-    if (sessions.active && !options.end_scored) {
-      const content = openSheet('Switch activity'); content.append(el('h2', 'End scored attempt and switch'), el('p', 'Creating a workspace copy stops the current scored track clock without completion or XP. Its original evidence stays saved.'));
+    const timed = sessions.active || (sessions.playground_active?.strict_timer && sessions.playground_active);
+    if (timed && !options.end_scored) {
+      const content = openSheet('Switch activity'); content.append(el('h2', 'End scored attempt and switch'), el('p', `Creating a workspace copy ends “${timed.title}” and stops its clock without completion or XP. Its original evidence stays saved.`));
       content.querySelector('h2').id = 'sheet-title';
       content.append(button('End scored attempt and switch', async () => { $('#sheet').close(); await copy({...options, end_scored:true}); }, ''), button('Cancel', () => $('#sheet').close())); return;
     }
@@ -531,7 +570,9 @@ function renderPlaygroundWorkspace(root, run, work) {
     const rule = playgroundField(root, 'Rule to repair', '', 'text', [['', 'Choose a rule'], ['deny_disabled', 'Disabled identity check'], ['owner_access', 'Owner access'], ['admin_read', 'Admin read'], ['admin_write', 'Admin write']]);
     const repair = button('Repair and check controls', async () => {
       await savePlaygroundDraft();
-      const result = await playgroundAction(run.id, 'repair', {rule: rule.value}); notify(result.message, result.repaired ? 'success' : 'error'); if (result.repaired) { await savePlaygroundDraft(); await renderPlayground(); }
+      const result = await playgroundAction(run.id, 'repair', {rule: rule.value});
+      const credit = result.practice_reward?.newly_awarded ? window.AscendRewards?.practiceText(result.practice_reward) : '';
+      notify(`${result.message}${credit ? ` ${credit}.` : ''}`, result.repaired ? 'success' : 'error'); if (result.repaired) { await savePlaygroundDraft(); await renderPlayground(); }
     }); repair.disabled = !editable; root.append(repair);
     root.append(button('End investigation and reveal fault', async () => { await savePlaygroundDraft(true); await playgroundAction(run.id, 'end'); await playgroundAction(run.id, 'reveal'); await renderPlayground(); }, 'text-button'));
   }

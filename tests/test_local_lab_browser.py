@@ -208,11 +208,17 @@ def test_browser_server_launch_edit_check_resume_and_download(live_server):
         expect(page.get_by_label("File contents", exact=True)).to_have_value(text)
         page.get_by_role("button", name="Check work", exact=True).click()
         expect(
-            page.get_by_text(
-                "Answer checked on server: pass. No XP or verified track completion.",
-                exact=True,
+            page.locator(".lab-server").get_by_role(
+                "heading", name="Checks passed", exact=True
             )
         ).to_be_visible()
+        expect(page.locator(".lab-server")).to_contain_text(
+            "Answer checked on server: pass"
+        )
+        expect(page.locator(".lab-server")).to_contain_text(
+            "Finish & keep work records this attempt and releases the runtime."
+        )
+        expect(page.locator("#xp-balance")).to_have_text("0 XP")
         page.get_by_role("button", name="Stop lab", exact=True).click()
         expect(
             page.get_by_role("button", name="Resume lab", exact=True)

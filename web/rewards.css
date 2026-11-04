@@ -1,0 +1,82 @@
+/* Finite reward scenes share the existing feedback and motion boundaries. */
+[data-reward-kind] { --reward-ink: #29382b; --reward-body: #f2cb58; --reward-flag: #baa0ef; --reward-eye: #fffbe8; --reward-ground: #bcd4b4; }
+.reward-visual { display: grid; place-items: center; position: relative; width: 84px; flex: 0 0 84px; align-self: center; }
+.reward-scene { display: block; width: 100%; height: auto; overflow: visible; }
+.reward-companion, .reward-flag, .reward-star, .reward-medal { transform-box: fill-box; transform-origin: center bottom; }
+[data-reward-kind='milestone'] { --feedback-ink: var(--milestone); --feedback-bg: var(--milestone-bg); border-color: var(--milestone); background: var(--milestone-bg); }
+[data-reward-kind='milestone'] .reward-visual { width: 124px; flex-basis: 124px; }
+[data-reward-kind='milestone'] .eyebrow { color: var(--milestone); }
+[data-reward-kind='answer'] .reward-visual, [data-reward-kind='example'] .reward-visual { width: 44px; flex-basis: 44px; align-self: flex-start; }
+.reward-receipt { display: flex; align-items: center; gap: 6px 10px; flex-wrap: wrap; margin-top: 14px; }
+.reward-xp { display: inline-flex; align-items: center; min-height: 28px; padding: 3px 9px; border: 1px solid var(--feedback-ink, var(--success)); border-radius: 4px; background: var(--surface); color: var(--text); font-size: .8rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+.reward-scope { font-size: .72rem; color: var(--muted); }
+.reward-evidence { flex-basis: 100%; margin: 0; font-size: .8rem; line-height: 1.6; color: var(--muted); }
+.reward-practice { display: inline-flex; align-items: center; min-height: 28px; padding: 3px 9px; border: 1px solid var(--accent); border-radius: 4px; background: var(--soft); color: var(--text); font-size: .8rem; font-weight: 800; }
+.answer-inline-result, .case-feedback.answer-inline-result { display: block; padding: 12px 0; border: 0; border-left: 0; background: transparent; box-shadow: none; margin-block: 12px; }
+.answer-inline-title { color: var(--success); font-size: .9rem; }
+.answer-inline-scope { font-size: .76rem; color: var(--muted); margin: 4px 0 8px; line-height: 1.5; }
+.answer-explanation { margin-top: 8px; font-size: .83rem; }
+.answer-explanation > summary { padding: 3px 0; font-size: .8rem; font-weight: 600; }
+.answer-explanation > p { margin: 10px 0; line-height: 1.65; }
+.answer-inline-result .pg-actions { margin: 12px 0 0; padding: 0; }
+.answer-reward-toast { position: fixed; right: 20px; bottom: 20px; z-index: 1400; display: flex; align-items: flex-start; gap: 9px; width: min(370px, calc(100vw - 32px)); padding: 12px 10px 12px 12px; border: 2px solid var(--success); border-radius: 5px; background: var(--success-bg); color: var(--text); box-shadow: 3px 3px 0 var(--shadow); overflow-wrap: anywhere; }
+.answer-reward-toast[data-reward-kind='answer'] .reward-visual { width: 28px; flex-basis: 28px; }
+.answer-reward-toast .feedback-mark { width: 28px; height: 28px; }
+.answer-toast-title { display: block; font-size: .83rem; line-height: 1.5; }
+.answer-toast-detail { margin: 2px 0 0; font-size: .75rem; line-height: 1.45; }
+.answer-reward-toast .reward-receipt { margin-top: 6px; gap: 4px 8px; }
+.answer-reward-toast .reward-xp, .answer-reward-toast .reward-practice { min-height: 0; padding: 0; background: transparent; border: 0; font-size: .75rem; }
+.answer-reward-toast .reward-scope { display: none; }
+.answer-toast-close { display: grid; place-items: center; flex: 0 0 28px; width: 28px; min-height: 28px; padding: 0; border: 0; box-shadow: none; background: transparent; color: var(--muted); font-size: 1.2rem; line-height: 1; }
+.answer-toast-close:hover { background: var(--hover); }
+.rewards-overview { margin-block: 26px; }
+.rewards-overview > h2 { font-size: 1.1rem; margin-bottom: 14px; }
+.rewards-wallet { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.reward-balance { padding: 18px; background: var(--soft); border: 2px solid var(--line); border-radius: 5px; box-shadow: 3px 3px 0 var(--shadow); }
+.reward-balance-xp { background: var(--success-bg); }
+.reward-balance-milestone { background: var(--milestone-bg); }
+.reward-balance > strong { font-size: 1.75rem; font-variant-numeric: tabular-nums; }
+.reward-balance > h3 { font-size: .85rem; margin: 4px 0 8px; }
+.reward-balance > p { margin: 0; color: var(--muted); font-size: .75rem; line-height: 1.6; }
+.reward-rules { margin: 14px 0; color: var(--muted); font-size: .79rem; line-height: 1.7; }
+.reward-history > summary { font-size: .83rem; }
+.reward-ledger { list-style: none; padding: 0; margin: 12px 0; }
+.reward-ledger > li { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid var(--divider); font-size: .78rem; }
+.reward-ledger small { color: var(--muted); }
+.reward-ledger strong { color: var(--accent); }
+.earned-medal { width: 42px; height: 50px; flex: 0 0 42px; color: #29382b; }
+.celebration-copy { min-width: 0; }
+.celebration-next { margin-top: 10px !important; font-size: .8rem; }
+.celebration-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 7px; flex: 0 0 auto !important; }
+.celebration-actions .reward-replay { font-size: .75rem; padding: 5px 0; }
+.earned-milestones { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 12px; }
+.earned-milestones .earned-badge { display: flex; align-items: center; width: 100%; padding: 16px; background: var(--surface); border: 1px solid var(--divider); border-left: 4px solid var(--milestone); border-radius: 4px; box-shadow: none; text-align: left; white-space: normal; }
+.earned-badge .earned-copy { display: flex; flex-direction: column; min-width: 0; gap: 5px; }
+.earned-badge .earned-copy strong { font-size: .84rem; line-height: 1.5; }
+.earned-badge .earned-copy small { color: var(--muted); font-size: .73rem; line-height: 1.5; }
+.earned-badge > .icon { flex: 0 0 24px; width: 24px; height: 24px; }
+@media (max-width: 639px) {
+  .answer-reward-toast { right: 16px; bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
+  .rewards-wallet { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .reward-balance { display: grid; grid-template-columns: 60px minmax(0, 1fr); column-gap: 12px; padding: 12px 14px; }
+  .reward-balance > strong { grid-row: 1 / 3; align-self: center; font-size: 1.45rem; }
+  .reward-balance > h3 { margin: 0 0 4px; }
+  .reward-ledger > li { grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; }
+  .reward-ledger small { grid-column: 1; }
+  .reward-ledger strong { grid-column: 2; grid-row: 1 / 3; }
+  .reward-visual { width: 60px; flex-basis: 60px; }
+  [data-reward-kind='milestone'] .reward-visual { width: 76px; flex-basis: 76px; }
+  [data-reward-kind='answer'] .reward-visual, [data-reward-kind='example'] .reward-visual { width: 34px; flex-basis: 34px; }
+  .lab-celebration[data-reward-kind] { gap: 12px; padding: 16px; align-items: flex-start; }
+  .lab-celebration[data-reward-kind] h2 { font-size: 1.15rem; }
+  .lab-celebration .celebration-copy { flex: 1; min-width: 150px; }
+  .lab-celebration .celebration-actions { flex-basis: 100% !important; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 8px 18px; }
+  .lab-celebration .celebration-actions > button:first-child { flex: 1; }
+  .pg-completion[data-reward-kind='challenge'] .feedback-copy > .pg-actions { margin-left: -72px; }
+}
+:root[data-motion='off'] .reward-replay { display: none; }
+@media (prefers-reduced-motion: reduce) { .reward-replay { display: none; } }
+@media (forced-colors: active) {
+  [data-reward-kind] { --reward-ink: CanvasText; --reward-body: Canvas; --reward-flag: Highlight; --reward-eye: Canvas; --reward-ground: Canvas; }
+  [data-reward-kind='milestone'], .reward-xp, .earned-milestones .earned-badge { border-color: CanvasText; }
+}

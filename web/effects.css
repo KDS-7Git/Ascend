@@ -16,14 +16,15 @@ body { isolation: isolate; }
 :root[data-view='docs'] .ambient-scene { opacity: .35; }
 /* Clip only the decorative layers. The outline, shadow and focus rings stay visible. */
 .next-card { isolation: isolate; background: var(--surface); box-shadow: var(--shadow-lg); }
-.hover-light { position: absolute; inset: 0; z-index: -1; border-radius: 2px; pointer-events: none; overflow: hidden; opacity: 0; transition: opacity 220ms ease; }
-.hover-light::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(color-mix(in srgb, var(--text) 18%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--text) 18%, transparent) 1px, transparent 1px); background-size: 24px 24px; mask-image: radial-gradient(circle 170px at var(--pointer-x, 75%) var(--pointer-y, 50%), #000 10%, #000b 45%, transparent 100%); }
-.hover-light::after { content: ''; position: absolute; left: var(--cell-x, 0); top: var(--cell-y, 0); width: 24px; height: 24px; border: 1px solid color-mix(in srgb, var(--text) 45%, transparent); background: color-mix(in srgb, var(--text) 5%, transparent); transition: left 100ms ease-out, top 100ms ease-out; }
-.next-card:has(.hover-light):hover .hover-light { opacity: 1; }
-.workspace-hover { position: fixed; inset: 0 0 0 var(--rail); border-radius: 0; }
-.workspace-hover.pointer-present { opacity: 1; }
-:root[data-view='docs'] .workspace-hover.pointer-present { opacity: .4; }
-:root[data-motion='off'] .hover-light { display: none; }
+:is(.next-card, .ws-route-card, .pg-catalog-card) { position: relative; isolation: isolate; }
+.hover-light { position:absolute; inset:0; z-index:-1; border-radius:inherit; pointer-events:none; overflow:hidden; opacity:0; transition:opacity 220ms ease; }
+.hover-light::before { content:''; position:absolute; inset:0; background-image:linear-gradient(color-mix(in srgb,var(--text) 18%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--text) 18%,transparent) 1px,transparent 1px); background-size:var(--grid-size-x,var(--workspace-grid-size)) var(--grid-size-y,var(--workspace-grid-size)); background-position:var(--grid-offset-x,0px) var(--grid-offset-y,0px); mask-image:radial-gradient(circle 170px at var(--pointer-x,75%) var(--pointer-y,50%),#000 10%,#000b 45%,transparent 100%); }
+.hover-light::after { content:''; position:absolute; left:var(--cell-x,0px); top:var(--cell-y,0px); width:var(--grid-size-x,var(--workspace-grid-size)); height:var(--grid-size-y,var(--workspace-grid-size)); border:1px solid color-mix(in srgb,var(--text) 45%,transparent); background:color-mix(in srgb,var(--text) 5%,transparent); }
+.hover-light.pointer-present { opacity:1; }
+.workspace-hover { position:fixed; inset:0 0 0 var(--rail); border-radius:0; }
+:root[data-view='docs'] .workspace-hover.pointer-present { opacity:.4; }
+:root[data-motion='off'] .hover-light,.page-inactive .hover-light { display:none; }
+@media (hover:none), (pointer:coarse) { .hover-light { display:none; } }
 .next-card .card-context { color: var(--accent); }
 .next-card > .eyebrow { align-self: flex-start; padding: 5px 10px; border: 2px solid var(--line); background: var(--action); color: var(--on-action); font-weight: 750; letter-spacing: .06em; box-shadow: 2px 2px 0 var(--shadow); }
 .page-header h1, .docs-article h1 { text-wrap: balance; }

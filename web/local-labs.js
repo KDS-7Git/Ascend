@@ -63,7 +63,10 @@ async function renderLabCatalog(root) {
     const history = el('details', undefined, 'quiet-details'); history.append(el('summary', 'Local lab results & sessions'));
     for (const attempt of attempts) {
       const card = el('article', undefined, 'card'); card.append(labRouteLink(attempt.recipe_id, attempt.recipe_id), el('p', `${attempt.status} · ${attempt.origin === 'offline' ? 'Synchronized offline practice' : 'Online session'}`));
-      if (attempt.result) card.append(el('p', `${attempt.result.evidence_label}: ${attempt.result.status}`), el('p', attempt.result.detail || '', 'small'));
+      if (attempt.result) {
+        const result = AscendFeedback.create({kind: attempt.result.status === 'pass' ? 'success' : 'warning', title: `${attempt.result.evidence_label}: ${attempt.result.status}`, message: attempt.result.detail || '', compact: true});
+        window.AscendRewards?.decorate(result, {kind: 'answer', positive: attempt.result.status === 'pass', practice: attempt.result.practice_reward, evidence: 'Practice points for your recorded work.'}); card.append(result);
+      }
       else card.append(el('p', 'Finish or destroy on the computer that started this lab. Stopping compute keeps the session reserved.', 'small')); history.append(card);
     }
     root.append(history);
@@ -130,10 +133,10 @@ async function renderHostedLab(root, recipe) {
   if (!root.isConnected || state.tab !== 'lab') return;
   if (!capabilities.configured) { root.append(el('p', 'Server labs will be available here when this installation’s server is connected. You can use the local setup below.', 'small muted')); return; }
   if (!capabilities.recipes.includes(recipe.id)) { root.append(el('p', 'This exercise needs its own environment setup. Review the local plan below; browser launch is not available for it yet.', 'small muted')); return; }
-  const ref = state.labRef;
+  const ref = state.labRef, account = state.account?.username;
   let lastSignature, lastJob;
   const selectedFiles = new Map();
-  const current = () => root.isConnected && state.tab === 'lab' && state.labRef === ref;
+  const current = () => root.isConnected && state.tab === 'lab' && state.labRef === ref && state.account?.username === account;
   async function submit(action, run, data = {}) {
     const path = action === 'start' ? 'hosted-labs/runs' : `hosted-labs/runs/${run.id}/${action}`;
     const job = await api(path, action === 'start' ? {recipe_id: recipe.id} : data);
@@ -172,7 +175,15 @@ async function renderHostedLab(root, recipe) {
       for (const name of run.files.filter(n => n.startsWith('work/'))) files[name] = (await api(`hosted-labs/runs/${run.id}/files?${new URLSearchParams({name})}`)).content;
       download({run_id: run.id, recipe_id: recipe.id, result: run.result, evidence_label: run.evidence_label, files}, `${recipe.id}-${run.id}.json`);
     }); exportButton.disabled = busy; actions.append(exportButton); root.append(actions);
-    if (run.result) root.append(el('p', `${run.evidence_label}: ${run.result.status}. No XP or verified track completion.`, 'small'));
+    if (run.result) {
+      const passed = run.result.status === 'pass', finished = Boolean(run.finished_at);
+      const result = AscendFeedback.create({kind: passed ? 'success' : 'warning', title: finished ? passed ? 'Lab result saved!' : 'Lab attempt recorded' : passed ? 'Checks passed' : 'Review the failing checks', message: `${recipe.title} · ${run.evidence_label}: ${run.result.status}`}); result.classList.add('hosted-reward-result');
+      window.AscendRewards?.decorate(result, {kind: finished && passed ? 'challenge' : 'answer', positive: passed, practice: run.practice_reward, evidence: finished ? 'Your work and its evidence are saved.' : 'Finish & keep work records this attempt and releases the runtime.'});
+      if (finished && passed) {
+        const next = el('div', undefined, 'pg-actions'); next.append(button('Browse Linux labs', () => playgroundOpen('labs'), '')); window.AscendRewards?.addReplay(result, next); $('.feedback-copy', result).append(next);
+      }
+      root.append(result);
+    }
     if (run.files.length) {
       const fields = el('div'); root.append(fields);
       const file = playgroundField(fields, 'Lab file', selectedFiles.get(run.id) || run.files.find(n => n.startsWith('input/')) || run.files[0], 'text', run.files.map(n => [n, n]));
@@ -219,9 +230,16 @@ async function renderHostedLab(root, recipe) {
     clearTimeout(hostedPoll);
     try {
       const data = await api('hosted-labs/runs'); if (!current()) return;
-      const signature = JSON.stringify([data.job?.id, data.job?.status, data.runs.map(r => [r.id, r.status, r.result])]);
+      const signature = JSON.stringify([data.job?.id, data.job?.status, data.runs.map(r => [r.id, r.status, r.result, r.practice_reward?.id, r.practice_reward?.points])]);
       if (signature !== lastSignature) { lastSignature = signature; await draw(data); }
-      if (lastJob && data.job?.id === lastJob && data.job.status === 'complete') { lastJob = null; notify('Server lab operation completed.', 'success'); }
+      if (lastJob && data.job?.id === lastJob && data.job.status === 'complete') {
+        lastJob = null;
+        const run = data.runs.find(r => r.id === data.job.run_id);
+        if (['check', 'finish'].includes(data.job.action) && run?.result) {
+          if (run.result.status === 'pass') window.AscendRewards?.play(root.querySelector('.hosted-reward-result'), {account, receiptId: `hosted-${data.job.action}:${run.id}`});
+          else notify(data.job.action === 'finish' ? 'Attempt saved. Review the checked result.' : 'Check finished. Review the failing conditions.', 'info');
+        } else notify('Server lab operation completed.', 'success');
+      }
       if (current()) hostedPoll = setTimeout(refresh, data.job && ['queued', 'running'].includes(data.job.status) ? 1500 : 15000);
     } catch (error) {
       if (current()) { root.replaceChildren(el('p', error.message, 'small'), button('Retry server connection', refresh, 'text-button')); lastSignature = null; }

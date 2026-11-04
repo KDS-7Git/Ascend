@@ -7,9 +7,99 @@ window.AscendMotion = (() => {
   const feedbackEvents = new WeakMap();
   let lastPage = null;
   let paused = root.dataset.motion === 'off';
+  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+  const pointerProperties = ['--pointer-shadow-x', '--pointer-shadow-y', '--pointer-art-x', '--pointer-art-y', '--pointer-art-angle'];
+  let pointerCard = null, pointerSurface = null, pointerFrame = null, pointerSample = null;
+
+  const forcedColors = window.matchMedia('(forced-colors: active)');
+  const pageGrid = document.createElement('span');
+  pageGrid.className = 'hover-light workspace-hover';
+  pageGrid.setAttribute('aria-hidden', 'true');
+  document.body.append(pageGrid);
+  let gridFrame = null, gridSample = null, cardGrid = null;
+
+  function clearGrid() {
+    if (gridFrame !== null) cancelAnimationFrame(gridFrame);
+    gridFrame = null; gridSample = null;
+    pageGrid.classList.remove('pointer-present');
+    cardGrid?.classList.remove('pointer-present'); cardGrid = null;
+  }
+  function positionGrid(layer, size) {
+    const rect = layer.getBoundingClientRect();
+    const sx = rect.width / layer.offsetWidth || 1, sy = rect.height / layer.offsetHeight || 1;
+    layer.style.setProperty('--pointer-x', `${(gridSample.x - rect.left) / sx}px`);
+    layer.style.setProperty('--pointer-y', `${(gridSample.y - rect.top) / sy}px`);
+    // Every layer uses the same viewport origin as the fixed paper background.
+    layer.style.setProperty('--grid-size-x', `${size / sx}px`);
+    layer.style.setProperty('--grid-size-y', `${size / sy}px`);
+    layer.style.setProperty('--grid-offset-x', `${-rect.left / sx}px`);
+    layer.style.setProperty('--grid-offset-y', `${-rect.top / sy}px`);
+    layer.style.setProperty('--cell-x', `${(Math.floor(gridSample.x / size) * size - rect.left) / sx}px`);
+    layer.style.setProperty('--cell-y', `${(Math.floor(gridSample.y / size) * size - rect.top) / sy}px`);
+    layer.classList.add('pointer-present');
+  }
+  function movingGeometry(surface) {
+    for (let node = surface; node && node !== document.body; node = node.parentElement) {
+      if (node.getAnimations().some(animation => animation.playState === 'running'
+        && Number.isFinite(animation.effect?.getComputedTiming().endTime)
+        && animation.effect.getKeyframes().some(frame => frame.transform || frame.translate || frame.rotate))) return true;
+    }
+    return false;
+  }
+  function alignPaperGrid(size) {
+    const card = document.querySelector('#today-cards>.next-card');
+    if (!card?.offsetWidth) return false;
+    const rect = card.getBoundingClientRect();
+    const sx = rect.width / card.offsetWidth || 1, sy = rect.height / card.offsetHeight || 1;
+    card.style.setProperty('--paper-grid-x', `${-rect.left / sx - card.clientLeft}px`);
+    card.style.setProperty('--paper-grid-y', `${-rect.top / sy - card.clientTop}px`);
+    card.style.setProperty('--paper-grid-size-x', `${size / sx}px`);
+    card.style.setProperty('--paper-grid-size-y', `${size / sy}px`);
+    return movingGeometry(card);
+  }
+  function paintGrid() {
+    gridFrame = null;
+    const size = parseFloat(getComputedStyle(root).getPropertyValue('--workspace-grid-size')) || 28;
+    const paperMoving = alignPaperGrid(size);
+    if (!gridSample || !enabled() || !finePointer.matches || forcedColors.matches || document.hidden) {
+      clearGrid();
+      if (paperMoving && !document.hidden) gridFrame = requestAnimationFrame(paintGrid);
+      return;
+    }
+    positionGrid(pageGrid, size);
+    const surface = document.elementFromPoint(gridSample.x, gridSample.y)?.closest('.next-card, .ws-route-card, .pg-catalog-card');
+    if (cardGrid?.parentElement !== surface) { cardGrid?.classList.remove('pointer-present'); cardGrid = null; }
+    if (surface) {
+      if (!cardGrid) {
+        cardGrid = surface.querySelector(':scope > .hover-light');
+        if (!cardGrid) {
+          cardGrid = document.createElement('span'); cardGrid.className = 'hover-light';
+          cardGrid.setAttribute('aria-hidden', 'true'); surface.append(cardGrid);
+        }
+      }
+      positionGrid(cardGrid, size);
+    }
+    // Compensate for existing card lifts and page entrances until they settle.
+    if (paperMoving || movingGeometry(surface)) gridFrame = requestAnimationFrame(paintGrid);
+  }
+  function queueGrid() {
+    if (gridFrame === null) gridFrame = requestAnimationFrame(paintGrid);
+  }
+
+  function resetPointerMotion() {
+    if (pointerFrame !== null) cancelAnimationFrame(pointerFrame);
+    pointerFrame = null;
+    if (pointerCard) {
+      delete pointerCard.dataset.pointerMotion;
+      pointerProperties.forEach(property => pointerCard.style.removeProperty(property));
+    }
+    pointerCard = pointerSurface = pointerSample = null;
+  }
 
   function enabled() { return !paused && !reduced.matches; }
   function cancelEntrances() {
+    clearGrid();
+    resetPointerMotion();
     running.forEach(animation => animation.cancel());
     running.clear();
   }
@@ -17,6 +107,8 @@ window.AscendMotion = (() => {
     root.dataset.motion = enabled() ? 'calm' : 'off';
     const select = document.getElementById('motion-preference');
     select.value = paused ? 'off' : 'calm';
+    const help = select.closest('.motion-preference')?.querySelector('.field-help');
+    if (help) help.textContent = reduced.matches ? 'Your device requests reduced motion. Effects stay still while that preference is enabled.' : paused ? 'Motion is off. Choose On for grid highlights and mouse interactions, page transitions, card effects and reward celebrations.' : 'Motion is on: grid highlights and mouse interactions, page transitions, card effects and reward celebrations. Effects pause when this tab is hidden.';
     if (!enabled()) cancelEntrances();
   }
   function setPaused(value) {
@@ -36,6 +128,10 @@ window.AscendMotion = (() => {
     lastPage = key;
     cancelEntrances();
     if (!enabled()) return;
+    if (screen.id === 'today') {
+      const landscape = document.querySelector('.ws-backdrop');
+      animate(landscape, [{opacity: 0, transform: 'translateY(18px)'}, {opacity: 1, transform: 'none'}], 1100);
+    }
     const title = screen.querySelector('h1');
     animate(title, [
       {opacity: 0, transform: 'translateY(18px)', clipPath: 'inset(0 0 100% 0)'},
@@ -72,6 +168,28 @@ window.AscendMotion = (() => {
     const last = feedbackEvents.get(node), now = performance.now();
     if (last?.kind === kind && now - last.at < 1000) return;
     feedbackEvents.set(node, {kind, at: now});
+    if (kind.startsWith('reward-')) {
+      // Answer, challenge and milestone scenes use the same lifecycle controls.
+      // The saved explanation and Continue action never wait for the vignette.
+      const milestone = kind === 'reward-milestone';
+      const scene = node.querySelector('.reward-visual');
+      animate(scene, [{opacity: .4, transform: 'scale(.8)'}, {opacity: 1, transform: 'scale(1.08)', offset: .55}, {opacity: 1, transform: 'none'}], milestone ? 700 : 450);
+      animate(node.querySelector('.feedback-mark-stroke'), [{strokeDasharray: '1', strokeDashoffset: '1'}, {strokeDasharray: '1', strokeDashoffset: '0'}], 420, 60);
+      animate(node.querySelector('.reward-companion'), [
+        {transform: 'translateY(0)'}, {transform: `translateY(${milestone ? -11 : -6}px) rotate(-4deg)`, offset: .28},
+        {transform: 'translateY(0) rotate(3deg)', offset: .58}, {transform: 'none'}
+      ], milestone ? 1150 : 820, 80);
+      animate(node.querySelector('.reward-flag'), [{transform: 'rotate(-14deg)'}, {transform: 'rotate(10deg)', offset: .35}, {transform: 'rotate(-5deg)', offset: .7}, {transform: 'none'}], milestone ? 1150 : 750, 160);
+      animate(node.querySelector('.reward-medal'), [{transform: 'translateY(12px) rotate(-12deg)', opacity: .2}, {transform: 'translateY(-3px) rotate(4deg)', opacity: 1, offset: .65}, {transform: 'none', opacity: 1}], 850, 100);
+      node.querySelectorAll('.reward-star').forEach((star, index) => animate(star, [
+        {opacity: 0, transform: 'scale(.2) rotate(-30deg)'},
+        {opacity: 1, transform: 'scale(1.35) rotate(10deg)', offset: .5},
+        {opacity: 1, transform: 'none'}
+      ], milestone ? 900 : 600, index * 100 + 120));
+      animate(node.querySelector('.reward-xp'), [{opacity: .35, transform: 'translateY(6px)'}, {opacity: 1, transform: 'none'}], 400, 180);
+      animate(node.querySelector('.reward-practice'), [{opacity: .35, transform: 'translateY(6px)'}, {opacity: 1, transform: 'none'}], 400, 100);
+      return;
+    }
     const celebration = kind === 'complete' || kind === 'streak';
     animate(node, celebration ? [
       {opacity: .35, transform: 'translateY(14px) scale(.96)'},
@@ -114,34 +232,56 @@ window.AscendMotion = (() => {
     root.classList.toggle('page-inactive', document.hidden);
     if (document.hidden) cancelEntrances();
   });
-  // Keep the native cursor; reveal a fixed grid and emphasize its nearest cell.
-  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
-  const pageGrid = document.createElement('span');
-  pageGrid.className = 'hover-light workspace-hover'; pageGrid.setAttribute('aria-hidden', 'true');
-  document.body.append(pageGrid);
-  function positionGrid(layer, event, container) {
-    const rect = container.getBoundingClientRect();
-    const x = event.clientX - rect.left - container.clientLeft;
-    const y = event.clientY - rect.top - container.clientTop;
-    layer.style.setProperty('--pointer-x', `${x}px`);
-    layer.style.setProperty('--pointer-y', `${y}px`);
-    layer.style.setProperty('--cell-x', `${Math.floor(x / 24) * 24}px`);
-    layer.style.setProperty('--cell-y', `${Math.floor(y / 24) * 24}px`);
-  }
   document.addEventListener('pointermove', event => {
-    if (!enabled() || !finePointer.matches) return;
-    positionGrid(pageGrid, event, pageGrid);
-    pageGrid.classList.add('pointer-present');
-    const card = event.target.closest('.next-card');
-    if (!card) return;
-    let light = card.querySelector('.hover-light');
-    if (!light) {
-      light = document.createElement('span'); light.className = 'hover-light';
-      light.setAttribute('aria-hidden', 'true'); card.append(light);
+    if (!enabled() || !finePointer.matches || forcedColors.matches || document.hidden || event.pointerType !== 'mouse') { clearGrid(); return; }
+    gridSample = {x:event.clientX, y:event.clientY}; queueGrid();
+  }, {passive:true});
+  document.addEventListener('pointerdown', queueGrid, {passive:true});
+  document.addEventListener('pointerup', queueGrid, {passive:true});
+  document.addEventListener('scroll', queueGrid, {capture:true, passive:true});
+  document.addEventListener('pointercancel', clearGrid, {passive:true});
+  window.addEventListener('resize', queueGrid);
+  window.addEventListener('blur', clearGrid);
+  root.addEventListener('pointerleave', clearGrid);
+  finePointer.addEventListener('change', clearGrid);
+  forcedColors.addEventListener('change', () => { if (forcedColors.matches) clearGrid(); else queueGrid(); });
+  window.addEventListener('focus', queueGrid);
+  new MutationObserver(queueGrid).observe(document.getElementById('main'), {childList:true, subtree:true});
+  // Mouse movement shifts hard shadows and decorative art. Text and buttons
+  // keep their hover positions; the native cursor stays available.
+  document.addEventListener('pointermove', event => {
+    if (!enabled() || !finePointer.matches || document.hidden || event.pointerType !== 'mouse' || event.buttons) {
+      resetPointerMotion(); return;
     }
-    positionGrid(light, event, card);
-  }, {passive: true});
-  document.documentElement.addEventListener('pointerleave', () => pageGrid.classList.remove('pointer-present'));
+    const surface = event.target.closest?.('.next-card, .ws-route-card, .pg-catalog-card, .level-header');
+    if (!surface) { resetPointerMotion(); return; }
+    const card = surface.matches('.level-header') ? surface.parentElement : surface;
+    if (card !== pointerCard) resetPointerMotion();
+    pointerCard = card; pointerSurface = surface;
+    pointerSample = {x:event.clientX, y:event.clientY};
+    if (pointerFrame !== null) return;
+    pointerFrame = requestAnimationFrame(() => {
+      pointerFrame = null;
+      if (!pointerCard?.isConnected || !enabled() || document.hidden) { resetPointerMotion(); return; }
+      const bounds = pointerSurface.getBoundingClientRect();
+      const unit = value => Math.max(-1, Math.min(1, value));
+      const x = unit((pointerSample.x - bounds.left) / Math.max(1, bounds.width) * 2 - 1);
+      const y = unit((pointerSample.y - bounds.top) / Math.max(1, bounds.height) * 2 - 1);
+      pointerCard.dataset.pointerMotion = 'true';
+      pointerCard.style.setProperty('--pointer-shadow-x', `${(8 - x * 4).toFixed(1)}px`);
+      pointerCard.style.setProperty('--pointer-shadow-y', `${(8 - y * 4).toFixed(1)}px`);
+      pointerCard.style.setProperty('--pointer-art-x', `${(x * 5).toFixed(1)}px`);
+      pointerCard.style.setProperty('--pointer-art-y', `${(y * 4).toFixed(1)}px`);
+      pointerCard.style.setProperty('--pointer-art-angle', `${(x * 3).toFixed(1)}deg`);
+    });
+  }, {passive:true});
+  document.addEventListener('pointerout', event => {
+    if (pointerSurface && !pointerSurface.contains(event.relatedTarget)) resetPointerMotion();
+  }, {passive:true});
+  document.addEventListener('pointerdown', resetPointerMotion, {passive:true});
+  document.addEventListener('scroll', resetPointerMotion, {capture:true, passive:true});
+  document.documentElement.addEventListener('pointerleave', resetPointerMotion);
+  finePointer.addEventListener('change', resetPointerMotion);
   sync();
   document.querySelector('.ambient-scene').hidden = false;
   return {enter, leave, feedback};

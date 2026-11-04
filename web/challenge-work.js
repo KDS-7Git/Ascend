@@ -39,6 +39,7 @@ async function openChallengeNotes(node) {
 
 async function finishChallenge() {
   const c = activeNotebook; if (!c) return;
+  const account = state.account?.username;
   c.panel.open = true;
   if (c.learned.value.trim().length < 20) {
     c.error.textContent = 'Add a short observation (at least 20 characters), then complete the lab.'; c.error.hidden = false;
@@ -47,22 +48,38 @@ async function finishChallenge() {
   await flushChallengeNotebook();
   const previousStreak = state.overview?.current_streak || 0;
   const result = await api(`challenges/${encodeURIComponent(c.ref)}/complete`, {revision: c.work.revision});
+  if (state.account?.username !== account) return;
   await refresh(); await renderChallenge();
-  if (!result.already_completed) {
-    showChallengeCelebration('Lab complete!', 'Your work is saved. Your track has moved forward.', state.overview?.current_streak > previousStreak);
+  if (!result.already_completed && state.tab === 'challenge' && state.challengeRef === c.ref && state.account?.username === account) {
+    showChallengeCelebration('Lab complete!', 'Your observations and completion are saved.', state.overview?.current_streak > previousStreak, {node: c.node, xp: null, practice: result.practice_reward || result.work?.practice_reward, receiptId: `track-complete:${c.ref}`, account});
   }
 }
 
-function showChallengeCelebration(title, text, streak = false) {
+function showChallengeCelebration(title, text, streak = false, options = {}) {
   const host = $('#challenge-content');
+  if (!host || state.tab !== 'challenge') return;
+  const node = options.node;
+  const kind = node?.milestone ? 'milestone' : options.kind || 'challenge';
+  if (kind === 'milestone') title = 'Milestone reached!';
   host.querySelector('.lab-celebration')?.remove();
-  const panel = el('section', undefined, 'lab-celebration'); panel.setAttribute('role', 'status');
+  const panel = el('section', undefined, 'lab-celebration'); panel.setAttribute('role', 'status'); panel.setAttribute('aria-atomic', 'true');
   const mark = el('span', undefined, 'completion-mark'); mark.append(icon('check')); mark.setAttribute('aria-hidden', 'true');
-  const copy = el('div'); copy.append(el('p', streak ? 'LAB COMPLETE · STREAK EXTENDED' : 'PROGRESS RECORDED', 'eyebrow'), el('h2', title), el('p', text));
-  panel.append(mark, copy, button('Continue learning', () => switchTab('today'), '')); host.prepend(panel);
-  window.AscendMotion?.feedback?.(panel, 'complete');
-  if (streak) window.AscendMotion?.feedback?.($('#streak-chip') || $('#streak')?.parentElement, 'streak');
-  panel.scrollIntoView({behavior: 'instant', block: 'nearest'});
+  const copy = el('div', undefined, 'celebration-copy');
+  copy.append(el('p', `${kind === 'milestone' ? 'MILESTONE SAVED' : 'PROGRESS RECORDED'}${streak ? ' · STREAK EXTENDED' : ''}`, 'eyebrow'), el('h2', title));
+  if (node) copy.append(el('p', compactTitle(node.title), 'celebration-accomplishment'));
+  copy.append(el('p', text));
+  const actions = el('div', undefined, 'celebration-actions'); actions.append(button('Continue learning', () => switchTab('today'), ''));
+  const next = state.overview?.next;
+  if (next && (!node || next.id !== node.id || next.pack_id !== node.pack_id)) copy.append(el('p', `Up next: ${compactTitle(next.title)}`, 'celebration-next'));
+  panel.append(mark, copy, actions); host.prepend(panel);
+  const evidence = options.evidence || (node?.verify?.type === 'manual' ? 'Completion recorded by you' : node?.verify?.type === 'file' ? 'Artifact checked · completion recorded' : 'The saved checks establish the result shown above.');
+  window.AscendRewards?.decorate(panel, {kind, xp: options.xp, practice: options.practice, evidence, receiptId: options.receiptId || ''});
+  window.AscendRewards?.addReplay(panel, actions);
+  if (options.fresh !== false) {
+    window.AscendRewards?.play(panel, {account: options.account || state.account?.username, receiptId: options.receiptId, kind});
+    panel.tabIndex = -1; panel.focus({preventScroll: true}); panel.scrollIntoView({behavior: 'instant', block: 'nearest'});
+  }
+  return panel;
 }
 
 async function prepareToEndChallenge() {
@@ -125,7 +142,8 @@ function mountChallengeNotebook(data) {
   const save = button('Save progress', async () => {
     await flushChallengeNotebook(true); const before = state.overview?.current_streak || 0; await refresh();
     if ((state.overview?.current_streak || 0) > before) window.AscendMotion?.feedback?.($('#streak')?.parentElement, 'streak');
-    notify('Progress saved. Keep adding to these notes whenever you return.', 'success');
+    const credit = c.work.practice_reward?.newly_awarded ? window.AscendRewards?.practiceText(c.work.practice_reward) : '';
+    notify(`Progress saved.${credit ? ` ${credit}.` : ''} Keep adding to these notes whenever you return.`, 'success');
   }, 'secondary'); body.append(save);
   const recovery = el('details', undefined, 'quiet-details'); recovery.append(el('summary', 'Note history & recovery'));
   recovery.append(button('Download my notes', () => downloadNotebook(learned.value, `${node.id}-notes.txt`), 'text-button'));
@@ -187,6 +205,9 @@ function mountChallengeNotebook(data) {
   toolbar.append(el('span', node.status === 'done' ? '✓ Completed · notes remain editable' : session?.status === 'finished' ? 'Session ended · continue your work below' : work.practice ? 'Practice session · no additional XP' : 'Lab in progress', 'lab-state'), button('Notes & evidence', () => openChallengeNotes(node), 'text-button'));
   if (node.status !== 'done' && node.verify?.type !== 'lab') toolbar.append(button('Complete lab', finishChallenge, ''));
   instructions.querySelector('h1')?.after(toolbar);
+  if (node.status === 'done' && (node.milestone || !['case', 'access-policy'].includes(data.exercise?.exercise))) {
+    showChallengeCelebration(node.verify?.type === 'lab' ? 'Challenge complete!' : 'Lab complete!', 'Your result is saved. Revisit the evidence whenever you need it.', false, {node, xp: data.exercise?.reward?.xp ?? null, practice: data.exercise?.practice_reward || work.completion_practice_reward, receiptId: `track-complete:${ref}`, fresh: false});
+  }
 }
 
 function downloadNotebook(value, name) {

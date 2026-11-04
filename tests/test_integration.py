@@ -195,7 +195,10 @@ def test_browser_complete_flow(live_server, width, height, tmp_path):
         assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
         page.get_by_role("button", name="10 min", exact=True).click()
         expect(page.locator(".time-fit-card")).to_be_visible()
-        assert int(page.locator(".time-fit-card").get_attribute("data-suggested-minutes")) <= 10
+        assert (
+            int(page.locator(".time-fit-card").get_attribute("data-suggested-minutes"))
+            <= 10
+        )
         expect(
             page.get_by_role("button", name="Start guided example", exact=True)
         ).to_be_visible()
@@ -293,19 +296,24 @@ def test_browser_guidance_partial_work_and_failed_evidence(
         page.locator(".next-card").get_by_role(
             "button", name="Log progress", exact=True
         ).click()
-        expect(page.get_by_label("Your notes", exact=True)).to_have_value("I compared a prediction with the first observed result")
+        expect(page.get_by_label("Your notes", exact=True)).to_have_value(
+            "I compared a prediction with the first observed result"
+        )
         page.get_by_label("Your notes", exact=True).fill(
             "I tried another input but have not saved the evidence file"
         )
         page.locator(".notebook-complete").click()
-        expect(page.locator("#notice")).to_contain_text(
-            "Evidence file does not exist"
-        )
+        expect(page.locator("#notice")).to_contain_text("Evidence file does not exist")
         expect(page.locator(".lab-celebration")).to_have_count(0)
         page.get_by_role("button", name="Today", exact=True).click()
         expect(page.locator(".next-card h2")).to_have_text("First task")
         assert len(httpx.get(live_server + "/api/entries").json()) == 1
-        assert httpx.get(live_server + "/api/challenges/test-pack:one").json()["node"]["status"] == "todo"
+        assert (
+            httpx.get(live_server + "/api/challenges/test-pack:one").json()["node"][
+                "status"
+            ]
+            == "todo"
+        )
         page.get_by_role("button", name="Path", exact=True).click()
         page.locator("#level-second > summary").click()
         page.locator(".path-node.locked").click()
@@ -462,10 +470,14 @@ def test_browser_timed_task_can_only_end_without_awarding_completion(live_server
         expect(page.get_by_role("heading", name="Your finish line")).to_be_visible()
         page.reload()
         page.get_by_role("button", name="Finish session", exact=True).click()
-        page.get_by_role("button", name="End session without completing", exact=True).click()
+        page.get_by_role(
+            "button", name="End session without completing", exact=True
+        ).click()
         expect(page.locator("#task-session")).not_to_be_visible()
         expect(
-            page.get_by_role("button", name="End session without completing", exact=True)
+            page.get_by_role(
+                "button", name="End session without completing", exact=True
+            )
         ).not_to_be_visible()
         expect(page.locator("#challenge-content")).to_contain_text("Session ended")
         state = httpx.get(live_server + "/api/challenges/test-pack:one").json()
@@ -578,7 +590,7 @@ def test_library_rows_profile_and_guide_navigation(live_server, width, height):
         page.keyboard.press("Escape")
         page.get_by_role("button", name="Open profile", exact=True).click()
         expect(page.locator("#profile-summary")).to_contain_text("local")
-        expect(page.locator("#profile-summary")).to_contain_text("Verified XP")
+        expect(page.locator("#profile-summary")).to_contain_text("Scored XP")
         page.get_by_label("Color theme").select_option("dark")
         expect(page.locator("html")).to_have_attribute("data-theme", "dark")
         expect(
@@ -711,9 +723,12 @@ def test_track_picker_groups_existing_packs_from_catalog(
         track = page.get_by_label("Choose a track", exact=True)
         start = page.get_by_role("button", name="Start mission", exact=True)
         expect(domain).to_be_enabled()
-        expect(domain.locator("option")).to_have_count(9)
+        expected_domains = {pack.get("category", "Projects") for pack in catalog} | {
+            "Custom"
+        }
+        expect(domain.locator("option")).to_have_count(len(expected_domains) + 1)
 
-        # The custom fixture stays separate; the 28 known IDs use catalog domains.
+        # The custom fixture stays separate; bundled IDs use catalog domains.
         domain.select_option("Custom")
         expect(track.locator("option")).to_have_count(2)
         expect(track.locator('option[value="test-pack"]')).to_have_count(1)
@@ -750,6 +765,99 @@ def test_track_picker_groups_existing_packs_from_catalog(
         browser.close()
 
 
+@pytest.mark.parametrize("width,height", [(1440, 1000), (390, 844)])
+def test_engineering_sequences_allow_direct_entry_and_keep_practice_work(
+    live_server, tmp_path, width, height
+):
+    import httpx
+    from playwright.sync_api import sync_playwright, expect
+
+    from ascend.registry import registry_entries
+
+    groups = {
+        category: sorted(
+            (row for row in registry_entries() if row.get("category") == category),
+            key=lambda row: row["track_order"],
+        )
+        for category in ("Infrastructure", "DevOps")
+    }
+    assert [len(group) for group in groups.values()] == [9, 3]
+    for group in groups.values():
+        for entry in reversed(group):
+            response = httpx.post(
+                live_server + "/api/command",
+                json={"argv": ["pack", "install", entry["id"]]},
+            )
+            assert response.status_code == 200, response.text
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page(viewport={"width": width, "height": height})
+        errors = []
+        page.on("pageerror", lambda error: errors.append(str(error)))
+        page.goto(live_server + "/#more")
+        domain = page.get_by_label("Choose a domain", exact=True)
+        track = page.get_by_label("Choose a track", exact=True)
+        expect(domain).to_be_enabled()
+        for category, group in groups.items():
+            domain.select_option(category)
+            assert track.locator("option").evaluate_all(
+                "options => options.slice(1).map(option => option.value)"
+            ) == [row["id"] for row in group]
+            for index, row in enumerate(group, start=1):
+                expect(track.locator(f'option[value="{row["id"]}"]')).to_have_text(
+                    f"{index} · {row['title']}"
+                )
+
+        later = groups["DevOps"][-1]
+        track.select_option(later["id"])
+        expect(page.locator("#mission-picker-help")).to_contain_text(
+            "The sequence is a guide"
+        )
+        page.get_by_role("button", name="Pause", exact=True).click()
+        page.get_by_role("button", name="Start mission", exact=True).click()
+        expect(page.locator("#notice")).to_contain_text("Mission started.")
+        assert (
+            httpx.get(live_server + "/api/me").json()["mission"]["pack_id"]
+            == later["id"]
+        )
+
+        # An experienced learner can attempt an application before its walkthrough.
+        ref = later["id"] + ":service-signals-milestone"
+        page.goto(live_server + "/#challenge/" + ref.replace(":", "%3A"))
+        expect(
+            page.get_by_role("button", name="Start timed task", exact=True)
+        ).to_be_enabled()
+        expect(page.locator(".challenge-materials a")).to_have_count(0)
+        page.get_by_role("button", name="Start timed task", exact=True).click()
+        expect(page.get_by_role("heading", name="Your finish line")).to_be_visible()
+        download_link = page.get_by_role(
+            "link", name="Download this track's runnable lab files", exact=True
+        )
+        expect(download_link).to_have_attribute("href", f"/training/{later['id']}.zip")
+        with page.expect_download() as downloaded:
+            download_link.click()
+        artifact = tmp_path / downloaded.value.suggested_filename
+        downloaded.value.save_as(artifact)
+        assert artifact.read_bytes().startswith(b"PK")
+
+        page.locator(".lab-toolbar").get_by_role(
+            "button", name="Notes & evidence", exact=True
+        ).click()
+        note = "Compared all attempted requests with the success-only denominator."
+        page.get_by_label("Your notes", exact=True).fill(note)
+        page.get_by_role("button", name="Save progress", exact=True).click()
+        expect(page.locator(".notebook-status")).to_have_text("Progress saved")
+        page.reload()
+        expect(page.get_by_label("Your notes", exact=True)).to_have_value(note)
+        saved = httpx.get(live_server + "/api/challenges/" + ref).json()
+        assert saved["node"]["status"] == "todo"
+        assert saved["session"]["status"] == "running"
+        assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+        assert not errors, errors
+        browser.close()
+
+
 def test_documentation_is_readable_offline_after_shell_install(live_server):
     from playwright.sync_api import sync_playwright, expect
 
@@ -769,6 +877,16 @@ def test_documentation_is_readable_offline_after_shell_install(live_server):
         expect(page.locator("#xp-balance")).to_have_text("— XP")
         expect(page.locator(".topbar #streak")).to_have_text("—")
         assert page.evaluate("Boolean(window.AscendMotion)")
+        assert page.evaluate(
+            "Boolean(window.AscendRewards && window.AscendAccounts && window.AscendWorkspace)"
+        )
+        expect(page.locator(".ws-backdrop")).to_have_count(1)
+        assert page.evaluate(
+            "[...document.styleSheets].some(s => s.href?.includes('/workspace-ui.css') && s.cssRules.length > 0)"
+        )
+        assert page.evaluate(
+            "[...document.styleSheets].some(s => s.href?.includes('/rewards.css') && s.cssRules.length > 0)"
+        )
         browser.close()
 
 
@@ -780,17 +898,25 @@ def test_motion_controls_persist_and_honor_device_preferences(live_server):
         page = browser.new_page(
             viewport={"width": 1440, "height": 1000}, reduced_motion="no-preference"
         )
+        page.add_init_script("""
+            window.motionEntrances = [];
+            const originalAnimate = Element.prototype.animate;
+            Element.prototype.animate = function(frames, options) {
+                window.motionEntrances.push({target: this.className, duration: options.duration});
+                return originalAnimate.call(this, frames, options);
+            };
+        """)
         page.goto(live_server)
         page.locator(".next-card").wait_for()
-        page.wait_for_function(
-            "document.querySelector('.ambient-scene').getAnimations({subtree:true}).some(a => a.playState === 'running')"
+        expect(page.locator("#app-loader")).not_to_be_visible()
+        assert page.evaluate(
+            "motionEntrances.some(a => a.target === 'ws-backdrop' && a.duration > 0)"
         )
         page.locator(".next-card").hover(position={"x": 180, "y": 80})
-        expect(page.locator(".next-card .hover-light")).to_be_visible()
+        expect(page.locator(".next-card")).not_to_have_css("transform", "none")
+        expect(page.locator(".next-card > .hover-light")).to_have_css("opacity", "1")
         page.locator(".page-header h1").first.hover()
-        expect(page.locator(".workspace-hover")).to_have_class(
-            "hover-light workspace-hover pointer-present"
-        )
+        expect(page.locator(".workspace-hover")).to_have_css("opacity", "1")
         assert (
             page.locator(".next-card").evaluate("e => getComputedStyle(e).cursor")
             != "none"
@@ -799,8 +925,9 @@ def test_motion_controls_persist_and_honor_device_preferences(live_server):
         page.get_by_role("button", name="Open profile", exact=True).click()
         page.get_by_label("Motion effects", exact=True).select_option("off")
         expect(page.locator("html")).to_have_attribute("data-motion", "off")
-        assert not page.locator(".ambient-scene").evaluate(
-            "e => e.getAnimations({subtree:true}).some(a => a.playState === 'running')"
+        expect(page.locator(".workspace-hover")).not_to_be_visible()
+        assert not page.evaluate(
+            "document.getAnimations().some(a => a.playState === 'running')"
         )
         page.reload()
         expect(page.get_by_label("Motion effects", exact=True)).to_have_value("off")
@@ -808,6 +935,7 @@ def test_motion_controls_persist_and_honor_device_preferences(live_server):
         expect(page.locator("html")).to_have_attribute("data-motion", "calm")
         page.emulate_media(reduced_motion="reduce")
         expect(page.locator("html")).to_have_attribute("data-motion", "off")
+        expect(page.locator(".workspace-hover")).not_to_be_visible()
         expect(page.locator("#motion-toggle")).to_have_count(0)
         page.get_by_role("button", name="Docs", exact=True).click()
         expect(page.locator("#guide-title")).to_be_visible()
@@ -819,7 +947,7 @@ def test_motion_controls_persist_and_honor_device_preferences(live_server):
         browser.close()
 
 
-@pytest.mark.parametrize("width,height", [(320, 480), (1440, 1000)])
+@pytest.mark.parametrize("width,height", [(320, 360), (1440, 1000)])
 def test_challenge_glow_plays_once_when_visible_per_load(live_server, width, height):
     from playwright.sync_api import sync_playwright, expect
 
@@ -1198,6 +1326,7 @@ def test_browser_explains_stale_server_and_recovers_after_retry(live_server):
         page.route("**/api/playground**", missing_playground)
         page.route("**/api/stats", old_stats)
         page.goto(live_server + "/#playground/quick")
+        sections = page.get_by_role("navigation", name="Playground sections")
         message = "The running Ascend server has not loaded this update. Restart the server, then reload this page."
         for tab in (
             "Quick practice",
@@ -1205,7 +1334,7 @@ def test_browser_explains_stale_server_and_recovers_after_retry(live_server):
             "Free practice",
             "Saved work & history",
         ):
-            page.get_by_role("link", name=tab, exact=True).click()
+            sections.get_by_role("link", name=tab, exact=True).click()
             expect(page.locator("#playground-content")).to_contain_text(message)
             expect(
                 page.get_by_role("button", name="Try again", exact=True)
@@ -1221,20 +1350,22 @@ def test_browser_explains_stale_server_and_recovers_after_retry(live_server):
             "XP contributions: track 0"
         )
         page.get_by_role("button", name="Playground", exact=True).click()
-        page.get_by_role("link", name="Quick practice", exact=True).click()
+        sections.get_by_role("link", name="Quick practice", exact=True).click()
         expect(page.locator(".pg-catalog-card").first).to_be_visible()
         # Static assets can update before either Linux-lab API is loaded.
         for endpoint in ("lab-catalog", "lab-attempts"):
-            page.get_by_role("link", name="Quick practice", exact=True).click()
+            sections.get_by_role("link", name="Quick practice", exact=True).click()
             expect(page.locator(".pg-catalog-card").first).to_be_visible()
             pattern = f"**/api/{endpoint}"
             page.route(pattern, missing_playground)
-            page.get_by_role("link", name="Linux labs", exact=True).click()
+            sections.get_by_role("link", name="Linux labs", exact=True).click()
             expect(page.locator("#playground-content")).to_contain_text(message)
             expect(page.locator("#playground-content")).not_to_contain_text("Not Found")
             page.unroute(pattern, missing_playground)
             page.get_by_role("button", name="Try again", exact=True).click()
-            expect(page.get_by_role("heading", name="Linux labs", exact=True)).to_be_visible()
+            expect(
+                page.get_by_role("heading", name="Linux labs", exact=True)
+            ).to_be_visible()
             expect(page.locator(".pg-lab")).to_have_count(15)
         assert not errors
         browser.close()

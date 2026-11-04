@@ -47,15 +47,20 @@ function notify(message, kind = 'info', options = {}) {
   if (!dialog && kind !== 'error') noticeTimer = setTimeout(dismissNotice, 8000);
 }
 async function api(path, body, method = "POST", interactive = true) {
-  const headers = {}; if (state.token) headers.Authorization = `Bearer ${state.token}`;
+  const sentToken = state.token;
+  const headers = {}; if (sentToken) headers.Authorization = `Bearer ${sentToken}`;
   const options = {headers, cache: "no-store"};
   if (body !== undefined) { options.method = method; if (body instanceof FormData) options.body = body; else { headers["Content-Type"] = "application/json"; options.body = JSON.stringify(body); } }
   let response;
   try { response = await fetch(`/api/${path}`, {...options, signal: AbortSignal.timeout(15000)}); } catch { throw new Error("The server is not responding. Check your connection and try again."); }
-  if (response.status === 401) { if (interactive && !$("#login-dialog").open) $("#login-dialog").showModal(); throw new Error("Sign in to continue."); }
+  if (response.status === 401) {
+    if (sentToken !== state.token) throw new Error('This request used an earlier session. Retry with your current session.');
+    if (interactive && !$("#login-dialog").open) $("#login-dialog").showModal();
+    throw new Error("Sign in to continue.");
+  }
   const data = await response.json();
   const route = path.split('?')[0];
-  if (response.status === 404 && /^(playground|lab-catalog|lab-attempts|hosted-labs)(\/|$)/.test(route) && data.detail === 'Not Found') throw new Error(SERVER_UPDATE_REQUIRED);
+  if (response.status === 404 && /^(playground|lab-catalog|lab-attempts|hosted-labs|rewards)(\/|$)/.test(route) && data.detail === 'Not Found') throw new Error(SERVER_UPDATE_REQUIRED);
   if (!response.ok) throw new Error(typeof data.detail === "string" ? data.detail : "Please check the form fields.");
   if (route === 'stats' && (!data.xp || !data.playground)) throw new Error(SERVER_UPDATE_REQUIRED);
   return data;
@@ -230,6 +235,7 @@ async function refresh() {
     aside.append(target);
   }
   if (aside.childElementCount) cards.append(aside);
+  window.AscendWorkspace?.renderToday({overview, levels, account});
   playChallengeIntro();
   await refreshSessions();
   window.AscendContext?.render();
@@ -341,6 +347,7 @@ function nodeCard(node, quick) {
 }
 function compactTitle(title) { return title.replace(/^(Reason it through|Investigate|Practice):\s*/i, '').replace(/\s*\(milestone\)$/i, ''); }
 function challengeIllustration() {
+  if (window.AscendWorkspace) return window.AscendWorkspace.companion();
   const art = svgElement('svg', {viewBox: '0 0 220 180', width: 220, height: 180, class: 'challenge-art', 'aria-hidden': 'true'});
   const group = svgElement('g', {stroke: 'currentColor', 'stroke-width': 2, 'stroke-linejoin': 'round'});
   for (const [x, y, color] of [[18, 125, 'var(--mint)'], [80, 88, 'var(--soft)'], [142, 48, 'var(--action)']]) {
@@ -546,10 +553,11 @@ async function renderPath() {
     const refs = await api(`lab-catalog?track=${encodeURIComponent(state.overview.mission.pack_id)}`);
     const section = trackLabReferences(refs); if (section) root.append(section);
   }
+  window.AscendWorkspace?.decoratePath();
 }
 
 async function renderStats() {
-  const [stats, days, levels, session, practice] = await Promise.all([api('stats'), api('heatmap'), api('levels'), command(['session', 'status']), api('playground/insights')]);
+  const [stats, days, session, practice, rewardSummary] = await Promise.all([api('stats'), api('heatmap'), command(['session', 'status']), api('playground/insights'), api('rewards')]);
   const root = $('#stats-content'); root.replaceChildren();
   updateStreak(stats.current_streak);
   const summary = el('section', undefined, 'stats-summary'); summary.setAttribute('aria-label', 'Progress summary');
@@ -558,7 +566,7 @@ async function renderStats() {
     [stats.current_streak, 'Current streak', 'days', 'streak-number'],
     [stats.best_streak, 'Best streak', 'days', ''],
     [stats.minutes_this_week, 'This week', 'min', ''],
-    [session.xp, 'Verified XP', 'XP', '']
+    [session.xp, 'Scored XP', 'XP', '']
   ]) {
     const metric = el('div'), valueNode = el('dd');
     valueNode.append(el('span', value.toLocaleString(), className), el('span', unit === 'days' && value === 1 ? 'day' : unit, 'metric-unit'));
@@ -567,6 +575,7 @@ async function renderStats() {
   const note = el('p', `${stats.freeze_available} ${stats.freeze_available === 1 ? 'freeze' : 'freezes'} available this week · ${session.verified_awards} verified ${session.verified_awards === 1 ? 'task' : 'tasks'}. `, 'small muted');
   const xpHelp = el('a', 'How XP works'); xpHelp.href = '#docs/timers'; note.append(xpHelp);
   summary.append(metrics, note); root.append(summary);
+  const wallet = window.AscendRewards?.overview(rewardSummary); if (wallet) root.append(wallet);
   root.append(el('p', `XP contributions: track ${stats.xp.track} · practice ${stats.xp.practice} · standalone challenges ${stats.xp.challenge}. Playground activity does not advance the path.`, 'muted'));
   root.append(el('p', `${stats.playground.practice_completed} practice exercises completed · ${stats.playground.challenges_solved} standalone challenges solved · ${stats.playground.saved_work} saved activities`, 'small'));
   const insights = el('details', undefined, 'pg-reference'); insights.append(el('summary', 'Practice over the last 14 days'), el('p', `${practice.resumed} activities resumed · ${practice.returned} returns to the track · ${practice.runs_with_hints} activities with hints · ${practice.revealed_runs} solution reviews`), el('p', `${practice.queries_with_ready_choices} of ${practice.selection_queries} observed filter selections offered a ready activity. ${practice.feedback_reports} feedback reports: ${practice.unclear_reports} unclear, ${practice.unwanted_repeats} unwanted repeats, ${practice.environment_issues} technical problems.`, 'small'), el('p', 'These are local usage observations, not measures of mastery. Time estimates stay authored until at least three clear, completed sessions provide personal pace data.', 'small muted')); root.append(insights);
@@ -591,10 +600,14 @@ async function renderStats() {
   minutesArea.append(chart); minutes.append(minutesArea); plots.append(calendar, minutes); root.append(plots);
   const achievements = el("section", undefined, "page-section achievements");
   achievements.append(el("h2", "Milestones you've earned"));
-  const earned = levels.flatMap(level => level.nodes).filter(node => node.milestone && node.status === "done");
+  const earned = rewardSummary.milestones.items;
   const shelf = el("div", undefined, "earned-milestones");
-  for (const node of earned) { const badge = el("div", undefined, "earned-badge"); badge.append(icon("flag"), el("span", node.title.replace(/\s*\(milestone\)$/i, ""))); shelf.append(badge); }
-  if (!earned.length) achievements.append(el("p", "Complete a milestone in your active track to add it here. Each one represents a skill you've put into practice.", "muted"));
+  for (const item of earned) {
+    const badge = button('', () => switchTab('challenge', {topic: item.reference}), 'earned-badge'), copy = el('span', undefined, 'earned-copy');
+    copy.append(el('strong', item.title.replace(/\s*\(milestone\)$/i, '')), el('small', item.pack_title), el('small', `${item.evidence_label} · Open saved work`));
+    badge.append(window.AscendRewards?.medal() || icon('flag'), copy); shelf.append(badge);
+  }
+  if (!earned.length) achievements.append(el("p", "Complete a track milestone to add its achievement here. Each keeps its saved work and evidence label.", "muted"));
   else achievements.append(shelf);
   root.append(achievements);
 }
@@ -623,7 +636,7 @@ async function refreshDocsChrome() {
   updateAccountChrome();
   updateStreak(stats.current_streak);
   $('#xp-balance').textContent = `${sessions.xp.toLocaleString()} XP`;
-  $('#xp-link').setAttribute('aria-label', `${sessions.xp} verified XP. View progress`);
+  $('#xp-link').setAttribute('aria-label', `${sessions.xp} scored XP. View rewards and progress`);
   renderSessionClock();
 }
 function bindAction(selector, action, after) { const node = $(selector); node.addEventListener('click', () => runAction(node, action, after)); }
@@ -640,22 +653,39 @@ const TRACK_DOMAINS = {
   Offensive: 'Offensive security',
   Defensive: 'Defensive security',
   Engineering: 'Security engineering',
+  Infrastructure: 'Infrastructure & Internet Operations',
+  DevOps: 'DevOps & deployment',
   Specialist: 'Specialist security',
   Practice: 'Hands-on labs',
   Projects: 'Projects',
   Custom: 'Custom tracks'
 };
-function packDomain(pack) { return pack.category || 'Custom'; }
+function packDomain(pack) { return pack.category || 'Projects'; }
+function trackOrder(pack) { return Number.isInteger(pack.track_order) && pack.track_order > 0 ? pack.track_order : Number.MAX_SAFE_INTEGER; }
+function compareTracks(a, b) { return packDomain(a).localeCompare(packDomain(b)) || trackOrder(a) - trackOrder(b) || packTitle(a).localeCompare(packTitle(b)); }
+function missionPickerHint() {
+  const domain = $('#mission-domain').value;
+  const packs = state.installedPacks.filter(pack => packDomain(pack) === domain);
+  const selected = packs.find(pack => pack.id === $('#mission-pack').value);
+  let text = !state.installedPacks.length ? 'No tracks installed yet. Browse learning tracks to get started.' : domain ? `${packs.length} installed ${packs.length === 1 ? 'track' : 'tracks'} in ${TRACK_DOMAINS[domain] || domain}.` : 'Pick a domain to see its tracks.';
+  if (selected) {
+    const entry = selected.entry || selected.prerequisite_summary;
+    if (entry) text += ` Entry: ${entry}`;
+    if (trackOrder(selected) !== Number.MAX_SAFE_INTEGER) text += ' The sequence is a guide; choose the track that fits your current skills.';
+  }
+  $('#mission-picker-help').textContent = text;
+}
 function drawMissionTracks(selectedId = '') {
   const domain = $('#mission-domain').value, select = $('#mission-pack');
-  const packs = state.installedPacks.filter(pack => packDomain(pack) === domain).sort((a, b) => packTitle(a).localeCompare(packTitle(b)));
+  const packs = state.installedPacks.filter(pack => packDomain(pack) === domain).sort(compareTracks);
   const placeholder = el('option', domain ? 'Choose a track…' : 'Choose a domain first'); placeholder.value = '';
   select.replaceChildren(placeholder, ...packs.map(pack => {
-    const option = el('option', packTitle(pack)); option.value = pack.id; return option;
+    const number = trackOrder(pack) === Number.MAX_SAFE_INTEGER ? '' : `${pack.track_order} · `;
+    const option = el('option', number + packTitle(pack)); option.value = pack.id; return option;
   }));
   select.value = packs.some(pack => pack.id === selectedId) ? selectedId : '';
   select.disabled = !packs.length;
-  $('#mission-picker-help').textContent = !state.installedPacks.length ? 'No tracks installed yet. Browse learning tracks to get started.' : domain ? `${packs.length} installed ${packs.length === 1 ? 'track' : 'tracks'} in ${TRACK_DOMAINS[domain] || domain}.` : 'Pick a domain to see its tracks.';
+  missionPickerHint();
   syncMissionActions();
 }
 function drawMissionPicker() {
@@ -677,8 +707,16 @@ async function renderMore() {
   const [packs, parked, catalog] = await Promise.all([api('packs'), command(['parked']), command(['pack', 'registry'])]);
   // Older servers omit categories from installed packs. Resolve stable IDs
   // against the catalog so existing installations get the same domain picker.
-  const domains = new Map(catalog.map(pack => [pack.id, pack.category || 'Projects']));
-  state.installedPacks = packs.map(pack => ({...pack, category: domains.get(pack.id) || pack.category || 'Custom'}));
+  const entries = new Map(catalog.map(pack => [pack.id, pack]));
+  state.installedPacks = packs.map(pack => {
+    const entry = entries.get(pack.id);
+    return {...pack, category: entry ? (entry.category || 'Projects') : (pack.category || 'Custom'),
+      track_order: entry?.track_order ?? pack.track_order,
+      recommended_after: entry?.recommended_after ?? pack.recommended_after ?? [],
+      description: entry?.description || pack.description || '',
+      entry: entry?.entry || pack.entry || '',
+      prerequisite_summary: entry?.prerequisite_summary || pack.prerequisite_summary || ''};
+  });
   $('#mission-name').textContent = state.overview?.mission?.title || 'No active mission';
   $('#mission-time').value = state.overview?.mission?.nudge_time || '';
   drawMissionPicker();
@@ -732,17 +770,19 @@ async function readPack(pack) {
   review.disabled = Boolean(pack.reviewed); actions.append(review); content.append(actions);
 }
 async function renderProfile() {
-  const account = await api('account'); state.account = account; updateAccountChrome();
+  const [account, rewardSummary] = await Promise.all([api('account'), api('rewards')]); state.account = account; updateAccountChrome();
   await refreshSessions();
   const summary = $('#profile-summary'); summary.replaceChildren();
   const avatar = el('span', account.username.slice(0, 1).toUpperCase(), 'avatar'); avatar.setAttribute('aria-hidden', 'true');
   const identity = el('div', undefined, 'profile-identity');
   identity.append(el('h2', account.username), el('p', account.auth_mode === 'single' ? 'Local learning account' : 'Your learning account'));
   const metrics = el('div', undefined, 'profile-metrics');
-  for (const [value, label] of [[state.sessions.xp, 'Verified XP'], [state.sessions.verified_awards, 'Verified tasks'], [state.overview?.current_streak || 0, 'Day streak']]) {
+  for (const [value, label] of [[state.sessions.xp, 'Scored XP'], [state.sessions.verified_awards, 'Assessed track tasks'], [state.overview?.current_streak || 0, 'Day streak']]) {
     const metric = el('div', undefined, 'profile-metric'); metric.append(el('strong', value.toLocaleString()), el('span', label)); metrics.append(metric);
   }
   summary.append(avatar, identity, metrics);
+  $('#profile > .rewards-overview')?.remove();
+  const wallet = window.AscendRewards?.overview(rewardSummary); if (wallet) summary.after(wallet);
   $('#account-info').textContent = `${account.username} · ${location.origin}`;
   $('#account-timezone').value = account.timezone;
   if (!$('#timezone-options').children.length) {
@@ -763,6 +803,11 @@ async function renderProfile() {
   $('#logout').hidden = account.auth_mode === 'single';
   $('#public-streak').checked = account.settings.public_streak || false;
   $('#public-link').textContent = account.settings.public_streak ? `${location.origin}/api/public/${encodeURIComponent(account.username)}/badge.svg` : 'Your streak is private. Sharing is optional.';
+  await window.AscendAccounts?.mount?.($('#account-security'), {
+    account, api,
+    replaceToken: token => { state.token = token; sessionStorage.setItem('ascend-token', token); },
+    signOut: () => { sessionStorage.removeItem('ascend-token'); location.reload(); }
+  });
 }
 document.querySelectorAll("[data-icon]").forEach(node => node.append(icon(node.dataset.icon)));
 window.addEventListener('hashchange', () => {
@@ -784,7 +829,7 @@ $('#profile-link').addEventListener('click', () => switchTab('profile').catch(er
 $('#installed-search').addEventListener('input', drawInstalledPacks);
 $('#show-all-packs').addEventListener('click', () => { state.showAllPacks = !state.showAllPacks; drawInstalledPacks(); });
 $('#mission-domain').addEventListener('change', () => drawMissionTracks());
-$('#mission-pack').addEventListener('change', syncMissionActions);
+$('#mission-pack').addEventListener('change', () => { missionPickerHint(); syncMissionActions(); });
 $("#sheet").addEventListener("click", event => { if (event.target === $("#sheet")) { const box = event.target.getBoundingClientRect(); if (event.clientY < box.top || event.clientY > box.bottom || event.clientX < box.left || event.clientX > box.right) event.target.close(); } });
 function handleForm(selector, handler) {
   $(selector).addEventListener('submit', event => {
@@ -846,7 +891,7 @@ $("#disable-push").addEventListener("click", async () => {
     $("#push-status").textContent = "Notifications are disabled on this browser.";
   } catch (error) { $("#push-status").textContent = error.message; }
 });
-handleForm("#login-form", async () => { try { const result = await api("login", {username: $("#username").value, password: $("#password").value}); state.token = result.token; sessionStorage.setItem("ascend-token", result.token); $("#password").value = ""; $("#login-dialog").close(); await refresh(); await switchTab(state.tab); } catch (error) { $("#login-error").textContent = error.message; } });
+handleForm("#login-form", async () => { try { const result = await api("login", {username: $("#username").value, password: $("#password").value, label: 'Browser'}); sessionStorage.setItem("ascend-token", result.token); $("#password").value = ""; location.reload(); } catch (error) { $("#login-error").textContent = error.message; } });
 document.addEventListener("keydown", event => { if (event.key.toLowerCase() === "l" && !["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement.tagName) && !$("#sheet").open && state.overview?.next) openLog(state.overview.next); });
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => {});
 const initialRoute = currentRoute();
@@ -860,7 +905,7 @@ async function refreshSessions() {
   state.sessions = await command(['session', 'status']);
   state.sessionFetched = performance.now();
   $('#xp-balance').textContent = `${state.sessions.xp.toLocaleString()} XP`;
-  $('#xp-link').setAttribute('aria-label', `${state.sessions.xp} verified XP. View progress`);
+  $('#xp-link').setAttribute('aria-label', `${state.sessions.xp} scored XP. View rewards and progress`);
   const current = [state.sessions.active, ...state.sessions.paused].filter(Boolean);
   document.querySelectorAll('button[data-challenge]').forEach(node => {
     const label = current.some(item => `${item.pack_id}:${item.node_id}` === node.dataset.challenge) ? 'Resume challenge' : node.dataset.defaultLabel;
@@ -990,6 +1035,9 @@ function showLab(node, run) {
       title.textContent = `${run.score.correct} of ${run.score.total} correct · +${run.score.xp} XP`;
       response.append(el('p', run.passed ? 'Verified. Every decision is correct.' : 'Your submission is final. Review the rules below; this task is not fully complete.', 'field-help'));
       response.append(el('p', run.reward_eligible ? 'XP = time-based reward × correct decisions ÷ total, rounded down.' : 'This session ended before scoring, so no XP was awarded.', 'field-help'));
+      const receipt = AscendFeedback.create({kind: run.passed ? 'success' : 'warning', title: run.passed ? 'All decisions are correct.' : 'Decisions saved. Review the missed rules.', compact: true}); receipt.id = 'policy-feedback';
+      if (run.passed) window.AscendRewards?.inlineAnswer(receipt, {title: 'All decisions are correct.', practice: run.practice_reward});
+      else window.AscendRewards?.decorate(receipt, {kind: 'answer', practice: run.practice_reward, positive: false, evidence: 'Practice points acknowledge the submission. The score above records the checked decisions.'}); response.append(receipt);
     } else response.append(el('p', 'One submission. Correct decisions earn equal shares of XP; incorrect decisions earn none.', 'field-help'));
   } else if (Object.keys(run.data || {}).length) evidence.append(dataView);
   else evidence.append(el('p', 'Use the scenario above to make your decision.', 'muted'));
@@ -1026,7 +1074,11 @@ function showLab(node, run) {
         const label = el('label', undefined, 'decision-choice'); label.append(option, el('span', text)); choices.append(label);
       }
       row.append(choices); group.append(row);
-      if (terminal && feedback) group.append(el('p', feedback.explanation, 'decision-explanation'));
+      if (terminal && feedback) {
+        const explanation = el('p', feedback.explanation, 'decision-explanation');
+        if (run.passed) { const why = el('details', undefined, 'answer-explanation'); why.append(el('summary', 'Why this decision?'), explanation); group.append(why); }
+        else group.append(explanation);
+      }
       form.append(group); inputs[key] = {type: 'boolean', input: group}; continue;
     }
     const label = el('label', key.replaceAll('_', ' ')); label.htmlFor = `lab-answer-${key}`;
@@ -1057,27 +1109,34 @@ function showLab(node, run) {
   form.addEventListener('input', () => { try { sessionStorage.setItem(draftKey, JSON.stringify(answers())); } catch { /* Server exercise data remains saved. */ } });
   form.addEventListener('submit', async event => {
     event.preventDefault(); submit.disabled = true;
+    const account = state.account?.username;
     try {
       const checked = await command(['lab', 'submit', run.id, JSON.stringify(answers())]);
+      if (state.account?.username !== account) return;
       if (policy && checked.exercise?.terminal) {
         try { sessionStorage.removeItem(draftKey); } catch { /* No stored draft. */ }
         await refresh(); await refreshSessions();
         if (state.tab === 'challenge' && state.challengeRef === `${node.pack_id}:${node.id}`) {
           await renderChallenge(); $('#policy-result')?.focus();
-          if (checked.completed) showChallengeCelebration('Decisions complete!', 'Your result is recorded and your track is ready for the next step.');
+          if (checked.completed && node.milestone) showChallengeCelebration('Decisions complete!', 'Every request decision passed its check.', false, {node, xp: checked.reward?.xp, practice: checked.practice_reward, account, receiptId: `track-complete:${node.pack_id}:${node.id}`});
+          else if (checked.completed) window.AscendRewards?.answer({account, receiptId: `track-answer:${run.id}`, xp: checked.reward?.newly_awarded ? checked.reward.xp : null, practice: checked.practice_reward?.newly_awarded ? checked.practice_reward : null});
         }
         return;
       }
       result.textContent = checked.summary;
       if (checked.completed) {
-        const gained = (checked.timer?.xp || 0) - (run.timer?.xp || 0);
+        const gained = checked.reward?.xp || 0;
         result.textContent = `✓ Verified.${gained > 0 ? ` +${gained} XP.` : ''} ${run.exercise === 'case' ? 'Your scenario decision passed; the hands-on assessment remains separate.' : 'The server recorded the demonstrated result.'}`;
         form.querySelectorAll('input, button').forEach(input => input.disabled = true);
         try { sessionStorage.removeItem(draftKey); } catch { /* No stored draft. */ }
         await refresh(); await refreshSessions();
         if (state.tab === 'path') await renderPath();
-        if (state.tab === 'challenge') showChallengeCelebration('Challenge complete!', `${gained > 0 ? `+${gained} XP earned. ` : ''}Your evidence is recorded. Continue with the next task.`);
-      } else submit.disabled = false;
+        if (state.tab === 'challenge' && state.challengeRef === `${node.pack_id}:${node.id}` && state.account?.username === account) showChallengeCelebration('Challenge complete!', 'Your evidence passed and the result is saved.', false, {node, xp: checked.reward?.xp, practice: checked.practice_reward, account, receiptId: `track-complete:${node.pack_id}:${node.id}`});
+      } else {
+        const credit = checked.practice_reward?.newly_awarded ? window.AscendRewards?.practiceText(checked.practice_reward) : '';
+        if (credit) result.append(el('span', ` ${credit} for the submitted work.`));
+        submit.disabled = false;
+      }
     } catch (error) { result.textContent = error.message; submit.disabled = false; }
   });
   const reset = el('details', undefined, 'quiet-details'); reset.append(el('summary', 'Exercise options'), el('p', 'A fresh instance replaces the exercise data and clears your draft answers. The original timer target is preserved.', 'muted small'));
@@ -1114,13 +1173,15 @@ function showCase(node, run) {
   form.append(group); column.append(form);
   const status = el('div', undefined, 'case-feedback'); status.setAttribute('role', 'status');
   if (terminal) {
-    status.dataset.feedback = run.passed ? 'success' : 'warning';
-    status.append(el('h2', run.passed ? 'Correct. Check complete.' : 'Answer recorded. No XP earned.'));
-    if (run.feedback?.explanation) status.append(el('p', run.feedback.explanation));
-    status.append(button(run.passed ? 'Continue learning' : 'Continue without XP', async () => {
+    if (run.passed) window.AscendRewards?.inlineAnswer(status, {title: 'Correct. Check complete.', explanation: run.feedback?.explanation, xp: run.reward?.xp, practice: run.practice_reward});
+    else {
+      AscendFeedback.set(status, {kind: 'warning', title: 'Answer recorded. No XP earned.', message: run.feedback?.explanation});
+      window.AscendRewards?.decorate(status, {kind: 'answer', xp: run.reward?.xp, practice: run.practice_reward, positive: false, evidence: 'Practice credit recognizes the recorded attempt. Review the explanation before continuing.'});
+    }
+    const actions = el('div', undefined, 'pg-actions'); actions.append(button(run.passed ? 'Continue learning' : 'Continue without XP', async () => {
       if (!run.passed && node.status === 'todo') await api(`nodes/${node.pack_id}:${node.id}/mark`, {status: 'skipped'});
       await refresh(); await switchTab('today');
-    }, ''));
+    }, '')); $('.feedback-copy', status).append(actions);
     column.append(status);
   } else {
     form.append(el('p', 'One submission. Review your choice before sending.', 'field-help'));
@@ -1129,7 +1190,9 @@ function showCase(node, run) {
     form.addEventListener('submit', event => {
       event.preventDefault();
       runAction(submit, async () => {
+        const account = state.account?.username;
         const checked = await command(['lab', 'submit', run.id, JSON.stringify({choice: group.querySelector(':checked')?.value})]);
+        if (state.account?.username !== account) return;
         try { sessionStorage.removeItem(draftKey); } catch { /* No saved draft. */ }
         await refresh();
         if (state.tab === 'challenge' && state.challengeRef === `${node.pack_id}:${node.id}`) {
@@ -1138,7 +1201,10 @@ function showCase(node, run) {
           feedback?.scrollIntoView({block: 'nearest', behavior: 'instant'});
           if (feedback) { feedback.tabIndex = -1; feedback.focus({preventScroll: true}); }
         }
-        if (checked.completed) showChallengeCelebration('Knowledge check complete!', 'Your answer is recorded. Continue with the next task.');
+        if (checked.completed && state.tab === 'challenge' && state.challengeRef === `${node.pack_id}:${node.id}` && state.account?.username === account) {
+          if (node.milestone) showChallengeCelebration('Knowledge check complete!', 'Your scenario decision passed and its explanation is saved below.', false, {node, xp: checked.reward?.xp, practice: checked.practice_reward, account, receiptId: `track-complete:${node.pack_id}:${node.id}`});
+          else window.AscendRewards?.answer({account, receiptId: `track-answer:${run.id}`, xp: checked.reward?.newly_awarded ? checked.reward.xp : null, practice: checked.practice_reward?.newly_awarded ? checked.practice_reward : null});
+        }
         if (!checked.terminal && !checked.completed) status.textContent = checked.summary;
       });
     });
@@ -1153,30 +1219,37 @@ async function browseTracks() {
   const [catalog, installed, labs] = await Promise.all([command(['pack', 'registry']), api('packs'), api('lab-catalog')]);
   const installedIds = new Set(installed.map(p => p.id));
   const content = openSheet('Track catalog'), title = el('h2', 'Find your next track'); title.id = 'sheet-title';
-  content.append(title, el('p', 'Explore a subject or role. Installing a track keeps your current mission in place.', 'muted'));
+  content.append(title, el('p', 'Explore a subject or role. Numbered tracks form a suggested sequence; choose your entry from the skills you already have. Installing a track keeps your current mission in place.', 'muted'));
   const controls = el('div', undefined, 'catalog-controls');
   const searchGroup = el('div');
-  const search = field(searchGroup, 'catalog-search', 'Search subjects and roles', 'search'); search.placeholder = 'SOC, red team, cloud…';
+  const search = field(searchGroup, 'catalog-search', 'Search subjects and roles', 'search'); search.placeholder = 'Linux, DevOps, VMs, tunnels, SOC…';
   const filter = el('select'); filter.setAttribute('aria-label', 'Track category');
   for (const group of ['All subjects', ...new Set(catalog.map(p => p.category || 'Projects'))]) { const option = el('option', group); option.value = group; filter.append(option); }
   controls.append(searchGroup, filter);
   const count = el('p', '', 'muted'), list = el('div', undefined, 'catalog-results'); content.append(controls, count, list);
   function draw() {
     const query = search.value.toLowerCase().trim();
-    const matches = catalog.filter(p => (filter.value === 'All subjects' || (p.category || 'Projects') === filter.value) && [p.title, p.id, ...(p.aliases || [])].join(' ').toLowerCase().includes(query));
+    const matches = catalog.filter(p => (filter.value === 'All subjects' || (p.category || 'Projects') === filter.value) && [p.title, p.id, p.description || '', ...(p.aliases || [])].join(' ').toLowerCase().includes(query)).sort(compareTracks);
     count.textContent = `${matches.length} tracks · supplied curricula are drafts`; list.replaceChildren();
     for (const pack of matches) {
       const card = el('article', undefined, 'catalog-card'), row = el('div', undefined, 'catalog-row'), copy = el('div', undefined, 'catalog-copy');
-      copy.append(el('p', pack.category || 'Project', 'eyebrow'), el('h3', pack.title));
+      const category = pack.category || 'Projects';
+      const position = trackOrder(pack) === Number.MAX_SAFE_INTEGER ? '' : ` · Track ${pack.track_order} of ${catalog.filter(p => packDomain(p) === category && trackOrder(p) !== Number.MAX_SAFE_INTEGER).length}`;
+      copy.append(el('p', (TRACK_DOMAINS[category] || category) + position, 'eyebrow'), el('h3', pack.title));
+      if (pack.description) copy.append(el('p', pack.description));
       if (pack.main_levels) copy.append(el('p', `${pack.main_levels} levels · ${pack.nodes} tasks`, 'muted'));
       const install = button(installedIds.has(pack.id) ? 'Installed' : 'Install', async () => {
         await command(['pack', 'install', pack.id]); installedIds.add(pack.id); await renderMore(); draw(); notify('Track installed. Your current mission is unchanged.', 'success');
       });
       install.setAttribute('aria-label', installedIds.has(pack.id) ? `${pack.title} is installed` : `Install ${pack.title}`);
       install.disabled = installedIds.has(pack.id); row.append(copy, install); card.append(row);
-      if (pack.entry || pack.limits) {
+      if (pack.entry || pack.prerequisite_summary || pack.limits || pack.recommended_after?.length) {
         const details = el('details'); details.append(el('summary', 'Entry skills & environment'));
-        if (pack.entry) details.append(el('p', pack.entry));
+        if (pack.entry || pack.prerequisite_summary) details.append(el('p', pack.entry || pack.prerequisite_summary));
+        if (pack.recommended_after?.length) {
+          const titles = pack.recommended_after.map(id => catalog.find(p => p.id === id)?.title || id.replaceAll('-', ' '));
+          details.append(el('p', `Suggested background: ${titles.join('; ')}. Prior skills can satisfy this background; completing those tracks is optional.`));
+        }
         if (pack.limits) details.append(el('p', pack.limits));
         card.append(details);
       }
