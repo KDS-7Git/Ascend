@@ -26,16 +26,24 @@ window.AscendContext = (() => {
     if (!headings.length) return;
     const host = section(title), nav = el('nav'); nav.setAttribute('aria-label', title); host.append(nav);
     const links = [];
+    let clickedHeading = null, followClickUntil = 0;
     for (const [i, heading] of headings.entries()) {
       if (!heading.id) heading.id = `context-${screen.id}-${i}`;
       const anchor = el('a', heading.textContent); anchor.href = `#${heading.id}`;
       anchor.addEventListener('click', event => {
-        event.preventDefault(); heading.tabIndex = -1; heading.focus({preventScroll:true});
+        event.preventDefault();
+        clickedHeading = heading; followClickUntil = performance.now() + 700;
+        for (const item of links) {
+          if (item.heading === heading) item.anchor.setAttribute('aria-current', 'location'); else item.anchor.removeAttribute('aria-current');
+        }
+        heading.tabIndex = -1; heading.focus({preventScroll:true});
         heading.scrollIntoView({block:'start', behavior:document.documentElement.dataset.motion === 'off' ? 'instant' : 'smooth'});
       }); nav.append(anchor); links.push({anchor, heading});
     }
     observer = new IntersectionObserver(entries => {
-      const entry = entries.find(item => item.isIntersecting); if (!entry) return;
+      const entry = entries.find(item => item.isIntersecting
+        && (performance.now() >= followClickUntil || item.target === clickedHeading));
+      if (!entry) return;
       for (const item of links) {
         if (item.heading === entry.target) item.anchor.setAttribute('aria-current', 'location'); else item.anchor.removeAttribute('aria-current');
       }

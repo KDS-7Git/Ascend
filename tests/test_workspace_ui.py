@@ -19,6 +19,227 @@ def _finish_motion(page):
     }""")
 
 
+def _check_sliding_selection(page, group, selected, before):
+    assert before is not None
+    marker = group.locator(".selection-indicator")
+    positions = marker.evaluate("""async e => {
+        const moving = () => e.getAnimations().find(a => a.transitionProperty === 'transform');
+        for (let i = 0; i < 30 && !moving(); i++)
+            await new Promise(requestAnimationFrame);
+        const animation = moving();
+        if (!animation) throw new Error('Selection did not slide');
+        const frames = animation.effect.getKeyframes();
+        const from = new DOMMatrix(frames[0].transform), to = new DOMMatrix(frames.at(-1).transform);
+        e.getAnimations().forEach(a => {
+            a.pause(); a.currentTime = a.effect.getComputedTiming().duration / 2;
+        });
+        const middle = new DOMMatrix(getComputedStyle(e).transform);
+        return {from:{x:from.m41, y:from.m42}, to:{x:to.m41, y:to.m42}, middle:{x:middle.m41, y:middle.m42}};
+    }""")
+    start, middle, destination = positions["from"], positions["middle"], positions["to"]
+    axis = max(("x", "y"), key=lambda name: abs(destination[name] - start[name]))
+    assert (
+        min(start[axis], destination[axis])
+        < middle[axis]
+        < max(start[axis], destination[axis])
+    ), positions
+    marker.evaluate("e => e.getAnimations().forEach(a => a.finish())")
+    after, destination = marker.evaluate(
+        "(marker, selected) => [marker.getBoundingClientRect().toJSON(), selected.getBoundingClientRect().toJSON()]",
+        selected.element_handle(),
+    )
+    for name in ("x", "y", "width", "height"):
+        assert abs(after[name] - destination[name]) < 1, (after, destination)
+
+
+@pytest.mark.parametrize("width,theme", [(1440, "light"), (390, "dark")])
+def test_navigation_selection_slides_retargets_and_honors_motion(
+    live_server, width, theme
+):
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page(viewport={"width": width, "height": 1000})
+        page.add_init_script(f"localStorage.setItem('ascend-theme', '{theme}')")
+        page.goto(live_server)
+        expect(page.locator("#app-loader")).not_to_be_visible()
+        _finish_motion(page)
+        nav = page.locator(".primary-nav")
+        marker = nav.locator(".selection-indicator")
+        before = marker.bounding_box()
+        selected = nav.get_by_role("button", name="Playground", exact=True)
+        selected.click()
+        expect(selected).to_have_attribute("aria-current", "page")
+        _check_sliding_selection(page, nav, selected, before)
+        nav.get_by_role("button", name="Stats", exact=True).click()
+        nav.get_by_role("button", name="Path", exact=True).click()
+        selected = nav.locator("[aria-current='page']")
+        expect(selected).to_have_text("Path")
+        page.wait_for_function("""() => {
+            const a = document.querySelector('.primary-nav .selection-indicator').getBoundingClientRect();
+            const b = document.querySelector('.primary-nav [aria-current]').getBoundingClientRect();
+            return Math.abs(a.x - b.x) < 1 && Math.abs(a.y - b.y) < 1;
+        }""")
+        page.emulate_media(reduced_motion="reduce")
+        nav.get_by_role("button", name="Today", exact=True).click()
+        expect(page.locator("html")).to_have_attribute("data-motion", "off")
+        page.wait_for_function("""() => {
+            const marker = document.querySelector('.primary-nav .selection-indicator');
+            const target = document.querySelector('.primary-nav [aria-current]');
+            const a = marker.getBoundingClientRect(), b = target.getBoundingClientRect();
+            return Math.abs(a.x - b.x) < 1 && Math.abs(a.y - b.y) < 1
+                && marker.getAnimations().length === 0;
+        }""")
+        page.emulate_media(forced_colors="active")
+        expect(marker).not_to_be_visible()
+        expect(nav.get_by_role("button", name="Today", exact=True)).to_have_attribute(
+            "aria-current", "page"
+        )
+        browser.close()
+
+
+@pytest.mark.parametrize("width", [1440, 390])
+def test_time_and_playground_selections_slide_and_resize(live_server, width):
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page(viewport={"width": width, "height": 1000})
+        page.goto(live_server)
+        expect(page.locator("#app-loader")).not_to_be_visible()
+        _finish_motion(page)
+        times = page.get_by_role("group", name="Time available")
+        before = times.locator(".selection-indicator").bounding_box()
+        selected = times.get_by_role("button", name="30 min", exact=True)
+        selected.click()
+        _check_sliding_selection(page, times, selected, before)
+        page.get_by_role("button", name="Playground", exact=True).click()
+        _finish_motion(page)
+        tabs = page.get_by_role("navigation", name="Playground sections")
+        before = tabs.locator(".selection-indicator").bounding_box()
+        selected = tabs.get_by_role("link", name="Saved work & history", exact=True)
+        selected.click()
+        _check_sliding_selection(page, tabs, selected, before)
+        page.set_viewport_size(
+            {"width": 390 if width == 1440 else 1440, "height": 1000}
+        )
+        page.wait_for_function("""() => {
+            const marker = document.querySelector('.playground-tabs .selection-indicator');
+            const target = document.querySelector('.playground-tabs [aria-current]');
+            const a = marker.getBoundingClientRect(), b = target.getBoundingClientRect();
+            return Math.abs(a.x - b.x) < 1 && Math.abs(a.y - b.y) < 1
+                && Math.abs(a.width - b.width) < 1 && marker.getAnimations().length === 0;
+        }""")
+        assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+        browser.close()
+
+
+def test_rebuilt_guide_lab_and_prediction_selections_slide(live_server):
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page(viewport={"width": 1440, "height": 1000})
+        page.goto(live_server + "/#docs/getting-started")
+        expect(page.locator("#app-loader")).not_to_be_visible()
+        _finish_motion(page)
+        topics = page.locator("#docs-topics")
+        before = topics.locator(".selection-indicator").bounding_box()
+        selected = topics.get_by_role("link", name="Timers & XP", exact=True)
+        selected.click()
+        _check_sliding_selection(page, topics, selected, before)
+        page.goto(live_server + "/#lab/labtainers-network-basics")
+        expect(page.get_by_role("navigation", name="Lab exercises")).to_be_visible()
+        _finish_motion(page)
+        labs = page.get_by_role("navigation", name="Lab exercises")
+        before = labs.locator(".selection-indicator").bounding_box()
+        selected = labs.get_by_role("link").nth(1)
+        selected.click()
+        expect(labs.get_by_role("link").nth(1)).to_have_attribute(
+            "aria-current", "page"
+        )
+        _check_sliding_selection(page, labs, labs.get_by_role("link").nth(1), before)
+        response = page.request.post(
+            live_server + "/api/playground/activities/example-integrity/start", data={}
+        )
+        assert response.ok
+        run = response.json()
+        response = page.request.post(
+            live_server + f"/api/playground/runs/{run['id']}/tour", data={"step": 1}
+        )
+        assert response.ok
+        page.goto(live_server + f"/#activity/{run['id']}")
+        choices = page.locator(".pg-prediction")
+        expect(choices).to_be_visible()
+        _finish_motion(page)
+        choices.get_by_role("button").first.click()
+        expect(choices.locator(".selection-indicator")).to_be_visible()
+        _finish_motion(page)
+        before = choices.locator(".selection-indicator").bounding_box()
+        selected = choices.get_by_role("button").nth(1)
+        selected.click()
+        _check_sliding_selection(page, choices, selected, before)
+        browser.close()
+
+
+def test_pack_dropdown_and_decision_selections_slide_independently(
+    live_server, pack_data
+):
+    from ascend.engine.packs import dump_toml
+
+    pack_data["node"][0]["verify"] = {"type": "lab", "exercise": "access-policy"}
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page(viewport={"width": 1440, "height": 1000})
+        response = page.request.post(
+            live_server + "/api/packs",
+            multipart={
+                "file": {
+                    "name": "test.toml",
+                    "mimeType": "text/plain",
+                    "buffer": dump_toml(pack_data).encode(),
+                }
+            },
+        )
+        assert response.ok
+        page.goto(live_server + "/#more")
+        expect(page.locator("#app-loader")).not_to_be_visible()
+        _finish_motion(page)
+        page.get_by_text("Import a pack", exact=True).click()
+        field = page.get_by_label("Install a community pack by ID", exact=True)
+        field.fill("devops")
+        dropdown = page.get_by_role("listbox", name="Available community packs")
+        field.press("ArrowDown")
+        expect(dropdown.locator(".selection-indicator")).to_be_visible()
+        _finish_motion(page)
+        before = dropdown.locator(".selection-indicator").bounding_box()
+        field.press("ArrowDown")
+        _check_sliding_selection(
+            page, dropdown, dropdown.get_by_role("option", selected=True), before
+        )
+        field.press("Escape")
+        page.get_by_role("button", name="Today", exact=True).click()
+        page.locator(".next-card").get_by_role("button", name="Open challenge").click()
+        page.get_by_role("button", name="Start verified exercise").click()
+        choices = page.get_by_role("group", name="Request r1", exact=True).locator(
+            ".decision-choices"
+        )
+        choices.get_by_role("radio", name="Allow", exact=True).check()
+        expect(choices.locator(".selection-indicator")).to_be_visible()
+        _finish_motion(page)
+        before = choices.locator(".selection-indicator").bounding_box()
+        choices.get_by_role("radio", name="Deny", exact=True).check()
+        _check_sliding_selection(
+            page, choices, choices.locator(".decision-choice").nth(1), before
+        )
+        page.get_by_role("group", name="Request r2", exact=True).get_by_role(
+            "radio", name="Allow", exact=True
+        ).check()
+        expect(choices.get_by_role("radio", name="Deny", exact=True)).to_be_checked()
+        marker_box, selected_box = choices.locator(".selection-indicator").evaluate(
+            "(marker, selected) => [marker.getBoundingClientRect().toJSON(), selected.getBoundingClientRect().toJSON()]",
+            choices.locator(".decision-choice").nth(1).element_handle(),
+        )
+        for name in ("x", "y", "width", "height"):
+            assert abs(marker_box[name] - selected_box[name]) < 1
+        browser.close()
+
+
 @pytest.mark.parametrize("theme", ["light", "dark"])
 def test_mouse_grid_stays_synchronized_and_keeps_controls_usable(
     live_server, theme, tmp_path
