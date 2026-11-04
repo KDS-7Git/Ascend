@@ -77,6 +77,16 @@ button:focus-visible,a:focus-visible,summary:focus-visible { outline-color:var(-
 .card:not(.pg-result):not(.session-result):not(.challenge-card),.level-section { box-shadow:3px 3px 0 var(--shadow); }
 .card.settings { padding:24px; margin:0 0 24px; border:2px solid var(--line); border-radius:7px; background:var(--surface); }
 .card.settings:last-child { margin-bottom:0; }
+.community-pack-picker { position:relative; flex:1 1 160px; min-width:0; }
+.community-pack-picker>input { width:100%; }
+.community-pack-options { position:absolute; top:calc(100% + 5px); left:0; right:0; z-index:5; max-height:min(280px,40dvh); overflow-y:auto; overscroll-behavior:contain; margin:0; padding:5px; list-style:none; border:2px solid var(--line); border-radius:var(--control-radius); background:var(--surface); box-shadow:var(--shadow-sm); }
+.community-pack-options.opens-above { top:auto; bottom:calc(100% + 5px); }
+.community-pack-options>li { padding:10px; min-height:44px; border-radius:3px; cursor:pointer; overflow-wrap:anywhere; }
+.community-pack-options>li:hover,.community-pack-options>li[aria-selected='true'] { background:var(--soft); }
+.community-pack-options strong,.community-pack-options span { display:block; }
+.community-pack-options strong { font-size:.82rem; }
+.community-pack-options span { margin-top:3px; font-size:.76rem; color:var(--muted); }
+.community-pack-options>li[aria-disabled='true'] { color:var(--muted); cursor:default; background:transparent; }
 .session-picker { margin-bottom:20px; gap:16px; }
 .session-picker>p { font-size:.8rem; color:var(--muted); }
 .time-chips { padding:3px; border-width:1.5px; }

@@ -705,6 +705,8 @@ function drawMissionPicker() {
 }
 async function renderMore() {
   const [packs, parked, catalog] = await Promise.all([api('packs'), command(['parked']), command(['pack', 'registry'])]);
+  communityPackCatalog = [...catalog].sort((a, b) => a.id.localeCompare(b.id));
+  if ($('#pack-id').getAttribute('aria-expanded') === 'true') drawCommunityPackSuggestions();
   // Older servers omit categories from installed packs. Resolve stable IDs
   // against the catalog so existing installations get the same domain picker.
   const entries = new Map(catalog.map(pack => [pack.id, pack]));
@@ -726,6 +728,53 @@ async function renderMore() {
     item.append(button('Resolve', async () => { await command(['resolve', String(idea.id)]); await renderMore(); }));
     return item;
   }));
+}
+let communityPackCatalog = [], communityPackActive = -1;
+function closeCommunityPackSuggestions() {
+  $('#community-pack-options').hidden = true;
+  $('#pack-id').setAttribute('aria-expanded', 'false');
+  $('#pack-id').removeAttribute('aria-activedescendant');
+  communityPackActive = -1;
+}
+function drawCommunityPackSuggestions() {
+  const input = $('#pack-id'), list = $('#community-pack-options');
+  if (document.activeElement !== input) { closeCommunityPackSuggestions(); return; }
+  const query = input.value.trim().toLowerCase();
+  const matches = communityPackCatalog.filter(pack => `${pack.id} ${packTitle(pack)}`.toLowerCase().includes(query));
+  communityPackActive = -1; input.removeAttribute('aria-activedescendant');
+  list.replaceChildren(...matches.map(pack => {
+    const option = el('li'); option.id = `community-pack-option-${pack.id}`; option.dataset.packId = pack.id;
+    option.setAttribute('role', 'option'); option.setAttribute('aria-selected', 'false');
+    option.append(el('strong', pack.id), el('span', packTitle(pack))); return option;
+  }));
+  if (!matches.length) {
+    const empty = el('li', 'No community packs match.');
+    empty.setAttribute('role', 'option'); empty.setAttribute('aria-disabled', 'true'); list.append(empty);
+  }
+  list.hidden = false; input.setAttribute('aria-expanded', 'true');
+  positionCommunityPackSuggestions();
+}
+function positionCommunityPackSuggestions() {
+  const list = $('#community-pack-options');
+  if (list.hidden) return;
+  const rect = $('#pack-id').getBoundingClientRect(), viewport = window.visualViewport;
+  const top = viewport?.offsetTop || 0, height = viewport?.height || innerHeight;
+  const below = top + height - rect.bottom, above = rect.top - top;
+  list.classList.toggle('opens-above', below < Math.min(list.scrollHeight, 280, height * .4) + 10 && above > below);
+}
+function activateCommunityPackOption(index) {
+  const options = [...$('#community-pack-options').querySelectorAll('[data-pack-id]')];
+  if (!options.length) return;
+  communityPackActive = (index + options.length) % options.length;
+  options.forEach((option, i) => option.setAttribute('aria-selected', String(i === communityPackActive)));
+  const option = options[communityPackActive];
+  $('#pack-id').setAttribute('aria-activedescendant', option.id);
+  option.scrollIntoView({block:'nearest'});
+}
+function chooseCommunityPackOption(option) {
+  if (!option) return;
+  $('#pack-id').value = option.dataset.packId;
+  closeCommunityPackSuggestions();
 }
 function drawInstalledPacks() {
   const query = $('#installed-search').value.toLowerCase().trim();
@@ -827,6 +876,27 @@ for (const dialog of document.querySelectorAll('dialog')) dialog.addEventListene
 $('#xp-link').addEventListener('click', () => switchTab('stats').catch(error => notify(error.message, 'error')));
 $('#profile-link').addEventListener('click', () => switchTab('profile').catch(error => notify(error.message, 'error')));
 $('#installed-search').addEventListener('input', drawInstalledPacks);
+for (const event of ['focus', 'input', 'click']) $('#pack-id').addEventListener(event, drawCommunityPackSuggestions);
+$('#pack-id').addEventListener('blur', closeCommunityPackSuggestions);
+$('#pack-id').addEventListener('keydown', event => {
+  const list = $('#community-pack-options');
+  if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+    event.preventDefault();
+    if (list.hidden) drawCommunityPackSuggestions();
+    const count = list.querySelectorAll('[data-pack-id]').length;
+    const next = communityPackActive < 0 ? (event.key === 'ArrowDown' ? 0 : count - 1) : communityPackActive + (event.key === 'ArrowDown' ? 1 : -1);
+    activateCommunityPackOption(next);
+  } else if (event.key === 'Enter' && !list.hidden && communityPackActive >= 0) {
+    event.preventDefault(); chooseCommunityPackOption(list.querySelectorAll('[data-pack-id]')[communityPackActive]);
+  } else if (event.key === 'Escape' && !list.hidden) {
+    event.preventDefault(); closeCommunityPackSuggestions();
+  }
+});
+$('#community-pack-options').addEventListener('pointerdown', event => event.preventDefault());
+$('#community-pack-options').addEventListener('click', event => chooseCommunityPackOption(event.target.closest('[data-pack-id]')));
+window.addEventListener('resize', positionCommunityPackSuggestions, {passive:true});
+window.visualViewport?.addEventListener('resize', positionCommunityPackSuggestions, {passive:true});
+document.addEventListener('scroll', positionCommunityPackSuggestions, {capture:true, passive:true});
 $('#show-all-packs').addEventListener('click', () => { state.showAllPacks = !state.showAllPacks; drawInstalledPacks(); });
 $('#mission-domain').addEventListener('change', () => drawMissionTracks());
 $('#mission-pack').addEventListener('change', () => { missionPickerHint(); syncMissionActions(); });
@@ -839,7 +909,7 @@ function handleForm(selector, handler) {
   });
 }
 handleForm("#search-form", async () => { const results = await api(`search?q=${encodeURIComponent($("#search").value)}`); $("#search-results").replaceChildren(...results.map(entry => { const item = el("article", undefined, "search-result"); item.append(el("p", entry.learned), el("p", `${entry.day} · ${entry.node_id || "Personal note"}`, "muted")); return item; })); if (!results.length) $("#search-results").append(el("p", "No matching notes yet.", "muted")); });
-handleForm("#install-form", async () => { await command(["pack", "install", $("#pack-id").value]); await renderMore(); notify("Pack installed. Read it before trusting its checks."); });
+handleForm("#install-form", async () => { closeCommunityPackSuggestions(); await command(["pack", "install", $("#pack-id").value]); await renderMore(); notify("Pack installed. Read it before trusting its checks."); });
 $("#pack-upload").addEventListener("change", async event => { if (!event.target.files[0]) return; const data = new FormData(); data.append("file", event.target.files[0]); try { await api("packs", data); await renderMore(); notify("Pack installed."); } catch (error) { notify(error.message, 'error'); } });
 bindAction('#start-mission', async () => {
   const args = ['mission', 'start', $('#mission-pack').value];

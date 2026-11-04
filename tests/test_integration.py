@@ -685,6 +685,77 @@ def test_library_rows_profile_and_guide_navigation(live_server, width, height):
         browser.close()
 
 
+@pytest.mark.parametrize("width,theme", [(1440, "light"), (390, "dark")])
+def test_community_pack_suggestions_filter_select_and_install(
+    live_server, width, theme
+):
+    import httpx
+    from playwright.sync_api import sync_playwright, expect
+
+    from ascend.registry import registry_entries
+
+    catalog = registry_entries()
+    home_pack = next(pack for pack in catalog if pack["id"] == "home-hack-lab")
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page(viewport={"width": width, "height": 1000})
+        page.add_init_script(f"localStorage.setItem('ascend-theme', '{theme}')")
+        errors = []
+        page.on("pageerror", lambda error: errors.append(str(error)))
+        page.goto(live_server + "/#more")
+        expect(page.locator("#app-loader")).not_to_be_visible()
+        page.get_by_text("Import a pack", exact=True).click()
+        field = page.get_by_label("Install a community pack by ID", exact=True)
+        suggestions = page.get_by_role("listbox", name="Available community packs")
+        field.press_sequentially("home-hack")
+        expect(field).to_have_attribute("aria-expanded", "true")
+        expect(suggestions).to_be_visible()
+        expect(suggestions.get_by_role("option")).to_have_count(1)
+        expect(suggestions).to_contain_text(home_pack["title"])
+        bounds = suggestions.bounding_box()
+        assert 0 <= bounds["y"] and bounds["y"] + bounds["height"] <= 1001
+        field.press("ArrowDown")
+        expect(suggestions.get_by_role("option", selected=True)).to_contain_text(
+            "home-hack-lab"
+        )
+        field.press("Enter")
+        expect(field).to_have_value("home-hack-lab")
+        expect(suggestions).not_to_be_visible()
+        assert "home-hack-lab" not in {
+            pack["id"] for pack in httpx.get(live_server + "/api/packs").json()
+        }
+
+        field.fill("no-such-community-pack")
+        expect(suggestions).to_contain_text("No community packs match.")
+        expect(suggestions.get_by_role("option")).to_have_attribute(
+            "aria-disabled", "true"
+        )
+        field.press("ArrowDown")
+        assert field.get_attribute("aria-activedescendant") is None
+        field.press("Escape")
+        expect(suggestions).not_to_be_visible()
+
+        field.fill(home_pack["title"].lower())
+        suggestions.get_by_role("option").click()
+        expect(field).to_have_value("home-hack-lab")
+        expect(field).to_be_focused()
+        expect(suggestions).not_to_be_visible()
+        page.locator("#install-form").get_by_role(
+            "button", name="Install", exact=True
+        ).click()
+        expect(page.locator("#notice")).to_contain_text("Pack installed.")
+        assert "home-hack-lab" in {
+            pack["id"] for pack in httpx.get(live_server + "/api/packs").json()
+        }
+        field.fill("")
+        expect(suggestions.get_by_role("option")).to_have_count(len(catalog))
+        field.press("Tab")
+        expect(suggestions).not_to_be_visible()
+        assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+        assert not errors, errors
+        browser.close()
+
+
 @pytest.mark.parametrize("installed_category", [None, "Custom"])
 def test_track_picker_groups_existing_packs_from_catalog(
     live_server, installed_category

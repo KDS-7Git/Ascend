@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="/feedback.css?v=20261103-ui3">
   <link rel="stylesheet" href="/rewards.css?v=20261103-hover1">
   <link rel="stylesheet" href="/context-rail.css?v=20261103-ui3">
-  <link rel="stylesheet" href="/workspace-ui.css?v=20261104-grid2">
+  <link rel="stylesheet" href="/workspace-ui.css?v=20261104-pack-suggestions1">
   <script src="/feedback.js?v=20261103-ui3" defer></script>
   <script src="/effects.js?v=20261104-grid2" defer></script>
   <script src="/rewards.js?v=20261103-hover1" defer></script>
@@ -28,7 +28,7 @@
   <script src="/challenge-work.js?v=20261103-hover1" defer></script>
   <script src="/accounts.js?v=20261103-hover1" defer></script>
   <script src="/workspace-ui.js?v=20261103-hover1" defer></script>
-  <script src="/app.js?v=20261103-hover1" defer></script>
+  <script src="/app.js?v=20261104-pack-suggestions1" defer></script>
 </head>
 <body>
   <div id="app-loader" class="app-loader" role="status" aria-live="polite">
@@ -134,7 +134,7 @@
         <div class="mission-actions"><p class="muted small">Pause your current mission before starting another. Your progress stays saved.</p><button id="pause-mission" class="secondary">Pause</button><button id="finish-mission" class="text-button">Finish</button></div>
         <details class="quiet-details"><summary>Mission reminder time</summary><label for="mission-time">Mission reminder override</label><div class="input-row"><input id="mission-time" type="time"><button id="save-mission-time" class="secondary">Save override</button></div></details>
       </section>
-      <section class="card settings library"><div class="section-heading"><h2>Installed packs <span id="pack-count" class="count-badge"></span></h2><a href="#docs/packs" class="subtle-link">About packs</a></div><label class="sr-only" for="installed-search">Search installed packs</label><input id="installed-search" type="search" placeholder="Find a pack in your library"><div id="pack-list" role="list" aria-label="Installed packs"></div><button id="show-all-packs" class="text-button" hidden>Show all packs</button><details class="quiet-details"><summary>Import a pack</summary><form id="install-form"><label for="pack-id">Install a community pack by ID</label><div class="input-row"><input id="pack-id" placeholder="home-hack-lab" required><button>Install</button></div></form><label for="pack-upload">Or choose a TOML pack</label><input id="pack-upload" type="file" accept=".toml"></details></section>
+      <section class="card settings library"><div class="section-heading"><h2>Installed packs <span id="pack-count" class="count-badge"></span></h2><a href="#docs/packs" class="subtle-link">About packs</a></div><label class="sr-only" for="installed-search">Search installed packs</label><input id="installed-search" type="search" placeholder="Find a pack in your library"><div id="pack-list" role="list" aria-label="Installed packs"></div><button id="show-all-packs" class="text-button" hidden>Show all packs</button><details class="quiet-details"><summary>Import a pack</summary><form id="install-form"><label for="pack-id">Install a community pack by ID</label><div class="input-row"><div class="community-pack-picker"><input id="pack-id" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="community-pack-options" aria-haspopup="listbox" placeholder="home-hack-lab" autocomplete="off" spellcheck="false" required><ul id="community-pack-options" class="community-pack-options" role="listbox" aria-label="Available community packs" hidden></ul></div><button>Install</button></div></form><label for="pack-upload">Or choose a TOML pack</label><input id="pack-upload" type="file" accept=".toml"></details></section>
       <details class="card settings ideas"><summary>Ideas for later</summary><p class="muted">Save the thought. Keep your place.</p><form id="park-form"><label for="park-note">An idea for later</label><div class="input-row"><input id="park-note" required><button>Park it</button></div></form><ul id="parked-list"></ul></details>
     </section>
     <section id="docs" class="screen docs-layout" aria-labelledby="guide-title" hidden>
