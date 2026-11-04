@@ -1,0 +1,82 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Change one bottleneck, rerun the same workload and retain the before/after record.",
+  "contract": [
+    {
+      "field": "same_workload",
+      "op": "eq",
+      "value": true,
+      "why": "same workload: satisfy the stated optimize and verify contract"
+    },
+    {
+      "field": "same_error_accounting",
+      "op": "eq",
+      "value": true,
+      "why": "same error accounting: satisfy the stated optimize and verify contract"
+    },
+    {
+      "field": "correctness_preserved",
+      "op": "eq",
+      "value": true,
+      "why": "correctness preserved: satisfy the stated optimize and verify contract"
+    },
+    {
+      "field": "gain_from_discarding_work",
+      "op": "eq",
+      "value": false,
+      "why": "gain from discarding work: satisfy the stated optimize and verify contract"
+    },
+    {
+      "field": "recovery_retested",
+      "op": "eq",
+      "value": true,
+      "why": "recovery retested: satisfy the stated optimize and verify contract"
+    }
+  ],
+  "starting": {
+    "same_workload": false,
+    "same_error_accounting": true,
+    "correctness_preserved": true,
+    "gain_from_discarding_work": false,
+    "recovery_retested": true
+  },
+  "reference": {
+    "same_workload": true,
+    "same_error_accounting": true,
+    "correctness_preserved": true,
+    "gain_from_discarding_work": false,
+    "recovery_retested": true
+  },
+  "rules": [
+    {
+      "field": "same_workload",
+      "op": "eq",
+      "value": true,
+      "why": "same workload: satisfy the stated optimize and verify contract"
+    },
+    {
+      "field": "same_error_accounting",
+      "op": "eq",
+      "value": true,
+      "why": "same error accounting: satisfy the stated optimize and verify contract"
+    },
+    {
+      "field": "correctness_preserved",
+      "op": "eq",
+      "value": true,
+      "why": "correctness preserved: satisfy the stated optimize and verify contract"
+    },
+    {
+      "field": "gain_from_discarding_work",
+      "op": "eq",
+      "value": false,
+      "why": "gain from discarding work: satisfy the stated optimize and verify contract"
+    },
+    {
+      "field": "recovery_retested",
+      "op": "eq",
+      "value": true,
+      "why": "recovery retested: satisfy the stated optimize and verify contract"
+    }
+  ]
+}

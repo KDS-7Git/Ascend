@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Select a workable route when router control or public inbound access is unavailable.",
+  "contract": [
+    {
+      "field": "service_enabled_after_reboot",
+      "op": "eq",
+      "value": true,
+      "why": "service enabled after reboot: satisfy the stated serve from home or a vps contract"
+    },
+    {
+      "field": "public_route_available",
+      "op": "eq",
+      "value": false,
+      "why": "public route available: satisfy the stated serve from home or a vps contract"
+    },
+    {
+      "field": "chosen_access",
+      "op": "eq",
+      "value": "private-vpn-or-outbound-relay",
+      "why": "chosen access: satisfy the stated serve from home or a vps contract"
+    },
+    {
+      "field": "outside_probe_performed",
+      "op": "eq",
+      "value": false,
+      "why": "outside probe performed: satisfy the stated serve from home or a vps contract"
+    }
+  ],
+  "starting": {
+    "service_enabled_after_reboot": true,
+    "public_route_available": false,
+    "chosen_access": "port-forward-despite-cgnat",
+    "outside_probe_performed": true
+  },
+  "reference": {
+    "service_enabled_after_reboot": true,
+    "public_route_available": false,
+    "chosen_access": "private-vpn-or-outbound-relay",
+    "outside_probe_performed": false
+  },
+  "rules": [
+    {
+      "field": "service_enabled_after_reboot",
+      "op": "eq",
+      "value": true,
+      "why": "service enabled after reboot: satisfy the stated serve from home or a vps contract"
+    },
+    {
+      "field": "public_route_available",
+      "op": "eq",
+      "value": false,
+      "why": "public route available: satisfy the stated serve from home or a vps contract"
+    },
+    {
+      "field": "chosen_access",
+      "op": "eq",
+      "value": "private-vpn-or-outbound-relay",
+      "why": "chosen access: satisfy the stated serve from home or a vps contract"
+    },
+    {
+      "field": "outside_probe_performed",
+      "op": "eq",
+      "value": false,
+      "why": "outside probe performed: satisfy the stated serve from home or a vps contract"
+    }
+  ]
+}

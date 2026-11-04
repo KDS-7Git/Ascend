@@ -1,0 +1,10 @@
+work/
+notes/
+data/
+backups/
+secrets/
+.terraform/
+*.tfstate*
+*.sqlite*
+*.lock.info
+__pycache__/

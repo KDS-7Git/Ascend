@@ -1,0 +1,80 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Repair drift without altering a guest outside the inventory.",
+  "contract": [
+    {
+      "field": "inventory_scope",
+      "op": "eq",
+      "value": [
+        "relay-a",
+        "relay-b"
+      ],
+      "why": "inventory scope: satisfy the stated configure a fleet contract"
+    },
+    {
+      "field": "unrelated_guest_changed",
+      "op": "eq",
+      "value": false,
+      "why": "unrelated guest changed: satisfy the stated configure a fleet contract"
+    },
+    {
+      "field": "second_run_unneeded_changes",
+      "op": "eq",
+      "value": 0,
+      "why": "second run unneeded changes: satisfy the stated configure a fleet contract"
+    },
+    {
+      "field": "service_controls_passed",
+      "op": "eq",
+      "value": true,
+      "why": "service controls passed: satisfy the stated configure a fleet contract"
+    }
+  ],
+  "starting": {
+    "inventory_scope": [
+      "relay-a",
+      "relay-b"
+    ],
+    "unrelated_guest_changed": true,
+    "second_run_unneeded_changes": 0,
+    "service_controls_passed": false
+  },
+  "reference": {
+    "inventory_scope": [
+      "relay-a",
+      "relay-b"
+    ],
+    "unrelated_guest_changed": false,
+    "second_run_unneeded_changes": 0,
+    "service_controls_passed": true
+  },
+  "rules": [
+    {
+      "field": "inventory_scope",
+      "op": "eq",
+      "value": [
+        "relay-a",
+        "relay-b"
+      ],
+      "why": "inventory scope: satisfy the stated configure a fleet contract"
+    },
+    {
+      "field": "unrelated_guest_changed",
+      "op": "eq",
+      "value": false,
+      "why": "unrelated guest changed: satisfy the stated configure a fleet contract"
+    },
+    {
+      "field": "second_run_unneeded_changes",
+      "op": "eq",
+      "value": 0,
+      "why": "second run unneeded changes: satisfy the stated configure a fleet contract"
+    },
+    {
+      "field": "service_controls_passed",
+      "op": "eq",
+      "value": true,
+      "why": "service controls passed: satisfy the stated configure a fleet contract"
+    }
+  ]
+}

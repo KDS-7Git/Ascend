@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Recover a wrong origin route or blocked connector transport; restrict a private application.",
+  "contract": [
+    {
+      "field": "origin_running",
+      "op": "eq",
+      "value": true,
+      "why": "origin running: satisfy the stated publish through cloudflared contract"
+    },
+    {
+      "field": "connector_transport_allowed",
+      "op": "eq",
+      "value": true,
+      "why": "connector transport allowed: satisfy the stated publish through cloudflared contract"
+    },
+    {
+      "field": "route_kind",
+      "op": "eq",
+      "value": "temporary-public-http",
+      "why": "route kind: satisfy the stated publish through cloudflared contract"
+    },
+    {
+      "field": "private_service_requires_access_policy",
+      "op": "eq",
+      "value": true,
+      "why": "private service requires access policy: satisfy the stated publish through cloudflared contract"
+    }
+  ],
+  "starting": {
+    "origin_running": true,
+    "connector_transport_allowed": false,
+    "route_kind": "temporary-public-http",
+    "private_service_requires_access_policy": false
+  },
+  "reference": {
+    "origin_running": true,
+    "connector_transport_allowed": true,
+    "route_kind": "temporary-public-http",
+    "private_service_requires_access_policy": true
+  },
+  "rules": [
+    {
+      "field": "origin_running",
+      "op": "eq",
+      "value": true,
+      "why": "origin running: satisfy the stated publish through cloudflared contract"
+    },
+    {
+      "field": "connector_transport_allowed",
+      "op": "eq",
+      "value": true,
+      "why": "connector transport allowed: satisfy the stated publish through cloudflared contract"
+    },
+    {
+      "field": "route_kind",
+      "op": "eq",
+      "value": "temporary-public-http",
+      "why": "route kind: satisfy the stated publish through cloudflared contract"
+    },
+    {
+      "field": "private_service_requires_access_policy",
+      "op": "eq",
+      "value": true,
+      "why": "private service requires access policy: satisfy the stated publish through cloudflared contract"
+    }
+  ]
+}

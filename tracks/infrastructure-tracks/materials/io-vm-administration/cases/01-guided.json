@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Inventory CPU architecture, virtualization support and available memory/storage; select a supported hypervisor route.",
+  "contract": [
+    {
+      "field": "host_architecture",
+      "op": "eq",
+      "value": "x86_64",
+      "why": "host architecture: satisfy the stated understand the host and guest contract"
+    },
+    {
+      "field": "guest_architecture",
+      "op": "eq",
+      "value": "x86_64",
+      "why": "guest architecture: satisfy the stated understand the host and guest contract"
+    },
+    {
+      "field": "kvm_exposed",
+      "op": "eq",
+      "value": true,
+      "why": "kvm exposed: satisfy the stated understand the host and guest contract"
+    },
+    {
+      "field": "guest_ssh_is_host_admin",
+      "op": "eq",
+      "value": false,
+      "why": "guest ssh is host admin: satisfy the stated understand the host and guest contract"
+    }
+  ],
+  "starting": {
+    "host_architecture": "x86_64",
+    "guest_architecture": "x86_64",
+    "kvm_exposed": false,
+    "guest_ssh_is_host_admin": false
+  },
+  "reference": {
+    "host_architecture": "x86_64",
+    "guest_architecture": "x86_64",
+    "kvm_exposed": true,
+    "guest_ssh_is_host_admin": false
+  },
+  "rules": [
+    {
+      "field": "host_architecture",
+      "op": "eq",
+      "value": "x86_64",
+      "why": "host architecture: satisfy the stated understand the host and guest contract"
+    },
+    {
+      "field": "guest_architecture",
+      "op": "eq",
+      "value": "x86_64",
+      "why": "guest architecture: satisfy the stated understand the host and guest contract"
+    },
+    {
+      "field": "kvm_exposed",
+      "op": "eq",
+      "value": true,
+      "why": "kvm exposed: satisfy the stated understand the host and guest contract"
+    },
+    {
+      "field": "guest_ssh_is_host_admin",
+      "op": "eq",
+      "value": false,
+      "why": "guest ssh is host admin: satisfy the stated understand the host and guest contract"
+    }
+  ]
+}

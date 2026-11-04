@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Attempt a cross-project read/resize using the wrong identity.",
+  "contract": [
+    {
+      "field": "learner_projects_isolated",
+      "op": "eq",
+      "value": true,
+      "why": "learner projects isolated: satisfy the stated separate learner and operator roles contract"
+    },
+    {
+      "field": "backend_denies_cross_project",
+      "op": "eq",
+      "value": true,
+      "why": "backend denies cross project: satisfy the stated separate learner and operator roles contract"
+    },
+    {
+      "field": "full_daemon_socket_given_to_learner",
+      "op": "eq",
+      "value": false,
+      "why": "full daemon socket given to learner: satisfy the stated separate learner and operator roles contract"
+    },
+    {
+      "field": "quota_enforced",
+      "op": "eq",
+      "value": true,
+      "why": "quota enforced: satisfy the stated separate learner and operator roles contract"
+    }
+  ],
+  "starting": {
+    "learner_projects_isolated": true,
+    "backend_denies_cross_project": false,
+    "full_daemon_socket_given_to_learner": false,
+    "quota_enforced": false
+  },
+  "reference": {
+    "learner_projects_isolated": true,
+    "backend_denies_cross_project": true,
+    "full_daemon_socket_given_to_learner": false,
+    "quota_enforced": true
+  },
+  "rules": [
+    {
+      "field": "learner_projects_isolated",
+      "op": "eq",
+      "value": true,
+      "why": "learner projects isolated: satisfy the stated separate learner and operator roles contract"
+    },
+    {
+      "field": "backend_denies_cross_project",
+      "op": "eq",
+      "value": true,
+      "why": "backend denies cross project: satisfy the stated separate learner and operator roles contract"
+    },
+    {
+      "field": "full_daemon_socket_given_to_learner",
+      "op": "eq",
+      "value": false,
+      "why": "full daemon socket given to learner: satisfy the stated separate learner and operator roles contract"
+    },
+    {
+      "field": "quota_enforced",
+      "op": "eq",
+      "value": true,
+      "why": "quota enforced: satisfy the stated separate learner and operator roles contract"
+    }
+  ]
+}

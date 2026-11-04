@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Diagnose synthetic queued/bounced mail; perform the public variant only with owned consenting endpoints.",
+  "contract": [
+    {
+      "field": "queue_reason_recorded",
+      "op": "eq",
+      "value": true,
+      "why": "queue reason recorded: satisfy the stated operate queues and delivery contract"
+    },
+    {
+      "field": "retry_bounded",
+      "op": "eq",
+      "value": true,
+      "why": "retry bounded: satisfy the stated operate queues and delivery contract"
+    },
+    {
+      "field": "downstream_restored",
+      "op": "eq",
+      "value": true,
+      "why": "downstream restored: satisfy the stated operate queues and delivery contract"
+    },
+    {
+      "field": "bulk_delete_unrelated_mail",
+      "op": "eq",
+      "value": false,
+      "why": "bulk delete unrelated mail: satisfy the stated operate queues and delivery contract"
+    }
+  ],
+  "starting": {
+    "queue_reason_recorded": false,
+    "retry_bounded": true,
+    "downstream_restored": true,
+    "bulk_delete_unrelated_mail": false
+  },
+  "reference": {
+    "queue_reason_recorded": true,
+    "retry_bounded": true,
+    "downstream_restored": true,
+    "bulk_delete_unrelated_mail": false
+  },
+  "rules": [
+    {
+      "field": "queue_reason_recorded",
+      "op": "eq",
+      "value": true,
+      "why": "queue reason recorded: satisfy the stated operate queues and delivery contract"
+    },
+    {
+      "field": "retry_bounded",
+      "op": "eq",
+      "value": true,
+      "why": "retry bounded: satisfy the stated operate queues and delivery contract"
+    },
+    {
+      "field": "downstream_restored",
+      "op": "eq",
+      "value": true,
+      "why": "downstream restored: satisfy the stated operate queues and delivery contract"
+    },
+    {
+      "field": "bulk_delete_unrelated_mail",
+      "op": "eq",
+      "value": false,
+      "why": "bulk delete unrelated mail: satisfy the stated operate queues and delivery contract"
+    }
+  ]
+}

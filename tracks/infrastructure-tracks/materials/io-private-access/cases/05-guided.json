@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Join a supported managed lab network or an owned Headscale lab; inspect actual connection paths.",
+  "contract": [
+    {
+      "field": "coordinator_owner_known",
+      "op": "eq",
+      "value": true,
+      "why": "coordinator owner known: satisfy the stated compare managed and self-hosted coordination contract"
+    },
+    {
+      "field": "path_observed",
+      "op": "eq",
+      "value": "direct-or-relay-measured",
+      "why": "path observed: satisfy the stated compare managed and self-hosted coordination contract"
+    },
+    {
+      "field": "offline_peer_is_reachable",
+      "op": "eq",
+      "value": false,
+      "why": "offline peer is reachable: satisfy the stated compare managed and self-hosted coordination contract"
+    },
+    {
+      "field": "account_limits_checked",
+      "op": "eq",
+      "value": true,
+      "why": "account limits checked: satisfy the stated compare managed and self-hosted coordination contract"
+    }
+  ],
+  "starting": {
+    "coordinator_owner_known": true,
+    "path_observed": "assumed-direct",
+    "offline_peer_is_reachable": false,
+    "account_limits_checked": true
+  },
+  "reference": {
+    "coordinator_owner_known": true,
+    "path_observed": "direct-or-relay-measured",
+    "offline_peer_is_reachable": false,
+    "account_limits_checked": true
+  },
+  "rules": [
+    {
+      "field": "coordinator_owner_known",
+      "op": "eq",
+      "value": true,
+      "why": "coordinator owner known: satisfy the stated compare managed and self-hosted coordination contract"
+    },
+    {
+      "field": "path_observed",
+      "op": "eq",
+      "value": "direct-or-relay-measured",
+      "why": "path observed: satisfy the stated compare managed and self-hosted coordination contract"
+    },
+    {
+      "field": "offline_peer_is_reachable",
+      "op": "eq",
+      "value": false,
+      "why": "offline peer is reachable: satisfy the stated compare managed and self-hosted coordination contract"
+    },
+    {
+      "field": "account_limits_checked",
+      "op": "eq",
+      "value": true,
+      "why": "account limits checked: satisfy the stated compare managed and self-hosted coordination contract"
+    }
+  ]
+}

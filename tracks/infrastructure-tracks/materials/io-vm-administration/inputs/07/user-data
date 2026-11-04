@@ -1,0 +1,11 @@
+#cloud-config
+users:
+  - name: learner
+    groups: [sudo]
+    sudo: ["ALL=(ALL) NOPASSWD:ALL"]
+    shell: /bin/bash
+    ssh_authorized_keys:
+      - REPLACE_WITH_YOUR_PUBLIC_KEY
+ssh_pwauth: false
+ssh_deletekeys: true
+ssh_genkeytypes: [ed25519, rsa]

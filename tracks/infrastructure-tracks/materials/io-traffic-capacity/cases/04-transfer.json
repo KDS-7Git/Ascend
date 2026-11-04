@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Find why adding workers increases latency or memory without improving useful work.",
+  "contract": [
+    {
+      "field": "workload_class",
+      "op": "eq",
+      "value": "io-wait",
+      "why": "workload class: satisfy the stated choose concurrency deliberately contract"
+    },
+    {
+      "field": "admitted_work_slots",
+      "op": "eq",
+      "value": 2,
+      "why": "admitted work slots: satisfy the stated choose concurrency deliberately contract"
+    },
+    {
+      "field": "slots_are_total_socket_limit",
+      "op": "eq",
+      "value": false,
+      "why": "slots are total socket limit: satisfy the stated choose concurrency deliberately contract"
+    },
+    {
+      "field": "cpu_time_equals_wall_latency",
+      "op": "eq",
+      "value": false,
+      "why": "cpu time equals wall latency: satisfy the stated choose concurrency deliberately contract"
+    }
+  ],
+  "starting": {
+    "workload_class": "io-wait",
+    "admitted_work_slots": 2,
+    "slots_are_total_socket_limit": true,
+    "cpu_time_equals_wall_latency": true
+  },
+  "reference": {
+    "workload_class": "io-wait",
+    "admitted_work_slots": 2,
+    "slots_are_total_socket_limit": false,
+    "cpu_time_equals_wall_latency": false
+  },
+  "rules": [
+    {
+      "field": "workload_class",
+      "op": "eq",
+      "value": "io-wait",
+      "why": "workload class: satisfy the stated choose concurrency deliberately contract"
+    },
+    {
+      "field": "admitted_work_slots",
+      "op": "eq",
+      "value": 2,
+      "why": "admitted work slots: satisfy the stated choose concurrency deliberately contract"
+    },
+    {
+      "field": "slots_are_total_socket_limit",
+      "op": "eq",
+      "value": false,
+      "why": "slots are total socket limit: satisfy the stated choose concurrency deliberately contract"
+    },
+    {
+      "field": "cpu_time_equals_wall_latency",
+      "op": "eq",
+      "value": false,
+      "why": "cpu time equals wall latency: satisfy the stated choose concurrency deliberately contract"
+    }
+  ]
+}

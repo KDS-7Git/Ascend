@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Reject a wrong name, credential or unauthenticated relay attempt.",
+  "contract": [
+    {
+      "field": "mailbox_protocol",
+      "op": "eq",
+      "value": "imap-over-tls",
+      "why": "mailbox protocol: satisfy the stated provide authenticated mailbox access contract"
+    },
+    {
+      "field": "login_requires_authentication",
+      "op": "eq",
+      "value": true,
+      "why": "login requires authentication: satisfy the stated provide authenticated mailbox access contract"
+    },
+    {
+      "field": "tls_name_verified",
+      "op": "eq",
+      "value": true,
+      "why": "tls name verified: satisfy the stated provide authenticated mailbox access contract"
+    },
+    {
+      "field": "password_in_report",
+      "op": "eq",
+      "value": false,
+      "why": "password in report: satisfy the stated provide authenticated mailbox access contract"
+    }
+  ],
+  "starting": {
+    "mailbox_protocol": "imap-over-tls",
+    "login_requires_authentication": true,
+    "tls_name_verified": false,
+    "password_in_report": true
+  },
+  "reference": {
+    "mailbox_protocol": "imap-over-tls",
+    "login_requires_authentication": true,
+    "tls_name_verified": true,
+    "password_in_report": false
+  },
+  "rules": [
+    {
+      "field": "mailbox_protocol",
+      "op": "eq",
+      "value": "imap-over-tls",
+      "why": "mailbox protocol: satisfy the stated provide authenticated mailbox access contract"
+    },
+    {
+      "field": "login_requires_authentication",
+      "op": "eq",
+      "value": true,
+      "why": "login requires authentication: satisfy the stated provide authenticated mailbox access contract"
+    },
+    {
+      "field": "tls_name_verified",
+      "op": "eq",
+      "value": true,
+      "why": "tls name verified: satisfy the stated provide authenticated mailbox access contract"
+    },
+    {
+      "field": "password_in_report",
+      "op": "eq",
+      "value": false,
+      "why": "password in report: satisfy the stated provide authenticated mailbox access contract"
+    }
+  ]
+}

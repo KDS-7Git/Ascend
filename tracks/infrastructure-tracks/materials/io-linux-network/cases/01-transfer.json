@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Diagnose a wrong port and a stopped process from a changed fixture.",
+  "contract": [
+    {
+      "field": "client_port",
+      "op": "eq",
+      "value": 8000,
+      "why": "client port: satisfy the stated follow a real request contract"
+    },
+    {
+      "field": "service_port",
+      "op": "eq",
+      "value": 8000,
+      "why": "service port: satisfy the stated follow a real request contract"
+    },
+    {
+      "field": "service_running",
+      "op": "eq",
+      "value": true,
+      "why": "service running: satisfy the stated follow a real request contract"
+    },
+    {
+      "field": "claim",
+      "op": "eq",
+      "value": "process and HTTP response observed",
+      "why": "claim: satisfy the stated follow a real request contract"
+    }
+  ],
+  "starting": {
+    "client_port": 8000,
+    "service_port": 8000,
+    "service_running": false,
+    "claim": "process and HTTP response observed"
+  },
+  "reference": {
+    "client_port": 8000,
+    "service_port": 8000,
+    "service_running": true,
+    "claim": "process and HTTP response observed"
+  },
+  "rules": [
+    {
+      "field": "client_port",
+      "op": "eq",
+      "value": 8000,
+      "why": "client port: satisfy the stated follow a real request contract"
+    },
+    {
+      "field": "service_port",
+      "op": "eq",
+      "value": 8000,
+      "why": "service port: satisfy the stated follow a real request contract"
+    },
+    {
+      "field": "service_running",
+      "op": "eq",
+      "value": true,
+      "why": "service running: satisfy the stated follow a real request contract"
+    },
+    {
+      "field": "claim",
+      "op": "eq",
+      "value": "process and HTTP response observed",
+      "why": "claim: satisfy the stated follow a real request contract"
+    }
+  ]
+}

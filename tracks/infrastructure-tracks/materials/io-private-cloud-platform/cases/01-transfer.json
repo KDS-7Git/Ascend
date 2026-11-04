@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Explain why guest SSH works without a desktop hypervisor application.",
+  "contract": [
+    {
+      "field": "guest_kernel_separate",
+      "op": "eq",
+      "value": true,
+      "why": "guest kernel separate: satisfy the stated read an existing control plane contract"
+    },
+    {
+      "field": "management_api_enforces_identity",
+      "op": "eq",
+      "value": true,
+      "why": "management api enforces identity: satisfy the stated read an existing control plane contract"
+    },
+    {
+      "field": "ssh_identifies_hypervisor_vendor",
+      "op": "eq",
+      "value": false,
+      "why": "ssh identifies hypervisor vendor: satisfy the stated read an existing control plane contract"
+    },
+    {
+      "field": "closing_browser_stops_vm",
+      "op": "eq",
+      "value": false,
+      "why": "closing browser stops vm: satisfy the stated read an existing control plane contract"
+    }
+  ],
+  "starting": {
+    "guest_kernel_separate": true,
+    "management_api_enforces_identity": false,
+    "ssh_identifies_hypervisor_vendor": false,
+    "closing_browser_stops_vm": true
+  },
+  "reference": {
+    "guest_kernel_separate": true,
+    "management_api_enforces_identity": true,
+    "ssh_identifies_hypervisor_vendor": false,
+    "closing_browser_stops_vm": false
+  },
+  "rules": [
+    {
+      "field": "guest_kernel_separate",
+      "op": "eq",
+      "value": true,
+      "why": "guest kernel separate: satisfy the stated read an existing control plane contract"
+    },
+    {
+      "field": "management_api_enforces_identity",
+      "op": "eq",
+      "value": true,
+      "why": "management api enforces identity: satisfy the stated read an existing control plane contract"
+    },
+    {
+      "field": "ssh_identifies_hypervisor_vendor",
+      "op": "eq",
+      "value": false,
+      "why": "ssh identifies hypervisor vendor: satisfy the stated read an existing control plane contract"
+    },
+    {
+      "field": "closing_browser_stops_vm",
+      "op": "eq",
+      "value": false,
+      "why": "closing browser stops vm: satisfy the stated read an existing control plane contract"
+    }
+  ]
+}

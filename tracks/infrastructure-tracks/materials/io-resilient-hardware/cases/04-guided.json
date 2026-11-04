@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Use a bounded VM profile to compare logging/write policies; repeat selected observations on a Pi if available.",
+  "contract": [
+    {
+      "field": "durable_state_on_tmpfs",
+      "op": "eq",
+      "value": false,
+      "why": "durable state on tmpfs: satisfy the stated operate on microsd contract"
+    },
+    {
+      "field": "write_heavy_builds_on_pc",
+      "op": "eq",
+      "value": true,
+      "why": "write heavy builds on pc: satisfy the stated operate on microsd contract"
+    },
+    {
+      "field": "log_growth_bounded",
+      "op": "eq",
+      "value": true,
+      "why": "log growth bounded: satisfy the stated operate on microsd contract"
+    },
+    {
+      "field": "root_filesystem_targeted_for_fill",
+      "op": "eq",
+      "value": false,
+      "why": "root filesystem targeted for fill: satisfy the stated operate on microsd contract"
+    }
+  ],
+  "starting": {
+    "durable_state_on_tmpfs": true,
+    "write_heavy_builds_on_pc": true,
+    "log_growth_bounded": true,
+    "root_filesystem_targeted_for_fill": false
+  },
+  "reference": {
+    "durable_state_on_tmpfs": false,
+    "write_heavy_builds_on_pc": true,
+    "log_growth_bounded": true,
+    "root_filesystem_targeted_for_fill": false
+  },
+  "rules": [
+    {
+      "field": "durable_state_on_tmpfs",
+      "op": "eq",
+      "value": false,
+      "why": "durable state on tmpfs: satisfy the stated operate on microsd contract"
+    },
+    {
+      "field": "write_heavy_builds_on_pc",
+      "op": "eq",
+      "value": true,
+      "why": "write heavy builds on pc: satisfy the stated operate on microsd contract"
+    },
+    {
+      "field": "log_growth_bounded",
+      "op": "eq",
+      "value": true,
+      "why": "log growth bounded: satisfy the stated operate on microsd contract"
+    },
+    {
+      "field": "root_filesystem_targeted_for_fill",
+      "op": "eq",
+      "value": false,
+      "why": "root filesystem targeted for fill: satisfy the stated operate on microsd contract"
+    }
+  ]
+}

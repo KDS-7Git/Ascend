@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Prevent an untrusted or failing change from accessing deployment credentials.",
+  "contract": [
+    {
+      "field": "token_permissions",
+      "op": "eq",
+      "value": "contents:read",
+      "why": "token permissions: satisfy the stated automate checks in ci contract"
+    },
+    {
+      "field": "untrusted_change_gets_deploy_secret",
+      "op": "eq",
+      "value": false,
+      "why": "untrusted change gets deploy secret: satisfy the stated automate checks in ci contract"
+    },
+    {
+      "field": "failing_control_exercised",
+      "op": "eq",
+      "value": true,
+      "why": "failing control exercised: satisfy the stated automate checks in ci contract"
+    },
+    {
+      "field": "commit_identity_retained",
+      "op": "eq",
+      "value": true,
+      "why": "commit identity retained: satisfy the stated automate checks in ci contract"
+    }
+  ],
+  "starting": {
+    "token_permissions": "contents:read",
+    "untrusted_change_gets_deploy_secret": true,
+    "failing_control_exercised": false,
+    "commit_identity_retained": true
+  },
+  "reference": {
+    "token_permissions": "contents:read",
+    "untrusted_change_gets_deploy_secret": false,
+    "failing_control_exercised": true,
+    "commit_identity_retained": true
+  },
+  "rules": [
+    {
+      "field": "token_permissions",
+      "op": "eq",
+      "value": "contents:read",
+      "why": "token permissions: satisfy the stated automate checks in ci contract"
+    },
+    {
+      "field": "untrusted_change_gets_deploy_secret",
+      "op": "eq",
+      "value": false,
+      "why": "untrusted change gets deploy secret: satisfy the stated automate checks in ci contract"
+    },
+    {
+      "field": "failing_control_exercised",
+      "op": "eq",
+      "value": true,
+      "why": "failing control exercised: satisfy the stated automate checks in ci contract"
+    },
+    {
+      "field": "commit_identity_retained",
+      "op": "eq",
+      "value": true,
+      "why": "commit identity retained: satisfy the stated automate checks in ci contract"
+    }
+  ]
+}

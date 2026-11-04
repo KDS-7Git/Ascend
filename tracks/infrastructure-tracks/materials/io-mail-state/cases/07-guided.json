@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Back up the sample application/mail state and restore into a clean target.",
+  "contract": [
+    {
+      "field": "backup_method",
+      "op": "eq",
+      "value": "sqlite-backup-api",
+      "why": "backup method: satisfy the stated keep state consistent contract"
+    },
+    {
+      "field": "independent_writable_sqlite_is_replication",
+      "op": "eq",
+      "value": false,
+      "why": "independent writable sqlite is replication: satisfy the stated keep state consistent contract"
+    },
+    {
+      "field": "restored_records_checked",
+      "op": "eq",
+      "value": true,
+      "why": "restored records checked: satisfy the stated keep state consistent contract"
+    },
+    {
+      "field": "restore_overwrites_only_copy",
+      "op": "eq",
+      "value": false,
+      "why": "restore overwrites only copy: satisfy the stated keep state consistent contract"
+    }
+  ],
+  "starting": {
+    "backup_method": "copy-live-file-without-wal",
+    "independent_writable_sqlite_is_replication": false,
+    "restored_records_checked": true,
+    "restore_overwrites_only_copy": false
+  },
+  "reference": {
+    "backup_method": "sqlite-backup-api",
+    "independent_writable_sqlite_is_replication": false,
+    "restored_records_checked": true,
+    "restore_overwrites_only_copy": false
+  },
+  "rules": [
+    {
+      "field": "backup_method",
+      "op": "eq",
+      "value": "sqlite-backup-api",
+      "why": "backup method: satisfy the stated keep state consistent contract"
+    },
+    {
+      "field": "independent_writable_sqlite_is_replication",
+      "op": "eq",
+      "value": false,
+      "why": "independent writable sqlite is replication: satisfy the stated keep state consistent contract"
+    },
+    {
+      "field": "restored_records_checked",
+      "op": "eq",
+      "value": true,
+      "why": "restored records checked: satisfy the stated keep state consistent contract"
+    },
+    {
+      "field": "restore_overwrites_only_copy",
+      "op": "eq",
+      "value": false,
+      "why": "restore overwrites only copy: satisfy the stated keep state consistent contract"
+    }
+  ]
+}

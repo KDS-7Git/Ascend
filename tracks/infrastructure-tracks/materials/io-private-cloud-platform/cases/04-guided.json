@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Create/start/stop/resize a guest and inspect the platform's job and inventory state.",
+  "contract": [
+    {
+      "field": "requested_memory_gib",
+      "op": "eq",
+      "value": 2,
+      "why": "requested memory gib: satisfy the stated handle lifecycle and resizing jobs contract"
+    },
+    {
+      "field": "guest_observed_memory_gib",
+      "op": "eq",
+      "value": 2,
+      "why": "guest observed memory gib: satisfy the stated handle lifecycle and resizing jobs contract"
+    },
+    {
+      "field": "over_quota_request_rejected",
+      "op": "eq",
+      "value": true,
+      "why": "over quota request rejected: satisfy the stated handle lifecycle and resizing jobs contract"
+    },
+    {
+      "field": "failed_cleanup_reservation_retained",
+      "op": "eq",
+      "value": true,
+      "why": "failed cleanup reservation retained: satisfy the stated handle lifecycle and resizing jobs contract"
+    }
+  ],
+  "starting": {
+    "requested_memory_gib": 2,
+    "guest_observed_memory_gib": 1,
+    "over_quota_request_rejected": true,
+    "failed_cleanup_reservation_retained": true
+  },
+  "reference": {
+    "requested_memory_gib": 2,
+    "guest_observed_memory_gib": 2,
+    "over_quota_request_rejected": true,
+    "failed_cleanup_reservation_retained": true
+  },
+  "rules": [
+    {
+      "field": "requested_memory_gib",
+      "op": "eq",
+      "value": 2,
+      "why": "requested memory gib: satisfy the stated handle lifecycle and resizing jobs contract"
+    },
+    {
+      "field": "guest_observed_memory_gib",
+      "op": "eq",
+      "value": 2,
+      "why": "guest observed memory gib: satisfy the stated handle lifecycle and resizing jobs contract"
+    },
+    {
+      "field": "over_quota_request_rejected",
+      "op": "eq",
+      "value": true,
+      "why": "over quota request rejected: satisfy the stated handle lifecycle and resizing jobs contract"
+    },
+    {
+      "field": "failed_cleanup_reservation_retained",
+      "op": "eq",
+      "value": true,
+      "why": "failed cleanup reservation retained: satisfy the stated handle lifecycle and resizing jobs contract"
+    }
+  ]
+}

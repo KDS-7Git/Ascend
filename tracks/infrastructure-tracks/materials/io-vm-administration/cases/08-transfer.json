@@ -1,0 +1,114 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Handle a failed start or exhausted lab allocation while protecting host headroom.",
+  "contract": [
+    {
+      "field": "host_ram_gib",
+      "op": "eq",
+      "value": 16,
+      "why": "host ram gib: satisfy the stated operate a small guest fleet contract"
+    },
+    {
+      "field": "owned_guests",
+      "op": "eq",
+      "value": [
+        "relay-a",
+        "relay-restore"
+      ],
+      "why": "owned guests: satisfy the stated operate a small guest fleet contract"
+    },
+    {
+      "field": "failed_cleanup_counted",
+      "op": "eq",
+      "value": true,
+      "why": "failed cleanup counted: satisfy the stated operate a small guest fleet contract"
+    },
+    {
+      "field": "lab_ram_gib",
+      "op": "min",
+      "value": 1,
+      "why": "At least one GiB is allocated to this declared starter lab"
+    },
+    {
+      "field": "host_reserve_gib",
+      "op": "min",
+      "value": 4,
+      "why": "Retain at least four GiB for the host and unmodelled activity"
+    },
+    {
+      "field": "lab_ram_gib",
+      "op": "sum_max",
+      "fields": [
+        "lab_ram_gib",
+        "host_reserve_gib"
+      ],
+      "value": 16,
+      "why": "Lab allocation plus host reserve cannot exceed the declared 16 GiB host"
+    }
+  ],
+  "starting": {
+    "host_ram_gib": 16,
+    "lab_ram_gib": 8,
+    "host_reserve_gib": 8,
+    "owned_guests": [
+      "relay-a",
+      "relay-restore"
+    ],
+    "failed_cleanup_counted": false
+  },
+  "reference": {
+    "host_ram_gib": 16,
+    "lab_ram_gib": 8,
+    "host_reserve_gib": 8,
+    "owned_guests": [
+      "relay-a",
+      "relay-restore"
+    ],
+    "failed_cleanup_counted": true
+  },
+  "rules": [
+    {
+      "field": "host_ram_gib",
+      "op": "eq",
+      "value": 16,
+      "why": "host ram gib: satisfy the stated operate a small guest fleet contract"
+    },
+    {
+      "field": "owned_guests",
+      "op": "eq",
+      "value": [
+        "relay-a",
+        "relay-restore"
+      ],
+      "why": "owned guests: satisfy the stated operate a small guest fleet contract"
+    },
+    {
+      "field": "failed_cleanup_counted",
+      "op": "eq",
+      "value": true,
+      "why": "failed cleanup counted: satisfy the stated operate a small guest fleet contract"
+    },
+    {
+      "field": "lab_ram_gib",
+      "op": "min",
+      "value": 1,
+      "why": "At least one GiB is allocated to this declared starter lab"
+    },
+    {
+      "field": "host_reserve_gib",
+      "op": "min",
+      "value": 4,
+      "why": "Retain at least four GiB for the host and unmodelled activity"
+    },
+    {
+      "field": "lab_ram_gib",
+      "op": "sum_max",
+      "fields": [
+        "lab_ram_gib",
+        "host_reserve_gib"
+      ],
+      "value": 16,
+      "why": "Lab allocation plus host reserve cannot exceed the declared 16 GiB host"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+<network>
+  <name>ascend-isolated</name>
+  <bridge name="ascendbr1" stp="on" delay="0"/>
+  <ip address="172.29.44.1" netmask="255.255.255.0">
+    <dhcp><range start="172.29.44.100" end="172.29.44.150"/></dhcp>
+  </ip>
+</network>

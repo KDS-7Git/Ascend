@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Repair a dependency-order or configuration failure.",
+  "contract": [
+    {
+      "field": "health_endpoint",
+      "op": "eq",
+      "value": "/ready",
+      "why": "health endpoint: satisfy the stated compose a small service contract"
+    },
+    {
+      "field": "persistent_volume_declared",
+      "op": "eq",
+      "value": true,
+      "why": "persistent volume declared: satisfy the stated compose a small service contract"
+    },
+    {
+      "field": "cleanup_project",
+      "op": "eq",
+      "value": "ascend-infra",
+      "why": "cleanup project: satisfy the stated compose a small service contract"
+    },
+    {
+      "field": "secrets_in_image",
+      "op": "eq",
+      "value": false,
+      "why": "secrets in image: satisfy the stated compose a small service contract"
+    }
+  ],
+  "starting": {
+    "health_endpoint": "/ready",
+    "persistent_volume_declared": false,
+    "cleanup_project": "ascend-infra",
+    "secrets_in_image": true
+  },
+  "reference": {
+    "health_endpoint": "/ready",
+    "persistent_volume_declared": true,
+    "cleanup_project": "ascend-infra",
+    "secrets_in_image": false
+  },
+  "rules": [
+    {
+      "field": "health_endpoint",
+      "op": "eq",
+      "value": "/ready",
+      "why": "health endpoint: satisfy the stated compose a small service contract"
+    },
+    {
+      "field": "persistent_volume_declared",
+      "op": "eq",
+      "value": true,
+      "why": "persistent volume declared: satisfy the stated compose a small service contract"
+    },
+    {
+      "field": "cleanup_project",
+      "op": "eq",
+      "value": "ascend-infra",
+      "why": "cleanup project: satisfy the stated compose a small service contract"
+    },
+    {
+      "field": "secrets_in_image",
+      "op": "eq",
+      "value": false,
+      "why": "secrets in image: satisfy the stated compose a small service contract"
+    }
+  ]
+}

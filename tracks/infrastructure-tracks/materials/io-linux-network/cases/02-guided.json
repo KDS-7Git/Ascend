@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Trace command output and errors, then run the service as an unprivileged user and inspect its working directory and open files.",
+  "contract": [
+    {
+      "field": "stdout_file",
+      "op": "eq",
+      "value": "stdout.txt",
+      "why": "stdout file: satisfy the stated own files, processes and permissions contract"
+    },
+    {
+      "field": "stderr_file",
+      "op": "eq",
+      "value": "stderr.txt",
+      "why": "stderr file: satisfy the stated own files, processes and permissions contract"
+    },
+    {
+      "field": "secret_mode",
+      "op": "eq",
+      "value": "0600",
+      "why": "secret mode: satisfy the stated own files, processes and permissions contract"
+    },
+    {
+      "field": "quoted_path",
+      "op": "eq",
+      "value": true,
+      "why": "quoted path: satisfy the stated own files, processes and permissions contract"
+    }
+  ],
+  "starting": {
+    "stdout_file": "stdout.txt",
+    "stderr_file": "stdout.txt",
+    "secret_mode": "0600",
+    "quoted_path": true
+  },
+  "reference": {
+    "stdout_file": "stdout.txt",
+    "stderr_file": "stderr.txt",
+    "secret_mode": "0600",
+    "quoted_path": true
+  },
+  "rules": [
+    {
+      "field": "stdout_file",
+      "op": "eq",
+      "value": "stdout.txt",
+      "why": "stdout file: satisfy the stated own files, processes and permissions contract"
+    },
+    {
+      "field": "stderr_file",
+      "op": "eq",
+      "value": "stderr.txt",
+      "why": "stderr file: satisfy the stated own files, processes and permissions contract"
+    },
+    {
+      "field": "secret_mode",
+      "op": "eq",
+      "value": "0600",
+      "why": "secret mode: satisfy the stated own files, processes and permissions contract"
+    },
+    {
+      "field": "quoted_path",
+      "op": "eq",
+      "value": true,
+      "why": "quoted path: satisfy the stated own files, processes and permissions contract"
+    }
+  ]
+}

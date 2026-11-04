@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Recover a failed deployment or expired synthetic credential.",
+  "contract": [
+    {
+      "field": "clean_target_reproduced",
+      "op": "eq",
+      "value": true,
+      "why": "clean target reproduced: satisfy the stated recreate and recover the delivery path contract"
+    },
+    {
+      "field": "version_identity_retained",
+      "op": "eq",
+      "value": true,
+      "why": "version identity retained: satisfy the stated recreate and recover the delivery path contract"
+    },
+    {
+      "field": "secret_rotation_tested",
+      "op": "eq",
+      "value": true,
+      "why": "secret rotation tested: satisfy the stated recreate and recover the delivery path contract"
+    },
+    {
+      "field": "owned_inventory_reconciled",
+      "op": "eq",
+      "value": true,
+      "why": "owned inventory reconciled: satisfy the stated recreate and recover the delivery path contract"
+    }
+  ],
+  "starting": {
+    "clean_target_reproduced": true,
+    "version_identity_retained": true,
+    "secret_rotation_tested": false,
+    "owned_inventory_reconciled": false
+  },
+  "reference": {
+    "clean_target_reproduced": true,
+    "version_identity_retained": true,
+    "secret_rotation_tested": true,
+    "owned_inventory_reconciled": true
+  },
+  "rules": [
+    {
+      "field": "clean_target_reproduced",
+      "op": "eq",
+      "value": true,
+      "why": "clean target reproduced: satisfy the stated recreate and recover the delivery path contract"
+    },
+    {
+      "field": "version_identity_retained",
+      "op": "eq",
+      "value": true,
+      "why": "version identity retained: satisfy the stated recreate and recover the delivery path contract"
+    },
+    {
+      "field": "secret_rotation_tested",
+      "op": "eq",
+      "value": true,
+      "why": "secret rotation tested: satisfy the stated recreate and recover the delivery path contract"
+    },
+    {
+      "field": "owned_inventory_reconciled",
+      "op": "eq",
+      "value": true,
+      "why": "owned inventory reconciled: satisfy the stated recreate and recover the delivery path contract"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Compare connection refusal, timeout, HTTP error and certificate rejection on owned endpoints.",
+  "contract": [
+    {
+      "field": "expected_name",
+      "op": "eq",
+      "value": "localhost",
+      "why": "expected name: satisfy the stated read transport and application failures contract"
+    },
+    {
+      "field": "trust_scope",
+      "op": "eq",
+      "value": "explicit-local-ca",
+      "why": "trust scope: satisfy the stated read transport and application failures contract"
+    },
+    {
+      "field": "disable_verification",
+      "op": "eq",
+      "value": false,
+      "why": "disable verification: satisfy the stated read transport and application failures contract"
+    },
+    {
+      "field": "wrong_port_class",
+      "op": "eq",
+      "value": "connection refusal",
+      "why": "wrong port class: satisfy the stated read transport and application failures contract"
+    }
+  ],
+  "starting": {
+    "expected_name": "localhost",
+    "trust_scope": "explicit-local-ca",
+    "disable_verification": true,
+    "wrong_port_class": "connection refusal"
+  },
+  "reference": {
+    "expected_name": "localhost",
+    "trust_scope": "explicit-local-ca",
+    "disable_verification": false,
+    "wrong_port_class": "connection refusal"
+  },
+  "rules": [
+    {
+      "field": "expected_name",
+      "op": "eq",
+      "value": "localhost",
+      "why": "expected name: satisfy the stated read transport and application failures contract"
+    },
+    {
+      "field": "trust_scope",
+      "op": "eq",
+      "value": "explicit-local-ca",
+      "why": "trust scope: satisfy the stated read transport and application failures contract"
+    },
+    {
+      "field": "disable_verification",
+      "op": "eq",
+      "value": false,
+      "why": "disable verification: satisfy the stated read transport and application failures contract"
+    },
+    {
+      "field": "wrong_port_class",
+      "op": "eq",
+      "value": "connection refusal",
+      "why": "wrong port class: satisfy the stated read transport and application failures contract"
+    }
+  ]
+}

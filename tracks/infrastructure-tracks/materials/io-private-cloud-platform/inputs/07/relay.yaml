@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: relay-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: relay-lab}
+  template:
+    metadata:
+      labels: {app: relay-lab}
+    spec:
+      containers:
+        - name: relay
+          image: ascend-relay:lab
+          imagePullPolicy: Never
+          args: ["--release", "kube-v1", "--read-only"]
+          ports: [{containerPort: 8000}]
+          readinessProbe:
+            httpGet: {path: /ready, port: 8000}
+          resources:
+            requests: {cpu: "100m", memory: "64Mi"}
+            limits: {cpu: "500m", memory: "128Mi"}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: relay-lab
+spec:
+  selector: {app: relay-lab}
+  ports: [{port: 8000, targetPort: 8000}]

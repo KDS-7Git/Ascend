@@ -1,0 +1,21 @@
+[Unit]
+Description=Ascend Relay teaching service
+After=network.target
+
+[Service]
+Type=simple
+DynamicUser=yes
+WorkingDirectory=/opt/ascend-relay
+StateDirectory=ascend-relay
+ExecStart=/usr/bin/python3 /opt/ascend-relay/shared/relay.py --host 127.0.0.1 --port 8000 --data /var/lib/ascend-relay/relay.sqlite --release service-v1
+Restart=on-failure
+RestartSec=2
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+MemoryMax=192M
+TasksMax=32
+
+[Install]
+WantedBy=multi-user.target

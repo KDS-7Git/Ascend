@@ -1,0 +1,82 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Use local DNS/message fixtures and real signing/verification on synthetic messages.",
+  "contract": [
+    {
+      "field": "from_domain",
+      "op": "eq",
+      "value": "relay.test",
+      "why": "from domain: satisfy the stated authenticate sender domains contract"
+    },
+    {
+      "field": "dkim_domain",
+      "op": "eq",
+      "value": "relay.test",
+      "why": "dkim domain: satisfy the stated authenticate sender domains contract"
+    },
+    {
+      "field": "spf_domain",
+      "op": "eq",
+      "value": "relay.test",
+      "why": "spf domain: satisfy the stated authenticate sender domains contract"
+    },
+    {
+      "field": "dmarc_alignment",
+      "op": "eq",
+      "value": true,
+      "why": "dmarc alignment: satisfy the stated authenticate sender domains contract"
+    },
+    {
+      "field": "authentication_is_encryption",
+      "op": "eq",
+      "value": false,
+      "why": "authentication is encryption: satisfy the stated authenticate sender domains contract"
+    }
+  ],
+  "starting": {
+    "from_domain": "relay.test",
+    "dkim_domain": "unrelated.test",
+    "spf_domain": "relay.test",
+    "dmarc_alignment": false,
+    "authentication_is_encryption": false
+  },
+  "reference": {
+    "from_domain": "relay.test",
+    "dkim_domain": "relay.test",
+    "spf_domain": "relay.test",
+    "dmarc_alignment": true,
+    "authentication_is_encryption": false
+  },
+  "rules": [
+    {
+      "field": "from_domain",
+      "op": "eq",
+      "value": "relay.test",
+      "why": "from domain: satisfy the stated authenticate sender domains contract"
+    },
+    {
+      "field": "dkim_domain",
+      "op": "eq",
+      "value": "relay.test",
+      "why": "dkim domain: satisfy the stated authenticate sender domains contract"
+    },
+    {
+      "field": "spf_domain",
+      "op": "eq",
+      "value": "relay.test",
+      "why": "spf domain: satisfy the stated authenticate sender domains contract"
+    },
+    {
+      "field": "dmarc_alignment",
+      "op": "eq",
+      "value": true,
+      "why": "dmarc alignment: satisfy the stated authenticate sender domains contract"
+    },
+    {
+      "field": "authentication_is_encryption",
+      "op": "eq",
+      "value": false,
+      "why": "authentication is encryption: satisfy the stated authenticate sender domains contract"
+    }
+  ]
+}

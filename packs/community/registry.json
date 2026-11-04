@@ -179,6 +179,149 @@
       "sha256": "5506408ad0fec0e93af739b6ce2c835c80bb442611d04b8f8bcadf1e35e12fce"
     },
     {
+      "id": "devops-delivery-automation",
+      "title": "DevOps 2: Delivery & Infrastructure Automation",
+      "domain": "devops",
+      "category": "DevOps",
+      "track_order": 2,
+      "recommended_after": [
+        "devops-service-foundations"
+      ],
+      "description": "Test every change, promote the same artifact, and recreate owned infrastructure with explicit trust and cleanup.",
+      "entry": "Enter after you can run, inspect and recover a small service; prior equivalent practice is valid.",
+      "background": [
+        "Git/file/terminal basics, service/version/state distinctions, and owned Docker or Linux guests for operational tasks."
+      ],
+      "limits": "Local rehearsal works without a paid account. Real CI needs a learner-owned repository; Terraform/OpenTofu and Ansible act only on the chosen learner environment. No shared server execution or automatic cloud spending.",
+      "aliases": [
+        "CI/CD",
+        "GitHub Actions",
+        "OpenTofu",
+        "Ansible",
+        "release pipeline"
+      ],
+      "labs": [],
+      "capabilities": [
+        "artifact-retention",
+        "behavioural-tests",
+        "change-review",
+        "ci-revision-evidence",
+        "ci-trust-boundary",
+        "configuration-idempotence",
+        "delivery-reproducibility",
+        "iac-plan-state-drift",
+        "immutable-promotion",
+        "inventory-scope",
+        "oci-image-identity",
+        "owned-resource-accounting",
+        "registry-lifecycle",
+        "release-incident-recovery",
+        "rollback-boundary",
+        "workload-identity"
+      ],
+      "main_levels": 8,
+      "nodes": 25,
+      "verification": "Manual operational review; runnable local controls for service, state, release and failure/recovery. Local reports are not automatic verified skill results.",
+      "version": 1,
+      "file": "devops/devops-delivery-automation.toml",
+      "sha256": "29b8418be40c719d4c8d3576b07e0b1f6a4139d128fab973b7e0ddfbcf6b369f"
+    },
+    {
+      "id": "devops-reliability-orchestration",
+      "title": "DevOps 3: Reliability, Recovery & Orchestration",
+      "domain": "devops",
+      "category": "DevOps",
+      "track_order": 3,
+      "recommended_after": [
+        "devops-service-foundations",
+        "devops-delivery-automation"
+      ],
+      "description": "Measure useful service behaviour, control overload, restore data, and operate a small Kubernetes deployment.",
+      "entry": "Enter when you can deploy and trace a versioned service and have used an owned Linux/container environment.",
+      "background": [
+        "Service/network/state basics; delivery practices from track 2 or equivalent prior work. Kubernetes uses a separate local-cluster budget."
+      ],
+      "limits": "Most checks run locally. A VM/cluster, real monitoring binary and optional CI account are needed for their corresponding operational outcomes. Same-PC replicas do not prove physical high availability.",
+      "aliases": [
+        "SRE",
+        "observability",
+        "backup restore",
+        "Kubernetes",
+        "capacity"
+      ],
+      "labs": [],
+      "capabilities": [
+        "artifact-authenticity",
+        "backup-consistency",
+        "bounded-admission",
+        "cluster-scope",
+        "constrained-operations",
+        "incident-handover",
+        "integrated-operations",
+        "kubernetes-controller-service",
+        "kubernetes-rollout-recovery",
+        "observability-signals",
+        "rbac-boundary",
+        "resource-budgeting",
+        "rpo-rto",
+        "secret-rotation",
+        "sli-slo-accounting",
+        "workload-capacity"
+      ],
+      "main_levels": 8,
+      "nodes": 25,
+      "verification": "Manual operational review; runnable local controls for service, state, release and failure/recovery. Local reports are not automatic verified skill results.",
+      "version": 1,
+      "file": "devops/devops-reliability-orchestration.toml",
+      "sha256": "36413e65ada3e015945080f573c9c33b928420f90b9c16e555668f4deae59680"
+    },
+    {
+      "id": "devops-service-foundations",
+      "title": "DevOps 1: Service & Deployment Foundations",
+      "domain": "devops",
+      "category": "DevOps",
+      "track_order": 1,
+      "recommended_after": [],
+      "description": "Take Relay from a local process to a versioned service, private edge, guest deployment and container.",
+      "entry": "Start here if processes, HTTP, Linux service operation or deployment boundaries are new.",
+      "background": [
+        "Basic file/editor use. A guided Linux guest setup is available through the Infrastructure VM track; Python, shell and networking are explained as used."
+      ],
+      "limits": "Local tools and owned Linux guests. No cloud subscription required. Public exposure and physical hardware are optional later variants; manual operational completion is not an automatic verified skill result.",
+      "aliases": [
+        "deployment basics",
+        "Linux service",
+        "reverse proxy",
+        "Docker",
+        "SSH"
+      ],
+      "labs": [],
+      "capabilities": [
+        "artifact-identity",
+        "container-artifact-runtime",
+        "deployment-recovery",
+        "git-release",
+        "http-request-path",
+        "least-privilege-files",
+        "operational-handover",
+        "release-observation",
+        "remote-deployment",
+        "reverse-proxy",
+        "shell-process-files",
+        "ssh-host-identity",
+        "state-survival",
+        "systemd-lifecycle",
+        "tls-name-trust",
+        "volume-lifecycle"
+      ],
+      "main_levels": 8,
+      "nodes": 25,
+      "verification": "Manual operational review; runnable local controls for service, state, release and failure/recovery. Local reports are not automatic verified skill results.",
+      "version": 1,
+      "file": "devops/devops-service-foundations.toml",
+      "sha256": "046f7958de9218b5f98218551e22e08961481ca1b7fee9f0ea5fc9294157232b"
+    },
+    {
       "id": "digital-forensics-incident-response",
       "title": "Digital Forensics and Incident Response",
       "category": "Defensive",
@@ -231,6 +374,282 @@
       "version": 4,
       "file": "projects/home-hack-lab.toml",
       "sha256": "f2919d6f872b53f3ec96609d5edb994ed23d3a3da839a415ddb5c97278b8034a"
+    },
+    {
+      "id": "io-delivery-automation",
+      "title": "Delivery & Infrastructure Automation",
+      "domain": "infrastructure",
+      "category": "Infrastructure",
+      "track_order": 5,
+      "recommended_after": [
+        "io-private-access"
+      ],
+      "description": "Reproduce a service and its infrastructure, promote a tested release, and recover a bad change.",
+      "entry": "New to this subject: start with the worked operation in level 1. Already practising: attempt an independent operation first and use Ascend early-unlock for a later level when appropriate. It records your choice, not an automatic proficiency pass. Job preparation emphasizes the reproducible handover; interest-led work can extend the same technical evidence with a different owned environment.",
+      "background": [
+        "Use the earlier tracks or equivalent practical experience. The sequence recommends background and does not require completing another whole track."
+      ],
+      "limits": "Operational milestones use manual review of real observations. Portable configuration feedback checks only the stated data contract; it does not create VMs, measure physical hardware, verify learner identity, or establish public reachability. Required native operations remain incomplete until performed. Recipes are unreviewed drafts; tool-version and provider/hardware variants require native replay before a tested label.",
+      "aliases": [
+        "Infrastructure as Code",
+        "OpenTofu",
+        "Ansible",
+        "Docker",
+        "CI/CD"
+      ],
+      "labs": [],
+      "main_levels": 8,
+      "nodes": 25,
+      "verification": "Manual operational review. Portable cases validate an editable configuration contract only; native VM/provider/device/public outcomes require actual observations.",
+      "version": 1,
+      "file": "infrastructure/io-delivery-automation.toml",
+      "sha256": "77e70ba572943a6dc705a2c521c3d6664532ebb826f7bd7ff4de47df80fa5f41"
+    },
+    {
+      "id": "io-linux-network",
+      "title": "Linux & Network Foundations",
+      "domain": "infrastructure",
+      "category": "Infrastructure",
+      "track_order": 1,
+      "recommended_after": [],
+      "description": "Explain a request path and operate a small Linux service using observations.",
+      "entry": "New to this subject: start with the worked operation in level 1. Already practising: attempt an independent operation first and use Ascend early-unlock for a later level when appropriate. It records your choice, not an automatic proficiency pass. Job preparation emphasizes the reproducible handover; interest-led work can extend the same technical evidence with a different owned environment.",
+      "background": [
+        "No prior infrastructure knowledge is assumed; a prepared Linux environment is enough to begin."
+      ],
+      "limits": "Operational milestones use manual review of real observations. Portable configuration feedback checks only the stated data contract; it does not create VMs, measure physical hardware, verify learner identity, or establish public reachability. Required native operations remain incomplete until performed. Recipes are unreviewed drafts; tool-version and provider/hardware variants require native replay before a tested label.",
+      "aliases": [
+        "Linux",
+        "Networking",
+        "TCP",
+        "DNS",
+        "CGNAT"
+      ],
+      "labs": [],
+      "main_levels": 8,
+      "nodes": 25,
+      "verification": "Manual operational review. Portable cases validate an editable configuration contract only; native VM/provider/device/public outcomes require actual observations.",
+      "version": 1,
+      "file": "infrastructure/io-linux-network.toml",
+      "sha256": "72a3a639315d9529eab37f4961d6515f16ca8c60412b183368b4a0b70321b7eb"
+    },
+    {
+      "id": "io-mail-state",
+      "title": "Mail & Stateful Self-Hosting",
+      "domain": "infrastructure",
+      "category": "Infrastructure",
+      "track_order": 6,
+      "recommended_after": [
+        "io-delivery-automation"
+      ],
+      "description": "Operate a local mail system and stateful service, and assess the extra requirements for reliable public mail.",
+      "entry": "New to this subject: start with the worked operation in level 1. Already practising: attempt an independent operation first and use Ascend early-unlock for a later level when appropriate. It records your choice, not an automatic proficiency pass. Job preparation emphasizes the reproducible handover; interest-led work can extend the same technical evidence with a different owned environment.",
+      "background": [
+        "Use the earlier tracks or equivalent practical experience. The sequence recommends background and does not require completing another whole track."
+      ],
+      "limits": "Operational milestones use manual review of real observations. Portable configuration feedback checks only the stated data contract; it does not create VMs, measure physical hardware, verify learner identity, or establish public reachability. Required native operations remain incomplete until performed. Recipes are unreviewed drafts; tool-version and provider/hardware variants require native replay before a tested label.",
+      "aliases": [
+        "Mail Server",
+        "SMTP",
+        "IMAP",
+        "Postfix",
+        "Dovecot",
+        "SPF",
+        "DKIM",
+        "DMARC",
+        "SQLite"
+      ],
+      "labs": [],
+      "main_levels": 8,
+      "nodes": 25,
+      "verification": "Manual operational review. Portable cases validate an editable configuration contract only; native VM/provider/device/public outcomes require actual observations.",
+      "version": 1,
+      "file": "infrastructure/io-mail-state.toml",
+      "sha256": "5cc2d4195a2c47b55cc95c3847a865580fcf27bc4f4ab607cccadb6eb3471b3e"
+    },
+    {
+      "id": "io-private-access",
+      "title": "Private Networks, SSH & Tunnels",
+      "domain": "infrastructure",
+      "category": "Infrastructure",
+      "track_order": 4,
+      "recommended_after": [
+        "io-public-hosting"
+      ],
+      "description": "Choose, configure and diagnose private access and tunnels with clear trust and routing boundaries.",
+      "entry": "New to this subject: start with the worked operation in level 1. Already practising: attempt an independent operation first and use Ascend early-unlock for a later level when appropriate. It records your choice, not an automatic proficiency pass. Job preparation emphasizes the reproducible handover; interest-led work can extend the same technical evidence with a different owned environment.",
+      "background": [
+        "Use the earlier tracks or equivalent practical experience. The sequence recommends background and does not require completing another whole track."
+      ],
+      "limits": "Operational milestones use manual review of real observations. Portable configuration feedback checks only the stated data contract; it does not create VMs, measure physical hardware, verify learner identity, or establish public reachability. Required native operations remain incomplete until performed. Recipes are unreviewed drafts; tool-version and provider/hardware variants require native replay before a tested label.",
+      "aliases": [
+        "VPN",
+        "WireGuard",
+        "Tailscale",
+        "Headscale",
+        "SSH Tunnel",
+        "frp",
+        "Custom Tunnel"
+      ],
+      "labs": [],
+      "main_levels": 8,
+      "nodes": 25,
+      "verification": "Manual operational review. Portable cases validate an editable configuration contract only; native VM/provider/device/public outcomes require actual observations.",
+      "version": 1,
+      "file": "infrastructure/io-private-access.toml",
+      "sha256": "3d3eccca29ce31e4f3f9e378f7e630387c8697836e21db0ee348b362b2f1ebcf"
+    },
+    {
+      "id": "io-private-cloud-platform",
+      "title": "Private Cloud & Platform Engineering",
+      "domain": "infrastructure",
+      "category": "Infrastructure",
+      "track_order": 9,
+      "recommended_after": [
+        "io-resilient-hardware"
+      ],
+      "description": "Operate a small college-style VM service using an existing control plane, with scoped roles and honest failure boundaries.",
+      "entry": "New to this subject: start with the worked operation in level 1. Already practising: attempt an independent operation first and use Ascend early-unlock for a later level when appropriate. It records your choice, not an automatic proficiency pass. Job preparation emphasizes the reproducible handover; interest-led work can extend the same technical evidence with a different owned environment.",
+      "background": [
+        "Use the earlier tracks or equivalent practical experience. The sequence recommends background and does not require completing another whole track."
+      ],
+      "limits": "Operational milestones use manual review of real observations. Portable configuration feedback checks only the stated data contract; it does not create VMs, measure physical hardware, verify learner identity, or establish public reachability. Required native operations remain incomplete until performed. Recipes are unreviewed drafts; tool-version and provider/hardware variants require native replay before a tested label.",
+      "aliases": [
+        "Private Cloud",
+        "VM Administration",
+        "Incus",
+        "Proxmox",
+        "Kubernetes"
+      ],
+      "labs": [],
+      "main_levels": 8,
+      "nodes": 25,
+      "verification": "Manual operational review. Portable cases validate an editable configuration contract only; native VM/provider/device/public outcomes require actual observations.",
+      "version": 1,
+      "file": "infrastructure/io-private-cloud-platform.toml",
+      "sha256": "30ea95485bdf138babde56c245f1304909aa232230b7df360f4d93c6c71b70cd"
+    },
+    {
+      "id": "io-public-hosting",
+      "title": "Web Hosting & Public Deployment",
+      "domain": "infrastructure",
+      "category": "Infrastructure",
+      "track_order": 3,
+      "recommended_after": [
+        "io-vm-administration"
+      ],
+      "description": "Publish an appropriate service and explain its DNS, transport, cost and availability dependencies.",
+      "entry": "New to this subject: start with the worked operation in level 1. Already practising: attempt an independent operation first and use Ascend early-unlock for a later level when appropriate. It records your choice, not an automatic proficiency pass. Job preparation emphasizes the reproducible handover; interest-led work can extend the same technical evidence with a different owned environment.",
+      "background": [
+        "Use the earlier tracks or equivalent practical experience. The sequence recommends background and does not require completing another whole track."
+      ],
+      "limits": "Operational milestones use manual review of real observations. Portable configuration feedback checks only the stated data contract; it does not create VMs, measure physical hardware, verify learner identity, or establish public reachability. Required native operations remain incomplete until performed. Recipes are unreviewed drafts; tool-version and provider/hardware variants require native replay before a tested label.",
+      "aliases": [
+        "VPS",
+        "Web Hosting",
+        "Deployment",
+        "Cloudflared",
+        "Cloudflare Tunnel",
+        "Free Hosting"
+      ],
+      "labs": [],
+      "main_levels": 8,
+      "nodes": 25,
+      "verification": "Manual operational review. Portable cases validate an editable configuration contract only; native VM/provider/device/public outcomes require actual observations.",
+      "version": 1,
+      "file": "infrastructure/io-public-hosting.toml",
+      "sha256": "4161439c3bcf1d09caafec4b47f025fd673158b50313073fda63a04e5d41b9c9"
+    },
+    {
+      "id": "io-resilient-hardware",
+      "title": "Resilient Operations & Efficient Hardware",
+      "domain": "infrastructure",
+      "category": "Infrastructure",
+      "track_order": 8,
+      "recommended_after": [
+        "io-traffic-capacity"
+      ],
+      "description": "Operate within a small machine's limits, recover data and migrate the same service as resources improve.",
+      "entry": "New to this subject: start with the worked operation in level 1. Already practising: attempt an independent operation first and use Ascend early-unlock for a later level when appropriate. It records your choice, not an automatic proficiency pass. Job preparation emphasizes the reproducible handover; interest-led work can extend the same technical evidence with a different owned environment.",
+      "background": [
+        "Use the earlier tracks or equivalent practical experience. The sequence recommends background and does not require completing another whole track."
+      ],
+      "limits": "Operational milestones use manual review of real observations. Portable configuration feedback checks only the stated data contract; it does not create VMs, measure physical hardware, verify learner identity, or establish public reachability. Required native operations remain incomplete until performed. Recipes are unreviewed drafts; tool-version and provider/hardware variants require native replay before a tested label.",
+      "aliases": [
+        "Raspberry Pi",
+        "Home Server",
+        "microSD",
+        "Backup",
+        "Resource Constraints"
+      ],
+      "labs": [],
+      "main_levels": 8,
+      "nodes": 25,
+      "verification": "Manual operational review. Portable cases validate an editable configuration contract only; native VM/provider/device/public outcomes require actual observations.",
+      "version": 1,
+      "file": "infrastructure/io-resilient-hardware.toml",
+      "sha256": "e985dc5890cca61e819a4a2d53f364de3396fb7fb2e6cca8e87e6cd712b29235"
+    },
+    {
+      "id": "io-traffic-capacity",
+      "title": "Traffic, Concurrency & Capacity",
+      "domain": "infrastructure",
+      "category": "Infrastructure",
+      "track_order": 7,
+      "recommended_after": [
+        "io-mail-state"
+      ],
+      "description": "Measure a workload, identify bottlenecks, protect service boundaries and justify a deployment size.",
+      "entry": "New to this subject: start with the worked operation in level 1. Already practising: attempt an independent operation first and use Ascend early-unlock for a later level when appropriate. It records your choice, not an automatic proficiency pass. Job preparation emphasizes the reproducible handover; interest-led work can extend the same technical evidence with a different owned environment.",
+      "background": [
+        "Use the earlier tracks or equivalent practical experience. The sequence recommends background and does not require completing another whole track."
+      ],
+      "limits": "Operational milestones use manual review of real observations. Portable configuration feedback checks only the stated data contract; it does not create VMs, measure physical hardware, verify learner identity, or establish public reachability. Required native operations remain incomplete until performed. Recipes are unreviewed drafts; tool-version and provider/hardware variants require native replay before a tested label.",
+      "aliases": [
+        "Load Balancer",
+        "Concurrency",
+        "Load Testing",
+        "Resource Estimation",
+        "Optimization"
+      ],
+      "labs": [],
+      "main_levels": 8,
+      "nodes": 25,
+      "verification": "Manual operational review. Portable cases validate an editable configuration contract only; native VM/provider/device/public outcomes require actual observations.",
+      "version": 1,
+      "file": "infrastructure/io-traffic-capacity.toml",
+      "sha256": "3e34d75f562f650ed327e875427769ffaf6d94a53d02690416d098eb442ab39e"
+    },
+    {
+      "id": "io-vm-administration",
+      "title": "Virtual Machines & Host Administration",
+      "domain": "infrastructure",
+      "category": "Infrastructure",
+      "track_order": 2,
+      "recommended_after": [
+        "io-linux-network"
+      ],
+      "description": "Create, host, resize, recover and administer guest machines from an owned hypervisor.",
+      "entry": "New to this subject: start with the worked operation in level 1. Already practising: attempt an independent operation first and use Ascend early-unlock for a later level when appropriate. It records your choice, not an automatic proficiency pass. Job preparation emphasizes the reproducible handover; interest-led work can extend the same technical evidence with a different owned environment.",
+      "background": [
+        "Use the earlier tracks or equivalent practical experience. The sequence recommends background and does not require completing another whole track."
+      ],
+      "limits": "Operational milestones use manual review of real observations. Portable configuration feedback checks only the stated data contract; it does not create VMs, measure physical hardware, verify learner identity, or establish public reachability. Required native operations remain incomplete until performed. Recipes are unreviewed drafts; tool-version and provider/hardware variants require native replay before a tested label.",
+      "aliases": [
+        "VMs",
+        "KVM",
+        "QEMU",
+        "libvirt",
+        "SSH",
+        "cloud-init"
+      ],
+      "labs": [],
+      "main_levels": 8,
+      "nodes": 25,
+      "verification": "Manual operational review. Portable cases validate an editable configuration contract only; native VM/provider/device/public outcomes require actual observations.",
+      "version": 1,
+      "file": "infrastructure/io-vm-administration.toml",
+      "sha256": "b3e1f9d22ea3a56805d0041e5658bdf16d4e56bba90d3a212669c32da9b321dd"
     },
     {
       "id": "malware-analysis",

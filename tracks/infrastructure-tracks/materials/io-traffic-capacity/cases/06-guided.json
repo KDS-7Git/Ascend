@@ -1,0 +1,94 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Run short capped tests against owned targets using both workload models.",
+  "contract": [
+    {
+      "field": "open_model",
+      "op": "eq",
+      "value": "constant-arrival-rate",
+      "why": "open model: satisfy the stated generate meaningful load contract"
+    },
+    {
+      "field": "max_vus",
+      "op": "max",
+      "value": 4,
+      "why": "max vus: satisfy the stated generate meaningful load contract"
+    },
+    {
+      "field": "duration_seconds",
+      "op": "eq",
+      "value": 5,
+      "why": "duration seconds: satisfy the stated generate meaningful load contract"
+    },
+    {
+      "field": "dropped_iterations_recorded",
+      "op": "eq",
+      "value": true,
+      "why": "dropped iterations recorded: satisfy the stated generate meaningful load contract"
+    },
+    {
+      "field": "target_owned",
+      "op": "eq",
+      "value": true,
+      "why": "target owned: satisfy the stated generate meaningful load contract"
+    },
+    {
+      "field": "max_vus",
+      "op": "min",
+      "value": 1,
+      "why": "max vus must be finite and within the positive lab envelope"
+    }
+  ],
+  "starting": {
+    "open_model": "constant-arrival-rate",
+    "max_vus": 4,
+    "duration_seconds": 5,
+    "dropped_iterations_recorded": false,
+    "target_owned": true
+  },
+  "reference": {
+    "open_model": "constant-arrival-rate",
+    "max_vus": 4,
+    "duration_seconds": 5,
+    "dropped_iterations_recorded": true,
+    "target_owned": true
+  },
+  "rules": [
+    {
+      "field": "open_model",
+      "op": "eq",
+      "value": "constant-arrival-rate",
+      "why": "open model: satisfy the stated generate meaningful load contract"
+    },
+    {
+      "field": "max_vus",
+      "op": "max",
+      "value": 4,
+      "why": "max vus: satisfy the stated generate meaningful load contract"
+    },
+    {
+      "field": "duration_seconds",
+      "op": "eq",
+      "value": 5,
+      "why": "duration seconds: satisfy the stated generate meaningful load contract"
+    },
+    {
+      "field": "dropped_iterations_recorded",
+      "op": "eq",
+      "value": true,
+      "why": "dropped iterations recorded: satisfy the stated generate meaningful load contract"
+    },
+    {
+      "field": "target_owned",
+      "op": "eq",
+      "value": true,
+      "why": "target owned: satisfy the stated generate meaningful load contract"
+    },
+    {
+      "field": "max_vus",
+      "op": "min",
+      "value": 1,
+      "why": "max vus must be finite and within the positive lab envelope"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Repair a restart loop caused by a bad path or configuration.",
+  "contract": [
+    {
+      "field": "working_directory",
+      "op": "eq",
+      "value": "/opt/ascend-relay",
+      "why": "working directory: satisfy the stated keep a service running contract"
+    },
+    {
+      "field": "service_user",
+      "op": "eq",
+      "value": "relaylab",
+      "why": "service user: satisfy the stated keep a service running contract"
+    },
+    {
+      "field": "enabled_at_boot",
+      "op": "eq",
+      "value": true,
+      "why": "enabled at boot: satisfy the stated keep a service running contract"
+    },
+    {
+      "field": "restart_policy",
+      "op": "eq",
+      "value": "on-failure",
+      "why": "restart policy: satisfy the stated keep a service running contract"
+    }
+  ],
+  "starting": {
+    "working_directory": "/opt/ascend-relay",
+    "service_user": "relaylab",
+    "enabled_at_boot": false,
+    "restart_policy": "on-failure"
+  },
+  "reference": {
+    "working_directory": "/opt/ascend-relay",
+    "service_user": "relaylab",
+    "enabled_at_boot": true,
+    "restart_policy": "on-failure"
+  },
+  "rules": [
+    {
+      "field": "working_directory",
+      "op": "eq",
+      "value": "/opt/ascend-relay",
+      "why": "working directory: satisfy the stated keep a service running contract"
+    },
+    {
+      "field": "service_user",
+      "op": "eq",
+      "value": "relaylab",
+      "why": "service user: satisfy the stated keep a service running contract"
+    },
+    {
+      "field": "enabled_at_boot",
+      "op": "eq",
+      "value": true,
+      "why": "enabled at boot: satisfy the stated keep a service running contract"
+    },
+    {
+      "field": "restart_policy",
+      "op": "eq",
+      "value": "on-failure",
+      "why": "restart policy: satisfy the stated keep a service running contract"
+    }
+  ]
+}

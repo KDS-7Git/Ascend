@@ -1,0 +1,10 @@
+serverAddr = "127.0.0.1"
+serverPort = 7000
+auth.method = "token"
+auth.token = "REPLACE_WITH_PRIVATE_LAB_TOKEN"
+[[proxies]]
+name = "relay-http"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 8000
+remotePort = 18000

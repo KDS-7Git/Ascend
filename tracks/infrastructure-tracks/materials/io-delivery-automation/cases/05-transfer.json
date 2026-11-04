@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Explain why code rollback cannot undo an incompatible database change.",
+  "contract": [
+    {
+      "field": "promoted_digest_matches_tested",
+      "op": "eq",
+      "value": true,
+      "why": "promoted digest matches tested: satisfy the stated promote and roll back contract"
+    },
+    {
+      "field": "release_changes_serialized",
+      "op": "eq",
+      "value": true,
+      "why": "release changes serialized: satisfy the stated promote and roll back contract"
+    },
+    {
+      "field": "data_compatible_with_rollback",
+      "op": "eq",
+      "value": true,
+      "why": "data compatible with rollback: satisfy the stated promote and roll back contract"
+    },
+    {
+      "field": "post_rollback_version",
+      "op": "eq",
+      "value": "v1",
+      "why": "post rollback version: satisfy the stated promote and roll back contract"
+    }
+  ],
+  "starting": {
+    "promoted_digest_matches_tested": true,
+    "release_changes_serialized": false,
+    "data_compatible_with_rollback": false,
+    "post_rollback_version": "v1"
+  },
+  "reference": {
+    "promoted_digest_matches_tested": true,
+    "release_changes_serialized": true,
+    "data_compatible_with_rollback": true,
+    "post_rollback_version": "v1"
+  },
+  "rules": [
+    {
+      "field": "promoted_digest_matches_tested",
+      "op": "eq",
+      "value": true,
+      "why": "promoted digest matches tested: satisfy the stated promote and roll back contract"
+    },
+    {
+      "field": "release_changes_serialized",
+      "op": "eq",
+      "value": true,
+      "why": "release changes serialized: satisfy the stated promote and roll back contract"
+    },
+    {
+      "field": "data_compatible_with_rollback",
+      "op": "eq",
+      "value": true,
+      "why": "data compatible with rollback: satisfy the stated promote and roll back contract"
+    },
+    {
+      "field": "post_rollback_version",
+      "op": "eq",
+      "value": "v1",
+      "why": "post rollback version: satisfy the stated promote and roll back contract"
+    }
+  ]
+}

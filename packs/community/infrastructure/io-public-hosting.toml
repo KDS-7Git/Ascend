@@ -1,0 +1,590 @@
+# Generated from docs/curriculum/infrastructure-paths.json; unreviewed draft teaching content.
+[pack]
+"id" = "io-public-hosting"
+"title" = "Web Hosting & Public Deployment"
+"kind" = "proficiency"
+"version" = 1
+"source" = "ai-draft"
+"reviewed" = false
+
+[[level]]
+"id" = "io-public-hosting-01"
+"title" = "Choose the hosting model"
+"lane" = "main"
+
+[[level]]
+"id" = "io-public-hosting-02"
+"title" = "Put an edge in front"
+"lane" = "main"
+
+[[level]]
+"id" = "io-public-hosting-03"
+"title" = "Own a name and certificate"
+"lane" = "main"
+
+[[level]]
+"id" = "io-public-hosting-04"
+"title" = "Serve from home or a VPS"
+"lane" = "main"
+
+[[level]]
+"id" = "io-public-hosting-05"
+"title" = "Publish a free static site"
+"lane" = "main"
+
+[[level]]
+"id" = "io-public-hosting-06"
+"title" = "Try free dynamic hosting"
+"lane" = "main"
+
+[[level]]
+"id" = "io-public-hosting-07"
+"title" = "Publish through cloudflared"
+"lane" = "main"
+
+[[level]]
+"id" = "io-public-hosting-08"
+"title" = "Diagnose a public deployment"
+"lane" = "main"
+
+[[level]]
+"id" = "entry"
+"title" = "Choose your entry point"
+"lane" = "side"
+
+[[level]]
+"id" = "recall"
+"title" = "Return later"
+"lane" = "side"
+
+[[node]]
+"level" = "entry"
+"preview" = "Match a concrete practical outcome to what you can already demonstrate."
+"requirements" = "Python 3.11+, a text editor and your own PC. No account or device purchase is required for this entry check."
+"setup" = "Download /training/io-public-hosting.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-public-hosting directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/entry.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-public-hosting.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "entry-demonstration"
+"title" = "Choose an entry point through a short demonstration"
+"size" = "S"
+"minutes" = 20
+"needs" = []
+"brief" = "New to this subject: start with the worked operation in level 1. Already practising: attempt an independent operation first and use Ascend early-unlock for a later level when appropriate. It records your choice, not an automatic proficiency pass. Job preparation emphasizes the reproducible handover; interest-led work can extend the same technical evidence with a different owned environment."
+"steps" = ["Read bootstrap.md, record your machine/OS and confirm the tools work.\n```sh\npython3 shared/selfcheck.py\n```\nThis checks the teaching tools, not proficiency.", "Read the eight independent finish lines in README.md and lessons/NN.md. Choose the first operation you cannot demonstrate on a fresh target without the worked steps.", "Begin that independent milestone if you already have the background, using existing early-unlock when needed. Otherwise start level 1 worked practice. Your own demonstration remains required; an entry choice does not complete other nodes.", "Record the chosen level, supporting prior observation and next concrete action in notes/entry.md. Return to guided material whenever a gap appears."]
+"done_when" = "Your local tool checks run, a practical observation supports the chosen starting level, and notes/entry.md names the next operation. This is manual self-assessment and does not certify or complete other levels."
+
+[[node]]
+"level" = "io-public-hosting-01"
+"preview" = "Publish a static build locally and run a dynamic service; compare what each requires."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python 3.11+ and curl on your PC for both static files and a synthetic dynamic service."
+"setup" = "Download /training/io-public-hosting.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-public-hosting directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/01.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-public-hosting.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-public-hosting-01-practice"
+"title" = "Operate: Choose the hosting model"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "A static host returns built files; a dynamic service executes code for each request and may own durable state. The source project is not necessarily the deployable artifact. Build output paths, base URLs and runtime compatibility determine which hosting option can execute the project. Start by serving both models locally and observe the difference."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 01 --variant guided --out work/01-guided\npython3 lab.py check work/01-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/01-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/01.md. Predict a successful response and a failure before running the following native operations.", "```sh\npython3 -m http.server 8090 --bind 127.0.0.1 --directory inputs/01/site\n# Second terminal: curl -i http://127.0.0.1:8090/\n# Keep this static server running in Terminal A. Start the dynamic service below in Terminal B.\n```", "```sh\n# PC or service GUEST, in this extracted track directory; leave this terminal running.\nmkdir -p data\npython3 shared/relay.py --host 127.0.0.1 --port 8000 --data data/relay.sqlite --release v1\n```", "```sh\n# CLIENT Terminal C while both services run:\ncurl -i http://127.0.0.1:8000/version\ncurl -i http://127.0.0.1:8090/api/updates\n# A static file server does not implement the dynamic API merely because its path exists.\n# Retain the 404 from the static API request, then stop both foreground servers with Ctrl+C.\n```", "Observe these controls and retain actual output: Serve the static build and dynamic API, record the distinction and choose compatible hosting for each. Do not call a source directory or a static placeholder API a deployed dynamic service.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 01 --out work/01-reference. Record that help was used."]
+"done_when" = "Serve the static build and dynamic API, record the distinction and choose compatible hosting for each. Do not call a source directory or a static placeholder API a deployed dynamic service. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-public-hosting-01"
+"preview" = "Choose a deployment target for a site that needs server-side processing."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python 3.11+ and curl on your PC for both static files and a synthetic dynamic service."
+"setup" = "Download /training/io-public-hosting.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-public-hosting directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/01.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-public-hosting.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-public-hosting-01-milestone"
+"title" = "Apply independently: Choose the hosting model"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Static assets, dynamic requests, build output, runtime, state and platform contracts."
+"steps" = ["Choose the native environment in lessons/01.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 01 --variant transfer --out work/01-transfer\npython3 lab.py check work/01-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/01-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Choose a deployment target for a site that needs server-side processing.", "Collect the actual controls: Serve the static build and dynamic API, record the distinction and choose compatible hosting for each. Do not call a source directory or a static placeholder API a deployed dynamic service.", "Retain your commands, changed input, cause, recovery and help used in notes/01.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Serve the static build and dynamic API, record the distinction and choose compatible hosting for each. Do not call a source directory or a static placeholder API a deployed dynamic service. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-public-hosting.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-public-hosting directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/01.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-public-hosting.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-public-hosting-01"
+"title" = "Return later: Choose the hosting model"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-public-hosting-01-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Static assets, dynamic requests, build output, runtime, state and platform contracts.", "Predict a changed-condition result: Choose a deployment target for a site that needs server-side processing.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-public-hosting-02"
+"preview" = "Run the real local Caddy lab and inspect the generated route and certificate controls."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python, curl and an installed reviewed Caddy binary on your PC; loopback-only edge requires no account."
+"setup" = "Download /training/io-public-hosting.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-public-hosting directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/02.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://caddyserver.com/docs/caddyfile/directives/reverse_proxy"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-public-hosting.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-public-hosting-02-practice"
+"title" = "Operate: Put an edge in front"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "A reverse proxy owns the client-facing listener and forwards to an upstream. The site hostname is not the same as the listener bind; make both intentional. An upstream address is interpreted from the proxy machine. A loopback upstream cannot refer to a separate VM. Validate configuration before launch and compare direct origin versus edge responses."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 02 --variant guided --out work/02-guided\npython3 lab.py check work/02-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/02-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/02.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# PC or service GUEST, in this extracted track directory; leave this terminal running.\nmkdir -p data\npython3 shared/relay.py --host 127.0.0.1 --port 8000 --data data/relay.sqlite --release v1\n```", "```sh\ncaddy validate --config inputs/02/Caddyfile --adapter caddyfile\ncaddy run --config inputs/02/Caddyfile --adapter caddyfile\n# In another terminal:\n# curl -i http://127.0.0.1:8080/version\n# ss -ltnp\n# Stop only this Caddy process with Ctrl+C before editing/restarting its configuration.\n```", "Observe these controls and retain actual output: Direct origin and edge version checks pass; a deliberately wrong upstream produces a 502. Verify actual socket binding instead of inferring it from a site hostname.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 02 --out work/02-reference. Record that help was used."]
+"done_when" = "Direct origin and edge version checks pass; a deliberately wrong upstream produces a 502. Verify actual socket binding instead of inferring it from a site hostname. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-public-hosting-02"
+"preview" = "Fix a changed upstream/name mismatch while preserving the intended boundary."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python, curl and an installed reviewed Caddy binary on your PC; loopback-only edge requires no account."
+"setup" = "Download /training/io-public-hosting.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-public-hosting directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/02.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://caddyserver.com/docs/caddyfile/directives/reverse_proxy"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-public-hosting.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-public-hosting-02-milestone"
+"title" = "Apply independently: Put an edge in front"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Reverse proxy, upstream address, headers, TLS termination, trust and names."
+"steps" = ["Choose the native environment in lessons/02.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 02 --variant transfer --out work/02-transfer\npython3 lab.py check work/02-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/02-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Fix a changed upstream/name mismatch while preserving the intended boundary.", "Collect the actual controls: Direct origin and edge version checks pass; a deliberately wrong upstream produces a 502. Verify actual socket binding instead of inferring it from a site hostname.", "Retain your commands, changed input, cause, recovery and help used in notes/02.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Direct origin and edge version checks pass; a deliberately wrong upstream produces a 502. Verify actual socket binding instead of inferring it from a site hostname. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-public-hosting.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-public-hosting directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/02.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://caddyserver.com/docs/caddyfile/directives/reverse_proxy"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-public-hosting.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-public-hosting-02"
+"title" = "Return later: Put an edge in front"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-public-hosting-02-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Reverse proxy, upstream address, headers, TLS termination, trust and names.", "Predict a changed-condition result: Fix a changed upstream/name mismatch while preserving the intended boundary.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-public-hosting-03"
+"preview" = "Use local DNS/TLS fixtures, then a supported public hostname/certificate variant when available."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: dig, curl and OpenSSL; local TLS is free. Public DNS/ACME needs an owned eligible domain and authoritative DNS access."
+"setup" = "Download /training/io-public-hosting.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-public-hosting directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/03.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://letsencrypt.org/docs/challenge-types/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-public-hosting.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-public-hosting-03-practice"
+"title" = "Operate: Own a name and certificate"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "DNS delegation establishes who answers for a name; records direct clients but do not open a network path. TLS proves a server name against a trusted issuer. ACME HTTP-01 needs a reachable challenge endpoint; DNS-01 needs authority over the challenge record. Private-CA practice can prove local TLS controls without purchasing a domain, while public issuance remains separately qualified."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 03 --variant guided --out work/03-guided\npython3 lab.py check work/03-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/03-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/03.md. Predict a successful response and a failure before running the following native operations.", "```sh\ndig example.com NS\ndig example.com A\ndig example.com AAAA\nmkdir -p work/tls\nopenssl req -x509 -newkey rsa:2048 -nodes -days 1 -keyout work/tls/key.pem -out work/tls/cert.pem -subj /CN=localhost -addext subjectAltName=DNS:localhost\nopenssl s_server -accept 127.0.0.1:8443 -cert work/tls/cert.pem -key work/tls/key.pem -www\n# Second terminal:\n# curl --cacert work/tls/cert.pem https://localhost:8443/\n# curl --cacert work/tls/cert.pem https://127.0.0.1:8443/  # must reject the name\n# For a public domain, use only your authoritative DNS account and inspect A/AAAA and challenge authority first.\n```", "Observe these controls and retain actual output: Local certificate tests prove matching-name/trust behaviour. Record external DNS/ACME evidence separately only after actually using an owned eligible public hostname.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 03 --out work/03-reference. Record that help was used."]
+"done_when" = "Local certificate tests prove matching-name/trust behaviour. Record external DNS/ACME evidence separately only after actually using an owned eligible public hostname. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-public-hosting-03"
+"preview" = "Repair a bad AAAA, stale answer or renewal prerequisite."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: dig, curl and OpenSSL; local TLS is free. Public DNS/ACME needs an owned eligible domain and authoritative DNS access."
+"setup" = "Download /training/io-public-hosting.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-public-hosting directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/03.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://letsencrypt.org/docs/challenge-types/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-public-hosting.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-public-hosting-03-milestone"
+"title" = "Apply independently: Own a name and certificate"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. DNS delegation, A/AAAA/CNAME, TTL, ACME, HTTP/DNS challenges and renewal."
+"steps" = ["Choose the native environment in lessons/03.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 03 --variant transfer --out work/03-transfer\npython3 lab.py check work/03-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/03-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Repair a bad AAAA, stale answer or renewal prerequisite.", "Collect the actual controls: Local certificate tests prove matching-name/trust behaviour. Record external DNS/ACME evidence separately only after actually using an owned eligible public hostname.", "Retain your commands, changed input, cause, recovery and help used in notes/03.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Local certificate tests prove matching-name/trust behaviour. Record external DNS/ACME evidence separately only after actually using an owned eligible public hostname. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-public-hosting.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-public-hosting directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/03.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://letsencrypt.org/docs/challenge-types/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-public-hosting.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-public-hosting-03"
+"title" = "Return later: Own a name and certificate"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-public-hosting-03-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: DNS delegation, A/AAAA/CNAME, TTL, ACME, HTTP/DNS challenges and renewal.", "Predict a changed-condition result: Repair a bad AAAA, stale answer or renewal prerequisite.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-public-hosting-04"
+"preview" = "Deploy to a guest/spare machine and test an owned external client path or simulated outer network."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: An owned always-on guest/device or eligible VPS, guest service/console access and a permitted client route. External proof needs another network; a VPS may cost money."
+"setup" = "Download /training/io-public-hosting.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-public-hosting directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/04.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-public-hosting.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-public-hosting-04-practice"
+"title" = "Operate: Serve from home or a VPS"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "An always-on origin requires power, operating-system startup, service startup and network reachability. A VPS supplies a provider-managed host boundary, but the guest still needs updates, access policy and a recoverable release. Home NAT, CGNAT and IPv6 decide whether an inbound route can exist. An external client is necessary to establish internet reachability."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 04 --variant guided --out work/04-guided\npython3 lab.py check work/04-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/04-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/04.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# Owned origin/VM: inspect before changing any network policy.\nhostname\nip -br address\nip route\nss -ltnp\nsystemctl status ascend-relay.service --no-pager\n# CLIENT: use the actual permitted origin/edge address.\n# curl --connect-timeout 3 --max-time 5 https://YOUR_OWNED_HOSTNAME/version\n# Repeat from another owned network, such as your phone's mobile data.\n# Without that external route, repeat through a second guest and label the result LAN/simulated WAN.\n```", "Observe these controls and retain actual output: Reboot the owned origin, verify release/state and test the intended client path. A successful local response must not become a claim that every network can access the site.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 04 --out work/04-reference. Record that help was used."]
+"done_when" = "Reboot the owned origin, verify release/state and test the intended client path. A successful local response must not become a claim that every network can access the site. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-public-hosting-04"
+"preview" = "Select a workable route when router control or public inbound access is unavailable."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: An owned always-on guest/device or eligible VPS, guest service/console access and a permitted client route. External proof needs another network; a VPS may cost money."
+"setup" = "Download /training/io-public-hosting.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-public-hosting directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/04.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-public-hosting.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-public-hosting-04-milestone"
+"title" = "Apply independently: Serve from home or a VPS"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Public/private addresses, router forwarding, CGNAT, IPv6, DNS and continuous operation."
+"steps" = ["Choose the native environment in lessons/04.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 04 --variant transfer --out work/04-transfer\npython3 lab.py check work/04-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/04-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Select a workable route when router control or public inbound access is unavailable.", "Collect the actual controls: Reboot the owned origin, verify release/state and test the intended client path. A successful local response must not become a claim that every network can access the site.", "Retain your commands, changed input, cause, recovery and help used in notes/04.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Reboot the owned origin, verify release/state and test the intended client path. A successful local response must not become a claim that every network can access the site. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-public-hosting.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-public-hosting directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/04.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-public-hosting.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-public-hosting-04"
+"title" = "Return later: Serve from home or a VPS"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-public-hosting-04-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Public/private addresses, router forwarding, CGNAT, IPv6, DNS and continuous operation.", "Predict a changed-condition result: Select a workable route when router control or public inbound access is unavailable.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-public-hosting-05"
+"preview" = "Deploy synthetic public content through a current eligible free static route such as GitHub Pages."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python/curl for local rehearsal; an owned eligible GitHub account/repository for optional public Pages deployment and its current limits."
+"setup" = "Download /training/io-public-hosting.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-public-hosting directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/05.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-public-hosting.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-public-hosting-05-practice"
+"title" = "Operate: Publish a free static site"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "Free static publishing is still a public action with account, repository and usage conditions. Publish synthetic content through an eligible provider subdomain first. The chosen output directory and base path must match the platform. Secrets belong outside static build artifacts because every served file can be downloaded by visitors."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 05 --variant guided --out work/05-guided\npython3 lab.py check work/05-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/05-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/05.md. Predict a successful response and a failure before running the following native operations.", "```sh\nmkdir -p work/static-site\ncp inputs/05/index.html work/static-site/index.html\npython3 -m http.server 8090 --bind 127.0.0.1 --directory work/static-site\n# Inspect locally before publishing. Stop this server with Ctrl+C.\n# In an OWNED repository, commit only these public synthetic files.\n# GitHub: Settings → Pages → choose the supported source/deployment workflow.\n# Use the assigned provider URL, then fetch / and a deliberately missing asset.\n# A repository push is not sufficient; inspect the completed Pages deployment and actual URL.\n```", "Observe these controls and retain actual output: The assigned public URL returns the intended synthetic build and missing assets fail correctly. Record provider/repository/visibility conditions and remove the demonstration when finished.", "Recover and clean up only the named resources: Remove only this demonstration deployment or disable its Pages source if you chose to publish it. Retain the build and deployment receipt locally; never delete an unrelated repository."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 05 --out work/05-reference. Record that help was used."]
+"done_when" = "The assigned public URL returns the intended synthetic build and missing assets fail correctly. Record provider/repository/visibility conditions and remove the demonstration when finished. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-public-hosting-05"
+"preview" = "Fix an asset/base-path or build-output failure."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python/curl for local rehearsal; an owned eligible GitHub account/repository for optional public Pages deployment and its current limits."
+"setup" = "Download /training/io-public-hosting.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-public-hosting directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/05.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-public-hosting.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-public-hosting-05-milestone"
+"title" = "Apply independently: Publish a free static site"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Build pipelines, provider subdomains, repository visibility, paths and usage limits."
+"steps" = ["Choose the native environment in lessons/05.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 05 --variant transfer --out work/05-transfer\npython3 lab.py check work/05-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/05-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Fix an asset/base-path or build-output failure.", "Collect the actual controls: The assigned public URL returns the intended synthetic build and missing assets fail correctly. Record provider/repository/visibility conditions and remove the demonstration when finished.", "Retain your commands, changed input, cause, recovery and help used in notes/05.md. Remove only this demonstration deployment or disable its Pages source if you chose to publish it. Retain the build and deployment receipt locally; never delete an unrelated repository."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "The assigned public URL returns the intended synthetic build and missing assets fail correctly. Record provider/repository/visibility conditions and remove the demonstration when finished. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-public-hosting.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-public-hosting directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/05.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-public-hosting.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-public-hosting-05"
+"title" = "Return later: Publish a free static site"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-public-hosting-05-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Build pipelines, provider subdomains, repository visibility, paths and usage limits.", "Predict a changed-condition result: Fix an asset/base-path or build-output failure.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-public-hosting-06"
+"preview" = "Deploy a compatible small endpoint on a current free offering; keep an equivalent local route."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: A supported Node toolchain and reviewed Wrangler CLI. Local rehearsal needs no public deployment; publishing requires your own eligible Cloudflare account/current plan."
+"setup" = "Download /training/io-public-hosting.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-public-hosting directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/06.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://developers.cloudflare.com/workers/platform/limits/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-public-hosting.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-public-hosting-06-practice"
+"title" = "Operate: Try free dynamic hosting"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "A free dynamic service has a runtime contract. A small Workers endpoint can be free under current limits, but is not a drop-in host for an arbitrary Python daemon. Other free web services may sleep or discard local files between instances. Verify current quotas, cold-start behaviour and persistence before choosing storage for user data."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 06 --variant guided --out work/06-guided\npython3 lab.py check work/06-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/06-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/06.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# PC with a supported Node toolchain. Inspect the simple Worker source first.\ncat inputs/06/worker.js\n# Use an installed, version-reviewed Wrangler CLI; login/deploy are explicit actions in your own account.\nwrangler dev --config inputs/06/wrangler.toml --ip 127.0.0.1 --port 8787\n# Second terminal: curl -i http://127.0.0.1:8787/version\n# When you choose to publish: wrangler deploy --config inputs/06/wrangler.toml\n# Inspect the assigned URL and current free-plan usage; no persistent database is assumed here.\n```", "Observe these controls and retain actual output: Verify the actual runtime and version locally and, if selected, at the assigned public URL. Record current plan limits and storage contract; do not infer persistence from one successful request.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 06 --out work/06-reference. Record that help was used."]
+"done_when" = "Verify the actual runtime and version locally and, if selected, at the assigned public URL. Record current plan limits and storage contract; do not infer persistence from one successful request. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-public-hosting-06"
+"preview" = "Diagnose a sleeping service or disappearing local runtime data."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: A supported Node toolchain and reviewed Wrangler CLI. Local rehearsal needs no public deployment; publishing requires your own eligible Cloudflare account/current plan."
+"setup" = "Download /training/io-public-hosting.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-public-hosting directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/06.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://developers.cloudflare.com/workers/platform/limits/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-public-hosting.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-public-hosting-06-milestone"
+"title" = "Apply independently: Try free dynamic hosting"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Execution compatibility, quotas, cold starts, runtime storage and database lifetime."
+"steps" = ["Choose the native environment in lessons/06.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 06 --variant transfer --out work/06-transfer\npython3 lab.py check work/06-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/06-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Diagnose a sleeping service or disappearing local runtime data.", "Collect the actual controls: Verify the actual runtime and version locally and, if selected, at the assigned public URL. Record current plan limits and storage contract; do not infer persistence from one successful request.", "Retain your commands, changed input, cause, recovery and help used in notes/06.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Verify the actual runtime and version locally and, if selected, at the assigned public URL. Record current plan limits and storage contract; do not infer persistence from one successful request. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-public-hosting.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-public-hosting directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/06.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://developers.cloudflare.com/workers/platform/limits/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-public-hosting.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-public-hosting-06"
+"title" = "Return later: Try free dynamic hosting"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-public-hosting-06-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Execution compatibility, quotas, cold starts, runtime storage and database lifetime.", "Predict a changed-condition result: Diagnose a sleeping service or disappearing local runtime data.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-public-hosting-07"
+"preview" = "Compare a temporary Quick Tunnel with a named route when the learner has the required account/domain."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python, curl and reviewed cloudflared; outbound connector transport must be permitted. A temporary Quick Tunnel is public; stable names/Access need the corresponding account/domain policy."
+"setup" = "Download /training/io-public-hosting.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-public-hosting directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/07.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-public-hosting.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-public-hosting-07-practice"
+"title" = "Operate: Publish through cloudflared"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "cloudflared establishes an outbound connection between a running origin and a relay service. A Quick Tunnel supplies a temporary public HTTP hostname; a stable named route has account/domain/configuration requirements. The connector does not keep a stopped origin alive, and routing alone is not an authentication policy. Outbound 7844 UDP/TCP restrictions can prevent connection."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 07 --variant guided --out work/07-guided\npython3 lab.py check work/07-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/07-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/07.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# PC or service GUEST, in this extracted track directory; leave this terminal running.\nmkdir -p data\npython3 shared/relay.py --host 127.0.0.1 --port 8000 --data data/relay.sqlite --release v1\n```", "```sh\n# Publishing this synthetic local service is an explicit learner action.\ncloudflared tunnel --url http://127.0.0.1:8000\n# From an independent owned client, request the printed temporary HTTPS URL /version.\n# Stop the origin, repeat the request, restore it, then stop the connector.\n# Named route, only with your OWN account/domain:\n# cloudflared tunnel login\n# cloudflared tunnel create relay-practice\n# cloudflared tunnel route dns relay-practice YOUR_OWNED_HOSTNAME\n# Follow the official configuration guide for that created tunnel and add Access policy where needed.\n```", "Observe these controls and retain actual output: Observe the external version and the origin-down failure, then revoke the intended route/connector. A Quick Tunnel is temporary and has documented limits; protect private applications with a tested identity policy.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 07 --out work/07-reference. Record that help was used."]
+"done_when" = "Observe the external version and the origin-down failure, then revoke the intended route/connector. A Quick Tunnel is temporary and has documented limits; protect private applications with a tested identity policy. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-public-hosting-07"
+"preview" = "Recover a wrong origin route or blocked connector transport; restrict a private application."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python, curl and reviewed cloudflared; outbound connector transport must be permitted. A temporary Quick Tunnel is public; stable names/Access need the corresponding account/domain policy."
+"setup" = "Download /training/io-public-hosting.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-public-hosting directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/07.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-public-hosting.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-public-hosting-07-milestone"
+"title" = "Apply independently: Publish through cloudflared"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Outbound connector, Quick versus named tunnels, public HTTP routes, Access and restart."
+"steps" = ["Choose the native environment in lessons/07.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 07 --variant transfer --out work/07-transfer\npython3 lab.py check work/07-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/07-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Recover a wrong origin route or blocked connector transport; restrict a private application.", "Collect the actual controls: Observe the external version and the origin-down failure, then revoke the intended route/connector. A Quick Tunnel is temporary and has documented limits; protect private applications with a tested identity policy.", "Retain your commands, changed input, cause, recovery and help used in notes/07.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Observe the external version and the origin-down failure, then revoke the intended route/connector. A Quick Tunnel is temporary and has documented limits; protect private applications with a tested identity policy. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-public-hosting.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-public-hosting directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/07.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-public-hosting.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-public-hosting-07"
+"title" = "Return later: Publish through cloudflared"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-public-hosting-07-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Outbound connector, Quick versus named tunnels, public HTTP routes, Access and restart.", "Predict a changed-condition result: Recover a wrong origin route or blocked connector transport; restrict a private application.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-public-hosting-08"
+"preview" = "Maintain a deployment record and test a second owned network when available."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: An owned running origin/edge and curl/dig; an external client and controlled public DNS only for the public variant."
+"setup" = "Download /training/io-public-hosting.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-public-hosting directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/08.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://developers.cloudflare.com/dns/manage-dns-records/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-public-hosting.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-public-hosting-08-practice"
+"title" = "Operate: Diagnose a public deployment"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "Deployment diagnosis follows DNS, transport, TLS, edge, origin and state separately. A successful test on the same LAN can conceal broken external routing or a bad AAAA record. Preserve the version and data control while repairing the responsible boundary. Record the actual client network so others can reproduce the incident."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 08 --variant guided --out work/08-guided\npython3 lab.py check work/08-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/08-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/08.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# Use your actual owned deployment hostname if present; otherwise the local edge.\n# dig YOUR_OWNED_HOSTNAME A\n# dig YOUR_OWNED_HOSTNAME AAAA\n# curl -4 -v --max-time 5 https://YOUR_OWNED_HOSTNAME/version\n# curl -6 -v --max-time 5 https://YOUR_OWNED_HOSTNAME/version\ncurl --max-time 3 -i http://127.0.0.1:8080/version\ncurl --max-time 3 -i http://127.0.0.1:8000/health\n# Compare direct origin, edge and an external owned client. Apply one repair, then repeat all controls.\n```", "Observe these controls and retain actual output: Provide a changed-cause incident timeline, corresponding network scope and restored release/TLS/access controls. Public claims need external evidence; otherwise retain the local variant as preparation.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 08 --out work/08-reference. Record that help was used."]
+"done_when" = "Provide a changed-cause incident timeline, corresponding network scope and restored release/TLS/access controls. Public claims need external evidence; otherwise retain the local variant as preparation. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-public-hosting-08"
+"preview" = "Recover a mixed DNS/origin/access failure and remove the intended public route."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: An owned running origin/edge and curl/dig; an external client and controlled public DNS only for the public variant."
+"setup" = "Download /training/io-public-hosting.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-public-hosting directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/08.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://developers.cloudflare.com/dns/manage-dns-records/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-public-hosting.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-public-hosting-08-milestone"
+"title" = "Apply independently: Diagnose a public deployment"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. LAN versus external clients, certificate/DNS state, origin availability and revocation."
+"steps" = ["Choose the native environment in lessons/08.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 08 --variant transfer --out work/08-transfer\npython3 lab.py check work/08-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/08-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Recover a mixed DNS/origin/access failure and remove the intended public route.", "Collect the actual controls: Provide a changed-cause incident timeline, corresponding network scope and restored release/TLS/access controls. Public claims need external evidence; otherwise retain the local variant as preparation.", "Retain your commands, changed input, cause, recovery and help used in notes/08.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Provide a changed-cause incident timeline, corresponding network scope and restored release/TLS/access controls. Public claims need external evidence; otherwise retain the local variant as preparation. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-public-hosting.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-public-hosting directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/08.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://developers.cloudflare.com/dns/manage-dns-records/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-public-hosting.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-public-hosting-08"
+"title" = "Return later: Diagnose a public deployment"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-public-hosting-08-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: LAN versus external clients, certificate/DNS state, origin availability and revocation.", "Predict a changed-condition result: Recover a mixed DNS/origin/access failure and remove the intended public route.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."

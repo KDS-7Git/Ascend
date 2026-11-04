@@ -1,0 +1,582 @@
+# Generated from docs/curriculum/devops-paths.json; unreviewed draft teaching content.
+[pack]
+"id" = "devops-service-foundations"
+"title" = "DevOps 1: Service & Deployment Foundations"
+"kind" = "proficiency"
+"version" = 1
+"source" = "ai-draft"
+"reviewed" = false
+
+[[level]]
+"id" = "request-path"
+"title" = "Trace a real request"
+"lane" = "main"
+
+[[level]]
+"id" = "linux-shell"
+"title" = "Use the Linux shell and service files"
+"lane" = "main"
+
+[[level]]
+"id" = "versioned-artifact"
+"title" = "Build a versioned artifact"
+"lane" = "main"
+
+[[level]]
+"id" = "service-lifecycle"
+"title" = "Operate a persistent Linux service"
+"lane" = "main"
+
+[[level]]
+"id" = "edge-tls"
+"title" = "Reach a service through an edge"
+"lane" = "main"
+
+[[level]]
+"id" = "ssh-deployment"
+"title" = "Deploy to an owned remote guest"
+"lane" = "main"
+
+[[level]]
+"id" = "container-runtime"
+"title" = "Package and recreate a container"
+"lane" = "main"
+
+[[level]]
+"id" = "foundation-capstone"
+"title" = "Recover a complete deployment"
+"lane" = "main"
+
+[[level]]
+"id" = "entry"
+"title" = "Choose your entry point"
+"lane" = "side"
+
+[[level]]
+"id" = "recall"
+"title" = "Return later"
+"lane" = "side"
+
+[[node]]
+"level" = "entry"
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Match the track's practical outcomes to what you can already demonstrate."
+"requirements" = "Python 3.11+ and a text editor on your own PC; no account required."
+"setup" = "Download /training/devops-service-foundations.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-service-foundations folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/entry.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-service-foundations.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "entry-demonstration"
+"title" = "Choose an entry point through a short demonstration"
+"size" = "S"
+"minutes" = 20
+"needs" = []
+"brief" = "Start here if processes, HTTP, Linux service operation or deployment boundaries are new."
+"steps" = ["Run the bundled checks to confirm your Python environment and the local reference tools work. These checks inspect the teaching code, not your knowledge.\n```sh\npython3 shared/selfcheck.py\n```", "Read the eight independent applications in README.md and the linked lessons. Choose the first one you cannot yet demonstrate from a fresh target without its worked instructions.", "If you already have the background, open the independent application for that level. Existing level early-unlock is available; it records your choice, not an automatic pass. Otherwise start the guided practice in level 1.", "Write the chosen starting level, the observation supporting that choice and the next concrete operation in notes/entry.md. Use the guided lesson whenever a gap appears."]
+"done_when" = "Your local tools run, you name a starting level based on demonstrated prior work, and your notes identify one concrete next operation. This self-assessment neither grades nor completes other levels."
+
+[[node]]
+"level" = "request-path"
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Trace a real HTTP request and distinguish a stopped service, a missing route and the wrong release."
+"requirements" = "Python 3.11+ and two terminals on your PC; no account or VM needed."
+"setup" = "Download /training/devops-service-foundations.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-service-foundations folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/request-path.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-service-foundations.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "request-path-practice"
+"title" = "Practice: Trace a real request"
+"size" = "M"
+"minutes" = 60
+"needs" = []
+"brief" = "A port belongs to a listening process. DNS/address selection, transport connection, HTTP status, readiness and release identity are separate observations. A 200 from the wrong release is still a failed deployment."
+"steps" = ["Extract the ZIP into its own folder. Terminal A stays open while the service runs. The startup record gives the actual database location. Only synthetic notes belong here.", "```sh\npython3 shared/relay.py --host 127.0.0.1 --port 8000 --data work/relay.sqlite --release v1\n```", "In Terminal B, predict each response before checking it. The explicit write creates one sample update and verifies replay/conflict handling.", "```sh\npython3 shared/check_service.py --url http://127.0.0.1:8000 --expect-release v1 --write\n```", "Compare the working URL with port 8001 (where you have started nothing) and /not-an-endpoint. Connection refusal and HTTP 404 come from different layers.", "```sh\ncurl -i http://127.0.0.1:8000/version\ncurl -i http://127.0.0.1:8001/version\ncurl -i http://127.0.0.1:8000/not-an-endpoint\n```", "Compare the observed result with your prediction and retain the commands/output in notes/request-path.md. A request trace identifies the process/address, three distinct failure types and the correct version; actual update and replay results are retained."]
+"hints" = ["Use the actual listener, release identity and state path printed by your process; a healthy service at another address may be the wrong deployment.", "If a required environment is unavailable, keep preparation as partial progress and return for the live operation."]
+"done_when" = "A request trace identifies the process/address, three distinct failure types and the correct version; actual update and replay results are retained. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "request-path"
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Trace a real HTTP request and distinguish a stopped service, a missing route and the wrong release."
+"requirements" = "Python 3.11+ and two terminals on your PC; no account or VM needed."
+"setup" = "Download /training/devops-service-foundations.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-service-foundations folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/request-path.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-service-foundations.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "request-path-milestone"
+"title" = "Apply independently: Trace a real request"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Apply the mechanism to a changed condition and recover the intended behaviour. A port belongs to a listening process. DNS/address selection, transport connection, HTTP status, readiness and release identity are separate observations. A 200 from the wrong release is still a failed deployment."
+"steps" = ["Use the named environment and files in lessons/request-path.md. Predict the changed result before opening the guided solution. Prior experience can replace guided practice; the demonstration below remains required.", "Start a second owned Relay process on port 8002 with --release v2 and a different data path. Both /health endpoints should work.", "A client expects v2 but still uses the first URL. Diagnose with release evidence, update the client address, and retain the before/after results.", "Stop only your two foreground services with Ctrl+C and rerun one check to distinguish a stopped process from an HTTP failure.", "Retain the failing case, successful control, recovery, explanation and any help used in notes/request-path.md. A request trace identifies the process/address, three distinct failure types and the correct version; actual update and replay results are retained."]
+"hints" = ["Compare one changed condition against the earlier successful control. Recover that control before trying another change."]
+"done_when" = "A request trace identifies the process/address, three distinct failure types and the correct version; actual update and replay results are retained. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "recall"
+"resource" = "https://developer.mozilla.org/en-US/docs/Web/HTTP"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Reconstruct a previous operational decision and check what you remember."
+"requirements" = "Your retained local notes; the original tools only if you choose a fresh observation."
+"setup" = "Download /training/devops-service-foundations.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-service-foundations folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/request-path.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-service-foundations.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-request-path"
+"title" = "Return later: Trace a real request"
+"size" = "S"
+"minutes" = 15
+"needs" = ["request-path-milestone"]
+"brief" = "After a suggested 2–7 days, reconstruct the mechanism without your walkthrough. Spacing is optional and is not automatically verified."
+"steps" = ["From memory, explain the mechanism: A port belongs to a listening process. DNS/address selection, transport connection, HTTP status, readiness and release identity are separate observations. A 200 from the wrong release is still a failed deployment.", "Predict one changed-condition result from this lesson: Start a second owned Relay process on port 8002 with --release v2 and a different data path. Both /health endpoints should work.", "Compare your reasoning with a fresh observation or your retained evidence. Record the specific correction and the next experiment you would use to test it."]
+"done_when" = "You reconstruct a concrete failure/recovery path, compare it with retained or fresh evidence, and correct the explanation in your notes. This manual recall task does not certify an unperformed live operation."
+
+[[node]]
+"level" = "linux-shell"
+"resource" = "https://docs.python.org/3/tutorial/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Use paths, permissions and process observations to repair a small Linux service."
+"requirements" = "Python 3.11+; Linux VM or Linux PC for POSIX permission/process commands."
+"setup" = "Download /training/devops-service-foundations.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-service-foundations folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/linux-shell.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-service-foundations.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "linux-shell-practice"
+"title" = "Practice: Use the Linux shell and service files"
+"size" = "M"
+"minutes" = 60
+"needs" = []
+"brief" = "Quoting, paths, permissions, pipes, redirection, exit status and process signals explain why a service starts in one terminal but fails elsewhere. Use a disposable Linux guest for OS operations; owning a terminal does not grant host administration."
+"steps" = ["Read shared/README.md. In your extracted folder create named working locations, and keep terminal output separate from application state.", "```sh\nmkdir -p work notes\npython3 --version\npwd\nls -la shared\npython3 shared/relay.py --help > notes/relay-help.txt\n```", "Start Relay in Terminal A using a data path containing a space; quote it. Observe the process and listener from Terminal B.", "```sh\npython3 shared/relay.py --data 'work/first service/relay.sqlite' --release shell-v1\n```", "```sh\nps -ef | grep '[r]elay.py'\nss -ltnp\npython3 shared/check_service.py --expect-release shell-v1\n```", "While the service is stopped, create a new synthetic token file with restricted permissions and inspect its owner. Do not copy a real key into the archive.", "```sh\nmkdir -p secrets\nprintf '%s\\n' 'synthetic-first-token' > secrets/write-token.txt\nchmod 600 secrets/write-token.txt\nls -l secrets/write-token.txt\n```", "Compare the observed result with your prediction and retain the commands/output in notes/linux-shell.md. The learner explains actual stdout/stderr and exit behaviour, repairs a file/identity fault with narrow permissions, and proves the legitimate path works."]
+"hints" = ["Use the actual listener, release identity and state path printed by your process; a healthy service at another address may be the wrong deployment.", "If a required environment is unavailable, keep preparation as partial progress and return for the live operation."]
+"done_when" = "The learner explains actual stdout/stderr and exit behaviour, repairs a file/identity fault with narrow permissions, and proves the legitimate path works. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "linux-shell"
+"resource" = "https://docs.python.org/3/tutorial/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Use paths, permissions and process observations to repair a small Linux service."
+"requirements" = "Python 3.11+; Linux VM or Linux PC for POSIX permission/process commands."
+"setup" = "Download /training/devops-service-foundations.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-service-foundations folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/linux-shell.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-service-foundations.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "linux-shell-milestone"
+"title" = "Apply independently: Use the Linux shell and service files"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Apply the mechanism to a changed condition and recover the intended behaviour. Quoting, paths, permissions, pipes, redirection, exit status and process signals explain why a service starts in one terminal but fails elsewhere. Use a disposable Linux guest for OS operations; owning a terminal does not grant host administration."
+"steps" = ["Use the named environment and files in lessons/linux-shell.md. Predict the changed result before opening the guided solution. Prior experience can replace guided practice; the demonstration below remains required.", "On the owned Linux guest, create an unwritable exercise directory and try using it as a new database location. Record the actual permission error.", "Repair ownership or the selected path for the intended service user; do not use chmod 777 or run the application as host root.", "Demonstrate that quoting preserves one path argument and that the valid service still responds after the repair.", "Retain the failing case, successful control, recovery, explanation and any help used in notes/linux-shell.md. The learner explains actual stdout/stderr and exit behaviour, repairs a file/identity fault with narrow permissions, and proves the legitimate path works."]
+"hints" = ["Compare one changed condition against the earlier successful control. Recover that control before trying another change."]
+"done_when" = "The learner explains actual stdout/stderr and exit behaviour, repairs a file/identity fault with narrow permissions, and proves the legitimate path works. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "recall"
+"resource" = "https://docs.python.org/3/tutorial/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Reconstruct a previous operational decision and check what you remember."
+"requirements" = "Your retained local notes; the original tools only if you choose a fresh observation."
+"setup" = "Download /training/devops-service-foundations.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-service-foundations folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/linux-shell.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-service-foundations.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-linux-shell"
+"title" = "Return later: Use the Linux shell and service files"
+"size" = "S"
+"minutes" = 15
+"needs" = ["linux-shell-milestone"]
+"brief" = "After a suggested 2–7 days, reconstruct the mechanism without your walkthrough. Spacing is optional and is not automatically verified."
+"steps" = ["From memory, explain the mechanism: Quoting, paths, permissions, pipes, redirection, exit status and process signals explain why a service starts in one terminal but fails elsewhere. Use a disposable Linux guest for OS operations; owning a terminal does not grant host administration.", "Predict one changed-condition result from this lesson: On the owned Linux guest, create an unwritable exercise directory and try using it as a new database location. Record the actual permission error.", "Compare your reasoning with a fresh observation or your retained evidence. Record the specific correction and the next experiment you would use to test it."]
+"done_when" = "You reconstruct a concrete failure/recovery path, compare it with retained or fresh evidence, and correct the explanation in your notes. This manual recall task does not certify an unperformed live operation."
+
+[[node]]
+"level" = "versioned-artifact"
+"resource" = "https://git-scm.com/book/en/v2"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Build an identifiable release and detect a changed artifact before deployment."
+"requirements" = "Python 3.11+; Git for the source-history portion."
+"setup" = "Download /training/devops-service-foundations.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-service-foundations folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/versioned-artifact.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-service-foundations.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "versioned-artifact-practice"
+"title" = "Practice: Build a versioned artifact"
+"size" = "M"
+"minutes" = 60
+"needs" = []
+"brief" = "Source revision, immutable build output, runtime configuration and persistent data serve different purposes. A checksum detects an artifact change; it does not authenticate who produced it."
+"steps" = ["Initialize a separate learning repository in the extracted track folder if needed. Copy gitignore.example to .gitignore before recording source; leave keys, databases and notes untracked.", "```sh\ngit init\ncp gitignore.example .gitignore\ngit add shared Dockerfile configs .gitignore\ngit status\n```", "Commit using your chosen local identity, then record the resulting commit ID. Build two copies with the same source and revision; the manifests should match.", "```sh\ngit -c user.name='Relay Learner' -c user.email='learner@example.invalid' commit -m 'Start Relay lab'\npython3 shared/release.py build --source shared/relay.py --out work/releases/v1 --release v1 --revision \"$(git rev-parse HEAD)\"\npython3 shared/release.py build --source shared/relay.py --out work/releases/v1-copy --release v1 --revision \"$(git rev-parse HEAD)\"\ndiff work/releases/v1/manifest.json work/releases/v1-copy/manifest.json\n```", "Inspect the manifest, select the artifact, and run the selected release in a terminal. Configuration and data stay outside the artifact.", "```sh\npython3 shared/release.py verify --artifact work/releases/v1\npython3 shared/release.py select --artifact work/releases/v1 --state work/current.json\npython3 shared/release.py serve --state work/current.json -- --port 8000 --data work/runtime.sqlite\n```", "Compare the observed result with your prediction and retain the commands/output in notes/versioned-artifact.md. Two identical inputs produce identical manifests; a modified artifact is rejected; v2 has a traceable source/release identity and separate runtime state."]
+"hints" = ["Use the actual listener, release identity and state path printed by your process; a healthy service at another address may be the wrong deployment.", "If a required environment is unavailable, keep preparation as partial progress and return for the live operation."]
+"done_when" = "Two identical inputs produce identical manifests; a modified artifact is rejected; v2 has a traceable source/release identity and separate runtime state. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "versioned-artifact"
+"resource" = "https://git-scm.com/book/en/v2"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Build an identifiable release and detect a changed artifact before deployment."
+"requirements" = "Python 3.11+; Git for the source-history portion."
+"setup" = "Download /training/devops-service-foundations.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-service-foundations folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/versioned-artifact.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-service-foundations.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "versioned-artifact-milestone"
+"title" = "Apply independently: Build a versioned artifact"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Apply the mechanism to a changed condition and recover the intended behaviour. Source revision, immutable build output, runtime configuration and persistent data serve different purposes. A checksum detects an artifact change; it does not authenticate who produced it."
+"steps" = ["Use the named environment and files in lessons/versioned-artifact.md. Predict the changed result before opening the guided solution. Prior experience can replace guided practice; the demonstration below remains required.", "Copy the v1 artifact to a new scratch directory, alter its relay.py and run the verifier: it must fail.", "Build a genuinely new v2 artifact from the intended source revision rather than editing a released directory in place.", "Show both artifact digests, the selected release and the HTTP version. Explain why a manifest hash alone is not provenance.", "Retain the failing case, successful control, recovery, explanation and any help used in notes/versioned-artifact.md. Two identical inputs produce identical manifests; a modified artifact is rejected; v2 has a traceable source/release identity and separate runtime state."]
+"hints" = ["Compare one changed condition against the earlier successful control. Recover that control before trying another change."]
+"done_when" = "Two identical inputs produce identical manifests; a modified artifact is rejected; v2 has a traceable source/release identity and separate runtime state. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "recall"
+"resource" = "https://git-scm.com/book/en/v2"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Reconstruct a previous operational decision and check what you remember."
+"requirements" = "Your retained local notes; the original tools only if you choose a fresh observation."
+"setup" = "Download /training/devops-service-foundations.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-service-foundations folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/versioned-artifact.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-service-foundations.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-versioned-artifact"
+"title" = "Return later: Build a versioned artifact"
+"size" = "S"
+"minutes" = 15
+"needs" = ["versioned-artifact-milestone"]
+"brief" = "After a suggested 2–7 days, reconstruct the mechanism without your walkthrough. Spacing is optional and is not automatically verified."
+"steps" = ["From memory, explain the mechanism: Source revision, immutable build output, runtime configuration and persistent data serve different purposes. A checksum detects an artifact change; it does not authenticate who produced it.", "Predict one changed-condition result from this lesson: Copy the v1 artifact to a new scratch directory, alter its relay.py and run the verifier: it must fail.", "Compare your reasoning with a fresh observation or your retained evidence. Record the specific correction and the next experiment you would use to test it."]
+"done_when" = "You reconstruct a concrete failure/recovery path, compare it with retained or fresh evidence, and correct the explanation in your notes. This manual recall task does not certify an unperformed live operation."
+
+[[node]]
+"level" = "service-lifecycle"
+"resource" = "https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Keep a service running across process failure and a guest reboot while preserving its data."
+"requirements" = "An owned Debian/Ubuntu-class Linux guest with systemd, Python and sudo; guest console recovery available."
+"setup" = "Download /training/devops-service-foundations.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-service-foundations folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/service-lifecycle.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-service-foundations.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "service-lifecycle-practice"
+"title" = "Practice: Operate a persistent Linux service"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "systemd owns a process lifecycle, identity, working directory and restart policy. Liveness, readiness and durable data differ. Restart=on-failure is not an availability guarantee when the host loses power."
+"steps" = ["Perform the following only inside your disposable guest, after copying the extracted track there. Inspect configs/relay.service; it uses DynamicUser and StateDirectory to avoid a permanent privileged application user.", "```sh\nsudo install -d /opt/ascend-relay/shared\nsudo install -m 0644 shared/relay.py /opt/ascend-relay/shared/relay.py\nsudo install -m 0644 configs/relay.service /etc/systemd/system/ascend-relay.service\nsudo systemctl daemon-reload\nsudo systemctl enable --now ascend-relay\n```", "Check lifecycle and application state independently. Record the service user and its actual data path.", "```sh\nsystemctl status ascend-relay --no-pager\nsystemctl show ascend-relay -p MainPID -p User -p StateDirectory\njournalctl -u ascend-relay -n 20 --no-pager\npython3 shared/check_service.py --expect-release service-v1 --write\n```", "Stop just the owned process through systemd's signal interface, observe recovery, then deliberately stop the unit. A requested stop should remain stopped.", "```sh\nsudo systemctl kill --signal=SIGKILL --kill-whom=main ascend-relay\nsleep 3\nsystemctl is-active ascend-relay\nsudo systemctl stop ascend-relay\nsystemctl is-active ascend-relay\n```", "Start it again, reboot the owned guest through its normal controls, reconnect and verify that the saved synthetic update survives. Do not reboot the shared Ascend server.", "Compare the observed result with your prediction and retain the commands/output in notes/service-lifecycle.md. A process failure recovers, a deliberate stop remains stopped, reboot restores the service, and required state survives; wrong configuration is diagnosed from observed evidence."]
+"hints" = ["Use the actual listener, release identity and state path printed by your process; a healthy service at another address may be the wrong deployment.", "If a required environment is unavailable, keep preparation as partial progress and return for the live operation."]
+"done_when" = "A process failure recovers, a deliberate stop remains stopped, reboot restores the service, and required state survives; wrong configuration is diagnosed from observed evidence. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "service-lifecycle"
+"resource" = "https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Keep a service running across process failure and a guest reboot while preserving its data."
+"requirements" = "An owned Debian/Ubuntu-class Linux guest with systemd, Python and sudo; guest console recovery available."
+"setup" = "Download /training/devops-service-foundations.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-service-foundations folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/service-lifecycle.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-service-foundations.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "service-lifecycle-milestone"
+"title" = "Apply independently: Operate a persistent Linux service"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Apply the mechanism to a changed condition and recover the intended behaviour. systemd owns a process lifecycle, identity, working directory and restart policy. Liveness, readiness and durable data differ. Restart=on-failure is not an availability guarantee when the host loses power."
+"steps" = ["Use the named environment and files in lessons/service-lifecycle.md. Predict the changed result before opening the guided solution. Prior experience can replace guided practice; the demonstration below remains required.", "Introduce a wrong ExecStart path in a copied unit installed only in the guest; inspect the failure and journal before repairing it.", "Recover the intended unit, confirm process identity/readiness/version and prove the earlier update remains.", "Disable and remove only ascend-relay when finished, or explicitly retain it for the next guest deployment task.", "Retain the failing case, successful control, recovery, explanation and any help used in notes/service-lifecycle.md. A process failure recovers, a deliberate stop remains stopped, reboot restores the service, and required state survives; wrong configuration is diagnosed from observed evidence."]
+"hints" = ["Compare one changed condition against the earlier successful control. Recover that control before trying another change."]
+"done_when" = "A process failure recovers, a deliberate stop remains stopped, reboot restores the service, and required state survives; wrong configuration is diagnosed from observed evidence. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "recall"
+"resource" = "https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Reconstruct a previous operational decision and check what you remember."
+"requirements" = "Your retained local notes; the original tools only if you choose a fresh observation."
+"setup" = "Download /training/devops-service-foundations.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-service-foundations folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/service-lifecycle.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-service-foundations.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-service-lifecycle"
+"title" = "Return later: Operate a persistent Linux service"
+"size" = "S"
+"minutes" = 15
+"needs" = ["service-lifecycle-milestone"]
+"brief" = "After a suggested 2–7 days, reconstruct the mechanism without your walkthrough. Spacing is optional and is not automatically verified."
+"steps" = ["From memory, explain the mechanism: systemd owns a process lifecycle, identity, working directory and restart policy. Liveness, readiness and durable data differ. Restart=on-failure is not an availability guarantee when the host loses power.", "Predict one changed-condition result from this lesson: Introduce a wrong ExecStart path in a copied unit installed only in the guest; inspect the failure and journal before repairing it.", "Compare your reasoning with a fresh observation or your retained evidence. Record the specific correction and the next experiment you would use to test it."]
+"done_when" = "You reconstruct a concrete failure/recovery path, compare it with retained or fresh evidence, and correct the explanation in your notes. This manual recall task does not certify an unperformed live operation."
+
+[[node]]
+"level" = "edge-tls"
+"resource" = "https://caddyserver.com/docs/caddyfile/directives/reverse_proxy"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Route requests through a private edge and prove TLS name and trust behaviour."
+"requirements" = "Python 3.11+ for the local proxy; Caddy and OpenSSL for the real TLS extension."
+"setup" = "Download /training/devops-service-foundations.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-service-foundations folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/edge-tls.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-service-foundations.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "edge-tls-practice"
+"title" = "Practice: Reach a service through an edge"
+"size" = "M"
+"minutes" = 60
+"needs" = []
+"brief" = "The reverse proxy has its own listener and upstream. TLS authenticates a hostname under a trusted CA; trust failure and name mismatch are different. A working process can remain unreachable through an incorrect edge route."
+"steps" = ["Start a fresh Relay v1 on port 8000 in Terminal A using the following command. Terminal B will run the edge; Terminal C will run the clients.", "```sh\npython3 shared/relay.py --port 8000 --data work/edge.sqlite --release v1\n```", "```sh\npython3 shared/edge.py --config configs/route.json --port 9000\n```", "```sh\ncurl -i http://127.0.0.1:8000/version\ncurl -i http://127.0.0.1:9000/version\n```", "Stop the teaching edge. Run the equivalent Caddy configuration and compare behaviour. Keep Caddy's listener and origin private to this machine.", "```sh\ncaddy validate --config configs/Caddyfile --adapter caddyfile\ncaddy run --config configs/Caddyfile --adapter caddyfile\n```", "Stop that Caddy process before the TLS extension. Generate a temporary lab certificate, then run the supplied TLS edge. This certificate is trusted only by the following client invocation.", "```sh\nmkdir -p work\nopenssl req -x509 -newkey rsa:2048 -nodes -days 1 -keyout work/key.pem -out work/cert.pem -subj '/CN=localhost' -addext 'subjectAltName=DNS:localhost'\ncaddy run --config configs/Caddyfile.tls --adapter caddyfile\n```", "```sh\npython3 shared/check_service.py --url https://localhost:9443 --ca-file work/cert.pem --expect-release v1\ncurl --cacert work/cert.pem https://127.0.0.1:9443/version\n```", "Compare the observed result with your prediction and retain the commands/output in notes/edge-tls.md. Direct and edge observations locate a routing fault, legitimate controls survive the repair, and TLS trust/name negative controls reject as expected."]
+"hints" = ["Use the actual listener, release identity and state path printed by your process; a healthy service at another address may be the wrong deployment.", "If a required environment is unavailable, keep preparation as partial progress and return for the live operation."]
+"done_when" = "Direct and edge observations locate a routing fault, legitimate controls survive the repair, and TLS trust/name negative controls reject as expected. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "edge-tls"
+"resource" = "https://caddyserver.com/docs/caddyfile/directives/reverse_proxy"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Route requests through a private edge and prove TLS name and trust behaviour."
+"requirements" = "Python 3.11+ for the local proxy; Caddy and OpenSSL for the real TLS extension."
+"setup" = "Download /training/devops-service-foundations.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-service-foundations folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/edge-tls.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-service-foundations.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "edge-tls-milestone"
+"title" = "Apply independently: Reach a service through an edge"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Apply the mechanism to a changed condition and recover the intended behaviour. The reverse proxy has its own listener and upstream. TLS authenticates a hostname under a trusted CA; trust failure and name mismatch are different. A working process can remain unreachable through an incorrect edge route."
+"steps" = ["Use the named environment and files in lessons/edge-tls.md. Predict the changed result before opening the guided solution. Prior experience can replace guided practice; the demonstration below remains required.", "Use route-fault.json with the teaching edge, record the 502 and the still-working direct backend, then repair the route in a working copy.", "For the real TLS edge, show a trusted correct-name success, an untrusted-CA rejection and a wrong-name rejection without -k.", "Explain what additional DNS/router/public-address conditions would be needed for an Internet deployment; the loopback exercise does not prove those.", "Retain the failing case, successful control, recovery, explanation and any help used in notes/edge-tls.md. Direct and edge observations locate a routing fault, legitimate controls survive the repair, and TLS trust/name negative controls reject as expected."]
+"hints" = ["Compare one changed condition against the earlier successful control. Recover that control before trying another change."]
+"done_when" = "Direct and edge observations locate a routing fault, legitimate controls survive the repair, and TLS trust/name negative controls reject as expected. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "recall"
+"resource" = "https://caddyserver.com/docs/caddyfile/directives/reverse_proxy"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Reconstruct a previous operational decision and check what you remember."
+"requirements" = "Your retained local notes; the original tools only if you choose a fresh observation."
+"setup" = "Download /training/devops-service-foundations.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-service-foundations folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/edge-tls.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-service-foundations.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-edge-tls"
+"title" = "Return later: Reach a service through an edge"
+"size" = "S"
+"minutes" = 15
+"needs" = ["edge-tls-milestone"]
+"brief" = "After a suggested 2–7 days, reconstruct the mechanism without your walkthrough. Spacing is optional and is not automatically verified."
+"steps" = ["From memory, explain the mechanism: The reverse proxy has its own listener and upstream. TLS authenticates a hostname under a trusted CA; trust failure and name mismatch are different. A working process can remain unreachable through an incorrect edge route.", "Predict one changed-condition result from this lesson: Use route-fault.json with the teaching edge, record the 502 and the still-working direct backend, then repair the route in a working copy.", "Compare your reasoning with a fresh observation or your retained evidence. Record the specific correction and the next experiment you would use to test it."]
+"done_when" = "You reconstruct a concrete failure/recovery path, compare it with retained or fresh evidence, and correct the explanation in your notes. This manual recall task does not certify an unperformed live operation."
+
+[[node]]
+"level" = "ssh-deployment"
+"resource" = "https://man.openbsd.org/ssh"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Deploy to an owned guest and reach its private service through authenticated SSH access."
+"requirements" = "Owned Linux guest reachable by SSH, verified host-key fingerprint and an SSH client. A local VM is sufficient."
+"setup" = "Download /training/devops-service-foundations.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-service-foundations folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/ssh-deployment.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-service-foundations.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "ssh-deployment-practice"
+"title" = "Practice: Deploy to an owned remote guest"
+"size" = "M"
+"minutes" = 60
+"needs" = []
+"brief" = "SSH gives a route and authenticated access to a guest OS; it does not grant hypervisor administration. Host keys identify the server. Copying an artifact, starting a process and publishing a website are separate operations."
+"steps" = ["Copy configs/ssh_config.example to a working file, replace its documentation address/user with your owned guest, and choose a dedicated key. Verify its public host-key fingerprint through the guest console before accepting it.", "```sh\nmkdir -p work\ncp configs/ssh_config.example work/ssh_config\nssh -F work/ssh_config relay-lab\n```", "On the guest, prepare a private learning folder; from your PC copy only the reviewed shared tools and service materials. Keep synthetic credentials out of the artifact.", "```sh\nssh -F work/ssh_config relay-lab 'mkdir -p ascend-relay-lab'\nscp -F work/ssh_config -r shared configs relay-lab:ascend-relay-lab/\n```", "Inside the guest, use the service-lifecycle procedure, or start this foreground equivalent from ascend-relay-lab: python3 shared/relay.py --data work/relay.sqlite --release service-v1. Keep that guest terminal open. From a separate PC terminal, forward one private service port.", "```sh\nssh -F work/ssh_config -N -L 127.0.0.1:18000:127.0.0.1:8000 relay-lab\n```", "```sh\npython3 shared/check_service.py --url http://127.0.0.1:18000 --expect-release service-v1\n```", "Compare the observed result with your prediction and retain the commands/output in notes/ssh-deployment.md. The intended guest and release are reached through a scoped authenticated path; a wrong destination is diagnosed and forwarding cleanup is observed."]
+"hints" = ["Use the actual listener, release identity and state path printed by your process; a healthy service at another address may be the wrong deployment.", "If a required environment is unavailable, keep preparation as partial progress and return for the live operation."]
+"done_when" = "The intended guest and release are reached through a scoped authenticated path; a wrong destination is diagnosed and forwarding cleanup is observed. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "ssh-deployment"
+"resource" = "https://man.openbsd.org/ssh"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Deploy to an owned guest and reach its private service through authenticated SSH access."
+"requirements" = "Owned Linux guest reachable by SSH, verified host-key fingerprint and an SSH client. A local VM is sufficient."
+"setup" = "Download /training/devops-service-foundations.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-service-foundations folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/ssh-deployment.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-service-foundations.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "ssh-deployment-milestone"
+"title" = "Apply independently: Deploy to an owned remote guest"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Apply the mechanism to a changed condition and recover the intended behaviour. SSH gives a route and authenticated access to a guest OS; it does not grant hypervisor administration. Host keys identify the server. Copying an artifact, starting a process and publishing a website are separate operations."
+"steps" = ["Use the named environment and files in lessons/ssh-deployment.md. Predict the changed result before opening the guided solution. Prior experience can replace guided practice; the demonstration below remains required.", "Create an access failure by using the wrong forwarded destination port in a separate client command. Diagnose it while the guest service remains healthy.", "Recover access without disabling host verification or exposing guest administration publicly.", "Record guest identity, artifact/version, private route and console recovery path; close the forwarding process and confirm access ends.", "Retain the failing case, successful control, recovery, explanation and any help used in notes/ssh-deployment.md. The intended guest and release are reached through a scoped authenticated path; a wrong destination is diagnosed and forwarding cleanup is observed."]
+"hints" = ["Compare one changed condition against the earlier successful control. Recover that control before trying another change."]
+"done_when" = "The intended guest and release are reached through a scoped authenticated path; a wrong destination is diagnosed and forwarding cleanup is observed. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "recall"
+"resource" = "https://man.openbsd.org/ssh"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Reconstruct a previous operational decision and check what you remember."
+"requirements" = "Your retained local notes; the original tools only if you choose a fresh observation."
+"setup" = "Download /training/devops-service-foundations.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-service-foundations folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/ssh-deployment.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-service-foundations.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-ssh-deployment"
+"title" = "Return later: Deploy to an owned remote guest"
+"size" = "S"
+"minutes" = 15
+"needs" = ["ssh-deployment-milestone"]
+"brief" = "After a suggested 2–7 days, reconstruct the mechanism without your walkthrough. Spacing is optional and is not automatically verified."
+"steps" = ["From memory, explain the mechanism: SSH gives a route and authenticated access to a guest OS; it does not grant hypervisor administration. Host keys identify the server. Copying an artifact, starting a process and publishing a website are separate operations.", "Predict one changed-condition result from this lesson: Create an access failure by using the wrong forwarded destination port in a separate client command. Diagnose it while the guest service remains healthy.", "Compare your reasoning with a fresh observation or your retained evidence. Record the specific correction and the next experiment you would use to test it."]
+"done_when" = "You reconstruct a concrete failure/recovery path, compare it with retained or fresh evidence, and correct the explanation in your notes. This manual recall task does not certify an unperformed live operation."
+
+[[node]]
+"level" = "container-runtime"
+"resource" = "https://docs.docker.com/get-started/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Build a runtime image and prove which data survives container replacement."
+"requirements" = "Owned Docker/Podman-capable Linux environment; sufficient space for a Python base image. No public registry publication required."
+"setup" = "Download /training/devops-service-foundations.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-service-foundations folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/container-runtime.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-service-foundations.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "container-runtime-practice"
+"title" = "Practice: Package and recreate a container"
+"size" = "M"
+"minutes" = 60
+"needs" = []
+"brief" = "An image is an artifact; a container is a running instance; a volume owns persistent state. Port publishing and the process's internal bind are separate. A tag can move, so record the actual image identity."
+"steps" = ["Inspect Dockerfile and .dockerignore. Resolve the selected base image and retain its digest; this initial fixture accepts an explicit PYTHON_IMAGE build argument.", "```sh\ndocker pull python:3.12-slim\ndocker image inspect python:3.12-slim --format '{{json .RepoDigests}}'\ndocker build -t ascend-relay:v1 .\ndocker image inspect ascend-relay:v1 --format '{{.Id}}'\n```", "Ensure your earlier port-8000 process is stopped, then start the named Compose project. Its published port binds loopback, its application is unprivileged, and its named volume stores state.", "```sh\ndocker compose -p ascend-devops-foundation up -d --build\npython3 shared/check_service.py --expect-release compose-v1 --write\ndocker compose -p ascend-devops-foundation ps\n```", "Recreate only the service and verify the update still exists. Stopping a project keeps its data volume by default.", "```sh\ndocker compose -p ascend-devops-foundation up -d --force-recreate\ncurl http://127.0.0.1:8000/api/updates\ndocker compose -p ascend-devops-foundation down\n```", "Compare the observed result with your prediction and retain the commands/output in notes/container-runtime.md. Image identity, process identity, port policy and state ownership are observed; the disposable-state negative case differs from the durable deployment."]
+"hints" = ["Use the actual listener, release identity and state path printed by your process; a healthy service at another address may be the wrong deployment.", "If a required environment is unavailable, keep preparation as partial progress and return for the live operation."]
+"done_when" = "Image identity, process identity, port policy and state ownership are observed; the disposable-state negative case differs from the durable deployment. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "container-runtime"
+"resource" = "https://docs.docker.com/get-started/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Build a runtime image and prove which data survives container replacement."
+"requirements" = "Owned Docker/Podman-capable Linux environment; sufficient space for a Python base image. No public registry publication required."
+"setup" = "Download /training/devops-service-foundations.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-service-foundations folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/container-runtime.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-service-foundations.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "container-runtime-milestone"
+"title" = "Apply independently: Package and recreate a container"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Apply the mechanism to a changed condition and recover the intended behaviour. An image is an artifact; a container is a running instance; a volume owns persistent state. Port publishing and the process's internal bind are separate. A tag can move, so record the actual image identity."
+"steps" = ["Use the named environment and files in lessons/container-runtime.md. Predict the changed result before opening the guided solution. Prior experience can replace guided practice; the demonstration below remains required.", "Run a disposable container without the persistent volume, create a synthetic update, remove/recreate that container, and observe the loss.", "Restore the declared volume-based deployment and show why its state survives a container replacement.", "Record the resolved base/image identities and all owned containers/volumes. Remove a data volume only after retaining the required backup.", "Retain the failing case, successful control, recovery, explanation and any help used in notes/container-runtime.md. Image identity, process identity, port policy and state ownership are observed; the disposable-state negative case differs from the durable deployment."]
+"hints" = ["Compare one changed condition against the earlier successful control. Recover that control before trying another change."]
+"done_when" = "Image identity, process identity, port policy and state ownership are observed; the disposable-state negative case differs from the durable deployment. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "recall"
+"resource" = "https://docs.docker.com/get-started/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Reconstruct a previous operational decision and check what you remember."
+"requirements" = "Your retained local notes; the original tools only if you choose a fresh observation."
+"setup" = "Download /training/devops-service-foundations.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-service-foundations folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/container-runtime.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-service-foundations.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-container-runtime"
+"title" = "Return later: Package and recreate a container"
+"size" = "S"
+"minutes" = 15
+"needs" = ["container-runtime-milestone"]
+"brief" = "After a suggested 2–7 days, reconstruct the mechanism without your walkthrough. Spacing is optional and is not automatically verified."
+"steps" = ["From memory, explain the mechanism: An image is an artifact; a container is a running instance; a volume owns persistent state. Port publishing and the process's internal bind are separate. A tag can move, so record the actual image identity.", "Predict one changed-condition result from this lesson: Run a disposable container without the persistent volume, create a synthetic update, remove/recreate that container, and observe the loss.", "Compare your reasoning with a fresh observation or your retained evidence. Record the specific correction and the next experiment you would use to test it."]
+"done_when" = "You reconstruct a concrete failure/recovery path, compare it with retained or fresh evidence, and correct the explanation in your notes. This manual recall task does not certify an unperformed live operation."
+
+[[node]]
+"level" = "foundation-capstone"
+"resource" = "https://sre.google/workbook/implementing-slos/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Reproduce a complete deployment and recover its release, route and saved data."
+"requirements" = "The local tools and owned guest/container route used in this track."
+"setup" = "Download /training/devops-service-foundations.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-service-foundations folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/foundation-capstone.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-service-foundations.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "foundation-capstone-practice"
+"title" = "Practice: Recover a complete deployment"
+"size" = "M"
+"minutes" = 120
+"needs" = []
+"brief" = "A reliable explanation connects client, edge, process, release and data rather than stopping at a green status. A fresh target is a stronger replay than the terminal where the original setup happened."
+"steps" = ["Use a fresh local process first; the owned-guest extension can use its systemd data path. From the track root, build/select an identifiable artifact and start it in Terminal A.", "```sh\npython3 shared/release.py build --source shared/relay.py --out work/foundation-artifact --release foundation-v1 --revision local-capstone\npython3 shared/release.py select --artifact work/foundation-artifact --state work/foundation-current.json\npython3 shared/release.py serve --state work/foundation-current.json -- --port 8000 --data work/foundation.sqlite\n```", "In Terminal B start the supplied teaching edge; in Terminal C require the intended release directly and through the edge. Write one synthetic update directly, since the teaching edge is GET-only.", "```sh\npython3 shared/edge.py --config configs/route.json --port 9000\n```", "```sh\npython3 shared/check_service.py --expect-release foundation-v1 --write\npython3 shared/check_service.py --url http://127.0.0.1:9000 --expect-release foundation-v1\npython3 shared/backup.py create --source work/foundation.sqlite --destination backups/foundation.sqlite\n```", "Record the update ID, artifact identity and actual state path. Stop only the teaching edge, then restart it using configs/route-fault.json. Diagnose the failure with direct and edge observations before repairing the route in a working copy.", "Write a handover with the actual release, start/stop commands, restore-to-new-path command, access method, save locations and known limits. A guest variant must inspect its actual /var/lib/ascend-relay state location instead of copying the local work path.", "Compare the observed result with your prediction and retain the commands/output in notes/foundation-capstone.md. A fresh target reproduces the correct release and retained data; the learner diagnoses two distinct faults and provides a usable runbook."]
+"hints" = ["Use the actual listener, release identity and state path printed by your process; a healthy service at another address may be the wrong deployment.", "If a required environment is unavailable, keep preparation as partial progress and return for the live operation."]
+"done_when" = "A fresh target reproduces the correct release and retained data; the learner diagnoses two distinct faults and provides a usable runbook. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "foundation-capstone"
+"resource" = "https://sre.google/workbook/implementing-slos/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Reproduce a complete deployment and recover its release, route and saved data."
+"requirements" = "The local tools and owned guest/container route used in this track."
+"setup" = "Download /training/devops-service-foundations.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-service-foundations folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/foundation-capstone.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-service-foundations.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "foundation-capstone-milestone"
+"title" = "Apply independently: Recover a complete deployment"
+"size" = "L"
+"minutes" = 180
+"milestone" = true
+"needs" = []
+"brief" = "Apply the mechanism to a changed condition and recover the intended behaviour. A reliable explanation connects client, edge, process, release and data rather than stopping at a green status. A fresh target is a stronger replay than the terminal where the original setup happened."
+"steps" = ["Use the named environment and files in lessons/foundation-capstone.md. Predict the changed result before opening the guided solution. Prior experience can replace guided practice; the demonstration below remains required.", "Recreate the service on a new disposable data/target path and restore the required synthetic data.", "Introduce a second cause: an old but healthy release or an unavailable data path. Recover the expected user behaviour and version.", "Have a fresh terminal or reviewer follow the handover; confirm intended cleanup without deleting unrelated guests, volumes or files.", "Retain the failing case, successful control, recovery, explanation and any help used in notes/foundation-capstone.md. A fresh target reproduces the correct release and retained data; the learner diagnoses two distinct faults and provides a usable runbook."]
+"hints" = ["Compare one changed condition against the earlier successful control. Recover that control before trying another change."]
+"done_when" = "A fresh target reproduces the correct release and retained data; the learner diagnoses two distinct faults and provides a usable runbook. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "recall"
+"resource" = "https://sre.google/workbook/implementing-slos/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Reconstruct a previous operational decision and check what you remember."
+"requirements" = "Your retained local notes; the original tools only if you choose a fresh observation."
+"setup" = "Download /training/devops-service-foundations.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-service-foundations folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/foundation-capstone.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-service-foundations.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-foundation-capstone"
+"title" = "Return later: Recover a complete deployment"
+"size" = "S"
+"minutes" = 15
+"needs" = ["foundation-capstone-milestone"]
+"brief" = "After a suggested 2–7 days, reconstruct the mechanism without your walkthrough. Spacing is optional and is not automatically verified."
+"steps" = ["From memory, explain the mechanism: A reliable explanation connects client, edge, process, release and data rather than stopping at a green status. A fresh target is a stronger replay than the terminal where the original setup happened.", "Predict one changed-condition result from this lesson: Recreate the service on a new disposable data/target path and restore the required synthetic data.", "Compare your reasoning with a fresh observation or your retained evidence. Record the specific correction and the next experiment you would use to test it."]
+"done_when" = "You reconstruct a concrete failure/recovery path, compare it with retained or fresh evidence, and correct the explanation in your notes. This manual recall task does not certify an unperformed live operation."

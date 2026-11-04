@@ -1,0 +1,82 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Configure an owned self-hosted relay; optionally implement a bounded educational relay over standard TLS.",
+  "contract": [
+    {
+      "field": "relay_reachable",
+      "op": "eq",
+      "value": true,
+      "why": "relay reachable: satisfy the stated build and compare a custom relay contract"
+    },
+    {
+      "field": "destination_allowlisted",
+      "op": "eq",
+      "value": true,
+      "why": "destination allowlisted: satisfy the stated build and compare a custom relay contract"
+    },
+    {
+      "field": "max_frame_bytes",
+      "op": "eq",
+      "value": 65536,
+      "why": "max frame bytes: satisfy the stated build and compare a custom relay contract"
+    },
+    {
+      "field": "custom_crypto",
+      "op": "eq",
+      "value": false,
+      "why": "custom crypto: satisfy the stated build and compare a custom relay contract"
+    },
+    {
+      "field": "public_open_proxy",
+      "op": "eq",
+      "value": false,
+      "why": "public open proxy: satisfy the stated build and compare a custom relay contract"
+    }
+  ],
+  "starting": {
+    "relay_reachable": true,
+    "destination_allowlisted": false,
+    "max_frame_bytes": 65536,
+    "custom_crypto": false,
+    "public_open_proxy": false
+  },
+  "reference": {
+    "relay_reachable": true,
+    "destination_allowlisted": true,
+    "max_frame_bytes": 65536,
+    "custom_crypto": false,
+    "public_open_proxy": false
+  },
+  "rules": [
+    {
+      "field": "relay_reachable",
+      "op": "eq",
+      "value": true,
+      "why": "relay reachable: satisfy the stated build and compare a custom relay contract"
+    },
+    {
+      "field": "destination_allowlisted",
+      "op": "eq",
+      "value": true,
+      "why": "destination allowlisted: satisfy the stated build and compare a custom relay contract"
+    },
+    {
+      "field": "max_frame_bytes",
+      "op": "eq",
+      "value": 65536,
+      "why": "max frame bytes: satisfy the stated build and compare a custom relay contract"
+    },
+    {
+      "field": "custom_crypto",
+      "op": "eq",
+      "value": false,
+      "why": "custom crypto: satisfy the stated build and compare a custom relay contract"
+    },
+    {
+      "field": "public_open_proxy",
+      "op": "eq",
+      "value": false,
+      "why": "public open proxy: satisfy the stated build and compare a custom relay contract"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+services:
+  relay:
+    build: .
+    image: ascend-relay:v1
+    ports: ['127.0.0.1:8000:8000']
+    volumes: [relay-data:/data]
+    command: [python, /app/relay.py, --host, 0.0.0.0, --port, '8000', --data, /data/relay.sqlite, --release, compose-v1]
+    mem_limit: 192m
+    cpus: 0.75
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/ready', timeout=2)"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+volumes:
+  relay-data:

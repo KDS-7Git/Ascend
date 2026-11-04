@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Diagnose a lost session or duplicated write during node changes.",
+  "contract": [
+    {
+      "field": "write_retry_idempotent",
+      "op": "eq",
+      "value": true,
+      "why": "write retry idempotent: satisfy the stated manage state across replicas contract"
+    },
+    {
+      "field": "state_owner_defined",
+      "op": "eq",
+      "value": true,
+      "why": "state owner defined: satisfy the stated manage state across replicas contract"
+    },
+    {
+      "field": "stickiness_is_replication",
+      "op": "eq",
+      "value": false,
+      "why": "stickiness is replication: satisfy the stated manage state across replicas contract"
+    },
+    {
+      "field": "independent_sqlite_files_share_state",
+      "op": "eq",
+      "value": false,
+      "why": "independent sqlite files share state: satisfy the stated manage state across replicas contract"
+    }
+  ],
+  "starting": {
+    "write_retry_idempotent": true,
+    "state_owner_defined": true,
+    "stickiness_is_replication": true,
+    "independent_sqlite_files_share_state": true
+  },
+  "reference": {
+    "write_retry_idempotent": true,
+    "state_owner_defined": true,
+    "stickiness_is_replication": false,
+    "independent_sqlite_files_share_state": false
+  },
+  "rules": [
+    {
+      "field": "write_retry_idempotent",
+      "op": "eq",
+      "value": true,
+      "why": "write retry idempotent: satisfy the stated manage state across replicas contract"
+    },
+    {
+      "field": "state_owner_defined",
+      "op": "eq",
+      "value": true,
+      "why": "state owner defined: satisfy the stated manage state across replicas contract"
+    },
+    {
+      "field": "stickiness_is_replication",
+      "op": "eq",
+      "value": false,
+      "why": "stickiness is replication: satisfy the stated manage state across replicas contract"
+    },
+    {
+      "field": "independent_sqlite_files_share_state",
+      "op": "eq",
+      "value": false,
+      "why": "independent sqlite files share state: satisfy the stated manage state across replicas contract"
+    }
+  ]
+}

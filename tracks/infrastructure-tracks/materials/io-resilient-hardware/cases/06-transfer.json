@@ -1,0 +1,102 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Distinguish CPU throttling, memory pressure and slow storage.",
+  "contract": [
+    {
+      "field": "host_ram_gib",
+      "op": "eq",
+      "value": 16,
+      "why": "host ram gib: satisfy the stated enforce and observe resource budgets contract"
+    },
+    {
+      "field": "quota_half_cpu_means_half_host",
+      "op": "eq",
+      "value": false,
+      "why": "quota half cpu means half host: satisfy the stated enforce and observe resource budgets contract"
+    },
+    {
+      "field": "failed_cleanup_resources_counted",
+      "op": "eq",
+      "value": true,
+      "why": "failed cleanup resources counted: satisfy the stated enforce and observe resource budgets contract"
+    },
+    {
+      "field": "lab_ram_gib",
+      "op": "min",
+      "value": 1,
+      "why": "At least one GiB is allocated to this declared starter lab"
+    },
+    {
+      "field": "host_and_margin_gib",
+      "op": "min",
+      "value": 4,
+      "why": "Retain at least four GiB for the host and unmodelled activity"
+    },
+    {
+      "field": "lab_ram_gib",
+      "op": "sum_max",
+      "fields": [
+        "lab_ram_gib",
+        "host_and_margin_gib"
+      ],
+      "value": 16,
+      "why": "Lab allocation plus host reserve cannot exceed the declared 16 GiB host"
+    }
+  ],
+  "starting": {
+    "host_ram_gib": 16,
+    "lab_ram_gib": 8,
+    "host_and_margin_gib": 8,
+    "quota_half_cpu_means_half_host": true,
+    "failed_cleanup_resources_counted": false
+  },
+  "reference": {
+    "host_ram_gib": 16,
+    "lab_ram_gib": 8,
+    "host_and_margin_gib": 8,
+    "quota_half_cpu_means_half_host": false,
+    "failed_cleanup_resources_counted": true
+  },
+  "rules": [
+    {
+      "field": "host_ram_gib",
+      "op": "eq",
+      "value": 16,
+      "why": "host ram gib: satisfy the stated enforce and observe resource budgets contract"
+    },
+    {
+      "field": "quota_half_cpu_means_half_host",
+      "op": "eq",
+      "value": false,
+      "why": "quota half cpu means half host: satisfy the stated enforce and observe resource budgets contract"
+    },
+    {
+      "field": "failed_cleanup_resources_counted",
+      "op": "eq",
+      "value": true,
+      "why": "failed cleanup resources counted: satisfy the stated enforce and observe resource budgets contract"
+    },
+    {
+      "field": "lab_ram_gib",
+      "op": "min",
+      "value": 1,
+      "why": "At least one GiB is allocated to this declared starter lab"
+    },
+    {
+      "field": "host_and_margin_gib",
+      "op": "min",
+      "value": 4,
+      "why": "Retain at least four GiB for the host and unmodelled activity"
+    },
+    {
+      "field": "lab_ram_gib",
+      "op": "sum_max",
+      "fields": [
+        "lab_ram_gib",
+        "host_and_margin_gib"
+      ],
+      "value": 16,
+      "why": "Lab allocation plus host reserve cannot exceed the declared 16 GiB host"
+    }
+  ]
+}

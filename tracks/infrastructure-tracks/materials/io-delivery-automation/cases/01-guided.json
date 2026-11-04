@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Build Relay from a known revision and retain a manifest.",
+  "contract": [
+    {
+      "field": "source_revision_recorded",
+      "op": "eq",
+      "value": true,
+      "why": "source revision recorded: satisfy the stated build an identifiable release contract"
+    },
+    {
+      "field": "artifact_digest_recorded",
+      "op": "eq",
+      "value": true,
+      "why": "artifact digest recorded: satisfy the stated build an identifiable release contract"
+    },
+    {
+      "field": "running_release",
+      "op": "eq",
+      "value": "artifact-v1",
+      "why": "running release: satisfy the stated build an identifiable release contract"
+    },
+    {
+      "field": "mutable_tag_is_digest",
+      "op": "eq",
+      "value": false,
+      "why": "mutable tag is digest: satisfy the stated build an identifiable release contract"
+    }
+  ],
+  "starting": {
+    "source_revision_recorded": true,
+    "artifact_digest_recorded": true,
+    "running_release": "untracked-build",
+    "mutable_tag_is_digest": false
+  },
+  "reference": {
+    "source_revision_recorded": true,
+    "artifact_digest_recorded": true,
+    "running_release": "artifact-v1",
+    "mutable_tag_is_digest": false
+  },
+  "rules": [
+    {
+      "field": "source_revision_recorded",
+      "op": "eq",
+      "value": true,
+      "why": "source revision recorded: satisfy the stated build an identifiable release contract"
+    },
+    {
+      "field": "artifact_digest_recorded",
+      "op": "eq",
+      "value": true,
+      "why": "artifact digest recorded: satisfy the stated build an identifiable release contract"
+    },
+    {
+      "field": "running_release",
+      "op": "eq",
+      "value": "artifact-v1",
+      "why": "running release: satisfy the stated build an identifiable release contract"
+    },
+    {
+      "field": "mutable_tag_is_digest",
+      "op": "eq",
+      "value": false,
+      "why": "mutable tag is digest: satisfy the stated build an identifiable release contract"
+    }
+  ]
+}

@@ -1,0 +1,590 @@
+# Generated from docs/curriculum/infrastructure-paths.json; unreviewed draft teaching content.
+[pack]
+"id" = "io-traffic-capacity"
+"title" = "Traffic, Concurrency & Capacity"
+"kind" = "proficiency"
+"version" = 1
+"source" = "ai-draft"
+"reviewed" = false
+
+[[level]]
+"id" = "io-traffic-capacity-01"
+"title" = "Define the workload"
+"lane" = "main"
+
+[[level]]
+"id" = "io-traffic-capacity-02"
+"title" = "Balance service traffic"
+"lane" = "main"
+
+[[level]]
+"id" = "io-traffic-capacity-03"
+"title" = "Manage state across replicas"
+"lane" = "main"
+
+[[level]]
+"id" = "io-traffic-capacity-04"
+"title" = "Choose concurrency deliberately"
+"lane" = "main"
+
+[[level]]
+"id" = "io-traffic-capacity-05"
+"title" = "Apply backpressure"
+"lane" = "main"
+
+[[level]]
+"id" = "io-traffic-capacity-06"
+"title" = "Generate meaningful load"
+"lane" = "main"
+
+[[level]]
+"id" = "io-traffic-capacity-07"
+"title" = "Estimate resources"
+"lane" = "main"
+
+[[level]]
+"id" = "io-traffic-capacity-08"
+"title" = "Optimize and verify"
+"lane" = "main"
+
+[[level]]
+"id" = "entry"
+"title" = "Choose your entry point"
+"lane" = "side"
+
+[[level]]
+"id" = "recall"
+"title" = "Return later"
+"lane" = "side"
+
+[[node]]
+"level" = "entry"
+"preview" = "Match a concrete practical outcome to what you can already demonstrate."
+"requirements" = "Python 3.11+, a text editor and your own PC. No account or device purchase is required for this entry check."
+"setup" = "Download /training/io-traffic-capacity.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-traffic-capacity directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/entry.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://sre.google/sre-book/handling-overload/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-traffic-capacity.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "entry-demonstration"
+"title" = "Choose an entry point through a short demonstration"
+"size" = "S"
+"minutes" = 20
+"needs" = []
+"brief" = "New to this subject: start with the worked operation in level 1. Already practising: attempt an independent operation first and use Ascend early-unlock for a later level when appropriate. It records your choice, not an automatic proficiency pass. Job preparation emphasizes the reproducible handover; interest-led work can extend the same technical evidence with a different owned environment."
+"steps" = ["Read bootstrap.md, record your machine/OS and confirm the tools work.\n```sh\npython3 shared/selfcheck.py\n```\nThis checks the teaching tools, not proficiency.", "Read the eight independent finish lines in README.md and lessons/NN.md. Choose the first operation you cannot demonstrate on a fresh target without the worked steps.", "Begin that independent milestone if you already have the background, using existing early-unlock when needed. Otherwise start level 1 worked practice. Your own demonstration remains required; an entry choice does not complete other nodes.", "Record the chosen level, supporting prior observation and next concrete action in notes/entry.md. Return to guided material whenever a gap appears."]
+"done_when" = "Your local tool checks run, a practical observation supports the chosen starting level, and notes/entry.md names the next operation. This is manual self-assessment and does not certify or complete other levels."
+
+[[node]]
+"level" = "io-traffic-capacity-01"
+"preview" = "Record a baseline workload with a fixed dataset and clear measurement boundaries."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python 3.11+ for CSV arithmetic and the bounded local Relay/probe. No external target or load-testing service is required."
+"setup" = "Download /training/io-traffic-capacity.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-traffic-capacity directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/01.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://sre.google/sre-book/handling-overload/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-traffic-capacity.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-traffic-capacity-01-practice"
+"title" = "Operate: Define the workload"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "A capacity statement needs a workload, an observation window and a success condition. Concurrent users, requests in progress and requests per second are different quantities. Include failed and unfinished requests in accounting, and examine tails rather than only average successful latency. Recorded CSV fixtures let you learn the calculation without generating external load."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 01 --variant guided --out work/01-guided\npython3 lab.py check work/01-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/01-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/01.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# PC or service GUEST, in this extracted track directory; leave this terminal running.\nmkdir -p data\npython3 shared/relay.py --host 127.0.0.1 --port 8000 --data data/relay.sqlite --release v1\n```", "```sh\npython3 lab.py analyze inputs/01/requests.csv\n# Read all ten rows and calculate the observation window by hand.\n# Compare all-request latency with the successful-only subset; explain the 503 record.\n# Then collect a small real local run using shared/probe_load.py according to --help:\npython3 shared/probe_load.py --url http://127.0.0.1:8000/work --clients 4 --requests 24 --output work/load-1.csv > work/load-1-summary.json\nASCEND_LOAD_WINDOW=$(python3 -c 'import json; print(json.load(open(\"work/load-1-summary.json\"))[\"window_seconds\"])')\npython3 shared/analyze.py work/load-1.csv --window-seconds \"$ASCEND_LOAD_WINDOW\"\n# Keep its target loopback/owned and its client/rate bounds below the declared lab envelope.\n```", "Observe these controls and retain actual output: Retain units, window, latency distribution, successful throughput and errors. CSV arithmetic is a dataset observation; a hardware-capacity claim requires an actual measured workload.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 01 --out work/01-reference. Record that help was used."]
+"done_when" = "Retain units, window, latency distribution, successful throughput and errors. CSV arithmetic is a dataset observation; a hardware-capacity claim requires an actual measured workload. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-traffic-capacity-01"
+"preview" = "Reject a misleading average or a claimed user capacity without a workload."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python 3.11+ for CSV arithmetic and the bounded local Relay/probe. No external target or load-testing service is required."
+"setup" = "Download /training/io-traffic-capacity.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-traffic-capacity directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/01.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://sre.google/sre-book/handling-overload/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-traffic-capacity.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-traffic-capacity-01-milestone"
+"title" = "Apply independently: Define the workload"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Requests, users, arrival rate, concurrency, response sizes, latency distributions and SLOs."
+"steps" = ["Choose the native environment in lessons/01.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 01 --variant transfer --out work/01-transfer\npython3 lab.py check work/01-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/01-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Reject a misleading average or a claimed user capacity without a workload.", "Collect the actual controls: Retain units, window, latency distribution, successful throughput and errors. CSV arithmetic is a dataset observation; a hardware-capacity claim requires an actual measured workload.", "Retain your commands, changed input, cause, recovery and help used in notes/01.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Retain units, window, latency distribution, successful throughput and errors. CSV arithmetic is a dataset observation; a hardware-capacity claim requires an actual measured workload. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-traffic-capacity.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-traffic-capacity directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/01.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://sre.google/sre-book/handling-overload/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-traffic-capacity.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-traffic-capacity-01"
+"title" = "Return later: Define the workload"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-traffic-capacity-01-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Requests, users, arrival rate, concurrency, response sizes, latency distributions and SLOs.", "Predict a changed-condition result: Reject a misleading average or a claimed user capacity without a workload.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-traffic-capacity-02"
+"preview" = "Run two service instances behind an explicitly configured balancer."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python, curl and a reviewed Caddy binary; two loopback Relay processes and distinct readiness files on your PC."
+"setup" = "Download /training/io-traffic-capacity.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-traffic-capacity directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/02.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://caddyserver.com/docs/caddyfile/directives/reverse_proxy"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-traffic-capacity.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-traffic-capacity-02-practice"
+"title" = "Operate: Balance service traffic"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "A balancer chooses an eligible backend according to its policy. Readiness should reflect whether that instance can accept the intended work; a process being alive is weaker evidence. The proxy itself may remain a single failure point. Configure the policy explicitly and distinguish new traffic removal from completion of already active work."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 02 --variant guided --out work/02-guided\npython3 lab.py check work/02-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/02-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/02.md. Predict a successful response and a failure before running the following native operations.", "```sh\nmkdir -p work\nprintf 'ready\n' > work/ready-a\nprintf 'ready\n' > work/ready-b\n# Terminal A:\npython3 shared/relay.py --host 127.0.0.1 --port 8001 --data work/a.sqlite --release a --read-only --ready-file work/ready-a\n# Terminal B uses port 8002, data work/b.sqlite, release b, and work/ready-b.\n# Terminal C:\ncaddy validate --config inputs/02/Caddyfile --adapter caddyfile\ncaddy run --config inputs/02/Caddyfile --adapter caddyfile\n# CLIENT: curl http://127.0.0.1:8080/version repeatedly and record both teaching instance labels.\n# Empty work/ready-b, wait for the configured health interval and observe new traffic.\n# Restore ready in that file and verify B returns. Stop only these three processes.\n```", "```sh\n# Terminal B full command, started separately from A:\npython3 shared/relay.py --host 127.0.0.1 --port 8002 --data work/b.sqlite --release b --read-only --ready-file work/ready-b\n# CLIENT commands, one at a time after A/B/edge are running:\n# curl http://127.0.0.1:8080/version\n# Truncate only this lab readiness file: truncate -s 0 work/ready-b\n# After two health intervals, repeat the client request; restore with: printf 'ready\\n' > work/ready-b\n```", "Observe these controls and retain actual output: Both teaching targets receive traffic while ready, B is removed/restored as readiness changes, and the learner identifies the edge/host failure points. The labels a/b identify targets in this exercise, not a production mixed-version guarantee.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 02 --out work/02-reference. Record that help was used."]
+"done_when" = "Both teaching targets receive traffic while ready, B is removed/restored as readiness changes, and the learner identifies the edge/host failure points. The labels a/b identify targets in this exercise, not a production mixed-version guarantee. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-traffic-capacity-02"
+"preview" = "Remove a ready target from new traffic while an existing request finishes."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python, curl and a reviewed Caddy binary; two loopback Relay processes and distinct readiness files on your PC."
+"setup" = "Download /training/io-traffic-capacity.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-traffic-capacity directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/02.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://caddyserver.com/docs/caddyfile/directives/reverse_proxy"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-traffic-capacity.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-traffic-capacity-02-milestone"
+"title" = "Apply independently: Balance service traffic"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Caddy/HAProxy/NGINX, balancing algorithms, active/passive checks, readiness and draining."
+"steps" = ["Choose the native environment in lessons/02.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 02 --variant transfer --out work/02-transfer\npython3 lab.py check work/02-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/02-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Remove a ready target from new traffic while an existing request finishes.", "Collect the actual controls: Both teaching targets receive traffic while ready, B is removed/restored as readiness changes, and the learner identifies the edge/host failure points. The labels a/b identify targets in this exercise, not a production mixed-version guarantee.", "Retain your commands, changed input, cause, recovery and help used in notes/02.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Both teaching targets receive traffic while ready, B is removed/restored as readiness changes, and the learner identifies the edge/host failure points. The labels a/b identify targets in this exercise, not a production mixed-version guarantee. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-traffic-capacity.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-traffic-capacity directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/02.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://caddyserver.com/docs/caddyfile/directives/reverse_proxy"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-traffic-capacity.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-traffic-capacity-02"
+"title" = "Return later: Balance service traffic"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-traffic-capacity-02-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Caddy/HAProxy/NGINX, balancing algorithms, active/passive checks, readiness and draining.", "Predict a changed-condition result: Remove a ready target from new traffic while an existing request finishes.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-traffic-capacity-03"
+"preview" = "Compare stateless version requests with a stateful operation through two instances."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python and the supplied service/checker; single-instance write controls and the earlier two-instance read-only topology."
+"setup" = "Download /training/io-traffic-capacity.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-traffic-capacity directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/03.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://sre.google/sre-book/handling-overload/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-traffic-capacity.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-traffic-capacity-03-practice"
+"title" = "Operate: Manage state across replicas"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "Stateless requests can be sent to either replica, but user sessions and writes require a state ownership and consistency design. Sticky routing can preserve locality while still failing if the selected instance disappears. Retrying a write without an idempotency contract can duplicate work. Observe these application controls rather than assuming a load balancer supplies them."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 03 --variant guided --out work/03-guided\npython3 lab.py check work/03-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/03-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/03.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# PC or service GUEST, in this extracted track directory; leave this terminal running.\nmkdir -p data\npython3 shared/relay.py --host 127.0.0.1 --port 8000 --data data/relay.sqlite --release v1\n```", "```sh\npython3 shared/check_service.py --url http://127.0.0.1:8000 --expect-release v1 --write\ncurl http://127.0.0.1:8000/api/updates\n# The checker verifies a repeated idempotency key and a conflicting payload.\n# Compare that single-instance state owner with the preceding read-only two-instance exercise.\n# Do not run two independent writable SQLite copies and call them one replicated service.\n```", "Observe these controls and retain actual output: Observe correct replay/conflict behaviour and identify where durable state lives. A stateful replica extension needs a real shared consistency design and its own failure controls.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 03 --out work/03-reference. Record that help was used."]
+"done_when" = "Observe correct replay/conflict behaviour and identify where durable state lives. A stateful replica extension needs a real shared consistency design and its own failure controls. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-traffic-capacity-03"
+"preview" = "Diagnose a lost session or duplicated write during node changes."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python and the supplied service/checker; single-instance write controls and the earlier two-instance read-only topology."
+"setup" = "Download /training/io-traffic-capacity.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-traffic-capacity directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/03.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://sre.google/sre-book/handling-overload/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-traffic-capacity.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-traffic-capacity-03-milestone"
+"title" = "Apply independently: Manage state across replicas"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Sessions, shared state, sticky routing, streaming, WebSockets and retryable writes."
+"steps" = ["Choose the native environment in lessons/03.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 03 --variant transfer --out work/03-transfer\npython3 lab.py check work/03-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/03-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Diagnose a lost session or duplicated write during node changes.", "Collect the actual controls: Observe correct replay/conflict behaviour and identify where durable state lives. A stateful replica extension needs a real shared consistency design and its own failure controls.", "Retain your commands, changed input, cause, recovery and help used in notes/03.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Observe correct replay/conflict behaviour and identify where durable state lives. A stateful replica extension needs a real shared consistency design and its own failure controls. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-traffic-capacity.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-traffic-capacity directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/03.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://sre.google/sre-book/handling-overload/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-traffic-capacity.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-traffic-capacity-03"
+"title" = "Return later: Manage state across replicas"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-traffic-capacity-03-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Sessions, shared state, sticky routing, streaming, WebSockets and retryable writes.", "Predict a changed-condition result: Diagnose a lost session or duplicated write during node changes.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-traffic-capacity-04"
+"preview" = "Compare a bounded I/O fixture with a CPU-bound fixture inside the declared lab allocation."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python and the supplied Relay/probe/analyzer on your PC; local synthetic I/O delay and bounded concurrency only."
+"setup" = "Download /training/io-traffic-capacity.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-traffic-capacity directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/04.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://sre.google/sre-book/handling-overload/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-traffic-capacity.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-traffic-capacity-04-practice"
+"title" = "Operate: Choose concurrency deliberately"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "Concurrency counts work in progress; parallelism counts simultaneous execution. I/O waits consume memory/connections without necessarily occupying a CPU. Threads, async tasks and processes have different overhead and CPU behavior. A per-application worker limit is not a global limit on sockets or OS threads."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 04 --variant guided --out work/04-guided\npython3 lab.py check work/04-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/04-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/04.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# PC: run a bounded I/O-delay service and inspect its documented flags.\npython3 shared/relay.py --help\npython3 shared/relay.py --host 127.0.0.1 --port 8000 --data work/concurrency.sqlite --release io-v1 --workers 2 --delay-ms 120\n# Second terminal: use the bounded local probe tool, changing only its client concurrency.\npython3 shared/probe_load.py --url http://127.0.0.1:8000/work --clients 4 --requests 24 --output work/load-4.csv > work/load-4-summary.json\nASCEND_LOAD_WINDOW=$(python3 -c 'import json; print(json.load(open(\"work/load-4-summary.json\"))[\"window_seconds\"])')\npython3 shared/analyze.py work/load-4.csv --window-seconds \"$ASCEND_LOAD_WINDOW\"\n# Record completed, rejected and timed-out work plus process/cgroup observations.\n# A CPU-bound extension must run inside your disposable guest's budget; do not stress the shared server.\n```", "```sh\n# CLIENT, after the first run; one worker changes only client concurrency.\npython3 shared/probe_load.py --url http://127.0.0.1:8000/work --clients 1 --requests 24 --output work/load-one-client.csv > work/load-one-client-summary.json\nASCEND_LOAD_WINDOW=$(python3 -c 'import json; print(json.load(open(\"work/load-one-client-summary.json\"))[\"window_seconds\"])')\npython3 shared/analyze.py work/load-one-client.csv --window-seconds \"$ASCEND_LOAD_WINDOW\"\n# These are elapsed-time samples in a closed model; do not feed this schema to lab.py analyze.\n```", "Observe these controls and retain actual output: Compare a controlled concurrency change using the same workload and report which boundary is limited. Do not infer more hardware capacity from a short artificial I/O delay.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 04 --out work/04-reference. Record that help was used."]
+"done_when" = "Compare a controlled concurrency change using the same workload and report which boundary is limited. Do not infer more hardware capacity from a short artificial I/O delay. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-traffic-capacity-04"
+"preview" = "Find why adding workers increases latency or memory without improving useful work."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python and the supplied Relay/probe/analyzer on your PC; local synthetic I/O delay and bounded concurrency only."
+"setup" = "Download /training/io-traffic-capacity.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-traffic-capacity directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/04.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://sre.google/sre-book/handling-overload/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-traffic-capacity.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-traffic-capacity-04-milestone"
+"title" = "Apply independently: Choose concurrency deliberately"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. I/O versus CPU work, threads, processes, async tasks, worker memory and pools."
+"steps" = ["Choose the native environment in lessons/04.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 04 --variant transfer --out work/04-transfer\npython3 lab.py check work/04-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/04-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Find why adding workers increases latency or memory without improving useful work.", "Collect the actual controls: Compare a controlled concurrency change using the same workload and report which boundary is limited. Do not infer more hardware capacity from a short artificial I/O delay.", "Retain your commands, changed input, cause, recovery and help used in notes/04.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Compare a controlled concurrency change using the same workload and report which boundary is limited. Do not infer more hardware capacity from a short artificial I/O delay. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-traffic-capacity.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-traffic-capacity directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/04.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://sre.google/sre-book/handling-overload/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-traffic-capacity.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-traffic-capacity-04"
+"title" = "Return later: Choose concurrency deliberately"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-traffic-capacity-04-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: I/O versus CPU work, threads, processes, async tasks, worker memory and pools.", "Predict a changed-condition result: Find why adding workers increases latency or memory without improving useful work.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-traffic-capacity-05"
+"preview" = "Run a controlled overload with explicit admission limits and recovery."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: The preceding local two-worker Relay and bounded probe; preserve actual observation windows/error counts for comparison."
+"setup" = "Download /training/io-traffic-capacity.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-traffic-capacity directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/05.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://sre.google/sre-book/handling-overload/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-traffic-capacity.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-traffic-capacity-05-practice"
+"title" = "Operate: Apply backpressure"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "An unbounded queue converts overload into growing memory and latency. Admission limits, bounded payloads, finite timeouts and retry budgets protect a service. Count rejected work explicitly and verify recovery after the burst. A lower latency achieved by discarding work is not increased useful throughput."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 05 --variant guided --out work/05-guided\npython3 lab.py check work/05-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/05-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/05.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# Start the bounded Relay service from the previous lesson with --workers 2.\npython3 shared/probe_load.py --url http://127.0.0.1:8000/work --clients 4 --requests 24 --output work/load-5.csv > work/load-5-summary.json\nASCEND_LOAD_WINDOW=$(python3 -c 'import json; print(json.load(open(\"work/load-5-summary.json\"))[\"window_seconds\"])')\npython3 shared/analyze.py work/load-5.csv --window-seconds \"$ASCEND_LOAD_WINDOW\"\n# Run a short allowed burst; compare successes, 503 rejections and outstanding work.\ncurl http://127.0.0.1:8000/metrics\n# Repeat after the burst with one client and verify recovery.\n# In candidate.json, repair both admission and retry policies; no network code is run by the case checker.\n```", "```sh\n# Recovery control, same running service after the short burst.\npython3 shared/probe_load.py --url http://127.0.0.1:8000/work --clients 1 --requests 4 --output work/load-recovered.csv > work/load-recovered-summary.json\nASCEND_LOAD_WINDOW=$(python3 -c 'import json; print(json.load(open(\"work/load-recovered-summary.json\"))[\"window_seconds\"])')\npython3 shared/analyze.py work/load-recovered.csv --window-seconds \"$ASCEND_LOAD_WINDOW\"\ncurl -i http://127.0.0.1:8000/ready\n```", "Observe these controls and retain actual output: Useful work and queues remain within the declared bound, rejected/dropped work is counted and ordinary requests recover afterwards. Explain which counters were actually measured.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 05 --out work/05-reference. Record that help was used."]
+"done_when" = "Useful work and queues remain within the declared bound, rejected/dropped work is counted and ordinary requests recover afterwards. Explain which counters were actually measured. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-traffic-capacity-05"
+"preview" = "Repair retry amplification or queue growth using changed constraints."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: The preceding local two-worker Relay and bounded probe; preserve actual observation windows/error counts for comparison."
+"setup" = "Download /training/io-traffic-capacity.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-traffic-capacity directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/05.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://sre.google/sre-book/handling-overload/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-traffic-capacity.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-traffic-capacity-05-milestone"
+"title" = "Apply independently: Apply backpressure"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Bounded queues, semaphores, timeouts, pool limits, retries, cancellation and fairness."
+"steps" = ["Choose the native environment in lessons/05.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 05 --variant transfer --out work/05-transfer\npython3 lab.py check work/05-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/05-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Repair retry amplification or queue growth using changed constraints.", "Collect the actual controls: Useful work and queues remain within the declared bound, rejected/dropped work is counted and ordinary requests recover afterwards. Explain which counters were actually measured.", "Retain your commands, changed input, cause, recovery and help used in notes/05.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Useful work and queues remain within the declared bound, rejected/dropped work is counted and ordinary requests recover afterwards. Explain which counters were actually measured. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-traffic-capacity.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-traffic-capacity directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/05.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://sre.google/sre-book/handling-overload/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-traffic-capacity.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-traffic-capacity-05"
+"title" = "Return later: Apply backpressure"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-traffic-capacity-05-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Bounded queues, semaphores, timeouts, pool limits, retries, cancellation and fairness.", "Predict a changed-condition result: Repair retry amplification or queue growth using changed constraints.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-traffic-capacity-06"
+"preview" = "Run short capped tests against owned targets using both workload models."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: A reviewed k6 install and owned loopback Relay. The fixed-arrival exercise is limited to five seconds, four starts/second and four VUs."
+"setup" = "Download /training/io-traffic-capacity.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-traffic-capacity directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/06.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://grafana.com/docs/k6/latest/using-k6/scenarios/concepts/open-vs-closed/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-traffic-capacity.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-traffic-capacity-06-practice"
+"title" = "Operate: Generate meaningful load"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "A closed workload starts more work after previous work finishes, so offered load can fall when the server slows. An open arrival model schedules arrivals independently and can expose dropped iterations when the generator lacks capacity. Neither model alone is universal; report generator saturation and the workload shape."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 06 --variant guided --out work/06-guided\npython3 lab.py check work/06-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/06-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/06.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# Only against the locally running owned Relay service, after checking its limits.\nk6 run --summary-export work/open-result.json inputs/06/open-load.js\n# Compare with a small closed workload:\nk6 run --vus 2 --duration 5s --summary-export work/closed-result.json inputs/06/closed-load.js\n# Record actual offered work, successful throughput, failures and dropped_iterations.\n# Stop/reduce the test if the declared local resource envelope or error threshold is exceeded.\n```", "Observe these controls and retain actual output: Explain the difference using two actual bounded runs and include dropped work. A test that backs off as latency rises cannot establish the same offered-load capacity as an open model.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 06 --out work/06-reference. Record that help was used."]
+"done_when" = "Explain the difference using two actual bounded runs and include dropped work. A test that backs off as latency rises cannot establish the same offered-load capacity as an open model. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-traffic-capacity-06"
+"preview" = "Explain a test that lowers offered load as the server slows."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: A reviewed k6 install and owned loopback Relay. The fixed-arrival exercise is limited to five seconds, four starts/second and four VUs."
+"setup" = "Download /training/io-traffic-capacity.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-traffic-capacity directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/06.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://grafana.com/docs/k6/latest/using-k6/scenarios/concepts/open-vs-closed/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-traffic-capacity.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-traffic-capacity-06-milestone"
+"title" = "Apply independently: Generate meaningful load"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. k6 open/closed models, coordinated omission, dropped iterations, warmup and generator limits."
+"steps" = ["Choose the native environment in lessons/06.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 06 --variant transfer --out work/06-transfer\npython3 lab.py check work/06-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/06-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Explain a test that lowers offered load as the server slows.", "Collect the actual controls: Explain the difference using two actual bounded runs and include dropped work. A test that backs off as latency rises cannot establish the same offered-load capacity as an open model.", "Retain your commands, changed input, cause, recovery and help used in notes/06.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Explain the difference using two actual bounded runs and include dropped work. A test that backs off as latency rises cannot establish the same offered-load capacity as an open model. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-traffic-capacity.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-traffic-capacity directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/06.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://grafana.com/docs/k6/latest/using-k6/scenarios/concepts/open-vs-closed/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-traffic-capacity.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-traffic-capacity-06"
+"title" = "Return later: Generate meaningful load"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-traffic-capacity-06-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: k6 open/closed models, coordinated omission, dropped iterations, warmup and generator limits.", "Predict a changed-condition result: Explain a test that lowers offered load as the server slows.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-traffic-capacity-07"
+"preview" = "Build a sizing worksheet from measured components, reserves and an explicit workload."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python, the supplied CSV and real measurements from your owned local service when making a hardware estimate."
+"setup" = "Download /training/io-traffic-capacity.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-traffic-capacity directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/07.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://sre.google/sre-book/handling-overload/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-traffic-capacity.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-traffic-capacity-07-practice"
+"title" = "Operate: Estimate resources"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "Little's Law relates mean throughput, mean time and mean work in progress within the same stable boundary; it is not a worker-count formula. CPU service time differs from wall latency. Storage, uplink, transient memory and bounded peak work may dominate before CPU. Size from measured inputs and add explicit headroom."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 07 --variant guided --out work/07-guided\npython3 lab.py check work/07-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/07-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/07.md. Predict a successful response and a failure before running the following native operations.", "```sh\npython3 lab.py analyze inputs/07/requests.csv\npython3 - <<'PY'\nrate=40; mean_seconds=0.15; cpu_seconds=0.008; utilization=0.65\nprint('mean in flight:',rate*mean_seconds)\nprint('component CPU budget:',rate*cpu_seconds/utilization)\nprint('payload Mbit/s:',200*1024*rate*8/1_000_000)\nprint('0.5MiB log per request TiB/day:',0.5*rate*86400/1024/1024)\nPY\n# Replace the invented inputs with your measured workload; retain units and boundaries.\n```", "Observe these controls and retain actual output: A worksheet separates invented teaching inputs from actual measurements and accounts for CPU, peak memory, I/O, disk, bandwidth and reserve. Compare predictions with a bounded validation run.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 07 --out work/07-reference. Record that help was used."]
+"done_when" = "A worksheet separates invented teaching inputs from actual measurements and accounts for CPU, peak memory, I/O, disk, bandwidth and reserve. Compare predictions with a bounded validation run. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-traffic-capacity-07"
+"preview" = "Find a limit caused by uplink, disk or pool size despite spare CPU."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python, the supplied CSV and real measurements from your owned local service when making a hardware estimate."
+"setup" = "Download /training/io-traffic-capacity.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-traffic-capacity directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/07.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://sre.google/sre-book/handling-overload/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-traffic-capacity.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-traffic-capacity-07-milestone"
+"title" = "Apply independently: Estimate resources"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. CPU service time, memory working sets, disk capacity/IOPS, bandwidth and Little's Law."
+"steps" = ["Choose the native environment in lessons/07.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 07 --variant transfer --out work/07-transfer\npython3 lab.py check work/07-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/07-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Find a limit caused by uplink, disk or pool size despite spare CPU.", "Collect the actual controls: A worksheet separates invented teaching inputs from actual measurements and accounts for CPU, peak memory, I/O, disk, bandwidth and reserve. Compare predictions with a bounded validation run.", "Retain your commands, changed input, cause, recovery and help used in notes/07.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "A worksheet separates invented teaching inputs from actual measurements and accounts for CPU, peak memory, I/O, disk, bandwidth and reserve. Compare predictions with a bounded validation run. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-traffic-capacity.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-traffic-capacity directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/07.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://sre.google/sre-book/handling-overload/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-traffic-capacity.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-traffic-capacity-07"
+"title" = "Return later: Estimate resources"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-traffic-capacity-07-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: CPU service time, memory working sets, disk capacity/IOPS, bandwidth and Little's Law.", "Predict a changed-condition result: Find a limit caused by uplink, disk or pool size despite spare CPU.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-traffic-capacity-08"
+"preview" = "Change one bottleneck, rerun the same workload and retain the before/after record."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: The same recorded workload, dataset and environment before/after one selected local service/edge change; Python analyzer and semantic checker."
+"setup" = "Download /training/io-traffic-capacity.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-traffic-capacity directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/08.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://sre.google/sre-book/handling-overload/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-traffic-capacity.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-traffic-capacity-08-practice"
+"title" = "Operate: Optimize and verify"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "Optimize the responsible constraint and then rerun the same workload. Cache state, dataset, error accounting, request shape and measurement window must remain comparable. A faster result can be meaningless if it rejects more requests or measures a different operation. Preserve correctness and recovery along with throughput."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 08 --variant guided --out work/08-guided\npython3 lab.py check work/08-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/08-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/08.md. Predict a successful response and a failure before running the following native operations.", "```sh\npython3 lab.py analyze inputs/08/before.csv\npython3 lab.py analyze inputs/08/after.csv\n# Explain why the supplied apparent optimization is invalid: it drops most useful work.\n# Then make ONE change to your owned local service/edge configuration and repeat the same bounded workload.\n# Keep before/after config, workload, successful/error counts, resource observations and recovery checks.\n```", "Observe these controls and retain actual output: Demonstrate a measured improvement under the same declared workload, retain failure accounting, and rerun semantic/recovery controls. Do not label the faster rejection fixture a successful capacity gain.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 08 --out work/08-reference. Record that help was used."]
+"done_when" = "Demonstrate a measured improvement under the same declared workload, retain failure accounting, and rerun semantic/recovery controls. Do not label the faster rejection fixture a successful capacity gain. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-traffic-capacity-08"
+"preview" = "Reject an apparent gain caused by changed error accounting or an easier workload."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: The same recorded workload, dataset and environment before/after one selected local service/edge change; Python analyzer and semantic checker."
+"setup" = "Download /training/io-traffic-capacity.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-traffic-capacity directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/08.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://sre.google/sre-book/handling-overload/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-traffic-capacity.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-traffic-capacity-08-milestone"
+"title" = "Apply independently: Optimize and verify"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Profiles, indexing, caching, batching, compression, limits and cost tradeoffs."
+"steps" = ["Choose the native environment in lessons/08.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 08 --variant transfer --out work/08-transfer\npython3 lab.py check work/08-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/08-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Reject an apparent gain caused by changed error accounting or an easier workload.", "Collect the actual controls: Demonstrate a measured improvement under the same declared workload, retain failure accounting, and rerun semantic/recovery controls. Do not label the faster rejection fixture a successful capacity gain.", "Retain your commands, changed input, cause, recovery and help used in notes/08.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Demonstrate a measured improvement under the same declared workload, retain failure accounting, and rerun semantic/recovery controls. Do not label the faster rejection fixture a successful capacity gain. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-traffic-capacity.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-traffic-capacity directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/08.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://sre.google/sre-book/handling-overload/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-traffic-capacity.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-traffic-capacity-08"
+"title" = "Return later: Optimize and verify"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-traffic-capacity-08-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Profiles, indexing, caching, batching, compression, limits and cost tradeoffs.", "Predict a changed-condition result: Reject an apparent gain caused by changed error accounting or an easier workload.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."

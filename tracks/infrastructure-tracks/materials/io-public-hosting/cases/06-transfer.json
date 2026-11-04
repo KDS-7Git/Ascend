@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Diagnose a sleeping service or disappearing local runtime data.",
+  "contract": [
+    {
+      "field": "runtime",
+      "op": "eq",
+      "value": "workers-compatible-javascript",
+      "why": "runtime: satisfy the stated try free dynamic hosting contract"
+    },
+    {
+      "field": "local_disk_is_durable_database",
+      "op": "eq",
+      "value": false,
+      "why": "local disk is durable database: satisfy the stated try free dynamic hosting contract"
+    },
+    {
+      "field": "quota_checked",
+      "op": "eq",
+      "value": true,
+      "why": "quota checked: satisfy the stated try free dynamic hosting contract"
+    },
+    {
+      "field": "cold_start_accounted_for",
+      "op": "eq",
+      "value": true,
+      "why": "cold start accounted for: satisfy the stated try free dynamic hosting contract"
+    }
+  ],
+  "starting": {
+    "runtime": "workers-compatible-javascript",
+    "local_disk_is_durable_database": true,
+    "quota_checked": false,
+    "cold_start_accounted_for": true
+  },
+  "reference": {
+    "runtime": "workers-compatible-javascript",
+    "local_disk_is_durable_database": false,
+    "quota_checked": true,
+    "cold_start_accounted_for": true
+  },
+  "rules": [
+    {
+      "field": "runtime",
+      "op": "eq",
+      "value": "workers-compatible-javascript",
+      "why": "runtime: satisfy the stated try free dynamic hosting contract"
+    },
+    {
+      "field": "local_disk_is_durable_database",
+      "op": "eq",
+      "value": false,
+      "why": "local disk is durable database: satisfy the stated try free dynamic hosting contract"
+    },
+    {
+      "field": "quota_checked",
+      "op": "eq",
+      "value": true,
+      "why": "quota checked: satisfy the stated try free dynamic hosting contract"
+    },
+    {
+      "field": "cold_start_accounted_for",
+      "op": "eq",
+      "value": true,
+      "why": "cold start accounted for: satisfy the stated try free dynamic hosting contract"
+    }
+  ]
+}

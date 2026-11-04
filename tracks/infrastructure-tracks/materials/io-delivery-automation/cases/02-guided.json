@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Run an immutable image locally and in the service VM.",
+  "contract": [
+    {
+      "field": "published_bind",
+      "op": "eq",
+      "value": "127.0.0.1",
+      "why": "published bind: satisfy the stated package the runtime contract"
+    },
+    {
+      "field": "data_location",
+      "op": "eq",
+      "value": "named-volume",
+      "why": "data location: satisfy the stated package the runtime contract"
+    },
+    {
+      "field": "runtime_uid",
+      "op": "eq",
+      "value": 10001,
+      "why": "runtime uid: satisfy the stated package the runtime contract"
+    },
+    {
+      "field": "image_identity_recorded",
+      "op": "eq",
+      "value": true,
+      "why": "image identity recorded: satisfy the stated package the runtime contract"
+    }
+  ],
+  "starting": {
+    "published_bind": "127.0.0.1",
+    "data_location": "container-writable-layer",
+    "runtime_uid": 10001,
+    "image_identity_recorded": true
+  },
+  "reference": {
+    "published_bind": "127.0.0.1",
+    "data_location": "named-volume",
+    "runtime_uid": 10001,
+    "image_identity_recorded": true
+  },
+  "rules": [
+    {
+      "field": "published_bind",
+      "op": "eq",
+      "value": "127.0.0.1",
+      "why": "published bind: satisfy the stated package the runtime contract"
+    },
+    {
+      "field": "data_location",
+      "op": "eq",
+      "value": "named-volume",
+      "why": "data location: satisfy the stated package the runtime contract"
+    },
+    {
+      "field": "runtime_uid",
+      "op": "eq",
+      "value": 10001,
+      "why": "runtime uid: satisfy the stated package the runtime contract"
+    },
+    {
+      "field": "image_identity_recorded",
+      "op": "eq",
+      "value": true,
+      "why": "image identity recorded: satisfy the stated package the runtime contract"
+    }
+  ]
+}

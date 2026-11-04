@@ -1,0 +1,82 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Identify blocked SMTP or an unavailable PTR change before claiming deployability.",
+  "contract": [
+    {
+      "field": "domain_control",
+      "op": "eq",
+      "value": true,
+      "why": "domain control: satisfy the stated assess a public mail deployment contract"
+    },
+    {
+      "field": "smtp_provider_policy_allows_use",
+      "op": "eq",
+      "value": true,
+      "why": "smtp provider policy allows use: satisfy the stated assess a public mail deployment contract"
+    },
+    {
+      "field": "ptr_change_authority",
+      "op": "eq",
+      "value": true,
+      "why": "ptr change authority: satisfy the stated assess a public mail deployment contract"
+    },
+    {
+      "field": "http_tunnel_replaces_smtp",
+      "op": "eq",
+      "value": false,
+      "why": "http tunnel replaces smtp: satisfy the stated assess a public mail deployment contract"
+    },
+    {
+      "field": "reputation_guaranteed",
+      "op": "eq",
+      "value": false,
+      "why": "reputation guaranteed: satisfy the stated assess a public mail deployment contract"
+    }
+  ],
+  "starting": {
+    "domain_control": true,
+    "smtp_provider_policy_allows_use": true,
+    "ptr_change_authority": false,
+    "http_tunnel_replaces_smtp": true,
+    "reputation_guaranteed": false
+  },
+  "reference": {
+    "domain_control": true,
+    "smtp_provider_policy_allows_use": true,
+    "ptr_change_authority": true,
+    "http_tunnel_replaces_smtp": false,
+    "reputation_guaranteed": false
+  },
+  "rules": [
+    {
+      "field": "domain_control",
+      "op": "eq",
+      "value": true,
+      "why": "domain control: satisfy the stated assess a public mail deployment contract"
+    },
+    {
+      "field": "smtp_provider_policy_allows_use",
+      "op": "eq",
+      "value": true,
+      "why": "smtp provider policy allows use: satisfy the stated assess a public mail deployment contract"
+    },
+    {
+      "field": "ptr_change_authority",
+      "op": "eq",
+      "value": true,
+      "why": "ptr change authority: satisfy the stated assess a public mail deployment contract"
+    },
+    {
+      "field": "http_tunnel_replaces_smtp",
+      "op": "eq",
+      "value": false,
+      "why": "http tunnel replaces smtp: satisfy the stated assess a public mail deployment contract"
+    },
+    {
+      "field": "reputation_guaranteed",
+      "op": "eq",
+      "value": false,
+      "why": "reputation guaranteed: satisfy the stated assess a public mail deployment contract"
+    }
+  ]
+}

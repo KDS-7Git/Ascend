@@ -1,0 +1,582 @@
+# Generated from docs/curriculum/devops-paths.json; unreviewed draft teaching content.
+[pack]
+"id" = "devops-reliability-orchestration"
+"title" = "DevOps 3: Reliability, Recovery & Orchestration"
+"kind" = "proficiency"
+"version" = 1
+"source" = "ai-draft"
+"reviewed" = false
+
+[[level]]
+"id" = "service-signals"
+"title" = "Measure service signals and an SLO"
+"lane" = "main"
+
+[[level]]
+"id" = "bounded-capacity"
+"title" = "Bound concurrency and compare workloads"
+"lane" = "main"
+
+[[level]]
+"id" = "secret-and-artifact"
+"title" = "Rotate a secret and verify an artifact"
+"lane" = "main"
+
+[[level]]
+"id" = "consistent-recovery"
+"title" = "Restore consistent data and report loss"
+"lane" = "main"
+
+[[level]]
+"id" = "kubernetes-basics"
+"title" = "Deploy a small Kubernetes workload"
+"lane" = "main"
+
+[[level]]
+"id" = "rollout-and-permissions"
+"title" = "Recover a rollout and inspect permissions"
+"lane" = "main"
+
+[[level]]
+"id" = "operating-budget"
+"title" = "Operate within a resource and storage budget"
+"lane" = "main"
+
+[[level]]
+"id" = "operational-capstone"
+"title" = "Ship, observe and recover the complete service"
+"lane" = "main"
+
+[[level]]
+"id" = "entry"
+"title" = "Choose your entry point"
+"lane" = "side"
+
+[[level]]
+"id" = "recall"
+"title" = "Return later"
+"lane" = "side"
+
+[[node]]
+"level" = "entry"
+"resource" = "https://sre.google/workbook/implementing-slos/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Match the track's practical outcomes to what you can already demonstrate."
+"requirements" = "Python 3.11+ and a text editor on your own PC; no account required."
+"setup" = "Download /training/devops-reliability-orchestration.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-reliability-orchestration folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/entry.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-reliability-orchestration.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "entry-demonstration"
+"title" = "Choose an entry point through a short demonstration"
+"size" = "S"
+"minutes" = 20
+"needs" = []
+"brief" = "Enter when you can deploy and trace a versioned service and have used an owned Linux/container environment."
+"steps" = ["Run the bundled checks to confirm your Python environment and the local reference tools work. These checks inspect the teaching code, not your knowledge.\n```sh\npython3 shared/selfcheck.py\n```", "Read the eight independent applications in README.md and the linked lessons. Choose the first one you cannot yet demonstrate from a fresh target without its worked instructions.", "If you already have the background, open the independent application for that level. Existing level early-unlock is available; it records your choice, not an automatic pass. Otherwise start the guided practice in level 1.", "Write the chosen starting level, the observation supporting that choice and the next concrete operation in notes/entry.md. Use the guided lesson whenever a gap appears."]
+"done_when" = "Your local tools run, you name a starting level based on demonstrated prior work, and your notes identify one concrete next operation. This self-assessment neither grades nor completes other levels."
+
+[[node]]
+"level" = "service-signals"
+"resource" = "https://sre.google/workbook/implementing-slos/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Measure traffic, latency, errors and saturation without hiding failed work."
+"requirements" = "Python 3.11+; optional Prometheus/Grafana installed on the learner PC for live monitoring."
+"setup" = "Download /training/devops-reliability-orchestration.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-reliability-orchestration folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/service-signals.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-reliability-orchestration.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "service-signals-practice"
+"title" = "Practice: Measure service signals and an SLO"
+"size" = "M"
+"minutes" = 60
+"needs" = []
+"brief" = "Latency, traffic, errors and saturation describe different aspects of service behaviour. Count failed/dropped work in the denominator; a lower average after rejecting most traffic is not improved capacity."
+"steps" = ["Inspect the recorded baseline and incident CSV fixtures. Both contain 50 attempted requests in the stated 60-second window. Predict which thresholds fail.", "```sh\npython3 shared/analyze.py fixtures/baseline.csv --window-seconds 60\npython3 shared/analyze.py fixtures/incident.csv --window-seconds 60\n```", "Start a real v1 Relay in Terminal A, then inspect /metrics before and after several checks in Terminal B. The counter names distinguish responses, active connections and admission rejections.", "```sh\npython3 shared/relay.py --data work/signals.sqlite --release v1\n```", "```sh\ncurl http://127.0.0.1:8000/metrics\npython3 shared/check_service.py --expect-release v1\ncurl http://127.0.0.1:8000/metrics\n```", "For the live extension, start a local Prometheus with short bounded retention. The supplied target expects Relay on the same host; use the correct actual address if you choose another topology.", "```sh\nprometheus --config.file=configs/prometheus.yml --storage.tsdb.path=work/prometheus --storage.tsdb.retention.time=1h --storage.tsdb.retention.size=128MB --web.listen-address=127.0.0.1:9090\n```", "Query rate(relay_admission_rejected_total[1m]) and target up. Optionally import configs/grafana-dashboard.json into your own local Grafana and select the actual datasource.", "Compare the observed result with your prediction and retain the commands/output in notes/service-signals.md. Correct calculations include all attempts and units; live metrics are distinct from recorded datasets; the learner rejects a misleading green/low-CPU conclusion."]
+"hints" = ["Use the actual listener, release identity and state path printed by your process; a healthy service at another address may be the wrong deployment.", "If a required environment is unavailable, keep preparation as partial progress and return for the live operation."]
+"done_when" = "Correct calculations include all attempts and units; live metrics are distinct from recorded datasets; the learner rejects a misleading green/low-CPU conclusion. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "service-signals"
+"resource" = "https://sre.google/workbook/implementing-slos/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Measure traffic, latency, errors and saturation without hiding failed work."
+"requirements" = "Python 3.11+; optional Prometheus/Grafana installed on the learner PC for live monitoring."
+"setup" = "Download /training/devops-reliability-orchestration.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-reliability-orchestration folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/service-signals.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-reliability-orchestration.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "service-signals-milestone"
+"title" = "Apply independently: Measure service signals and an SLO"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Apply the mechanism to a changed condition and recover the intended behaviour. Latency, traffic, errors and saturation describe different aspects of service behaviour. Count failed/dropped work in the denominator; a lower average after rejecting most traffic is not improved capacity."
+"steps" = ["Use the named environment and files in lessons/service-signals.md. Predict the changed result before opening the guided solution. Prior experience can replace guided practice; the demonstration below remains required.", "Change the measurement window or omit failed requests in a scratch calculation and show why the claim changes misleadingly.", "Generate a few deliberate failures against your own service, observe the actual counters, and state what remains unmeasured by these simple signals.", "Define an SLI numerator/denominator/window and a proposed objective justified for this lab, not a universal business promise.", "Retain the failing case, successful control, recovery, explanation and any help used in notes/service-signals.md. Correct calculations include all attempts and units; live metrics are distinct from recorded datasets; the learner rejects a misleading green/low-CPU conclusion."]
+"hints" = ["Compare one changed condition against the earlier successful control. Recover that control before trying another change."]
+"done_when" = "Correct calculations include all attempts and units; live metrics are distinct from recorded datasets; the learner rejects a misleading green/low-CPU conclusion. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "recall"
+"resource" = "https://sre.google/workbook/implementing-slos/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Reconstruct a previous operational decision and check what you remember."
+"requirements" = "Your retained local notes; the original tools only if you choose a fresh observation."
+"setup" = "Download /training/devops-reliability-orchestration.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-reliability-orchestration folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/service-signals.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-reliability-orchestration.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-service-signals"
+"title" = "Return later: Measure service signals and an SLO"
+"size" = "S"
+"minutes" = 15
+"needs" = ["service-signals-milestone"]
+"brief" = "After a suggested 2–7 days, reconstruct the mechanism without your walkthrough. Spacing is optional and is not automatically verified."
+"steps" = ["From memory, explain the mechanism: Latency, traffic, errors and saturation describe different aspects of service behaviour. Count failed/dropped work in the denominator; a lower average after rejecting most traffic is not improved capacity.", "Predict one changed-condition result from this lesson: Change the measurement window or omit failed requests in a scratch calculation and show why the claim changes misleadingly.", "Compare your reasoning with a fresh observation or your retained evidence. Record the specific correction and the next experiment you would use to test it."]
+"done_when" = "You reconstruct a concrete failure/recovery path, compare it with retained or fresh evidence, and correct the explanation in your notes. This manual recall task does not certify an unperformed live operation."
+
+[[node]]
+"level" = "bounded-capacity"
+"resource" = "https://grafana.com/docs/k6/latest/using-k6/scenarios/concepts/open-vs-closed/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Compare controlled workloads and explain how concurrency limits change useful throughput."
+"requirements" = "Python 3.11+ and owned local target; optional k6 CLI for the fixed-arrival comparison."
+"setup" = "Download /training/devops-reliability-orchestration.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-reliability-orchestration folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/bounded-capacity.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-reliability-orchestration.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "bounded-capacity-practice"
+"title" = "Practice: Bound concurrency and compare workloads"
+"size" = "M"
+"minutes" = 60
+"needs" = []
+"brief" = "Concurrency is work in progress; parallelism is simultaneous execution. Worker/pool/queue limits and CPU quota describe different boundaries. A closed client slows its offered work when the service slows."
+"steps" = ["Start an isolated service with a short simulated dependency delay and small worker limit. It remains a local experiment, not a stress test of the shared Ascend machine.", "```sh\npython3 shared/relay.py --port 8000 --data work/load.sqlite --release load-v1 --workers 2 --delay-ms 120\n```", "Run a bounded client experiment and record its printed actual window. Use that window when analyzing the CSV rather than inventing a duration.", "```sh\npython3 shared/probe_load.py --clients 4 --requests 24 --output notes/load-two-workers.csv\n```", "Use the window_seconds printed by that run: python3 shared/analyze.py notes/load-two-workers.csv --window-seconds YOUR_OBSERVED_SECONDS. The default objectives are illustrative; rejected work may correctly make this overload experiment exit with status 1.", "Repeat with one controlled change, such as --workers 1 or --delay-ms 250, using a new output filename. Inspect successful, rejected and failed work plus response durations.", "With k6 installed, run the supplied low-rate ten-second fixed-arrival exercise and record dropped_iterations as well as latency/errors.", "```sh\nk6 run configs/k6.js\n```", "Compare the observed result with your prediction and retain the commands/output in notes/bounded-capacity.md. The comparison counts all work, identifies the limiting boundary, preserves correctness and states the measurement scope and generator limits."]
+"hints" = ["Use the actual listener, release identity and state path printed by your process; a healthy service at another address may be the wrong deployment.", "If a required environment is unavailable, keep preparation as partial progress and return for the live operation."]
+"done_when" = "The comparison counts all work, identifies the limiting boundary, preserves correctness and states the measurement scope and generator limits. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "bounded-capacity"
+"resource" = "https://grafana.com/docs/k6/latest/using-k6/scenarios/concepts/open-vs-closed/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Compare controlled workloads and explain how concurrency limits change useful throughput."
+"requirements" = "Python 3.11+ and owned local target; optional k6 CLI for the fixed-arrival comparison."
+"setup" = "Download /training/devops-reliability-orchestration.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-reliability-orchestration folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/bounded-capacity.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-reliability-orchestration.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "bounded-capacity-milestone"
+"title" = "Apply independently: Bound concurrency and compare workloads"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Apply the mechanism to a changed condition and recover the intended behaviour. Concurrency is work in progress; parallelism is simultaneous execution. Worker/pool/queue limits and CPU quota describe different boundaries. A closed client slows its offered work when the service slows."
+"steps" = ["Use the named environment and files in lessons/bounded-capacity.md. Predict the changed result before opening the guided solution. Prior experience can replace guided practice; the demonstration below remains required.", "Keep workload/dataset/client placement fixed while changing one worker or queue boundary. Explain both any improvement and any increased rejection.", "Calculate a first CPU/memory/network budget from observed inputs and reserves. Do not use p95 in Little's Law or claim users-per-GB.", "Recover normal work after the overload and verify the actual state/response controls still pass.", "Retain the failing case, successful control, recovery, explanation and any help used in notes/bounded-capacity.md. The comparison counts all work, identifies the limiting boundary, preserves correctness and states the measurement scope and generator limits."]
+"hints" = ["Compare one changed condition against the earlier successful control. Recover that control before trying another change."]
+"done_when" = "The comparison counts all work, identifies the limiting boundary, preserves correctness and states the measurement scope and generator limits. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "recall"
+"resource" = "https://grafana.com/docs/k6/latest/using-k6/scenarios/concepts/open-vs-closed/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Reconstruct a previous operational decision and check what you remember."
+"requirements" = "Your retained local notes; the original tools only if you choose a fresh observation."
+"setup" = "Download /training/devops-reliability-orchestration.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-reliability-orchestration folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/bounded-capacity.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-reliability-orchestration.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-bounded-capacity"
+"title" = "Return later: Bound concurrency and compare workloads"
+"size" = "S"
+"minutes" = 15
+"needs" = ["bounded-capacity-milestone"]
+"brief" = "After a suggested 2–7 days, reconstruct the mechanism without your walkthrough. Spacing is optional and is not automatically verified."
+"steps" = ["From memory, explain the mechanism: Concurrency is work in progress; parallelism is simultaneous execution. Worker/pool/queue limits and CPU quota describe different boundaries. A closed client slows its offered work when the service slows.", "Predict one changed-condition result from this lesson: Keep workload/dataset/client placement fixed while changing one worker or queue boundary. Explain both any improvement and any increased rejection.", "Compare your reasoning with a fresh observation or your retained evidence. Record the specific correction and the next experiment you would use to test it."]
+"done_when" = "You reconstruct a concrete failure/recovery path, compare it with retained or fresh evidence, and correct the explanation in your notes. This manual recall task does not certify an unperformed live operation."
+
+[[node]]
+"level" = "secret-and-artifact"
+"resource" = "https://docs.github.com/en/actions/security-for-github-actions/security-hardening-your-deployments/about-security-hardening-with-openid-connect"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Revoke a write credential and distinguish artifact integrity from signer trust."
+"requirements" = "Python 3.11+; OpenSSL for the local signature exercise; only synthetic credentials."
+"setup" = "Download /training/devops-reliability-orchestration.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-reliability-orchestration folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/secret-and-artifact.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-reliability-orchestration.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "secret-and-artifact-practice"
+"title" = "Practice: Rotate a secret and verify an artifact"
+"size" = "M"
+"minutes" = 60
+"needs" = []
+"brief" = "Credentials grant authority and must be revocable; artifact digests detect content changes but do not establish who signed them. Store secrets outside release artifacts and restrict their local permissions."
+"steps" = ["Create a synthetic token file and start a fresh service using it. Run an authenticated write check, then attempt the same write without credentials.", "```sh\nmkdir -p secrets work notes\nprintf '%s\\n' 'synthetic-old-token' > secrets/write-token.txt\nchmod 600 secrets/write-token.txt\npython3 shared/relay.py --data work/secret.sqlite --release secret-v1 --token-file secrets/write-token.txt\n```", "```sh\npython3 shared/check_service.py --expect-release secret-v1 --write --token-file secrets/write-token.txt\npython3 shared/check_service.py --expect-release secret-v1 --write\n```", "Save a separate old-client token file, replace the server token file with a new synthetic value, and show that the old client fails while the new client succeeds. Never paste actual tokens into the notebook.", "Build a source artifact and use a temporary local signing key to sign its manifest. Keep the signature outside the immutable artifact directory.", "```sh\npython3 shared/release.py build --source shared/relay.py --out work/signed-artifact --release signed-v1 --revision local-reviewed\nopenssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out secrets/signing.pem\nopenssl pkey -in secrets/signing.pem -pubout -out notes/signer-public.pem\nopenssl dgst -sha256 -sign secrets/signing.pem -out notes/manifest.sig work/signed-artifact/manifest.json\nopenssl dgst -sha256 -verify notes/signer-public.pem -signature notes/manifest.sig work/signed-artifact/manifest.json\n```", "Compare the observed result with your prediction and retain the commands/output in notes/secret-and-artifact.md. Old credentials are denied, current legitimate writes work, and altered content fails signature/digest controls with accurately scoped signer trust."]
+"hints" = ["Use the actual listener, release identity and state path printed by your process; a healthy service at another address may be the wrong deployment.", "If a required environment is unavailable, keep preparation as partial progress and return for the live operation."]
+"done_when" = "Old credentials are denied, current legitimate writes work, and altered content fails signature/digest controls with accurately scoped signer trust. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "secret-and-artifact"
+"resource" = "https://docs.github.com/en/actions/security-for-github-actions/security-hardening-your-deployments/about-security-hardening-with-openid-connect"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Revoke a write credential and distinguish artifact integrity from signer trust."
+"requirements" = "Python 3.11+; OpenSSL for the local signature exercise; only synthetic credentials."
+"setup" = "Download /training/devops-reliability-orchestration.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-reliability-orchestration folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/secret-and-artifact.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-reliability-orchestration.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "secret-and-artifact-milestone"
+"title" = "Apply independently: Rotate a secret and verify an artifact"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Apply the mechanism to a changed condition and recover the intended behaviour. Credentials grant authority and must be revocable; artifact digests detect content changes but do not establish who signed them. Store secrets outside release artifacts and restrict their local permissions."
+"steps" = ["Use the named environment and files in lessons/secret-and-artifact.md. Predict the changed result before opening the guided solution. Prior experience can replace guided practice; the demonstration below remains required.", "Change a copied manifest and verify the signature rejection. Verify that an untrusted replacement public key cannot establish the intended signer merely because it verifies some signature.", "Rotate the synthetic write token without restarting the application, then prove revoked/new client behaviour.", "Explain where a real CI workload identity or signature provenance policy would add assurance beyond this local self-controlled key.", "Retain the failing case, successful control, recovery, explanation and any help used in notes/secret-and-artifact.md. Old credentials are denied, current legitimate writes work, and altered content fails signature/digest controls with accurately scoped signer trust."]
+"hints" = ["Compare one changed condition against the earlier successful control. Recover that control before trying another change."]
+"done_when" = "Old credentials are denied, current legitimate writes work, and altered content fails signature/digest controls with accurately scoped signer trust. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "recall"
+"resource" = "https://docs.github.com/en/actions/security-for-github-actions/security-hardening-your-deployments/about-security-hardening-with-openid-connect"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Reconstruct a previous operational decision and check what you remember."
+"requirements" = "Your retained local notes; the original tools only if you choose a fresh observation."
+"setup" = "Download /training/devops-reliability-orchestration.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-reliability-orchestration folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/secret-and-artifact.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-reliability-orchestration.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-secret-and-artifact"
+"title" = "Return later: Rotate a secret and verify an artifact"
+"size" = "S"
+"minutes" = 15
+"needs" = ["secret-and-artifact-milestone"]
+"brief" = "After a suggested 2–7 days, reconstruct the mechanism without your walkthrough. Spacing is optional and is not automatically verified."
+"steps" = ["From memory, explain the mechanism: Credentials grant authority and must be revocable; artifact digests detect content changes but do not establish who signed them. Store secrets outside release artifacts and restrict their local permissions.", "Predict one changed-condition result from this lesson: Change a copied manifest and verify the signature rejection. Verify that an untrusted replacement public key cannot establish the intended signer merely because it verifies some signature.", "Compare your reasoning with a fresh observation or your retained evidence. Record the specific correction and the next experiment you would use to test it."]
+"done_when" = "You reconstruct a concrete failure/recovery path, compare it with retained or fresh evidence, and correct the explanation in your notes. This manual recall task does not certify an unperformed live operation."
+
+[[node]]
+"level" = "consistent-recovery"
+"resource" = "https://www.sqlite.org/backup.html"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Restore a consistent snapshot into a clean service and measure the data lost."
+"requirements" = "Python 3.11+ and a running owned Relay service with synthetic data."
+"setup" = "Download /training/devops-reliability-orchestration.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-reliability-orchestration folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/consistent-recovery.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-reliability-orchestration.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "consistent-recovery-practice"
+"title" = "Practice: Restore consistent data and report loss"
+"size" = "M"
+"minutes" = 60
+"needs" = []
+"brief" = "A snapshot is useful when it restores the required records into a clean target. SQLite's backup API produces a consistent snapshot; a live file copy can omit WAL state. RPO and RTO describe data loss and recovery time."
+"steps" = ["Start a dedicated stateful service and add a named synthetic update. Record its ID and the clock time before the backup.", "```sh\npython3 shared/relay.py --data work/recovery.sqlite --release recovery-v1\n```", "```sh\npython3 shared/check_service.py --expect-release recovery-v1 --write\npython3 shared/backup.py create --source work/recovery.sqlite --destination backups/before-incident.sqlite\n```", "Write another update after the snapshot while the service is still running; retain the new ID.", "```sh\npython3 shared/check_service.py --expect-release recovery-v1 --write\n```", "Now stop the original service with Ctrl+C. Restore into a new path; the helper refuses to overwrite an existing database.\n```sh\npython3 shared/backup.py restore --source backups/before-incident.sqlite --destination restored/relay.sqlite\npython3 shared/backup.py inspect --source restored/relay.sqlite\n```", "Start a new service using restored/relay.sqlite while the original is stopped. Compare IDs, record counts and logical-record hashes, including the deliberately lost later write.", "```sh\npython3 shared/relay.py --data restored/relay.sqlite --release recovered-v1\n```", "Compare the observed result with your prediction and retain the commands/output in notes/consistent-recovery.md. A clean service uses restored data while the original is stopped; integrity/count/hash controls pass and data loss/recovery time are honestly measured."]
+"hints" = ["Use the actual listener, release identity and state path printed by your process; a healthy service at another address may be the wrong deployment.", "If a required environment is unavailable, keep preparation as partial progress and return for the live operation."]
+"done_when" = "A clean service uses restored data while the original is stopped; integrity/count/hash controls pass and data loss/recovery time are honestly measured. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "consistent-recovery"
+"resource" = "https://www.sqlite.org/backup.html"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Restore a consistent snapshot into a clean service and measure the data lost."
+"requirements" = "Python 3.11+ and a running owned Relay service with synthetic data."
+"setup" = "Download /training/devops-reliability-orchestration.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-reliability-orchestration folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/consistent-recovery.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-reliability-orchestration.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "consistent-recovery-milestone"
+"title" = "Apply independently: Restore consistent data and report loss"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Apply the mechanism to a changed condition and recover the intended behaviour. A snapshot is useful when it restores the required records into a clean target. SQLite's backup API produces a consistent snapshot; a live file copy can omit WAL state. RPO and RTO describe data loss and recovery time."
+"steps" = ["Use the named environment and files in lessons/consistent-recovery.md. Predict the changed result before opening the guided solution. Prior experience can replace guided practice; the demonstration below remains required.", "Create a damaged copy of a backup, inspect its failure, and preserve the original known-good snapshot.", "Recover into another fresh path and report observed recovery time and the exact missing writes against your stated objective.", "Place a backup on a separate device/host if available. Otherwise explain the unresolved common-disk failure domain.", "Retain the failing case, successful control, recovery, explanation and any help used in notes/consistent-recovery.md. A clean service uses restored data while the original is stopped; integrity/count/hash controls pass and data loss/recovery time are honestly measured."]
+"hints" = ["Compare one changed condition against the earlier successful control. Recover that control before trying another change."]
+"done_when" = "A clean service uses restored data while the original is stopped; integrity/count/hash controls pass and data loss/recovery time are honestly measured. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "recall"
+"resource" = "https://www.sqlite.org/backup.html"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Reconstruct a previous operational decision and check what you remember."
+"requirements" = "Your retained local notes; the original tools only if you choose a fresh observation."
+"setup" = "Download /training/devops-reliability-orchestration.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-reliability-orchestration folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/consistent-recovery.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-reliability-orchestration.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-consistent-recovery"
+"title" = "Return later: Restore consistent data and report loss"
+"size" = "S"
+"minutes" = 15
+"needs" = ["consistent-recovery-milestone"]
+"brief" = "After a suggested 2–7 days, reconstruct the mechanism without your walkthrough. Spacing is optional and is not automatically verified."
+"steps" = ["From memory, explain the mechanism: A snapshot is useful when it restores the required records into a clean target. SQLite's backup API produces a consistent snapshot; a live file copy can omit WAL state. RPO and RTO describe data loss and recovery time.", "Predict one changed-condition result from this lesson: Create a damaged copy of a backup, inspect its failure, and preserve the original known-good snapshot.", "Compare your reasoning with a fresh observation or your retained evidence. Record the specific correction and the next experiment you would use to test it."]
+"done_when" = "You reconstruct a concrete failure/recovery path, compare it with retained or fresh evidence, and correct the explanation in your notes. This manual recall task does not certify an unperformed live operation."
+
+[[node]]
+"level" = "kubernetes-basics"
+"resource" = "https://kind.sigs.k8s.io/docs/user/quick-start/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Operate a small local Kubernetes service and diagnose endpoint selection."
+"requirements" = "Owned local Docker environment, kind and kubectl; budget roughly 4–6 GiB for this sequential cluster lab and inspect actual use."
+"setup" = "Download /training/devops-reliability-orchestration.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-reliability-orchestration folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/kubernetes-basics.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-reliability-orchestration.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "kubernetes-basics-practice"
+"title" = "Practice: Deploy a small Kubernetes workload"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "A controller reconciles declared state; a Service selects endpoints by labels. Pod readiness controls routing eligibility. Container image identity and guest/host boundaries still matter."
+"steps" = ["Stop conflicting local deployments. Check kind get clusters first; if ascend-relay already exists, identify its owner and choose an unused lab name or intentionally resume your own cluster. The commands below assume this is a new, distinctly named learner-owned cluster.", "```sh\ndocker build -t ascend-relay:v1 .\nkind create cluster --name ascend-relay\nkind load docker-image ascend-relay:v1 --name ascend-relay\nkubectl --context kind-ascend-relay apply -f configs/namespace.yaml\n```", "Inspect deployment.yaml before applying. It runs two read-only replicas with bounded resources and an ephemeral scratch volume; it is not a writable replicated SQLite design.", "```sh\nkubectl --context kind-ascend-relay apply -f configs/deployment.yaml -f configs/service.yaml\nkubectl --context kind-ascend-relay -n ascend-relay rollout status deployment/relay --timeout=120s\nkubectl --context kind-ascend-relay -n ascend-relay get pods,service,endpoints\n```", "Keep a port-forward in one terminal and verify the actual service from another.", "```sh\nkubectl --context kind-ascend-relay -n ascend-relay port-forward service/relay 18000:80\n```", "```sh\npython3 shared/check_service.py --url http://127.0.0.1:18000 --expect-release k8s-v1\n```", "Compare the observed result with your prediction and retain the commands/output in notes/kubernetes-basics.md. A real cluster serves the expected version; readiness/selection and read-only controls are demonstrated without claiming physical HA."]
+"hints" = ["Use the actual listener, release identity and state path printed by your process; a healthy service at another address may be the wrong deployment.", "If a required environment is unavailable, keep preparation as partial progress and return for the live operation."]
+"done_when" = "A real cluster serves the expected version; readiness/selection and read-only controls are demonstrated without claiming physical HA. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "kubernetes-basics"
+"resource" = "https://kind.sigs.k8s.io/docs/user/quick-start/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Operate a small local Kubernetes service and diagnose endpoint selection."
+"requirements" = "Owned local Docker environment, kind and kubectl; budget roughly 4–6 GiB for this sequential cluster lab and inspect actual use."
+"setup" = "Download /training/devops-reliability-orchestration.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-reliability-orchestration folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/kubernetes-basics.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-reliability-orchestration.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "kubernetes-basics-milestone"
+"title" = "Apply independently: Deploy a small Kubernetes workload"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Apply the mechanism to a changed condition and recover the intended behaviour. A controller reconciles declared state; a Service selects endpoints by labels. Pod readiness controls routing eligibility. Container image identity and guest/host boundaries still matter."
+"steps" = ["Use the named environment and files in lessons/kubernetes-basics.md. Predict the changed result before opening the guided solution. Prior experience can replace guided practice; the demonstration below remains required.", "Apply service-fault.yaml. Observe running pods but an empty/mismatched endpoint selection. Diagnose and restore the intended selector.", "Demonstrate that writes are rejected by the read-only workload; this is expected, not a database outage.", "Retain the actual context/namespace/image/endpoint observations and owned-cluster cleanup command.", "When the next rollout lesson and your evidence are complete, remove only this owned cluster with kind delete cluster --name ascend-relay. Inspect kind get clusters and retained Docker images afterward; deleting a cluster is not a generic image-prune operation.", "Retain the failing case, successful control, recovery, explanation and any help used in notes/kubernetes-basics.md. A real cluster serves the expected version; readiness/selection and read-only controls are demonstrated without claiming physical HA."]
+"hints" = ["Compare one changed condition against the earlier successful control. Recover that control before trying another change."]
+"done_when" = "A real cluster serves the expected version; readiness/selection and read-only controls are demonstrated without claiming physical HA. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "recall"
+"resource" = "https://kind.sigs.k8s.io/docs/user/quick-start/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Reconstruct a previous operational decision and check what you remember."
+"requirements" = "Your retained local notes; the original tools only if you choose a fresh observation."
+"setup" = "Download /training/devops-reliability-orchestration.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-reliability-orchestration folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/kubernetes-basics.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-reliability-orchestration.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-kubernetes-basics"
+"title" = "Return later: Deploy a small Kubernetes workload"
+"size" = "S"
+"minutes" = 15
+"needs" = ["kubernetes-basics-milestone"]
+"brief" = "After a suggested 2–7 days, reconstruct the mechanism without your walkthrough. Spacing is optional and is not automatically verified."
+"steps" = ["From memory, explain the mechanism: A controller reconciles declared state; a Service selects endpoints by labels. Pod readiness controls routing eligibility. Container image identity and guest/host boundaries still matter.", "Predict one changed-condition result from this lesson: Apply service-fault.yaml. Observe running pods but an empty/mismatched endpoint selection. Diagnose and restore the intended selector.", "Compare your reasoning with a fresh observation or your retained evidence. Record the specific correction and the next experiment you would use to test it."]
+"done_when" = "You reconstruct a concrete failure/recovery path, compare it with retained or fresh evidence, and correct the explanation in your notes. This manual recall task does not certify an unperformed live operation."
+
+[[node]]
+"level" = "rollout-and-permissions"
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Recover an unhealthy rollout and observe allowed and denied API permissions."
+"requirements" = "The owned kind cluster from the preceding lesson; kubectl permissions for that lab."
+"setup" = "Download /training/devops-reliability-orchestration.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-reliability-orchestration folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/rollout-and-permissions.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-reliability-orchestration.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "rollout-and-permissions-practice"
+"title" = "Practice: Recover a rollout and inspect permissions"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "A Deployment revision, ready endpoints and image availability determine a rollout. Kubernetes permissions must be checked against the API, not inferred from a UI button. A namespaced role does not grant host administration."
+"steps" = ["Record the current working revision and readiness. Cause a scoped image failure by selecting an unavailable local image; imagePullPolicy Never makes the failure visible without pulling arbitrary content.", "```sh\nkubectl --context kind-ascend-relay -n ascend-relay rollout history deployment/relay\nkubectl --context kind-ascend-relay -n ascend-relay set image deployment/relay relay=ascend-relay:missing\nkubectl --context kind-ascend-relay -n ascend-relay get pods\nkubectl --context kind-ascend-relay -n ascend-relay describe deployment relay\n```", "Recover the recorded good revision and require ready endpoints again.", "```sh\nkubectl --context kind-ascend-relay -n ascend-relay rollout undo deployment/relay\nkubectl --context kind-ascend-relay -n ascend-relay rollout status deployment/relay --timeout=120s\n```", "Create a scoped observer service account and bind the provided read-only role only in this namespace. Use the lab administrator's impersonation capability to check intended permissions.", "```sh\nkubectl --context kind-ascend-relay -n ascend-relay create serviceaccount observer\nkubectl --context kind-ascend-relay apply -f configs/read-only-role.yaml\nkubectl --context kind-ascend-relay -n ascend-relay create rolebinding observer --role=observer --serviceaccount=ascend-relay:observer\nkubectl --context kind-ascend-relay -n ascend-relay auth can-i get pods --as=system:serviceaccount:ascend-relay:observer\nkubectl --context kind-ascend-relay -n ascend-relay auth can-i delete deployments --as=system:serviceaccount:ascend-relay:observer\n```", "Compare the observed result with your prediction and retain the commands/output in notes/rollout-and-permissions.md. A failed rollout is recovered, correct ready endpoints return, and allowed/denied API permissions are observed in the declared lab scope."]
+"hints" = ["Use the actual listener, release identity and state path printed by your process; a healthy service at another address may be the wrong deployment.", "If a required environment is unavailable, keep preparation as partial progress and return for the live operation."]
+"done_when" = "A failed rollout is recovered, correct ready endpoints return, and allowed/denied API permissions are observed in the declared lab scope. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "rollout-and-permissions"
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Recover an unhealthy rollout and observe allowed and denied API permissions."
+"requirements" = "The owned kind cluster from the preceding lesson; kubectl permissions for that lab."
+"setup" = "Download /training/devops-reliability-orchestration.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-reliability-orchestration folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/rollout-and-permissions.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-reliability-orchestration.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "rollout-and-permissions-milestone"
+"title" = "Apply independently: Recover a rollout and inspect permissions"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Apply the mechanism to a changed condition and recover the intended behaviour. A Deployment revision, ready endpoints and image availability determine a rollout. Kubernetes permissions must be checked against the API, not inferred from a UI button. A namespaced role does not grant host administration."
+"steps" = ["Use the named environment and files in lessons/rollout-and-permissions.md. Predict the changed result before opening the guided solution. Prior experience can replace guided practice; the demonstration below remains required.", "Change a readiness path in an owned copied manifest, observe why running containers are not sufficient, and repair that fault independently from the image case.", "Verify the observer cannot read another namespace's private resources or mutate this deployment; keep credentials out of evidence.", "Recheck the intended application/version after recovery and identify which authorization result was actually observed.", "Retain the failing case, successful control, recovery, explanation and any help used in notes/rollout-and-permissions.md. A failed rollout is recovered, correct ready endpoints return, and allowed/denied API permissions are observed in the declared lab scope."]
+"hints" = ["Compare one changed condition against the earlier successful control. Recover that control before trying another change."]
+"done_when" = "A failed rollout is recovered, correct ready endpoints return, and allowed/denied API permissions are observed in the declared lab scope. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "recall"
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Reconstruct a previous operational decision and check what you remember."
+"requirements" = "Your retained local notes; the original tools only if you choose a fresh observation."
+"setup" = "Download /training/devops-reliability-orchestration.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-reliability-orchestration folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/rollout-and-permissions.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-reliability-orchestration.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-rollout-and-permissions"
+"title" = "Return later: Recover a rollout and inspect permissions"
+"size" = "S"
+"minutes" = 15
+"needs" = ["rollout-and-permissions-milestone"]
+"brief" = "After a suggested 2–7 days, reconstruct the mechanism without your walkthrough. Spacing is optional and is not automatically verified."
+"steps" = ["From memory, explain the mechanism: A Deployment revision, ready endpoints and image availability determine a rollout. Kubernetes permissions must be checked against the API, not inferred from a UI button. A namespaced role does not grant host administration.", "Predict one changed-condition result from this lesson: Change a readiness path in an owned copied manifest, observe why running containers are not sufficient, and repair that fault independently from the image case.", "Compare your reasoning with a fresh observation or your retained evidence. Record the specific correction and the next experiment you would use to test it."]
+"done_when" = "You reconstruct a concrete failure/recovery path, compare it with retained or fresh evidence, and correct the explanation in your notes. This manual recall task does not certify an unperformed live operation."
+
+[[node]]
+"level" = "operating-budget"
+"resource" = "https://prometheus.io/docs/prometheus/latest/getting_started/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Measure resource use and recover from an explicitly bounded resource failure."
+"requirements" = "Owned Linux VM/container environment; physical Pi/spare host optional. No disk-pressure test on the shared server."
+"setup" = "Download /training/devops-reliability-orchestration.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-reliability-orchestration folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/operating-budget.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-reliability-orchestration.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "operating-budget-practice"
+"title" = "Practice: Operate within a resource and storage budget"
+"size" = "M"
+"minutes" = 60
+"needs" = []
+"brief" = "Memory, CPU quota, write volume, retained metrics, image cache and free space are independent constraints. A 16-core desktop with 16 GB RAM is not an unlimited cluster; a microSD server needs controlled writes and recovery."
+"steps" = ["Inventory only the lab's processes/containers/volumes and record host reserve. Use OS tools and the actual resource controls before proposing more replicas.", "```sh\ndf -h\ndf -i\ndocker system df\ndocker stats --no-stream\n```", "Review the supplied container/Pod memory and CPU limits. Record whether the chosen boundary is a quota, weight, request or maximum, and inspect actual events when a bounded owned workload exceeds it.", "For a concrete memory-bound experiment, first confirm ascend-relay-budget is an unused container name. The following container has no network or persistent volume and an explicit 48 MiB cap; it attempts one 80 MiB allocation. An unsupported memory controller or swap setting is a setup failure to diagnose, not evidence that the limit worked.\n```sh\ndocker run --name ascend-relay-budget --memory 48m --memory-swap 48m --cpus 0.25 --network none python:3.12-slim python -c \"sample = bytearray(80 * 1024 * 1024); print(len(sample))\"\ndocker inspect ascend-relay-budget --format 'OOMKilled={{.State.OOMKilled}} ExitCode={{.State.ExitCode}}'\ndocker rm ascend-relay-budget\n```", "Keep logs and Prometheus retention bounded on the learner PC. For a systemd guest, inspect its journal usage and configure a guest-local retention policy after retaining required evidence.", "```sh\njournalctl --disk-usage\nsystemctl show ascend-relay -p MemoryMax -p TasksMax\n```", "When available, run the same service on a supported Pi or spare PC. Record uname -m, actual memory, power/cooling and storage observations, with the same release and workload. The advantage is an independent, always-on physical host; a VM on your PC covers software practice without buying hardware, but does not measure flash endurance or a separate power failure.", "Compare the observed result with your prediction and retain the commands/output in notes/operating-budget.md. The learner accounts for aggregate resources and writes, demonstrates bounded failure/recovery, and distinguishes PC models from physical-device measurements."]
+"hints" = ["Use the actual listener, release identity and state path printed by your process; a healthy service at another address may be the wrong deployment.", "If a required environment is unavailable, keep preparation as partial progress and return for the live operation."]
+"done_when" = "The learner accounts for aggregate resources and writes, demonstrates bounded failure/recovery, and distinguishes PC models from physical-device measurements. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "operating-budget"
+"resource" = "https://prometheus.io/docs/prometheus/latest/getting_started/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Measure resource use and recover from an explicitly bounded resource failure."
+"requirements" = "Owned Linux VM/container environment; physical Pi/spare host optional. No disk-pressure test on the shared server."
+"setup" = "Download /training/devops-reliability-orchestration.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-reliability-orchestration folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/operating-budget.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-reliability-orchestration.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "operating-budget-milestone"
+"title" = "Apply independently: Operate within a resource and storage budget"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Apply the mechanism to a changed condition and recover the intended behaviour. Memory, CPU quota, write volume, retained metrics, image cache and free space are independent constraints. A 16-core desktop with 16 GB RAM is not an unlimited cluster; a microSD server needs controlled writes and recovery."
+"steps" = ["Use the named environment and files in lessons/operating-budget.md. Predict the changed result before opening the guided solution. Prior experience can replace guided practice; the demonstration below remains required.", "Change one budget in an owned disposable workload and diagnose the resulting throttle, rejection or failure using observed counters rather than guessed hardware capacity.", "Restore the valid budget, verify service/data recovery and list the images/volumes still intentionally retained.", "Plan a later SSD/RAM/second-host upgrade around the measured constraint, preserving the existing runbook and earlier skill evidence.", "Retain the failing case, successful control, recovery, explanation and any help used in notes/operating-budget.md. The learner accounts for aggregate resources and writes, demonstrates bounded failure/recovery, and distinguishes PC models from physical-device measurements."]
+"hints" = ["Compare one changed condition against the earlier successful control. Recover that control before trying another change."]
+"done_when" = "The learner accounts for aggregate resources and writes, demonstrates bounded failure/recovery, and distinguishes PC models from physical-device measurements. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "recall"
+"resource" = "https://prometheus.io/docs/prometheus/latest/getting_started/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Reconstruct a previous operational decision and check what you remember."
+"requirements" = "Your retained local notes; the original tools only if you choose a fresh observation."
+"setup" = "Download /training/devops-reliability-orchestration.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-reliability-orchestration folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/operating-budget.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-reliability-orchestration.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-operating-budget"
+"title" = "Return later: Operate within a resource and storage budget"
+"size" = "S"
+"minutes" = 15
+"needs" = ["operating-budget-milestone"]
+"brief" = "After a suggested 2–7 days, reconstruct the mechanism without your walkthrough. Spacing is optional and is not automatically verified."
+"steps" = ["From memory, explain the mechanism: Memory, CPU quota, write volume, retained metrics, image cache and free space are independent constraints. A 16-core desktop with 16 GB RAM is not an unlimited cluster; a microSD server needs controlled writes and recovery.", "Predict one changed-condition result from this lesson: Change one budget in an owned disposable workload and diagnose the resulting throttle, rejection or failure using observed counters rather than guessed hardware capacity.", "Compare your reasoning with a fresh observation or your retained evidence. Record the specific correction and the next experiment you would use to test it."]
+"done_when" = "You reconstruct a concrete failure/recovery path, compare it with retained or fresh evidence, and correct the explanation in your notes. This manual recall task does not certify an unperformed live operation."
+
+[[node]]
+"level" = "operational-capstone"
+"resource" = "https://sre.google/workbook/implementing-slos/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Ship, measure and recover an identifiable service with a reproducible handover."
+"requirements" = "An owned guest/container target or the separately qualified Kubernetes route; real learner-owned CI if claiming a hosted pipeline."
+"setup" = "Download /training/devops-reliability-orchestration.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-reliability-orchestration folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/operational-capstone.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-reliability-orchestration.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "operational-capstone-practice"
+"title" = "Practice: Ship, observe and recover the complete service"
+"size" = "M"
+"minutes" = 120
+"needs" = []
+"brief" = "A capstone combines artifact identity, appropriate access, service health, state recovery, permissions and a handover that another person can reproduce. Passing a single endpoint check does not satisfy the whole operation."
+"steps" = ["Select a VM/container deployment route or the stateless Kubernetes route and state its evidence limits. Build/test an identifiable release through the previous track's actual pipeline or clearly labelled local rehearsal.", "Deploy it, record the current route/version, and verify the relevant read/write or read-only controls. Retain a consistent snapshot for the stateful route.", "Define a modest workload and service objective, observe actual results, then introduce a fresh incident: old healthy artifact, denied credential, route failure, readiness error or lost active data.", "Recover the expected behaviour and required data, measure the result, and hand over a runbook with artifact, access, configuration, resource, backup and cleanup details.", "Compare the observed result with your prediction and retain the commands/output in notes/operational-capstone.md. The actual release, detection, recovery, state/permission controls and handover all work within the stated environment; local/physical/public claims remain distinct."]
+"hints" = ["Use the actual listener, release identity and state path printed by your process; a healthy service at another address may be the wrong deployment.", "If a required environment is unavailable, keep preparation as partial progress and return for the live operation."]
+"done_when" = "The actual release, detection, recovery, state/permission controls and handover all work within the stated environment; local/physical/public claims remain distinct. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "operational-capstone"
+"resource" = "https://sre.google/workbook/implementing-slos/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Ship, measure and recover an identifiable service with a reproducible handover."
+"requirements" = "An owned guest/container target or the separately qualified Kubernetes route; real learner-owned CI if claiming a hosted pipeline."
+"setup" = "Download /training/devops-reliability-orchestration.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-reliability-orchestration folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/operational-capstone.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-reliability-orchestration.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "operational-capstone-milestone"
+"title" = "Apply independently: Ship, observe and recover the complete service"
+"size" = "L"
+"minutes" = 180
+"milestone" = true
+"needs" = []
+"brief" = "Apply the mechanism to a changed condition and recover the intended behaviour. A capstone combines artifact identity, appropriate access, service health, state recovery, permissions and a handover that another person can reproduce. Passing a single endpoint check does not satisfy the whole operation."
+"steps" = ["Use the named environment and files in lessons/operational-capstone.md. Predict the changed result before opening the guided solution. Prior experience can replace guided practice; the demonstration below remains required.", "Use a fresh target or a fresh reviewer to reproduce the deployment and required restoration without relying on unexplained pre-existing state.", "Demonstrate one correct denial as well as success, and state remaining public-network, hardware, provider or scale assumptions.", "Delete only the owned cluster/resources when finished, or explicitly retain the chosen service and its ongoing resource responsibilities.", "Retain the failing case, successful control, recovery, explanation and any help used in notes/operational-capstone.md. The actual release, detection, recovery, state/permission controls and handover all work within the stated environment; local/physical/public claims remain distinct."]
+"hints" = ["Compare one changed condition against the earlier successful control. Recover that control before trying another change."]
+"done_when" = "The actual release, detection, recovery, state/permission controls and handover all work within the stated environment; local/physical/public claims remain distinct. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "recall"
+"resource" = "https://sre.google/workbook/implementing-slos/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Reconstruct a previous operational decision and check what you remember."
+"requirements" = "Your retained local notes; the original tools only if you choose a fresh observation."
+"setup" = "Download /training/devops-reliability-orchestration.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-reliability-orchestration folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/operational-capstone.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-reliability-orchestration.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-operational-capstone"
+"title" = "Return later: Ship, observe and recover the complete service"
+"size" = "S"
+"minutes" = 15
+"needs" = ["operational-capstone-milestone"]
+"brief" = "After a suggested 2–7 days, reconstruct the mechanism without your walkthrough. Spacing is optional and is not automatically verified."
+"steps" = ["From memory, explain the mechanism: A capstone combines artifact identity, appropriate access, service health, state recovery, permissions and a handover that another person can reproduce. Passing a single endpoint check does not satisfy the whole operation.", "Predict one changed-condition result from this lesson: Use a fresh target or a fresh reviewer to reproduce the deployment and required restoration without relying on unexplained pre-existing state.", "Compare your reasoning with a fresh observation or your retained evidence. Record the specific correction and the next experiment you would use to test it."]
+"done_when" = "You reconstruct a concrete failure/recovery path, compare it with retained or fresh evidence, and correct the explanation in your notes. This manual recall task does not certify an unperformed live operation."

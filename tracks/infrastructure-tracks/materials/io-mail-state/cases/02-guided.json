@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Deliver synthetic messages between isolated lab MTAs using reserved test domains.",
+  "contract": [
+    {
+      "field": "accepted_domain",
+      "op": "eq",
+      "value": "relay.test",
+      "why": "accepted domain: satisfy the stated run smtp between owned hosts contract"
+    },
+    {
+      "field": "open_relay",
+      "op": "eq",
+      "value": false,
+      "why": "open relay: satisfy the stated run smtp between owned hosts contract"
+    },
+    {
+      "field": "trusted_network",
+      "op": "eq",
+      "value": "loopback-only",
+      "why": "trusted network: satisfy the stated run smtp between owned hosts contract"
+    },
+    {
+      "field": "queue_observed",
+      "op": "eq",
+      "value": true,
+      "why": "queue observed: satisfy the stated run smtp between owned hosts contract"
+    }
+  ],
+  "starting": {
+    "accepted_domain": "relay.test",
+    "open_relay": true,
+    "trusted_network": "loopback-only",
+    "queue_observed": true
+  },
+  "reference": {
+    "accepted_domain": "relay.test",
+    "open_relay": false,
+    "trusted_network": "loopback-only",
+    "queue_observed": true
+  },
+  "rules": [
+    {
+      "field": "accepted_domain",
+      "op": "eq",
+      "value": "relay.test",
+      "why": "accepted domain: satisfy the stated run smtp between owned hosts contract"
+    },
+    {
+      "field": "open_relay",
+      "op": "eq",
+      "value": false,
+      "why": "open relay: satisfy the stated run smtp between owned hosts contract"
+    },
+    {
+      "field": "trusted_network",
+      "op": "eq",
+      "value": "loopback-only",
+      "why": "trusted network: satisfy the stated run smtp between owned hosts contract"
+    },
+    {
+      "field": "queue_observed",
+      "op": "eq",
+      "value": true,
+      "why": "queue observed: satisfy the stated run smtp between owned hosts contract"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Diagnose a service that works only while the terminal is open.",
+  "contract": [
+    {
+      "field": "enabled_at_boot",
+      "op": "eq",
+      "value": true,
+      "why": "enabled at boot: satisfy the stated keep an owned service available contract"
+    },
+    {
+      "field": "time_correct",
+      "op": "eq",
+      "value": true,
+      "why": "time correct: satisfy the stated keep an owned service available contract"
+    },
+    {
+      "field": "required_state_survived",
+      "op": "eq",
+      "value": true,
+      "why": "required state survived: satisfy the stated keep an owned service available contract"
+    },
+    {
+      "field": "same_host_monitor_survives_power_loss",
+      "op": "eq",
+      "value": false,
+      "why": "same host monitor survives power loss: satisfy the stated keep an owned service available contract"
+    }
+  ],
+  "starting": {
+    "enabled_at_boot": true,
+    "time_correct": false,
+    "required_state_survived": true,
+    "same_host_monitor_survives_power_loss": true
+  },
+  "reference": {
+    "enabled_at_boot": true,
+    "time_correct": true,
+    "required_state_survived": true,
+    "same_host_monitor_survives_power_loss": false
+  },
+  "rules": [
+    {
+      "field": "enabled_at_boot",
+      "op": "eq",
+      "value": true,
+      "why": "enabled at boot: satisfy the stated keep an owned service available contract"
+    },
+    {
+      "field": "time_correct",
+      "op": "eq",
+      "value": true,
+      "why": "time correct: satisfy the stated keep an owned service available contract"
+    },
+    {
+      "field": "required_state_survived",
+      "op": "eq",
+      "value": true,
+      "why": "required state survived: satisfy the stated keep an owned service available contract"
+    },
+    {
+      "field": "same_host_monitor_survives_power_loss",
+      "op": "eq",
+      "value": false,
+      "why": "same host monitor survives power loss: satisfy the stated keep an owned service available contract"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Connect a service guest and a client guest; compare NAT and a supported bridged/routed setup.",
+  "contract": [
+    {
+      "field": "network_mode",
+      "op": "eq",
+      "value": "nat",
+      "why": "network mode: satisfy the stated build virtual networks contract"
+    },
+    {
+      "field": "guest_address",
+      "op": "eq",
+      "value": "192.168.122.10",
+      "why": "guest address: satisfy the stated build virtual networks contract"
+    },
+    {
+      "field": "client_route_present",
+      "op": "eq",
+      "value": true,
+      "why": "client route present: satisfy the stated build virtual networks contract"
+    },
+    {
+      "field": "public_inbound_automatic",
+      "op": "eq",
+      "value": false,
+      "why": "public inbound automatic: satisfy the stated build virtual networks contract"
+    }
+  ],
+  "starting": {
+    "network_mode": "nat",
+    "guest_address": "192.168.122.10",
+    "client_route_present": false,
+    "public_inbound_automatic": false
+  },
+  "reference": {
+    "network_mode": "nat",
+    "guest_address": "192.168.122.10",
+    "client_route_present": true,
+    "public_inbound_automatic": false
+  },
+  "rules": [
+    {
+      "field": "network_mode",
+      "op": "eq",
+      "value": "nat",
+      "why": "network mode: satisfy the stated build virtual networks contract"
+    },
+    {
+      "field": "guest_address",
+      "op": "eq",
+      "value": "192.168.122.10",
+      "why": "guest address: satisfy the stated build virtual networks contract"
+    },
+    {
+      "field": "client_route_present",
+      "op": "eq",
+      "value": true,
+      "why": "client route present: satisfy the stated build virtual networks contract"
+    },
+    {
+      "field": "public_inbound_automatic",
+      "op": "eq",
+      "value": false,
+      "why": "public inbound automatic: satisfy the stated build virtual networks contract"
+    }
+  ]
+}

@@ -1,0 +1,590 @@
+# Generated from docs/curriculum/infrastructure-paths.json; unreviewed draft teaching content.
+[pack]
+"id" = "io-private-access"
+"title" = "Private Networks, SSH & Tunnels"
+"kind" = "proficiency"
+"version" = 1
+"source" = "ai-draft"
+"reviewed" = false
+
+[[level]]
+"id" = "io-private-access-01"
+"title" = "Establish remote identity"
+"lane" = "main"
+
+[[level]]
+"id" = "io-private-access-02"
+"title" = "Forward a local service"
+"lane" = "main"
+
+[[level]]
+"id" = "io-private-access-03"
+"title" = "Reverse and dynamically forward"
+"lane" = "main"
+
+[[level]]
+"id" = "io-private-access-04"
+"title" = "Build a WireGuard network"
+"lane" = "main"
+
+[[level]]
+"id" = "io-private-access-05"
+"title" = "Compare managed and self-hosted coordination"
+"lane" = "main"
+
+[[level]]
+"id" = "io-private-access-06"
+"title" = "Use subnet and exit nodes"
+"lane" = "main"
+
+[[level]]
+"id" = "io-private-access-07"
+"title" = "Reach private services through Cloudflare"
+"lane" = "main"
+
+[[level]]
+"id" = "io-private-access-08"
+"title" = "Build and compare a custom relay"
+"lane" = "main"
+
+[[level]]
+"id" = "entry"
+"title" = "Choose your entry point"
+"lane" = "side"
+
+[[level]]
+"id" = "recall"
+"title" = "Return later"
+"lane" = "side"
+
+[[node]]
+"level" = "entry"
+"preview" = "Match a concrete practical outcome to what you can already demonstrate."
+"requirements" = "Python 3.11+, a text editor and your own PC. No account or device purchase is required for this entry check."
+"setup" = "Download /training/io-private-access.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-access directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/entry.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://man.openbsd.org/ssh"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-access.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "entry-demonstration"
+"title" = "Choose an entry point through a short demonstration"
+"size" = "S"
+"minutes" = 20
+"needs" = []
+"brief" = "New to this subject: start with the worked operation in level 1. Already practising: attempt an independent operation first and use Ascend early-unlock for a later level when appropriate. It records your choice, not an automatic proficiency pass. Job preparation emphasizes the reproducible handover; interest-led work can extend the same technical evidence with a different owned environment."
+"steps" = ["Read bootstrap.md, record your machine/OS and confirm the tools work.\n```sh\npython3 shared/selfcheck.py\n```\nThis checks the teaching tools, not proficiency.", "Read the eight independent finish lines in README.md and lessons/NN.md. Choose the first operation you cannot demonstrate on a fresh target without the worked steps.", "Begin that independent milestone if you already have the background, using existing early-unlock when needed. Otherwise start level 1 worked practice. Your own demonstration remains required; an entry choice does not complete other nodes.", "Record the chosen level, supporting prior observation and next concrete action in notes/entry.md. Return to guided material whenever a gap appears."]
+"done_when" = "Your local tool checks run, a practical observation supports the chosen starting level, and notes/entry.md names the next operation. This is manual self-assessment and does not certify or complete other levels."
+
+[[node]]
+"level" = "io-private-access-01"
+"preview" = "Create distinct lab identities and verify the remote host before logging in."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: OpenSSH client and an owned disposable SSH guest with a trusted console/recovery identity."
+"setup" = "Download /training/io-private-access.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-access directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/01.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://man.openbsd.org/ssh"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-access.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-private-access-01-practice"
+"title" = "Operate: Establish remote identity"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "SSH authenticates the server identity and the user separately. A changed host key can mean reinstall, address reuse or an attack; verify the new fingerprint through the owned console before replacing a known_hosts record. A user key grants only the target account rights. Keep keys scoped, private and revocable, with a recovery path."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 01 --variant guided --out work/01-guided\npython3 lab.py check work/01-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/01-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/01.md. Predict a successful response and a failure before running the following native operations.", "```sh\nmkdir -p work/ssh\nssh-keygen -t ed25519 -f work/ssh/learner-key\nssh-keygen -lf work/ssh/learner-key.pub\n# GUEST console: ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub\n# Install the public user key for your owned guest account using its trusted console.\n# CLIENT: ssh -i work/ssh/learner-key learner@ACTUAL_GUEST_ADDRESS\n# Revoke only this key from the guest account, then verify it fails while the recovery identity works.\n```", "Observe these controls and retain actual output: Observe successful intended access and rejected revoked credentials, with verified host identity and a working recovery path.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 01 --out work/01-reference. Record that help was used."]
+"done_when" = "Observe successful intended access and rejected revoked credentials, with verified host identity and a working recovery path. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-private-access-01"
+"preview" = "Replace a revoked key while preserving legitimate access and console recovery."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: OpenSSH client and an owned disposable SSH guest with a trusted console/recovery identity."
+"setup" = "Download /training/io-private-access.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-access directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/01.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://man.openbsd.org/ssh"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-access.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-private-access-01-milestone"
+"title" = "Apply independently: Establish remote identity"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. SSH host verification, user keys, agents, revocation and least privilege."
+"steps" = ["Choose the native environment in lessons/01.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 01 --variant transfer --out work/01-transfer\npython3 lab.py check work/01-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/01-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Replace a revoked key while preserving legitimate access and console recovery.", "Collect the actual controls: Observe successful intended access and rejected revoked credentials, with verified host identity and a working recovery path.", "Retain your commands, changed input, cause, recovery and help used in notes/01.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Observe successful intended access and rejected revoked credentials, with verified host identity and a working recovery path. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-private-access.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-access directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/01.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://man.openbsd.org/ssh"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-access.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-private-access-01"
+"title" = "Return later: Establish remote identity"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-private-access-01-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: SSH host verification, user keys, agents, revocation and least privilege.", "Predict a changed-condition result: Replace a revoked key while preserving legitimate access and console recovery.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-private-access-02"
+"preview" = "Reach a private guest service through an authenticated local forward."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Two owned SSH endpoints, forwarding allowed by that server and a private Relay origin. No public listener is required."
+"setup" = "Download /training/io-private-access.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-access directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/02.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://man.openbsd.org/ssh"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-access.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-private-access-02-practice"
+"title" = "Operate: Forward a local service"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "A local SSH forward listens on the client and connects to the destination from the remote SSH server. The two loopback addresses therefore name different machines. Bind the client listener deliberately and restrict forwarding on the server where appropriate. Forwarding a port does not change application authorization."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 02 --variant guided --out work/02-guided\npython3 lab.py check work/02-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/02-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/02.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# CLIENT: the remote loopback address belongs to the SSH GUEST.\nssh -N -o ExitOnForwardFailure=yes -L 127.0.0.1:18000:127.0.0.1:8000 learner@ACTUAL_GUEST_ADDRESS\n# Keep this foreground session open. Second CLIENT terminal:\n# curl -i http://127.0.0.1:18000/version\n# ss -ltnp\n# Stop the SSH command with Ctrl+C and verify that this listener disappears.\n# GUEST must already run the intended private Relay service on 127.0.0.1:8000.\n```", "Observe these controls and retain actual output: Observe the response through the local forward, deliberate wrong-destination failure, loopback binding and removal after closing SSH.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 02 --out work/02-reference. Record that help was used."]
+"done_when" = "Observe the response through the local forward, deliberate wrong-destination failure, loopback binding and removal after closing SSH. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-private-access-02"
+"preview" = "Correct a destination resolved on the wrong side of the SSH connection."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Two owned SSH endpoints, forwarding allowed by that server and a private Relay origin. No public listener is required."
+"setup" = "Download /training/io-private-access.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-access directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/02.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://man.openbsd.org/ssh"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-access.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-private-access-02-milestone"
+"title" = "Apply independently: Forward a local service"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. SSH -L, listener binding, destination perspective and access restrictions."
+"steps" = ["Choose the native environment in lessons/02.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 02 --variant transfer --out work/02-transfer\npython3 lab.py check work/02-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/02-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Correct a destination resolved on the wrong side of the SSH connection.", "Collect the actual controls: Observe the response through the local forward, deliberate wrong-destination failure, loopback binding and removal after closing SSH.", "Retain your commands, changed input, cause, recovery and help used in notes/02.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Observe the response through the local forward, deliberate wrong-destination failure, loopback binding and removal after closing SSH. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-private-access.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-access directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/02.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://man.openbsd.org/ssh"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-access.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-private-access-02"
+"title" = "Return later: Forward a local service"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-private-access-02-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: SSH -L, listener binding, destination perspective and access restrictions.", "Predict a changed-condition result: Correct a destination resolved on the wrong side of the SSH connection.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-private-access-03"
+"preview" = "Build loopback-bound reverse forwarding and a separate SOCKS experiment on owned guests."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: OpenSSH and an owned reachable relay guest. Two local guests teach the directions; a real CGNAT route additionally needs an eligible reachable relay."
+"setup" = "Download /training/io-private-access.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-access directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/03.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://man.openbsd.org/ssh"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-access.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-private-access-03-practice"
+"title" = "Operate: Reverse and dynamically forward"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "A reverse SSH forward creates the listening side on the remote SSH server and connects back through the authenticated session. Dynamic forwarding supplies a SOCKS proxy for supporting clients; it is not a full IP VPN. A reverse connection from a CGNAT origin still needs a reachable relay. GatewayPorts and listener bindings decide who can connect to it."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 03 --variant guided --out work/03-guided\npython3 lab.py check work/03-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/03-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/03.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# ORIGIN: Relay listens at its own loopback:8000; RELAY is an owned reachable SSH server.\nssh -N -o ExitOnForwardFailure=yes -R 127.0.0.1:18000:127.0.0.1:8000 learner@ACTUAL_RELAY_ADDRESS\n# RELAY console: curl http://127.0.0.1:18000/version\n# Separate CLIENT experiment with the owned SSH server:\nssh -N -D 127.0.0.1:1080 learner@ACTUAL_RELAY_ADDRESS\n# CLIENT: curl --socks5-hostname 127.0.0.1:1080 http://PRIVATE_SERVICE_FROM_RELAY:8000/version\n# Close each forwarding session when finished. Keep management access separate.\n```", "Observe these controls and retain actual output: Demonstrate both directions with labelled machines and remove the listeners afterwards. Do not expose a public relay port by accident or claim SOCKS routes all device traffic.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 03 --out work/03-reference. Record that help was used."]
+"done_when" = "Demonstrate both directions with labelled machines and remove the listeners afterwards. Do not expose a public relay port by accident or claim SOCKS routes all device traffic. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-private-access-03"
+"preview" = "Diagnose a CGNAT origin whose relay or listener is unreachable."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: OpenSSH and an owned reachable relay guest. Two local guests teach the directions; a real CGNAT route additionally needs an eligible reachable relay."
+"setup" = "Download /training/io-private-access.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-access directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/03.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://man.openbsd.org/ssh"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-access.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-private-access-03-milestone"
+"title" = "Apply independently: Reverse and dynamically forward"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. SSH -R/-D, SOCKS, GatewayPorts, relay reachability and connection lifetime."
+"steps" = ["Choose the native environment in lessons/03.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 03 --variant transfer --out work/03-transfer\npython3 lab.py check work/03-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/03-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Diagnose a CGNAT origin whose relay or listener is unreachable.", "Collect the actual controls: Demonstrate both directions with labelled machines and remove the listeners afterwards. Do not expose a public relay port by accident or claim SOCKS routes all device traffic.", "Retain your commands, changed input, cause, recovery and help used in notes/03.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Demonstrate both directions with labelled machines and remove the listeners afterwards. Do not expose a public relay port by accident or claim SOCKS routes all device traffic. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-private-access.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-access directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/03.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://man.openbsd.org/ssh"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-access.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-private-access-03"
+"title" = "Return later: Reverse and dynamically forward"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-private-access-03-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: SSH -R/-D, SOCKS, GatewayPorts, relay reachability and connection lifetime.", "Predict a changed-condition result: Diagnose a CGNAT origin whose relay or listener is unreachable.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-private-access-04"
+"preview" = "Connect two guests, then optionally a phone or Pi; test only the chosen routes."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Two disposable Linux guests with WireGuard, distinct keys and permitted UDP peer reachability; administrator rights are guest-scoped."
+"setup" = "Download /training/io-private-access.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-access directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/04.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://www.wireguard.com/quickstart/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-access.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-private-access-04-practice"
+"title" = "Operate: Build a WireGuard network"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "WireGuard associates public keys with allowed tunnel addresses. AllowedIPs affects both routing selection and which source addresses a peer may claim. The handshake uses UDP; keys alone do not create an outer-network route. Start with two isolated guest peers and one specific route before experimenting with an exit gateway."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 04 --variant guided --out work/04-guided\npython3 lab.py check work/04-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/04-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/04.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# Two disposable Linux PEER guests; install WireGuard in those guests, not the shared host.\nmkdir -p work\numask 077\nwg genkey | tee work/wg-private.key | wg pubkey > work/wg-public.key\n# PEER A: cp inputs/04/wg0.conf work/wg0.conf\n# PEER B: copy wg0-peer-b.conf instead. Replace each private key, the OTHER public key and actual UDP endpoint.\n# Never upload the resulting private-key configuration to a public report.\nsudo wg-quick up ./work/wg0.conf\nsudo wg show\nip route\nping -c 2 10.44.0.2\n# Repeat after revoking the peer on the other guest; then restore and close the lab.\nsudo wg-quick down ./work/wg0.conf\n```", "Observe these controls and retain actual output: Handshake and intended route work; a revoked peer/unlisted route fails. Show actual endpoint/route/MTU observations and remove only this guest tunnel.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 04 --out work/04-reference. Record that help was used."]
+"done_when" = "Handshake and intended route work; a revoked peer/unlisted route fails. Show actual endpoint/route/MTU observations and remove only this guest tunnel. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-private-access-04"
+"preview" = "Repair a bad AllowedIPs/route/MTU fixture and revoke one peer."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Two disposable Linux guests with WireGuard, distinct keys and permitted UDP peer reachability; administrator rights are guest-scoped."
+"setup" = "Download /training/io-private-access.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-access directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/04.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://www.wireguard.com/quickstart/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-access.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-private-access-04-milestone"
+"title" = "Apply independently: Build a WireGuard network"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Keys, peers, UDP, routes, AllowedIPs, forwarding and MTU."
+"steps" = ["Choose the native environment in lessons/04.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 04 --variant transfer --out work/04-transfer\npython3 lab.py check work/04-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/04-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Repair a bad AllowedIPs/route/MTU fixture and revoke one peer.", "Collect the actual controls: Handshake and intended route work; a revoked peer/unlisted route fails. Show actual endpoint/route/MTU observations and remove only this guest tunnel.", "Retain your commands, changed input, cause, recovery and help used in notes/04.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Handshake and intended route work; a revoked peer/unlisted route fails. Show actual endpoint/route/MTU observations and remove only this guest tunnel. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-private-access.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-access directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/04.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://www.wireguard.com/quickstart/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-access.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-private-access-04"
+"title" = "Return later: Build a WireGuard network"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-private-access-04-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Keys, peers, UDP, routes, AllowedIPs, forwarding and MTU.", "Predict a changed-condition result: Repair a bad AllowedIPs/route/MTU fixture and revoke one peer.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-private-access-05"
+"preview" = "Join a supported managed lab network or an owned Headscale lab; inspect actual connection paths."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Two owned peers with supported Tailscale clients and an eligible identity/plan, or a separately operated compatible Headscale coordinator."
+"setup" = "Download /training/io-private-access.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-access directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/05.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://tailscale.com/kb/1257/connection-types"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-access.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-private-access-05-practice"
+"title" = "Operate: Compare managed and self-hosted coordination"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "A coordination service distributes identity and peer information; the actual encrypted data path can be direct or relayed. Tailscale and a self-hosted Headscale coordinator share useful concepts but differ in operating responsibilities and supported versions. A hosted control plane does not imply every peer is directly reachable."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 05 --variant guided --out work/05-guided\npython3 lab.py check work/05-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/05-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/05.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# On two owned peers, using an eligible plan and intentional identity/login:\ntailscale up\ntailscale status\ntailscale netcheck\n# tailscale ping ACTUAL_OWNED_PEER_NAME\n# Record whether the path is direct or relayed, then take one peer offline and compare.\n# Alternative: use a supported Headscale server, its documented user/preauth-key workflow,\n# and tailscale up --login-server=https://YOUR_OWNED_COORDINATOR.\n# Do not put a preauth key into shared notes or shell history screenshots.\n```", "Observe these controls and retain actual output: Record enrolled identities and actual connection path, offline-peer behaviour and revocation. A coordinator configuration file alone does not prove peer connectivity.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 05 --out work/05-reference. Record that help was used."]
+"done_when" = "Record enrolled identities and actual connection path, offline-peer behaviour and revocation. A coordinator configuration file alone does not prove peer connectivity. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-private-access-05"
+"preview" = "Explain relay use and an offline peer without assuming every connection is direct."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Two owned peers with supported Tailscale clients and an eligible identity/plan, or a separately operated compatible Headscale coordinator."
+"setup" = "Download /training/io-private-access.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-access directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/05.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://tailscale.com/kb/1257/connection-types"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-access.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-private-access-05-milestone"
+"title" = "Apply independently: Compare managed and self-hosted coordination"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Tailscale, Headscale, coordination, direct data paths, NAT traversal and relays."
+"steps" = ["Choose the native environment in lessons/05.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 05 --variant transfer --out work/05-transfer\npython3 lab.py check work/05-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/05-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Explain relay use and an offline peer without assuming every connection is direct.", "Collect the actual controls: Record enrolled identities and actual connection path, offline-peer behaviour and revocation. A coordinator configuration file alone does not prove peer connectivity.", "Retain your commands, changed input, cause, recovery and help used in notes/05.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Record enrolled identities and actual connection path, offline-peer behaviour and revocation. A coordinator configuration file alone does not prove peer connectivity. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-private-access.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-access directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/05.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://tailscale.com/kb/1257/connection-types"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-access.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-private-access-05"
+"title" = "Return later: Compare managed and self-hosted coordination"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-private-access-05-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Tailscale, Headscale, coordination, direct data paths, NAT traversal and relays.", "Predict a changed-condition result: Explain relay use and an offline peer without assuming every connection is direct.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-private-access-06"
+"preview" = "Expose one private lab subnet, then separately test a scoped exit-node exercise."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: An owned Linux router guest and client, a non-overlapping private lab subnet, explicit forwarding/route approval and the earlier private peer setup."
+"setup" = "Download /training/io-private-access.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-access directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/06.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://tailscale.com/kb/1019/subnets"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-access.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-private-access-06-practice"
+"title" = "Operate: Use subnet and exit nodes"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "A subnet router advertises selected private routes; an exit node routes broader internet egress. Route acceptance, forwarding, return routes and DNS all matter. Do not turn a private-subnet task into full-tunnel egress merely because a default route seems easier. Verify exactly which traffic changes path."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 06 --variant guided --out work/06-guided\npython3 lab.py check work/06-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/06-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/06.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# Disposable Linux ROUTER GUEST only; record its original forwarding values first.\nsysctl net.ipv4.ip_forward net.ipv6.conf.all.forwarding\nsudo sysctl -w net.ipv4.ip_forward=1\n# Enable IPv6 forwarding only when the exercise actually uses IPv6.\n# Confirm the subnet does not overlap the CLIENT's local LAN. If it does, choose a distinct owned lab subnet.\n# At cleanup remove the advertised route and restore the forwarding values recorded above.\n```", "```sh\n# An OWNED Linux ROUTER peer, inside the disposable lab network, after checking forwarding prerequisites:\ntailscale set --advertise-routes=192.168.122.0/24\n# Approve only the intended route through your own coordination policy.\n# CLIENT: tailscale set --accept-routes=true\n# Probe the private Relay address and inspect the resulting route.\n# Separate exit-node exercise: advertise/use an exit node according to the official instructions,\n# then compare private-service routing and internet egress independently.\n# Remove the advertised lab routes in cleanup.\n```", "Observe these controls and retain actual output: The permitted private service works, unrelated routes retain their intended path and DNS is correct. Egress changes need their own explicit test and authorization.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 06 --out work/06-reference. Record that help was used."]
+"done_when" = "The permitted private service works, unrelated routes retain their intended path and DNS is correct. Egress changes need their own explicit test and authorization. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-private-access-06"
+"preview" = "Fix a DNS/route conflict or unintended egress path."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: An owned Linux router guest and client, a non-overlapping private lab subnet, explicit forwarding/route approval and the earlier private peer setup."
+"setup" = "Download /training/io-private-access.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-access directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/06.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://tailscale.com/kb/1019/subnets"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-access.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-private-access-06-milestone"
+"title" = "Apply independently: Use subnet and exit nodes"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Subnet routing, internet egress, split DNS, forwarding and route approval."
+"steps" = ["Choose the native environment in lessons/06.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 06 --variant transfer --out work/06-transfer\npython3 lab.py check work/06-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/06-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Fix a DNS/route conflict or unintended egress path.", "Collect the actual controls: The permitted private service works, unrelated routes retain their intended path and DNS is correct. Egress changes need their own explicit test and authorization.", "Retain your commands, changed input, cause, recovery and help used in notes/06.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "The permitted private service works, unrelated routes retain their intended path and DNS is correct. Egress changes need their own explicit test and authorization. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-private-access.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-access directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/06.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://tailscale.com/kb/1019/subnets"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-access.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-private-access-06"
+"title" = "Return later: Use subnet and exit nodes"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-private-access-06-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Subnet routing, internet egress, split DNS, forwarding and route approval.", "Predict a changed-condition result: Fix a DNS/route conflict or unintended egress path.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-private-access-07"
+"preview" = "Compare a public browser route with the documented client-assisted private access path."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Your owned Cloudflare tunnel/Access account policy, eligible hostname, connector and required client; permitted and denied test identities. Use earlier local routes if this capability is unavailable."
+"setup" = "Download /training/io-private-access.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-access directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/07.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/routing-to-tunnel/protocols/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-access.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-private-access-07-practice"
+"title" = "Operate: Reach private services through Cloudflare"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "A normal public HTTP tunnel can be visited in a browser. Documented Cloudflare TCP/SSH routes may require client-side cloudflared or a configured private-network client. Routing and identity enforcement remain separate. An ordinary HTTP tunnel is not a general public SMTP or arbitrary UDP listener."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 07 --variant guided --out work/07-guided\npython3 lab.py check work/07-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/07-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/07.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# Inspect the public/private routes you created in your own Cloudflare account.\n# For a configured, protected SSH hostname, the CLIENT configuration can use:\n# ProxyCommand cloudflared access ssh --hostname %h\n# Then: ssh learner@YOUR_OWNED_SSH_HOSTNAME\n# Test an allowed identity, a denied identity and a disconnected origin separately.\n# Compare this with a public HTTP hostname opened directly in a browser.\ncloudflared --version\n# Version output identifies the tool only; it is not completion evidence.\n```", "Observe these controls and retain actual output: Observe permitted and denied access using the actual required client, then test origin unavailability. Keep ordinary public HTTP and client-assisted private access distinct.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 07 --out work/07-reference. Record that help was used."]
+"done_when" = "Observe permitted and denied access using the actual required client, then test origin unavailability. Keep ordinary public HTTP and client-assisted private access distinct. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-private-access-07"
+"preview" = "Diagnose a missing client, denied identity or unavailable outbound transport."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Your owned Cloudflare tunnel/Access account policy, eligible hostname, connector and required client; permitted and denied test identities. Use earlier local routes if this capability is unavailable."
+"setup" = "Download /training/io-private-access.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-access directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/07.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/routing-to-tunnel/protocols/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-access.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-private-access-07-milestone"
+"title" = "Apply independently: Reach private services through Cloudflare"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Public HTTP versus client-assisted TCP/SSH and private network access."
+"steps" = ["Choose the native environment in lessons/07.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 07 --variant transfer --out work/07-transfer\npython3 lab.py check work/07-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/07-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Diagnose a missing client, denied identity or unavailable outbound transport.", "Collect the actual controls: Observe permitted and denied access using the actual required client, then test origin unavailability. Keep ordinary public HTTP and client-assisted private access distinct.", "Retain your commands, changed input, cause, recovery and help used in notes/07.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Observe permitted and denied access using the actual required client, then test origin unavailability. Keep ordinary public HTTP and client-assisted private access distinct. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-private-access.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-access directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/07.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/routing-to-tunnel/protocols/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-access.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-private-access-07"
+"title" = "Return later: Reach private services through Cloudflare"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-private-access-07-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Public HTTP versus client-assisted TCP/SSH and private network access.", "Predict a changed-condition result: Diagnose a missing client, denied identity or unavailable outbound transport.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-private-access-08"
+"preview" = "Configure an owned self-hosted relay; optionally implement a bounded educational relay over standard TLS."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python, OpenSSL and reviewed frp binaries. A single-PC loopback relay is the free minimum; two-guest/public variants need explicit owned network reachability."
+"setup" = "Download /training/io-private-access.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-access directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/08.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://gofrp.org/en/docs/overview/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-access.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-private-access-08-practice"
+"title" = "Operate: Build and compare a custom relay"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "A relay connects two independently reachable sessions and needs authentication, bounded messages, flow control and a reconnect policy. Use a maintained implementation before writing a small educational protocol. Standard TLS/SSH handles cryptography; a custom framing function does not prove safe public multi-tenant operation. Bind and allowlist every destination."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 08 --variant guided --out work/08-guided\npython3 lab.py check work/08-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/08-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/08.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# First use the free single-PC route: all three listeners stay on loopback.\ncp inputs/08/frps.toml work/frps.toml\ncp inputs/08/frpc.toml work/frpc.toml\n# Generate a fresh token into a local file and put the SAME value into both copies in your editor.\numask 077\nopenssl rand -hex 32 > work/frp-token\n# Terminal A: start Relay on 127.0.0.1:8000 (shared/relay.py).\n# Terminal B: frps -c work/frps.toml\n# Terminal C: frpc -c work/frpc.toml\n# CLIENT: curl http://127.0.0.1:18000/version\n# Stop frpc, change its token, restart and observe rejection. Restore token, try remotePort=18001 and observe rejection.\n# For a two-guest variant, bind frps only to its actual private guest address and adapt serverAddr.\n# Keep proxyBindAddr loopback: use an authenticated SSH forward for a remote client if needed.\n```", "```sh\n# Use reviewed frp binaries on two owned machines. Read the TOML inputs before editing copies.\n# RELAY: frps -c work/frps.toml\n# ORIGIN: frpc -c work/frpc.toml\n# Set a fresh shared token locally with openssl rand -hex 32 and use your actual relay address.\n# Test the single intended route, a wrong token, disconnected origin, then reconnect.\n# For a zero-network protocol exercise:\npython3 inputs/08/framing.py\n# Modify the payload length in that local script and verify an oversized frame is rejected.\n```", "Observe these controls and retain actual output: Show the real relay rejects an unauthorized connection/target and recovers from disconnect, or retain framing-only results as the limited local exercise. Public relay operation needs a reachable owned endpoint and reviewed policy.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 08 --out work/08-reference. Record that help was used."]
+"done_when" = "Show the real relay rejects an unauthorized connection/target and recovers from disconnect, or retain framing-only results as the limited local exercise. Public relay operation needs a reachable owned endpoint and reviewed policy. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-private-access-08"
+"preview" = "Test disconnect, denied target and oversized-frame cases against the supplied lab contract."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python, OpenSSL and reviewed frp binaries. A single-PC loopback relay is the free minimum; two-guest/public variants need explicit owned network reachability."
+"setup" = "Download /training/io-private-access.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-access directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/08.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://gofrp.org/en/docs/overview/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-access.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-private-access-08-milestone"
+"title" = "Apply independently: Build and compare a custom relay"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. SSH versus frp/rathole, authentication, framing, flow control, reconnects and allowlisted targets."
+"steps" = ["Choose the native environment in lessons/08.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 08 --variant transfer --out work/08-transfer\npython3 lab.py check work/08-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/08-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Test disconnect, denied target and oversized-frame cases against the supplied lab contract.", "Collect the actual controls: Show the real relay rejects an unauthorized connection/target and recovers from disconnect, or retain framing-only results as the limited local exercise. Public relay operation needs a reachable owned endpoint and reviewed policy.", "Retain your commands, changed input, cause, recovery and help used in notes/08.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Show the real relay rejects an unauthorized connection/target and recovers from disconnect, or retain framing-only results as the limited local exercise. Public relay operation needs a reachable owned endpoint and reviewed policy. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-private-access.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-access directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/08.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://gofrp.org/en/docs/overview/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-access.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-private-access-08"
+"title" = "Return later: Build and compare a custom relay"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-private-access-08-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: SSH versus frp/rathole, authentication, framing, flow control, reconnects and allowlisted targets.", "Predict a changed-condition result: Test disconnect, denied target and oversized-frame cases against the supplied lab contract.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."

@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Repair duplicated identity or stale initialization data.",
+  "contract": [
+    {
+      "field": "instance_kind",
+      "op": "eq",
+      "value": "virtual-machine",
+      "why": "instance kind: satisfy the stated offer reproducible guest templates contract"
+    },
+    {
+      "field": "unique_cloud_init_identity",
+      "op": "eq",
+      "value": true,
+      "why": "unique cloud init identity: satisfy the stated offer reproducible guest templates contract"
+    },
+    {
+      "field": "guest_memory_gib",
+      "op": "eq",
+      "value": 1,
+      "why": "guest memory gib: satisfy the stated offer reproducible guest templates contract"
+    },
+    {
+      "field": "image_source_reviewed",
+      "op": "eq",
+      "value": true,
+      "why": "image source reviewed: satisfy the stated offer reproducible guest templates contract"
+    }
+  ],
+  "starting": {
+    "instance_kind": "virtual-machine",
+    "unique_cloud_init_identity": false,
+    "guest_memory_gib": 1,
+    "image_source_reviewed": false
+  },
+  "reference": {
+    "instance_kind": "virtual-machine",
+    "unique_cloud_init_identity": true,
+    "guest_memory_gib": 1,
+    "image_source_reviewed": true
+  },
+  "rules": [
+    {
+      "field": "instance_kind",
+      "op": "eq",
+      "value": "virtual-machine",
+      "why": "instance kind: satisfy the stated offer reproducible guest templates contract"
+    },
+    {
+      "field": "unique_cloud_init_identity",
+      "op": "eq",
+      "value": true,
+      "why": "unique cloud init identity: satisfy the stated offer reproducible guest templates contract"
+    },
+    {
+      "field": "guest_memory_gib",
+      "op": "eq",
+      "value": 1,
+      "why": "guest memory gib: satisfy the stated offer reproducible guest templates contract"
+    },
+    {
+      "field": "image_source_reviewed",
+      "op": "eq",
+      "value": true,
+      "why": "image source reviewed: satisfy the stated offer reproducible guest templates contract"
+    }
+  ]
+}

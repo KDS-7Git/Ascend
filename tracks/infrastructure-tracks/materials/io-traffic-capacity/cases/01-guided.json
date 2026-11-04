@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Record a baseline workload with a fixed dataset and clear measurement boundaries.",
+  "contract": [
+    {
+      "field": "workload_named",
+      "op": "eq",
+      "value": true,
+      "why": "workload named: satisfy the stated define the workload contract"
+    },
+    {
+      "field": "failed_requests_counted",
+      "op": "eq",
+      "value": true,
+      "why": "failed requests counted: satisfy the stated define the workload contract"
+    },
+    {
+      "field": "latency_population",
+      "op": "eq",
+      "value": "all-observed-requests",
+      "why": "latency population: satisfy the stated define the workload contract"
+    },
+    {
+      "field": "users_equal_rps",
+      "op": "eq",
+      "value": false,
+      "why": "users equal rps: satisfy the stated define the workload contract"
+    }
+  ],
+  "starting": {
+    "workload_named": true,
+    "failed_requests_counted": false,
+    "latency_population": "all-observed-requests",
+    "users_equal_rps": false
+  },
+  "reference": {
+    "workload_named": true,
+    "failed_requests_counted": true,
+    "latency_population": "all-observed-requests",
+    "users_equal_rps": false
+  },
+  "rules": [
+    {
+      "field": "workload_named",
+      "op": "eq",
+      "value": true,
+      "why": "workload named: satisfy the stated define the workload contract"
+    },
+    {
+      "field": "failed_requests_counted",
+      "op": "eq",
+      "value": true,
+      "why": "failed requests counted: satisfy the stated define the workload contract"
+    },
+    {
+      "field": "latency_population",
+      "op": "eq",
+      "value": "all-observed-requests",
+      "why": "latency population: satisfy the stated define the workload contract"
+    },
+    {
+      "field": "users_equal_rps",
+      "op": "eq",
+      "value": false,
+      "why": "users equal rps: satisfy the stated define the workload contract"
+    }
+  ]
+}

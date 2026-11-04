@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Find a duplicated identity or a snapshot dependent on a missing parent image.",
+  "contract": [
+    {
+      "field": "backup_independent_of_active_disk",
+      "op": "eq",
+      "value": true,
+      "why": "backup independent of active disk: satisfy the stated clone and recover machines contract"
+    },
+    {
+      "field": "clone_instance_id",
+      "op": "eq",
+      "value": "relay-restore-01",
+      "why": "clone instance id: satisfy the stated clone and recover machines contract"
+    },
+    {
+      "field": "clone_identity_unique",
+      "op": "eq",
+      "value": true,
+      "why": "clone identity unique: satisfy the stated clone and recover machines contract"
+    },
+    {
+      "field": "source_stopped_during_restore_test",
+      "op": "eq",
+      "value": true,
+      "why": "source stopped during restore test: satisfy the stated clone and recover machines contract"
+    }
+  ],
+  "starting": {
+    "backup_independent_of_active_disk": true,
+    "clone_instance_id": "relay-restore-01",
+    "clone_identity_unique": false,
+    "source_stopped_during_restore_test": false
+  },
+  "reference": {
+    "backup_independent_of_active_disk": true,
+    "clone_instance_id": "relay-restore-01",
+    "clone_identity_unique": true,
+    "source_stopped_during_restore_test": true
+  },
+  "rules": [
+    {
+      "field": "backup_independent_of_active_disk",
+      "op": "eq",
+      "value": true,
+      "why": "backup independent of active disk: satisfy the stated clone and recover machines contract"
+    },
+    {
+      "field": "clone_instance_id",
+      "op": "eq",
+      "value": "relay-restore-01",
+      "why": "clone instance id: satisfy the stated clone and recover machines contract"
+    },
+    {
+      "field": "clone_identity_unique",
+      "op": "eq",
+      "value": true,
+      "why": "clone identity unique: satisfy the stated clone and recover machines contract"
+    },
+    {
+      "field": "source_stopped_during_restore_test",
+      "op": "eq",
+      "value": true,
+      "why": "source stopped during restore test: satisfy the stated clone and recover machines contract"
+    }
+  ]
+}

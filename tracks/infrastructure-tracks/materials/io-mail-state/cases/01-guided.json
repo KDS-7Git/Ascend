@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Send synthetic application mail to local Mailpit and inspect its envelope and content.",
+  "contract": [
+    {
+      "field": "smtp_target",
+      "op": "eq",
+      "value": "127.0.0.1:1025",
+      "why": "smtp target: satisfy the stated follow a message contract"
+    },
+    {
+      "field": "recipient",
+      "op": "eq",
+      "value": "learner@relay.test",
+      "why": "recipient: satisfy the stated follow a message contract"
+    },
+    {
+      "field": "headers_equal_envelope_required",
+      "op": "eq",
+      "value": false,
+      "why": "headers equal envelope required: satisfy the stated follow a message contract"
+    },
+    {
+      "field": "capture_proves_public_delivery",
+      "op": "eq",
+      "value": false,
+      "why": "capture proves public delivery: satisfy the stated follow a message contract"
+    }
+  ],
+  "starting": {
+    "smtp_target": "unapproved-external-mta:25",
+    "recipient": "learner@relay.test",
+    "headers_equal_envelope_required": false,
+    "capture_proves_public_delivery": false
+  },
+  "reference": {
+    "smtp_target": "127.0.0.1:1025",
+    "recipient": "learner@relay.test",
+    "headers_equal_envelope_required": false,
+    "capture_proves_public_delivery": false
+  },
+  "rules": [
+    {
+      "field": "smtp_target",
+      "op": "eq",
+      "value": "127.0.0.1:1025",
+      "why": "smtp target: satisfy the stated follow a message contract"
+    },
+    {
+      "field": "recipient",
+      "op": "eq",
+      "value": "learner@relay.test",
+      "why": "recipient: satisfy the stated follow a message contract"
+    },
+    {
+      "field": "headers_equal_envelope_required",
+      "op": "eq",
+      "value": false,
+      "why": "headers equal envelope required: satisfy the stated follow a message contract"
+    },
+    {
+      "field": "capture_proves_public_delivery",
+      "op": "eq",
+      "value": false,
+      "why": "capture proves public delivery: satisfy the stated follow a message contract"
+    }
+  ]
+}

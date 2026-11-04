@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Exercise a local network/credential fault, then an owned physical failure where available.",
+  "contract": [
+    {
+      "field": "failure_boundary_identified",
+      "op": "eq",
+      "value": true,
+      "why": "failure boundary identified: satisfy the stated recover connectivity and services contract"
+    },
+    {
+      "field": "saved_data_retained",
+      "op": "eq",
+      "value": true,
+      "why": "saved data retained: satisfy the stated recover connectivity and services contract"
+    },
+    {
+      "field": "private_access_policy_retained",
+      "op": "eq",
+      "value": true,
+      "why": "private access policy retained: satisfy the stated recover connectivity and services contract"
+    },
+    {
+      "field": "recovery_control_repeated",
+      "op": "eq",
+      "value": true,
+      "why": "recovery control repeated: satisfy the stated recover connectivity and services contract"
+    }
+  ],
+  "starting": {
+    "failure_boundary_identified": false,
+    "saved_data_retained": true,
+    "private_access_policy_retained": true,
+    "recovery_control_repeated": true
+  },
+  "reference": {
+    "failure_boundary_identified": true,
+    "saved_data_retained": true,
+    "private_access_policy_retained": true,
+    "recovery_control_repeated": true
+  },
+  "rules": [
+    {
+      "field": "failure_boundary_identified",
+      "op": "eq",
+      "value": true,
+      "why": "failure boundary identified: satisfy the stated recover connectivity and services contract"
+    },
+    {
+      "field": "saved_data_retained",
+      "op": "eq",
+      "value": true,
+      "why": "saved data retained: satisfy the stated recover connectivity and services contract"
+    },
+    {
+      "field": "private_access_policy_retained",
+      "op": "eq",
+      "value": true,
+      "why": "private access policy retained: satisfy the stated recover connectivity and services contract"
+    },
+    {
+      "field": "recovery_control_repeated",
+      "op": "eq",
+      "value": true,
+      "why": "recovery control repeated: satisfy the stated recover connectivity and services contract"
+    }
+  ]
+}

@@ -1,0 +1,590 @@
+# Generated from docs/curriculum/infrastructure-paths.json; unreviewed draft teaching content.
+[pack]
+"id" = "io-delivery-automation"
+"title" = "Delivery & Infrastructure Automation"
+"kind" = "proficiency"
+"version" = 1
+"source" = "ai-draft"
+"reviewed" = false
+
+[[level]]
+"id" = "io-delivery-automation-01"
+"title" = "Build an identifiable release"
+"lane" = "main"
+
+[[level]]
+"id" = "io-delivery-automation-02"
+"title" = "Package the runtime"
+"lane" = "main"
+
+[[level]]
+"id" = "io-delivery-automation-03"
+"title" = "Compose a small service"
+"lane" = "main"
+
+[[level]]
+"id" = "io-delivery-automation-04"
+"title" = "Automate checks in CI"
+"lane" = "main"
+
+[[level]]
+"id" = "io-delivery-automation-05"
+"title" = "Promote and roll back"
+"lane" = "main"
+
+[[level]]
+"id" = "io-delivery-automation-06"
+"title" = "Declare infrastructure"
+"lane" = "main"
+
+[[level]]
+"id" = "io-delivery-automation-07"
+"title" = "Configure a fleet"
+"lane" = "main"
+
+[[level]]
+"id" = "io-delivery-automation-08"
+"title" = "Recreate and recover the delivery path"
+"lane" = "main"
+
+[[level]]
+"id" = "entry"
+"title" = "Choose your entry point"
+"lane" = "side"
+
+[[level]]
+"id" = "recall"
+"title" = "Return later"
+"lane" = "side"
+
+[[node]]
+"level" = "entry"
+"preview" = "Match a concrete practical outcome to what you can already demonstrate."
+"requirements" = "Python 3.11+, a text editor and your own PC. No account or device purchase is required for this entry check."
+"setup" = "Download /training/io-delivery-automation.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-delivery-automation directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/entry.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://git-scm.com/docs/gittutorial"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "entry-demonstration"
+"title" = "Choose an entry point through a short demonstration"
+"size" = "S"
+"minutes" = 20
+"needs" = []
+"brief" = "New to this subject: start with the worked operation in level 1. Already practising: attempt an independent operation first and use Ascend early-unlock for a later level when appropriate. It records your choice, not an automatic proficiency pass. Job preparation emphasizes the reproducible handover; interest-led work can extend the same technical evidence with a different owned environment."
+"steps" = ["Read bootstrap.md, record your machine/OS and confirm the tools work.\n```sh\npython3 shared/selfcheck.py\n```\nThis checks the teaching tools, not proficiency.", "Read the eight independent finish lines in README.md and lessons/NN.md. Choose the first operation you cannot demonstrate on a fresh target without the worked steps.", "Begin that independent milestone if you already have the background, using existing early-unlock when needed. Otherwise start level 1 worked practice. Your own demonstration remains required; an entry choice does not complete other nodes.", "Record the chosen level, supporting prior observation and next concrete action in notes/entry.md. Return to guided material whenever a gap appears."]
+"done_when" = "Your local tool checks run, a practical observation supports the chosen starting level, and notes/entry.md names the next operation. This is manual self-assessment and does not certify or complete other levels."
+
+[[node]]
+"level" = "io-delivery-automation-01"
+"preview" = "Build Relay from a known revision and retain a manifest."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python 3.11+, Git and curl on your PC; an owned local repository with synthetic content."
+"setup" = "Download /training/io-delivery-automation.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-delivery-automation directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/01.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://git-scm.com/docs/gittutorial"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-delivery-automation-01-practice"
+"title" = "Operate: Build an identifiable release"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "A release record connects source revision, tested inputs and an artifact digest to what is actually running. A mutable tag or a directory name cannot establish that identity. Build in an owned workspace, preserve the inputs, and compare the deployed version with the recorded artifact before calling a release successful."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 01 --variant guided --out work/01-guided\npython3 lab.py check work/01-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/01-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/01.md. Predict a successful response and a failure before running the following native operations.", "```sh\nmkdir -p work/release\ncp shared/relay.py work/release/relay.py\ngit -C work/release init\ngit -C work/release add relay.py\ngit -C work/release -c user.name='Lab Learner' -c user.email='learner@example.invalid' commit -m 'Create synthetic Relay release'\ngit -C work/release rev-parse HEAD\npython3 lab.py fingerprint work/release/relay.py\npython3 work/release/relay.py --host 127.0.0.1 --port 8000 --data work/release/relay.sqlite --release artifact-v1\n# Second terminal: python3 shared/check_service.py --url http://127.0.0.1:8000 --expect-release artifact-v1\n```", "Observe these controls and retain actual output: Retain commit/digest and actual running-release evidence, then show a different release is rejected by the expected-release checker.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 01 --out work/01-reference. Record that help was used."]
+"done_when" = "Retain commit/digest and actual running-release evidence, then show a different release is rejected by the expected-release checker. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-delivery-automation-01"
+"preview" = "Detect a runtime that differs from the tested artifact."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python 3.11+, Git and curl on your PC; an owned local repository with synthetic content."
+"setup" = "Download /training/io-delivery-automation.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-delivery-automation directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/01.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://git-scm.com/docs/gittutorial"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-delivery-automation-01-milestone"
+"title" = "Apply independently: Build an identifiable release"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Git, dependency inputs, tests, artifact checksums and configuration."
+"steps" = ["Choose the native environment in lessons/01.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 01 --variant transfer --out work/01-transfer\npython3 lab.py check work/01-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/01-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Detect a runtime that differs from the tested artifact.", "Collect the actual controls: Retain commit/digest and actual running-release evidence, then show a different release is rejected by the expected-release checker.", "Retain your commands, changed input, cause, recovery and help used in notes/01.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Retain commit/digest and actual running-release evidence, then show a different release is rejected by the expected-release checker. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-delivery-automation.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-delivery-automation directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/01.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://git-scm.com/docs/gittutorial"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-delivery-automation-01"
+"title" = "Return later: Build an identifiable release"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-delivery-automation-01-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Git, dependency inputs, tests, artifact checksums and configuration.", "Predict a changed-condition result: Detect a runtime that differs from the tested artifact.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-delivery-automation-02"
+"preview" = "Run an immutable image locally and in the service VM."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: A learner-owned Docker environment, image download space and Python checker. The writable data volume is dedicated to this lab."
+"setup" = "Download /training/io-delivery-automation.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-delivery-automation directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/02.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://docs.docker.com/compose/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-delivery-automation-02-practice"
+"title" = "Operate: Package the runtime"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "An image packages application/runtime inputs; a container is a process using that image. Writable runtime state belongs in an explicit persistent location. A recreated container may otherwise lose data even when its image remains available. Build once, inspect the image identity, and use a non-root runtime identity with a writable data volume."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 02 --variant guided --out work/02-guided\npython3 lab.py check work/02-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/02-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/02.md. Predict a successful response and a failure before running the following native operations.", "```sh\ndocker build -f inputs/02/Dockerfile -t ascend-relay:lab .\ndocker image inspect ascend-relay:lab --format '{{.Id}}'\ndocker volume create ascend-relay-data\ndocker run --name ascend-relay-lab --rm -p 127.0.0.1:8088:8000 -v ascend-relay-data:/data ascend-relay:lab\n# Second terminal: python3 shared/check_service.py --url http://127.0.0.1:8088 --expect-release container-v1 --write\n# Stop only ascend-relay-lab, recreate with the SAME volume, and inspect /api/updates.\n# Delete only your named practice volume after recording/backup if no longer needed.\n```", "Observe these controls and retain actual output: Non-root service works, expected image/version is observed and a recorded update survives recreation with the same volume. Track base-image digest during reviewed release authoring.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 02 --out work/02-reference. Record that help was used."]
+"done_when" = "Non-root service works, expected image/version is observed and a recorded update survives recreation with the same volume. Track base-image digest during reviewed release authoring. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-delivery-automation-02"
+"preview" = "Recover a recreation that lost data or changed runtime identity."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: A learner-owned Docker environment, image download space and Python checker. The writable data volume is dedicated to this lab."
+"setup" = "Download /training/io-delivery-automation.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-delivery-automation directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/02.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://docs.docker.com/compose/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-delivery-automation-02-milestone"
+"title" = "Apply independently: Package the runtime"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Containers versus VMs, images, layers, users, networks and volumes."
+"steps" = ["Choose the native environment in lessons/02.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 02 --variant transfer --out work/02-transfer\npython3 lab.py check work/02-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/02-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Recover a recreation that lost data or changed runtime identity.", "Collect the actual controls: Non-root service works, expected image/version is observed and a recorded update survives recreation with the same volume. Track base-image digest during reviewed release authoring.", "Retain your commands, changed input, cause, recovery and help used in notes/02.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Non-root service works, expected image/version is observed and a recorded update survives recreation with the same volume. Track base-image digest during reviewed release authoring. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-delivery-automation.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-delivery-automation directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/02.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://docs.docker.com/compose/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-delivery-automation-02"
+"title" = "Return later: Package the runtime"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-delivery-automation-02-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Containers versus VMs, images, layers, users, networks and volumes.", "Predict a changed-condition result: Recover a recreation that lost data or changed runtime identity.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-delivery-automation-03"
+"preview" = "Run edge, application and state components with explicit data locations."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Docker with Compose v2, the preceding ascend-relay:lab image and a dedicated project/data volume."
+"setup" = "Download /training/io-delivery-automation.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-delivery-automation directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/03.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://docs.docker.com/compose/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-delivery-automation-03-practice"
+"title" = "Operate: Compose a small service"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "Compose declares several related runtime resources and their ownership. Startup order is not application readiness; checks must observe the endpoint and required dependencies. Named volumes, networks and project names determine what cleanup removes. Review the fully rendered configuration before starting it."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 03 --variant guided --out work/03-guided\npython3 lab.py check work/03-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/03-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/03.md. Predict a successful response and a failure before running the following native operations.", "```sh\ndocker compose -p ascend-infra -f inputs/03/compose.yaml config\ndocker compose -p ascend-infra -f inputs/03/compose.yaml up -d\ndocker compose -p ascend-infra -f inputs/03/compose.yaml ps\ndocker compose -p ascend-infra -f inputs/03/compose.yaml logs --tail 30\npython3 shared/check_service.py --url http://127.0.0.1:8088 --expect-release container-v1 --write\ndocker compose -p ascend-infra -f inputs/03/compose.yaml down\n# The default down retains the named data volume; inspect before intentionally deleting it.\n```", "Observe these controls and retain actual output: Show readiness, retained data after recreation and selective cleanup. A running container state alone does not satisfy application health.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 03 --out work/03-reference. Record that help was used."]
+"done_when" = "Show readiness, retained data after recreation and selective cleanup. A running container state alone does not satisfy application health. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-delivery-automation-03"
+"preview" = "Repair a dependency-order or configuration failure."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Docker with Compose v2, the preceding ascend-relay:lab image and a dedicated project/data volume."
+"setup" = "Download /training/io-delivery-automation.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-delivery-automation directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/03.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://docs.docker.com/compose/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-delivery-automation-03-milestone"
+"title" = "Apply independently: Compose a small service"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Compose, dependencies, readiness, secrets, logs and owned cleanup."
+"steps" = ["Choose the native environment in lessons/03.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 03 --variant transfer --out work/03-transfer\npython3 lab.py check work/03-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/03-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Repair a dependency-order or configuration failure.", "Collect the actual controls: Show readiness, retained data after recreation and selective cleanup. A running container state alone does not satisfy application health.", "Retain your commands, changed input, cause, recovery and help used in notes/03.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Show readiness, retained data after recreation and selective cleanup. A running container state alone does not satisfy application health. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-delivery-automation.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-delivery-automation directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/03.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://docs.docker.com/compose/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-delivery-automation-03"
+"title" = "Return later: Compose a small service"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-delivery-automation-03-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Compose, dependencies, readiness, secrets, logs and owned cleanup.", "Predict a changed-condition result: Repair a dependency-order or configuration failure.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-delivery-automation-04"
+"preview" = "Run a failing and passing change in a learner-owned CI project or equivalent local pipeline rehearsal."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python for local checks; an owned repository/eligible GitHub Actions account for the actual CI run. Current hosted-runner allowances and workflow permissions apply."
+"setup" = "Download /training/io-delivery-automation.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-delivery-automation directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/04.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://docs.github.com/en/actions"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-delivery-automation-04-practice"
+"title" = "Operate: Automate checks in CI"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "A CI job runs code with the runner's available identity and permissions. Untrusted pull-request code must not receive deployment credentials. A useful pipeline has a failing control and records which source/artifact passed. Syntax checks, runtime smoke checks and deployment gates answer different questions."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 04 --variant guided --out work/04-guided\npython3 lab.py check work/04-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/04-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/04.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# In the extracted directory, first run the local service/checker flow.\npython3 shared/selfcheck.py\n# Then copy this lab's authored service/checker files and workflow into a NEW owned repository.\n# Use .github/workflows/relay.yml as shown in the inputs; review permissions before pushing.\n# Submit a change with an intentionally wrong expected release in its smoke check.\n# Observe the failed job, fix it, and retain both commit/job identifiers.\n# A local run remains local evidence until an actual CI service runs the workflow.\n```", "Observe these controls and retain actual output: Retain one failed and one passing runtime job against identified commits. Do not label a local rehearsal as externally executed CI or grant broad tokens merely to make a deployment step work.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 04 --out work/04-reference. Record that help was used."]
+"done_when" = "Retain one failed and one passing runtime job against identified commits. Do not label a local rehearsal as externally executed CI or grant broad tokens merely to make a deployment step work. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-delivery-automation-04"
+"preview" = "Prevent an untrusted or failing change from accessing deployment credentials."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python for local checks; an owned repository/eligible GitHub Actions account for the actual CI run. Current hosted-runner allowances and workflow permissions apply."
+"setup" = "Download /training/io-delivery-automation.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-delivery-automation directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/04.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://docs.github.com/en/actions"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-delivery-automation-04-milestone"
+"title" = "Apply independently: Automate checks in CI"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Triggers, runner identity, permissions, caches, artifacts and secret boundaries."
+"steps" = ["Choose the native environment in lessons/04.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 04 --variant transfer --out work/04-transfer\npython3 lab.py check work/04-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/04-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Prevent an untrusted or failing change from accessing deployment credentials.", "Collect the actual controls: Retain one failed and one passing runtime job against identified commits. Do not label a local rehearsal as externally executed CI or grant broad tokens merely to make a deployment step work.", "Retain your commands, changed input, cause, recovery and help used in notes/04.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Retain one failed and one passing runtime job against identified commits. Do not label a local rehearsal as externally executed CI or grant broad tokens merely to make a deployment step work. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-delivery-automation.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-delivery-automation directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/04.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://docs.github.com/en/actions"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-delivery-automation-04"
+"title" = "Return later: Automate checks in CI"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-delivery-automation-04-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Triggers, runner identity, permissions, caches, artifacts and secret boundaries.", "Predict a changed-condition result: Prevent an untrusted or failing change from accessing deployment credentials.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-delivery-automation-05"
+"preview" = "Promote one tested artifact and recover a seeded stateless regression."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python and your retained artifacts/revisions; loopback service and dedicated SQLite data. No provider is required."
+"setup" = "Download /training/io-delivery-automation.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-delivery-automation directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/05.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://docs.github.com/en/actions"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-delivery-automation-05-practice"
+"title" = "Operate: Promote and roll back"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "Promotion should move the tested artifact into the target, not build a different artifact under the same name. Rollback restores an earlier release only when data/schema compatibility permits it. Keep state separate, serialize competing release changes, and test behaviour and version after promotion and recovery."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 05 --variant guided --out work/05-guided\npython3 lab.py check work/05-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/05-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/05.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# Build two retained local artifacts; this example changes release metadata, not database schema.\n# Use actual source revisions from your owned repository in place of the illustrative revision labels.\npython3 shared/release.py build --out work/artifacts/v1 --release v1 --revision lab-revision-v1\npython3 shared/release.py build --out work/artifacts/v2 --release v2 --revision lab-revision-v2\npython3 shared/release.py verify --artifact work/artifacts/v1\npython3 shared/release.py select --artifact work/artifacts/v1 --state work/current.json\n# Terminal A: serve the selected artifact. It owns its release label; do not override it.\npython3 shared/release.py serve --state work/current.json -- --host 127.0.0.1 --port 8000 --data work/release-data.sqlite\n# CLIENT: python3 shared/check_service.py --url http://127.0.0.1:8000 --expect-release v1 --write\n# Stop A. Then select the already built v2 and start serve again:\npython3 shared/release.py select --artifact work/artifacts/v2 --state work/current.json\npython3 shared/release.py resolve --state work/current.json\n# Restart the same serve command in A; CLIENT expected v1 now fails, expected v2 passes.\n# Stop A, select the RETAINED v1 artifact and start serve again. Verify version AND prior updates.\n# Selecting a pointer does not reload a running process; the explicit stop/start is part of this procedure.\n```", "Observe these controls and retain actual output: Show the exact artifact identity, detected wrong-version control and restored version/data. Explain separately why this stateless-compatible change does not prove rollback of a destructive schema migration.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 05 --out work/05-reference. Record that help was used."]
+"done_when" = "Show the exact artifact identity, detected wrong-version control and restored version/data. Explain separately why this stateless-compatible change does not prove rollback of a destructive schema migration. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-delivery-automation-05"
+"preview" = "Explain why code rollback cannot undo an incompatible database change."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python and your retained artifacts/revisions; loopback service and dedicated SQLite data. No provider is required."
+"setup" = "Download /training/io-delivery-automation.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-delivery-automation directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/05.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://docs.github.com/en/actions"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-delivery-automation-05-milestone"
+"title" = "Apply independently: Promote and roll back"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Staging, immutable promotion, release gates, concurrent releases and data compatibility."
+"steps" = ["Choose the native environment in lessons/05.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 05 --variant transfer --out work/05-transfer\npython3 lab.py check work/05-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/05-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Explain why code rollback cannot undo an incompatible database change.", "Collect the actual controls: Show the exact artifact identity, detected wrong-version control and restored version/data. Explain separately why this stateless-compatible change does not prove rollback of a destructive schema migration.", "Retain your commands, changed input, cause, recovery and help used in notes/05.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Show the exact artifact identity, detected wrong-version control and restored version/data. Explain separately why this stateless-compatible change does not prove rollback of a destructive schema migration. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-delivery-automation.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-delivery-automation directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/05.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://docs.github.com/en/actions"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-delivery-automation-05"
+"title" = "Return later: Promote and roll back"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-delivery-automation-05-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Staging, immutable promotion, release gates, concurrent releases and data compatibility.", "Predict a changed-condition result: Explain why code rollback cannot undo an incompatible database change.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-delivery-automation-06"
+"preview" = "Provision owned local VM resources with a reviewed provider and inspect its state."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: An owned supported libvirt host, reviewed OpenTofu/libvirt provider, verified base image and host administrator access; plan/state remain private."
+"setup" = "Download /training/io-delivery-automation.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-delivery-automation directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/06.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://opentofu.org/docs/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-delivery-automation-06-practice"
+"title" = "Operate: Declare infrastructure"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "Infrastructure as code records desired resources through a provider API. Plan is a proposal; apply changes the environment; state records mappings and can contain secrets. An owned libvirt sandbox offers useful practice without a cloud bill. Review provider identity/version and every proposed replacement before apply."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 06 --variant guided --out work/06-guided\npython3 lab.py check work/06-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/06-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/06.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# OWNED Linux libvirt HOST only; this provider can administer that host.\ncp -r inputs/06 work/tofu\n# Write work/tofu/terraform.tfvars with base_image = \"/absolute/path/to/your/verified/base.img\".\ntofu -chdir=work/tofu init\ntofu -chdir=work/tofu validate\ntofu -chdir=work/tofu plan -out=lab.plan\n# Inspect the plan, then explicitly choose whether to apply ONLY those named resources:\ntofu -chdir=work/tofu apply lab.plan\ntofu -chdir=work/tofu show\n# When finished: tofu -chdir=work/tofu plan -destroy; inspect, then tofu -chdir=work/tofu destroy\n# Never upload terraform state or a secret-bearing plan to public notes.\n```", "Observe these controls and retain actual output: The plan, created guest inventory and confirmed destruction agree. The supplied provider version is a concrete lab pin; revalidate it on the selected host before treating that route as supported.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 06 --out work/06-reference. Record that help was used."]
+"done_when" = "The plan, created guest inventory and confirmed destruction agree. The supplied provider version is a concrete lab pin; revalidate it on the selected host before treating that route as supported. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-delivery-automation-06"
+"preview" = "Reject or correct a plan that replaces the wrong resource."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: An owned supported libvirt host, reviewed OpenTofu/libvirt provider, verified base image and host administrator access; plan/state remain private."
+"setup" = "Download /training/io-delivery-automation.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-delivery-automation directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/06.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://opentofu.org/docs/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-delivery-automation-06-milestone"
+"title" = "Apply independently: Declare infrastructure"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. OpenTofu/provider boundary, plan/apply, state, drift and destruction."
+"steps" = ["Choose the native environment in lessons/06.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 06 --variant transfer --out work/06-transfer\npython3 lab.py check work/06-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/06-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Reject or correct a plan that replaces the wrong resource.", "Collect the actual controls: The plan, created guest inventory and confirmed destruction agree. The supplied provider version is a concrete lab pin; revalidate it on the selected host before treating that route as supported.", "Retain your commands, changed input, cause, recovery and help used in notes/06.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "The plan, created guest inventory and confirmed destruction agree. The supplied provider version is a concrete lab pin; revalidate it on the selected host before treating that route as supported. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-delivery-automation.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-delivery-automation directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/06.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://opentofu.org/docs/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-delivery-automation-06"
+"title" = "Return later: Declare infrastructure"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-delivery-automation-06-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: OpenTofu/provider boundary, plan/apply, state, drift and destruction.", "Predict a changed-condition result: Reject or correct a plan that replaces the wrong resource.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-delivery-automation-07"
+"preview" = "Configure two owned guests and run the same playbook again."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Ansible on the controller, two owned SSH Linux guests with guest sudo and a third non-target control; reviewed inventory and key paths."
+"setup" = "Download /training/io-delivery-automation.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-delivery-automation directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/07.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://docs.ansible.com/ansible/latest/getting_started/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-delivery-automation-07-practice"
+"title" = "Operate: Configure a fleet"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "Configuration automation acts with the permissions of its connection identity and privilege escalation. Inventory scope is therefore a boundary. Idempotence means a repeated run converges to the declared state without unintended repeated change, but it does not alone establish correct application behaviour."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 07 --variant guided --out work/07-guided\npython3 lab.py check work/07-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/07-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/07.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# Edit a COPY of the supplied inventory with actual OWNED guest addresses and key paths.\ncp inputs/07/inventory.ini work/inventory.ini\nansible-inventory -i work/inventory.ini --list\nansible-playbook -i work/inventory.ini inputs/07/site.yml --syntax-check\nansible-playbook -i work/inventory.ini inputs/07/site.yml --check --diff\n# After reviewing the exact two owned targets, apply and run again:\nansible-playbook -i work/inventory.ini inputs/07/site.yml\nansible-playbook -i work/inventory.ini inputs/07/site.yml\n# Probe each guest's service from its permitted client; preserve a non-target control guest.\n```", "Observe these controls and retain actual output: The second run converges and the actual guest service works; a third non-inventory guest remains unchanged. Match copy/key paths to your extracted folder and owned machines.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 07 --out work/07-reference. Record that help was used."]
+"done_when" = "The second run converges and the actual guest service works; a third non-inventory guest remains unchanged. Match copy/key paths to your extracted folder and owned machines. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-delivery-automation-07"
+"preview" = "Repair drift without altering a guest outside the inventory."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Ansible on the controller, two owned SSH Linux guests with guest sudo and a third non-target control; reviewed inventory and key paths."
+"setup" = "Download /training/io-delivery-automation.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-delivery-automation directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/07.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://docs.ansible.com/ansible/latest/getting_started/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-delivery-automation-07-milestone"
+"title" = "Apply independently: Configure a fleet"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Ansible inventory, idempotence, privilege scope, secret handling and change limits."
+"steps" = ["Choose the native environment in lessons/07.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 07 --variant transfer --out work/07-transfer\npython3 lab.py check work/07-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/07-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Repair drift without altering a guest outside the inventory.", "Collect the actual controls: The second run converges and the actual guest service works; a third non-inventory guest remains unchanged. Match copy/key paths to your extracted folder and owned machines.", "Retain your commands, changed input, cause, recovery and help used in notes/07.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "The second run converges and the actual guest service works; a third non-inventory guest remains unchanged. Match copy/key paths to your extracted folder and owned machines. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-delivery-automation.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-delivery-automation directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/07.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://docs.ansible.com/ansible/latest/getting_started/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-delivery-automation-07"
+"title" = "Return later: Configure a fleet"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-delivery-automation-07-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Ansible inventory, idempotence, privilege scope, secret handling and change limits.", "Predict a changed-condition result: Repair drift without altering a guest outside the inventory.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-delivery-automation-08"
+"preview" = "Rebuild a clean target and deploy the same release using the recorded procedure."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: A clean owned guest plus the earlier delivery tools, retained artifact/configuration and an application-consistent backup."
+"setup" = "Download /training/io-delivery-automation.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-delivery-automation directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/08.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://docs.ansible.com/ansible/latest/getting_started/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-delivery-automation-08-practice"
+"title" = "Operate: Recreate and recover the delivery path"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "A reproducible delivery path joins infrastructure, configuration, artifact identity and recovery. Someone else should be able to create a clean target from the retained inputs without your shell history. Rehearse an expired synthetic credential or bad release and identify which layer failed before changing everything."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 08 --variant guided --out work/08-guided\npython3 lab.py check work/08-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/08-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/08.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# In a NEW owned guest/workspace, repeat the reviewed image, service and edge procedures.\npython3 shared/selfcheck.py\npython3 lab.py fingerprint shared/relay.py\n# Record actual target/version checks using check_service.py and your intended access path.\n# Restore a backup into a NEW data file; never overwrite the only live copy.\npython3 shared/backup.py inspect --source work/release-data.sqlite\n# Hand over the runbook with image/source identity, machine roles, commands, data paths,\n# expected failure control and selective teardown inventory.\n```", "Observe these controls and retain actual output: A clean target reproduces the service and recoverable data, the intended bad release/credential fails, and cleanup accounts for all owned resources.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 08 --out work/08-reference. Record that help was used."]
+"done_when" = "A clean target reproduces the service and recoverable data, the intended bad release/credential fails, and cleanup accounts for all owned resources. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-delivery-automation-08"
+"preview" = "Recover a failed deployment or expired synthetic credential."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: A clean owned guest plus the earlier delivery tools, retained artifact/configuration and an application-consistent backup."
+"setup" = "Download /training/io-delivery-automation.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-delivery-automation directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/08.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://docs.ansible.com/ansible/latest/getting_started/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-delivery-automation-08-milestone"
+"title" = "Apply independently: Recreate and recover the delivery path"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Automation, release evidence, infrastructure ownership and runbooks."
+"steps" = ["Choose the native environment in lessons/08.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 08 --variant transfer --out work/08-transfer\npython3 lab.py check work/08-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/08-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Recover a failed deployment or expired synthetic credential.", "Collect the actual controls: A clean target reproduces the service and recoverable data, the intended bad release/credential fails, and cleanup accounts for all owned resources.", "Retain your commands, changed input, cause, recovery and help used in notes/08.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "A clean target reproduces the service and recoverable data, the intended bad release/credential fails, and cleanup accounts for all owned resources. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-delivery-automation.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-delivery-automation directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/08.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://docs.ansible.com/ansible/latest/getting_started/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-delivery-automation-08"
+"title" = "Return later: Recreate and recover the delivery path"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-delivery-automation-08-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Automation, release evidence, infrastructure ownership and runbooks.", "Predict a changed-condition result: Recover a failed deployment or expired synthetic credential.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."

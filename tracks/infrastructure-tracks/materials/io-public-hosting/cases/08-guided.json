@@ -1,0 +1,82 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Maintain a deployment record and test a second owned network when available.",
+  "contract": [
+    {
+      "field": "origin_release",
+      "op": "eq",
+      "value": "v1",
+      "why": "origin release: satisfy the stated diagnose a public deployment contract"
+    },
+    {
+      "field": "edge_release",
+      "op": "eq",
+      "value": "v1",
+      "why": "edge release: satisfy the stated diagnose a public deployment contract"
+    },
+    {
+      "field": "bad_aaaa_removed",
+      "op": "eq",
+      "value": true,
+      "why": "bad aaaa removed: satisfy the stated diagnose a public deployment contract"
+    },
+    {
+      "field": "management_exposed",
+      "op": "eq",
+      "value": false,
+      "why": "management exposed: satisfy the stated diagnose a public deployment contract"
+    },
+    {
+      "field": "external_claim_has_external_probe",
+      "op": "eq",
+      "value": true,
+      "why": "external claim has external probe: satisfy the stated diagnose a public deployment contract"
+    }
+  ],
+  "starting": {
+    "origin_release": "v1",
+    "edge_release": "stale-v0",
+    "bad_aaaa_removed": true,
+    "management_exposed": false,
+    "external_claim_has_external_probe": true
+  },
+  "reference": {
+    "origin_release": "v1",
+    "edge_release": "v1",
+    "bad_aaaa_removed": true,
+    "management_exposed": false,
+    "external_claim_has_external_probe": true
+  },
+  "rules": [
+    {
+      "field": "origin_release",
+      "op": "eq",
+      "value": "v1",
+      "why": "origin release: satisfy the stated diagnose a public deployment contract"
+    },
+    {
+      "field": "edge_release",
+      "op": "eq",
+      "value": "v1",
+      "why": "edge release: satisfy the stated diagnose a public deployment contract"
+    },
+    {
+      "field": "bad_aaaa_removed",
+      "op": "eq",
+      "value": true,
+      "why": "bad aaaa removed: satisfy the stated diagnose a public deployment contract"
+    },
+    {
+      "field": "management_exposed",
+      "op": "eq",
+      "value": false,
+      "why": "management exposed: satisfy the stated diagnose a public deployment contract"
+    },
+    {
+      "field": "external_claim_has_external_probe",
+      "op": "eq",
+      "value": true,
+      "why": "external claim has external probe: satisfy the stated diagnose a public deployment contract"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+[Unit]
+Description=Ascend Relay practice service
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/ascend-relay
+ExecStart=/usr/bin/python3 /opt/ascend-relay/shared/relay.py --host 127.0.0.1 --port 8000 --data /opt/ascend-relay/data/relay.sqlite --release v1
+User=relaylab
+Group=relaylab
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

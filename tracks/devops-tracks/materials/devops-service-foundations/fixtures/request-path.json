@@ -1,0 +1,10 @@
+{
+  "fixture": "relay-request-path-v1",
+  "edge_status": 502,
+  "origin_status": 200,
+  "origin_release": "v1",
+  "expected_release": "v1",
+  "edge_upstream": "127.0.0.1:8001",
+  "origin_listener": "127.0.0.1:8000",
+  "scope": "Recorded comparison fixture; run the actual proxy and service to demonstrate an operational repair."
+}

@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Recover an incorrect first-boot cloud-init/key setup using trusted host-console observations and the stopped-guest backup/reseed procedure; do not assume a passwordless cloud image permits console login.",
+  "contract": [
+    {
+      "field": "image_verified",
+      "op": "eq",
+      "value": true,
+      "why": "image verified: satisfy the stated create a machine from a known image contract"
+    },
+    {
+      "field": "guest_name",
+      "op": "eq",
+      "value": "relay-a",
+      "why": "guest name: satisfy the stated create a machine from a known image contract"
+    },
+    {
+      "field": "ssh_password_login",
+      "op": "eq",
+      "value": false,
+      "why": "ssh password login: satisfy the stated create a machine from a known image contract"
+    },
+    {
+      "field": "unique_instance_id",
+      "op": "eq",
+      "value": "relay-a-01",
+      "why": "unique instance id: satisfy the stated create a machine from a known image contract"
+    }
+  ],
+  "starting": {
+    "image_verified": true,
+    "guest_name": "relay-a",
+    "ssh_password_login": true,
+    "unique_instance_id": "copied-template-id"
+  },
+  "reference": {
+    "image_verified": true,
+    "guest_name": "relay-a",
+    "ssh_password_login": false,
+    "unique_instance_id": "relay-a-01"
+  },
+  "rules": [
+    {
+      "field": "image_verified",
+      "op": "eq",
+      "value": true,
+      "why": "image verified: satisfy the stated create a machine from a known image contract"
+    },
+    {
+      "field": "guest_name",
+      "op": "eq",
+      "value": "relay-a",
+      "why": "guest name: satisfy the stated create a machine from a known image contract"
+    },
+    {
+      "field": "ssh_password_login",
+      "op": "eq",
+      "value": false,
+      "why": "ssh password login: satisfy the stated create a machine from a known image contract"
+    },
+    {
+      "field": "unique_instance_id",
+      "op": "eq",
+      "value": "relay-a-01",
+      "why": "unique instance id: satisfy the stated create a machine from a known image contract"
+    }
+  ]
+}

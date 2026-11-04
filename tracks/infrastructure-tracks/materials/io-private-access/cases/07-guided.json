@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Compare a public browser route with the documented client-assisted private access path.",
+  "contract": [
+    {
+      "field": "protocol",
+      "op": "eq",
+      "value": "ssh",
+      "why": "protocol: satisfy the stated reach private services through cloudflare contract"
+    },
+    {
+      "field": "client_cloudflared_required",
+      "op": "eq",
+      "value": true,
+      "why": "client cloudflared required: satisfy the stated reach private services through cloudflare contract"
+    },
+    {
+      "field": "identity_policy_tested",
+      "op": "eq",
+      "value": true,
+      "why": "identity policy tested: satisfy the stated reach private services through cloudflare contract"
+    },
+    {
+      "field": "ordinary_http_tunnel_is_public_smtp",
+      "op": "eq",
+      "value": false,
+      "why": "ordinary http tunnel is public smtp: satisfy the stated reach private services through cloudflare contract"
+    }
+  ],
+  "starting": {
+    "protocol": "ssh",
+    "client_cloudflared_required": false,
+    "identity_policy_tested": true,
+    "ordinary_http_tunnel_is_public_smtp": false
+  },
+  "reference": {
+    "protocol": "ssh",
+    "client_cloudflared_required": true,
+    "identity_policy_tested": true,
+    "ordinary_http_tunnel_is_public_smtp": false
+  },
+  "rules": [
+    {
+      "field": "protocol",
+      "op": "eq",
+      "value": "ssh",
+      "why": "protocol: satisfy the stated reach private services through cloudflare contract"
+    },
+    {
+      "field": "client_cloudflared_required",
+      "op": "eq",
+      "value": true,
+      "why": "client cloudflared required: satisfy the stated reach private services through cloudflare contract"
+    },
+    {
+      "field": "identity_policy_tested",
+      "op": "eq",
+      "value": true,
+      "why": "identity policy tested: satisfy the stated reach private services through cloudflare contract"
+    },
+    {
+      "field": "ordinary_http_tunnel_is_public_smtp",
+      "op": "eq",
+      "value": false,
+      "why": "ordinary http tunnel is public smtp: satisfy the stated reach private services through cloudflare contract"
+    }
+  ]
+}

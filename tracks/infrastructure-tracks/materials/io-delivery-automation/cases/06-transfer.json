@@ -1,0 +1,82 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Reject or correct a plan that replaces the wrong resource.",
+  "contract": [
+    {
+      "field": "provider_scope",
+      "op": "eq",
+      "value": "owned-libvirt-host",
+      "why": "provider scope: satisfy the stated declare infrastructure contract"
+    },
+    {
+      "field": "plan_reviewed",
+      "op": "eq",
+      "value": true,
+      "why": "plan reviewed: satisfy the stated declare infrastructure contract"
+    },
+    {
+      "field": "unrelated_replacement",
+      "op": "eq",
+      "value": false,
+      "why": "unrelated replacement: satisfy the stated declare infrastructure contract"
+    },
+    {
+      "field": "state_public",
+      "op": "eq",
+      "value": false,
+      "why": "state public: satisfy the stated declare infrastructure contract"
+    },
+    {
+      "field": "cleanup_confirmed",
+      "op": "eq",
+      "value": true,
+      "why": "cleanup confirmed: satisfy the stated declare infrastructure contract"
+    }
+  ],
+  "starting": {
+    "provider_scope": "owned-libvirt-host",
+    "plan_reviewed": true,
+    "unrelated_replacement": true,
+    "state_public": true,
+    "cleanup_confirmed": true
+  },
+  "reference": {
+    "provider_scope": "owned-libvirt-host",
+    "plan_reviewed": true,
+    "unrelated_replacement": false,
+    "state_public": false,
+    "cleanup_confirmed": true
+  },
+  "rules": [
+    {
+      "field": "provider_scope",
+      "op": "eq",
+      "value": "owned-libvirt-host",
+      "why": "provider scope: satisfy the stated declare infrastructure contract"
+    },
+    {
+      "field": "plan_reviewed",
+      "op": "eq",
+      "value": true,
+      "why": "plan reviewed: satisfy the stated declare infrastructure contract"
+    },
+    {
+      "field": "unrelated_replacement",
+      "op": "eq",
+      "value": false,
+      "why": "unrelated replacement: satisfy the stated declare infrastructure contract"
+    },
+    {
+      "field": "state_public",
+      "op": "eq",
+      "value": false,
+      "why": "state public: satisfy the stated declare infrastructure contract"
+    },
+    {
+      "field": "cleanup_confirmed",
+      "op": "eq",
+      "value": true,
+      "why": "cleanup confirmed: satisfy the stated declare infrastructure contract"
+    }
+  ]
+}

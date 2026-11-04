@@ -1,0 +1,582 @@
+# Generated from docs/curriculum/devops-paths.json; unreviewed draft teaching content.
+[pack]
+"id" = "devops-delivery-automation"
+"title" = "DevOps 2: Delivery & Infrastructure Automation"
+"kind" = "proficiency"
+"version" = 1
+"source" = "ai-draft"
+"reviewed" = false
+
+[[level]]
+"id" = "change-test"
+"title" = "Make a change fail usefully"
+"lane" = "main"
+
+[[level]]
+"id" = "real-ci"
+"title" = "Run checks in a real CI workflow"
+"lane" = "main"
+
+[[level]]
+"id" = "image-identity"
+"title" = "Build and identify a runtime image"
+"lane" = "main"
+
+[[level]]
+"id" = "promotion-rollback"
+"title" = "Promote one artifact and roll it back"
+"lane" = "main"
+
+[[level]]
+"id" = "iac-plan-apply"
+"title" = "Provision owned infrastructure with OpenTofu"
+"lane" = "main"
+
+[[level]]
+"id" = "ansible-configuration"
+"title" = "Configure an owned guest idempotently"
+"lane" = "main"
+
+[[level]]
+"id" = "pipeline-trust"
+"title" = "Separate build identity from deployment authority"
+"lane" = "main"
+
+[[level]]
+"id" = "delivery-capstone"
+"title" = "Recreate the release path"
+"lane" = "main"
+
+[[level]]
+"id" = "entry"
+"title" = "Choose your entry point"
+"lane" = "side"
+
+[[level]]
+"id" = "recall"
+"title" = "Return later"
+"lane" = "side"
+
+[[node]]
+"level" = "entry"
+"resource" = "https://git-scm.com/book/en/v2"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Match the track's practical outcomes to what you can already demonstrate."
+"requirements" = "Python 3.11+ and a text editor on your own PC; no account required."
+"setup" = "Download /training/devops-delivery-automation.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-delivery-automation folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/entry.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "entry-demonstration"
+"title" = "Choose an entry point through a short demonstration"
+"size" = "S"
+"minutes" = 20
+"needs" = []
+"brief" = "Enter after you can run, inspect and recover a small service; prior equivalent practice is valid."
+"steps" = ["Run the bundled checks to confirm your Python environment and the local reference tools work. These checks inspect the teaching code, not your knowledge.\n```sh\npython3 shared/selfcheck.py\n```", "Read the eight independent applications in README.md and the linked lessons. Choose the first one you cannot yet demonstrate from a fresh target without its worked instructions.", "If you already have the background, open the independent application for that level. Existing level early-unlock is available; it records your choice, not an automatic pass. Otherwise start the guided practice in level 1.", "Write the chosen starting level, the observation supporting that choice and the next concrete operation in notes/entry.md. Use the guided lesson whenever a gap appears."]
+"done_when" = "Your local tools run, you name a starting level based on demonstrated prior work, and your notes identify one concrete next operation. This self-assessment neither grades nor completes other levels."
+
+[[node]]
+"level" = "change-test"
+"resource" = "https://git-scm.com/book/en/v2"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Make a behavioural regression fail a meaningful test, then repair the source."
+"requirements" = "Python 3.11+ and Git in an extracted learning repository."
+"setup" = "Download /training/devops-delivery-automation.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-delivery-automation folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/change-test.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "change-test-practice"
+"title" = "Practice: Make a change fail usefully"
+"size" = "M"
+"minutes" = 60
+"needs" = []
+"brief" = "A test is useful when an incorrect behaviour fails for the intended reason. Source edits and generated release files must be kept separate. Do not make a failing test green by removing its assertion."
+"steps" = ["Read gitignore.example and initialize an isolated learning repository in the extracted folder if you do not already have one. Record the original shared files before the experiment. Run the reference checks: they create temporary loopback services and verify actual response, data, release and recovery behaviour.", "```sh\npython3 shared/selfcheck.py\n```", "In a working source copy, change the unknown-endpoint response from 404 to 200. Predict which control will fail, rerun the selfchecks, and retain the actual failure.", "Restore the correct behaviour through Git or your saved source copy. Add a new control not already present, such as rejecting a missing message field, and make an intentional regression prove that control fails for the intended reason.", "```sh\ngit diff -- shared/relay.py shared/selfcheck.py\npython3 shared/selfcheck.py\n```", "Compare the observed result with your prediction and retain the commands/output in notes/change-test.md. An intended wrong behaviour is detected; the legitimate control stays covered and the source change is traceable."]
+"hints" = ["Use the actual listener, release identity and state path printed by your process; a healthy service at another address may be the wrong deployment.", "If a required environment is unavailable, keep preparation as partial progress and return for the live operation."]
+"done_when" = "An intended wrong behaviour is detected; the legitimate control stays covered and the source change is traceable. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "change-test"
+"resource" = "https://git-scm.com/book/en/v2"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Make a behavioural regression fail a meaningful test, then repair the source."
+"requirements" = "Python 3.11+ and Git in an extracted learning repository."
+"setup" = "Download /training/devops-delivery-automation.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-delivery-automation folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/change-test.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "change-test-milestone"
+"title" = "Apply independently: Make a change fail usefully"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Apply the mechanism to a changed condition and recover the intended behaviour. A test is useful when an incorrect behaviour fails for the intended reason. Source edits and generated release files must be kept separate. Do not make a failing test green by removing its assertion."
+"steps" = ["Use the named environment and files in lessons/change-test.md. Predict the changed result before opening the guided solution. Prior experience can replace guided practice; the demonstration below remains required.", "Introduce a different behavioural regression: accept a reused idempotency key with different content or permit a write on the read-only route.", "Show a test that fails before the repair and passes afterward while the ordinary write still works.", "Record the commit/revision and the failing/passing control, not only an overall success message.", "Retain the failing case, successful control, recovery, explanation and any help used in notes/change-test.md. An intended wrong behaviour is detected; the legitimate control stays covered and the source change is traceable."]
+"hints" = ["Compare one changed condition against the earlier successful control. Recover that control before trying another change."]
+"done_when" = "An intended wrong behaviour is detected; the legitimate control stays covered and the source change is traceable. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "recall"
+"resource" = "https://git-scm.com/book/en/v2"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Reconstruct a previous operational decision and check what you remember."
+"requirements" = "Your retained local notes; the original tools only if you choose a fresh observation."
+"setup" = "Download /training/devops-delivery-automation.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-delivery-automation folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/change-test.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-change-test"
+"title" = "Return later: Make a change fail usefully"
+"size" = "S"
+"minutes" = 15
+"needs" = ["change-test-milestone"]
+"brief" = "After a suggested 2–7 days, reconstruct the mechanism without your walkthrough. Spacing is optional and is not automatically verified."
+"steps" = ["From memory, explain the mechanism: A test is useful when an incorrect behaviour fails for the intended reason. Source edits and generated release files must be kept separate. Do not make a failing test green by removing its assertion.", "Predict one changed-condition result from this lesson: Introduce a different behavioural regression: accept a reused idempotency key with different content or permit a write on the read-only route.", "Compare your reasoning with a fresh observation or your retained evidence. Record the specific correction and the next experiment you would use to test it."]
+"done_when" = "You reconstruct a concrete failure/recovery path, compare it with retained or fresh evidence, and correct the explanation in your notes. This manual recall task does not certify an unperformed live operation."
+
+[[node]]
+"level" = "real-ci"
+"resource" = "https://docs.github.com/en/actions"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Connect a real CI run to its source revision and the artifact it produced."
+"requirements" = "Python/Git locally; a learner-owned GitHub repository and its current Actions allowance are required for real CI completion. Local rehearsal is available as partial preparation."
+"setup" = "Download /training/devops-delivery-automation.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-delivery-automation folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/real-ci.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "real-ci-practice"
+"title" = "Practice: Run checks in a real CI workflow"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "A CI runner executes code with a specific identity and permissions. A passing local command is preparation; a CI run records the revision and environment that actually executed it."
+"steps" = ["Start with the local rehearsal and inspect configs/workflow.yml. It grants only contents:read, receives no deployment secrets and uploads a source artifact after tests.", "```sh\npython3 shared/selfcheck.py\nmkdir -p .github/workflows\ncp configs/workflow.yml .github/workflows/relay.yml\n```", "In your own repository, commit the reviewed workflow/shared files and push using your chosen credentials. Check repository visibility and Actions allowance first. Record the run URL, revision and artifact identity from the actual workflow.", "Send a deliberately failing source change to that same learning repository. Confirm the test job fails and the upload step does not produce a promotable artifact for that failed job.", "If no repository/account is available, run the same commands locally and record this as a local rehearsal; leave the external CI observation outstanding.", "Compare the observed result with your prediction and retain the commands/output in notes/real-ci.md. The real-variant record links passing/failing CI runs to commits and artifacts; local-only work is labelled as rehearsal rather than a hosted CI receipt."]
+"hints" = ["Use the actual listener, release identity and state path printed by your process; a healthy service at another address may be the wrong deployment.", "If a required environment is unavailable, keep preparation as partial progress and return for the live operation."]
+"done_when" = "The real-variant record links passing/failing CI runs to commits and artifacts; local-only work is labelled as rehearsal rather than a hosted CI receipt. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "real-ci"
+"resource" = "https://docs.github.com/en/actions"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Connect a real CI run to its source revision and the artifact it produced."
+"requirements" = "Python/Git locally; a learner-owned GitHub repository and its current Actions allowance are required for real CI completion. Local rehearsal is available as partial preparation."
+"setup" = "Download /training/devops-delivery-automation.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-delivery-automation folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/real-ci.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "real-ci-milestone"
+"title" = "Apply independently: Run checks in a real CI workflow"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Apply the mechanism to a changed condition and recover the intended behaviour. A CI runner executes code with a specific identity and permissions. A passing local command is preparation; a CI run records the revision and environment that actually executed it."
+"steps" = ["Use the named environment and files in lessons/real-ci.md. Predict the changed result before opening the guided solution. Prior experience can replace guided practice; the demonstration below remains required.", "Make a corrected revision pass in CI and download its named artifact into a new directory.", "Verify its manifest using shared/release.py and compare the manifest revision with the actual run's commit.", "Reject a passing artifact from another revision when the release task expects the newly tested change.", "Retain the failing case, successful control, recovery, explanation and any help used in notes/real-ci.md. The real-variant record links passing/failing CI runs to commits and artifacts; local-only work is labelled as rehearsal rather than a hosted CI receipt."]
+"hints" = ["Compare one changed condition against the earlier successful control. Recover that control before trying another change."]
+"done_when" = "The real-variant record links passing/failing CI runs to commits and artifacts; local-only work is labelled as rehearsal rather than a hosted CI receipt. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "recall"
+"resource" = "https://docs.github.com/en/actions"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Reconstruct a previous operational decision and check what you remember."
+"requirements" = "Your retained local notes; the original tools only if you choose a fresh observation."
+"setup" = "Download /training/devops-delivery-automation.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-delivery-automation folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/real-ci.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-real-ci"
+"title" = "Return later: Run checks in a real CI workflow"
+"size" = "S"
+"minutes" = 15
+"needs" = ["real-ci-milestone"]
+"brief" = "After a suggested 2–7 days, reconstruct the mechanism without your walkthrough. Spacing is optional and is not automatically verified."
+"steps" = ["From memory, explain the mechanism: A CI runner executes code with a specific identity and permissions. A passing local command is preparation; a CI run records the revision and environment that actually executed it.", "Predict one changed-condition result from this lesson: Make a corrected revision pass in CI and download its named artifact into a new directory.", "Compare your reasoning with a fresh observation or your retained evidence. Record the specific correction and the next experiment you would use to test it."]
+"done_when" = "You reconstruct a concrete failure/recovery path, compare it with retained or fresh evidence, and correct the explanation in your notes. This manual recall task does not certify an unperformed live operation."
+
+[[node]]
+"level" = "image-identity"
+"resource" = "https://docs.docker.com/get-started/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Follow source, base and runtime image identities through an actual container build."
+"requirements" = "Owned Docker environment; optional learner-owned registry namespace for publication."
+"setup" = "Download /training/devops-delivery-automation.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-delivery-automation folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/image-identity.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "image-identity-practice"
+"title" = "Practice: Build and identify a runtime image"
+"size" = "M"
+"minutes" = 60
+"needs" = []
+"brief" = "OCI tags name references; digests identify image content. Source artifact identity, base image identity and built image identity each answer a different question. Registry access is a separate capability."
+"steps" = ["Build and verify a source artifact, then copy its verified entrypoint into a fresh minimal build context. This ties the image bytes to the artifact, rather than building an unrelated working-tree copy. Record the resolved base reference and image ID.", "```sh\npython3 shared/release.py build --source shared/relay.py --out work/ci-artifact --release image-v1 --revision local-reviewed\npython3 shared/release.py verify --artifact work/ci-artifact\nmkdir -p work/image-context/shared\ncp work/ci-artifact/relay.py work/image-context/shared/relay.py\ncp Dockerfile work/image-context/Dockerfile\ncmp work/ci-artifact/relay.py work/image-context/shared/relay.py\ndocker pull python:3.12-slim\ndocker image inspect python:3.12-slim --format '{{json .RepoDigests}}'\ndocker build -t ascend-relay:v1 work/image-context\ndocker image inspect ascend-relay:v1 --format '{{.Id}}'\n```", "For a repeatable rebuild, replace the mutable PYTHON_IMAGE default with the actual repo@sha256 digest you just inspected using docker build --build-arg PYTHON_IMAGE=YOUR_RECORDED_BASE_REFERENCE. Keep the Dockerfile and that reference with the image record.", "Run the image under a disposable name and loopback port. Compare runtime /version with the image metadata and configuration.", "```sh\ndocker run --rm --name ascend-relay-image -p 127.0.0.1:18000:8000 ascend-relay:v1\n```", "```sh\npython3 shared/check_service.py --url http://127.0.0.1:18000 --expect-release container-v1\n```", "For the registry variant, authenticate only to your owned namespace, push the chosen image, record its repository digest, then pull/run that exact digest in another disposable environment. Keep registry secrets out of the notebook.", "Compare the observed result with your prediction and retain the commands/output in notes/image-identity.md. The learner distinguishes source, base, image and runtime identity; a moved-tag negative case cannot silently replace the intended release."]
+"hints" = ["Use the actual listener, release identity and state path printed by your process; a healthy service at another address may be the wrong deployment.", "If a required environment is unavailable, keep preparation as partial progress and return for the live operation."]
+"done_when" = "The learner distinguishes source, base, image and runtime identity; a moved-tag negative case cannot silently replace the intended release. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "image-identity"
+"resource" = "https://docs.docker.com/get-started/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Follow source, base and runtime image identities through an actual container build."
+"requirements" = "Owned Docker environment; optional learner-owned registry namespace for publication."
+"setup" = "Download /training/devops-delivery-automation.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-delivery-automation folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/image-identity.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "image-identity-milestone"
+"title" = "Apply independently: Build and identify a runtime image"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Apply the mechanism to a changed condition and recover the intended behaviour. OCI tags name references; digests identify image content. Source artifact identity, base image identity and built image identity each answer a different question. Registry access is a separate capability."
+"steps" = ["Use the named environment and files in lessons/image-identity.md. Predict the changed result before opening the guided solution. Prior experience can replace guided practice; the demonstration below remains required.", "Build a second image under a different tag, move a familiar tag to it, and show that the familiar name is not content identity.", "Use the recorded digest/ID to select the intended image and verify the correct source/runtime combination.", "Show that publication/pull evidence exists only when a real registry operation occurred.", "Retain the failing case, successful control, recovery, explanation and any help used in notes/image-identity.md. The learner distinguishes source, base, image and runtime identity; a moved-tag negative case cannot silently replace the intended release."]
+"hints" = ["Compare one changed condition against the earlier successful control. Recover that control before trying another change."]
+"done_when" = "The learner distinguishes source, base, image and runtime identity; a moved-tag negative case cannot silently replace the intended release. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "recall"
+"resource" = "https://docs.docker.com/get-started/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Reconstruct a previous operational decision and check what you remember."
+"requirements" = "Your retained local notes; the original tools only if you choose a fresh observation."
+"setup" = "Download /training/devops-delivery-automation.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-delivery-automation folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/image-identity.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-image-identity"
+"title" = "Return later: Build and identify a runtime image"
+"size" = "S"
+"minutes" = 15
+"needs" = ["image-identity-milestone"]
+"brief" = "After a suggested 2–7 days, reconstruct the mechanism without your walkthrough. Spacing is optional and is not automatically verified."
+"steps" = ["From memory, explain the mechanism: OCI tags name references; digests identify image content. Source artifact identity, base image identity and built image identity each answer a different question. Registry access is a separate capability.", "Predict one changed-condition result from this lesson: Build a second image under a different tag, move a familiar tag to it, and show that the familiar name is not content identity.", "Compare your reasoning with a fresh observation or your retained evidence. Record the specific correction and the next experiment you would use to test it."]
+"done_when" = "You reconstruct a concrete failure/recovery path, compare it with retained or fresh evidence, and correct the explanation in your notes. This manual recall task does not certify an unperformed live operation."
+
+[[node]]
+"level" = "promotion-rollback"
+"resource" = "https://docs.github.com/en/actions"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Activate a tested release, detect the wrong version and restore the earlier artifact."
+"requirements" = "Python 3.11+ and two terminals; optional owned staging guest."
+"setup" = "Download /training/devops-delivery-automation.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-delivery-automation folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/promotion-rollback.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "promotion-rollback-practice"
+"title" = "Practice: Promote one artifact and roll it back"
+"size" = "M"
+"minutes" = 60
+"needs" = []
+"brief" = "Delivery selects a tested artifact; deployment makes it active. Changing the pointer does not change already running code. Stateless rollback does not undo an incompatible data migration."
+"steps" = ["Build v1 and v2 artifacts from known source revisions. Select v1 and start the selected service in Terminal A.", "```sh\npython3 shared/release.py build --source shared/relay.py --out work/releases/v1 --release v1 --revision reviewed-a\npython3 shared/release.py build --source shared/relay.py --out work/releases/v2 --release v2 --revision reviewed-b\npython3 shared/release.py select --artifact work/releases/v1 --state work/current.json\npython3 shared/release.py serve --state work/current.json -- --data work/state.sqlite --port 8000\n```", "Check v1, then change the selected pointer from Terminal B. Observe that the running process still reports v1 until deliberately restarted.", "```sh\npython3 shared/release.py select --artifact work/releases/v2 --state work/current.json\npython3 shared/check_service.py --expect-release v1\n```", "Restart the selected service and require v2. Treat an unexpected response as a failed release; restore the v1 selection and restart to recover.", "```sh\npython3 shared/release.py select --artifact work/releases/v1 --state work/current.json\n```", "Inspect fixtures/pipeline.json. Explain why its selected failed commit is not eligible for release, then compare that reasoning with your real test/artifact records.", "Compare the observed result with your prediction and retain the commands/output in notes/promotion-rollback.md. Only a verified artifact is selected; process activation is observed independently; recovery returns the correct version and preserves the required data."]
+"hints" = ["Use the actual listener, release identity and state path printed by your process; a healthy service at another address may be the wrong deployment.", "If a required environment is unavailable, keep preparation as partial progress and return for the live operation."]
+"done_when" = "Only a verified artifact is selected; process activation is observed independently; recovery returns the correct version and preserves the required data. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "promotion-rollback"
+"resource" = "https://docs.github.com/en/actions"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Activate a tested release, detect the wrong version and restore the earlier artifact."
+"requirements" = "Python 3.11+ and two terminals; optional owned staging guest."
+"setup" = "Download /training/devops-delivery-automation.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-delivery-automation folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/promotion-rollback.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "promotion-rollback-milestone"
+"title" = "Apply independently: Promote one artifact and roll it back"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Apply the mechanism to a changed condition and recover the intended behaviour. Delivery selects a tested artifact; deployment makes it active. Changing the pointer does not change already running code. Stateless rollback does not undo an incompatible data migration."
+"steps" = ["Use the named environment and files in lessons/promotion-rollback.md. Predict the changed result before opening the guided solution. Prior experience can replace guided practice; the demonstration below remains required.", "Modify a copy of a built artifact after its manifest was written; selection must reject it without changing the current pointer.", "Create a synthetic update before a restart/promotion and verify its continued presence afterward.", "Explain how an incompatible database migration would change this rollback procedure; do not claim the code pointer reverses data changes.", "Retain the failing case, successful control, recovery, explanation and any help used in notes/promotion-rollback.md. Only a verified artifact is selected; process activation is observed independently; recovery returns the correct version and preserves the required data."]
+"hints" = ["Compare one changed condition against the earlier successful control. Recover that control before trying another change."]
+"done_when" = "Only a verified artifact is selected; process activation is observed independently; recovery returns the correct version and preserves the required data. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "recall"
+"resource" = "https://docs.github.com/en/actions"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Reconstruct a previous operational decision and check what you remember."
+"requirements" = "Your retained local notes; the original tools only if you choose a fresh observation."
+"setup" = "Download /training/devops-delivery-automation.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-delivery-automation folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/promotion-rollback.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-promotion-rollback"
+"title" = "Return later: Promote one artifact and roll it back"
+"size" = "S"
+"minutes" = 15
+"needs" = ["promotion-rollback-milestone"]
+"brief" = "After a suggested 2–7 days, reconstruct the mechanism without your walkthrough. Spacing is optional and is not automatically verified."
+"steps" = ["From memory, explain the mechanism: Delivery selects a tested artifact; deployment makes it active. Changing the pointer does not change already running code. Stateless rollback does not undo an incompatible data migration.", "Predict one changed-condition result from this lesson: Modify a copy of a built artifact after its manifest was written; selection must reject it without changing the current pointer.", "Compare your reasoning with a fresh observation or your retained evidence. Record the specific correction and the next experiment you would use to test it."]
+"done_when" = "You reconstruct a concrete failure/recovery path, compare it with retained or fresh evidence, and correct the explanation in your notes. This manual recall task does not certify an unperformed live operation."
+
+[[node]]
+"level" = "iac-plan-apply"
+"resource" = "https://opentofu.org/docs/intro/core-workflow/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Create a small owned deployment from a reviewed infrastructure plan and reconcile drift."
+"requirements" = "Owned local Docker daemon, OpenTofu 1.6+ and network access for the reviewed Docker provider. Do not point this at Ascend's daemon."
+"setup" = "Download /training/devops-delivery-automation.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-delivery-automation folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/iac-plan-apply.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "iac-plan-apply-practice"
+"title" = "Practice: Provision owned infrastructure with OpenTofu"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "Desired configuration, a plan, applied resources and state are distinct. A plan can replace or destroy resources even when it appears to be a small edit. Provider plugins act with the learner's permissions."
+"steps" = ["Build the local Relay image and record its exact image ID. Inspect configs/tofu/main.tf: it creates a named lab network, volume and container with a loopback publication.", "```sh\ndocker build -t ascend-relay:v1 .\ndocker image inspect ascend-relay:v1 --format '{{.Id}}'\ncd configs/tofu\ntofu init\n```", "Replace the example image ID below with your observed sha256 ID. Inspect the plan before applying it; retain .terraform.lock.hcl with the reviewed source, while state stays private.", "```sh\ntofu plan -var='relay_image_id=sha256:REPLACE_WITH_LOCAL_IMAGE_ID' -out=reviewed.plan\ntofu show reviewed.plan\ntofu apply reviewed.plan\n```", "From the track root, run the following version/write check. Change the release variable in a new reviewed plan and inspect whether replacement is required before applying. Keep a backup before any operation that could remove the owned data volume.", "```sh\ncd ../..\npython3 shared/check_service.py --url http://127.0.0.1:18000 --expect-release tofu-v1 --write\n```", "Inspect the actual named container/network/volume and compare with tofu state list. A saved plan alone is not evidence of provisioned infrastructure.", "Compare the observed result with your prediction and retain the commands/output in notes/iac-plan-apply.md. Plan, applied inventory and observed service agree; drift is detected; restoration or teardown follows an explicit data/ownership decision."]
+"hints" = ["Use the actual listener, release identity and state path printed by your process; a healthy service at another address may be the wrong deployment.", "If a required environment is unavailable, keep preparation as partial progress and return for the live operation."]
+"done_when" = "Plan, applied inventory and observed service agree; drift is detected; restoration or teardown follows an explicit data/ownership decision. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "iac-plan-apply"
+"resource" = "https://opentofu.org/docs/intro/core-workflow/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Create a small owned deployment from a reviewed infrastructure plan and reconcile drift."
+"requirements" = "Owned local Docker daemon, OpenTofu 1.6+ and network access for the reviewed Docker provider. Do not point this at Ascend's daemon."
+"setup" = "Download /training/devops-delivery-automation.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-delivery-automation folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/iac-plan-apply.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "iac-plan-apply-milestone"
+"title" = "Apply independently: Provision owned infrastructure with OpenTofu"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Apply the mechanism to a changed condition and recover the intended behaviour. Desired configuration, a plan, applied resources and state are distinct. A plan can replace or destroy resources even when it appears to be a small edit. Provider plugins act with the learner's permissions."
+"steps" = ["Use the named environment and files in lessons/iac-plan-apply.md. Predict the changed result before opening the guided solution. Prior experience can replace guided practice; the demonstration below remains required.", "Change or remove the owned container outside OpenTofu, then inspect refresh/plan output before reconciling.", "Reject a plan that would destroy data you have not backed up. Retain a valid backup before the final reviewed tofu destroy.", "After destruction, inspect actual owned resources rather than assuming a zero exit code accounted for every leftover.", "Retain the failing case, successful control, recovery, explanation and any help used in notes/iac-plan-apply.md. Plan, applied inventory and observed service agree; drift is detected; restoration or teardown follows an explicit data/ownership decision."]
+"hints" = ["Compare one changed condition against the earlier successful control. Recover that control before trying another change."]
+"done_when" = "Plan, applied inventory and observed service agree; drift is detected; restoration or teardown follows an explicit data/ownership decision. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "recall"
+"resource" = "https://opentofu.org/docs/intro/core-workflow/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Reconstruct a previous operational decision and check what you remember."
+"requirements" = "Your retained local notes; the original tools only if you choose a fresh observation."
+"setup" = "Download /training/devops-delivery-automation.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-delivery-automation folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/iac-plan-apply.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-iac-plan-apply"
+"title" = "Return later: Provision owned infrastructure with OpenTofu"
+"size" = "S"
+"minutes" = 15
+"needs" = ["iac-plan-apply-milestone"]
+"brief" = "After a suggested 2–7 days, reconstruct the mechanism without your walkthrough. Spacing is optional and is not automatically verified."
+"steps" = ["From memory, explain the mechanism: Desired configuration, a plan, applied resources and state are distinct. A plan can replace or destroy resources even when it appears to be a small edit. Provider plugins act with the learner's permissions.", "Predict one changed-condition result from this lesson: Change or remove the owned container outside OpenTofu, then inspect refresh/plan output before reconciling.", "Compare your reasoning with a fresh observation or your retained evidence. Record the specific correction and the next experiment you would use to test it."]
+"done_when" = "You reconstruct a concrete failure/recovery path, compare it with retained or fresh evidence, and correct the explanation in your notes. This manual recall task does not certify an unperformed live operation."
+
+[[node]]
+"level" = "ansible-configuration"
+"resource" = "https://docs.ansible.com/ansible/latest/getting_started/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Apply repeatable guest configuration and recover a drifted service."
+"requirements" = "Owned Debian/Ubuntu-class guest, verified SSH identity, sudo within that guest and Ansible on the learner PC."
+"setup" = "Download /training/devops-delivery-automation.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-delivery-automation folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/ansible-configuration.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "ansible-configuration-practice"
+"title" = "Practice: Configure an owned guest idempotently"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "Infrastructure creates resources; configuration management establishes software/service state. Idempotence concerns the specified desired state, not whether a command prints changed=0 after ignoring failures."
+"steps" = ["Edit the documentation address/user in configs/ansible/inventory.ini for one owned guest. Inspect the inventory and exact target before any playbook run.", "```sh\nansible-inventory -i configs/ansible/inventory.ini --graph\nansible relay_targets -i configs/ansible/inventory.ini --limit relay1 -m ping\n```", "Read the playbook and service template. Run in check/diff mode, then apply only to that guest. Do not publish inventory credentials or raw facts containing private data.", "```sh\nansible-playbook -i configs/ansible/inventory.ini configs/ansible/playbook.yml --limit relay1 --check --diff\nansible-playbook -i configs/ansible/inventory.ini configs/ansible/playbook.yml --limit relay1\n```", "Run the same playbook again and inspect actual service state. Reach the private service through the guest SSH forwarding route from the first track.", "```sh\nansible-playbook -i configs/ansible/inventory.ini configs/ansible/playbook.yml --limit relay1\nssh -N -L 127.0.0.1:18000:127.0.0.1:8000 YOUR_OWN_GUEST\n```", "```sh\npython3 shared/check_service.py --url http://127.0.0.1:18000 --expect-release ansible-v1\n```", "Compare the observed result with your prediction and retain the commands/output in notes/ansible-configuration.md. The intended configuration is applied and a repeated run is idempotent; a drifted service recovers without mutating an unrelated target."]
+"hints" = ["Use the actual listener, release identity and state path printed by your process; a healthy service at another address may be the wrong deployment.", "If a required environment is unavailable, keep preparation as partial progress and return for the live operation."]
+"done_when" = "The intended configuration is applied and a repeated run is idempotent; a drifted service recovers without mutating an unrelated target. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "ansible-configuration"
+"resource" = "https://docs.ansible.com/ansible/latest/getting_started/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Apply repeatable guest configuration and recover a drifted service."
+"requirements" = "Owned Debian/Ubuntu-class guest, verified SSH identity, sudo within that guest and Ansible on the learner PC."
+"setup" = "Download /training/devops-delivery-automation.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-delivery-automation folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/ansible-configuration.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "ansible-configuration-milestone"
+"title" = "Apply independently: Configure an owned guest idempotently"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Apply the mechanism to a changed condition and recover the intended behaviour. Infrastructure creates resources; configuration management establishes software/service state. Idempotence concerns the specified desired state, not whether a command prints changed=0 after ignoring failures."
+"steps" = ["Use the named environment and files in lessons/ansible-configuration.md. Predict the changed result before opening the guided solution. Prior experience can replace guided practice; the demonstration below remains required.", "Introduce drift in the owned unit's release/configuration and rerun the playbook to recover the intended state.", "Add a second owned guest only when your local memory envelope permits it; target one guest and demonstrate the other is unchanged.", "Explain the check-mode limits and prove the service actually responds after convergence.", "Retain the failing case, successful control, recovery, explanation and any help used in notes/ansible-configuration.md. The intended configuration is applied and a repeated run is idempotent; a drifted service recovers without mutating an unrelated target."]
+"hints" = ["Compare one changed condition against the earlier successful control. Recover that control before trying another change."]
+"done_when" = "The intended configuration is applied and a repeated run is idempotent; a drifted service recovers without mutating an unrelated target. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "recall"
+"resource" = "https://docs.ansible.com/ansible/latest/getting_started/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Reconstruct a previous operational decision and check what you remember."
+"requirements" = "Your retained local notes; the original tools only if you choose a fresh observation."
+"setup" = "Download /training/devops-delivery-automation.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-delivery-automation folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/ansible-configuration.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-ansible-configuration"
+"title" = "Return later: Configure an owned guest idempotently"
+"size" = "S"
+"minutes" = 15
+"needs" = ["ansible-configuration-milestone"]
+"brief" = "After a suggested 2–7 days, reconstruct the mechanism without your walkthrough. Spacing is optional and is not automatically verified."
+"steps" = ["From memory, explain the mechanism: Infrastructure creates resources; configuration management establishes software/service state. Idempotence concerns the specified desired state, not whether a command prints changed=0 after ignoring failures.", "Predict one changed-condition result from this lesson: Introduce drift in the owned unit's release/configuration and rerun the playbook to recover the intended state.", "Compare your reasoning with a fresh observation or your retained evidence. Record the specific correction and the next experiment you would use to test it."]
+"done_when" = "You reconstruct a concrete failure/recovery path, compare it with retained or fresh evidence, and correct the explanation in your notes. This manual recall task does not certify an unperformed live operation."
+
+[[node]]
+"level" = "pipeline-trust"
+"resource" = "https://docs.github.com/en/actions/security-for-github-actions/security-hardening-your-deployments/about-security-hardening-with-openid-connect"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Require both a passing change and the intended identity before a release is eligible."
+"requirements" = "A local copy of the supplied workflow and fixture; owned CI/cloud accounts only for the optional real identity extension."
+"setup" = "Download /training/devops-delivery-automation.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-delivery-automation folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/pipeline-trust.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "pipeline-trust-practice"
+"title" = "Practice: Separate build identity from deployment authority"
+"size" = "M"
+"minutes" = 60
+"needs" = []
+"brief" = "An untrusted pull request executes code. Repository permissions, secret release conditions and OIDC trust policies decide what that code can access. A green test is not permission to deploy."
+"steps" = ["Inspect the workflow's events and permissions. Identify why the test job does not need a deployment credential or write access to repository content.", "```sh\ncat configs/workflow.yml\ncat fixtures/pipeline.json\n```", "Execute the readable local policy gate against the authored fixture. The initial selection points to a failed change; an explicitly selected passing/trusted change should be allowed. This evaluates supplied facts and does not authenticate a real CI identity.\n```sh\npython3 tools/pipeline_policy.py fixtures/pipeline.json --expected-revision commit-a\npython3 tools/pipeline_policy.py fixtures/pipeline.json --expected-revision commit-a --candidate commit-a --artifact sha256:aaa\npython3 tools/pipeline_policy.py fixtures/pipeline.json --expected-revision commit-c --candidate commit-c --artifact sha256:ccc\n```", "Construct a release decision table using fixture commit-a, commit-b and commit-c. A candidate must satisfy the expected revision/artifact, passing tests and the intended trust boundary.", "In your owned repository, observe a fork/untrusted-change workflow without adding deployment secrets; record its event, permissions and run revision. Provider OIDC is an extension: use that provider's real policy tools to test issuer, audience, repository/ref/environment and token lifetime. A provider-free policy experiment proves only the local decision rule.", "Pin reviewed action commit SHAs and retain their upstream release references before treating the workflow as a production policy. The provided tagged action versions are a readable starter.", "Compare the observed result with your prediction and retain the commands/output in notes/pipeline-trust.md. The learner distinguishes test success from deployment authority and demonstrates or accurately scopes both an allowed and a denied identity path."]
+"hints" = ["Use the actual listener, release identity and state path printed by your process; a healthy service at another address may be the wrong deployment.", "If a required environment is unavailable, keep preparation as partial progress and return for the live operation."]
+"done_when" = "The learner distinguishes test success from deployment authority and demonstrates or accurately scopes both an allowed and a denied identity path. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "pipeline-trust"
+"resource" = "https://docs.github.com/en/actions/security-for-github-actions/security-hardening-your-deployments/about-security-hardening-with-openid-connect"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Require both a passing change and the intended identity before a release is eligible."
+"requirements" = "A local copy of the supplied workflow and fixture; owned CI/cloud accounts only for the optional real identity extension."
+"setup" = "Download /training/devops-delivery-automation.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-delivery-automation folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/pipeline-trust.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "pipeline-trust-milestone"
+"title" = "Apply independently: Separate build identity from deployment authority"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Apply the mechanism to a changed condition and recover the intended behaviour. An untrusted pull request executes code. Repository permissions, secret release conditions and OIDC trust policies decide what that code can access. A green test is not permission to deploy."
+"steps" = ["Use the named environment and files in lessons/pipeline-trust.md. Predict the changed result before opening the guided solution. Prior experience can replace guided practice; the demonstration below remains required.", "Change one claim or trust condition in a copied policy/fixture and show why the candidate becomes ineligible even though tests passed.", "For a real OIDC variant, retain the denied/allowed provider observations without exposing tokens. With no provider, explicitly retain policy analysis as analysis only.", "Explain why echoing a secret, giving pull requests broad write permissions or using a shared privileged runner would break the boundary.", "Retain the failing case, successful control, recovery, explanation and any help used in notes/pipeline-trust.md. The learner distinguishes test success from deployment authority and demonstrates or accurately scopes both an allowed and a denied identity path."]
+"hints" = ["Compare one changed condition against the earlier successful control. Recover that control before trying another change."]
+"done_when" = "The learner distinguishes test success from deployment authority and demonstrates or accurately scopes both an allowed and a denied identity path. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "recall"
+"resource" = "https://docs.github.com/en/actions/security-for-github-actions/security-hardening-your-deployments/about-security-hardening-with-openid-connect"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Reconstruct a previous operational decision and check what you remember."
+"requirements" = "Your retained local notes; the original tools only if you choose a fresh observation."
+"setup" = "Download /training/devops-delivery-automation.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-delivery-automation folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/pipeline-trust.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-pipeline-trust"
+"title" = "Return later: Separate build identity from deployment authority"
+"size" = "S"
+"minutes" = 15
+"needs" = ["pipeline-trust-milestone"]
+"brief" = "After a suggested 2–7 days, reconstruct the mechanism without your walkthrough. Spacing is optional and is not automatically verified."
+"steps" = ["From memory, explain the mechanism: An untrusted pull request executes code. Repository permissions, secret release conditions and OIDC trust policies decide what that code can access. A green test is not permission to deploy.", "Predict one changed-condition result from this lesson: Change one claim or trust condition in a copied policy/fixture and show why the candidate becomes ineligible even though tests passed.", "Compare your reasoning with a fresh observation or your retained evidence. Record the specific correction and the next experiment you would use to test it."]
+"done_when" = "You reconstruct a concrete failure/recovery path, compare it with retained or fresh evidence, and correct the explanation in your notes. This manual recall task does not certify an unperformed live operation."
+
+[[node]]
+"level" = "delivery-capstone"
+"resource" = "https://sre.google/workbook/implementing-slos/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Recreate an identifiable release on a clean target and recover a failed activation."
+"requirements" = "The owned local/container or guest environment used in this track; real CI variant requires the learner's repository."
+"setup" = "Download /training/devops-delivery-automation.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-delivery-automation folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/delivery-capstone.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "delivery-capstone-practice"
+"title" = "Practice: Recreate the release path"
+"size" = "M"
+"minutes" = 120
+"needs" = []
+"brief" = "A useful pipeline can reproduce a clean target, choose the tested immutable artifact and recover a failed activation. Its inventory, secrets and data ownership must remain understandable."
+"steps" = ["Choose the local Docker/OpenTofu route or the owned guest/Ansible route. Record the actual source → test → artifact → target chain and separate credentials.", "Create a fresh target, deploy a verified artifact, observe the required version and add one synthetic update.", "Introduce a faulty release decision or configuration, detect it with the appropriate service/version control, and recover using the recorded earlier artifact.", "Retain the exact plan/configuration, CI or local run identity, artifact hash, current runtime observations and a cleanup inventory in your notebook/runbook.", "Compare the observed result with your prediction and retain the commands/output in notes/delivery-capstone.md. A clean target reproduces the release and fails/recover controls correctly; the handover explains identity, state, trust and remaining external limits."]
+"hints" = ["Use the actual listener, release identity and state path printed by your process; a healthy service at another address may be the wrong deployment.", "If a required environment is unavailable, keep preparation as partial progress and return for the live operation."]
+"done_when" = "A clean target reproduces the release and fails/recover controls correctly; the handover explains identity, state, trust and remaining external limits. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "delivery-capstone"
+"resource" = "https://sre.google/workbook/implementing-slos/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Recreate an identifiable release on a clean target and recover a failed activation."
+"requirements" = "The owned local/container or guest environment used in this track; real CI variant requires the learner's repository."
+"setup" = "Download /training/devops-delivery-automation.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-delivery-automation folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/delivery-capstone.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "delivery-capstone-milestone"
+"title" = "Apply independently: Recreate the release path"
+"size" = "L"
+"minutes" = 180
+"milestone" = true
+"needs" = []
+"brief" = "Apply the mechanism to a changed condition and recover the intended behaviour. A useful pipeline can reproduce a clean target, choose the tested immutable artifact and recover a failed activation. Its inventory, secrets and data ownership must remain understandable."
+"steps" = ["Use the named environment and files in lessons/delivery-capstone.md. Predict the changed result before opening the guided solution. Prior experience can replace guided practice; the demonstration below remains required.", "Have a fresh terminal or reviewer reproduce the target from the runbook without reusing an unexplained existing container/guest.", "Use an old but healthy artifact as the incident; the correct version check must catch it.", "Restore the expected version and data, then either retain the target explicitly or destroy only the owned resources with evidence.", "Retain the failing case, successful control, recovery, explanation and any help used in notes/delivery-capstone.md. A clean target reproduces the release and fails/recover controls correctly; the handover explains identity, state, trust and remaining external limits."]
+"hints" = ["Compare one changed condition against the earlier successful control. Recover that control before trying another change."]
+"done_when" = "A clean target reproduces the release and fails/recover controls correctly; the handover explains identity, state, trust and remaining external limits. Review the observations and explanation in your local notes before marking done. A required live operation remains incomplete until you perform it in the stated environment. Manual completion records your assessment; local tool output or a saved file does not automatically verify skill."
+
+[[node]]
+"level" = "recall"
+"resource" = "https://sre.google/workbook/implementing-slos/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official reference explains the underlying tool or mechanism; a paid course is not required."
+"preview" = "Reconstruct a previous operational decision and check what you remember."
+"requirements" = "Your retained local notes; the original tools only if you choose a fresh observation."
+"setup" = "Download /training/devops-delivery-automation.zip and extract it into a new folder you choose on your own PC. Open a terminal in the extracted devops-delivery-automation folder; commands use that folder unless a step explicitly changes it. Read README.md and shared/README.md. The core tools need Python 3.11+ and no Python packages. Shell examples use Linux/macOS; use a Linux guest or WSL for POSIX commands on Windows. Keep foreground services in separate terminals and stop earlier listeners before reusing a port. Create notes/delivery-capstone.md from notes-template.md in your editor and keep predictions, exact commands, observed output and explanations there. If that file already exists, append a dated attempt or choose a new name. work/, data/, backups/ and restored/ hold the explicitly named local outputs. These files stay on your computer; opening a challenge does not create or upload them. Use Ascend's notebook or chosen upload control only when you intend to copy evidence into Ascend."
+"materials" = [{ "label" = "Download this track's runnable lab files", "url" = "/training/devops-delivery-automation.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-delivery-capstone"
+"title" = "Return later: Recreate the release path"
+"size" = "S"
+"minutes" = 15
+"needs" = ["delivery-capstone-milestone"]
+"brief" = "After a suggested 2–7 days, reconstruct the mechanism without your walkthrough. Spacing is optional and is not automatically verified."
+"steps" = ["From memory, explain the mechanism: A useful pipeline can reproduce a clean target, choose the tested immutable artifact and recover a failed activation. Its inventory, secrets and data ownership must remain understandable.", "Predict one changed-condition result from this lesson: Have a fresh terminal or reviewer reproduce the target from the runbook without reusing an unexplained existing container/guest.", "Compare your reasoning with a fresh observation or your retained evidence. Record the specific correction and the next experiment you would use to test it."]
+"done_when" = "You reconstruct a concrete failure/recovery path, compare it with retained or fresh evidence, and correct the explanation in your notes. This manual recall task does not certify an unperformed live operation."

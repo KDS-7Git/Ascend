@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Recover a guest SSH lockout through the owned console.",
+  "contract": [
+    {
+      "field": "host_key_verified",
+      "op": "eq",
+      "value": true,
+      "why": "host key verified: satisfy the stated administer through ssh and console contract"
+    },
+    {
+      "field": "guest_role",
+      "op": "eq",
+      "value": "guest-admin",
+      "why": "guest role: satisfy the stated administer through ssh and console contract"
+    },
+    {
+      "field": "hypervisor_socket_granted",
+      "op": "eq",
+      "value": false,
+      "why": "hypervisor socket granted: satisfy the stated administer through ssh and console contract"
+    },
+    {
+      "field": "console_recovery",
+      "op": "eq",
+      "value": true,
+      "why": "console recovery: satisfy the stated administer through ssh and console contract"
+    }
+  ],
+  "starting": {
+    "host_key_verified": true,
+    "guest_role": "guest-admin",
+    "hypervisor_socket_granted": true,
+    "console_recovery": true
+  },
+  "reference": {
+    "host_key_verified": true,
+    "guest_role": "guest-admin",
+    "hypervisor_socket_granted": false,
+    "console_recovery": true
+  },
+  "rules": [
+    {
+      "field": "host_key_verified",
+      "op": "eq",
+      "value": true,
+      "why": "host key verified: satisfy the stated administer through ssh and console contract"
+    },
+    {
+      "field": "guest_role",
+      "op": "eq",
+      "value": "guest-admin",
+      "why": "guest role: satisfy the stated administer through ssh and console contract"
+    },
+    {
+      "field": "hypervisor_socket_granted",
+      "op": "eq",
+      "value": false,
+      "why": "hypervisor socket granted: satisfy the stated administer through ssh and console contract"
+    },
+    {
+      "field": "console_recovery",
+      "op": "eq",
+      "value": true,
+      "why": "console recovery: satisfy the stated administer through ssh and console contract"
+    }
+  ]
+}

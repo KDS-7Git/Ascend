@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Choose a viable inbound or outbound-relay path when the origin lacks a reachable address.",
+  "contract": [
+    {
+      "field": "origin_has_public_inbound",
+      "op": "eq",
+      "value": false,
+      "why": "origin has public inbound: satisfy the stated cross network boundaries contract"
+    },
+    {
+      "field": "chosen_path",
+      "op": "eq",
+      "value": "outbound-authenticated-relay",
+      "why": "chosen path: satisfy the stated cross network boundaries contract"
+    },
+    {
+      "field": "ddns_creates_route",
+      "op": "eq",
+      "value": false,
+      "why": "ddns creates route: satisfy the stated cross network boundaries contract"
+    },
+    {
+      "field": "simulated_wan_is_public",
+      "op": "eq",
+      "value": false,
+      "why": "simulated wan is public: satisfy the stated cross network boundaries contract"
+    }
+  ],
+  "starting": {
+    "origin_has_public_inbound": false,
+    "chosen_path": "outbound-authenticated-relay",
+    "ddns_creates_route": true,
+    "simulated_wan_is_public": false
+  },
+  "reference": {
+    "origin_has_public_inbound": false,
+    "chosen_path": "outbound-authenticated-relay",
+    "ddns_creates_route": false,
+    "simulated_wan_is_public": false
+  },
+  "rules": [
+    {
+      "field": "origin_has_public_inbound",
+      "op": "eq",
+      "value": false,
+      "why": "origin has public inbound: satisfy the stated cross network boundaries contract"
+    },
+    {
+      "field": "chosen_path",
+      "op": "eq",
+      "value": "outbound-authenticated-relay",
+      "why": "chosen path: satisfy the stated cross network boundaries contract"
+    },
+    {
+      "field": "ddns_creates_route",
+      "op": "eq",
+      "value": false,
+      "why": "ddns creates route: satisfy the stated cross network boundaries contract"
+    },
+    {
+      "field": "simulated_wan_is_public",
+      "op": "eq",
+      "value": false,
+      "why": "simulated wan is public: satisfy the stated cross network boundaries contract"
+    }
+  ]
+}

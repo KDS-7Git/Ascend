@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Prepare a Pi for headless key-based administration, deploy a boot-managed service and check it from your PC; use the same software procedure in a Linux VM when no device is available.",
+  "contract": [
+    {
+      "field": "native_image_architecture_matches",
+      "op": "eq",
+      "value": true,
+      "why": "native image architecture matches: satisfy the stated use physical devices well contract"
+    },
+    {
+      "field": "power_supply_suitable",
+      "op": "eq",
+      "value": true,
+      "why": "power supply suitable: satisfy the stated use physical devices well contract"
+    },
+    {
+      "field": "thermal_observation_recorded",
+      "op": "eq",
+      "value": true,
+      "why": "thermal observation recorded: satisfy the stated use physical devices well contract"
+    },
+    {
+      "field": "vm_test_claims_physical_power_recovery",
+      "op": "eq",
+      "value": false,
+      "why": "vm test claims physical power recovery: satisfy the stated use physical devices well contract"
+    }
+  ],
+  "starting": {
+    "native_image_architecture_matches": false,
+    "power_supply_suitable": true,
+    "thermal_observation_recorded": true,
+    "vm_test_claims_physical_power_recovery": false
+  },
+  "reference": {
+    "native_image_architecture_matches": true,
+    "power_supply_suitable": true,
+    "thermal_observation_recorded": true,
+    "vm_test_claims_physical_power_recovery": false
+  },
+  "rules": [
+    {
+      "field": "native_image_architecture_matches",
+      "op": "eq",
+      "value": true,
+      "why": "native image architecture matches: satisfy the stated use physical devices well contract"
+    },
+    {
+      "field": "power_supply_suitable",
+      "op": "eq",
+      "value": true,
+      "why": "power supply suitable: satisfy the stated use physical devices well contract"
+    },
+    {
+      "field": "thermal_observation_recorded",
+      "op": "eq",
+      "value": true,
+      "why": "thermal observation recorded: satisfy the stated use physical devices well contract"
+    },
+    {
+      "field": "vm_test_claims_physical_power_recovery",
+      "op": "eq",
+      "value": false,
+      "why": "vm test claims physical power recovery: satisfy the stated use physical devices well contract"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Fix a DNS/route conflict or unintended egress path.",
+  "contract": [
+    {
+      "field": "subnet_route",
+      "op": "eq",
+      "value": "192.168.122.0/24",
+      "why": "subnet route: satisfy the stated use subnet and exit nodes contract"
+    },
+    {
+      "field": "exit_node_enabled",
+      "op": "eq",
+      "value": false,
+      "why": "exit node enabled: satisfy the stated use subnet and exit nodes contract"
+    },
+    {
+      "field": "return_route_verified",
+      "op": "eq",
+      "value": true,
+      "why": "return route verified: satisfy the stated use subnet and exit nodes contract"
+    },
+    {
+      "field": "private_dns_scope_preserved",
+      "op": "eq",
+      "value": true,
+      "why": "private dns scope preserved: satisfy the stated use subnet and exit nodes contract"
+    }
+  ],
+  "starting": {
+    "subnet_route": "192.168.122.0/24",
+    "exit_node_enabled": false,
+    "return_route_verified": false,
+    "private_dns_scope_preserved": false
+  },
+  "reference": {
+    "subnet_route": "192.168.122.0/24",
+    "exit_node_enabled": false,
+    "return_route_verified": true,
+    "private_dns_scope_preserved": true
+  },
+  "rules": [
+    {
+      "field": "subnet_route",
+      "op": "eq",
+      "value": "192.168.122.0/24",
+      "why": "subnet route: satisfy the stated use subnet and exit nodes contract"
+    },
+    {
+      "field": "exit_node_enabled",
+      "op": "eq",
+      "value": false,
+      "why": "exit node enabled: satisfy the stated use subnet and exit nodes contract"
+    },
+    {
+      "field": "return_route_verified",
+      "op": "eq",
+      "value": true,
+      "why": "return route verified: satisfy the stated use subnet and exit nodes contract"
+    },
+    {
+      "field": "private_dns_scope_preserved",
+      "op": "eq",
+      "value": true,
+      "why": "private dns scope preserved: satisfy the stated use subnet and exit nodes contract"
+    }
+  ]
+}

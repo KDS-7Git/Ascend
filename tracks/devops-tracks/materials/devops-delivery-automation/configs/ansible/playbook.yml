@@ -1,0 +1,40 @@
+---
+- name: Install Relay on the selected owned guest
+  hosts: relay_targets
+  become: true
+  vars:
+    relay_release: ansible-v1
+  tasks:
+    - name: Install Python
+      ansible.builtin.package:
+        name: python3
+        state: present
+    - name: Create the source directory
+      ansible.builtin.file:
+        path: /opt/ascend-relay/shared
+        state: directory
+        mode: '0755'
+    - name: Copy the reviewed application
+      ansible.builtin.copy:
+        src: ../../shared/relay.py
+        dest: /opt/ascend-relay/shared/relay.py
+        mode: '0644'
+      notify: Restart Relay
+    - name: Configure the service
+      ansible.builtin.template:
+        src: relay.service.j2
+        dest: /etc/systemd/system/ascend-relay.service
+        mode: '0644'
+      notify: Restart Relay
+    - name: Enable the owned service
+      ansible.builtin.systemd_service:
+        name: ascend-relay
+        enabled: true
+        state: started
+        daemon_reload: true
+  handlers:
+    - name: Restart Relay
+      ansible.builtin.systemd_service:
+        name: ascend-relay
+        state: restarted
+        daemon_reload: true

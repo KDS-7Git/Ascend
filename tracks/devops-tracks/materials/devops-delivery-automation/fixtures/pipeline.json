@@ -1,0 +1,27 @@
+{
+  "commits": [
+    {
+      "id": "commit-a",
+      "tests": "passed",
+      "trusted": true,
+      "artifact": "sha256:aaa"
+    },
+    {
+      "id": "commit-b",
+      "tests": "failed",
+      "trusted": true,
+      "artifact": "sha256:bbb"
+    },
+    {
+      "id": "commit-c",
+      "tests": "passed",
+      "trusted": false,
+      "artifact": "sha256:ccc"
+    }
+  ],
+  "selected": {
+    "commit": "commit-b",
+    "artifact": "sha256:bbb"
+  },
+  "scope": "Authored pipeline decision fixture; not a real CI receipt"
+}

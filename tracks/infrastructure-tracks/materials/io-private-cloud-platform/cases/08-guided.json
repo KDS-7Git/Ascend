@@ -1,0 +1,82 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Operate two learner guests through the selected existing control plane and hand over a reproducible runbook.",
+  "contract": [
+    {
+      "field": "two_real_learner_identities",
+      "op": "eq",
+      "value": true,
+      "why": "two real learner identities: satisfy the stated run the college-style capstone contract"
+    },
+    {
+      "field": "cross_learner_change_denied",
+      "op": "eq",
+      "value": true,
+      "why": "cross learner change denied: satisfy the stated run the college-style capstone contract"
+    },
+    {
+      "field": "resize_and_restore_observed",
+      "op": "eq",
+      "value": true,
+      "why": "resize and restore observed: satisfy the stated run the college-style capstone contract"
+    },
+    {
+      "field": "cleanup_inventory_reconciled",
+      "op": "eq",
+      "value": true,
+      "why": "cleanup inventory reconciled: satisfy the stated run the college-style capstone contract"
+    },
+    {
+      "field": "ui_click_is_backend_success",
+      "op": "eq",
+      "value": false,
+      "why": "ui click is backend success: satisfy the stated run the college-style capstone contract"
+    }
+  ],
+  "starting": {
+    "two_real_learner_identities": true,
+    "cross_learner_change_denied": false,
+    "resize_and_restore_observed": true,
+    "cleanup_inventory_reconciled": true,
+    "ui_click_is_backend_success": false
+  },
+  "reference": {
+    "two_real_learner_identities": true,
+    "cross_learner_change_denied": true,
+    "resize_and_restore_observed": true,
+    "cleanup_inventory_reconciled": true,
+    "ui_click_is_backend_success": false
+  },
+  "rules": [
+    {
+      "field": "two_real_learner_identities",
+      "op": "eq",
+      "value": true,
+      "why": "two real learner identities: satisfy the stated run the college-style capstone contract"
+    },
+    {
+      "field": "cross_learner_change_denied",
+      "op": "eq",
+      "value": true,
+      "why": "cross learner change denied: satisfy the stated run the college-style capstone contract"
+    },
+    {
+      "field": "resize_and_restore_observed",
+      "op": "eq",
+      "value": true,
+      "why": "resize and restore observed: satisfy the stated run the college-style capstone contract"
+    },
+    {
+      "field": "cleanup_inventory_reconciled",
+      "op": "eq",
+      "value": true,
+      "why": "cleanup inventory reconciled: satisfy the stated run the college-style capstone contract"
+    },
+    {
+      "field": "ui_click_is_backend_success",
+      "op": "eq",
+      "value": false,
+      "why": "ui click is backend success: satisfy the stated run the college-style capstone contract"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Handle a changed address/storage layout and validate old and new ownership.",
+  "contract": [
+    {
+      "field": "target_independent_path",
+      "op": "eq",
+      "value": true,
+      "why": "target independent path: satisfy the stated migrate without restarting the learning path contract"
+    },
+    {
+      "field": "source_stopped_during_validation",
+      "op": "eq",
+      "value": true,
+      "why": "source stopped during validation: satisfy the stated migrate without restarting the learning path contract"
+    },
+    {
+      "field": "data_and_version_checked",
+      "op": "eq",
+      "value": true,
+      "why": "data and version checked: satisfy the stated migrate without restarting the learning path contract"
+    },
+    {
+      "field": "same_host_replicas_claim_physical_ha",
+      "op": "eq",
+      "value": false,
+      "why": "same host replicas claim physical ha: satisfy the stated migrate without restarting the learning path contract"
+    }
+  ],
+  "starting": {
+    "target_independent_path": true,
+    "source_stopped_during_validation": false,
+    "data_and_version_checked": true,
+    "same_host_replicas_claim_physical_ha": true
+  },
+  "reference": {
+    "target_independent_path": true,
+    "source_stopped_during_validation": true,
+    "data_and_version_checked": true,
+    "same_host_replicas_claim_physical_ha": false
+  },
+  "rules": [
+    {
+      "field": "target_independent_path",
+      "op": "eq",
+      "value": true,
+      "why": "target independent path: satisfy the stated migrate without restarting the learning path contract"
+    },
+    {
+      "field": "source_stopped_during_validation",
+      "op": "eq",
+      "value": true,
+      "why": "source stopped during validation: satisfy the stated migrate without restarting the learning path contract"
+    },
+    {
+      "field": "data_and_version_checked",
+      "op": "eq",
+      "value": true,
+      "why": "data and version checked: satisfy the stated migrate without restarting the learning path contract"
+    },
+    {
+      "field": "same_host_replicas_claim_physical_ha",
+      "op": "eq",
+      "value": false,
+      "why": "same host replicas claim physical ha: satisfy the stated migrate without restarting the learning path contract"
+    }
+  ]
+}

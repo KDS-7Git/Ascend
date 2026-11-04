@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Replace a revoked key while preserving legitimate access and console recovery.",
+  "contract": [
+    {
+      "field": "server_fingerprint_verified",
+      "op": "eq",
+      "value": true,
+      "why": "server fingerprint verified: satisfy the stated establish remote identity contract"
+    },
+    {
+      "field": "private_key_published",
+      "op": "eq",
+      "value": false,
+      "why": "private key published: satisfy the stated establish remote identity contract"
+    },
+    {
+      "field": "revoked_key_accepted",
+      "op": "eq",
+      "value": false,
+      "why": "revoked key accepted: satisfy the stated establish remote identity contract"
+    },
+    {
+      "field": "recovery_identity_retained",
+      "op": "eq",
+      "value": true,
+      "why": "recovery identity retained: satisfy the stated establish remote identity contract"
+    }
+  ],
+  "starting": {
+    "server_fingerprint_verified": true,
+    "private_key_published": false,
+    "revoked_key_accepted": true,
+    "recovery_identity_retained": false
+  },
+  "reference": {
+    "server_fingerprint_verified": true,
+    "private_key_published": false,
+    "revoked_key_accepted": false,
+    "recovery_identity_retained": true
+  },
+  "rules": [
+    {
+      "field": "server_fingerprint_verified",
+      "op": "eq",
+      "value": true,
+      "why": "server fingerprint verified: satisfy the stated establish remote identity contract"
+    },
+    {
+      "field": "private_key_published",
+      "op": "eq",
+      "value": false,
+      "why": "private key published: satisfy the stated establish remote identity contract"
+    },
+    {
+      "field": "revoked_key_accepted",
+      "op": "eq",
+      "value": false,
+      "why": "revoked key accepted: satisfy the stated establish remote identity contract"
+    },
+    {
+      "field": "recovery_identity_retained",
+      "op": "eq",
+      "value": true,
+      "why": "recovery identity retained: satisfy the stated establish remote identity contract"
+    }
+  ]
+}

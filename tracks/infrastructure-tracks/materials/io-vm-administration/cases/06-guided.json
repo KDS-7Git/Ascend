@@ -1,0 +1,82 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Resize an owned guest using a supported shutdown or live procedure, then grow its partition/filesystem where required.",
+  "contract": [
+    {
+      "field": "configured_vcpus",
+      "op": "eq",
+      "value": 2,
+      "why": "configured vcpus: satisfy the stated change cpu, memory and storage contract"
+    },
+    {
+      "field": "observed_vcpus",
+      "op": "eq",
+      "value": 2,
+      "why": "observed vcpus: satisfy the stated change cpu, memory and storage contract"
+    },
+    {
+      "field": "disk_gib",
+      "op": "eq",
+      "value": 16,
+      "why": "disk gib: satisfy the stated change cpu, memory and storage contract"
+    },
+    {
+      "field": "filesystem_grown",
+      "op": "eq",
+      "value": true,
+      "why": "filesystem grown: satisfy the stated change cpu, memory and storage contract"
+    },
+    {
+      "field": "data_restored_and_checked",
+      "op": "eq",
+      "value": true,
+      "why": "data restored and checked: satisfy the stated change cpu, memory and storage contract"
+    }
+  ],
+  "starting": {
+    "configured_vcpus": 2,
+    "observed_vcpus": 1,
+    "disk_gib": 16,
+    "filesystem_grown": true,
+    "data_restored_and_checked": true
+  },
+  "reference": {
+    "configured_vcpus": 2,
+    "observed_vcpus": 2,
+    "disk_gib": 16,
+    "filesystem_grown": true,
+    "data_restored_and_checked": true
+  },
+  "rules": [
+    {
+      "field": "configured_vcpus",
+      "op": "eq",
+      "value": 2,
+      "why": "configured vcpus: satisfy the stated change cpu, memory and storage contract"
+    },
+    {
+      "field": "observed_vcpus",
+      "op": "eq",
+      "value": 2,
+      "why": "observed vcpus: satisfy the stated change cpu, memory and storage contract"
+    },
+    {
+      "field": "disk_gib",
+      "op": "eq",
+      "value": 16,
+      "why": "disk gib: satisfy the stated change cpu, memory and storage contract"
+    },
+    {
+      "field": "filesystem_grown",
+      "op": "eq",
+      "value": true,
+      "why": "filesystem grown: satisfy the stated change cpu, memory and storage contract"
+    },
+    {
+      "field": "data_restored_and_checked",
+      "op": "eq",
+      "value": true,
+      "why": "data restored and checked: satisfy the stated change cpu, memory and storage contract"
+    }
+  ]
+}

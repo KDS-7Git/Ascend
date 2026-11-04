@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Recover a fresh fault involving two of DNS, process, binding or permissions.",
+  "contract": [
+    {
+      "field": "request_port",
+      "op": "eq",
+      "value": 8000,
+      "why": "request port: satisfy the stated recover your first service contract"
+    },
+    {
+      "field": "process_running",
+      "op": "eq",
+      "value": true,
+      "why": "process running: satisfy the stated recover your first service contract"
+    },
+    {
+      "field": "saved_data_preserved",
+      "op": "eq",
+      "value": true,
+      "why": "saved data preserved: satisfy the stated recover your first service contract"
+    },
+    {
+      "field": "unrelated_access_expanded",
+      "op": "eq",
+      "value": false,
+      "why": "unrelated access expanded: satisfy the stated recover your first service contract"
+    }
+  ],
+  "starting": {
+    "request_port": 8000,
+    "process_running": false,
+    "saved_data_preserved": true,
+    "unrelated_access_expanded": true
+  },
+  "reference": {
+    "request_port": 8000,
+    "process_running": true,
+    "saved_data_preserved": true,
+    "unrelated_access_expanded": false
+  },
+  "rules": [
+    {
+      "field": "request_port",
+      "op": "eq",
+      "value": 8000,
+      "why": "request port: satisfy the stated recover your first service contract"
+    },
+    {
+      "field": "process_running",
+      "op": "eq",
+      "value": true,
+      "why": "process running: satisfy the stated recover your first service contract"
+    },
+    {
+      "field": "saved_data_preserved",
+      "op": "eq",
+      "value": true,
+      "why": "saved data preserved: satisfy the stated recover your first service contract"
+    },
+    {
+      "field": "unrelated_access_expanded",
+      "op": "eq",
+      "value": false,
+      "why": "unrelated access expanded: satisfy the stated recover your first service contract"
+    }
+  ]
+}

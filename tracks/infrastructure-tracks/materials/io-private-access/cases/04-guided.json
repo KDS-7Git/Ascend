@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Connect two guests, then optionally a phone or Pi; test only the chosen routes.",
+  "contract": [
+    {
+      "field": "allowed_ips",
+      "op": "eq",
+      "value": "10.44.0.2/32",
+      "why": "allowed ips: satisfy the stated build a wireguard network contract"
+    },
+    {
+      "field": "peer_public_key_unique",
+      "op": "eq",
+      "value": true,
+      "why": "peer public key unique: satisfy the stated build a wireguard network contract"
+    },
+    {
+      "field": "endpoint_reachable",
+      "op": "eq",
+      "value": true,
+      "why": "endpoint reachable: satisfy the stated build a wireguard network contract"
+    },
+    {
+      "field": "private_key_in_report",
+      "op": "eq",
+      "value": false,
+      "why": "private key in report: satisfy the stated build a wireguard network contract"
+    }
+  ],
+  "starting": {
+    "allowed_ips": "0.0.0.0/0",
+    "peer_public_key_unique": true,
+    "endpoint_reachable": true,
+    "private_key_in_report": false
+  },
+  "reference": {
+    "allowed_ips": "10.44.0.2/32",
+    "peer_public_key_unique": true,
+    "endpoint_reachable": true,
+    "private_key_in_report": false
+  },
+  "rules": [
+    {
+      "field": "allowed_ips",
+      "op": "eq",
+      "value": "10.44.0.2/32",
+      "why": "allowed ips: satisfy the stated build a wireguard network contract"
+    },
+    {
+      "field": "peer_public_key_unique",
+      "op": "eq",
+      "value": true,
+      "why": "peer public key unique: satisfy the stated build a wireguard network contract"
+    },
+    {
+      "field": "endpoint_reachable",
+      "op": "eq",
+      "value": true,
+      "why": "endpoint reachable: satisfy the stated build a wireguard network contract"
+    },
+    {
+      "field": "private_key_in_report",
+      "op": "eq",
+      "value": false,
+      "why": "private key in report: satisfy the stated build a wireguard network contract"
+    }
+  ]
+}

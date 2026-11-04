@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Diagnose a CGNAT origin whose relay or listener is unreachable.",
+  "contract": [
+    {
+      "field": "relay_reachable",
+      "op": "eq",
+      "value": true,
+      "why": "relay reachable: satisfy the stated reverse and dynamically forward contract"
+    },
+    {
+      "field": "reverse_bind",
+      "op": "eq",
+      "value": "127.0.0.1",
+      "why": "reverse bind: satisfy the stated reverse and dynamically forward contract"
+    },
+    {
+      "field": "gateway_ports_required_for_this_private_test",
+      "op": "eq",
+      "value": false,
+      "why": "gateway ports required for this private test: satisfy the stated reverse and dynamically forward contract"
+    },
+    {
+      "field": "socks_is_full_ip_vpn",
+      "op": "eq",
+      "value": false,
+      "why": "socks is full ip vpn: satisfy the stated reverse and dynamically forward contract"
+    }
+  ],
+  "starting": {
+    "relay_reachable": true,
+    "reverse_bind": "0.0.0.0",
+    "gateway_ports_required_for_this_private_test": false,
+    "socks_is_full_ip_vpn": true
+  },
+  "reference": {
+    "relay_reachable": true,
+    "reverse_bind": "127.0.0.1",
+    "gateway_ports_required_for_this_private_test": false,
+    "socks_is_full_ip_vpn": false
+  },
+  "rules": [
+    {
+      "field": "relay_reachable",
+      "op": "eq",
+      "value": true,
+      "why": "relay reachable: satisfy the stated reverse and dynamically forward contract"
+    },
+    {
+      "field": "reverse_bind",
+      "op": "eq",
+      "value": "127.0.0.1",
+      "why": "reverse bind: satisfy the stated reverse and dynamically forward contract"
+    },
+    {
+      "field": "gateway_ports_required_for_this_private_test",
+      "op": "eq",
+      "value": false,
+      "why": "gateway ports required for this private test: satisfy the stated reverse and dynamically forward contract"
+    },
+    {
+      "field": "socks_is_full_ip_vpn",
+      "op": "eq",
+      "value": false,
+      "why": "socks is full ip vpn: satisfy the stated reverse and dynamically forward contract"
+    }
+  ]
+}

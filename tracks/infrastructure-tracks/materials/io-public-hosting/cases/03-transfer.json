@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Repair a bad AAAA, stale answer or renewal prerequisite.",
+  "contract": [
+    {
+      "field": "requested_name",
+      "op": "eq",
+      "value": "localhost",
+      "why": "requested name: satisfy the stated own a name and certificate contract"
+    },
+    {
+      "field": "certificate_san",
+      "op": "eq",
+      "value": "localhost",
+      "why": "certificate san: satisfy the stated own a name and certificate contract"
+    },
+    {
+      "field": "trust_disabled",
+      "op": "eq",
+      "value": false,
+      "why": "trust disabled: satisfy the stated own a name and certificate contract"
+    },
+    {
+      "field": "public_dns_verified",
+      "op": "eq",
+      "value": false,
+      "why": "public dns verified: satisfy the stated own a name and certificate contract"
+    }
+  ],
+  "starting": {
+    "requested_name": "localhost",
+    "certificate_san": "localhost",
+    "trust_disabled": true,
+    "public_dns_verified": true
+  },
+  "reference": {
+    "requested_name": "localhost",
+    "certificate_san": "localhost",
+    "trust_disabled": false,
+    "public_dns_verified": false
+  },
+  "rules": [
+    {
+      "field": "requested_name",
+      "op": "eq",
+      "value": "localhost",
+      "why": "requested name: satisfy the stated own a name and certificate contract"
+    },
+    {
+      "field": "certificate_san",
+      "op": "eq",
+      "value": "localhost",
+      "why": "certificate san: satisfy the stated own a name and certificate contract"
+    },
+    {
+      "field": "trust_disabled",
+      "op": "eq",
+      "value": false,
+      "why": "trust disabled: satisfy the stated own a name and certificate contract"
+    },
+    {
+      "field": "public_dns_verified",
+      "op": "eq",
+      "value": false,
+      "why": "public dns verified: satisfy the stated own a name and certificate contract"
+    }
+  ]
+}

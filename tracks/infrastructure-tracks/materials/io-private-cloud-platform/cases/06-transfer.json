@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Explain or recover a migration blocked by storage, CPU or network prerequisites.",
+  "contract": [
+    {
+      "field": "backup_retained_independently",
+      "op": "eq",
+      "value": true,
+      "why": "backup retained independently: satisfy the stated move and recover guests contract"
+    },
+    {
+      "field": "source_stopped_for_restore",
+      "op": "eq",
+      "value": true,
+      "why": "source stopped for restore: satisfy the stated move and recover guests contract"
+    },
+    {
+      "field": "restored_identity_reviewed",
+      "op": "eq",
+      "value": true,
+      "why": "restored identity reviewed: satisfy the stated move and recover guests contract"
+    },
+    {
+      "field": "nested_hosts_are_physical_ha",
+      "op": "eq",
+      "value": false,
+      "why": "nested hosts are physical ha: satisfy the stated move and recover guests contract"
+    }
+  ],
+  "starting": {
+    "backup_retained_independently": true,
+    "source_stopped_for_restore": false,
+    "restored_identity_reviewed": true,
+    "nested_hosts_are_physical_ha": true
+  },
+  "reference": {
+    "backup_retained_independently": true,
+    "source_stopped_for_restore": true,
+    "restored_identity_reviewed": true,
+    "nested_hosts_are_physical_ha": false
+  },
+  "rules": [
+    {
+      "field": "backup_retained_independently",
+      "op": "eq",
+      "value": true,
+      "why": "backup retained independently: satisfy the stated move and recover guests contract"
+    },
+    {
+      "field": "source_stopped_for_restore",
+      "op": "eq",
+      "value": true,
+      "why": "source stopped for restore: satisfy the stated move and recover guests contract"
+    },
+    {
+      "field": "restored_identity_reviewed",
+      "op": "eq",
+      "value": true,
+      "why": "restored identity reviewed: satisfy the stated move and recover guests contract"
+    },
+    {
+      "field": "nested_hosts_are_physical_ha",
+      "op": "eq",
+      "value": false,
+      "why": "nested hosts are physical ha: satisfy the stated move and recover guests contract"
+    }
+  ]
+}

@@ -1,0 +1,590 @@
+# Generated from docs/curriculum/infrastructure-paths.json; unreviewed draft teaching content.
+[pack]
+"id" = "io-private-cloud-platform"
+"title" = "Private Cloud & Platform Engineering"
+"kind" = "proficiency"
+"version" = 1
+"source" = "ai-draft"
+"reviewed" = false
+
+[[level]]
+"id" = "io-private-cloud-platform-01"
+"title" = "Read an existing control plane"
+"lane" = "main"
+
+[[level]]
+"id" = "io-private-cloud-platform-02"
+"title" = "Offer reproducible guest templates"
+"lane" = "main"
+
+[[level]]
+"id" = "io-private-cloud-platform-03"
+"title" = "Separate learner and operator roles"
+"lane" = "main"
+
+[[level]]
+"id" = "io-private-cloud-platform-04"
+"title" = "Handle lifecycle and resizing jobs"
+"lane" = "main"
+
+[[level]]
+"id" = "io-private-cloud-platform-05"
+"title" = "Publish a guest service"
+"lane" = "main"
+
+[[level]]
+"id" = "io-private-cloud-platform-06"
+"title" = "Move and recover guests"
+"lane" = "main"
+
+[[level]]
+"id" = "io-private-cloud-platform-07"
+"title" = "Compare orchestration layers"
+"lane" = "main"
+
+[[level]]
+"id" = "io-private-cloud-platform-08"
+"title" = "Run the college-style capstone"
+"lane" = "main"
+
+[[level]]
+"id" = "entry"
+"title" = "Choose your entry point"
+"lane" = "side"
+
+[[level]]
+"id" = "recall"
+"title" = "Return later"
+"lane" = "side"
+
+[[node]]
+"level" = "entry"
+"preview" = "Match a concrete practical outcome to what you can already demonstrate."
+"requirements" = "Python 3.11+, a text editor and your own PC. No account or device purchase is required for this entry check."
+"setup" = "Download /training/io-private-cloud-platform.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-cloud-platform directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/entry.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxcontainers.org/incus/docs/main/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-cloud-platform.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "entry-demonstration"
+"title" = "Choose an entry point through a short demonstration"
+"size" = "S"
+"minutes" = 20
+"needs" = []
+"brief" = "New to this subject: start with the worked operation in level 1. Already practising: attempt an independent operation first and use Ascend early-unlock for a later level when appropriate. It records your choice, not an automatic proficiency pass. Job preparation emphasizes the reproducible handover; interest-led work can extend the same technical evidence with a different owned environment."
+"steps" = ["Read bootstrap.md, record your machine/OS and confirm the tools work.\n```sh\npython3 shared/selfcheck.py\n```\nThis checks the teaching tools, not proficiency.", "Read the eight independent finish lines in README.md and lessons/NN.md. Choose the first operation you cannot demonstrate on a fresh target without the worked steps.", "Begin that independent milestone if you already have the background, using existing early-unlock when needed. Otherwise start level 1 worked practice. Your own demonstration remains required; an entry choice does not complete other nodes.", "Record the chosen level, supporting prior observation and next concrete action in notes/entry.md. Return to guided material whenever a gap appears."]
+"done_when" = "Your local tool checks run, a practical observation supports the chosen starting level, and notes/entry.md names the next operation. This is manual self-assessment and does not certify or complete other levels."
+
+[[node]]
+"level" = "io-private-cloud-platform-01"
+"preview" = "Trace guest creation in one supported existing platform from UI/API to hypervisor and virtual network."
+"requirements" = "Owned Linux Incus HOST with KVM, a reviewed Incus version/image server, one supported storage pool and private managed bridge, plus approximately 1 GiB initial guest RAM and 12 GiB sparse guest disk. Keep a separate host reserve. A prepared guest/SSH account alone does not authorize host administration. Multi-user operations also require two distinct restricted TLS clients and the operator recovery identity; native results are required."
+"setup" = "Download /training/io-private-cloud-platform.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-cloud-platform directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/01.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxcontainers.org/incus/docs/main/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-cloud-platform.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-private-cloud-platform-01-practice"
+"title" = "Operate: Read an existing control plane"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "A cloud-style portal translates authenticated requests into hypervisor, storage and network operations. The guest keeps running under the host even when a browser closes; SSH enters the guest rather than the host management daemon. Begin with an existing platform before building a new portal, and identify which service owns each operation."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 01 --variant guided --out work/01-guided\npython3 lab.py check work/01-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/01-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/01.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# OWNED Linux HOST with the selected supported management platform.\nvirsh -c qemu:///system list --all\n# Or, on an installed Incus lab host:\nincus info\nincus project list\nincus list --all-projects\n# Follow one guest from the UI/API operation to host process, disk, network and guest SSH.\n# Merely reaching an SSH endpoint cannot identify whether the college used a VM, container or bare host.\n```", "Observe these controls and retain actual output: Map actual platform, hypervisor/instance kind, guest service and identities. A UI walkthrough without creating/observing a guest remains architecture preparation.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 01 --out work/01-reference. Record that help was used."]
+"done_when" = "Map actual platform, hypervisor/instance kind, guest service and identities. A UI walkthrough without creating/observing a guest remains architecture preparation. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-private-cloud-platform-01"
+"preview" = "Explain why guest SSH works without a desktop hypervisor application."
+"requirements" = "Owned Linux Incus HOST with KVM, a reviewed Incus version/image server, one supported storage pool and private managed bridge, plus approximately 1 GiB initial guest RAM and 12 GiB sparse guest disk. Keep a separate host reserve. A prepared guest/SSH account alone does not authorize host administration. Multi-user operations also require two distinct restricted TLS clients and the operator recovery identity; native results are required."
+"setup" = "Download /training/io-private-cloud-platform.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-cloud-platform directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/01.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxcontainers.org/incus/docs/main/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-cloud-platform.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-private-cloud-platform-01-milestone"
+"title" = "Apply independently: Read an existing control plane"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. libvirt/Cockpit, Proxmox, Incus and OpenStack responsibilities; VM versus cloud API."
+"steps" = ["Choose the native environment in lessons/01.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 01 --variant transfer --out work/01-transfer\npython3 lab.py check work/01-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/01-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Explain why guest SSH works without a desktop hypervisor application.", "Collect the actual controls: Map actual platform, hypervisor/instance kind, guest service and identities. A UI walkthrough without creating/observing a guest remains architecture preparation.", "Retain your commands, changed input, cause, recovery and help used in notes/01.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Map actual platform, hypervisor/instance kind, guest service and identities. A UI walkthrough without creating/observing a guest remains architecture preparation. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-private-cloud-platform.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-cloud-platform directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/01.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxcontainers.org/incus/docs/main/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-cloud-platform.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-private-cloud-platform-01"
+"title" = "Return later: Read an existing control plane"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-private-cloud-platform-01-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: libvirt/Cockpit, Proxmox, Incus and OpenStack responsibilities; VM versus cloud API.", "Predict a changed-condition result: Explain why guest SSH works without a desktop hypervisor application.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-private-cloud-platform-02"
+"preview" = "Publish a small internal catalog of reviewed templates in the owned lab platform."
+"requirements" = "Owned Linux Incus HOST with KVM, a reviewed Incus version/image server, one supported storage pool and private managed bridge, plus approximately 1 GiB initial guest RAM and 12 GiB sparse guest disk. Keep a separate host reserve. A prepared guest/SSH account alone does not authorize host administration."
+"setup" = "Download /training/io-private-cloud-platform.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-cloud-platform directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/02.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxcontainers.org/incus/docs/main/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-cloud-platform.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-private-cloud-platform-02-practice"
+"title" = "Operate: Offer reproducible guest templates"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "An image provides a common base; an instance profile chooses resources and network settings; per-instance initialization supplies unique identities. A project may share selected images/profiles or keep them isolated. CPU/memory shapes are allocations, not guaranteed requests-per-second figures."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 02 --variant guided --out work/02-guided\npython3 lab.py check work/02-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/02-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/02.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# OPERATOR, owned supported Incus Linux HOST only. Check KVM, free memory and disk first.\nincus version\n# For a fresh host use incus admin init interactively: a directory pool named default,\n# a private managed bridge named incusbr0, and no public management listener.\n# Existing installations: inspect and adapt to their chosen pool/network; do not reinitialize them.\nincus storage list\nincus network list\nincus image list images: ubuntu/24.04\nincus project create ascend-a -c features.images=true -c features.profiles=true -c features.networks=false\nincus profile create lab-small --project ascend-a\nincus profile set lab-small limits.memory=1GiB limits.cpu=1 --project ascend-a\nincus profile device add lab-small root disk path=/ pool=default size=12GiB --project ascend-a\nincus profile device add lab-small eth0 nic network=incusbr0 name=eth0 --project ascend-a\nssh-keygen -t ed25519 -f work/incus-learner-key\ncp inputs/02/user-data work/incus-user-data\n# Replace the PUBLIC-key placeholder, then inspect the file before passing it to cloud-init.\nincus init images:ubuntu/24.04/cloud relay-a --vm --project ascend-a --profile lab-small\nincus config set relay-a cloud-init.user-data - --project ascend-a < work/incus-user-data\nincus config show relay-a --project ascend-a --expanded\nincus start relay-a --project ascend-a\nincus info relay-a --project ascend-a\nincus exec relay-a --project ascend-a -- cloud-init status --wait\nincus exec relay-a --project ascend-a -- ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub\n# Compare this trusted fingerprint on first SSH connection. Record guest type, address and identity.\n# The cloud image alias is a concrete starting choice; confirm it exists for your architecture/version.\n```", "Observe these controls and retain actual output: Host configuration and the guest identify a real VM with the intended resources and unique identity. Containers are a useful alternate exercise but cannot satisfy the separate guest-kernel outcome.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 02 --out work/02-reference. Record that help was used."]
+"done_when" = "Host configuration and the guest identify a real VM with the intended resources and unique identity. Containers are a useful alternate exercise but cannot satisfy the separate guest-kernel outcome. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-private-cloud-platform-02"
+"preview" = "Repair duplicated identity or stale initialization data."
+"requirements" = "Owned Linux Incus HOST with KVM, a reviewed Incus version/image server, one supported storage pool and private managed bridge, plus approximately 1 GiB initial guest RAM and 12 GiB sparse guest disk. Keep a separate host reserve. A prepared guest/SSH account alone does not authorize host administration."
+"setup" = "Download /training/io-private-cloud-platform.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-cloud-platform directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/02.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxcontainers.org/incus/docs/main/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-cloud-platform.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-private-cloud-platform-02-milestone"
+"title" = "Apply independently: Offer reproducible guest templates"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Images, cloud-init, identity, flavors, resource profiles and image lifecycle."
+"steps" = ["Choose the native environment in lessons/02.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 02 --variant transfer --out work/02-transfer\npython3 lab.py check work/02-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/02-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Repair duplicated identity or stale initialization data.", "Collect the actual controls: Host configuration and the guest identify a real VM with the intended resources and unique identity. Containers are a useful alternate exercise but cannot satisfy the separate guest-kernel outcome.", "Retain your commands, changed input, cause, recovery and help used in notes/02.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Host configuration and the guest identify a real VM with the intended resources and unique identity. Containers are a useful alternate exercise but cannot satisfy the separate guest-kernel outcome. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-private-cloud-platform.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-cloud-platform directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/02.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxcontainers.org/incus/docs/main/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-cloud-platform.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-private-cloud-platform-02"
+"title" = "Return later: Offer reproducible guest templates"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-private-cloud-platform-02-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Images, cloud-init, identity, flavors, resource profiles and image lifecycle.", "Predict a changed-condition result: Repair duplicated identity or stale initialization data.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-private-cloud-platform-03"
+"preview" = "Use two sample learner identities and an operator in the local platform."
+"requirements" = "Owned Linux Incus HOST with KVM, a reviewed Incus version/image server, one supported storage pool and private managed bridge, plus approximately 1 GiB initial guest RAM and 12 GiB sparse guest disk. Keep a separate host reserve. A prepared guest/SSH account alone does not authorize host administration. Multi-user operations also require two distinct restricted TLS clients and the operator recovery identity; native results are required."
+"setup" = "Download /training/io-private-cloud-platform.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-cloud-platform directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/03.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxcontainers.org/incus/docs/main/howto/projects_confine/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-cloud-platform.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-private-cloud-platform-03-practice"
+"title" = "Operate: Separate learner and operator roles"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "Multi-user isolation must be enforced by the management API and daemon. Hiding a button cannot restrict a user who has unrestricted host sockets or certificates. Give each learner a confined project identity, test direct denied API calls and preserve a separate operator recovery identity. Quotas and ownership are separate controls."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 03 --variant guided --out work/03-guided\npython3 lab.py check work/03-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/03-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/03.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# OPERATOR on that OWNED Incus lab host. Only this host identity retains full administration.\nincus project create ascend-b -c features.images=true -c features.profiles=true -c features.networks=false\n# Repeat the lab-small profile creation/root/NIC commands from level 2 for --project ascend-b.\nincus project set ascend-a restricted=true limits.instances=2 limits.memory=3GiB\nincus project set ascend-a restricted.devices.nic=managed restricted.networks.access=incusbr0\nincus project set ascend-b restricted=true limits.instances=2 limits.memory=3GiB\nincus project set ascend-b restricted.devices.nic=managed restricted.networks.access=incusbr0\nincus config trust list\n# Enable TLS management only on a chosen PRIVATE host address reachable by the two owned clients.\n# Example after replacing ACTUAL_PRIVATE_HOST_ADDRESS: incus config set core.https_address ACTUAL_PRIVATE_HOST_ADDRESS:8443\n# Record/verify the server certificate fingerprint through the operator's trusted console.\nincus config trust add learner-a --projects ascend-a --restricted\nincus config trust add learner-b --projects ascend-b --restricted\n# Each command produces a separate enrollment token; deliver to its OWN client and do not submit it as evidence.\n# CLIENT A and CLIENT B must be different client configurations/identities with no full host socket access.\n# CLIENT A: incus remote add college TOKEN_FOR_A --project ascend-a\n# CLIENT B: incus remote add college TOKEN_FOR_B --project ascend-b\n# The remote's --project option selects a project; the server's restricted certificate enforces confinement.\n```", "```sh\n# CLIENT A: use its enrolled restricted remote for all these calls.\nincus list college: --project ascend-a\nincus info college:relay-a --project ascend-a\n# OPERATOR first creates a B-owned relay-b using B's profile/cloud-init as in level 2.\nincus info college:relay-b --project ascend-b\nincus config set college:relay-b limits.memory=2GiB --project ascend-b\n# Those B requests must be denied by the daemon, not merely absent from a UI.\n# Repeat A access from CLIENT B and record the denial. A single unrestricted client changing --project is not this test.\n# Revoke a learner certificate by its exact recorded fingerprint at cleanup:\n# OPERATOR: incus config trust remove ACTUAL_LEARNER_CERTIFICATE_FINGERPRINT\n# Confirm that client's subsequent allowed-project request is now denied.\n```", "Observe these controls and retain actual output: Two actual learner identities can use only their own allowed resources; direct cross-project requests fail at the backend. A single operator account or a hidden UI control is not this test.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 03 --out work/03-reference. Record that help was used."]
+"done_when" = "Two actual learner identities can use only their own allowed resources; direct cross-project requests fail at the backend. A single operator account or a hidden UI control is not this test. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-private-cloud-platform-03"
+"preview" = "Attempt a cross-project read/resize using the wrong identity."
+"requirements" = "Owned Linux Incus HOST with KVM, a reviewed Incus version/image server, one supported storage pool and private managed bridge, plus approximately 1 GiB initial guest RAM and 12 GiB sparse guest disk. Keep a separate host reserve. A prepared guest/SSH account alone does not authorize host administration. Multi-user operations also require two distinct restricted TLS clients and the operator recovery identity; native results are required."
+"setup" = "Download /training/io-private-cloud-platform.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-cloud-platform directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/03.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxcontainers.org/incus/docs/main/howto/projects_confine/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-cloud-platform.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-private-cloud-platform-03-milestone"
+"title" = "Apply independently: Separate learner and operator roles"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Projects, memberships, API identities, ownership, quotas and audit records."
+"steps" = ["Choose the native environment in lessons/03.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 03 --variant transfer --out work/03-transfer\npython3 lab.py check work/03-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/03-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Attempt a cross-project read/resize using the wrong identity.", "Collect the actual controls: Two actual learner identities can use only their own allowed resources; direct cross-project requests fail at the backend. A single operator account or a hidden UI control is not this test.", "Retain your commands, changed input, cause, recovery and help used in notes/03.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Two actual learner identities can use only their own allowed resources; direct cross-project requests fail at the backend. A single operator account or a hidden UI control is not this test. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-private-cloud-platform.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-cloud-platform directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/03.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxcontainers.org/incus/docs/main/howto/projects_confine/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-cloud-platform.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-private-cloud-platform-03"
+"title" = "Return later: Separate learner and operator roles"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-private-cloud-platform-03-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Projects, memberships, API identities, ownership, quotas and audit records.", "Predict a changed-condition result: Attempt a cross-project read/resize using the wrong identity.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-private-cloud-platform-04"
+"preview" = "Create/start/stop/resize a guest and inspect the platform's job and inventory state."
+"requirements" = "Owned Linux Incus HOST with KVM, a reviewed Incus version/image server, one supported storage pool and private managed bridge, plus approximately 1 GiB initial guest RAM and 12 GiB sparse guest disk. Keep a separate host reserve. A prepared guest/SSH account alone does not authorize host administration. Multi-user operations also require two distinct restricted TLS clients and the operator recovery identity; native results are required."
+"setup" = "Download /training/io-private-cloud-platform.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-cloud-platform directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/04.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxcontainers.org/incus/docs/main/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-cloud-platform.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-private-cloud-platform-04-practice"
+"title" = "Operate: Handle lifecycle and resizing jobs"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "Provisioning is an operation with intermediate states. Requested, configured-next-boot and guest-observed resources can differ. Keep reservations until cleanup succeeds, serialize conflicting operations and expose errors rather than turning the UI green after a button click. Quota rejection should not partially allocate another guest."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 04 --variant guided --out work/04-guided\npython3 lab.py check work/04-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/04-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/04.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# OPERATOR or appropriately scoped learner, on the OWNED lab host.\nincus operation list\nincus info relay-a --project ascend-a\nincus stop relay-a --project ascend-a\nincus config set relay-a limits.memory=2GiB --project ascend-a\nincus config set relay-a limits.cpu=2 --project ascend-a\nincus start relay-a --project ascend-a\nincus info relay-a --project ascend-a\n# GUEST: observe memory/CPU after any required restart.\n# Attempt one over-quota allocation through the restricted identity and verify no partial resource leak.\n```", "```sh\n# CLIENT A after normal resize; the project's 3 GiB total memory bound is lower than this request.\nincus init images:ubuntu/24.04/cloud too-large --vm --project ascend-a --profile lab-small -c limits.memory=4GiB\n# Use college:too-large when invoking through the restricted remote.\n# Rejection is expected. Inspect instances, operations and storage as OPERATOR for a partial allocation.\n# If a cleanup failed, retain it in inventory and release reservation only after reconciliation.\n```", "Observe these controls and retain actual output: Observe requested/configured/guest resources, retained operation status and an over-quota rejection without leaked allocation. Platform feature support must match the selected version.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 04 --out work/04-reference. Record that help was used."]
+"done_when" = "Observe requested/configured/guest resources, retained operation status and an over-quota rejection without leaked allocation. Platform feature support must match the selected version. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-private-cloud-platform-04"
+"preview" = "Recover a failed provisioning or partial resize operation."
+"requirements" = "Owned Linux Incus HOST with KVM, a reviewed Incus version/image server, one supported storage pool and private managed bridge, plus approximately 1 GiB initial guest RAM and 12 GiB sparse guest disk. Keep a separate host reserve. A prepared guest/SSH account alone does not authorize host administration. Multi-user operations also require two distinct restricted TLS clients and the operator recovery identity; native results are required."
+"setup" = "Download /training/io-private-cloud-platform.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-cloud-platform directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/04.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxcontainers.org/incus/docs/main/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-cloud-platform.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-private-cloud-platform-04-milestone"
+"title" = "Apply independently: Handle lifecycle and resizing jobs"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Queued operations, states, locking, host observations, reconciliation and failed jobs."
+"steps" = ["Choose the native environment in lessons/04.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 04 --variant transfer --out work/04-transfer\npython3 lab.py check work/04-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/04-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Recover a failed provisioning or partial resize operation.", "Collect the actual controls: Observe requested/configured/guest resources, retained operation status and an over-quota rejection without leaked allocation. Platform feature support must match the selected version.", "Retain your commands, changed input, cause, recovery and help used in notes/04.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Observe requested/configured/guest resources, retained operation status and an over-quota rejection without leaked allocation. Platform feature support must match the selected version. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-private-cloud-platform.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-cloud-platform directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/04.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxcontainers.org/incus/docs/main/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-cloud-platform.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-private-cloud-platform-04"
+"title" = "Return later: Handle lifecycle and resizing jobs"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-private-cloud-platform-04-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Queued operations, states, locking, host observations, reconciliation and failed jobs.", "Predict a changed-condition result: Recover a failed provisioning or partial resize operation.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-private-cloud-platform-05"
+"preview" = "Give a learner guest a website route and a separate administration path."
+"requirements" = "Owned Linux Incus HOST with KVM, a reviewed Incus version/image server, one supported storage pool and private managed bridge, plus approximately 1 GiB initial guest RAM and 12 GiB sparse guest disk. Keep a separate host reserve. A prepared guest/SSH account alone does not authorize host administration. Multi-user operations also require two distinct restricted TLS clients and the operator recovery identity; native results are required."
+"setup" = "Download /training/io-private-cloud-platform.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-cloud-platform directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/05.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://caddyserver.com/docs/caddyfile/directives/reverse_proxy"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-cloud-platform.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-private-cloud-platform-05-practice"
+"title" = "Operate: Publish a guest service"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "A running guest, a reachable management endpoint and a published website are separate states. Give the website a deliberate edge route while keeping host management private. Instance addresses may change after recreation; either discovery or a controlled address policy must update the route. A guest user must not need host administrator credentials to serve an application."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 05 --variant guided --out work/05-guided\npython3 lab.py check work/05-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/05-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/05.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# OPERATOR: inspect the guest's actual address and network.\nincus list --project ascend-a\nincus exec relay-a --project ascend-a -- ip -br address\n# GUEST: run Relay on its private interface, using only synthetic data.\n# EDGE: adapt the supplied Caddyfile to that actual private address.\ncaddy validate --config inputs/05/Caddyfile --adapter caddyfile\ncaddy run --config inputs/05/Caddyfile --adapter caddyfile\n# CLIENT: curl http://127.0.0.1:8080/version\n# Test guest SSH and management-API permissions separately.\n```", "Observe these controls and retain actual output: The edge returns the actual guest release and intended site path while management/cross-guest access remains restricted. Label a loopback edge as local until an external route is tested.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 05 --out work/05-reference. Record that help was used."]
+"done_when" = "The edge returns the actual guest release and intended site path while management/cross-guest access remains restricted. Label a loopback edge as local until an external route is tested. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-private-cloud-platform-05"
+"preview" = "Repair a failed route without granting host administration to the guest user."
+"requirements" = "Owned Linux Incus HOST with KVM, a reviewed Incus version/image server, one supported storage pool and private managed bridge, plus approximately 1 GiB initial guest RAM and 12 GiB sparse guest disk. Keep a separate host reserve. A prepared guest/SSH account alone does not authorize host administration. Multi-user operations also require two distinct restricted TLS clients and the operator recovery identity; native results are required."
+"setup" = "Download /training/io-private-cloud-platform.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-cloud-platform directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/05.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://caddyserver.com/docs/caddyfile/directives/reverse_proxy"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-cloud-platform.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-private-cloud-platform-05-milestone"
+"title" = "Apply independently: Publish a guest service"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Floating/routed/bridged addresses, reverse proxy, guest perimeter and private access."
+"steps" = ["Choose the native environment in lessons/05.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 05 --variant transfer --out work/05-transfer\npython3 lab.py check work/05-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/05-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Repair a failed route without granting host administration to the guest user.", "Collect the actual controls: The edge returns the actual guest release and intended site path while management/cross-guest access remains restricted. Label a loopback edge as local until an external route is tested.", "Retain your commands, changed input, cause, recovery and help used in notes/05.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "The edge returns the actual guest release and intended site path while management/cross-guest access remains restricted. Label a loopback edge as local until an external route is tested. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-private-cloud-platform.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-cloud-platform directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/05.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://caddyserver.com/docs/caddyfile/directives/reverse_proxy"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-cloud-platform.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-private-cloud-platform-05"
+"title" = "Return later: Publish a guest service"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-private-cloud-platform-05-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Floating/routed/bridged addresses, reverse proxy, guest perimeter and private access.", "Predict a changed-condition result: Repair a failed route without granting host administration to the guest user.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-private-cloud-platform-06"
+"preview" = "Restore or migrate between supported lab hypervisors; use a second physical host for physical-failure evidence."
+"requirements" = "Owned Linux Incus HOST with KVM, a reviewed Incus version/image server, one supported storage pool and private managed bridge, plus approximately 1 GiB initial guest RAM and 12 GiB sparse guest disk. Keep a separate host reserve. A prepared guest/SSH account alone does not authorize host administration. Multi-user operations also require two distinct restricted TLS clients and the operator recovery identity; native results are required."
+"setup" = "Download /training/io-private-cloud-platform.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-cloud-platform directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/06.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxcontainers.org/incus/docs/main/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-cloud-platform.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-private-cloud-platform-06-practice"
+"title" = "Operate: Move and recover guests"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "A portable backup includes the guest state/configuration needed by the target platform. Live migration additionally needs compatible CPU, storage and networking. Logical migration between nested hosts on one PC does not test physical host failure. Start with an independent offline restore, inspect identity and test application data while the source is stopped."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 06 --variant guided --out work/06-guided\npython3 lab.py check work/06-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/06-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/06.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# OPERATOR, OWNED Incus host and project only.\nmkdir -p work/instance-backups\nincus stop relay-a --project ascend-a\nincus export relay-a work/instance-backups/relay-a.tar.gz --project ascend-a\n# Restore under a NEW name, inspect/change network identity before starting on the same network.\nincus import work/instance-backups/relay-a.tar.gz relay-restored --project ascend-a\nincus config show relay-restored --project ascend-a --expanded\n# Start only after checking identities/resource quota; verify data with relay-a still stopped.\n# A second physical host enables additional host-failure/migration tests after compatibility preflight.\n```", "```sh\n# The resized source plus a same-size restored guest may exceed the 3 GiB project bound.\n# A stopped VM can still count toward project quotas. OPERATOR must inspect/reserve aggregate resources\n# and, if physically affordable, temporarily raise only ascend-a's memory limit for the restore test.\n# Restore is a replacement: keep the source stopped, inspect MAC/IP/machine ID/SSH identity, and never\n# start both with duplicate guest identities. If both will coexist, disconnect the restored guest NIC,\n# reset guest machine/SSH/cloud-init identity through the operator console and revalidate before reconnecting.\n# After selective cleanup restore the original project limit; do not free a reservation merely because a VM stopped.\n```", "Observe these controls and retain actual output: A new guest restores actual service/data and appropriate identity while the original is stopped. Name the shared physical resources and distinguish restore, offline move and live migration.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 06 --out work/06-reference. Record that help was used."]
+"done_when" = "A new guest restores actual service/data and appropriate identity while the original is stopped. Name the shared physical resources and distinguish restore, offline move and live migration. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-private-cloud-platform-06"
+"preview" = "Explain or recover a migration blocked by storage, CPU or network prerequisites."
+"requirements" = "Owned Linux Incus HOST with KVM, a reviewed Incus version/image server, one supported storage pool and private managed bridge, plus approximately 1 GiB initial guest RAM and 12 GiB sparse guest disk. Keep a separate host reserve. A prepared guest/SSH account alone does not authorize host administration. Multi-user operations also require two distinct restricted TLS clients and the operator recovery identity; native results are required."
+"setup" = "Download /training/io-private-cloud-platform.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-cloud-platform directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/06.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxcontainers.org/incus/docs/main/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-cloud-platform.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-private-cloud-platform-06-milestone"
+"title" = "Apply independently: Move and recover guests"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Backups, storage reachability, CPU compatibility, offline/live migration and physical failure domains."
+"steps" = ["Choose the native environment in lessons/06.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 06 --variant transfer --out work/06-transfer\npython3 lab.py check work/06-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/06-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Explain or recover a migration blocked by storage, CPU or network prerequisites.", "Collect the actual controls: A new guest restores actual service/data and appropriate identity while the original is stopped. Name the shared physical resources and distinguish restore, offline move and live migration.", "Retain your commands, changed input, cause, recovery and help used in notes/06.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "A new guest restores actual service/data and appropriate identity while the original is stopped. Name the shared physical resources and distinguish restore, offline move and live migration. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-private-cloud-platform.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-cloud-platform directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/06.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxcontainers.org/incus/docs/main/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-cloud-platform.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-private-cloud-platform-06"
+"title" = "Return later: Move and recover guests"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-private-cloud-platform-06-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Backups, storage reachability, CPU compatibility, offline/live migration and physical failure domains.", "Predict a changed-condition result: Explain or recover a migration blocked by storage, CPU or network prerequisites.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-private-cloud-platform-07"
+"preview" = "Deploy Relay's stateless mode in a small separate cluster lab and compare its control loop with VM management."
+"requirements" = "Python for preparation; native route needs your own PC with Docker, kind, kubectl, an image build and roughly 4–6 GiB additional planning RAM. Stop unused VM labs and inspect actual host reserve."
+"setup" = "Download /training/io-private-cloud-platform.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-cloud-platform directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/07.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-cloud-platform.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-private-cloud-platform-07-practice"
+"title" = "Operate: Compare orchestration layers"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "Kubernetes reconciles workloads and service endpoints; a VM manager owns guest machines and virtual devices. These control loops operate at different boundaries. A pod resource request affects scheduling while a limit constrains runtime use; a selected Service can route to no ready pods. Use a small separate cluster lab rather than stacking every control plane on the small server."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 07 --variant guided --out work/07-guided\npython3 lab.py check work/07-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/07-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/07.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# Learner PC with a reviewed kind/kubectl setup and enough remaining RAM; keep this separate from other heavy labs.\nkind create cluster --name ascend-infra\nkubectl config current-context\ndocker build -f inputs/07/Dockerfile -t ascend-relay:lab .\n# Inspect the built image ID; this exercise uses the local Never-pull image only.\nkind load docker-image ascend-relay:lab --name ascend-infra\nkubectl apply -f inputs/07/relay.yaml\nkubectl rollout status deployment/relay-lab\nkubectl get pods,services,endpointslices\nkubectl port-forward service/relay-lab 18080:8000 --address 127.0.0.1\n# CLIENT: curl http://127.0.0.1:18080/version\n# After the fault/recovery controls: kind delete cluster --name ascend-infra\n```", "Observe these controls and retain actual output: The actual cluster serves the expected image/release, a selector/readiness fault removes the intended traffic path, and recovery plus owned-cluster cleanup are observed.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 07 --out work/07-reference. Record that help was used."]
+"done_when" = "The actual cluster serves the expected image/release, a selector/readiness fault removes the intended traffic path, and recovery plus owned-cluster cleanup are observed. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-private-cloud-platform-07"
+"preview" = "Recover a selector/readiness or resource-allocation fault."
+"requirements" = "Python for preparation; native route needs your own PC with Docker, kind, kubectl, an image build and roughly 4–6 GiB additional planning RAM. Stop unused VM labs and inspect actual host reserve."
+"setup" = "Download /training/io-private-cloud-platform.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-cloud-platform directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/07.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-cloud-platform.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-private-cloud-platform-07-milestone"
+"title" = "Apply independently: Compare orchestration layers"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. VM lifecycle, container orchestration, Kubernetes requests/limits, scheduler and storage boundaries."
+"steps" = ["Choose the native environment in lessons/07.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 07 --variant transfer --out work/07-transfer\npython3 lab.py check work/07-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/07-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Recover a selector/readiness or resource-allocation fault.", "Collect the actual controls: The actual cluster serves the expected image/release, a selector/readiness fault removes the intended traffic path, and recovery plus owned-cluster cleanup are observed.", "Retain your commands, changed input, cause, recovery and help used in notes/07.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "The actual cluster serves the expected image/release, a selector/readiness fault removes the intended traffic path, and recovery plus owned-cluster cleanup are observed. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-private-cloud-platform.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-cloud-platform directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/07.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://kubernetes.io/docs/tutorials/kubernetes-basics/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-cloud-platform.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-private-cloud-platform-07"
+"title" = "Return later: Compare orchestration layers"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-private-cloud-platform-07-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: VM lifecycle, container orchestration, Kubernetes requests/limits, scheduler and storage boundaries.", "Predict a changed-condition result: Recover a selector/readiness or resource-allocation fault.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-private-cloud-platform-08"
+"preview" = "Operate two learner guests through the selected existing control plane and hand over a reproducible runbook."
+"requirements" = "Owned Linux Incus HOST with KVM, a reviewed Incus version/image server, one supported storage pool and private managed bridge, plus approximately 1 GiB initial guest RAM and 12 GiB sparse guest disk. Keep a separate host reserve. A prepared guest/SSH account alone does not authorize host administration. Multi-user operations also require two distinct restricted TLS clients and the operator recovery identity; native results are required."
+"setup" = "Download /training/io-private-cloud-platform.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-cloud-platform directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/08.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxcontainers.org/incus/docs/main/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-cloud-platform.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-private-cloud-platform-08-practice"
+"title" = "Operate: Run the college-style capstone"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "A college-style service joins template selection, project identity, resource admission, guest boot, SSH, application publishing, observation and recovery. Each stage needs its own evidence and permissions. Use the existing platform UI/API to prove the workflow before building a custom front end; retain failed-operation state until inventory is reconciled."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 08 --variant guided --out work/08-guided\npython3 lab.py check work/08-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/08-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/08.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# OWNED lab control plane: run the complete two-project scenario with two restricted learner identities.\nincus project list\nincus list --all-projects\nincus operation list\n# For each learner: create a reviewed VM, obtain its unique SSH identity, deploy the site and retain the resource shape.\n# OPERATOR: apply one permitted resize, reject one over-quota request, restore one guest from backup.\n# LEARNER A: demonstrate backend denial for B's private instance/console/configuration.\n# Release only the owned exercise guests; inspect remaining images, volumes and failed tasks before freeing reservations.\n```", "Observe these controls and retain actual output: Submit a reproducible runbook with genuine per-identity authorization, website, resize, over-quota, restore and selective cleanup evidence. All components on one PC still share that physical failure domain.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 08 --out work/08-reference. Record that help was used."]
+"done_when" = "Submit a reproducible runbook with genuine per-identity authorization, website, resize, over-quota, restore and selective cleanup evidence. All components on one PC still share that physical failure domain. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-private-cloud-platform-08"
+"preview" = "Inject a failed resize, denied cross-learner operation or lost active disk."
+"requirements" = "Owned Linux Incus HOST with KVM, a reviewed Incus version/image server, one supported storage pool and private managed bridge, plus approximately 1 GiB initial guest RAM and 12 GiB sparse guest disk. Keep a separate host reserve. A prepared guest/SSH account alone does not authorize host administration. Multi-user operations also require two distinct restricted TLS clients and the operator recovery identity; native results are required."
+"setup" = "Download /training/io-private-cloud-platform.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-cloud-platform directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/08.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxcontainers.org/incus/docs/main/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-cloud-platform.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-private-cloud-platform-08-milestone"
+"title" = "Apply independently: Run the college-style capstone"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Template → assigned guest → SSH → hosted site → measured load → resize → recovery → release."
+"steps" = ["Choose the native environment in lessons/08.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 08 --variant transfer --out work/08-transfer\npython3 lab.py check work/08-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/08-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Inject a failed resize, denied cross-learner operation or lost active disk.", "Collect the actual controls: Submit a reproducible runbook with genuine per-identity authorization, website, resize, over-quota, restore and selective cleanup evidence. All components on one PC still share that physical failure domain.", "Retain your commands, changed input, cause, recovery and help used in notes/08.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Submit a reproducible runbook with genuine per-identity authorization, website, resize, over-quota, restore and selective cleanup evidence. All components on one PC still share that physical failure domain. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-private-cloud-platform.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-private-cloud-platform directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/08.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxcontainers.org/incus/docs/main/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-private-cloud-platform.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-private-cloud-platform-08"
+"title" = "Return later: Run the college-style capstone"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-private-cloud-platform-08-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Template → assigned guest → SSH → hosted site → measured load → resize → recovery → release.", "Predict a changed-condition result: Inject a failed resize, denied cross-learner operation or lost active disk.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."

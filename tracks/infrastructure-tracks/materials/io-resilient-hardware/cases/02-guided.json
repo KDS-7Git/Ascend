@@ -1,0 +1,80 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Set per-lab log/metrics limits and inspect their effects on a generated small dataset.",
+  "contract": [
+    {
+      "field": "journal_limit_mib",
+      "op": "max",
+      "value": 128,
+      "why": "journal limit mib: satisfy the stated bound operational data contract"
+    },
+    {
+      "field": "retained_errors",
+      "op": "eq",
+      "value": true,
+      "why": "retained errors: satisfy the stated bound operational data contract"
+    },
+    {
+      "field": "metrics_cardinality_bounded",
+      "op": "eq",
+      "value": true,
+      "why": "metrics cardinality bounded: satisfy the stated bound operational data contract"
+    },
+    {
+      "field": "free_space_reserve_gib",
+      "op": "eq",
+      "value": 10,
+      "why": "free space reserve gib: satisfy the stated bound operational data contract"
+    },
+    {
+      "field": "journal_limit_mib",
+      "op": "min",
+      "value": 1,
+      "why": "journal limit mib must be finite and within the positive lab envelope"
+    }
+  ],
+  "starting": {
+    "journal_limit_mib": 100000,
+    "retained_errors": true,
+    "metrics_cardinality_bounded": true,
+    "free_space_reserve_gib": 10
+  },
+  "reference": {
+    "journal_limit_mib": 128,
+    "retained_errors": true,
+    "metrics_cardinality_bounded": true,
+    "free_space_reserve_gib": 10
+  },
+  "rules": [
+    {
+      "field": "journal_limit_mib",
+      "op": "max",
+      "value": 128,
+      "why": "journal limit mib: satisfy the stated bound operational data contract"
+    },
+    {
+      "field": "retained_errors",
+      "op": "eq",
+      "value": true,
+      "why": "retained errors: satisfy the stated bound operational data contract"
+    },
+    {
+      "field": "metrics_cardinality_bounded",
+      "op": "eq",
+      "value": true,
+      "why": "metrics cardinality bounded: satisfy the stated bound operational data contract"
+    },
+    {
+      "field": "free_space_reserve_gib",
+      "op": "eq",
+      "value": 10,
+      "why": "free space reserve gib: satisfy the stated bound operational data contract"
+    },
+    {
+      "field": "journal_limit_mib",
+      "op": "min",
+      "value": 1,
+      "why": "journal limit mib must be finite and within the positive lab envelope"
+    }
+  ]
+}

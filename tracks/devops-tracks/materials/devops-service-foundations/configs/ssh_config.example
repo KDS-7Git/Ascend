@@ -1,0 +1,8 @@
+Host relay-lab
+    HostName 192.0.2.10
+    User student
+    IdentityFile ~/.ssh/ascend_lab
+    IdentitiesOnly yes
+    ServerAliveInterval 30
+# Replace the documentation address with your owned guest address.
+# Verify the guest host-key fingerprint through its console before accepting.

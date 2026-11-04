@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Fix a changed upstream/name mismatch while preserving the intended boundary.",
+  "contract": [
+    {
+      "field": "listen",
+      "op": "eq",
+      "value": "127.0.0.1:8080",
+      "why": "listen: satisfy the stated put an edge in front contract"
+    },
+    {
+      "field": "upstream",
+      "op": "eq",
+      "value": "127.0.0.1:8000",
+      "why": "upstream: satisfy the stated put an edge in front contract"
+    },
+    {
+      "field": "host_header_is_bind_rule",
+      "op": "eq",
+      "value": false,
+      "why": "host header is bind rule: satisfy the stated put an edge in front contract"
+    },
+    {
+      "field": "origin_direct_access_intended",
+      "op": "eq",
+      "value": false,
+      "why": "origin direct access intended: satisfy the stated put an edge in front contract"
+    }
+  ],
+  "starting": {
+    "listen": "0.0.0.0:8080",
+    "upstream": "127.0.0.1:8000",
+    "host_header_is_bind_rule": true,
+    "origin_direct_access_intended": false
+  },
+  "reference": {
+    "listen": "127.0.0.1:8080",
+    "upstream": "127.0.0.1:8000",
+    "host_header_is_bind_rule": false,
+    "origin_direct_access_intended": false
+  },
+  "rules": [
+    {
+      "field": "listen",
+      "op": "eq",
+      "value": "127.0.0.1:8080",
+      "why": "listen: satisfy the stated put an edge in front contract"
+    },
+    {
+      "field": "upstream",
+      "op": "eq",
+      "value": "127.0.0.1:8000",
+      "why": "upstream: satisfy the stated put an edge in front contract"
+    },
+    {
+      "field": "host_header_is_bind_rule",
+      "op": "eq",
+      "value": false,
+      "why": "host header is bind rule: satisfy the stated put an edge in front contract"
+    },
+    {
+      "field": "origin_direct_access_intended",
+      "op": "eq",
+      "value": false,
+      "why": "origin direct access intended: satisfy the stated put an edge in front contract"
+    }
+  ]
+}

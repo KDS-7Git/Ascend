@@ -1,0 +1,590 @@
+# Generated from docs/curriculum/infrastructure-paths.json; unreviewed draft teaching content.
+[pack]
+"id" = "io-linux-network"
+"title" = "Linux & Network Foundations"
+"kind" = "proficiency"
+"version" = 1
+"source" = "ai-draft"
+"reviewed" = false
+
+[[level]]
+"id" = "io-linux-network-01"
+"title" = "Follow a real request"
+"lane" = "main"
+
+[[level]]
+"id" = "io-linux-network-02"
+"title" = "Own files, processes and permissions"
+"lane" = "main"
+
+[[level]]
+"id" = "io-linux-network-03"
+"title" = "Connect a local network"
+"lane" = "main"
+
+[[level]]
+"id" = "io-linux-network-04"
+"title" = "Resolve names deliberately"
+"lane" = "main"
+
+[[level]]
+"id" = "io-linux-network-05"
+"title" = "Read transport and application failures"
+"lane" = "main"
+
+[[level]]
+"id" = "io-linux-network-06"
+"title" = "Cross network boundaries"
+"lane" = "main"
+
+[[level]]
+"id" = "io-linux-network-07"
+"title" = "Keep a service running"
+"lane" = "main"
+
+[[level]]
+"id" = "io-linux-network-08"
+"title" = "Recover your first service"
+"lane" = "main"
+
+[[level]]
+"id" = "entry"
+"title" = "Choose your entry point"
+"lane" = "side"
+
+[[level]]
+"id" = "recall"
+"title" = "Return later"
+"lane" = "side"
+
+[[node]]
+"level" = "entry"
+"preview" = "Match a concrete practical outcome to what you can already demonstrate."
+"requirements" = "Python 3.11+, a text editor and your own PC. No account or device purchase is required for this entry check."
+"setup" = "Download /training/io-linux-network.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-linux-network directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/entry.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxupskillchallenge.org/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-linux-network.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "entry-demonstration"
+"title" = "Choose an entry point through a short demonstration"
+"size" = "S"
+"minutes" = 20
+"needs" = []
+"brief" = "New to this subject: start with the worked operation in level 1. Already practising: attempt an independent operation first and use Ascend early-unlock for a later level when appropriate. It records your choice, not an automatic proficiency pass. Job preparation emphasizes the reproducible handover; interest-led work can extend the same technical evidence with a different owned environment."
+"steps" = ["Read bootstrap.md, record your machine/OS and confirm the tools work.\n```sh\npython3 shared/selfcheck.py\n```\nThis checks the teaching tools, not proficiency.", "Read the eight independent finish lines in README.md and lessons/NN.md. Choose the first operation you cannot demonstrate on a fresh target without the worked steps.", "Begin that independent milestone if you already have the background, using existing early-unlock when needed. Otherwise start level 1 worked practice. Your own demonstration remains required; an entry choice does not complete other nodes.", "Record the chosen level, supporting prior observation and next concrete action in notes/entry.md. Return to guided material whenever a gap appears."]
+"done_when" = "Your local tool checks run, a practical observation supports the chosen starting level, and notes/entry.md names the next operation. This is manual self-assessment and does not certify or complete other levels."
+
+[[node]]
+"level" = "io-linux-network-01"
+"preview" = "Run the supplied service, call it with curl, and correlate one request with its process and log."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python 3.11+, curl and a Linux shell with ss; no cloud account or VM purchase."
+"setup" = "Download /training/io-linux-network.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-linux-network directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/01.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxupskillchallenge.org/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-linux-network.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-linux-network-01-practice"
+"title" = "Operate: Follow a real request"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "A URL names a protocol, host and optional port. The operating system delivers a TCP connection to a listening socket owned by a process; that process interprets HTTP. A DNS answer or a listening socket proves only one part of the path. Follow one request before changing configuration, and distinguish an HTTP error from failure to connect."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 01 --variant guided --out work/01-guided\npython3 lab.py check work/01-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/01-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/01.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# PC or service GUEST, in this extracted track directory; leave this terminal running.\nmkdir -p data\npython3 shared/relay.py --host 127.0.0.1 --port 8000 --data data/relay.sqlite --release v1\n```", "```sh\n# A second terminal in the SAME machine.\ncurl -i http://127.0.0.1:8000/health\ncurl -i http://127.0.0.1:8000/version\npython3 shared/check_service.py --url http://127.0.0.1:8000 --expect-release v1\n```", "```sh\nss -ltnp | sed -n '1,12p'\ncurl --max-time 2 -i http://127.0.0.1:8999/health\n# Stop Relay with Ctrl+C in its own terminal, then repeat the successful probe.\n```", "Observe these controls and retain actual output: Retain a 200 version response, the matching socket/process, a refused wrong-port request and refusal after stopping only this service.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 01 --out work/01-reference. Record that help was used."]
+"done_when" = "Retain a 200 version response, the matching socket/process, a refused wrong-port request and refusal after stopping only this service. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-linux-network-01"
+"preview" = "Diagnose a wrong port and a stopped process from a changed fixture."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python 3.11+, curl and a Linux shell with ss; no cloud account or VM purchase."
+"setup" = "Download /training/io-linux-network.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-linux-network directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/01.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxupskillchallenge.org/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-linux-network.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-linux-network-01-milestone"
+"title" = "Apply independently: Follow a real request"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Processes, sockets, client/server, addresses and ports."
+"steps" = ["Choose the native environment in lessons/01.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 01 --variant transfer --out work/01-transfer\npython3 lab.py check work/01-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/01-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Diagnose a wrong port and a stopped process from a changed fixture.", "Collect the actual controls: Retain a 200 version response, the matching socket/process, a refused wrong-port request and refusal after stopping only this service.", "Retain your commands, changed input, cause, recovery and help used in notes/01.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Retain a 200 version response, the matching socket/process, a refused wrong-port request and refusal after stopping only this service. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-linux-network.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-linux-network directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/01.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxupskillchallenge.org/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-linux-network.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-linux-network-01"
+"title" = "Return later: Follow a real request"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-linux-network-01-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Processes, sockets, client/server, addresses and ports.", "Predict a changed-condition result: Diagnose a wrong port and a stopped process from a changed fixture.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-linux-network-02"
+"preview" = "Trace command output and errors, then run the service as an unprivileged user and inspect its working directory and open files."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: A POSIX shell and editor. The optional second-identity permission check requires administrator rights only in a disposable Linux guest."
+"setup" = "Download /training/io-linux-network.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-linux-network directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/02.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxupskillchallenge.org/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-linux-network.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-linux-network-02-practice"
+"title" = "Operate: Own files, processes and permissions"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "The shell parses words before it starts a process. Quoting preserves spaces; pipes connect stdout to stdin; redirection opens a file and stdout/stderr are different streams. Permissions apply to identities and directories as well as a file. Solve the actual path or access problem rather than making all files world-writable."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 02 --variant guided --out work/02-guided\npython3 lab.py check work/02-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/02-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/02.md. Predict a successful response and a failure before running the following native operations.", "```sh\nmkdir -p work/shell\npython3 -c 'import sys; print(\"normal output\"); print(\"diagnostic output\",file=sys.stderr)' > work/shell/stdout.txt 2> work/shell/stderr.txt\ncat work/shell/stdout.txt\ncat work/shell/stderr.txt\nprintf '%s\n' 'two words' | wc -w\ntouch 'work/shell/file with spaces.txt'\nls -l 'work/shell/file with spaces.txt'\nchmod 600 'work/shell/file with spaces.txt'\nstat 'work/shell/file with spaces.txt'\n```", "```sh\n# Optional identity control, only inside your disposable Linux GUEST.\nsudo useradd --system --shell /usr/sbin/nologin ascend-reader\nsudo install -d -m 0755 /var/tmp/ascend-permissions\nprintf 'synthetic practice value\n' > work/shell/synthetic-secret\nsudo install -o \"$USER\" -m 0600 work/shell/synthetic-secret /var/tmp/ascend-permissions/secret\ncat /var/tmp/ascend-permissions/secret\nsudo -u ascend-reader cat /var/tmp/ascend-permissions/secret\n# The last command must fail. Remove only this synthetic file and this newly created lab user at cleanup.\n```", "Observe these controls and retain actual output: Keep distinct output/error files, show the quoted spaced path works, and explain which identity can read the 0600 file. Do not claim another-user denial unless you actually test a second owned lab identity.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 02 --out work/02-reference. Record that help was used."]
+"done_when" = "Keep distinct output/error files, show the quoted spaced path works, and explain which identity can read the 0600 file. Do not claim another-user denial unless you actually test a second owned lab identity. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-linux-network-02"
+"preview" = "Repair a permission or environment fault without broadening unrelated access."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: A POSIX shell and editor. The optional second-identity permission check requires administrator rights only in a disposable Linux guest."
+"setup" = "Download /training/io-linux-network.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-linux-network directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/02.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxupskillchallenge.org/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-linux-network.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-linux-network-02-milestone"
+"title" = "Apply independently: Own files, processes and permissions"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Shell command structure, quoting, variables, pipes/redirection, stdout/stderr, paths, users/groups, environment, exit codes and signals."
+"steps" = ["Choose the native environment in lessons/02.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 02 --variant transfer --out work/02-transfer\npython3 lab.py check work/02-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/02-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Repair a permission or environment fault without broadening unrelated access.", "Collect the actual controls: Keep distinct output/error files, show the quoted spaced path works, and explain which identity can read the 0600 file. Do not claim another-user denial unless you actually test a second owned lab identity.", "Retain your commands, changed input, cause, recovery and help used in notes/02.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Keep distinct output/error files, show the quoted spaced path works, and explain which identity can read the 0600 file. Do not claim another-user denial unless you actually test a second owned lab identity. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-linux-network.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-linux-network directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/02.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxupskillchallenge.org/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-linux-network.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-linux-network-02"
+"title" = "Return later: Own files, processes and permissions"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-linux-network-02-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Shell command structure, quoting, variables, pipes/redirection, stdout/stderr, paths, users/groups, environment, exit codes and signals.", "Predict a changed-condition result: Repair a permission or environment fault without broadening unrelated access.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-linux-network-03"
+"preview" = "Connect a client and server using a disposable virtual network; then try a second owned device if available."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Two owned Linux guests/devices on an isolated permitted network, Python, curl and iproute2; no public address required."
+"setup" = "Download /training/io-linux-network.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-linux-network directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/03.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxupskillchallenge.org/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-linux-network.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-linux-network-03-practice"
+"title" = "Operate: Connect a local network"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "A host decides whether a destination is on-link or needs a gateway using its address, prefix and routes. Loopback addresses refer to the current machine, and a loopback-bound server cannot serve a different guest. Guest Wi-Fi/client isolation may block peers even if each reaches the internet. Inspect both ends rather than treating all connection failures as a server defect."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 03 --variant guided --out work/03-guided\npython3 lab.py check work/03-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/03-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/03.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# Linux CLIENT/GUEST; these commands inspect without changing routes.\nip -br address\nip route\nip neigh\nip route get 192.168.122.10\n# On the SERVICE GUEST, use its actual lab address from ip -br address.\n# Run the server bound to that address, then curl it from a second owned guest.\n```", "```sh\n# Example only after confirming this is the SERVICE GUEST's assigned address.\nLAB_SERVICE_IP=192.168.122.10\npython3 shared/relay.py --host \"$LAB_SERVICE_IP\" --port 8000 --data data/relay.sqlite --release v1\n# CLIENT: curl -i http://192.168.122.10:8000/version\n```", "Observe these controls and retain actual output: Observe a response from a second owned guest and a loopback-only failure. Record actual addresses/subnets; the portable case alone does not establish LAN access.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 03 --out work/03-reference. Record that help was used."]
+"done_when" = "Observe a response from a second owned guest and a loopback-only failure. Record actual addresses/subnets; the portable case alone does not establish LAN access. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-linux-network-03"
+"preview" = "Find a wrong subnet, guest-Wi-Fi isolation or loopback-only binding."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Two owned Linux guests/devices on an isolated permitted network, Python, curl and iproute2; no public address required."
+"setup" = "Download /training/io-linux-network.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-linux-network directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/03.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxupskillchallenge.org/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-linux-network.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-linux-network-03-milestone"
+"title" = "Apply independently: Connect a local network"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Subnets, DHCP, ARP/neighbor discovery, routes, loopback and bind addresses."
+"steps" = ["Choose the native environment in lessons/03.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 03 --variant transfer --out work/03-transfer\npython3 lab.py check work/03-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/03-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Find a wrong subnet, guest-Wi-Fi isolation or loopback-only binding.", "Collect the actual controls: Observe a response from a second owned guest and a loopback-only failure. Record actual addresses/subnets; the portable case alone does not establish LAN access.", "Retain your commands, changed input, cause, recovery and help used in notes/03.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Observe a response from a second owned guest and a loopback-only failure. Record actual addresses/subnets; the portable case alone does not establish LAN access. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-linux-network.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-linux-network directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/03.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxupskillchallenge.org/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-linux-network.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-linux-network-03"
+"title" = "Return later: Connect a local network"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-linux-network-03-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Subnets, DHCP, ARP/neighbor discovery, routes, loopback and bind addresses.", "Predict a changed-condition result: Find a wrong subnet, guest-Wi-Fi isolation or loopback-only binding.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-linux-network-04"
+"preview" = "Use an isolated DNS fixture and inspect answers, authority and caching with dig."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: A Linux client with dig/curl; optional disposable DNS guest with dnsmasq. Use a prepared local Relay process for the override control."
+"setup" = "Download /training/io-linux-network.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-linux-network directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/04.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://developers.cloudflare.com/dns/manage-dns-records/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-linux-network.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-linux-network-04-practice"
+"title" = "Operate: Resolve names deliberately"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "A hosts-file substitution, recursive resolver response and authoritative DNS response are different observations. DNS TTL affects caching; changing an application does not repair a wrong A/AAAA record. A bad IPv6 answer can break some clients even when IPv4 works. Use an explicit resolver or curl address override to isolate DNS without claiming the override repaired public DNS."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 04 --variant guided --out work/04-guided\npython3 lab.py check work/04-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/04-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/04.md. Predict a successful response and a failure before running the following native operations.", "```sh\ndig example.com A\ndig example.com AAAA\ndig example.com NS\n# Record answer source and TTL, not only the IP address.\ncurl --resolve relay.test:8000:127.0.0.1 http://relay.test:8000/version\n# The --resolve command needs the local Relay process and affects this curl invocation only.\n```", "```sh\n# Optional isolated DNS GUEST, after installing dnsmasq in that disposable guest.\ndnsmasq --no-daemon --port=1053 --listen-address=127.0.0.1 --bind-interfaces --no-hosts --no-resolv --address=/relay.test/127.0.0.1\n# Second terminal: dig @127.0.0.1 -p 1053 relay.test A\n```", "Observe these controls and retain actual output: Retain the resolver/TTL and explicit override results. For a DNS repair, query the changed resolver again; an HTTP override alone is not DNS evidence.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 04 --out work/04-reference. Record that help was used."]
+"done_when" = "Retain the resolver/TTL and explicit override results. For a DNS repair, query the changed resolver again; an HTTP override alone is not DNS evidence. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-linux-network-04"
+"preview" = "Repair a stale or wrong answer while distinguishing hosts-file substitution from DNS."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: A Linux client with dig/curl; optional disposable DNS guest with dnsmasq. Use a prepared local Relay process for the override control."
+"setup" = "Download /training/io-linux-network.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-linux-network directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/04.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://developers.cloudflare.com/dns/manage-dns-records/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-linux-network.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-linux-network-04-milestone"
+"title" = "Apply independently: Resolve names deliberately"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Stub/recursive/authoritative DNS, records, TTL, cache and split DNS."
+"steps" = ["Choose the native environment in lessons/04.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 04 --variant transfer --out work/04-transfer\npython3 lab.py check work/04-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/04-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Repair a stale or wrong answer while distinguishing hosts-file substitution from DNS.", "Collect the actual controls: Retain the resolver/TTL and explicit override results. For a DNS repair, query the changed resolver again; an HTTP override alone is not DNS evidence.", "Retain your commands, changed input, cause, recovery and help used in notes/04.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Retain the resolver/TTL and explicit override results. For a DNS repair, query the changed resolver again; an HTTP override alone is not DNS evidence. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-linux-network.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-linux-network directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/04.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://developers.cloudflare.com/dns/manage-dns-records/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-linux-network.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-linux-network-04"
+"title" = "Return later: Resolve names deliberately"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-linux-network-04-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Stub/recursive/authoritative DNS, records, TTL, cache and split DNS.", "Predict a changed-condition result: Repair a stale or wrong answer while distinguishing hosts-file substitution from DNS.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-linux-network-05"
+"preview" = "Compare connection refusal, timeout, HTTP error and certificate rejection on owned endpoints."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python, curl and OpenSSL on your PC; scoped self-signed local TLS needs no public domain."
+"setup" = "Download /training/io-linux-network.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-linux-network directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/05.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://letsencrypt.org/docs/challenge-types/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-linux-network.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-linux-network-05-practice"
+"title" = "Operate: Read transport and application failures"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "Connection refusal means no acceptable listener at that address/port; a timeout can arise along the network path; an HTTP 500 proves an HTTP endpoint replied. TLS independently checks certificate trust and the expected name. Do not turn off certificate verification to make an HTTPS test pass."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 05 --variant guided --out work/05-guided\npython3 lab.py check work/05-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/05-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/05.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# PC or service GUEST, in this extracted track directory; leave this terminal running.\nmkdir -p data\npython3 shared/relay.py --host 127.0.0.1 --port 8000 --data data/relay.sqlite --release v1\n```", "```sh\n# A second terminal in the SAME machine.\ncurl -i http://127.0.0.1:8000/health\ncurl -i http://127.0.0.1:8000/version\npython3 shared/check_service.py --url http://127.0.0.1:8000 --expect-release v1\n```", "```sh\nmkdir -p work\ncurl --max-time 2 -v http://127.0.0.1:8999/\nopenssl req -x509 -newkey rsa:2048 -nodes -days 1 -keyout work/key.pem -out work/cert.pem -subj /CN=localhost -addext subjectAltName=DNS:localhost\nopenssl s_server -accept 127.0.0.1:8443 -cert work/cert.pem -key work/key.pem -www\n# Second terminal, same PC:\n# curl --cacert work/cert.pem https://localhost:8443/\n# curl --cacert work/cert.pem https://127.0.0.1:8443/    # name rejection\n# curl https://localhost:8443/                         # trust rejection\n```", "Observe these controls and retain actual output: The matching name with scoped CA succeeds; wrong name and untrusted certificate fail. Keep no private key in an uploaded public report.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 05 --out work/05-reference. Record that help was used."]
+"done_when" = "The matching name with scoped CA succeeds; wrong name and untrusted certificate fail. Keep no private key in an uploaded public report. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-linux-network-05"
+"preview" = "Locate a failing layer from a fresh set of observations."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python, curl and OpenSSL on your PC; scoped self-signed local TLS needs no public domain."
+"setup" = "Download /training/io-linux-network.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-linux-network directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/05.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://letsencrypt.org/docs/challenge-types/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-linux-network.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-linux-network-05-milestone"
+"title" = "Apply independently: Read transport and application failures"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. TCP, UDP, HTTP, TLS, connections, timeouts and certificate names."
+"steps" = ["Choose the native environment in lessons/05.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 05 --variant transfer --out work/05-transfer\npython3 lab.py check work/05-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/05-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Locate a failing layer from a fresh set of observations.", "Collect the actual controls: The matching name with scoped CA succeeds; wrong name and untrusted certificate fail. Keep no private key in an uploaded public report.", "Retain your commands, changed input, cause, recovery and help used in notes/05.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "The matching name with scoped CA succeeds; wrong name and untrusted certificate fail. Keep no private key in an uploaded public report. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-linux-network.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-linux-network directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/05.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://letsencrypt.org/docs/challenge-types/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-linux-network.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-linux-network-05"
+"title" = "Return later: Read transport and application failures"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-linux-network-05-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: TCP, UDP, HTTP, TLS, connections, timeouts and certificate names.", "Predict a changed-condition result: Locate a failing layer from a fresh set of observations.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-linux-network-06"
+"preview" = "Model an inner and outer network with VMs or namespaces; compare address and route observations."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Linux network inspection tools and read-only access to your own router/provider address information, or isolated guests for the simulated route."
+"setup" = "Download /training/io-linux-network.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-linux-network directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/06.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-linux-network.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-linux-network-06-practice"
+"title" = "Operate: Cross network boundaries"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "Home devices normally have private addresses. Router forwarding only helps when the outer address and provider policy permit inbound traffic; CGNAT introduces another boundary you do not administer. DDNS updates a name and cannot create inbound routing. IPv6 may offer reachability but still needs correct firewall policy. An outbound connector can use an eligible relay when inbound access is unavailable."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 06 --variant guided --out work/06-guided\npython3 lab.py check work/06-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/06-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/06.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# Inspect on your owned CLIENT and router/guest; no router change is performed here.\nip -br address\nip -6 route\nip route\npython3 -c 'import ipaddress; a=ipaddress.ip_address(\"100.64.10.2\"); print(a in ipaddress.ip_network(\"100.64.0.0/10\"))'\n# Compare the router's WAN address in its own admin UI with the provider's documented addressing.\n# For a no-hardware equivalent use two guest networks and mark the outer network simulated.\n```", "Observe these controls and retain actual output: Draw each controlled boundary and choose a path that can exist. Public reachability requires a client outside that network; keep simulation results labelled.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 06 --out work/06-reference. Record that help was used."]
+"done_when" = "Draw each controlled boundary and choose a path that can exist. Public reachability requires a client outside that network; keep simulation results labelled. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-linux-network-06"
+"preview" = "Choose a viable inbound or outbound-relay path when the origin lacks a reachable address."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Linux network inspection tools and read-only access to your own router/provider address information, or isolated guests for the simulated route."
+"setup" = "Download /training/io-linux-network.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-linux-network directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/06.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-linux-network.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-linux-network-06-milestone"
+"title" = "Apply independently: Cross network boundaries"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. NAT, forwarding, CGNAT, IPv4/IPv6, firewall paths and hairpin access."
+"steps" = ["Choose the native environment in lessons/06.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 06 --variant transfer --out work/06-transfer\npython3 lab.py check work/06-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/06-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Choose a viable inbound or outbound-relay path when the origin lacks a reachable address.", "Collect the actual controls: Draw each controlled boundary and choose a path that can exist. Public reachability requires a client outside that network; keep simulation results labelled.", "Retain your commands, changed input, cause, recovery and help used in notes/06.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Draw each controlled boundary and choose a path that can exist. Public reachability requires a client outside that network; keep simulation results labelled. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-linux-network.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-linux-network directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/06.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-linux-network.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-linux-network-06"
+"title" = "Return later: Cross network boundaries"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-linux-network-06-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: NAT, forwarding, CGNAT, IPv4/IPv6, firewall paths and hairpin access.", "Predict a changed-condition result: Choose a viable inbound or outbound-relay path when the origin lacks a reachable address.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-linux-network-07"
+"preview" = "Create a service unit in a disposable guest and test restart and guest reboot."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: An owned disposable Ubuntu/Debian Linux guest with systemd and administrator rights; Python, curl, boot/console access and persistent guest storage."
+"setup" = "Download /training/io-linux-network.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-linux-network directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/07.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxupskillchallenge.org/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-linux-network.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-linux-network-07-practice"
+"title" = "Operate: Keep a service running"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "An interactive shell, a running process, an enabled service and a healthy service are different states. systemd starts a service with a defined identity, working directory and restart policy. Package repositories and updates supply executable code; record the distribution and package versions. A restart loop often exposes a path/configuration error rather than proving the machine needs more resources."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 07 --variant guided --out work/07-guided\npython3 lab.py check work/07-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/07-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/07.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# Disposable Linux SERVICE GUEST only; package installation needs its administrator.\nsudo apt-get update\nsudo apt-get install python3\nsudo useradd --system --home /opt/ascend-relay --shell /usr/sbin/nologin relaylab\nsudo install -d -o relaylab -g relaylab /opt/ascend-relay/data /opt/ascend-relay/shared\nsudo install -m 0644 shared/relay.py /opt/ascend-relay/shared/relay.py\nsudo install -m 0644 inputs/07/relay.service /etc/systemd/system/ascend-relay.service\nsudo systemctl daemon-reload\nsudo systemctl enable --now ascend-relay.service\nsystemctl status ascend-relay.service --no-pager\njournalctl -u ascend-relay.service -n 30 --no-pager\ncurl http://127.0.0.1:8000/version\n```", "Observe these controls and retain actual output: Reboot only the disposable guest, then verify service version and retained state. Stop/disable the named unit during cleanup; an unavailable guest reboot is incomplete operational evidence.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 07 --out work/07-reference. Record that help was used."]
+"done_when" = "Reboot only the disposable guest, then verify service version and retained state. Stop/disable the named unit during cleanup; an unavailable guest reboot is incomplete operational evidence. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-linux-network-07"
+"preview" = "Repair a restart loop caused by a bad path or configuration."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: An owned disposable Ubuntu/Debian Linux guest with systemd and administrator rights; Python, curl, boot/console access and persistent guest storage."
+"setup" = "Download /training/io-linux-network.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-linux-network directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/07.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxupskillchallenge.org/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-linux-network.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-linux-network-07-milestone"
+"title" = "Apply independently: Keep a service running"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Package repositories, updates, service installation, systemd, boot, users, health/readiness and durable state."
+"steps" = ["Choose the native environment in lessons/07.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 07 --variant transfer --out work/07-transfer\npython3 lab.py check work/07-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/07-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Repair a restart loop caused by a bad path or configuration.", "Collect the actual controls: Reboot only the disposable guest, then verify service version and retained state. Stop/disable the named unit during cleanup; an unavailable guest reboot is incomplete operational evidence.", "Retain your commands, changed input, cause, recovery and help used in notes/07.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Reboot only the disposable guest, then verify service version and retained state. Stop/disable the named unit during cleanup; an unavailable guest reboot is incomplete operational evidence. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-linux-network.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-linux-network directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/07.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxupskillchallenge.org/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-linux-network.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-linux-network-07"
+"title" = "Return later: Keep a service running"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-linux-network-07-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Package repositories, updates, service installation, systemd, boot, users, health/readiness and durable state.", "Predict a changed-condition result: Repair a restart loop caused by a bad path or configuration.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-linux-network-08"
+"preview" = "Follow a worked service outage, then build a small request-path runbook."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python, curl and ss in your owned Linux environment; retain the service/data from the earlier operations."
+"setup" = "Download /training/io-linux-network.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-linux-network directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/08.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxupskillchallenge.org/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-linux-network.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-linux-network-08-practice"
+"title" = "Operate: Recover your first service"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "A useful incident record starts with observations and a hypothesis, then changes the smallest responsible component and repeats the control. This lab combines DNS, binding and process state. A repaired page must not be obtained by granting unrelated file or network access. Keep a runbook another learner can use without your memory."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 08 --variant guided --out work/08-guided\npython3 lab.py check work/08-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/08-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/08.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# PC or service GUEST, in this extracted track directory; leave this terminal running.\nmkdir -p data\npython3 shared/relay.py --host 127.0.0.1 --port 8000 --data data/relay.sqlite --release v1\n```", "```sh\n# Reproduce the incident by using an intentionally wrong client port.\ncurl --max-time 2 -i http://127.0.0.1:8999/version\nss -ltnp\ncurl --max-time 2 -i http://127.0.0.1:8000/version\n# Then stop Relay and compare the same request. Restart only your Relay process.\npython3 shared/check_service.py --url http://127.0.0.1:8000 --expect-release v1 --write\n```", "Observe these controls and retain actual output: Record the changed-cause incident, both failing observations, restored version/write behaviour and unchanged access boundary. Include machine names and exact commands in your runbook.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 08 --out work/08-reference. Record that help was used."]
+"done_when" = "Record the changed-cause incident, both failing observations, restored version/write behaviour and unchanged access boundary. Include machine names and exact commands in your runbook. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-linux-network-08"
+"preview" = "Recover a fresh fault involving two of DNS, process, binding or permissions."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python, curl and ss in your owned Linux environment; retain the service/data from the earlier operations."
+"setup" = "Download /training/io-linux-network.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-linux-network directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/08.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxupskillchallenge.org/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-linux-network.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-linux-network-08-milestone"
+"title" = "Apply independently: Recover your first service"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Diagnosis, evidence, least-change repair and handover."
+"steps" = ["Choose the native environment in lessons/08.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 08 --variant transfer --out work/08-transfer\npython3 lab.py check work/08-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/08-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Recover a fresh fault involving two of DNS, process, binding or permissions.", "Collect the actual controls: Record the changed-cause incident, both failing observations, restored version/write behaviour and unchanged access boundary. Include machine names and exact commands in your runbook.", "Retain your commands, changed input, cause, recovery and help used in notes/08.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Record the changed-cause incident, both failing observations, restored version/write behaviour and unchanged access boundary. Include machine names and exact commands in your runbook. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-linux-network.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-linux-network directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/08.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://linuxupskillchallenge.org/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-linux-network.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-linux-network-08"
+"title" = "Return later: Recover your first service"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-linux-network-08-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Diagnosis, evidence, least-change repair and handover.", "Predict a changed-condition result: Recover a fresh fault involving two of DNS, process, binding or permissions.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."

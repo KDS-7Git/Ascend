@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Recover from a lost active disk and check required records against stated objectives.",
+  "contract": [
+    {
+      "field": "backup_consistent",
+      "op": "eq",
+      "value": true,
+      "why": "backup consistent: satisfy the stated restore independent data contract"
+    },
+    {
+      "field": "restore_to_new_target",
+      "op": "eq",
+      "value": true,
+      "why": "restore to new target: satisfy the stated restore independent data contract"
+    },
+    {
+      "field": "data_checked",
+      "op": "eq",
+      "value": true,
+      "why": "data checked: satisfy the stated restore independent data contract"
+    },
+    {
+      "field": "same_disk_copy_is_independent_hardware_backup",
+      "op": "eq",
+      "value": false,
+      "why": "same disk copy is independent hardware backup: satisfy the stated restore independent data contract"
+    }
+  ],
+  "starting": {
+    "backup_consistent": true,
+    "restore_to_new_target": false,
+    "data_checked": true,
+    "same_disk_copy_is_independent_hardware_backup": true
+  },
+  "reference": {
+    "backup_consistent": true,
+    "restore_to_new_target": true,
+    "data_checked": true,
+    "same_disk_copy_is_independent_hardware_backup": false
+  },
+  "rules": [
+    {
+      "field": "backup_consistent",
+      "op": "eq",
+      "value": true,
+      "why": "backup consistent: satisfy the stated restore independent data contract"
+    },
+    {
+      "field": "restore_to_new_target",
+      "op": "eq",
+      "value": true,
+      "why": "restore to new target: satisfy the stated restore independent data contract"
+    },
+    {
+      "field": "data_checked",
+      "op": "eq",
+      "value": true,
+      "why": "data checked: satisfy the stated restore independent data contract"
+    },
+    {
+      "field": "same_disk_copy_is_independent_hardware_backup",
+      "op": "eq",
+      "value": false,
+      "why": "same disk copy is independent hardware backup: satisfy the stated restore independent data contract"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Diagnose a working guest service that the edge cannot reach.",
+  "contract": [
+    {
+      "field": "edge_upstream",
+      "op": "eq",
+      "value": "192.168.122.10:8000",
+      "why": "edge upstream: satisfy the stated host websites inside guests contract"
+    },
+    {
+      "field": "guest_service_running",
+      "op": "eq",
+      "value": true,
+      "why": "guest service running: satisfy the stated host websites inside guests contract"
+    },
+    {
+      "field": "management_public",
+      "op": "eq",
+      "value": false,
+      "why": "management public: satisfy the stated host websites inside guests contract"
+    },
+    {
+      "field": "observed_release",
+      "op": "eq",
+      "value": "vm-v1",
+      "why": "observed release: satisfy the stated host websites inside guests contract"
+    }
+  ],
+  "starting": {
+    "edge_upstream": "192.168.122.10:8000",
+    "guest_service_running": false,
+    "management_public": false,
+    "observed_release": "vm-v1"
+  },
+  "reference": {
+    "edge_upstream": "192.168.122.10:8000",
+    "guest_service_running": true,
+    "management_public": false,
+    "observed_release": "vm-v1"
+  },
+  "rules": [
+    {
+      "field": "edge_upstream",
+      "op": "eq",
+      "value": "192.168.122.10:8000",
+      "why": "edge upstream: satisfy the stated host websites inside guests contract"
+    },
+    {
+      "field": "guest_service_running",
+      "op": "eq",
+      "value": true,
+      "why": "guest service running: satisfy the stated host websites inside guests contract"
+    },
+    {
+      "field": "management_public",
+      "op": "eq",
+      "value": false,
+      "why": "management public: satisfy the stated host websites inside guests contract"
+    },
+    {
+      "field": "observed_release",
+      "op": "eq",
+      "value": "vm-v1",
+      "why": "observed release: satisfy the stated host websites inside guests contract"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Repair a stale or wrong answer while distinguishing hosts-file substitution from DNS.",
+  "contract": [
+    {
+      "field": "a_record",
+      "op": "eq",
+      "value": "127.0.0.1",
+      "why": "a record: satisfy the stated resolve names deliberately contract"
+    },
+    {
+      "field": "resolver_port",
+      "op": "eq",
+      "value": 1053,
+      "why": "resolver port: satisfy the stated resolve names deliberately contract"
+    },
+    {
+      "field": "stale_aaaa_present",
+      "op": "eq",
+      "value": false,
+      "why": "stale aaaa present: satisfy the stated resolve names deliberately contract"
+    },
+    {
+      "field": "override_is_dns_fix",
+      "op": "eq",
+      "value": false,
+      "why": "override is dns fix: satisfy the stated resolve names deliberately contract"
+    }
+  ],
+  "starting": {
+    "a_record": "127.0.0.1",
+    "resolver_port": 1053,
+    "stale_aaaa_present": true,
+    "override_is_dns_fix": false
+  },
+  "reference": {
+    "a_record": "127.0.0.1",
+    "resolver_port": 1053,
+    "stale_aaaa_present": false,
+    "override_is_dns_fix": false
+  },
+  "rules": [
+    {
+      "field": "a_record",
+      "op": "eq",
+      "value": "127.0.0.1",
+      "why": "a record: satisfy the stated resolve names deliberately contract"
+    },
+    {
+      "field": "resolver_port",
+      "op": "eq",
+      "value": 1053,
+      "why": "resolver port: satisfy the stated resolve names deliberately contract"
+    },
+    {
+      "field": "stale_aaaa_present",
+      "op": "eq",
+      "value": false,
+      "why": "stale aaaa present: satisfy the stated resolve names deliberately contract"
+    },
+    {
+      "field": "override_is_dns_fix",
+      "op": "eq",
+      "value": false,
+      "why": "override is dns fix: satisfy the stated resolve names deliberately contract"
+    }
+  ]
+}

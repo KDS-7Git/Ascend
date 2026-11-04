@@ -1,0 +1,15 @@
+[Unit]
+Description=Ascend Relay managed by Ansible
+After=network.target
+[Service]
+DynamicUser=yes
+StateDirectory=ascend-relay
+ExecStart=/usr/bin/python3 /opt/ascend-relay/shared/relay.py --host 127.0.0.1 --port 8000 --data /var/lib/ascend-relay/relay.sqlite --release {{ relay_release }}
+Restart=on-failure
+RestartSec=2
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+MemoryMax=192M
+[Install]
+WantedBy=multi-user.target

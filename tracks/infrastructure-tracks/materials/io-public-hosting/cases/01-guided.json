@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Publish a static build locally and run a dynamic service; compare what each requires.",
+  "contract": [
+    {
+      "field": "static_output",
+      "op": "eq",
+      "value": "site",
+      "why": "static output: satisfy the stated choose the hosting model contract"
+    },
+    {
+      "field": "dynamic_runtime_required",
+      "op": "eq",
+      "value": true,
+      "why": "dynamic runtime required: satisfy the stated choose the hosting model contract"
+    },
+    {
+      "field": "static_host_executes_python",
+      "op": "eq",
+      "value": false,
+      "why": "static host executes python: satisfy the stated choose the hosting model contract"
+    },
+    {
+      "field": "runtime_state_persistent_by_default",
+      "op": "eq",
+      "value": false,
+      "why": "runtime state persistent by default: satisfy the stated choose the hosting model contract"
+    }
+  ],
+  "starting": {
+    "static_output": "site",
+    "dynamic_runtime_required": true,
+    "static_host_executes_python": true,
+    "runtime_state_persistent_by_default": false
+  },
+  "reference": {
+    "static_output": "site",
+    "dynamic_runtime_required": true,
+    "static_host_executes_python": false,
+    "runtime_state_persistent_by_default": false
+  },
+  "rules": [
+    {
+      "field": "static_output",
+      "op": "eq",
+      "value": "site",
+      "why": "static output: satisfy the stated choose the hosting model contract"
+    },
+    {
+      "field": "dynamic_runtime_required",
+      "op": "eq",
+      "value": true,
+      "why": "dynamic runtime required: satisfy the stated choose the hosting model contract"
+    },
+    {
+      "field": "static_host_executes_python",
+      "op": "eq",
+      "value": false,
+      "why": "static host executes python: satisfy the stated choose the hosting model contract"
+    },
+    {
+      "field": "runtime_state_persistent_by_default",
+      "op": "eq",
+      "value": false,
+      "why": "runtime state persistent by default: satisfy the stated choose the hosting model contract"
+    }
+  ]
+}

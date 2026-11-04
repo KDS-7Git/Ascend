@@ -1,0 +1,74 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Build a sizing worksheet from measured components, reserves and an explicit workload.",
+  "contract": [
+    {
+      "field": "mean_inflight",
+      "op": "near",
+      "value": 6.0,
+      "why": "mean inflight: satisfy the stated estimate resources contract",
+      "tolerance": 0.002
+    },
+    {
+      "field": "component_cpu_budget",
+      "op": "near",
+      "value": 0.492,
+      "why": "component cpu budget: satisfy the stated estimate resources contract",
+      "tolerance": 0.002
+    },
+    {
+      "field": "payload_mbit_per_second",
+      "op": "near",
+      "value": 65.536,
+      "why": "payload mbit per second: satisfy the stated estimate resources contract",
+      "tolerance": 0.002
+    },
+    {
+      "field": "physical_user_capacity_proved",
+      "op": "eq",
+      "value": false,
+      "why": "physical user capacity proved: satisfy the stated estimate resources contract"
+    }
+  ],
+  "starting": {
+    "mean_inflight": 40.0,
+    "component_cpu_budget": 0.492,
+    "payload_mbit_per_second": 65.536,
+    "physical_user_capacity_proved": false
+  },
+  "reference": {
+    "mean_inflight": 6.0,
+    "component_cpu_budget": 0.492,
+    "payload_mbit_per_second": 65.536,
+    "physical_user_capacity_proved": false
+  },
+  "rules": [
+    {
+      "field": "mean_inflight",
+      "op": "near",
+      "value": 6.0,
+      "why": "mean inflight: satisfy the stated estimate resources contract",
+      "tolerance": 0.002
+    },
+    {
+      "field": "component_cpu_budget",
+      "op": "near",
+      "value": 0.492,
+      "why": "component cpu budget: satisfy the stated estimate resources contract",
+      "tolerance": 0.002
+    },
+    {
+      "field": "payload_mbit_per_second",
+      "op": "near",
+      "value": 65.536,
+      "why": "payload mbit per second: satisfy the stated estimate resources contract",
+      "tolerance": 0.002
+    },
+    {
+      "field": "physical_user_capacity_proved",
+      "op": "eq",
+      "value": false,
+      "why": "physical user capacity proved: satisfy the stated estimate resources contract"
+    }
+  ]
+}

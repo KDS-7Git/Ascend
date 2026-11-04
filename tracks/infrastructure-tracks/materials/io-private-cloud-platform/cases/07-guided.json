@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Deploy Relay's stateless mode in a small separate cluster lab and compare its control loop with VM management.",
+  "contract": [
+    {
+      "field": "service_selector",
+      "op": "eq",
+      "value": "relay-lab",
+      "why": "service selector: satisfy the stated compare orchestration layers contract"
+    },
+    {
+      "field": "readiness_path",
+      "op": "eq",
+      "value": "/ready",
+      "why": "readiness path: satisfy the stated compare orchestration layers contract"
+    },
+    {
+      "field": "namespace_scope_known",
+      "op": "eq",
+      "value": true,
+      "why": "namespace scope known: satisfy the stated compare orchestration layers contract"
+    },
+    {
+      "field": "pod_is_guest_vm",
+      "op": "eq",
+      "value": false,
+      "why": "pod is guest vm: satisfy the stated compare orchestration layers contract"
+    }
+  ],
+  "starting": {
+    "service_selector": "unmatched-label",
+    "readiness_path": "/ready",
+    "namespace_scope_known": true,
+    "pod_is_guest_vm": false
+  },
+  "reference": {
+    "service_selector": "relay-lab",
+    "readiness_path": "/ready",
+    "namespace_scope_known": true,
+    "pod_is_guest_vm": false
+  },
+  "rules": [
+    {
+      "field": "service_selector",
+      "op": "eq",
+      "value": "relay-lab",
+      "why": "service selector: satisfy the stated compare orchestration layers contract"
+    },
+    {
+      "field": "readiness_path",
+      "op": "eq",
+      "value": "/ready",
+      "why": "readiness path: satisfy the stated compare orchestration layers contract"
+    },
+    {
+      "field": "namespace_scope_known",
+      "op": "eq",
+      "value": true,
+      "why": "namespace scope known: satisfy the stated compare orchestration layers contract"
+    },
+    {
+      "field": "pod_is_guest_vm",
+      "op": "eq",
+      "value": false,
+      "why": "pod is guest vm: satisfy the stated compare orchestration layers contract"
+    }
+  ]
+}

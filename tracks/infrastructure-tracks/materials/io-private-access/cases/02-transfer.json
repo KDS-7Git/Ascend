@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Correct a destination resolved on the wrong side of the SSH connection.",
+  "contract": [
+    {
+      "field": "client_listener",
+      "op": "eq",
+      "value": "127.0.0.1:18000",
+      "why": "client listener: satisfy the stated forward a local service contract"
+    },
+    {
+      "field": "destination_from",
+      "op": "eq",
+      "value": "ssh-server",
+      "why": "destination from: satisfy the stated forward a local service contract"
+    },
+    {
+      "field": "destination_port",
+      "op": "eq",
+      "value": 8000,
+      "why": "destination port: satisfy the stated forward a local service contract"
+    },
+    {
+      "field": "application_auth_still_required",
+      "op": "eq",
+      "value": true,
+      "why": "application auth still required: satisfy the stated forward a local service contract"
+    }
+  ],
+  "starting": {
+    "client_listener": "0.0.0.0:18000",
+    "destination_from": "ssh-server",
+    "destination_port": 8000,
+    "application_auth_still_required": false
+  },
+  "reference": {
+    "client_listener": "127.0.0.1:18000",
+    "destination_from": "ssh-server",
+    "destination_port": 8000,
+    "application_auth_still_required": true
+  },
+  "rules": [
+    {
+      "field": "client_listener",
+      "op": "eq",
+      "value": "127.0.0.1:18000",
+      "why": "client listener: satisfy the stated forward a local service contract"
+    },
+    {
+      "field": "destination_from",
+      "op": "eq",
+      "value": "ssh-server",
+      "why": "destination from: satisfy the stated forward a local service contract"
+    },
+    {
+      "field": "destination_port",
+      "op": "eq",
+      "value": 8000,
+      "why": "destination port: satisfy the stated forward a local service contract"
+    },
+    {
+      "field": "application_auth_still_required",
+      "op": "eq",
+      "value": true,
+      "why": "application auth still required: satisfy the stated forward a local service contract"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Remove a ready target from new traffic while an existing request finishes.",
+  "contract": [
+    {
+      "field": "policy",
+      "op": "eq",
+      "value": "round_robin",
+      "why": "policy: satisfy the stated balance service traffic contract"
+    },
+    {
+      "field": "health_path",
+      "op": "eq",
+      "value": "/ready",
+      "why": "health path: satisfy the stated balance service traffic contract"
+    },
+    {
+      "field": "unready_backend_receives_new_traffic",
+      "op": "eq",
+      "value": false,
+      "why": "unready backend receives new traffic: satisfy the stated balance service traffic contract"
+    },
+    {
+      "field": "single_host_is_physical_ha",
+      "op": "eq",
+      "value": false,
+      "why": "single host is physical ha: satisfy the stated balance service traffic contract"
+    }
+  ],
+  "starting": {
+    "policy": "round_robin",
+    "health_path": "/ready",
+    "unready_backend_receives_new_traffic": true,
+    "single_host_is_physical_ha": true
+  },
+  "reference": {
+    "policy": "round_robin",
+    "health_path": "/ready",
+    "unready_backend_receives_new_traffic": false,
+    "single_host_is_physical_ha": false
+  },
+  "rules": [
+    {
+      "field": "policy",
+      "op": "eq",
+      "value": "round_robin",
+      "why": "policy: satisfy the stated balance service traffic contract"
+    },
+    {
+      "field": "health_path",
+      "op": "eq",
+      "value": "/ready",
+      "why": "health path: satisfy the stated balance service traffic contract"
+    },
+    {
+      "field": "unready_backend_receives_new_traffic",
+      "op": "eq",
+      "value": false,
+      "why": "unready backend receives new traffic: satisfy the stated balance service traffic contract"
+    },
+    {
+      "field": "single_host_is_physical_ha",
+      "op": "eq",
+      "value": false,
+      "why": "single host is physical ha: satisfy the stated balance service traffic contract"
+    }
+  ]
+}

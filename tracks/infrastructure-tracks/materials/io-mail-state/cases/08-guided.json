@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Recover the local mail service from a fresh failure and document any public-service dependencies.",
+  "contract": [
+    {
+      "field": "source_stopped_for_restore_test",
+      "op": "eq",
+      "value": true,
+      "why": "source stopped for restore test: satisfy the stated recover a mail service contract"
+    },
+    {
+      "field": "old_credential_rejected",
+      "op": "eq",
+      "value": true,
+      "why": "old credential rejected: satisfy the stated recover a mail service contract"
+    },
+    {
+      "field": "unauthorized_relay_rejected",
+      "op": "eq",
+      "value": true,
+      "why": "unauthorized relay rejected: satisfy the stated recover a mail service contract"
+    },
+    {
+      "field": "required_messages_restored",
+      "op": "eq",
+      "value": true,
+      "why": "required messages restored: satisfy the stated recover a mail service contract"
+    }
+  ],
+  "starting": {
+    "source_stopped_for_restore_test": true,
+    "old_credential_rejected": true,
+    "unauthorized_relay_rejected": true,
+    "required_messages_restored": false
+  },
+  "reference": {
+    "source_stopped_for_restore_test": true,
+    "old_credential_rejected": true,
+    "unauthorized_relay_rejected": true,
+    "required_messages_restored": true
+  },
+  "rules": [
+    {
+      "field": "source_stopped_for_restore_test",
+      "op": "eq",
+      "value": true,
+      "why": "source stopped for restore test: satisfy the stated recover a mail service contract"
+    },
+    {
+      "field": "old_credential_rejected",
+      "op": "eq",
+      "value": true,
+      "why": "old credential rejected: satisfy the stated recover a mail service contract"
+    },
+    {
+      "field": "unauthorized_relay_rejected",
+      "op": "eq",
+      "value": true,
+      "why": "unauthorized relay rejected: satisfy the stated recover a mail service contract"
+    },
+    {
+      "field": "required_messages_restored",
+      "op": "eq",
+      "value": true,
+      "why": "required messages restored: satisfy the stated recover a mail service contract"
+    }
+  ]
+}

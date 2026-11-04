@@ -1,0 +1,46 @@
+- name: Prepare only the explicitly selected Relay lab guests
+  hosts: relay_lab
+  become: true
+  tasks:
+    - name: Install Python runtime
+      ansible.builtin.package:
+        name: python3
+        state: present
+    - name: Create service identity
+      ansible.builtin.user:
+        name: relaylab
+        system: true
+        shell: /usr/sbin/nologin
+    - name: Create service paths
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: relaylab
+        group: relaylab
+        mode: "0750"
+      loop: [/opt/ascend-relay, /opt/ascend-relay/shared, /opt/ascend-relay/data]
+    - name: Copy authored service
+      ansible.builtin.copy:
+        src: ../../shared/relay.py
+        dest: /opt/ascend-relay/shared/relay.py
+        owner: relaylab
+        group: relaylab
+        mode: "0640"
+      notify: Restart Relay
+    - name: Copy unit
+      ansible.builtin.copy:
+        src: relay.service
+        dest: /etc/systemd/system/ascend-relay.service
+        mode: "0644"
+      notify: Restart Relay
+    - name: Enable owned service
+      ansible.builtin.systemd_service:
+        name: ascend-relay.service
+        enabled: true
+        state: started
+        daemon_reload: true
+  handlers:
+    - name: Restart Relay
+      ansible.builtin.systemd_service:
+        name: ascend-relay.service
+        state: restarted

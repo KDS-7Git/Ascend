@@ -1,0 +1,590 @@
+# Generated from docs/curriculum/infrastructure-paths.json; unreviewed draft teaching content.
+[pack]
+"id" = "io-mail-state"
+"title" = "Mail & Stateful Self-Hosting"
+"kind" = "proficiency"
+"version" = 1
+"source" = "ai-draft"
+"reviewed" = false
+
+[[level]]
+"id" = "io-mail-state-01"
+"title" = "Follow a message"
+"lane" = "main"
+
+[[level]]
+"id" = "io-mail-state-02"
+"title" = "Run SMTP between owned hosts"
+"lane" = "main"
+
+[[level]]
+"id" = "io-mail-state-03"
+"title" = "Provide authenticated mailbox access"
+"lane" = "main"
+
+[[level]]
+"id" = "io-mail-state-04"
+"title" = "Authenticate sender domains"
+"lane" = "main"
+
+[[level]]
+"id" = "io-mail-state-05"
+"title" = "Assess a public mail deployment"
+"lane" = "main"
+
+[[level]]
+"id" = "io-mail-state-06"
+"title" = "Operate queues and delivery"
+"lane" = "main"
+
+[[level]]
+"id" = "io-mail-state-07"
+"title" = "Keep state consistent"
+"lane" = "main"
+
+[[level]]
+"id" = "io-mail-state-08"
+"title" = "Recover a mail service"
+"lane" = "main"
+
+[[level]]
+"id" = "entry"
+"title" = "Choose your entry point"
+"lane" = "side"
+
+[[level]]
+"id" = "recall"
+"title" = "Return later"
+"lane" = "side"
+
+[[node]]
+"level" = "entry"
+"preview" = "Match a concrete practical outcome to what you can already demonstrate."
+"requirements" = "Python 3.11+, a text editor and your own PC. No account or device purchase is required for this entry check."
+"setup" = "Download /training/io-mail-state.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-mail-state directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/entry.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://mailpit.axllent.org/docs/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-mail-state.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "entry-demonstration"
+"title" = "Choose an entry point through a short demonstration"
+"size" = "S"
+"minutes" = 20
+"needs" = []
+"brief" = "New to this subject: start with the worked operation in level 1. Already practising: attempt an independent operation first and use Ascend early-unlock for a later level when appropriate. It records your choice, not an automatic proficiency pass. Job preparation emphasizes the reproducible handover; interest-led work can extend the same technical evidence with a different owned environment."
+"steps" = ["Read bootstrap.md, record your machine/OS and confirm the tools work.\n```sh\npython3 shared/selfcheck.py\n```\nThis checks the teaching tools, not proficiency.", "Read the eight independent finish lines in README.md and lessons/NN.md. Choose the first operation you cannot demonstrate on a fresh target without the worked steps.", "Begin that independent milestone if you already have the background, using existing early-unlock when needed. Otherwise start level 1 worked practice. Your own demonstration remains required; an entry choice does not complete other nodes.", "Record the chosen level, supporting prior observation and next concrete action in notes/entry.md. Return to guided material whenever a gap appears."]
+"done_when" = "Your local tool checks run, a practical observation supports the chosen starting level, and notes/entry.md names the next operation. This is manual self-assessment and does not certify or complete other levels."
+
+[[node]]
+"level" = "io-mail-state-01"
+"preview" = "Send synthetic application mail to local Mailpit and inspect its envelope and content."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python 3.11+ and a reviewed Mailpit binary on your PC; all mail and web listeners stay on loopback."
+"setup" = "Download /training/io-mail-state.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-mail-state directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/01.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://mailpit.axllent.org/docs/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-mail-state.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-mail-state-01-practice"
+"title" = "Operate: Follow a message"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "An application submits an SMTP envelope and message headers; they can contain different identities. A local capture service helps debug application mail without delivering it to the internet. A captured message proves submission/capture, not mailbox access, SPF/DKIM verification or external deliverability."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 01 --variant guided --out work/01-guided\npython3 lab.py check work/01-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/01-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/01.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# PC with reviewed Mailpit binary; loopback SMTP and UI only.\nmailpit --smtp 127.0.0.1:1025 --listen 127.0.0.1:8025\n# Second terminal in the extracted track directory:\npython3 inputs/01/send_local.py\npython3 lab.py inspect-mail inputs/01/message.eml\n# Open http://127.0.0.1:8025 and compare the SMTP envelope with From/To headers.\n# Stop only this Mailpit process after retaining the synthetic capture.\n```", "Observe these controls and retain actual output: Inspect an actual local SMTP capture, identify envelope/header differences and verify a wrong local port fails. Do not send these demonstrations to external recipients.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 01 --out work/01-reference. Record that help was used."]
+"done_when" = "Inspect an actual local SMTP capture, identify envelope/header differences and verify a wrong local port fails. Do not send these demonstrations to external recipients. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-mail-state-01"
+"preview" = "Find a wrong recipient/envelope or application configuration."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python 3.11+ and a reviewed Mailpit binary on your PC; all mail and web listeners stay on loopback."
+"setup" = "Download /training/io-mail-state.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-mail-state directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/01.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://mailpit.axllent.org/docs/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-mail-state.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-mail-state-01-milestone"
+"title" = "Apply independently: Follow a message"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Application submission, SMTP envelope, headers, queues and delivery versus receipt."
+"steps" = ["Choose the native environment in lessons/01.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 01 --variant transfer --out work/01-transfer\npython3 lab.py check work/01-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/01-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Find a wrong recipient/envelope or application configuration.", "Collect the actual controls: Inspect an actual local SMTP capture, identify envelope/header differences and verify a wrong local port fails. Do not send these demonstrations to external recipients.", "Retain your commands, changed input, cause, recovery and help used in notes/01.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Inspect an actual local SMTP capture, identify envelope/header differences and verify a wrong local port fails. Do not send these demonstrations to external recipients. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-mail-state.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-mail-state directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/01.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://mailpit.axllent.org/docs/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-mail-state.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-mail-state-01"
+"title" = "Return later: Follow a message"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-mail-state-01-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Application submission, SMTP envelope, headers, queues and delivery versus receipt.", "Predict a changed-condition result: Find a wrong recipient/envelope or application configuration.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-mail-state-02"
+"preview" = "Deliver synthetic messages between isolated lab MTAs using reserved test domains."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: A disposable Ubuntu/Debian mail guest with Postfix, mailutils, Python and guest administrator access. No public mail domain or external delivery is used."
+"setup" = "Download /training/io-mail-state.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-mail-state directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/02.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://www.postfix.org/BASIC_CONFIGURATION_README.html"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-mail-state.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-mail-state-02-practice"
+"title" = "Operate: Run SMTP between owned hosts"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "An MTA accepts, queues, routes and delivers mail according to domain and relay policy. Local delivery for an owned test domain is different from forwarding arbitrary recipients. Start with a loopback-only MTA in a disposable guest, then a second isolated peer if available. Preserve the refusal of unauthorized relay while enabling the legitimate path."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 02 --variant guided --out work/02-guided\npython3 lab.py check work/02-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/02-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/02.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# Disposable Ubuntu/Debian MAIL GUEST only; install/configure its Postfix interactively as local lab mail.\nsudo apt-get install postfix mailutils\nsudo postconf -e 'myhostname = mail.relay.test'\nsudo postconf -e 'mydestination = $myhostname, localhost.$mydomain, localhost, relay.test'\nsudo postconf -e 'inet_interfaces = loopback-only'\nsudo postconf -e 'mynetworks = 127.0.0.1/32 [::1]/128'\nsudo postconf -e 'smtpd_relay_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination'\nsudo postfix check\nsudo systemctl restart postfix\npostconf -n\nprintf 'Synthetic local mail\n' | mail -s 'Relay lab' \"$USER\"\npostqueue -p\n# To add a second owned guest, declare only its explicit lab address and test relay rejection from an untrusted peer.\n```", "```sh\n# GUEST loopback negative control: 127.0.0.2 is outside the explicit trusted /32.\npython3 inputs/02/reject_relay.py\n# The script stops after RCPT rejection; it does not send DATA or contact an external host.\n```", "Observe these controls and retain actual output: Observe local acceptance/delivery and the 127.0.0.2 untrusted RCPT rejection, including its relay-policy status/text. A generic connectivity error or a rejection at MAIL is not this control.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 02 --out work/02-reference. Record that help was used."]
+"done_when" = "Observe local acceptance/delivery and the 127.0.0.2 untrusted RCPT rejection, including its relay-policy status/text. A generic connectivity error or a rejection at MAIL is not this control. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-mail-state-02"
+"preview" = "Reject unauthorized relay while preserving legitimate lab delivery."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: A disposable Ubuntu/Debian mail guest with Postfix, mailutils, Python and guest administrator access. No public mail domain or external delivery is used."
+"setup" = "Download /training/io-mail-state.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-mail-state directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/02.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://www.postfix.org/BASIC_CONFIGURATION_README.html"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-mail-state.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-mail-state-02-milestone"
+"title" = "Apply independently: Run SMTP between owned hosts"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Postfix, domains, relaying policy, ports, queues and rejection."
+"steps" = ["Choose the native environment in lessons/02.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 02 --variant transfer --out work/02-transfer\npython3 lab.py check work/02-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/02-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Reject unauthorized relay while preserving legitimate lab delivery.", "Collect the actual controls: Observe local acceptance/delivery and the 127.0.0.2 untrusted RCPT rejection, including its relay-policy status/text. A generic connectivity error or a rejection at MAIL is not this control.", "Retain your commands, changed input, cause, recovery and help used in notes/02.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Observe local acceptance/delivery and the 127.0.0.2 untrusted RCPT rejection, including its relay-policy status/text. A generic connectivity error or a rejection at MAIL is not this control. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-mail-state.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-mail-state directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/02.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://www.postfix.org/BASIC_CONFIGURATION_README.html"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-mail-state.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-mail-state-02"
+"title" = "Return later: Run SMTP between owned hosts"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-mail-state-02-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Postfix, domains, relaying policy, ports, queues and rejection.", "Predict a changed-condition result: Reject unauthorized relay while preserving legitimate lab delivery.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-mail-state-03"
+"preview" = "Read an owned mailbox and submit through the intended authenticated endpoint."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: The previous disposable mail guest, Dovecot 2.3, OpenSSL, a synthetic local account and guest-local TLS certificate; version-specific syntax must match."
+"setup" = "Download /training/io-mail-state.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-mail-state directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/03.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://doc.dovecot.org/2.3/configuration_manual/quick_configuration/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-mail-state.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-mail-state-03-practice"
+"title" = "Operate: Provide authenticated mailbox access"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "SMTP submission authenticates a sender to an MTA; IMAP provides mailbox access. These are distinct endpoints with separate TLS and authorization requirements. Use a disposable guest and a synthetic local account. Verify the installed Dovecot version before applying configuration: the supplied teaching fragment uses the Dovecot 2.3 syntax common on Ubuntu 24.04."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 03 --variant guided --out work/03-guided\npython3 lab.py check work/03-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/03-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/03.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# Disposable MAIL GUEST with the preceding local Postfix exercise configured.\nsudo apt-get install dovecot-imapd\ndovecot --version\n# Stop here and use that version's reference if it is not Dovecot 2.3.\nsudo useradd --create-home labmail\nsudo passwd labmail\nmkdir -p work/tls\numask 077\nopenssl req -x509 -newkey rsa:2048 -nodes -days 1 -keyout work/tls/key.pem -out work/tls/cert.pem -subj /CN=localhost -addext subjectAltName=DNS:localhost\nsudo install -m 0644 work/tls/cert.pem /etc/ssl/certs/ascend-mail-lab.pem\nsudo install -m 0600 work/tls/key.pem /etc/ssl/private/ascend-mail-lab.key\nsudo install -m 0644 inputs/03/dovecot-2.3-lab.conf /etc/dovecot/conf.d/99-ascend-lab.conf\nsudo postconf -e 'home_mailbox = Maildir/'\nsudo postfix check\nsudo doveconf -n\nsudo systemctl restart postfix dovecot\nprintf 'Synthetic message for IMAP\n' | mail -s 'Mailbox control' labmail\nopenssl s_client -connect 127.0.0.1:993 -servername localhost -verify_hostname localhost -verify_return_error -CAfile work/tls/cert.pem -crlf\n# In the TLS IMAP session: a1 LOGIN labmail YOUR_SYNTHETIC_PASSWORD\n# a2 SELECT INBOX\n# a3 FETCH 1 BODY[TEXT]\n# a4 LOGOUT\n# Repeat with a wrong password; repeat s_client using -verify_hostname wrong.invalid to observe name rejection.\n# Next configure the distinct authenticated submission endpoint using the following block.\n```", "```sh\n# Same disposable Ubuntu MAIL GUEST, after TLS, Maildir, local user and Dovecot work.\n# Review existing master.cf, then configure only this guest's loopback submission service.\nsudo cp /etc/postfix/master.cf work/master-before-submission.cf\nsudo postconf -e 'smtpd_tls_cert_file = /etc/ssl/certs/ascend-mail-lab.pem'\nsudo postconf -e 'smtpd_tls_key_file = /etc/ssl/private/ascend-mail-lab.key'\nsudo postconf -M 'submission/inet=submission inet n - y - - smtpd'\nsudo postconf -P 'submission/inet/smtpd_tls_security_level=encrypt'\nsudo postconf -P 'submission/inet/smtpd_sasl_auth_enable=yes'\nsudo postconf -P 'submission/inet/smtpd_sasl_type=dovecot'\nsudo postconf -P 'submission/inet/smtpd_sasl_path=private/auth'\nsudo postconf -P 'submission/inet/smtpd_relay_restrictions=permit_sasl_authenticated,reject'\nsudo postconf -P 'submission/inet/smtpd_recipient_restrictions=permit_sasl_authenticated,reject'\nsudo postfix check\nsudo doveconf -n\nsudo systemctl restart postfix dovecot\nss -ltn\n# Confirm 587 remains loopback-only (inet_interfaces was set in lesson 2).\npython3 inputs/03/submit_authenticated.py\npython3 inputs/03/submit_authenticated.py --wrong-password\npython3 inputs/03/submit_authenticated.py --unauthenticated\n# The script prompts privately for the valid synthetic password and verifies the localhost certificate.\n# Open the earlier IMAP session and fetch the accepted message; refused attempts must not appear.\n# This proves local authenticated submission/mailbox controls, not external SMTP or public deliverability.\n```", "Observe these controls and retain actual output: Authenticated loopback SMTP submission and IMAP retrieval succeed; unauthenticated submission, wrong credentials and a wrong TLS name fail. Retain the actual message/control observations without passwords or private keys. Public delivery remains a separately qualified outcome.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 03 --out work/03-reference. Record that help was used."]
+"done_when" = "Authenticated loopback SMTP submission and IMAP retrieval succeed; unauthenticated submission, wrong credentials and a wrong TLS name fail. Retain the actual message/control observations without passwords or private keys. Public delivery remains a separately qualified outcome. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-mail-state-03"
+"preview" = "Reject a wrong name, credential or unauthenticated relay attempt."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: The previous disposable mail guest, Dovecot 2.3, OpenSSL, a synthetic local account and guest-local TLS certificate; version-specific syntax must match."
+"setup" = "Download /training/io-mail-state.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-mail-state directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/03.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://doc.dovecot.org/2.3/configuration_manual/quick_configuration/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-mail-state.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-mail-state-03-milestone"
+"title" = "Apply independently: Provide authenticated mailbox access"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Dovecot/IMAP, submission, TLS, credentials, mailbox storage and service roles."
+"steps" = ["Choose the native environment in lessons/03.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 03 --variant transfer --out work/03-transfer\npython3 lab.py check work/03-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/03-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Reject a wrong name, credential or unauthenticated relay attempt.", "Collect the actual controls: Authenticated loopback SMTP submission and IMAP retrieval succeed; unauthenticated submission, wrong credentials and a wrong TLS name fail. Retain the actual message/control observations without passwords or private keys. Public delivery remains a separately qualified outcome.", "Retain your commands, changed input, cause, recovery and help used in notes/03.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Authenticated loopback SMTP submission and IMAP retrieval succeed; unauthenticated submission, wrong credentials and a wrong TLS name fail. Retain the actual message/control observations without passwords or private keys. Public delivery remains a separately qualified outcome. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-mail-state.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-mail-state directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/03.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://doc.dovecot.org/2.3/configuration_manual/quick_configuration/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-mail-state.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-mail-state-03"
+"title" = "Return later: Provide authenticated mailbox access"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-mail-state-03-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Dovecot/IMAP, submission, TLS, credentials, mailbox storage and service roles.", "Predict a changed-condition result: Reject a wrong name, credential or unauthenticated relay attempt.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-mail-state-04"
+"preview" = "Use local DNS/message fixtures and real signing/verification on synthetic messages."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: A disposable mail/DNS lab, OpenDKIM tools and an isolated authoritative test resolver; private signing keys stay local. Parsing alone is not signing evidence."
+"setup" = "Download /training/io-mail-state.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-mail-state directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/04.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://manpages.debian.org/bookworm/opendkim-tools/opendkim-testmsg.8.en.html"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-mail-state.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-mail-state-04-practice"
+"title" = "Operate: Authenticate sender domains"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "SPF evaluates an envelope domain against a sending IP; DKIM verifies a signature over selected content; DMARC relates authenticated identities to the visible From domain. None is encryption or a guarantee of inbox placement. A local test DNS zone can teach alignment and signing before public delegation exists."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 04 --variant guided --out work/04-guided\npython3 lab.py check work/04-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/04-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/04.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# Disposable Ubuntu MAIL/DNS GUEST; use its local resolver, never change the shared host's resolver.\n# Required packages in that owned guest: opendkim-tools, dnsmasq-base, openssl and dnsutils.\nmkdir -p work/dkim\numask 077\nopendkim-genkey -b 2048 -d relay.test -s lab -D work/dkim\nopenssl rsa -in work/dkim/lab.private -pubout -outform DER | openssl base64 -A > work/dkim/lab-public.b64\npython3 inputs/04/make_local_dns.py\ndnsmasq --test --conf-file=work/dkim/dnsmasq.conf\n# Check that no existing guest service owns 127.0.0.1:53 before starting this listener.\nsudo dnsmasq --no-daemon --conf-file=work/dkim/dnsmasq.conf\n# Leave DNS in Terminal A. In guest Terminal B, inspect its actual interface and resolver:\n# ip -br address\n# resolvectl status\n# Set split DNS for .relay.test on this GUEST's actual interface only:\n# sudo resolvectl dns ACTUAL_LAB_INTERFACE 127.0.0.1\n# sudo resolvectl domain ACTUAL_LAB_INTERFACE '~relay.test'\n# Verify the installed resolver uses that route: dig lab._domainkey.relay.test TXT\n# If this guest lacks systemd-resolved, configure its equivalent scoped test resolver explicitly first.\n```", "```sh\n# Same GUEST after the system resolver actually sees the isolated DKIM TXT record.\ndig relay.test MX\ndig relay.test TXT\ndig _dmarc.relay.test TXT\nopendkim-testkey -d relay.test -s lab -k work/dkim/lab.private -vvv\nopendkim-testmsg -d relay.test -s lab -k work/dkim/lab.private < inputs/04/message.eml > work/dkim/signed.eml\nopendkim-testmsg < work/dkim/signed.eml\n# Successful verification exits zero. It may print no output; inspect the exit status.\ncp work/dkim/signed.eml work/dkim/tampered.eml\n# In your editor change one non-whitespace body word in tampered.eml, leaving the signed headers intact.\nopendkim-testmsg < work/dkim/tampered.eml\n# The changed body must now fail signature verification. Header parsing alone cannot establish this result.\n# Compare the signing d=relay.test with the visible From domain and interpret the published SPF/DMARC fixtures.\n# SPF's 192.0.2.10 is an invented documentation input, not this guest's public identity.\n```", "Observe these controls and retain actual output: Observe actual signing/verification and a modified-message failure in the chosen local DNS route. Header parsing alone does not independently verify DKIM or public domain ownership.", "Recover and clean up only the named resources: In the disposable mail guest, revert the exact temporary resolver link with sudo resolvectl revert ACTUAL_LAB_INTERFACE and stop this foreground dnsmasq process with Ctrl+C. Retain public records and redacted signed/tampered observations; keep or remove only this lab private key locally. Recheck the guest resolver after cleanup."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 04 --out work/04-reference. Record that help was used."]
+"done_when" = "Observe actual signing/verification and a modified-message failure in the chosen local DNS route. Header parsing alone does not independently verify DKIM or public domain ownership. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-mail-state-04"
+"preview" = "Detect a bad signature or misaligned identity without treating SPF as encryption."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: A disposable mail/DNS lab, OpenDKIM tools and an isolated authoritative test resolver; private signing keys stay local. Parsing alone is not signing evidence."
+"setup" = "Download /training/io-mail-state.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-mail-state directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/04.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://manpages.debian.org/bookworm/opendkim-tools/opendkim-testmsg.8.en.html"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-mail-state.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-mail-state-04-milestone"
+"title" = "Apply independently: Authenticate sender domains"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. MX, SPF, DKIM, DMARC, alignment, signing and verification."
+"steps" = ["Choose the native environment in lessons/04.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 04 --variant transfer --out work/04-transfer\npython3 lab.py check work/04-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/04-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Detect a bad signature or misaligned identity without treating SPF as encryption.", "Collect the actual controls: Observe actual signing/verification and a modified-message failure in the chosen local DNS route. Header parsing alone does not independently verify DKIM or public domain ownership.", "Retain your commands, changed input, cause, recovery and help used in notes/04.md. In the disposable mail guest, revert the exact temporary resolver link with sudo resolvectl revert ACTUAL_LAB_INTERFACE and stop this foreground dnsmasq process with Ctrl+C. Retain public records and redacted signed/tampered observations; keep or remove only this lab private key locally. Recheck the guest resolver after cleanup."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Observe actual signing/verification and a modified-message failure in the chosen local DNS route. Header parsing alone does not independently verify DKIM or public domain ownership. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-mail-state.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-mail-state directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/04.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://manpages.debian.org/bookworm/opendkim-tools/opendkim-testmsg.8.en.html"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-mail-state.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-mail-state-04"
+"title" = "Return later: Authenticate sender domains"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-mail-state-04-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: MX, SPF, DKIM, DMARC, alignment, signing and verification.", "Predict a changed-condition result: Detect a bad signature or misaligned identity without treating SPF as encryption.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-mail-state-05"
+"preview" = "Inspect an eligible learner environment and build a go/no-go record; use a full local equivalent otherwise."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Read-only access to an owned domain/address/provider policy for the public route; local feasibility planning is available without buying those resources."
+"setup" = "Download /training/io-mail-state.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-mail-state directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/05.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://docs.digitalocean.com/support/why-is-smtp-blocked/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-mail-state.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-mail-state-05-practice"
+"title" = "Operate: Assess a public mail deployment"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "Public mail needs more than software: a suitable stable address, domain records, PTR authority, reachable/allowed SMTP, TLS, reputation and ongoing operation. Providers can block SMTP and an HTTP tunnel does not replace public MTA transport. Document a go/no-go decision before exposing a mail service or buying resources."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 05 --variant guided --out work/05-guided\npython3 lab.py check work/05-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/05-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/05.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# Use only an OWNED domain/address and a provider account you may inspect.\n# dig YOUR_OWNED_DOMAIN MX\n# dig YOUR_OWNED_DOMAIN TXT\n# dig -x YOUR_OWNED_MAIL_IP\n# Read the provider's current outbound/inbound SMTP policy and PTR control.\n# Test connectivity only to a consenting/owned endpoint; do not scan public mail hosts.\npython3 lab.py prepare 05 --variant guided --out work/mail-feasibility\npython3 lab.py check work/mail-feasibility\n# The initial case is deliberately infeasible; repair the plan, not the provider's policy.\n```", "Observe these controls and retain actual output: Retain a source-backed feasibility record. Complete the public operational variant only on an eligible owned setup; a local mail lab remains meaningful but is not proof of external delivery.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 05 --out work/05-reference. Record that help was used."]
+"done_when" = "Retain a source-backed feasibility record. Complete the public operational variant only on an eligible owned setup; a local mail lab remains meaningful but is not proof of external delivery. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-mail-state-05"
+"preview" = "Identify blocked SMTP or an unavailable PTR change before claiming deployability."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Read-only access to an owned domain/address/provider policy for the public route; local feasibility planning is available without buying those resources."
+"setup" = "Download /training/io-mail-state.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-mail-state directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/05.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://docs.digitalocean.com/support/why-is-smtp-blocked/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-mail-state.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-mail-state-05-milestone"
+"title" = "Apply independently: Assess a public mail deployment"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Domain control, reachable IP, PTR authority, port policy, reputation and provider terms."
+"steps" = ["Choose the native environment in lessons/05.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 05 --variant transfer --out work/05-transfer\npython3 lab.py check work/05-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/05-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Identify blocked SMTP or an unavailable PTR change before claiming deployability.", "Collect the actual controls: Retain a source-backed feasibility record. Complete the public operational variant only on an eligible owned setup; a local mail lab remains meaningful but is not proof of external delivery.", "Retain your commands, changed input, cause, recovery and help used in notes/05.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Retain a source-backed feasibility record. Complete the public operational variant only on an eligible owned setup; a local mail lab remains meaningful but is not proof of external delivery. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-mail-state.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-mail-state directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/05.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://docs.digitalocean.com/support/why-is-smtp-blocked/"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-mail-state.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-mail-state-05"
+"title" = "Return later: Assess a public mail deployment"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-mail-state-05-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Domain control, reachable IP, PTR authority, port policy, reputation and provider terms.", "Predict a changed-condition result: Identify blocked SMTP or an unavailable PTR change before claiming deployability.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-mail-state-06"
+"preview" = "Diagnose synthetic queued/bounced mail; perform the public variant only with owned consenting endpoints."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Two owned isolated lab MTAs and synthetic messages, Postfix queue tools and administrator rights only in those lab guests."
+"setup" = "Download /training/io-mail-state.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-mail-state directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/06.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://www.postfix.org/BASIC_CONFIGURATION_README.html"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-mail-state.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-mail-state-06-practice"
+"title" = "Operate: Operate queues and delivery"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "Mail can be accepted locally yet remain queued or be rejected downstream. Queue IDs, status codes and timestamps locate the failure. Retries and bounces need bounded policies, and sending more copies is not a fix for a configuration or reputation problem. Inspect only synthetic lab mail and preserve selective controls."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 06 --variant guided --out work/06-guided\npython3 lab.py check work/06-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/06-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/06.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# Disposable MAIL GUEST with synthetic messages from the earlier lessons.\npostqueue -p\npostqueue -j > work/queue.jsonl\n# Inspect one actual SYNTHETIC queue ID from the output:\n# postcat -q YOUR_LAB_QUEUE_ID\n# Temporarily stop the owned downstream lab MTA, submit one synthetic message, then inspect the deferred reason.\n# Restore the downstream MTA and selectively requeue that lab message according to the installed Postfix tools.\n# Do not delete or flush an unrelated production queue.\n```", "Observe these controls and retain actual output: Observe a deferred synthetic message and its specific cause, then successful delivery after the actual cause is repaired. Receipt at a local MTA is not the same as external mailbox receipt.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 06 --out work/06-reference. Record that help was used."]
+"done_when" = "Observe a deferred synthetic message and its specific cause, then successful delivery after the actual cause is repaired. Receipt at a local MTA is not the same as external mailbox receipt. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-mail-state-06"
+"preview" = "Recover a stalled queue or a rejected delivery with the correct cause."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Two owned isolated lab MTAs and synthetic messages, Postfix queue tools and administrator rights only in those lab guests."
+"setup" = "Download /training/io-mail-state.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-mail-state directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/06.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://www.postfix.org/BASIC_CONFIGURATION_README.html"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-mail-state.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-mail-state-06-milestone"
+"title" = "Apply independently: Operate queues and delivery"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Retries, bounces, throttling, blocklists, reputation, relay options and monitoring."
+"steps" = ["Choose the native environment in lessons/06.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 06 --variant transfer --out work/06-transfer\npython3 lab.py check work/06-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/06-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Recover a stalled queue or a rejected delivery with the correct cause.", "Collect the actual controls: Observe a deferred synthetic message and its specific cause, then successful delivery after the actual cause is repaired. Receipt at a local MTA is not the same as external mailbox receipt.", "Retain your commands, changed input, cause, recovery and help used in notes/06.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "Observe a deferred synthetic message and its specific cause, then successful delivery after the actual cause is repaired. Receipt at a local MTA is not the same as external mailbox receipt. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-mail-state.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-mail-state directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/06.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://www.postfix.org/BASIC_CONFIGURATION_README.html"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-mail-state.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-mail-state-06"
+"title" = "Return later: Operate queues and delivery"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-mail-state-06-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Retries, bounces, throttling, blocklists, reputation, relay options and monitoring.", "Predict a changed-condition result: Recover a stalled queue or a rejected delivery with the correct cause.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-mail-state-07"
+"preview" = "Back up the sample application/mail state and restore into a clean target."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python and the included Relay/check_service/backup tools; a recorded synthetic update and a new restore path on your PC."
+"setup" = "Download /training/io-mail-state.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-mail-state directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/07.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://www.sqlite.org/backup.html"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-mail-state.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-mail-state-07-practice"
+"title" = "Operate: Keep state consistent"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "Durable state needs a consistency boundary. SQLite WAL allows readers alongside a writer but still has a single-writer design; unrelated writable copies do not form a replicated database. Use the backup API rather than copying arbitrary live database/WAL files. Mailbox state similarly needs a known consistent backup procedure."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 07 --variant guided --out work/07-guided\npython3 lab.py check work/07-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/07-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/07.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# PC or service GUEST, in this extracted track directory; leave this terminal running.\nmkdir -p data\npython3 shared/relay.py --host 127.0.0.1 --port 8000 --data data/relay.sqlite --release v1\n```", "```sh\n# Second terminal after adding a synthetic update:\npython3 shared/check_service.py --url http://127.0.0.1:8000 --expect-release v1 --write\nmkdir -p work/backups\npython3 shared/backup.py create --source data/relay.sqlite --destination work/backups/relay-first.sqlite\npython3 shared/backup.py inspect --source work/backups/relay-first.sqlite\npython3 shared/backup.py restore --source work/backups/relay-first.sqlite --destination work/relay-restored.sqlite\n# Stop the original service, start a new instance using work/relay-restored.sqlite, and inspect the prior update.\n```", "Observe these controls and retain actual output: A clean target restores the required records and passes integrity/content checks while the original service is stopped. Record actual loss/recovery scope; a backup file existing is insufficient.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 07 --out work/07-reference. Record that help was used."]
+"done_when" = "A clean target restores the required records and passes integrity/content checks while the original service is stopped. Record actual loss/recovery scope; a backup file existing is insufficient. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-mail-state-07"
+"preview" = "Detect an inconsistent backup or a multi-writer design that exceeds its database guarantees."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: Python and the included Relay/check_service/backup tools; a recorded synthetic update and a new restore path on your PC."
+"setup" = "Download /training/io-mail-state.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-mail-state directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/07.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://www.sqlite.org/backup.html"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-mail-state.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-mail-state-07-milestone"
+"title" = "Apply independently: Keep state consistent"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. SQLite/PostgreSQL roles, transactions, one-writer limits, mail storage and backup consistency."
+"steps" = ["Choose the native environment in lessons/07.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 07 --variant transfer --out work/07-transfer\npython3 lab.py check work/07-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/07-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Detect an inconsistent backup or a multi-writer design that exceeds its database guarantees.", "Collect the actual controls: A clean target restores the required records and passes integrity/content checks while the original service is stopped. Record actual loss/recovery scope; a backup file existing is insufficient.", "Retain your commands, changed input, cause, recovery and help used in notes/07.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "A clean target restores the required records and passes integrity/content checks while the original service is stopped. Record actual loss/recovery scope; a backup file existing is insufficient. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-mail-state.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-mail-state directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/07.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://www.sqlite.org/backup.html"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-mail-state.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-mail-state-07"
+"title" = "Return later: Keep state consistent"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-mail-state-07-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: SQLite/PostgreSQL roles, transactions, one-writer limits, mail storage and backup consistency.", "Predict a changed-condition result: Detect an inconsistent backup or a multi-writer design that exceeds its database guarantees.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."
+
+[[node]]
+"level" = "io-mail-state-08"
+"preview" = "Recover the local mail service from a fresh failure and document any public-service dependencies."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: A clean disposable mail guest with the same supported Postfix/Dovecot versions, an independent consistent mailbox backup and new/current credentials."
+"setup" = "Download /training/io-mail-state.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-mail-state directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/08.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://www.postfix.org/BASIC_CONFIGURATION_README.html"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-mail-state.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-mail-state-08-practice"
+"title" = "Operate: Recover a mail service"
+"size" = "M"
+"minutes" = 90
+"needs" = []
+"brief" = "Recovery combines data, service configuration, identities and access policy. Restoring old configuration can revive an obsolete credential or open relay rule. Verify legitimate mail delivery and mailbox access again, reject old credentials and unauthorized relay, and document which parts of public readiness remain external dependencies."
+"steps" = ["First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 08 --variant guided --out work/08-guided\npython3 lab.py check work/08-guided\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/08-guided. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Read the mechanism and environment boundaries in lessons/08.md. Predict a successful response and a failure before running the following native operations.", "```sh\n# MAIL GUEST: stop only the lab mail services for the declared cold-mailbox backup.\nsudo systemctl stop postfix dovecot\nsudo tar -cpf work/mailbox-backup.tar -C /home/labmail Maildir\n# Retain the reviewed lab configuration separately, excluding private keys/password material from public reports.\n# Restore into a NEW disposable MAIL GUEST with unique identity and current credentials.\n# Then: postfix check; doveconf -n; start the lab services; repeat local submission/IMAP/relay-negative controls.\n# Keep the original guest stopped during the restore verification.\n```", "Observe these controls and retain actual output: The new target serves required synthetic messages and legitimate authenticated access while refusing old credentials and relay. State whether external public delivery was actually tested.", "Recover and clean up only the named resources: Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Check which machine owns the listener, address, file and identity. The same loopback address names a different endpoint on each machine.", "For the portable model only, create a separate help workspace: python3 lab.py reference 08 --out work/08-reference. Record that help was used."]
+"done_when" = "The new target serves required synthetic messages and legitimate authenticated access while refusing old credentials and relay. State whether external public delivery was actually tested. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+"checkpoints" = [{ "id" = "diagnosis", "title" = "Explain the failed control", "minutes" = 15, "done_when" = "A prediction and the portable check identify the failing control and state what real observation is still needed.", "next_step" = "Run the named native operation on the owned machine and collect its actual success/failure controls." }, { "id" = "observation", "title" = "Retain the native observation", "minutes" = 30, "done_when" = "The intended native positive and negative observations are retained with their environment and file paths.", "next_step" = "Recover the changed condition, check retained state/access, and complete the named cleanup." }]
+
+[[node]]
+"level" = "io-mail-state-08"
+"preview" = "Rotate credentials and reject relay after restoration while legitimate delivery continues."
+"requirements" = "Portable model: Python 3.11+ and an editor. Native operation: A clean disposable mail guest with the same supported Postfix/Dovecot versions, an independent consistent mailbox backup and new/current credentials."
+"setup" = "Download /training/io-mail-state.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-mail-state directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/08.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://www.postfix.org/BASIC_CONFIGURATION_README.html"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-mail-state.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "io-mail-state-08-milestone"
+"title" = "Apply independently: Recover a mail service"
+"size" = "M"
+"minutes" = 120
+"milestone" = true
+"needs" = []
+"brief" = "Demonstrate the mechanism under a changed condition. Secrets, independent restore, relay controls, retained data and operating cost."
+"steps" = ["Choose the native environment in lessons/08.md. Prior experience may replace the worked operation; it does not replace the following evidence.", "First predict the failed control from the assignment. This short portable exercise checks a configuration model, not a running machine. Create a fresh workspace (the tool refuses to overwrite an existing one):\n```sh\npython3 lab.py prepare 08 --variant transfer --out work/08-transfer\npython3 lab.py check work/08-transfer\n```\nThe initial check intentionally fails. Read assignment.json, edit candidate.json, then repeat the same check. Your files stay in work/08-transfer. If repeating the exercise, choose a new --out directory. A green result checks only this data contract. The native operation and its finish line below remain required.", "Perform this change on the specified owned target: Rotate credentials and reject relay after restoration while legitimate delivery continues.", "Collect the actual controls: The new target serves required synthetic messages and legitimate authenticated access while refusing old credentials and relay. State whether external public delivery was actually tested.", "Retain your commands, changed input, cause, recovery and help used in notes/08.md. Stop only the service started for this lesson. Keep the edited files and transcript in work/. Remove only the named disposable resources after validating your retained evidence."]
+"hints" = ["Compare one changed condition with a known working control; use the guided operation only when needed and record that help."]
+"done_when" = "The new target serves required synthetic messages and legitimate authenticated access while refusing old credentials and relay. State whether external public delivery was actually tested. Retain your prediction, commands, positive and negative results, recovery and help used in your local note. Complete a required native operation in the stated environment before marking it done. Manual completion records your assessment; a saved file or passing portable case is not automatic verified skill."
+
+[[node]]
+"level" = "recall"
+"preview" = "Reconstruct this operation and one failure after a break."
+"requirements" = "Your retained local notes; original tools only if you choose a fresh observation."
+"setup" = "Download /training/io-mail-state.zip and extract it into a NEW folder you choose on your PC. Open a terminal in its io-mail-state directory; read README.md and bootstrap.md. Python 3.11+ runs the portable tools without extra Python packages. POSIX examples use Linux; Windows users can use a prepared Linux guest or WSL for the initial shell practice. Create work/ and notes/. Copy notes-template.md in your editor to notes/08.md, or append a dated attempt if the note already exists. Input files are in inputs/NN/, portable starting cases in cases/, operational instructions in lessons/NN.md, and the shared synthetic service in shared/. All generated work remains in the local paths printed by the tools. Opening a challenge does not create or upload these files. Use Ascend's notebook/upload control only when you choose to copy evidence into Ascend. Run commands one at a time on the named HOST, GUEST or CLIENT. Replace explicit address/key placeholders after inspection, and keep each foreground service in its own terminal. Stop its process with Ctrl+C before reusing the same listener."
+"resource" = "https://www.postfix.org/BASIC_CONFIGURATION_README.html"
+"resource_label" = "Free technical reference"
+"resource_note" = "The bundled lesson defines the practical task. This optional official/open reference explains its mechanism; no paid course is needed."
+"materials" = [{ "label" = "Download this track's practical lab files", "url" = "/training/io-mail-state.zip" }]
+"verify" = { "type" = "manual" }
+"auto_complete" = false
+"id" = "recall-io-mail-state-08"
+"title" = "Return later: Recover a mail service"
+"size" = "S"
+"minutes" = 15
+"needs" = ["io-mail-state-08-milestone"]
+"brief" = "A suggested 2–7 day return is optional; the application does not verify how long you waited."
+"steps" = ["Explain from memory: Secrets, independent restore, relay controls, retained data and operating cost.", "Predict a changed-condition result: Rotate credentials and reject relay after restoration while legitimate delivery continues.", "Compare with retained or fresh observations and record one correction plus the experiment that would test it."]
+"done_when" = "Your note reconstructs the mechanism and a concrete failure/recovery path, compares it with evidence and records a correction. This recall does not certify an unperformed native operation."

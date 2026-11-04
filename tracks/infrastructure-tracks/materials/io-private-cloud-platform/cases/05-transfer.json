@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Repair a failed route without granting host administration to the guest user.",
+  "contract": [
+    {
+      "field": "public_site_needs_host_admin",
+      "op": "eq",
+      "value": false,
+      "why": "public site needs host admin: satisfy the stated publish a guest service contract"
+    },
+    {
+      "field": "edge_targets_actual_guest_address",
+      "op": "eq",
+      "value": true,
+      "why": "edge targets actual guest address: satisfy the stated publish a guest service contract"
+    },
+    {
+      "field": "management_private",
+      "op": "eq",
+      "value": true,
+      "why": "management private: satisfy the stated publish a guest service contract"
+    },
+    {
+      "field": "site_release_verified",
+      "op": "eq",
+      "value": true,
+      "why": "site release verified: satisfy the stated publish a guest service contract"
+    }
+  ],
+  "starting": {
+    "public_site_needs_host_admin": true,
+    "edge_targets_actual_guest_address": true,
+    "management_private": false,
+    "site_release_verified": true
+  },
+  "reference": {
+    "public_site_needs_host_admin": false,
+    "edge_targets_actual_guest_address": true,
+    "management_private": true,
+    "site_release_verified": true
+  },
+  "rules": [
+    {
+      "field": "public_site_needs_host_admin",
+      "op": "eq",
+      "value": false,
+      "why": "public site needs host admin: satisfy the stated publish a guest service contract"
+    },
+    {
+      "field": "edge_targets_actual_guest_address",
+      "op": "eq",
+      "value": true,
+      "why": "edge targets actual guest address: satisfy the stated publish a guest service contract"
+    },
+    {
+      "field": "management_private",
+      "op": "eq",
+      "value": true,
+      "why": "management private: satisfy the stated publish a guest service contract"
+    },
+    {
+      "field": "site_release_verified",
+      "op": "eq",
+      "value": true,
+      "why": "site release verified: satisfy the stated publish a guest service contract"
+    }
+  ]
+}

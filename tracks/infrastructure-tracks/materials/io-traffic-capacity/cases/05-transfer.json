@@ -1,0 +1,106 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Repair retry amplification or queue growth using changed constraints.",
+  "contract": [
+    {
+      "field": "queue_limit",
+      "op": "max",
+      "value": 16,
+      "why": "queue limit: satisfy the stated apply backpressure contract"
+    },
+    {
+      "field": "retry_limit",
+      "op": "max",
+      "value": 2,
+      "why": "retry limit: satisfy the stated apply backpressure contract"
+    },
+    {
+      "field": "timeouts_finite",
+      "op": "eq",
+      "value": true,
+      "why": "timeouts finite: satisfy the stated apply backpressure contract"
+    },
+    {
+      "field": "rejections_counted",
+      "op": "eq",
+      "value": true,
+      "why": "rejections counted: satisfy the stated apply backpressure contract"
+    },
+    {
+      "field": "post_burst_recovery_checked",
+      "op": "eq",
+      "value": true,
+      "why": "post burst recovery checked: satisfy the stated apply backpressure contract"
+    },
+    {
+      "field": "queue_limit",
+      "op": "min",
+      "value": 1,
+      "why": "queue limit must be finite and within the positive lab envelope"
+    },
+    {
+      "field": "retry_limit",
+      "op": "min",
+      "value": 0,
+      "why": "retry limit must be finite and within the positive lab envelope"
+    }
+  ],
+  "starting": {
+    "queue_limit": 16,
+    "retry_limit": 1000000,
+    "timeouts_finite": true,
+    "rejections_counted": false,
+    "post_burst_recovery_checked": true
+  },
+  "reference": {
+    "queue_limit": 16,
+    "retry_limit": 2,
+    "timeouts_finite": true,
+    "rejections_counted": true,
+    "post_burst_recovery_checked": true
+  },
+  "rules": [
+    {
+      "field": "queue_limit",
+      "op": "max",
+      "value": 16,
+      "why": "queue limit: satisfy the stated apply backpressure contract"
+    },
+    {
+      "field": "retry_limit",
+      "op": "max",
+      "value": 2,
+      "why": "retry limit: satisfy the stated apply backpressure contract"
+    },
+    {
+      "field": "timeouts_finite",
+      "op": "eq",
+      "value": true,
+      "why": "timeouts finite: satisfy the stated apply backpressure contract"
+    },
+    {
+      "field": "rejections_counted",
+      "op": "eq",
+      "value": true,
+      "why": "rejections counted: satisfy the stated apply backpressure contract"
+    },
+    {
+      "field": "post_burst_recovery_checked",
+      "op": "eq",
+      "value": true,
+      "why": "post burst recovery checked: satisfy the stated apply backpressure contract"
+    },
+    {
+      "field": "queue_limit",
+      "op": "min",
+      "value": 1,
+      "why": "queue limit must be finite and within the positive lab envelope"
+    },
+    {
+      "field": "retry_limit",
+      "op": "min",
+      "value": 0,
+      "why": "retry limit must be finite and within the positive lab envelope"
+    }
+  ]
+}

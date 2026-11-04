@@ -1,0 +1,68 @@
+{
+  "scope": "Editable configuration/artifact reasoning; not live operational evidence, a trusted grade, or an automatic completion check.",
+  "brief": "Connect a client and server using a disposable virtual network; then try a second owned device if available.",
+  "contract": [
+    {
+      "field": "server_bind",
+      "op": "eq",
+      "value": "guest-lab-address",
+      "why": "server bind: satisfy the stated connect a local network contract"
+    },
+    {
+      "field": "client_same_subnet",
+      "op": "eq",
+      "value": true,
+      "why": "client same subnet: satisfy the stated connect a local network contract"
+    },
+    {
+      "field": "peer_isolation",
+      "op": "eq",
+      "value": false,
+      "why": "peer isolation: satisfy the stated connect a local network contract"
+    },
+    {
+      "field": "public_access_claim",
+      "op": "eq",
+      "value": false,
+      "why": "public access claim: satisfy the stated connect a local network contract"
+    }
+  ],
+  "starting": {
+    "server_bind": "127.0.0.1",
+    "client_same_subnet": true,
+    "peer_isolation": false,
+    "public_access_claim": false
+  },
+  "reference": {
+    "server_bind": "guest-lab-address",
+    "client_same_subnet": true,
+    "peer_isolation": false,
+    "public_access_claim": false
+  },
+  "rules": [
+    {
+      "field": "server_bind",
+      "op": "eq",
+      "value": "guest-lab-address",
+      "why": "server bind: satisfy the stated connect a local network contract"
+    },
+    {
+      "field": "client_same_subnet",
+      "op": "eq",
+      "value": true,
+      "why": "client same subnet: satisfy the stated connect a local network contract"
+    },
+    {
+      "field": "peer_isolation",
+      "op": "eq",
+      "value": false,
+      "why": "peer isolation: satisfy the stated connect a local network contract"
+    },
+    {
+      "field": "public_access_claim",
+      "op": "eq",
+      "value": false,
+      "why": "public access claim: satisfy the stated connect a local network contract"
+    }
+  ]
+}

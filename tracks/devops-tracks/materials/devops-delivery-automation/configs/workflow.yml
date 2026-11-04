@@ -1,0 +1,20 @@
+name: Relay checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python shared/selfcheck.py
+      - run: python shared/release.py build --source shared/relay.py --out build/relay --release ci-v1 --revision "$GITHUB_SHA"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: relay-${{ github.sha }}
+          path: build/relay/
+# For a production policy, pin action commit SHAs after checking the selected upstream release.
+# This test-only workflow receives no deployment credentials and publishes no package.

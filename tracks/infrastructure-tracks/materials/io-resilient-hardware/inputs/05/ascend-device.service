@@ -1,0 +1,20 @@
+[Unit]
+Description=Ascend device practice service
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/ascend-device
+ExecStart=/usr/bin/python3 /opt/ascend-device/shared/relay.py --host 127.0.0.1 --port 8000 --data /opt/ascend-device/data/relay.sqlite --release device-v1 --ready-file /opt/ascend-device/control/ready
+User=relaylab-device
+Group=relaylab-device
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/opt/ascend-device/data
+
+[Install]
+WantedBy=multi-user.target

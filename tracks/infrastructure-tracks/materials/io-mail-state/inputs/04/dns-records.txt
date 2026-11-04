@@ -1,0 +1,5 @@
+relay.test. MX 10 mail.relay.test.
+relay.test. TXT "v=spf1 ip4:192.0.2.10 -all"
+_dmarc.relay.test. TXT "v=DMARC1; p=none"
+# Add the generated lab._domainkey TXT value to the isolated resolver.
+# 192.0.2.10 is documentation space, not a claimed public mail host.
