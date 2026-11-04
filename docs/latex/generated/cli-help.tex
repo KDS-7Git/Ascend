@@ -1066,11 +1066,12 @@ options:
 \subsubsection{ascend-server }
 \begin{verbatim}
 usage: ascend-server [-h] [--host HOST] [--port PORT] [--home HOME]
-                     [--auth-mode {single,multi}]
-                     {user-add,push-keys} ...
+                     [--auth-mode {single,multi}] [--account-management]
+                     {user-add,user-list,user-password,user-disable,user-enable,user-revoke,push-keys}
+                     ...
 
 positional arguments:
-  {user-add,push-keys}
+  {user-add,user-list,user-password,user-disable,user-enable,user-revoke,push-keys}
 
 options:
   -h, --help            show this help message and exit
@@ -1078,6 +1079,8 @@ options:
   --port PORT
   --home HOME
   --auth-mode {single,multi}
+  --account-management  Enable account security controls with --auth-mode
+                        multi; off for single-user testing
 \end{verbatim}
 \subsubsection{ascend-server user-add}
 \begin{verbatim}
@@ -1089,6 +1092,53 @@ positional arguments:
 options:
   -h, --help           show this help message and exit
   --timezone TIMEZONE
+\end{verbatim}
+\subsubsection{ascend-server user-list}
+\begin{verbatim}
+usage: ascend-server user-list [-h]
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend-server user-password}
+\begin{verbatim}
+usage: ascend-server user-password [-h] username
+
+positional arguments:
+  username
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend-server user-disable}
+\begin{verbatim}
+usage: ascend-server user-disable [-h] username
+
+positional arguments:
+  username
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend-server user-enable}
+\begin{verbatim}
+usage: ascend-server user-enable [-h] username
+
+positional arguments:
+  username
+
+options:
+  -h, --help  show this help message and exit
+\end{verbatim}
+\subsubsection{ascend-server user-revoke}
+\begin{verbatim}
+usage: ascend-server user-revoke [-h] username
+
+positional arguments:
+  username
+
+options:
+  -h, --help  show this help message and exit
 \end{verbatim}
 \subsubsection{ascend-server push-keys}
 \begin{verbatim}

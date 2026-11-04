@@ -57,7 +57,7 @@
             "Coming up: the task has a prerequisite or an earlier level to complete. Open it to see what is needed.",
             "Complete: the task was marked complete under its evidence rules.",
             "Skipped: you chose to move past the task. A skip is kept separate from completion and earns no milestone badge or XP.",
-            "Milestone: a task that brings a level’s skills together. Its distinct diamond shape and label identify it."
+            "Milestone: a task that brings a level\u2019s skills together. Its distinct diamond shape and label identify it."
           ]
         },
         {
@@ -135,7 +135,7 @@
         },
         {
           "type": "paragraph",
-          "text": "For JSON evidence tasks, the included report.py asks for your own observations and preserves existing reports. Run it from the extracted lab folder using the path shown in the challenge. The file checker sees the Ascend server’s filesystem: a laptop-only file is not visible to a hosted or container server. There is no report upload in this workflow; place the evidence at the configured server lab path, then check it and log progress."
+          "text": "For JSON evidence tasks, the included report.py asks for your own observations and preserves existing reports. Run it from the extracted lab folder using the path shown in the challenge. The file checker sees the Ascend server\u2019s filesystem: a laptop-only file is not visible to a hosted or container server. There is no report upload in this workflow; place the evidence at the configured server lab path, then check it and log progress."
         },
         {
           "type": "steps",
@@ -184,7 +184,7 @@
           "items": [
             "Server-verified exercise: Ascend checks the result against your current generated instance. Wrong answers do not complete the task or earn XP.",
             "Server-graded reasoning check: your scenario decision is checked. This does not grade a free-form explanation or prove that you performed a practical assessment.",
-            "Signed external lab evidence: an administrator’s collector confirms named challenge results for your assigned game instance. The browser cannot simply send a solved flag.",
+            "Signed external lab evidence: an administrator\u2019s collector confirms named challenge results for your assigned game instance. The browser cannot simply send a solved flag.",
             "Artifact check: a file exists and meets the configured checks. A person must still review whether its result and reasoning are correct.",
             "Human assessment: some explanations and changed-case demonstrations need review rather than a machine check."
           ]
@@ -195,7 +195,7 @@
         },
         {
           "type": "paragraph",
-          "text": "Permission puzzles allow one final submission. Choose Allow or Deny for every request, then press Submit decisions. The result explains each rule and gives equal partial credit for correctly classified requests: XP = the time-based reward × correct requests ÷ total requests, rounded down. Four of six correct within the target earns 66 XP. Incorrect decisions earn no credit. Only all-correct results complete the task; Continue with partial result skips it while retaining earned XP. Reloading or requesting a fresh instance cannot reset your submitted result."
+          "text": "Permission puzzles allow one final submission. Choose Allow or Deny for every request, then press Submit decisions. The result explains each rule and gives equal partial credit for correctly classified requests: XP = the time-based reward \u00d7 correct requests \u00f7 total requests, rounded down. Four of six correct within the target earns 66 XP. Incorrect decisions earn no credit. Only all-correct results complete the task; Continue with partial result skips it while retaining earned XP. Reloading or requesting a fresh instance cannot reset your submitted result."
         },
         {
           "type": "heading",
@@ -232,7 +232,7 @@
       "blocks": [
         {
           "type": "paragraph",
-          "text": "Your verified XP balance and day streak appear in the top bar on every screen. Select either to open Stats, or open your Profile to see your balance, streak, and verified task count. XP is personal feedback, not a spendable coin balance."
+          "text": "Your scored XP and day streak appear in the top bar. Open Stats or Profile to see Practice points, scored XP, assessed track tasks and milestones with their evidence. These measures have separate purposes; neither XP nor Practice points buys access."
         },
         {
           "type": "steps",
@@ -262,7 +262,7 @@
         },
         {
           "type": "paragraph",
-          "text": "For a 20-minute target, completing at 20 minutes earns 100 XP, at 30 minutes earns 75 XP, and at 40 minutes earns 50 XP. The timer cannot be paused. Completing, skipping or ending stops that task’s session; later practice is unscored. Ending before verification cannot be used to preserve a higher reward. Permission puzzles multiply this time-based reward by the fraction of correct decisions, so a partial result may earn fewer than 25 XP or zero."
+          "text": "For a 20-minute target, completing at 20 minutes earns 100 XP, at 30 minutes earns 75 XP, and at 40 minutes earns 50 XP. The timer cannot be paused. Completing, skipping or ending stops that task\u2019s session; later practice is unscored. Ending before verification cannot be used to preserve a higher reward. Permission puzzles multiply this time-based reward by the fraction of correct decisions, so a partial result may earn fewer than 25 XP or zero."
         },
         {
           "type": "paragraph",
@@ -275,7 +275,8 @@
       ],
       "related": [
         "reminders",
-        "verification"
+        "verification",
+        "practice-rewards"
       ],
       "section": "Daily practice"
     },
@@ -295,7 +296,7 @@
         },
         {
           "type": "paragraph",
-          "text": "ntfy is a simple route to Android notifications. Telegram needs administrator-provided bot and chat settings. Desktop sends to the server’s desktop session, which may not be your phone or laptop. Browser push requires a supported browser and a secure origin."
+          "text": "ntfy is a simple route to Android notifications. Telegram needs administrator-provided bot and chat settings. Desktop sends to the server\u2019s desktop session, which may not be your phone or laptop. Browser push requires a supported browser and a secure origin."
         },
         {
           "type": "heading",
@@ -331,13 +332,13 @@
       "blocks": [
         {
           "type": "paragraph",
-          "text": "The avatar in the top bar opens your Profile. It shows your actual account name, verified XP, verified task count, and current day streak. There is no invented rank or profile completion score."
+          "text": "The avatar opens your Profile. It shows your account name, scored XP, assessed track tasks, Practice points, milestones and day streak. Each measure has an explanation; participation points do not claim skill verification."
         },
         {
           "type": "list",
           "items": [
             "Timezone: search for a city timezone, such as Asia/Kolkata for India (UTC+05:30), Europe/London or UTC, then save. A city timezone also handles daylight-saving changes where applicable; a raw UTC offset is not accepted.",
-            "Preferences: choose your timezone, System/Light/Dark appearance and On/Off motion effects. Appearance choices are saved in this browser. Your device’s reduced motion setting always takes priority.",
+            "Preferences: choose your timezone, System/Light/Dark appearance and On/Off motion effects. Appearance choices are saved in this browser. Your device\u2019s reduced motion setting always takes priority.",
             "Reminders: configure notification timing and delivery.",
             "Privacy & account: choose whether to publish a streak badge. Sharing is off unless you enable it.",
             "Log out: available on authenticated servers. A single-user local server has no login session to end."
@@ -345,7 +346,7 @@
         },
         {
           "type": "paragraph",
-          "text": "Account names are provisioned by the server administrator. The app does not offer an unsupported username or password edit. Your progress is account-scoped on the server; a theme preference stays local to the browser."
+          "text": "Accounts are provisioned by the server operator. Account security is hidden during single-user dashboard testing. When the operator enables it in multi-user mode, Profile supports password changes and session revocation. Password recovery is an operator action that retains learning history. Your server progress is account-scoped; appearance preferences and unsynced drafts remain in this browser."
         },
         {
           "type": "heading",
@@ -362,7 +363,9 @@
       ],
       "related": [
         "reminders",
-        "missions"
+        "missions",
+        "practice-rewards",
+        "account-security"
       ],
       "section": "Setup & help"
     },
@@ -397,7 +400,7 @@
         },
         {
           "type": "paragraph",
-          "text": "The collector is an administrator tool on the Docker host. It signs a fresh observation for the learner’s numeric account ID. Refresh it after solving, then press Verify lab completion within five minutes. The tracker receives a read-only receipt, not the Docker socket."
+          "text": "The collector is an administrator tool on the Docker host. It signs a fresh observation for the learner\u2019s numeric account ID. Refresh it after solving, then press Verify lab completion within five minutes. The tracker receives a read-only receipt, not the Docker socket."
         },
         {
           "type": "heading",
@@ -462,7 +465,7 @@
         },
         {
           "type": "paragraph",
-          "text": "Ask the administrator to collect a new receipt for the correct numeric account and assigned instance. Receipts expire after five minutes. A different learner’s game, an unsigned file, or a missing challenge does not count."
+          "text": "Ask the administrator to collect a new receipt for the correct numeric account and assigned instance. Receipts expire after five minutes. A different learner\u2019s game, an unsigned file, or a missing challenge does not count."
         },
         {
           "type": "heading",
@@ -519,7 +522,7 @@
           "items": [
             "Start a worked example in Learn with guidance. It opens on its own page with a practice clock. The first unfamiliar skill opens a three-step walkthrough automatically; use Next, Back or Skip tour. Open walkthrough is always available later.",
             "Apply the skill in a fresh easy challenge. Relevant independent cases and changed-condition checks support harder recommendations; total XP does not establish readiness.",
-            "Your answers and notes save in your Ascend profile under Playground → Saved work & history. Each activity appears once; View attempts opens all its attempts for individual review or return. Save & leave pauses worked examples and free workspaces. Assessed challenge timers keep running. The optional return reminder is a note to your future self, not an extra task. Available hints are limited and optional; some challenges have no hints.",
+            "Your answers and notes save in your Ascend profile under Playground \u2192 Saved work & history. Each activity appears once; View attempts opens all its attempts for individual review or return. Save & leave pauses worked examples and free workspaces. Assessed challenge timers keep running. The optional return reminder is a note to your future self, not an extra task. Available hints are limited and optional; some challenges have no hints.",
             "Solve or explicitly end an attempt before opening its full solution. Previously seen cases are familiar practice. Finite mysteries do not promise unlimited novelty."
           ]
         },
@@ -578,7 +581,7 @@
       "blocks": [
         {
           "type": "paragraph",
-          "text": "Open Playground → Linux labs, or a track’s open-source references. Cards show a brief, level, environment and readiness. Select Open lab for full tasks, setup, commands, evidence, source and license. Each exercise has a shareable link; returning to the catalog keeps your filters."
+          "text": "Open Playground \u2192 Linux labs, or a track\u2019s open-source references. Cards show a brief, level, environment and readiness. Select Open lab for full tasks, setup, commands, evidence, source and license. Each exercise has a shareable link; returning to the catalog keeps your filters."
         },
         {
           "type": "heading",
@@ -608,7 +611,7 @@
         {
           "type": "steps",
           "items": [
-            "Install the Ascend CLI on the learner’s Linux computer. Run doctor for the recipe to check available tools, platform and free space.",
+            "Install the Ascend CLI on the learner\u2019s Linux computer. Run doctor for the recipe to check available tools, platform and free space.",
             "Start the recipe. The first download needs internet; subsequent starts reuse matching cached assets. --offline skips the Ascend server and keeps results pending until you explicitly sync.",
             "Use the returned run ID with show. Edit the listed answers.json or policy.json in your saved work directory, then run check. Service recipes also provide a loopback browser URL.",
             "Use stop and resume to keep the same attempt. Stop does not pause its session deadline. Use finish to export a small result and destroy its owned runtime while retaining your files."
@@ -668,6 +671,175 @@
           "type": "paragraph",
           "text": "Fill collector.json to select the exact Kubernetes context, emulator serial, AWS profile or FRR container. Collectors perform read-only queries; Android and AWS secret values are excluded. Repair, debugger and LLM traces can be captured from bounded JSON observations. Include the required negative controls. LLM evidence needs at least three distinct baseline and injection trials with actual tool calls. Missing evidence remains unsupported. Finish preserves all work; clean up the actual environment using its upstream plan."
         }
+      ]
+    },
+    {
+      "id": "infrastructure-domain",
+      "title": "Infrastructure: local to Internet",
+      "section": "Learning tracks",
+      "summary": "Nine practical tracks connect Linux, VMs, public hosting, private access, mail, capacity and resilient devices.",
+      "related": [
+        "packs",
+        "missions",
+        "engineering-materials",
+        "devops-domain"
+      ],
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Open More \u2192 Browse learning tracks and choose Infrastructure. Tracks are numbered in a suggested order. Install the track that matches your skills, then choose Infrastructure & Internet Operations in the mission picker. Installation and suggested background do not force completion of earlier tracks."
+        },
+        {
+          "type": "list",
+          "items": [
+            "1. Linux & Network Foundations: shell, services, DNS, routes and first recovery.",
+            "2. Virtual Machines & Host Administration: guest creation, SSH, websites, resizing, clones and restore.",
+            "3. Web Hosting & Public Deployment: DNS/TLS, home/VPS access, free hosting and Cloudflare Tunnel.",
+            "4. Private Networks, SSH & Tunnels: forwards, VPNs, subnet/exit nodes and owned relays.",
+            "5. Delivery & Infrastructure Automation: containers, CI, release identity, OpenTofu and Ansible.",
+            "6. Mail & Stateful Self-Hosting: SMTP/IMAP, sender identity, queue handling, state and recovery.",
+            "7. Traffic, Concurrency & Capacity: balancing, admission, load models, sizing and optimization.",
+            "8. Resilient Operations & Efficient Hardware: small servers, microSD, Pi, backups and resource budgets.",
+            "9. Private Cloud & Platform Engineering: a college-style guest service with projects, roles, quota and lifecycle controls."
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Choose an environment and an entry point"
+        },
+        {
+          "type": "paragraph",
+          "text": "Each task states which commands belong on HOST, GUEST or CLIENT and what tools/access it needs. A PC and disposable Linux guests support the main local route. Physical Pi/router/storage work and external public-service checks state their additional requirements. For a later level in an installed track, use Path \u2192 level details \u2192 the explicit early-unlock action when you already have the entry skills; unlocking does not mark tasks completed."
+        },
+        {
+          "type": "paragraph",
+          "text": "The small-server profile uses about four cores, 4\u20138 GB RAM and 100\u2013120 GB physical microSD. Use the PC for builds, VM fleets and bounded load. More hardware extends the same project. Ordinary hosted lab capacity remains two slots; these lessons do not allocate a private VM automatically."
+        }
+      ]
+    },
+    {
+      "id": "devops-domain",
+      "title": "DevOps: operate, release, recover",
+      "section": "Learning tracks",
+      "summary": "Three sequential practical tracks carry one small service through deployment, delivery automation and reliable operation.",
+      "related": [
+        "infrastructure-domain",
+        "engineering-materials",
+        "missions",
+        "verification"
+      ],
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Browse learning tracks \u2192 DevOps, install your chosen track, then select DevOps & deployment in the mission picker. The sequence is a guide; a developer with existing skills can start with delivery or reliability after checking its prerequisites."
+        },
+        {
+          "type": "list",
+          "items": [
+            "1. Service foundations: request paths, Linux, releases, service lifecycle, edge/TLS, containers, configuration and a first deployment.",
+            "2. Delivery automation: tested artifacts, CI, registries, staging, rollback, infrastructure state and configuration automation.",
+            "3. Reliability & orchestration: useful signals, capacity, secrets, backup/restore, Kubernetes and an integrated incident capstone."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The practical files include the Relay service, independent fault inputs, environment configuration and operating instructions. Local checks exercise named controls. Full CI/provider/VM/cluster operations run in your own declared environment, and the task explains how to retain their evidence."
+        },
+        {
+          "type": "paragraph",
+          "text": "DevOps shares mechanisms with Infrastructure. Use the entry descriptions to avoid redundant study. A matching topic name does not silently transfer a completion or award XP again; record what you actually performed."
+        }
+      ]
+    },
+    {
+      "id": "engineering-materials",
+      "title": "Use your engineering practice files",
+      "section": "Practice",
+      "summary": "Download the files after Start, run the named local exercises, and keep the exact observations and recovery evidence.",
+      "related": [
+        "infrastructure-domain",
+        "devops-domain",
+        "lessons",
+        "verification"
+      ],
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Open a task and read its preview and environment requirements. Start reveals the instructions and material download.",
+            "Download and extract the track ZIP into a new folder you control. Its README and lessons directory identify the files and the machine for each command. The shared directory contains common Relay tools.",
+            "Run the specified local check or native operation. Keep the original input, your changed input and the observed positive/negative controls. A command printed in Ascend is not automatically executed on the server.",
+            "Save the named local report or runbook at the exact path shown by the lesson. Keep a copy of important VM files outside a VM you plan to delete. Add your explanation and observations to the task notebook.",
+            "Read the completion criteria before marking the task done. Portable data checks validate those inputs; they do not prove that a public service, physical device or VM operation happened. Leave an unavailable operational test unfinished and return when its requirements are available."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The application can save submitted task notes and uploaded evidence to your account, but local terminal files and guest disks stay in that environment until you explicitly copy or upload them. A download is a separate device copy. Follow the task\u2019s cleanup steps and remove only its owned resources."
+        },
+        {
+          "type": "paragraph",
+          "text": "These curricula are authored drafts with runnable materials and local verification. Existing completion and XP policies still apply. Installing a tool, provisioning a VM, or creating a report file does not automatically establish verified operational mastery."
+        }
+      ]
+    },
+    {
+      "id": "practice-rewards",
+      "title": "Practice points, XP & achievements",
+      "summary": "Different rewards recognise effort, assessed results and completed milestones.",
+      "section": "Learning & progress",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Practice points acknowledge meaningful participation. Scored XP reflects the existing assessed-result rules. Milestone achievements show completed tasks and the kind of evidence recorded. None is a spendable currency, a guarantee of mastery or a way to jump the lab queue."
+        },
+        {
+          "type": "list",
+          "items": [
+            "Practice points: 5 for a distinct meaningful activity per learning day, up to 30 per day. A completed worked example, valid assessed submission, checked lab result or explicitly saved substantive learning note can qualify. Draft autosaves, opening pages and starting timers do not.",
+            "Repeating the same activity on the same day does not give more Practice points. Replaying an old completion or saving the identical note on a later day does not create a new reward. New deliberate practice and new observations can qualify; learning remains available after the cap.",
+            "Scored XP: preserve the track timer/correctness rules and Playground first-solve rules. Worked examples and manual/local/hosted practice do not become verified XP because they earn Practice points.",
+            "Achievements: complete a milestone to keep its medal with the task title, track and evidence label. Manual completion is labelled as recorded by you; a medal does not turn a self-report into a server-verified assessment."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Results show the saved receipt before the visual celebration. Refreshing or replaying the animation does not add points. Reduced-motion and motion-off settings retain the result, receipt and actions with a static illustration."
+        }
+      ],
+      "related": [
+        "timers",
+        "playground",
+        "profile"
+      ]
+    },
+    {
+      "id": "account-security",
+      "title": "Optional account security",
+      "summary": "Keep local dashboard testing simple; enable account controls when ready for separate users.",
+      "section": "Setup & help",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "The default single-user mode opens the existing local account without a login screen. Account-security controls remain hidden. The operator can later enable multi-user authentication and Account management; changing modes does not copy local history into a new named account."
+        },
+        {
+          "type": "list",
+          "items": [
+            "When enabled, Profile \u2192 Account security lists your sessions and lets you sign out one session or all other sessions. Session labels describe the client, not a verified physical device.",
+            "Change password requires the current password and a new password of at least 12 characters. It keeps this browser signed in with a new token and signs out earlier sessions.",
+            "Sessions expire 30 days after sign-in. Password and sign-in attempts have a temporary retry limit.",
+            "For a forgotten password or a new account, contact the installation operator through your usual channel. Ascend does not display a recovery email flow without a configured identity service."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Logging into another account reloads the workspace. Unsynced drafts stay associated with their original account for recovery; they are not submitted as the new account. Local browser storage is not encrypted private storage for a shared browser profile."
+        }
+      ],
+      "related": [
+        "profile",
+        "reminders"
       ]
     }
   ]

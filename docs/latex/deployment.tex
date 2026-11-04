@@ -28,6 +28,26 @@ account has no password and cannot log in. Create real accounts for
 separate users; switching auth mode does not transfer the local
 profile\textquotesingle s data into a newly created account.
 
+Account-security UI remains off during single-user dashboard testing. To enable
+it later for named accounts, use \texttt{--auth-mode multi --account-management},
+or combine \texttt{AUTH\_MODE=multi} and \texttt{ASCEND\_ACCOUNT\_MANAGEMENT=1}.
+Single mode always keeps these controls hidden. Profile then provides password
+changes and individual/all-other session revocation. Tokens expire after 30 days;
+each account retains at most 20 sessions. Password changes rotate the current
+token and revoke earlier sessions. The operator can recover access without an
+email service:
+\begin{verbatim}
+ascend-server user-list
+ascend-server user-password alice
+ascend-server user-disable alice
+ascend-server user-enable alice
+ascend-server user-revoke alice
+\end{verbatim}
+Recovery prompts for the new password and retains learning history. The implicit
+local account cannot be enabled for login. Login/current-password throttling is
+per process; shared limits for a multi-worker public deployment belong at its
+edge. No running instance is switched to multi-user mode automatically.
+
 \hypertarget{docker-linux-pc-vps-or-raspberry-pi}{%
 \subsubsection{Docker: Linux PC, VPS, or Raspberry
 Pi}\label{docker-linux-pc-vps-or-raspberry-pi}}

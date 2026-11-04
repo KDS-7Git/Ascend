@@ -576,6 +576,13 @@ These schemas come from the current OpenAPI model definitions. Business rules an
       "type": "string",
       "maxLength": 1024,
       "title": "Password"
+    },
+    "label": {
+      "type": "string",
+      "maxLength": 80,
+      "minLength": 1,
+      "title": "Label",
+      "default": "CLI or browser"
     }
   },
   "additionalProperties": false,
@@ -613,6 +620,31 @@ These schemas come from the current OpenAPI model definitions. Business rules an
     "status"
   ],
   "title": "Mark"
+}
+\end{verbatim}
+\subsubsection{PasswordChange}
+\begin{verbatim}
+{
+  "properties": {
+    "current_password": {
+      "type": "string",
+      "maxLength": 1024,
+      "title": "Current Password"
+    },
+    "new_password": {
+      "type": "string",
+      "maxLength": 1024,
+      "minLength": 12,
+      "title": "New Password"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object",
+  "required": [
+    "current_password",
+    "new_password"
+  ],
+  "title": "PasswordChange"
 }
 \end{verbatim}
 \subsubsection{PracticeAgain}

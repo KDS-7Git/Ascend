@@ -2,11 +2,11 @@
 
 import argparse
 import json
-from pathlib import Path
 import re
 import subprocess
 import sys
 import tempfile
+from pathlib import Path
 
 from ascend.cli import parser as cli_parser
 from ascend.server.app import create_app
@@ -113,7 +113,16 @@ def generate():
             + "}\n"
             + verbatim(parser.format_help())
         )
-    for args in [[], ["user-add"], ["push-keys"]]:
+    for args in [
+        [],
+        ["user-add"],
+        ["user-list"],
+        ["user-password"],
+        ["user-disable"],
+        ["user-enable"],
+        ["user-revoke"],
+        ["push-keys"],
+    ]:
         result = subprocess.run(
             [sys.executable, "-m", "ascend.server", *args, "--help"],
             cwd=ROOT,
@@ -129,7 +138,9 @@ def generate():
         )
     (GENERATED / "cli-help.tex").write_text("".join(help_text))
     with tempfile.TemporaryDirectory(prefix="ascend-doc-schema-") as home:
-        schema = create_app(home, scheduler=False).openapi()
+        schema = create_app(
+            home, auth_mode="multi", scheduler=False, account_management=True
+        ).openapi()
     models = [
         "\\subsection{Generated HTTP request and validation schemas}\nThese schemas come from the current OpenAPI model definitions. Business rules and additional status codes are documented in the endpoint reference.\n"
     ]
@@ -186,9 +197,16 @@ def generate():
         )
     (GENERATED / "curriculum-map.tex").write_text("".join(matrix))
     catalog = ["\\section{Public learning catalog}\\label{public-catalog}\n"]
-    for row in json.loads((ROOT / "packs/community/catalog.json").read_text())[
-        "tracks"
-    ]:
+    community = ROOT / "packs/community"
+    catalog_rows = [
+        row
+        for path in [
+            community / "catalog.json",
+            *sorted(community.glob("*/catalog.json")),
+        ]
+        for row in json.loads(path.read_text())["tracks"]
+    ]
+    for row in catalog_rows:
         catalog.append("\\subsection{" + escape(row["title"]) + "}\n")
         for label, key in [
             ("Pack ID", "id"),
@@ -233,6 +251,7 @@ def compile_doc(name, records):
     for pass_number in (1, 2):
         result = subprocess.run(
             ["xelatex", "-interaction=nonstopmode", "-halt-on-error", name + ".tex"],
+            check=False,
             cwd=DOCS,
             text=True,
             capture_output=True,

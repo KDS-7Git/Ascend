@@ -1,7 +1,9 @@
 # Verification record
 
-The current Playground and Linux-lab implementation passed 417 regression tests,
-including phone/desktop challenge timing, grouped history and accessibility checks.
+The current Playground, engineering-track, reward and workspace implementation
+passed 658 regression tests, including phone/desktop challenge timing, grouped
+history, saved-work recovery, reward feedback and accessibility checks. See the
+[workspace completion record](workspace-completion.md) for scope and reproduction.
 All seven reviewed server-runner recipes passed real lifecycle validation.
 Reproduce environment checks with [the hosted acceptance script](../../scripts/verify_hosted_labs.py)
 and [the runner setup guide](../design/server-lab-runner.md). Source/image reviews

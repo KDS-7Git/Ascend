@@ -15,7 +15,10 @@ In \texttt{AUTH\_MODE=multi}, use
 health endpoint and login are unauthenticated. Accounts are provisioned
 using \texttt{ascend-server user-add}. There is no public registration
 endpoint. Passwords use scrypt; tokens are hashed at rest. Browser
-tokens are session-scoped, and CLI tokens are stored with mode 0600.
+tokens are stored in session storage, and CLI tokens are stored with mode 0600.
+Tokens expire after 30 days, with at most 20 sessions per named account.
+Optional account-security routes are mounted only when multi-user mode and
+\texttt{ASCEND\_ACCOUNT\_MANAGEMENT=1} are both enabled.
 
 \begin{longtable}[]{@{}P{.45\textwidth}P{.50\textwidth}@{}}
 \toprule\noalign{}
@@ -24,8 +27,8 @@ Route & Contract \\
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-\path|GET /api/health| & \texttt{\{status, auth\_mode\}} \\
-\path|POST /api/login| & \texttt{\{username,password\}} →
+\path|GET /api/health| & \texttt{\{status, auth\_mode, account\_management\}} \\
+\path|POST /api/login| & \texttt{\{username,password,label?\}} →
 \texttt{\{token\}} \\
 \path|GET /api/me?minutes=30| & Mission, next/quick-win node data,
 current level, streak and today state \\
@@ -51,6 +54,11 @@ weeks \\
 \path|GET /api/search?q=text| & Reverse chronological substring
 matches \\
 \path|GET /api/account| & Current account and reminder preferences \\
+\path|GET /api/rewards| & Practice points, scored XP, milestone evidence and recent practice receipts \\
+\path|GET /api/account/security| & Optional: own session identifiers and expiry \\
+\path|POST /api/account/password| & Optional: current/new password; rotate token and revoke earlier sessions \\
+\path|POST /api/account/sessions/revoke-others| & Optional: revoke other own sessions \\
+\path|DELETE /api/account/sessions/{id}| & Optional: revoke one own session \\
 \path|POST /api/command| &
 \texttt{\{argv:{[}...{]},pack\_text?:"..."\}}; same application commands
 as the CLI \\

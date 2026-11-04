@@ -45,7 +45,9 @@ notebook columns. Compact screens use the original single working column.
 \texttt{?cursor=circuit} URL parameter. It samples a bounded five-cell history,
 uses one animation-frame update at a time and fades after idle. It is decorative,
 does not replace the pointer, and never intercepts input. The default remains the
-existing grid until the owner accepts the preview.
+native pointer with a grid highlight across the page and interactive cards. The
+fixed background, challenge-card texture and highlighted cells share a viewport
+origin and responsive spacing, including during scrolling and card movement.
 
 The browser regressions in \path{tests/test_ui_feedback.py} exercise state
 handoffs, replay/reload continuity, short-session selection, responsive geometry,
@@ -111,11 +113,11 @@ topics in that navigation; it does not insert a list above the article.
 The subsequent visual pass reviewed React Bits, Aceternity UI, Magic UI and Motion's
 accessibility guidance. The neobrutalism pass also inspected Neobrutalism Components
 and Gumroad's public pages for outlined controls, flat color and clear hierarchy.
-Original local CSS and Web Animations API code supply a printed dot field, outlined
-geometric shapes, sparse moving squares, an orbit motif, short heading and section
-entrances, and chart transitions. The native cursor remains. Hovering over the main
-challenge reveals a neutral grid and emphasizes the cell under the pointer;
-buttons lift with a larger hard shadow and press back into place.
+Original local CSS and Web Animations API code supply a fixed printed grid,
+landscape contours, a layered dark backdrop, short heading and section entrances,
+and chart transitions. The backdrop has a finite entrance. The native cursor
+remains; the page and interactive cards receive synchronized grid highlights. Buttons lift
+with a larger hard shadow and press back into place.
 The source register distinguishes rendered-page inspection from repository-source
 inspection when the React Bits page returned an empty browser body.
 
@@ -169,8 +171,9 @@ object or has the admin role. Existing rewards remain unchanged.
 Profile's timezone input offers searchable city/timezone suggestions and an explicit
 \texttt{Asia/Kolkata} example for India (UTC+05:30). The server accepts timezone
 names such as \texttt{Europe/London} and \texttt{UTC}, and its error explains the
-format. City zones account for applicable daylight-saving changes. The neutral
-cursor grid also extends across the page background as a user-requested trial.
+format. City zones account for applicable daylight-saving changes. The earlier
+page-wide cursor grid has been restored with shared spacing and coordinates
+following the owner's report that the two grids did not align.
 
 \subsection{Navigation and information hierarchy}
 The persistent top bar shows the verified XP balance, day streak and a profile avatar. The
@@ -197,23 +200,24 @@ Pack preview & Complete title and tasks grouped by level, with the first group o
 Lesson dialog & Fixed close/header and feedback regions surround an independently scrolling body. Initial focus goes to the title for a lesson and to the first field for the short logging form. Escape closes; focus returns to the opener.\\
 Challenge workspace & Starting closes the preview and opens a stable page route. Reload restores the same exercise and answer draft. Resume challenge navigates; End session stops timing without completion or XP.\\
 Action feedback & The live region moves into the active dialog. Error and in-dialog messages persist until dismissed or replaced. Page-level informational messages last eight seconds. Timer reminders cannot replace an unresolved error.\\
-Buttons & One filled primary action, outlined secondary actions and underlined text actions. Text actions stay transparent over the cursor grid; hover deepens/moves the underline with a 1 px lift. Keyboard focus outlines and 44 px text-button targets remain. Pending actions disable repeat submission and expose an accessible busy state; a small spinner provides feedback.\\
+Buttons & One filled primary action, outlined secondary actions and underlined text actions. File pickers, profile controls and Playground tabs share the outlined, raised styling. Text actions retain a quiet hover underline. Keyboard focus outlines and 44 px text-button targets remain. Pending actions disable repeat submission and expose an accessible busy state; a small spinner provides feedback.\\
 Docs & Ten searchable help topics grouped into Start here, Daily practice and Setup \& help. A stable desktop rail and compact-screen overlay preserve the reading position. Stable links, command-copy actions and related guides work offline after the shell is installed; progress writes still require the server.\\
-Profile & Actual account identity and verified totals, editable timezone, locally persisted theme, reminders and opt-in streak sharing. Unsupported username/password editing is not presented.\\
+Profile & Actual account identity, scored XP, Practice points, milestone evidence, editable timezone, appearance, reminders and opt-in streak sharing. Optional account-security controls remain hidden in single-user testing.\\
 Path & Uniform vertical task rows, current-level emphasis and distinct ready, locked, done, skipped and milestone states. Color supplements labels and shapes.\\
 Typography & Locally bundled Inter Variable with its SIL Open Font License. A limited hierarchy separates headings, body copy and supporting labels; mobile form text is 16 px to avoid focus zoom.\\
-Motion & A 100 ms page exit, 320--480 ms staggered entrances and 600 ms chart bars, plus slow ambient decoration. Profile preferences and device reduced motion disable effects. The next challenge has a 2.4-second border sweep once per page load, deferred until visible; tab changes and data refreshes do not replay it.\\
+Motion & A 100 ms page exit, 320--480 ms staggered entrances and 600 ms chart bars, plus finite backdrop and companion entrances. Profile explains the effective motion setting; device reduced motion disables effects. The next challenge has a 2.4-second border sweep once per page load, deferred until visible; tab changes and data refreshes do not replay it.\\
 \end{longtable}
 
 The palette uses shared CSS variables for light and dark themes. Light mode uses
-background \texttt{\#f6f3e9}, text \texttt{\#252522}, supporting text
-\texttt{\#59574f}, violet links \texttt{\#5940a1} and mustard actions
-\texttt{\#f5ce47}. Dark mode uses background \texttt{\#1c1d1b}, cream text
-\texttt{\#f6f3e9}, lavender links \texttt{\#cab6ff} and the same mustard action
+background \texttt{\#eee8d9}, text \texttt{\#292620}, supporting text
+\texttt{\#615b4e}, violet links \texttt{\#4c377b} and mustard actions
+\texttt{\#f5ce47}. Dark mode uses background \texttt{\#111622}, cream text
+\texttt{\#f5f0ff}, lavender links \texttt{\#d3b8ff} and the same mustard action
 fill with dark text. Link and button-fill tokens are separate to preserve contrast.
-Controls use 2 px outlines, 4 px corners and 3 px offset shadows; the featured
+Controls use 2 px outlines, 5 px corners and 3 px offset shadows; the featured
 challenge uses a 6 px shadow. Quiet list actions retain a flatter treatment.
-Supporting sections remain open rows with dividers, not extra bordered cards.
+Tracks and Profile group their rows inside opaque, neutral-bordered panels,
+matching the context sidebar. Worked examples do not have colored side stripes.
 The saved theme is applied before first paint. Fonts and the help guide are
 bundled locally; no third-party font request is required during use.
 

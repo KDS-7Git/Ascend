@@ -51,6 +51,7 @@ milestones += [
     ("Linux local labs", "local-lab-regression.txt"),
     ("Local delivery", "chat-completion-verification.txt"),
     ("Learner-local labs", "learner-local-verification.txt"),
+    ("Playground completion", "workspace-final-regression.txt"),
 ]
 for milestone, filename in milestones:
     path = ROOT / "docs/testing" / filename
