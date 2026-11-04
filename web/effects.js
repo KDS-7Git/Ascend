@@ -32,6 +32,8 @@ window.AscendMotion = (() => {
     // Every layer uses the same viewport origin as the fixed paper background.
     layer.style.setProperty('--grid-size-x', `${size / sx}px`);
     layer.style.setProperty('--grid-size-y', `${size / sy}px`);
+    layer.style.setProperty('--grid-line-x', `${1 / sx}px`);
+    layer.style.setProperty('--grid-line-y', `${1 / sy}px`);
     layer.style.setProperty('--grid-offset-x', `${-rect.left / sx}px`);
     layer.style.setProperty('--grid-offset-y', `${-rect.top / sy}px`);
     layer.style.setProperty('--cell-x', `${(Math.floor(gridSample.x / size) * size - rect.left) / sx}px`);
@@ -55,6 +57,8 @@ window.AscendMotion = (() => {
     card.style.setProperty('--paper-grid-y', `${-rect.top / sy - card.clientTop}px`);
     card.style.setProperty('--paper-grid-size-x', `${size / sx}px`);
     card.style.setProperty('--paper-grid-size-y', `${size / sy}px`);
+    card.style.setProperty('--paper-grid-line-x', `${1 / sx}px`);
+    card.style.setProperty('--paper-grid-line-y', `${1 / sy}px`);
     return movingGeometry(card);
   }
   function paintGrid() {

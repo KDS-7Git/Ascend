@@ -1,5 +1,6 @@
 """Production workspace surfaces and recovery of overlapping Playground saves."""
 
+import base64
 import os
 from pathlib import Path
 
@@ -56,19 +57,21 @@ def test_mouse_grid_stays_synchronized_and_keeps_controls_usable(
             if (bodySize !== size + 'px ' + size + 'px') return false;
             const card = document.querySelector('.next-card');
             const bounds = card.getBoundingClientRect();
-            const paper = getComputedStyle(card, '::before');
-            if (!paper.backgroundSize.split(',').every(value => value.trim() === size + 'px ' + size + 'px')
-                || Math.abs(bounds.left + card.clientLeft + parseFloat(paper.backgroundPositionX)) > .05
-                || Math.abs(bounds.top + card.clientTop + parseFloat(paper.backgroundPositionY)) > .05) return false;
+            const paper = getComputedStyle(card);
+            const value = (style, name) => parseFloat(style.getPropertyValue(name));
+            if (value(paper, '--paper-grid-size-x') !== size
+                || value(paper, '--paper-grid-size-y') !== size
+                || Math.abs(bounds.left + card.clientLeft + value(paper, '--paper-grid-x')) > .05
+                || Math.abs(bounds.top + card.clientTop + value(paper, '--paper-grid-y')) > .05) return false;
             const layers = [...document.querySelectorAll('.hover-light.pointer-present')];
             return layers.length === 2 && layers.every(layer => {
                 const rect = layer.getBoundingClientRect();
-                const grid = getComputedStyle(layer, '::before');
+                const grid = getComputedStyle(layer);
                 const cell = getComputedStyle(layer, '::after');
                 const near = (a, b) => Math.abs(a - b) < .05;
-                return grid.backgroundSize.split(',').every(value => value.trim() === size + 'px ' + size + 'px')
-                    && near(rect.left + parseFloat(grid.backgroundPositionX), 0)
-                    && near(rect.top + parseFloat(grid.backgroundPositionY), 0)
+                return value(grid, '--grid-size-x') === size && value(grid, '--grid-size-y') === size
+                    && near(rect.left + value(grid, '--grid-offset-x'), 0)
+                    && near(rect.top + value(grid, '--grid-offset-y'), 0)
                     && near(rect.left + parseFloat(cell.left), Math.floor(point.x / size) * size)
                     && near(rect.top + parseFloat(cell.top), Math.floor(point.y / size) * size);
             });
@@ -107,6 +110,81 @@ def test_mouse_grid_stays_synchronized_and_keeps_controls_usable(
         expect(grid).to_have_css("opacity", "1")
         assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
         assert not errors
+        browser.close()
+
+
+@pytest.mark.parametrize("theme", ["light", "dark"])
+@pytest.mark.parametrize("pixel_ratio", [1, 1.25])
+def test_hover_grid_renders_both_axes_during_fractional_card_movement(
+    live_server, theme, pixel_ratio
+):
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page(
+            viewport={"width": 1440, "height": 1000},
+            device_scale_factor=pixel_ratio,
+            reduced_motion="no-preference",
+        )
+        page.add_init_script(f"localStorage.setItem('ascend-theme', '{theme}')")
+        page.goto(live_server)
+        expect(page.locator("#app-loader")).not_to_be_visible()
+        _finish_motion(page)
+        card = page.locator(".next-card")
+        # Isolate the printed lines from text, art and the selected-cell border.
+        page.evaluate("""() => {
+            const sheet = [...document.styleSheets].at(-1);
+            sheet.insertRule('.next-card > :not(.hover-light) { visibility:hidden; }');
+            sheet.insertRule('.hover-light::after { display:none; }');
+        }""")
+        for transform in ["none", "translate(.375px, .625px) scale(.985)"]:
+            card.evaluate("(card, value) => card.style.transform = value", transform)
+            _finish_motion(page)
+            box = card.bounding_box()
+            point = {"x": box["x"] + box["width"] / 2, "y": box["y"] + 155}
+            page.mouse.move(point["x"], point["y"])
+            highlight = card.locator(".hover-light")
+            expect(highlight).to_have_css("opacity", "1")
+            _finish_motion(page)
+            highlight.evaluate(
+                "e => { e.style.transition = 'none'; e.style.opacity = '0'; }"
+            )
+            before = base64.b64encode(page.screenshot(scale="css")).decode()
+            highlight.evaluate("e => e.style.opacity = '1'")
+            after = base64.b64encode(page.screenshot(scale="css")).decode()
+            strength = page.evaluate(
+                """async ({before, after, point}) => {
+                    const pixels = async encoded => {
+                        const image = new Image();
+                        image.src = 'data:image/png;base64,' + encoded;
+                        await image.decode();
+                        const canvas = document.createElement('canvas');
+                        canvas.width = image.width; canvas.height = image.height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(image, 0, 0);
+                        return {data:ctx.getImageData(0, 0, canvas.width, canvas.height).data,
+                            width:canvas.width};
+                    };
+                    const [off, on] = await Promise.all([pixels(before), pixels(after)]);
+                    const delta = (x, y) => {
+                        const index = (Math.round(y) * on.width + Math.round(x)) * 4;
+                        return Math.max(...[0, 1, 2].map(channel =>
+                            Math.abs(on.data[index + channel] - off.data[index + channel])));
+                    };
+                    const size = parseFloat(getComputedStyle(document.documentElement)
+                        .getPropertyValue('--workspace-grid-size'));
+                    const x = Math.floor(point.x / size) * size;
+                    const y = Math.floor(point.y / size) * size;
+                    const strength = vertical => [5, 11, 17, 23].reduce((sum, offset) =>
+                        sum + Math.max(...[-1, 0, 1, 2].map(edge => vertical
+                            ? delta(x + edge, y + offset) : delta(x + offset, y + edge))), 0) / 4;
+                    return {vertical:strength(true), horizontal:strength(false)};
+                }""",
+                {"before": before, "after": after, "point": point},
+            )
+            assert strength["vertical"] >= 10, (transform, strength)
+            assert strength["horizontal"] >= 10, (transform, strength)
+            ratio = strength["vertical"] / strength["horizontal"]
+            assert 0.75 <= ratio <= 1.33, (transform, strength)
         browser.close()
 
 
