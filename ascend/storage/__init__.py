@@ -7,6 +7,7 @@ import os
 import sqlite3
 
 TABLES = {
+    "practice_rewards",
     "external_lab_attempts",
     "node_checkpoints",
     "activity_feedback",

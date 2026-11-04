@@ -3,20 +3,21 @@
 Rules live in engine; persistence and external checks enter through adapters.
 """
 
-from dataclasses import asdict, replace
-from datetime import date, datetime, timedelta
 import hashlib
 import json
-from pathlib import Path
 import re
 import tempfile
+from dataclasses import asdict, replace
+from datetime import date, datetime, timedelta
+from pathlib import Path
 
+from ascend import rewards
 from ascend.engine.levels import next_nodes, open_levels
 from ascend.engine.packs import Node, parse_pack, substitute
 from ascend.engine.streak import best_streak, logical_date, streak_details
 from ascend.engine.validation import guard_secrets, validate_entry
 from ascend.engine.verifiers import VerifyResult
-from ascend.verifiers import command, file, manual, http, git
+from ascend.verifiers import command, file, git, http, manual
 
 
 class Tracker:
@@ -521,6 +522,7 @@ class Tracker:
         complete=False,
         force=None,
         mission_id=None,
+        reward_practice=True,
     ):
         if force and not complete:
             raise ValueError("--force requires --complete")
@@ -594,11 +596,29 @@ class Tracker:
                     completion_before=json.dumps(before),
                     completion_revision=self.states(pack.id)[node.id]["revision"],
                 )
+            practice_reward = (
+                rewards.award(
+                    self,
+                    "track" if node else "learning-note",
+                    f"{pack.id}:{node.id}" if node else "personal",
+                    node.title if node else "Learning reflection",
+                    "learning-note-saved",
+                    event_key=rewards.note_event(
+                        "track" if node else "learning-note",
+                        f"{pack.id}:{node.id}" if node else "personal",
+                        learned,
+                        next_step,
+                    ),
+                )
+                if reward_practice and len(learned.strip()) >= 20
+                else None
+            )
         return {
             "id": entry_id,
             "day": self.day().isoformat(),
             "completed": completed,
             "verification": verification.summary if verification else None,
+            "practice_reward": practice_reward,
         }
 
     def stats(self):

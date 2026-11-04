@@ -1,11 +1,11 @@
 """Activity isolation, evidence privacy, replay safety and cross-client contracts."""
 
-from concurrent.futures import ThreadPoolExecutor
-from copy import deepcopy
-from datetime import datetime, timedelta, timezone
 import hashlib
 import ipaddress
 import json
+from concurrent.futures import ThreadPoolExecutor
+from copy import deepcopy
+from datetime import datetime, timedelta, timezone
 from threading import Barrier
 
 import pytest
@@ -18,7 +18,7 @@ from ascend.engine.packs import dump_toml
 from ascend.engine.practice import readiness
 from ascend.playground import catalog, fixtures
 from ascend.server.app import create_app
-from ascend.storage import Database
+from ascend.storage import MIGRATIONS, Database
 
 
 def key(t, run):
@@ -225,10 +225,9 @@ def test_additive_migration_keeps_existing_profile(installed, remove_playground_
     other = Database(t.db.home)
     try:
         assert all(other.rows(table) == rows for table, rows in before.items())
-        assert (
-            other.connection.execute("SELECT version FROM schema_version").fetchone()[0]
-            == 12
-        )
+        assert other.connection.execute(
+            "SELECT version FROM schema_version"
+        ).fetchone()[0] == int(MIGRATIONS[-1].name.split("_")[0])
     finally:
         other.close()
 
@@ -250,10 +249,19 @@ def test_concurrent_submissions_award_and_complete_once(tracker):
 
     with ThreadPoolExecutor(2) as pool:
         results = list(pool.map(lambda _: submit(), range(2)))
-    assert results[0] == results[1]
+    assert (
+        sum(result["result"]["practice_reward"]["newly_awarded"] for result in results)
+        == 1
+    )
+    recorded = deepcopy(results)
+    for result in recorded:
+        result["result"]["practice_reward"]["newly_awarded"] = False
+    assert recorded[0] == recorded[1]
     assert len(t.db.rows("activity_rewards")) == 1 and len(t.entries()) == 1
+    assert len(t.db.rows("practice_rewards")) == 1
+    assert t.db.rows("practice_rewards")[0]["points"] == 5
     assert solve(t, "policy-audit")["result"]["xp"] == 0
-    assert t.playground.submit(run["id"], {}) == results[0]
+    assert t.playground.submit(run["id"], {}) == recorded[0]
 
 
 def test_concurrent_track_and_activity_starts_leave_one_foreground(installed):

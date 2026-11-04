@@ -1,5 +1,7 @@
 import json
 import time
+from copy import deepcopy
+from datetime import UTC, datetime, timedelta
 from types import SimpleNamespace
 from unittest.mock import Mock
 
@@ -15,6 +17,71 @@ from ascend.server.lab_runner import RunnerClient
 
 KEY = "a-private-runner-key-for-tests-123456789"
 ALICE, BOB = "a" * 64, "b" * 64
+
+
+def test_hosted_participation_requires_a_finished_authenticated_result_and_never_replays(
+    tmp_path,
+):
+    from ascend.application import Tracker
+    from ascend.rewards import practice_summary
+    from ascend.storage import Database
+
+    db = Database(tmp_path)
+    now = datetime(2026, 11, 3, 12, tzinfo=UTC)
+    tracker = Tracker(db, clock=lambda: now)
+    runner = RunnerClient("http://127.0.0.1:8421", KEY, "test-site")
+
+    def row(
+        number,
+        recipe,
+        *,
+        status="pass",
+        finished=now - timedelta(minutes=1),
+        authority="server-runner",
+    ):
+        return {
+            "id": f"{number:032x}",
+            "recipe_id": recipe,
+            "title": recipe,
+            "status": "destroyed",
+            "finished_at": finished.isoformat() if finished else None,
+            "result": {"status": status, "authority": authority},
+        }
+
+    snapshot = {
+        "runs": [
+            row(1, "passed-lab"),
+            row(2, "failed-lab", status="fail"),
+            row(3, "still-working", finished=None),
+            row(4, "abandoned", status="not-checked"),
+            row(5, "old-history", finished=now - timedelta(days=2)),
+            row(6, "untrusted-report", authority="manual"),
+        ],
+        "job": None,
+    }
+    runner.request = lambda path, data=None: deepcopy(snapshot)
+    try:
+        first = runner.runs(tracker)["runs"]
+        assert all(run["practice_reward"]["newly_awarded"] for run in first[:2])
+        assert all(run["practice_reward"] is None for run in first[2:])
+        assert practice_summary(tracker)["total"] == 10
+        assert not any(
+            run["practice_reward"]["newly_awarded"]
+            for run in runner.runs(tracker)["runs"][:2]
+        )
+        tracker.clock = lambda: now + timedelta(days=1)
+        runner.runs(tracker)
+        assert (
+            practice_summary(tracker)["total"] == 10
+            and practice_summary(tracker)["today"] == 0
+        )
+        snapshot["runs"].append(
+            row(7, "passed-lab", finished=tracker.now() - timedelta(minutes=1))
+        )
+        assert runner.runs(tracker)["runs"][-1]["practice_reward"]["points"] == 5
+        assert practice_summary(tracker)["total"] == 15
+    finally:
+        db.close()
 
 
 def wait(controller, account=ALICE):

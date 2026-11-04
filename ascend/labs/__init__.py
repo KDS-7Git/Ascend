@@ -1,16 +1,29 @@
 """Account-scoped exercises. Only constrained data is evaluated; never learner code."""
 
-from datetime import datetime, timedelta
 import hashlib
 import ipaddress
 import json
-from pathlib import Path
 import secrets
+from datetime import datetime, timedelta
+from pathlib import Path
 
+from ascend import rewards, timing
 from ascend.engine.verifiers import VerifyResult
-from ascend import timing
 
 EXERCISES = {"logging", "subnet", "access-policy", "integrity", "timeline", "case"}
+
+
+def reward_receipt(t, pack_id, node_id, *, fresh=False):
+    """Read this user's recorded award; dashboard totals are not a receipt."""
+    rows = t.db.rows("xp_awards", "pack_id=? AND node_id=?", (pack_id, node_id))
+    award = rows[0] if rows else None
+    return {
+        "id": f"track:{pack_id}:{node_id}",
+        "xp": award["points"] if award else 0,
+        "recorded": bool(award),
+        "newly_awarded": bool(fresh and award),
+        "evidence_kind": award["evidence_kind"] if award else None,
+    }
 
 
 def access_decision(request):
@@ -251,6 +264,8 @@ def view(t, run_id):
         "attempts": row["attempts"],
         "terminal": bool(row["passed_at"]),
         "timer": timing.summary(t),
+        "reward": reward_receipt(t, row["pack_id"], row["node_id"]),
+        "practice_reward": rewards.receipt(t, event_key=f"assessment:{row['id']}"),
         **({"attempt_limit": 1} if row["exercise"] == "access-policy" else {}),
     }
 
@@ -290,6 +305,8 @@ def permission_result(t, row):
         },
         "reward_eligible": bool(awards),
         "timer": timing.summary(t),
+        "reward": reward_receipt(t, row["pack_id"], row["node_id"]),
+        "practice_reward": rewards.receipt(t, event_key=f"assessment:{row['run_id']}"),
     }
 
 
@@ -315,6 +332,8 @@ def case_result(t, row):
             or f"The supported decision is: {public['choices'][correct]}",
         },
         "timer": timing.summary(t),
+        "reward": reward_receipt(t, row["pack_id"], row["node_id"]),
+        "practice_reward": rewards.receipt(t, event_key=f"assessment:{row['run_id']}"),
     }
 
 
@@ -419,8 +438,11 @@ def submit(t, run_id, answers):
                 "exercise": receipt,
                 "summary": "This challenge has already been submitted. Your first result is final.",
                 "timer": timing.summary(t),
+                "reward": receipt["reward"],
+                "practice_reward": receipt["practice_reward"],
             }
         row, pack, node = owned(t, run_id)
+        had_award = reward_receipt(t, pack.id, node.id)["recorded"]
         recorded = recorded_result(t, "pack_id=? AND node_id=?", (pack.id, node.id))
         if recorded:
             raise ValueError(
@@ -470,6 +492,8 @@ def submit(t, run_id, answers):
                 "completed": True,
                 "summary": "This instance was already verified.",
                 "timer": timing.summary(t),
+                "reward": reward_receipt(t, pack.id, node.id),
+                "practice_reward": rewards.receipt(t, event_key=f"assessment:{run_id}"),
             }
         t.db.update("lab_runs", "id=?", (run_id,), attempts=row["attempts"] + 1)
         if is_policy:
@@ -495,6 +519,24 @@ def submit(t, run_id, answers):
                 submitted_at=t.now().isoformat(),
                 challenge=json.dumps(challenge),
             )
+        practice_reward = None
+        if (
+            ready
+            and set(answers) == set(expected)
+            and all(
+                type(answers[k]) is type(value)
+                and not (isinstance(answers[k], str) and not answers[k].strip())
+                for k, value in expected.items()
+            )
+        ):
+            practice_reward = rewards.award(
+                t,
+                "track",
+                f"{pack.id}:{node.id}",
+                node.title,
+                "assessment-submitted",
+                event_key=f"assessment:{run_id}",
+            )
         if not ok:
             if is_case:
                 timing.finish(t, pack, node, "mcq:incorrect")
@@ -511,6 +553,8 @@ def submit(t, run_id, answers):
                 else "The expected result has not been demonstrated. Check the instructions and data; no completion or XP was awarded.",
                 "exercise": view(t, run_id) if is_case or is_policy else None,
                 "timer": timing.summary(t),
+                "reward": reward_receipt(t, pack.id, node.id, fresh=not had_award),
+                "practice_reward": practice_reward,
             }
         t.db.update("lab_runs", "id=?", (run_id,), passed_at=t.now().isoformat())
         result = t.check(f"{pack.id}:{node.id}", confirm=True)
@@ -520,6 +564,8 @@ def submit(t, run_id, answers):
         "receipt": run_id,
         "terminal": True,
         "exercise": view(t, run_id),
+        "reward": reward_receipt(t, pack.id, node.id, fresh=not had_award),
+        "practice_reward": practice_reward,
     }
 
 

@@ -11,9 +11,12 @@ def remove_playground_schema():
     """Reconstruct a pre-Playground database for legacy migration tests."""
 
     def remove(db):
-        for row in db.connection.execute("SELECT name FROM sqlite_master WHERE type='trigger' AND name LIKE 'external_lab_%'").fetchall():
+        for row in db.connection.execute(
+            "SELECT name FROM sqlite_master WHERE type='trigger' AND name LIKE 'external_lab_%'"
+        ).fetchall():
             db.connection.execute(f'DROP TRIGGER "{row[0]}"')
         db.connection.execute("DROP TABLE IF EXISTS external_lab_attempts")
+        db.connection.execute("DROP TABLE IF EXISTS practice_rewards")
         for name in (
             "activity_insert_guard",
             "activity_update_guard",

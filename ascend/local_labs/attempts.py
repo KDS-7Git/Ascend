@@ -6,6 +6,7 @@ import json
 import secrets
 from datetime import datetime, timedelta
 
+from ascend import rewards
 from ascend.local_labs.catalog import detail, executable
 from ascend.local_labs.checks import answer_check, bounded, local_report
 
@@ -25,6 +26,8 @@ class Attempts:
         row = self.owned(attempt_id)
         result = {k: v for k, v in row.items() if k not in {"nonce_hash", "user_id"}}
         result["result"] = json.loads(row["result"]) if row["result"] else None
+        if result["result"] and result["result"].get("practice_reward"):
+            result["result"]["practice_reward"]["newly_awarded"] = False
         result["assignment"] = (
             json.loads(row["assignment"]) if row["assignment"] else None
         )
@@ -271,6 +274,42 @@ class Attempts:
                 fixture_id=row["fixture_id"],
                 origin=row["origin"],
             )
+            participation = True
+            if recipe["grading"] == "audit-answers-v1":
+                answers = data.get("answers", {})
+                strings = (
+                    "discovery_event_id",
+                    "executable",
+                    "companion_event_id",
+                    "intent",
+                    "explanation",
+                )
+                participation = (
+                    all(
+                        isinstance(answers.get(key), str) and answers[key].strip()
+                        for key in strings
+                    )
+                    and len(answers["explanation"].strip()) >= 20
+                    and type(answers.get("uid")) is int
+                    and all(
+                        isinstance(answers.get(key), list)
+                        and answers[key]
+                        and all(
+                            isinstance(value, str) and value.strip()
+                            for value in answers[key]
+                        )
+                        for key in ("arguments", "benign_event_ids")
+                    )
+                )
+            if participation and result["status"] in {"pass", "fail"}:
+                result["practice_reward"] = rewards.award(
+                    self.t,
+                    "local-lab",
+                    row["recipe_id"],
+                    recipe["title"],
+                    "lab-result-recorded",
+                    event_key=f"local-lab:{attempt_id}",
+                )
             self.db.update(
                 "external_lab_attempts",
                 "id=?",
@@ -279,4 +318,7 @@ class Attempts:
                 ended_at=self.t.now().isoformat(),
                 result=json.dumps(result),
             )
-        return self.view(attempt_id)
+        response = self.view(attempt_id)
+        if result.get("practice_reward"):
+            response["result"]["practice_reward"] = result["practice_reward"]
+        return response

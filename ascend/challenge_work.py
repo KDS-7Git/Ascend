@@ -8,10 +8,11 @@ Saving a draft is neither a completion nor a learning-day entry.
 import hashlib
 import json
 import os
-from pathlib import Path
 import re
 import secrets
+from pathlib import Path
 
+from ascend import rewards
 from ascend.engine.validation import guard_secrets, validate_entry
 from ascend.engine.verifiers import VerifyResult
 from ascend.verifiers import file as file_verifier
@@ -28,9 +29,11 @@ def key(kind, pack, node):
 
 
 def require_started(t, pack, node):
-    if not t.db.rows("task_sessions", "pack_id=? AND node_id=?", (pack.id, node.id)):
-        if t.states(pack.id).get(node.id, {}).get("status") != "done":
-            raise ValueError("Start this challenge before saving work")
+    if (
+        not t.db.rows("task_sessions", "pack_id=? AND node_id=?", (pack.id, node.id))
+        and t.states(pack.id).get(node.id, {}).get("status") != "done"
+    ):
+        raise ValueError("Start this challenge before saving work")
 
 
 def notebook(t, pack, node):
@@ -122,6 +125,12 @@ def work(t, pack, node):
             for r in history
         ],
         "practice": bool(t.db.setting(key("practice", pack, node))),
+        "practice_reward": rewards.receipt(
+            t, activity_key=f"track:{pack.id}:{node.id}"
+        ),
+        "completion_practice_reward": rewards.receipt(
+            t, event_key=f"track-complete:{pack.id}:{node.id}"
+        ),
     }
 
 
@@ -149,6 +158,7 @@ def _record_progress(t, pack, node, saved):
             next_step,
             node_id=f"{pack.id}:{node.id}",
             mission_id=missions[0]["id"],
+            reward_practice=False,
         )["id"]
     t.db.insert(
         "entries",
@@ -188,8 +198,21 @@ def save(t, reference, learned, next_step, revision, log_progress=False):
         }
         if log_progress:
             saved["entry_id"] = _record_progress(t, pack, node, saved)
+            practice_reward = rewards.award(
+                t,
+                "track",
+                f"{pack.id}:{node.id}",
+                node.title,
+                "learning-note-saved",
+                event_key=rewards.note_event(
+                    "track", f"{pack.id}:{node.id}", learned, next_step
+                ),
+            )
         t.db.set_setting(key("notebook", pack, node), saved)
-    return work(t, pack, node)
+    result = work(t, pack, node)
+    if log_progress:
+        result["practice_reward"] = practice_reward
+    return result
 
 
 def complete(t, reference, revision):
@@ -227,11 +250,20 @@ def complete(t, reference, revision):
             key("notebook", pack, node),
             {**saved, "entry_id": entry_id, "revision": revision + 1},
         )
+        practice_reward = rewards.award(
+            t,
+            "track",
+            f"{pack.id}:{node.id}",
+            node.title,
+            "practical-completion",
+            event_key=f"track-complete:{pack.id}:{node.id}",
+        )
     return {
         "completed": True,
         "already_completed": False,
         "verification": result.summary,
         "work": work(t, pack, node),
+        "practice_reward": practice_reward,
     }
 
 

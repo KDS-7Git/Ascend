@@ -1,5 +1,6 @@
 import argparse
 import getpass
+import json
 import os
 import sqlite3
 
@@ -14,10 +15,19 @@ def main():
         choices=["single", "multi"],
         default=os.environ.get("AUTH_MODE", "single"),
     )
+    parser.add_argument(
+        "--account-management",
+        action="store_true",
+        default=os.environ.get("ASCEND_ACCOUNT_MANAGEMENT") == "1",
+        help="Enable account security controls with --auth-mode multi; off for single-user testing",
+    )
     sub = parser.add_subparsers(dest="command")
     add = sub.add_parser("user-add")
     add.add_argument("username")
     add.add_argument("--timezone", required=True)
+    sub.add_parser("user-list")
+    for name in ("user-password", "user-disable", "user-enable", "user-revoke"):
+        sub.add_parser(name).add_argument("username")
     keys = sub.add_parser("push-keys")
     keys.add_argument("--out", required=True)
     args = parser.parse_args()
@@ -33,8 +43,8 @@ def main():
             parser.exit(2, f"{error}\n")
         return
     if args.command == "user-add":
-        from ascend.storage import Database
         from ascend.server.auth import create_user
+        from ascend.storage import Database
 
         db = Database(args.home)
         try:
@@ -48,14 +58,59 @@ def main():
         finally:
             db.close()
         return
-    from ascend.server.app import create_app
+    if args.command in {
+        "user-list",
+        "user-password",
+        "user-disable",
+        "user-enable",
+        "user-revoke",
+    }:
+        from ascend.server import auth
+        from ascend.storage import Database
+
+        db = Database(args.home)
+        try:
+            if args.command == "user-list":
+                print(json.dumps(auth.list_users(db), indent=2))
+            elif args.command == "user-password":
+                password = getpass.getpass("New password: ")
+                if password != getpass.getpass("Confirm new password: "):
+                    raise ValueError("Passwords do not match")
+                auth.reset_password(db, args.username, password)
+                print(
+                    f"Password reset for {args.username}. Account enabled; all existing sessions signed out."
+                )
+            elif args.command == "user-revoke":
+                row = auth.managed_user(db, args.username)
+                db.connection.execute(
+                    "DELETE FROM api_tokens WHERE user_id=?", (row["id"],)
+                )
+                print(f"Signed out all sessions for {args.username}.")
+            else:
+                auth.set_enabled(db, args.username, args.command == "user-enable")
+                print(
+                    f"Account {args.username} {'enabled' if args.command == 'user-enable' else 'disabled'}; existing sessions signed out. Learning data is retained."
+                )
+        except (ValueError, sqlite3.IntegrityError) as error:
+            parser.exit(2, f"{error}\n")
+        finally:
+            db.close()
+        return
     import uvicorn
+
+    from ascend.server.app import create_app
 
     if args.host == "0.0.0.0":
         print(
             "Listening on all interfaces. Use a TLS reverse proxy beyond your trusted LAN."
         )
-    uvicorn.run(create_app(args.home, args.auth_mode), host=args.host, port=args.port)
+    uvicorn.run(
+        create_app(
+            args.home, args.auth_mode, account_management=args.account_management
+        ),
+        host=args.host,
+        port=args.port,
+    )
 
 
 if __name__ == "__main__":

@@ -5,6 +5,7 @@ import secrets
 from copy import deepcopy
 from datetime import datetime
 
+from ascend import rewards
 from ascend.engine.practice import (
     readiness,
     ready,
@@ -20,6 +21,26 @@ def bounded_object(value):
     if not isinstance(value, dict) or len(json.dumps(value)) > 100_000:
         raise ValueError("Use a JSON object smaller than 100 KB")
     return value
+
+
+def complete_answer(fields, answers):
+    """A participation receipt requires a complete, well-formed submission."""
+    if not fields or set(fields) != set(answers):
+        return False
+    for name, field in fields.items():
+        value = answers[name]
+        expected = {"boolean": bool, "integer": int, "text": str}.get(
+            field["type"], str
+        )
+        if type(value) is not expected or (
+            isinstance(value, str) and not value.strip()
+        ):
+            return False
+        if field.get("options") and value not in [
+            option[0] for option in field["options"]
+        ]:
+            return False
+    return True
 
 
 class Playground:
@@ -317,6 +338,9 @@ class Playground:
 
     def summary(self, row):
         item = json.loads(row["fixture"])["definition"]
+        result = json.loads(row["result"]) if row["result"] else None
+        if result and result.get("practice_reward"):
+            result["practice_reward"]["newly_awarded"] = False
         return {
             k: row[k]
             for k in (
@@ -336,7 +360,7 @@ class Playground:
         } | {
             "title": item["title"],
             "difficulty": item["difficulty"],
-            "result": json.loads(row["result"]) if row["result"] else None,
+            "result": result,
             "elapsed_seconds": int(self.elapsed(row)),
             "strict_timer": self.strict_timer(row),
         }
@@ -474,9 +498,9 @@ class Playground:
                     )
             return {"tour": work["tour"]}
 
-    def log(self, run_id, learned, next_step, minutes=None):
+    def log(self, run_id, learned, next_step, minutes=None, *, reward_practice=True):
         with self.db.transaction():
-            self.owned(run_id)
+            row = self.owned(run_id)
             previous = self.t.entries()
             next_step = next_step or "Choose another activity or return to your track"
             learned, next_step = validate_entry(
@@ -510,11 +534,27 @@ class Playground:
                     activity_run_id=run_id,
                     **values,
                 )
+            item = json.loads(row["fixture"])["definition"]
+            practice_reward = (
+                rewards.award(
+                    self.t,
+                    "playground",
+                    row["activity_id"],
+                    item["title"],
+                    "learning-note-saved",
+                    event_key=rewards.note_event(
+                        "playground", row["activity_id"], learned, next_step
+                    ),
+                )
+                if reward_practice and len(learned.strip()) >= 20
+                else None
+            )
             return {
                 "id": entry_id,
                 "saved": True,
                 "day": self.t.day().isoformat(),
                 "activity_run_id": run_id,
+                "practice_reward": practice_reward,
             }
 
     def evidence_write(self, row, fixture, outcome, independent=False):
@@ -596,7 +636,7 @@ class Playground:
                     "A workspace has no assessment finish line; save work or learning notes"
                 )
             if row["role"] == "example":
-                self.log(run_id, learned, next_step)
+                self.log(run_id, learned, next_step, reward_practice=False)
                 passed, independent, points, familiar = (
                     True,
                     False,
@@ -631,6 +671,20 @@ class Playground:
                 if passed
                 else "The evidence checks do not all match. Compare your prediction with the fixture, study a separate example, or save for later.",
             }
+            # Submission grading is recorded below in the same transaction.
+            # Empty/malformed data does not qualify merely for pressing Check.
+            fields = fixture["public"].get("fields", {})
+            if row["role"] == "example" or complete_answer(fields, answers):
+                outcome["practice_reward"] = rewards.award(
+                    self.t,
+                    "playground",
+                    row["activity_id"],
+                    fixture["definition"]["title"],
+                    "worked-example-complete"
+                    if row["role"] == "example"
+                    else "evidence-submitted",
+                    event_key=f"playground-run:{run_id}",
+                )
             self.db.update(
                 "activity_runs",
                 "id=?",
@@ -673,7 +727,10 @@ class Playground:
                     source="activity",
                     complete=0,
                 )
-            return self.view(run_id)
+            response = self.view(run_id)
+            if outcome.get("practice_reward"):
+                response["result"]["practice_reward"] = outcome["practice_reward"]
+            return response
 
     def hint(self, run_id):
         with self.db.transaction():
@@ -828,15 +885,34 @@ class Playground:
                     "repaired": False,
                     "message": "That rule does not explain the captured behavior. Keep testing the controls.",
                 }
-            fixture["repaired"] = True
             controls = fixtures.experiment(
                 "access", json.loads(row["work"])["workspace"]
             )
-            self.db.update(
-                "activity_runs", "id=?", (run_id,), fixture=json.dumps(fixture)
-            )
+            event_key = f"workspace-repair:{run_id}"
+            if fixture.get("repaired"):
+                # Copies preserve a repaired workspace. Rechecking that healthy
+                # state must not manufacture a new participation event.
+                practice_reward = rewards.receipt(self.t, event_key=event_key)
+            else:
+                fixture["repaired"] = True
+                self.db.update(
+                    "activity_runs",
+                    "id=?",
+                    (run_id,),
+                    fixture=json.dumps(fixture),
+                    updated_at=self.t.now().isoformat(),
+                )
+                practice_reward = rewards.award(
+                    self.t,
+                    "playground",
+                    row["activity_id"],
+                    fixture["definition"]["title"],
+                    "workspace-repaired",
+                    event_key=event_key,
+                )
             return {
                 "repaired": True,
                 "controls": controls,
+                "practice_reward": practice_reward,
                 "message": "Implementation restored to your displayed policy. The saved requests now match that policy's control results.",
             }

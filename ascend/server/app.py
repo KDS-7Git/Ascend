@@ -32,6 +32,7 @@ class Model(BaseModel):
 class Login(Model):
     username: str = Field(max_length=100)
     password: str = Field(max_length=1024)
+    label: str = Field(default="CLI or browser", min_length=1, max_length=80)
 
 
 class Entry(Model):
@@ -109,11 +110,17 @@ class LabSubmission(LabAttemptToken):
     submission: dict | None = None
 
 
-def create_app(home=None, auth_mode=None, scheduler=True):
+def create_app(home=None, auth_mode=None, scheduler=True, account_management=None):
     home = Path(home or default_home())
     auth_mode = auth_mode or os.environ.get("AUTH_MODE", "single")
     if auth_mode not in {"single", "multi"}:
         raise ValueError("AUTH_MODE must be single or multi")
+    from ascend.server import accounts
+
+    if account_management is None:
+        account_management = os.environ.get("ASCEND_ACCOUNT_MANAGEMENT") == "1"
+    account_management = bool(account_management and auth_mode == "multi")
+    login_throttle = accounts.LoginThrottle()
     Database(home).close()
 
     def tick():
@@ -165,6 +172,7 @@ def create_app(home=None, auth_mode=None, scheduler=True):
     app.state.home = home
     app.state.nudge_tick = tick
     from ascend.server.lab_runner import RunnerClient
+
     app.state.lab_runner = RunnerClient()
 
     @app.middleware("http")
@@ -178,12 +186,17 @@ def create_app(home=None, auth_mode=None, scheduler=True):
             return JSONResponse(
                 {"detail": "Cross-origin writes are not allowed"}, status_code=403
             )
-        if request.url.path.startswith(("/api/lab-attempts", "/api/hosted-labs")) and request.method == "POST":
+        if (
+            request.url.path.startswith(("/api/lab-attempts", "/api/hosted-labs"))
+            and request.method == "POST"
+        ):
             # Bound the wire body too, including chunked requests without Content-Length.
             body = bytearray()
             async for chunk in request.stream():
                 if len(body) + len(chunk) > 1_048_576:
-                    return JSONResponse({"detail": "Lab submission exceeds 1 MiB"}, status_code=413)
+                    return JSONResponse(
+                        {"detail": "Lab submission exceeds 1 MiB"}, status_code=413
+                    )
                 body.extend(chunk)
             request._body = bytes(body)
         response = await call_next(request)
@@ -242,16 +255,26 @@ def create_app(home=None, auth_mode=None, scheduler=True):
 
     @app.get("/api/health")
     def health():
-        return {"status": "ok", "auth_mode": auth_mode}
+        return {
+            "status": "ok",
+            "auth_mode": auth_mode,
+            "account_management": account_management,
+        }
 
     @app.post("/api/login")
-    def sign_in(body: Login):
+    def sign_in(body: Login, request: Request):
+        if auth_mode != "multi":
+            raise HTTPException(404, "Sign-in is not enabled for this local workspace")
+        identity = login_throttle.check(
+            request.client.host if request.client else "unknown", body.username
+        )
         db = Database(home)
         try:
             try:
-                token = login(db, body.username, body.password)
+                token = login(db, body.username, body.password, body.label)
             except ValueError:
                 raise HTTPException(401, "Invalid username or password") from None
+            login_throttle.succeeded(identity)
             return {"token": token}
         finally:
             db.close()
@@ -259,11 +282,12 @@ def create_app(home=None, auth_mode=None, scheduler=True):
     @app.get("/api/account")
     def account(t=Depends(tracker)):
         row = t.db.connection.execute(
-            "SELECT username,timezone FROM users WHERE id=?", (t.db.user_id,)
+            "SELECT id,username,timezone FROM users WHERE id=?", (t.db.user_id,)
         ).fetchone()
         return {
             **dict(row),
             "auth_mode": auth_mode,
+            "account_management": account_management,
             "settings": {
                 r["key"]: t.db.setting(r["key"])
                 for r in t.db.rows("settings")
@@ -287,6 +311,8 @@ def create_app(home=None, auth_mode=None, scheduler=True):
                 (t.db.user_id, hashlib.sha256(auth[7:].encode()).hexdigest()),
             )
         return {"logged_out": True}
+
+    accounts.mount(app, tracker, account_management)
 
     @app.get("/api/push/key")
     def push_key(t=Depends(tracker)):
@@ -385,8 +411,13 @@ def create_app(home=None, auth_mode=None, scheduler=True):
         return presentation.overview(t, t.overview(minutes))
 
     @app.get("/api/lab-catalog")
-    def lab_catalog(track: str | None = None, level: str | None = None,
-                    location: str | None = None, search: str | None = None, t=Depends(tracker)):
+    def lab_catalog(
+        track: str | None = None,
+        level: str | None = None,
+        location: str | None = None,
+        search: str | None = None,
+        t=Depends(tracker),
+    ):
         from ascend.local_labs.catalog import catalog
 
         return catalog(track=track, level=level, location=location, search=search)
@@ -401,7 +432,9 @@ def create_app(home=None, auth_mode=None, scheduler=True):
     def lab_attempt_start(body: LabAttemptStart, t=Depends(tracker)):
         from ascend.local_labs.attempts import Attempts
 
-        return Attempts(t).create(body.recipe_id, offline=body.offline, case_key=body.case_key)
+        return Attempts(t).create(
+            body.recipe_id, offline=body.offline, case_key=body.case_key
+        )
 
     @app.get("/api/lab-attempts/{attempt_id}")
     def lab_attempt(attempt_id: str, t=Depends(tracker)):
@@ -443,16 +476,21 @@ def create_app(home=None, auth_mode=None, scheduler=True):
 
     @app.post("/api/hosted-labs/runs")
     def hosted_start(body: LabAttemptStart, t=Depends(tracker)):
-        return app.state.lab_runner.action(t, "start", data={"recipe_id": body.recipe_id})
+        return app.state.lab_runner.action(
+            t, "start", data={"recipe_id": body.recipe_id}
+        )
 
     from ascend.local_labs.runner_protocol import Action as HostedAction
 
     @app.post("/api/hosted-labs/runs/{run_id}/{action}")
     def hosted_action(run_id: str, action: str, body: HostedAction, t=Depends(tracker)):
         from ascend.local_labs.runner_protocol import ACTIONS
+
         if action not in ACTIONS - {"start"}:
             raise HTTPException(404, "Unknown server lab action")
-        return app.state.lab_runner.action(t, action, run_id, body.model_dump(exclude_none=True))
+        return app.state.lab_runner.action(
+            t, action, run_id, body.model_dump(exclude_none=True)
+        )
 
     @app.get("/api/hosted-labs/runs/{run_id}/files")
     def hosted_file(run_id: str, name: str, t=Depends(tracker)):
@@ -704,10 +742,7 @@ def create_app(home=None, auth_mode=None, scheduler=True):
 
     @app.get("/api/packs")
     def packs(t=Depends(tracker)):
-        categories = {
-            entry["id"]: entry.get("category", "Projects")
-            for entry in registry_entries()
-        }
+        catalog = {entry["id"]: entry for entry in registry_entries()}
         result = []
         for row in t.db.rows("packs"):
             try:
@@ -733,7 +768,18 @@ def create_app(home=None, auth_mode=None, scheduler=True):
                     if k not in {"path", "fingerprint", "user_id"}
                 }
                 | metadata
-                | {"category": categories.get(row["id"], "Custom")}
+                | {
+                    key: catalog.get(row["id"], {}).get(key, default)
+                    for key, default in (
+                        ("category", "Projects" if row["id"] in catalog else "Custom"),
+                        ("domain", None),
+                        ("track_order", None),
+                        ("recommended_after", []),
+                        ("description", ""),
+                        ("entry", ""),
+                        ("prerequisite_summary", ""),
+                    )
+                }
             )
         return result
 
@@ -754,7 +800,15 @@ def create_app(home=None, auth_mode=None, scheduler=True):
 
     @app.get("/api/stats")
     def stats(t=Depends(tracker)):
-        return t.stats()
+        from ascend.rewards import practice_summary
+
+        return {**t.stats(), "practice_points": practice_summary(t)}
+
+    @app.get("/api/rewards")
+    def reward_summary(t=Depends(tracker)):
+        from ascend.rewards import summary
+
+        return summary(t)
 
     @app.get("/api/heatmap")
     def heatmap(t=Depends(tracker)):

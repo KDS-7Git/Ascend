@@ -5,6 +5,7 @@ import hmac
 import json
 import os
 import re
+from datetime import datetime
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode, urlsplit
 from urllib.request import Request, build_opener
@@ -95,7 +96,43 @@ class RunnerClient:
         )
 
     def runs(self, tracker):
-        return self.request(f"/v1/accounts/{self.scope(tracker)}/runs")
+        from ascend.rewards import award, receipt
+
+        snapshot = self.request(f"/v1/accounts/{self.scope(tracker)}/runs")
+        for run in snapshot.get("runs", []):
+            identity = run.get("id", "")
+            if not re.fullmatch(r"[a-f0-9]{32}", identity):
+                continue
+            event = "hosted-lab:" + identity
+            reward = receipt(tracker, event_key=event)
+            result = run.get("result") or {}
+            # A finished result comes from this account's authenticated runner.
+            # Merely opening historical runs must not mint a new day's credit.
+            if (
+                reward is None
+                and result.get("authority") == "server-runner"
+                and result.get("status") in {"pass", "fail"}
+            ):
+                try:
+                    finished = datetime.fromisoformat(run.get("finished_at") or "")
+                except (ValueError, TypeError):
+                    finished = None
+                if (
+                    finished
+                    and finished.tzinfo
+                    and finished <= tracker.now()
+                    and tracker.day(finished) == tracker.day()
+                ):
+                    reward = award(
+                        tracker,
+                        "hosted-lab",
+                        run["recipe_id"],
+                        run["title"],
+                        "lab-result-recorded",
+                        event_key=event,
+                    )
+            run["practice_reward"] = reward
+        return snapshot
 
     def action(self, tracker, action, run_id=None, data=None):
         path = f"/v1/accounts/{self.scope(tracker)}/runs"
