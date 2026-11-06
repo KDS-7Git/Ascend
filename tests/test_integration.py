@@ -36,7 +36,7 @@ def test_browser_saves_authored_checkpoint_without_completing_task(
     with sync_playwright() as p:
         browser = p.chromium.launch()
         page = browser.new_page(viewport={"width": 390, "height": 844})
-        page.goto(live_server)
+        page.goto(live_server + "/app")
         page.get_by_role("button", name="10 min", exact=True).click()
         page.get_by_role("button", name="Open checkpoint", exact=True).click()
         page.get_by_label("What did you observe or learn?", exact=True).fill(
@@ -189,7 +189,7 @@ def test_browser_complete_flow(live_server, width, height, tmp_path):
         page = browser.new_page(viewport={"width": width, "height": height})
         errors = []
         page.on("pageerror", lambda error: errors.append(str(error)))
-        page.goto(live_server)
+        page.goto(live_server + "/app")
         expect(page.locator(".next-card h2")).to_have_text("First task")
         expect(page.locator(".quick-card h2")).to_have_text("Small task")
         assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
@@ -271,7 +271,7 @@ def test_browser_guidance_partial_work_and_failed_evidence(
         page = browser.new_page(
             viewport={"width": 390, "height": 844}, reduced_motion="reduce"
         )
-        page.goto(live_server)
+        page.goto(live_server + "/app")
         page.get_by_role("button", name="Open challenge", exact=True).click()
         expect(page.locator(".challenge-steps li")).to_have_count(0)
         page.get_by_role("button", name="Start timed task", exact=True).click()
@@ -350,7 +350,7 @@ def test_browser_skips_do_not_earn_milestones(live_server, pack_data):
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch()
         page = browser.new_page(viewport={"width": 390, "height": 844})
-        page.goto(live_server)
+        page.goto(live_server + "/app")
         expect(
             page.get_by_role("heading", name="Your main path is explored.")
         ).to_be_visible()
@@ -384,7 +384,7 @@ def test_browser_verified_logging_timer_and_catalog(
         page = browser.new_page(viewport={"width": width, "height": height})
         errors = []
         page.on("pageerror", lambda error: errors.append(str(error)))
-        page.goto(live_server)
+        page.goto(live_server + "/app")
         page.locator(".next-card").get_by_role("button", name="Open challenge").click()
         expect(page.get_by_label("Session target (minutes)")).to_have_value("15")
         expect(
@@ -392,7 +392,7 @@ def test_browser_verified_logging_timer_and_catalog(
         ).to_have_count(0)
         page.get_by_role("button", name="Start verified exercise").click()
         challenge_url = (
-            live_server + "/#challenge/verified-security-lab%3Alab-readiness"
+            live_server + "/app#challenge/verified-security-lab%3Alab-readiness"
         )
         expect(page).to_have_url(challenge_url)
         expect(page.locator("#sheet")).not_to_be_visible()
@@ -462,10 +462,10 @@ def test_browser_timed_task_can_only_end_without_awarding_completion(live_server
     with sync_playwright() as p:
         browser = p.chromium.launch()
         page = browser.new_page(viewport={"width": 390, "height": 844})
-        page.goto(live_server)
+        page.goto(live_server + "/app")
         page.locator(".next-card").get_by_role("button", name="Open challenge").click()
         page.get_by_role("button", name="Start timed task", exact=True).click()
-        expect(page).to_have_url(live_server + "/#challenge/test-pack%3Aone")
+        expect(page).to_have_url(live_server + "/app#challenge/test-pack%3Aone")
         expect(page.locator("#sheet")).not_to_be_visible()
         expect(page.get_by_role("heading", name="Your finish line")).to_be_visible()
         page.reload()
@@ -519,7 +519,7 @@ def test_dialog_feedback_stays_visible_and_returns_keyboard_focus(
         page = browser.new_page(
             viewport={"width": width, "height": height}, reduced_motion="reduce"
         )
-        page.goto(live_server)
+        page.goto(live_server + "/app")
         opener = page.locator(".next-card").get_by_role("button", name="Open challenge")
         opener.click()
         page.locator(".manage-challenge > summary").click()
@@ -576,7 +576,7 @@ def test_library_rows_profile_and_guide_navigation(live_server, width, height):
         )
         errors = []
         page.on("pageerror", lambda error: errors.append(str(error)))
-        page.goto(live_server + "/#more")
+        page.goto(live_server + "/app#more")
         page.get_by_label("Search installed packs").fill("active directory")
         expect(page.locator(".pack-item")).to_have_count(1)
         row = page.locator(".pack-item")
@@ -659,7 +659,7 @@ def test_library_rows_profile_and_guide_navigation(live_server, width, height):
         ).click()
         expect(page.locator("#docs-menu")).not_to_be_visible()
         expect(page.locator("#guide-title")).to_have_text("Timers & XP")
-        expect(page).to_have_url(live_server + "/#docs/timers")
+        expect(page).to_have_url(live_server + "/app#docs/timers")
         expect(page.locator("#docs-article")).to_contain_text("100 XP")
         page.reload()
         expect(page.locator("#guide-title")).to_have_text("Timers & XP")
@@ -702,7 +702,7 @@ def test_community_pack_suggestions_filter_select_and_install(
         page.add_init_script(f"localStorage.setItem('ascend-theme', '{theme}')")
         errors = []
         page.on("pageerror", lambda error: errors.append(str(error)))
-        page.goto(live_server + "/#more")
+        page.goto(live_server + "/app#more")
         expect(page.locator("#app-loader")).not_to_be_visible()
         page.get_by_text("Import a pack", exact=True).click()
         field = page.get_by_label("Install a community pack by ID", exact=True)
@@ -789,7 +789,7 @@ def test_track_picker_groups_existing_packs_from_catalog(
             route.fulfill(response=response, json=packs)
 
         page.route("**/api/packs", legacy_packs)
-        page.goto(live_server + "/#more")
+        page.goto(live_server + "/app#more")
         domain = page.get_by_label("Choose a domain", exact=True)
         track = page.get_by_label("Choose a track", exact=True)
         start = page.get_by_role("button", name="Start mission", exact=True)
@@ -866,7 +866,7 @@ def test_engineering_sequences_allow_direct_entry_and_keep_practice_work(
         page = browser.new_page(viewport={"width": width, "height": height})
         errors = []
         page.on("pageerror", lambda error: errors.append(str(error)))
-        page.goto(live_server + "/#more")
+        page.goto(live_server + "/app#more")
         domain = page.get_by_label("Choose a domain", exact=True)
         track = page.get_by_label("Choose a track", exact=True)
         expect(domain).to_be_enabled()
@@ -895,7 +895,7 @@ def test_engineering_sequences_allow_direct_entry_and_keep_practice_work(
 
         # An experienced learner can attempt an application before its walkthrough.
         ref = later["id"] + ":service-signals-milestone"
-        page.goto(live_server + "/#challenge/" + ref.replace(":", "%3A"))
+        page.goto(live_server + "/app#challenge/" + ref.replace(":", "%3A"))
         expect(
             page.get_by_role("button", name="Start timed task", exact=True)
         ).to_be_enabled()
@@ -936,7 +936,7 @@ def test_documentation_is_readable_offline_after_shell_install(live_server):
         browser = p.chromium.launch()
         context = browser.new_context()
         page = context.new_page()
-        page.goto(live_server + "/#docs/verification")
+        page.goto(live_server + "/app#docs/verification")
         expect(page.locator("#guide-title")).to_have_text("Evidence & verification")
         page.evaluate(
             'navigator.serviceWorker.ready.then(() => new Promise(resolve => navigator.serviceWorker.controller ? resolve() : navigator.serviceWorker.addEventListener("controllerchange", resolve, {once:true})))'
@@ -977,7 +977,7 @@ def test_motion_controls_persist_and_honor_device_preferences(live_server):
                 return originalAnimate.call(this, frames, options);
             };
         """)
-        page.goto(live_server)
+        page.goto(live_server + "/app")
         page.locator(".next-card").wait_for()
         expect(page.locator("#app-loader")).not_to_be_visible()
         assert page.evaluate(
@@ -1035,7 +1035,7 @@ def test_challenge_glow_plays_once_when_visible_per_load(live_server, width, hei
                 }
             });
         """)
-        page.goto(live_server)
+        page.goto(live_server + "/app")
         card = page.locator(".next-card")
         card.wait_for()
         if width == 320:
@@ -1090,7 +1090,7 @@ def test_mcq_has_one_submission_clear_result_and_persistent_timer(
         page = browser.new_page(
             viewport={"width": width, "height": height}, reduced_motion="reduce"
         )
-        page.goto(live_server)
+        page.goto(live_server + "/app")
         page.locator(".next-card").get_by_role(
             "button", name="Open challenge", exact=True
         ).click()
@@ -1137,7 +1137,7 @@ def test_mcq_has_one_submission_clear_result_and_persistent_timer(
         page.get_by_role("button", name="Review attempt", exact=True).click()
         expect(page.locator(".case-feedback")).to_be_visible()
         page.get_by_role("button", name="Continue without XP", exact=True).click()
-        expect(page).to_have_url(live_server + "/#today")
+        expect(page).to_have_url(live_server + "/app#today")
         state = httpx.get(live_server + "/api/challenges/test-pack:one").json()
         assert state["node"]["status"] == "skipped"
         assert state["exercise"]["attempts"] == 1 and not state["exercise"]["passed"]
@@ -1164,7 +1164,7 @@ def test_permission_requests_have_explicit_choices_and_separate_submit(
         page = browser.new_page(
             viewport={"width": width, "height": height}, reduced_motion="reduce"
         )
-        page.goto(live_server)
+        page.goto(live_server + "/app")
         page.locator(".next-card").get_by_role("button", name="Open challenge").click()
         page.get_by_role("button", name="Start verified exercise").click()
         expect(page.locator(".decision-field")).to_have_count(6)
@@ -1228,7 +1228,7 @@ def test_permission_requests_have_explicit_choices_and_separate_submit(
         page.get_by_role(
             "button", name="Continue with partial result", exact=True
         ).click()
-        expect(page).to_have_url(live_server + "/#today")
+        expect(page).to_have_url(live_server + "/app#today")
         assert httpx.get(challenge_url).json()["node"]["status"] == "skipped"
         browser.close()
 
@@ -1242,13 +1242,13 @@ def test_loading_screen_recovers_from_slow_response_and_missing_script(live_serv
         page.add_init_script("localStorage.setItem('ascend-theme', 'dark')")
         pending = []
         page.route("**/api/me", lambda route: pending.append(route))
-        page.goto(live_server, wait_until="domcontentloaded")
+        page.goto(live_server + "/app", wait_until="domcontentloaded")
         expect(page.locator("#app-loader")).to_be_visible()
         assert (
             page.locator("#app-loader").evaluate(
                 "e => getComputedStyle(e).backgroundColor"
             )
-            == "rgb(28, 29, 27)"
+            == "rgb(17, 22, 34)"
         )
         # The overlay has a bounded lifetime even while the request is still pending.
         expect(page.locator("#app-loader")).not_to_be_visible(timeout=6500)
@@ -1306,7 +1306,7 @@ def test_guided_challenge_has_copyable_commands_and_free_reference(
             viewport={"width": width, "height": height}, reduced_motion="reduce"
         )
         page.context.grant_permissions(["clipboard-read", "clipboard-write"])
-        page.goto(live_server)
+        page.goto(live_server + "/app")
         page.locator(".next-card").get_by_role("button", name="Open challenge").click()
         expect(page.locator("#sheet-title")).to_have_text(guide.title)
         expect(page.get_by_role("heading", name="Required setup")).to_be_visible()
@@ -1340,7 +1340,7 @@ def test_guided_challenge_has_copyable_commands_and_free_reference(
         ).to_have_count(0)
         expect(page.get_by_role("heading", name="Your finish line")).to_have_count(0)
         page.locator("#sheet").get_by_role("button", name="Close dialog").click()
-        page.goto(live_server + "/#challenge/test-pack%3Aone")
+        page.goto(live_server + "/app#challenge/test-pack%3Aone")
         expect(page.locator("#challenge-content .challenge-steps")).to_have_count(0)
         expect(reference).to_be_visible()
         page.get_by_role("button", name="Start timed task", exact=True).click()
@@ -1396,7 +1396,7 @@ def test_browser_explains_stale_server_and_recovers_after_retry(live_server):
 
         page.route("**/api/playground**", missing_playground)
         page.route("**/api/stats", old_stats)
-        page.goto(live_server + "/#playground/quick")
+        page.goto(live_server + "/app#playground/quick")
         sections = page.get_by_role("navigation", name="Playground sections")
         message = "The running Ascend server has not loaded this update. Restart the server, then reload this page."
         for tab in (

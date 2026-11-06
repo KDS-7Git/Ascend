@@ -79,7 +79,7 @@ def test_notebook_upload_completion_and_recovery(
         )
         errors = []
         page.on("pageerror", lambda e: errors.append(str(e)))
-        page.goto(url)
+        page.goto(url + "/app")
         page.locator(".next-card").get_by_role("button", name="Open challenge").click()
         page.get_by_role("button", name="Start timed task", exact=True).click()
         expect(page.locator(".lab-toolbar")).to_be_visible()
@@ -145,7 +145,7 @@ def test_notebook_upload_completion_and_recovery(
         ).click()
         expect(page.locator(".next-card h2")).to_have_text("Second task")
         expect(page.locator("#task-session")).not_to_be_visible()
-        page.goto(url + "/#challenge/test-pack%3Aone")
+        page.goto(url + "/app#challenge/test-pack%3Aone")
         expect(page.locator(".lab-toolbar")).to_be_visible()
         page.locator(".lab-toolbar").get_by_role(
             "button", name="Notes & evidence", exact=True

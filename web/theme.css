@@ -1,0 +1,69 @@
+/* Shared design tokens for the public site, authentication, and workspace. */
+@font-face {
+  font-family: Inter;
+  src: url('/fonts/InterVariable.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+:root {
+  scrollbar-gutter: stable;
+  color-scheme: light;
+  --bg:#eee8d9; --surface:#fffdf5; --text:#292620; --muted:#615b4e;
+  --line:#292620; --divider:#d4cbb8; --accent:#4c377b; --accent-hover:#38265e; --on-accent:#ffffff;
+  --soft:#e4dafa; --mint:#d7eddb; --peach:#ffdbc0; --hover:#f0eadc;
+  --action:#f5ce47; --action-hover:#ffdf72; --on-action:#28251e;
+  --success:#296344; --success-bg:#d7eddb; --shadow:#292620;
+  --error:#aa3035; --error-bg:#ffe2dc; --milestone:#75500b; --milestone-bg:#fce5a0;
+  --glow:#8952ff; --glow-second:#10c6b5;
+  --shadow-sm:3px 3px 0 var(--shadow); --shadow-lg:6px 6px 0 var(--shadow);
+  --control-radius:5px; --radius:7px; --rail:224px; --header:68px; --content-width:1320px;
+  --hero-bg:var(--soft); --hero-text:var(--text);
+  --interaction-fill:#fff0b1; --interaction-ink:#292620; --interaction-muted:#5b4c28;
+  --workspace-grid-size:28px; --workspace-grid:#9d927501; --workspace-contour:#7d775a; --workspace-glow:#fbefd3;
+  font-family:Inter,ui-sans-serif,system-ui,sans-serif;
+  font-size:15px;
+}
+:root[data-theme='dark'], :root[data-workspace-theme='dark'] {
+  color-scheme:dark;
+  --bg:#111622; --surface:#1d2434; --text:#f5f0ff; --muted:#bdc4d7;
+  --line:#7e879f; --divider:#3a4459; --accent:#d3b8ff; --accent-hover:#e7d8ff; --on-accent:#30263f;
+  --soft:#393052; --mint:#233f3d; --peach:#563c2f; --hover:#293146;
+  --success:#a9ebc9; --success-bg:#233f3d; --shadow:#080d18;
+  --error:#ffb8ae; --error-bg:#513738; --milestone:#f5ce78; --milestone-bg:#463c24;
+  --glow:#bd92ff; --glow-second:#4fe3cf;
+  --workspace-grid:#c7ccff01; --workspace-contour:#9a9ad3; --workspace-glow:#25213a;
+  --interaction-fill:#f5ce47; --interaction-ink:#28251e; --interaction-muted:#51451f;
+}
+@media (prefers-color-scheme:dark) {
+  :root:not([data-theme='light']) {
+    color-scheme:dark;
+    --bg:#111622; --surface:#1d2434; --text:#f5f0ff; --muted:#bdc4d7;
+    --line:#7e879f; --divider:#3a4459; --accent:#d3b8ff; --accent-hover:#e7d8ff; --on-accent:#30263f;
+    --soft:#393052; --mint:#233f3d; --peach:#563c2f; --hover:#293146;
+    --success:#a9ebc9; --success-bg:#233f3d; --shadow:#080d18;
+    --error:#ffb8ae; --error-bg:#513738; --milestone:#f5ce78; --milestone-bg:#463c24;
+    --glow:#bd92ff; --glow-second:#4fe3cf;
+    --workspace-grid:#c7ccff01; --workspace-contour:#9a9ad3; --workspace-glow:#25213a;
+    --interaction-fill:#f5ce47; --interaction-ink:#28251e; --interaction-muted:#51451f;
+  }
+}
+body {
+  background-color:var(--bg);
+  background-image:linear-gradient(var(--workspace-grid) 1px,transparent 1px),linear-gradient(90deg,var(--workspace-grid) 1px,transparent 1px),radial-gradient(ellipse at 75% 0,var(--workspace-glow),transparent 65%);
+  background-size:var(--workspace-grid-size) var(--workspace-grid-size),var(--workspace-grid-size) var(--workspace-grid-size),100% 100%;
+  background-attachment:fixed;
+}
+:root[data-workspace-theme='dark'] body {
+  background-image:linear-gradient(var(--workspace-grid) 1px,transparent 1px),linear-gradient(90deg,var(--workspace-grid) 1px,transparent 1px),radial-gradient(ellipse at 83% 8%,#65449855,transparent 52%),radial-gradient(ellipse at 13% 75%,#1b6d7950,transparent 58%),linear-gradient(145deg,#151723,#101824 55%,#172332);
+  background-size:var(--workspace-grid-size) var(--workspace-grid-size),var(--workspace-grid-size) var(--workspace-grid-size),100% 100%,100% 100%,100% 100%;
+}
+.ws-backdrop { position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden; }
+.ws-landscape,.ws-night-atmosphere,.ws-night-ribbons { position:absolute; inset:0; width:100%; height:100%; }
+.ws-map-stroke { stroke:var(--workspace-contour); stroke-width:1; opacity:.28; }
+.ws-terrain-contours { fill:none; stroke:var(--workspace-contour); stroke-width:1.7; opacity:.2; }
+.ws-terrain-markers { fill:#e2bf4a; stroke:var(--workspace-contour); stroke-width:1.5; opacity:.12; }
+.ws-night-atmosphere { display:none; }
+.ws-night-ribbons { opacity:.7; }
+:root[data-workspace-theme='dark'] .ws-landscape { opacity:.3; }
+:root[data-workspace-theme='dark'] .ws-night-atmosphere { display:block; }

@@ -1,8 +1,8 @@
 /* Render-blocking first-paint surface; matches the saved/system theme. */
-:root { color-scheme: light; --boot-bg: #f6f3e9; --boot-ink: #252522; background: var(--boot-bg); }
-:root[data-theme='dark'] { color-scheme: dark; --boot-bg: #1c1d1b; --boot-ink: #f6f3e9; }
+:root { color-scheme: light; --boot-bg: #eee8d9; --boot-ink: #292620; background: var(--boot-bg); }
+:root[data-theme='dark'] { color-scheme: dark; --boot-bg: #111622; --boot-ink: #f5f0ff; }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) { color-scheme: dark; --boot-bg: #1c1d1b; --boot-ink: #f6f3e9; }
+  :root:not([data-theme='light']) { color-scheme: dark; --boot-bg: #111622; --boot-ink: #f5f0ff; }
 }
 body { background: var(--boot-bg); }
 .app-loader { display: none; }

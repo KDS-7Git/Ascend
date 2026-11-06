@@ -284,5 +284,6 @@ def test_sync_proposes_and_accepts_file_evidence(installed, tmp_path):
 def test_web_assets_and_no_cache_of_private_api(client):
     assert client.get("/").status_code == 200
     assert client.get("/manifest.webmanifest").json()["display"] == "standalone"
-    assert "Today" in client.get("/").text
+    assert "Today" in client.get("/app").text
+    assert "Small steps. Real skills." in client.get("/").text
     assert client.get("/api/me").headers["cache-control"] == "no-store"

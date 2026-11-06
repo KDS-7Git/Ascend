@@ -7,13 +7,20 @@ returns **401**; missing pack resources return **404**; write conflicts return
 **409**. Private API responses have `Cache-Control: no-store`.
 
 In `AUTH_MODE=multi`, use `Authorization: Bearer <token>`. The health endpoint and
-login are unauthenticated. Accounts are provisioned using `ascend-server user-add`.
+login are unauthenticated. Accounts are provisioned using `ascend-server user-add`
+by default. `ASCEND_REGISTRATION=1` enables self-service signup and account security
+in multi-user mode. The public catalog uses bundled metadata, never private packs.
 There is no public registration endpoint. Passwords use scrypt; tokens are hashed
 at rest. Browser tokens are session-scoped, and CLI tokens are stored with mode 0600.
 
 | Route | Contract |
 |---|---|
 | `GET /api/health` | `{status, auth_mode}` |
+| `GET /api/site` | Authentication, signup and recovery capabilities; supported timezones |
+| `GET /api/catalog` | Public bundled track summaries and categories |
+| `GET /api/catalog/{id}` | Public track levels and challenge previews |
+| `POST /api/register` | Opt-in: `{username,password,timezone?,label?}` → `{token,recovery_code}` |
+| `POST /api/recover` | Optional: `{username,recovery_code,new_password}` → replacement recovery code; revoke sessions |
 | `POST /api/login` | `{username,password}` → `{token}` |
 | `GET /api/me?minutes=30` | Mission, next/quick-win node data, current level, streak and today state |
 | `GET /api/levels?pack=<id>` | Levels with node states, active days and minutes |
@@ -27,6 +34,7 @@ at rest. Browser tokens are session-scoped, and CLI tokens are stored with mode 
 | `GET /api/heatmap` | Day/count values for the last 12 calendar weeks |
 | `GET /api/search?q=text` | Reverse chronological substring matches |
 | `GET /api/account` | Current account and reminder preferences |
+| `POST /api/account/recovery-code` | Optional: `{current_password}` → a new caller-owned recovery code |
 | `POST /api/command` | `{argv:[...],pack_text?:"..."}`; same application commands as the CLI |
 | `POST /api/logout` | Revoke the current token |
 | `GET /api/push/key` | Configured public VAPID key |

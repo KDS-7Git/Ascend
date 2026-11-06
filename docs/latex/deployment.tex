@@ -13,7 +13,8 @@ The default bind is \texttt{127.0.0.1:8420}.
 To serve your LAN, bind the machine\textquotesingle s specific LAN
 address. \texttt{-\/-host 0.0.0.0} is explicit and prints a reminder to
 use a TLS reverse proxy beyond your trusted LAN. Multi-user deployments
-are for administrator-provisioned accounts, not anonymous public signup.
+use administrator-provisioned accounts by default. Self-service signup is opt-in
+with \texttt{--registration} or \texttt{ASCEND\_REGISTRATION=1} in multi-user mode.
 Single mode has no login. Use multi mode even for one person when the service
 is reachable by people who should not have access to the learning profile.
 
@@ -47,6 +48,23 @@ Recovery prompts for the new password and retains learning history. The implicit
 local account cannot be enabled for login. Login/current-password throttling is
 per process; shared limits for a multi-worker public deployment belong at its
 edge. No running instance is switched to multi-user mode automatically.
+
+\texttt{ascend-server --auth-mode multi --registration} also enables account
+security. Signup on \path{/auth} creates an empty named account and returns a
+private recovery code. Existing users can create or replace a code in Profile.
+Self-service recovery requires the username, saved code and a new password; it
+atomically rotates the code and password and revokes earlier sessions. An
+administrator password reset invalidates saved recovery codes. Codes are hashed
+at rest and shown for the learner to save, not retained in browser storage.
+The optional Remember me control persists the token in browser local storage;
+sign-out clears both local and tab credentials, and password rotation updates
+the remembered token. All sessions still expire 30 days after issuance.
+
+The public home page is at \path{/}; searchable discovery at \path{/tracks},
+track previews at \path{/tracks/<id>}, and account access at \path{/auth}.
+The learning workspace and installed PWA start at \path{/app}. Legacy root-hash
+workspace bookmarks redirect there. Public discovery reads bundled metadata,
+while private installed tracks and learning records remain account-scoped.
 
 \hypertarget{docker-linux-pc-vps-or-raspberry-pi}{%
 \subsubsection{Docker: Linux PC, VPS, or Raspberry

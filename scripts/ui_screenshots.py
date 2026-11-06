@@ -478,7 +478,7 @@ def main():
                     )
                     pending = []
                     page.route("**/api/me", lambda route: pending.append(route))
-                    page.goto(base, wait_until="domcontentloaded")
+                    page.goto(base + "/app", wait_until="domcontentloaded")
                     expect(page.locator("#app-loader")).to_be_visible()
                     page.screenshot(path=TARGET / f"loading-{theme}.png")
                     captures += 1

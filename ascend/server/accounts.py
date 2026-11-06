@@ -17,6 +17,11 @@ class PasswordChange(BaseModel):
     new_password: str = Field(min_length=12, max_length=1024)
 
 
+class RecoveryCode(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    current_password: str = Field(min_length=1, max_length=1024)
+
+
 class LoginThrottle:
     """Bound expensive login checks per process without storing raw identities."""
 
@@ -78,7 +83,22 @@ def mount(app, tracker, enabled):
             "session_lifetime_days": auth.SESSION_LIFETIME.days,
             "max_sessions": auth.MAX_SESSIONS,
             "provisioning": "operator",
+            "recovery_code_configured": bool(
+                t.db.connection.execute(
+                    "SELECT 1 FROM account_recovery WHERE user_id=?", (t.db.user_id,)
+                ).fetchone()
+            ),
         }
+
+    @app.post("/api/account/recovery-code")
+    def recovery_code(body: RecoveryCode, request: Request, t=dependency):
+        identity = password_throttle.check(
+            request.client.host if request.client else "unknown",
+            "password:" + str(t.db.user_id),
+        )
+        code = auth.replace_recovery_code(t.db, t.db.user_id, body.current_password)
+        password_throttle.succeeded(identity)
+        return {"recovery_code": code}
 
     @app.post("/api/account/password")
     def password(body: PasswordChange, request: Request, t=dependency):

@@ -51,7 +51,7 @@ def test_walkthrough_hands_off_and_keeps_the_takeaway(live_server, width, theme)
         run = page.request.post(
             live_server + "/api/playground/activities/example-access/start", data={}
         ).json()
-        page.goto(live_server + "/#activity/" + run["id"])
+        page.goto(live_server + "/app#activity/" + run["id"])
         expect(
             page.get_by_role("heading", name="Read the rule before the request")
         ).to_be_visible()
@@ -131,7 +131,7 @@ def test_ten_minutes_selects_a_fitting_activity(live_server, tmp_path, pack_data
         page = browser.new_page(
             viewport={"width": 1440, "height": 1000}, reduced_motion="reduce"
         )
-        page.goto(live_server)
+        page.goto(live_server + "/app")
         expect(page.locator(".next-card h2")).to_have_text("First task")
         page.get_by_role("button", name="10 min", exact=True).click()
         expect(page.locator(".time-fit-card h2")).to_have_text("Small task")
@@ -209,7 +209,7 @@ def test_shared_feedback_and_page_geometry(live_server, width):
             "playground/history",
             "profile",
         ]:
-            page.goto(live_server + "/#" + route)
+            page.goto(live_server + "/app#" + route)
             expect(page.locator("#route-progress")).not_to_be_visible()
             expect(page.locator(".app-loader")).not_to_be_visible()
             assert page.evaluate(
@@ -260,7 +260,7 @@ def test_older_motion_script_cannot_break_walkthrough(live_server):
         run = page.request.post(
             live_server + "/api/playground/activities/example-access/start", data={}
         ).json()
-        page.goto(live_server + "/#activity/" + run["id"])
+        page.goto(live_server + "/app#activity/" + run["id"])
         page.get_by_role("button", name="Next step", exact=True).click()
         expect(page.get_by_role("heading", name="Follow one request")).to_be_visible()
         page.get_by_role("button", name="No", exact=True).click()
@@ -297,7 +297,7 @@ def test_saved_work_groups_attempts_and_keeps_filters(live_server, tmp_path, wid
         page = browser.new_page(
             viewport={"width": width, "height": 1000}, reduced_motion="reduce"
         )
-        page.goto(live_server + "/#playground/history")
+        page.goto(live_server + "/app#playground/history")
         expect(page.locator(".work-group-row")).to_have_count(2)
         expect(page.locator(".work-count")).to_contain_text("23 attempts")
         page.get_by_label("Search saved work").fill("request decisions")
@@ -315,7 +315,7 @@ def test_saved_work_groups_attempts_and_keeps_filters(live_server, tmp_path, wid
         row = page.locator(".work-row").first
         activity_id = row.get_attribute("data-activity-id")
         row.get_by_role("button").click()
-        expect(page).to_have_url(live_server + "/#attempts/" + activity_id)
+        expect(page).to_have_url(live_server + "/app#attempts/" + activity_id)
         expect(page.locator("#attempt-group-title")).to_be_visible()
         page.reload()
         expect(page.locator("#attempts .work-row")).to_have_count(12)
@@ -335,7 +335,7 @@ def test_saved_work_groups_attempts_and_keeps_filters(live_server, tmp_path, wid
         attempt = page.locator("#attempts .work-row").first
         run_id = attempt.get_attribute("data-run-id")
         attempt.get_by_role("button").click()
-        expect(page).to_have_url(live_server + "/#activity/" + run_id)
+        expect(page).to_have_url(live_server + "/app#activity/" + run_id)
         expect(page.locator("#activity-title")).to_be_visible()
         assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
         browser.close()
@@ -354,7 +354,7 @@ def test_saved_work_paginates_distinct_activities(live_server, tmp_path):
     with sync_playwright() as p:
         browser = p.chromium.launch()
         page = browser.new_page(viewport={"width": 390, "height": 900})
-        page.goto(live_server + "/#playground/history")
+        page.goto(live_server + "/app#playground/history")
         expect(page.locator(".work-group-row")).to_have_count(10)
         expect(page.locator(".work-count")).to_contain_text(
             "12 activities · 13 attempts"

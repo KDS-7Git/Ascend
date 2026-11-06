@@ -75,11 +75,11 @@ def account_server(tmp_path, pack_data, request):
 
 
 def browser_login(page, username, password=PASSWORD):
-    expect(page.locator("#login-dialog")).to_be_visible()
+    expect(page.locator("#auth-forms")).to_be_visible()
     page.get_by_label("Username", exact=True).fill(username)
     page.get_by_label("Password", exact=True).fill(password)
-    page.get_by_role("button", name="Sign in", exact=True).click()
-    expect(page.locator("#login-dialog")).not_to_be_visible()
+    page.locator("#auth-form").get_by_role("button", name="Sign in", exact=True).click()
+    expect(page.locator("#auth-forms")).not_to_be_visible()
     expect(page.locator("#profile-link")).to_have_attribute(
         "title", f"{username} · Profile"
     )
@@ -90,7 +90,7 @@ def test_default_dashboard_stays_logged_in_without_account_controls(account_serv
     with sync_playwright() as p:
         browser = p.chromium.launch()
         page = browser.new_page(viewport={"width": 390, "height": 844})
-        page.goto(account_server + "/#profile")
+        page.goto(account_server + "/app#profile")
         expect(page.locator("#profile-summary")).to_contain_text(
             "Local learning account"
         )
@@ -106,7 +106,7 @@ def test_password_controls_and_delayed_old_session_response(account_server):
         page = browser.new_page(viewport={"width": 390, "height": 844})
         errors = []
         page.on("pageerror", lambda error: errors.append(str(error)))
-        page.goto(account_server + "/#profile")
+        page.goto(account_server + "/app#profile")
         browser_login(page, "alice")
         expect(page.locator("#account-security")).to_be_visible()
         old = page.evaluate("sessionStorage.getItem('ascend-token')")
@@ -157,7 +157,7 @@ def test_expired_login_cannot_submit_old_notebook_as_another_user(account_server
     with sync_playwright() as p:
         browser = p.chromium.launch()
         page = browser.new_page(viewport={"width": 1440, "height": 1000})
-        page.goto(account_server + "/#challenge/test-pack%3Aone")
+        page.goto(account_server + "/app#challenge/test-pack%3Aone")
         browser_login(page, "alice")
         page.get_by_role("button", name="Start timed task", exact=True).click()
         expect(page.get_by_label("Your notes", exact=True)).to_be_visible()
@@ -167,7 +167,7 @@ def test_expired_login_cannot_submit_old_notebook_as_another_user(account_server
         ).raise_for_status()
         note = "Alice's private draft belongs only to the account that wrote it."
         page.get_by_label("Your notes", exact=True).fill(note)
-        expect(page.locator("#login-dialog")).to_be_visible()
+        expect(page.locator("#auth-forms")).to_be_visible()
         browser_login(page, "bob")
         page.get_by_role("button", name="Start timed task", exact=True).click()
         expect(page.get_by_label("Your notes", exact=True)).to_have_value("")

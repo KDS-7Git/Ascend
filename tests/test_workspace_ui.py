@@ -60,7 +60,7 @@ def test_navigation_selection_slides_retargets_and_honors_motion(
         browser = p.chromium.launch()
         page = browser.new_page(viewport={"width": width, "height": 1000})
         page.add_init_script(f"localStorage.setItem('ascend-theme', '{theme}')")
-        page.goto(live_server)
+        page.goto(live_server + "/app")
         expect(page.locator("#app-loader")).not_to_be_visible()
         _finish_motion(page)
         nav = page.locator(".primary-nav")
@@ -102,7 +102,7 @@ def test_time_and_playground_selections_slide_and_resize(live_server, width):
     with sync_playwright() as p:
         browser = p.chromium.launch()
         page = browser.new_page(viewport={"width": width, "height": 1000})
-        page.goto(live_server)
+        page.goto(live_server + "/app")
         expect(page.locator("#app-loader")).not_to_be_visible()
         _finish_motion(page)
         times = page.get_by_role("group", name="Time available")
@@ -135,7 +135,7 @@ def test_rebuilt_guide_lab_and_prediction_selections_slide(live_server):
     with sync_playwright() as p:
         browser = p.chromium.launch()
         page = browser.new_page(viewport={"width": 1440, "height": 1000})
-        page.goto(live_server + "/#docs/getting-started")
+        page.goto(live_server + "/app#docs/getting-started")
         expect(page.locator("#app-loader")).not_to_be_visible()
         _finish_motion(page)
         topics = page.locator("#docs-topics")
@@ -143,7 +143,7 @@ def test_rebuilt_guide_lab_and_prediction_selections_slide(live_server):
         selected = topics.get_by_role("link", name="Timers & XP", exact=True)
         selected.click()
         _check_sliding_selection(page, topics, selected, before)
-        page.goto(live_server + "/#lab/labtainers-network-basics")
+        page.goto(live_server + "/app#lab/labtainers-network-basics")
         expect(page.get_by_role("navigation", name="Lab exercises")).to_be_visible()
         _finish_motion(page)
         labs = page.get_by_role("navigation", name="Lab exercises")
@@ -163,7 +163,7 @@ def test_rebuilt_guide_lab_and_prediction_selections_slide(live_server):
             live_server + f"/api/playground/runs/{run['id']}/tour", data={"step": 1}
         )
         assert response.ok
-        page.goto(live_server + f"/#activity/{run['id']}")
+        page.goto(live_server + f"/app#activity/{run['id']}")
         choices = page.locator(".pg-prediction")
         expect(choices).to_be_visible()
         _finish_motion(page)
@@ -197,7 +197,7 @@ def test_pack_dropdown_and_decision_selections_slide_independently(
             },
         )
         assert response.ok
-        page.goto(live_server + "/#more")
+        page.goto(live_server + "/app#more")
         expect(page.locator("#app-loader")).not_to_be_visible()
         _finish_motion(page)
         page.get_by_text("Import a pack", exact=True).click()
@@ -252,7 +252,7 @@ def test_mouse_grid_stays_synchronized_and_keeps_controls_usable(
         page.add_init_script(f"localStorage.setItem('ascend-theme', '{theme}')")
         errors = []
         page.on("pageerror", lambda error: errors.append(str(error)))
-        page.goto(live_server)
+        page.goto(live_server + "/app")
         expect(page.locator("#app-loader")).not_to_be_visible()
         _finish_motion(page)
         grid = page.locator(".workspace-hover")
@@ -347,7 +347,7 @@ def test_hover_grid_renders_both_axes_during_fractional_card_movement(
             reduced_motion="no-preference",
         )
         page.add_init_script(f"localStorage.setItem('ascend-theme', '{theme}')")
-        page.goto(live_server)
+        page.goto(live_server + "/app")
         expect(page.locator("#app-loader")).not_to_be_visible()
         _finish_motion(page)
         card = page.locator(".next-card")
@@ -427,7 +427,7 @@ def test_mouse_movement_shifts_card_art_and_shadows_without_moving_copy(
             ("playground", ".pg-catalog-card", ".pg-emblem", "button"),
             ("path", ".level-section", ".level-number", ".level-title"),
         ):
-            page.goto(live_server + "/#" + route)
+            page.goto(live_server + "/app#" + route)
             card = page.locator(selector).first
             expect(card).to_be_visible()
             expect(page.locator("#app-loader")).not_to_be_visible()
@@ -472,7 +472,7 @@ def test_mouse_movement_resets_for_press_scroll_navigation_and_motion_preference
         page = browser.new_page(
             viewport={"width": 1440, "height": 1000}, reduced_motion="no-preference"
         )
-        page.goto(live_server + "/#path")
+        page.goto(live_server + "/app#path")
         card = page.locator(".level-section").first
         header = card.locator(".level-header")
         expect(header).to_be_visible()
@@ -525,7 +525,7 @@ def test_mouse_movement_resets_for_press_scroll_navigation_and_motion_preference
             viewport={"width": 390, "height": 844}, is_mobile=True, has_touch=True
         )
         touch_page = touch.new_page()
-        touch_page.goto(live_server)
+        touch_page.goto(live_server + "/app")
         touch_card = touch_page.locator(".next-card")
         expect(touch_card).to_be_visible()
         _finish_motion(touch_page)
@@ -551,7 +551,7 @@ def test_tracks_and_profile_keep_readable_panels_in_both_themes(live_server, wid
             assert response.ok
         errors = []
         page.on("pageerror", lambda error: errors.append(str(error)))
-        page.goto(live_server)
+        page.goto(live_server + "/app")
         for theme in ("light", "dark"):
             page.get_by_role("button", name="Open profile", exact=True).click()
             page.get_by_label("Color theme", exact=True).select_option(theme)
@@ -597,7 +597,7 @@ def test_playground_serializes_saves_and_recovers_newer_unsynced_edits(live_serv
         run = page.request.post(
             live_server + "/api/playground/activities/policy-workspace/start", data={}
         ).json()
-        page.goto(live_server + "/#activity/" + run["id"])
+        page.goto(live_server + "/app#activity/" + run["id"])
         note = page.get_by_label("What did you learn?", exact=True)
         held = []
         requests = []
@@ -650,14 +650,14 @@ def test_workspace_copy_confirms_ending_an_active_timed_challenge(live_server):
         workspace = page.request.post(
             live_server + "/api/playground/activities/policy-workspace/start", data={}
         ).json()
-        page.goto(live_server + "/#activity/" + workspace["id"])
+        page.goto(live_server + "/app#activity/" + workspace["id"])
         page.get_by_role("button", name="Save workspace", exact=True).click()
         expect(page.locator("#playground")).to_be_visible()
         challenge = page.request.post(
             live_server + "/api/playground/activities/copy-check/start",
             data={"deliberate": True},
         ).json()
-        page.goto(live_server + "/#activity/" + workspace["id"])
+        page.goto(live_server + "/app#activity/" + workspace["id"])
         page.get_by_role("button", name="Duplicate workspace", exact=True).click()
         expect(page.get_by_role("dialog")).to_contain_text(
             challenge["activity"]["title"]

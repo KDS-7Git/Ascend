@@ -1,6 +1,6 @@
 "use strict";
 const $ = (selector, root = document) => root.querySelector(selector);
-const state = {token: sessionStorage.getItem("ascend-token"), minutes: null, overview: null, levels: [], tab: "today", account: null, guides: null, guideTopic: null, installedPacks: [], showAllPacks: false};
+const state = {token: window.AscendSession?.get() || sessionStorage.getItem("ascend-token"), minutes: null, overview: null, levels: [], tab: "today", account: null, guides: null, guideTopic: null, installedPacks: [], showAllPacks: false};
 const TABS = ["today", "path", "playground", "activity", "lab", "attempts", "stats", "more", "docs", "profile", "challenge"];
 const TAB_NAMES = {today: "Today", path: "Learning path", playground: "Playground", activity: "Playground activity", lab: "Linux lab", attempts: "Activity attempts", stats: "Progress", more: "Tracks", docs: "Documentation", profile: "Profile", challenge: "Challenge"};
 let noticeTimer;
@@ -55,7 +55,8 @@ async function api(path, body, method = "POST", interactive = true) {
   try { response = await fetch(`/api/${path}`, {...options, signal: AbortSignal.timeout(15000)}); } catch { throw new Error("The server is not responding. Check your connection and try again."); }
   if (response.status === 401) {
     if (sentToken !== state.token) throw new Error('This request used an earlier session. Retry with your current session.');
-    if (interactive && !$("#login-dialog").open) $("#login-dialog").showModal();
+    if (interactive && window.AscendSession) window.AscendSession.requireSignIn(sentToken ? 'expired' : '');
+    else if (interactive && !$("#login-dialog").open) $("#login-dialog").showModal();
     throw new Error("Sign in to continue.");
   }
   const data = await response.json();
@@ -854,8 +855,8 @@ async function renderProfile() {
   $('#public-link').textContent = account.settings.public_streak ? `${location.origin}/api/public/${encodeURIComponent(account.username)}/badge.svg` : 'Your streak is private. Sharing is optional.';
   await window.AscendAccounts?.mount?.($('#account-security'), {
     account, api,
-    replaceToken: token => { state.token = token; sessionStorage.setItem('ascend-token', token); },
-    signOut: () => { sessionStorage.removeItem('ascend-token'); location.reload(); }
+    replaceToken: token => { window.AscendSession.set(token); state.token = token; },
+    signOut: finishSignOut
   });
 }
 document.querySelectorAll("[data-icon]").forEach(node => node.append(icon(node.dataset.icon)));
@@ -932,10 +933,14 @@ handleForm('#reminder-form', async () => {
 bindAction('#test-nudge', async () => { const result = await command(['config', 'nudge-test']); notify(result.sent ? 'Test reminder sent.' : result.reason, result.sent ? 'success' : 'error'); });
 handleForm('#park-form', async () => { await command(['park', $('#park-note').value]); $('#park-note').value = ''; await renderMore(); notify('Idea saved for later.', 'success'); });
 bindAction('#save-timezone', async () => { await command(['config', 'timezone', $('#account-timezone').value]); await refresh(); notify('Timezone saved.', 'success'); });
-function setTheme(theme) { if (theme === "system") delete document.documentElement.dataset.theme; else document.documentElement.dataset.theme = theme; localStorage.setItem("ascend-theme", theme); }
+function setTheme(theme) { window.AscendTheme.set(theme); }
 $("#theme").value = localStorage.getItem("ascend-theme") || "system"; setTheme($("#theme").value);
 $("#theme").addEventListener("change", event => setTheme(event.target.value));
-$("#logout").addEventListener("click", async () => { try { await api("logout", {}); sessionStorage.removeItem("ascend-token"); state.token = null; location.reload(); } catch (error) { notify(error.message, 'error'); } });
+function finishSignOut() { window.AscendSession.clear(); state.token = null; location.assign(window.AscendSession.signInUrl('signed-out','/app#today')); }
+$("#logout").addEventListener("click", () => runAction($('#logout'), async () => {
+  try { await flushChallengeNotebook(); await savePlaygroundDraft(true); } catch { /* Existing account-keyed browser drafts retain unsynced work. */ }
+  await api('logout', {}); finishSignOut();
+}));
 $("#public-streak").addEventListener("change", async event => { try { await command(["config", "public-streak", String(event.target.checked)]); await renderProfile(); } catch (error) { notify(error.message, 'error'); } });
 $("#enable-push").addEventListener("click", async () => {
   try {
@@ -961,11 +966,22 @@ $("#disable-push").addEventListener("click", async () => {
     $("#push-status").textContent = "Notifications are disabled on this browser.";
   } catch (error) { $("#push-status").textContent = error.message; }
 });
-handleForm("#login-form", async () => { try { const result = await api("login", {username: $("#username").value, password: $("#password").value, label: 'Browser'}); sessionStorage.setItem("ascend-token", result.token); $("#password").value = ""; location.reload(); } catch (error) { $("#login-error").textContent = error.message; } });
+handleForm("#login-form", async () => { try { const result = await api("login", {username: $("#username").value, password: $("#password").value, label: 'Browser'}); window.AscendSession.set(result.token,false); $("#password").value = ""; location.reload(); } catch (error) { $("#login-error").textContent = error.message; } });
 document.addEventListener("keydown", event => { if (event.key.toLowerCase() === "l" && !["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement.tagName) && !$("#sheet").open && state.overview?.next) openLog(state.overview.next); });
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => {});
 const initialRoute = currentRoute();
-switchTab(initialRoute.tab, {topic: initialRoute.topic}).catch(error => notify(error.message, 'error')).finally(() => {
+async function startWorkspace() {
+  if (!await window.AscendSession.authorizeWorkspace()) return;
+  await switchTab(initialRoute.tab, {topic: initialRoute.topic});
+  const requestedTrack = new URLSearchParams(location.search).get('track');
+  if (initialRoute.tab === 'more' && requestedTrack && /^[a-z0-9-]+$/.test(requestedTrack)) {
+    const installed = state.installedPacks.find(pack => pack.id === requestedTrack);
+    if (installed) await readPack(installed);
+    else await browseTracks(requestedTrack);
+    const url = new URL(location.href); url.searchParams.delete('track'); history.replaceState(null,'',url.pathname + url.search + url.hash);
+  }
+}
+startWorkspace().catch(error => notify(error.message, 'error')).finally(() => {
   window.AscendBoot?.finish();
   playChallengeIntro();
 });
@@ -1285,7 +1301,7 @@ function showCase(node, run) {
   if (node.resource_note) notes.append(el('p', node.resource_note, 'field-help'));
   column.append(notes);
 }
-async function browseTracks() {
+async function browseTracks(selectedId = '') {
   const [catalog, installed, labs] = await Promise.all([command(['pack', 'registry']), api('packs'), api('lab-catalog')]);
   const installedIds = new Set(installed.map(p => p.id));
   const content = openSheet('Track catalog'), title = el('h2', 'Find your next track'); title.id = 'sheet-title';
@@ -1293,6 +1309,7 @@ async function browseTracks() {
   const controls = el('div', undefined, 'catalog-controls');
   const searchGroup = el('div');
   const search = field(searchGroup, 'catalog-search', 'Search subjects and roles', 'search'); search.placeholder = 'Linux, DevOps, VMs, tunnels, SOC…';
+  search.value = selectedId;
   const filter = el('select'); filter.setAttribute('aria-label', 'Track category');
   for (const group of ['All subjects', ...new Set(catalog.map(p => p.category || 'Projects'))]) { const option = el('option', group); option.value = group; filter.append(option); }
   controls.append(searchGroup, filter);

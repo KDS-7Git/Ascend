@@ -25,6 +25,8 @@ docker/wheelhouse/
 .ascend-labs/
 
 # Local development captures and machine-specific execution records.
+/re
+/sys
 docs/screenshots/
 docs/testing/*.txt
 docs/testing/*-deployment.json

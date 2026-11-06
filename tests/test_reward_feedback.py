@@ -42,7 +42,7 @@ def test_example_earns_practice_points_and_restores_without_motion(live_server, 
         run = page.request.post(
             live_server + "/api/playground/activities/example-access/start", data={}
         ).json()
-        page.goto(live_server + "/#activity/" + run["id"])
+        page.goto(live_server + "/app#activity/" + run["id"])
         page.get_by_role("button", name="Skip tour", exact=True).click()
         page.get_by_label("In your own words: what did you learn?").fill(
             "The caller needs ownership or a permitted administrator action."
@@ -83,7 +83,7 @@ def test_milestone_waits_for_save_names_the_work_and_keeps_replay_cosmetic(
             viewport={"width": width, "height": 950}, reduced_motion=motion
         )
         page.add_init_script(MOTION_CAPTURE)
-        page.goto(live_server)
+        page.goto(live_server + "/app")
         page.locator(".next-card").get_by_role("button", name="Open challenge").click()
         page.get_by_role("button", name="Start timed task", exact=True).click()
         page.locator(".lab-toolbar").get_by_role(
@@ -165,7 +165,7 @@ def test_correct_answer_uses_a_small_external_toast_and_optional_explanation(
             viewport={"width": width, "height": 950}, reduced_motion=motion
         )
         page.add_init_script(MOTION_CAPTURE)
-        page.goto(live_server)
+        page.goto(live_server + "/app")
         page.locator(".next-card").get_by_role("button", name="Open challenge").click()
         page.get_by_role("button", name="Start verified exercise", exact=True).click()
         page.get_by_role(
@@ -214,7 +214,7 @@ def test_prediction_feedback_does_not_award_or_repeat(live_server):
         run = page.request.post(
             live_server + "/api/playground/activities/example-access/start", data={}
         ).json()
-        page.goto(live_server + "/#activity/" + run["id"])
+        page.goto(live_server + "/app#activity/" + run["id"])
         page.get_by_role("button", name="Next step", exact=True).click()
         choice = page.get_by_role("button", name="No", exact=True)
         choice.click()

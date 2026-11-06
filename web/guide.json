@@ -341,12 +341,12 @@
             "Preferences: choose your timezone, System/Light/Dark appearance and On/Off motion effects. Appearance choices are saved in this browser. Your device\u2019s reduced motion setting always takes priority.",
             "Reminders: configure notification timing and delivery.",
             "Privacy & account: choose whether to publish a streak badge. Sharing is off unless you enable it.",
-            "Log out: available on authenticated servers. A single-user local server has no login session to end."
+            "Sign out: available on authenticated servers. This revokes the current server session and clears remembered browser credentials. A single-user local server opens its local account directly."
           ]
         },
         {
           "type": "paragraph",
-          "text": "Accounts are provisioned by the server operator. Account security is hidden during single-user dashboard testing. When the operator enables it in multi-user mode, Profile supports password changes and session revocation. Password recovery is an operator action that retains learning history. Your server progress is account-scoped; appearance preferences and unsynced drafts remain in this browser."
+          "text": "Accounts are provided by the workspace administrator by default. When signup is enabled, create an account on the auth page and save your private recovery code. Profile supports password changes, recovery-code replacement and session revocation when account security is enabled. Your server progress stays with your account; appearance preferences and unsynced drafts remain in this browser."
         },
         {
           "type": "heading",
@@ -829,7 +829,7 @@
             "When enabled, Profile \u2192 Account security lists your sessions and lets you sign out one session or all other sessions. Session labels describe the client, not a verified physical device.",
             "Change password requires the current password and a new password of at least 12 characters. It keeps this browser signed in with a new token and signs out earlier sessions.",
             "Sessions expire 30 days after sign-in. Password and sign-in attempts have a temporary retry limit.",
-            "For a forgotten password or a new account, contact the installation operator through your usual channel. Ascend does not display a recovery email flow without a configured identity service."
+            "For a forgotten password, use your saved one-use recovery code on the auth page. A reset gives you a replacement code and signs out earlier sessions. If you do not have a code, contact the workspace administrator. New accounts can use signup when it is enabled, or ask the administrator for access."
           ]
         },
         {

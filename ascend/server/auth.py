@@ -41,7 +41,7 @@ def password_hash(password, salt=None):
     return f"scrypt${salt}${digest}"
 
 
-def create_user(db, username, password, timezone_name):
+def new_user_values(username, password, timezone_name):
     if not re.fullmatch(r"[a-zA-Z0-9_-]{1,40}", username):
         raise ValueError("Username must use letters, numbers, _ or -")
     validate_password(password)
@@ -49,15 +49,20 @@ def create_user(db, username, password, timezone_name):
         ZoneInfo(timezone_name)
     except (KeyError, ValueError):
         raise ValueError("An IANA timezone is required") from None
+    return (
+        username,
+        password_hash(password),
+        timezone_name,
+        datetime.now(UTC).isoformat(),
+    )
+
+
+def create_user(db, username, password, timezone_name):
+    values = new_user_values(username, password, timezone_name)
     with db.transaction():
         cursor = db.connection.execute(
             "INSERT INTO users(username,password_hash,timezone,created_at) VALUES (?,?,?,?)",
-            (
-                username,
-                password_hash(password),
-                timezone_name,
-                datetime.now(UTC).isoformat(),
-            ),
+            values,
         )
         return cursor.lastrowid
 
@@ -199,6 +204,101 @@ def change_password(db, user_id, current_password, new_password):
         return issue_token(db, user_id, "Browser after password change")
 
 
+def recovery_hash(code):
+    normalized = code.upper().replace("-", "").replace(" ", "").removeprefix("ASCEND")
+    return hashlib.sha256(("ascend-recovery:" + normalized).encode()).hexdigest()
+
+
+def new_recovery_code():
+    raw = secrets.token_hex(24).upper()
+    return "ASCEND-" + "-".join(raw[i : i + 8] for i in range(0, len(raw), 8))
+
+
+def store_recovery_code(db, user_id, code):
+    db.connection.execute(
+        "INSERT INTO account_recovery(user_id,code_hash,created_at) VALUES (?,?,?) "
+        "ON CONFLICT(user_id) DO UPDATE SET code_hash=excluded.code_hash,created_at=excluded.created_at",
+        (user_id, recovery_hash(code), datetime.now(UTC).isoformat()),
+    )
+
+
+def register(db, username, password, timezone_name, label="Browser"):
+    values = new_user_values(username, password, timezone_name)
+    code = new_recovery_code()
+    with db.transaction():
+        if db.connection.execute(
+            "SELECT 1 FROM users WHERE username=? COLLATE NOCASE", (username,)
+        ).fetchone():
+            raise ValueError("That username is already in use")
+        user_id = db.connection.execute(
+            "INSERT INTO users(username,password_hash,timezone,created_at) VALUES (?,?,?,?)",
+            values,
+        ).lastrowid
+        store_recovery_code(db, user_id, code)
+        token = issue_token(db, user_id, label)
+    return {"token": token, "recovery_code": code}
+
+
+def replace_recovery_code(db, user_id, current_password):
+    row = db.connection.execute(
+        "SELECT password_hash FROM users WHERE id=?", (user_id,)
+    ).fetchone()
+    if (
+        user_id == 1
+        or not row
+        or not password_matches(current_password, row["password_hash"])
+    ):
+        raise ValueError("Current password is incorrect")
+    code = new_recovery_code()
+    with db.transaction():
+        current = db.connection.execute(
+            "SELECT password_hash FROM users WHERE id=?", (user_id,)
+        ).fetchone()
+        if not current or not hmac.compare_digest(
+            current["password_hash"], row["password_hash"]
+        ):
+            raise ValueError("Current password is incorrect")
+        store_recovery_code(db, user_id, code)
+    return code
+
+
+def recover_password(db, username, code, new_password):
+    validate_password(new_password)
+    row = db.connection.execute(
+        "SELECT users.id,users.password_hash,account_recovery.code_hash FROM users "
+        "JOIN account_recovery ON users.id=account_recovery.user_id WHERE username=?",
+        (username,),
+    ).fetchone()
+    message = "Recovery details are incorrect or the code has already been used"
+    if (
+        not row
+        or row["id"] == 1
+        or not row["password_hash"].startswith("scrypt$")
+        or not hmac.compare_digest(recovery_hash(code), row["code_hash"])
+    ):
+        raise ValueError(message)
+    replacement = password_hash(new_password)
+    next_code = new_recovery_code()
+    with db.transaction():
+        current = db.connection.execute(
+            "SELECT users.password_hash,account_recovery.code_hash FROM users "
+            "JOIN account_recovery ON users.id=account_recovery.user_id WHERE users.id=?",
+            (row["id"],),
+        ).fetchone()
+        if (
+            not current
+            or not hmac.compare_digest(current["password_hash"], row["password_hash"])
+            or not hmac.compare_digest(current["code_hash"], row["code_hash"])
+        ):
+            raise ValueError(message)
+        db.connection.execute(
+            "UPDATE users SET password_hash=? WHERE id=?", (replacement, row["id"])
+        )
+        db.connection.execute("DELETE FROM api_tokens WHERE user_id=?", (row["id"],))
+        store_recovery_code(db, row["id"], next_code)
+    return next_code
+
+
 def managed_user(db, username):
     row = db.connection.execute(
         "SELECT * FROM users WHERE username=?", (username,)
@@ -219,6 +319,9 @@ def reset_password(db, username, new_password):
             (password_hash(new_password), row["id"]),
         )
         db.connection.execute("DELETE FROM api_tokens WHERE user_id=?", (row["id"],))
+        db.connection.execute(
+            "DELETE FROM account_recovery WHERE user_id=?", (row["id"],)
+        )
 
 
 def set_enabled(db, username, enabled):

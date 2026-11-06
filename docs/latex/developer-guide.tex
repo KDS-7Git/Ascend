@@ -53,10 +53,12 @@ mobile and desktop widths.
 \subsection{Security and operational assumptions}
 Every business query is user-scoped. Passwords use scrypt and server bearer tokens
 are hashed. CLI token storage uses restrictive permissions; browser tokens are
-session-scoped. The PWA uses DOM text construction for authored content. The server
+session-scoped unless the learner chooses Remember me. The PWA uses DOM text construction for authored content. The server
 sets a self-only content security policy, same-origin write checks and no-store
-headers for private responses. No anonymous signup or public production hardening
-beyond the documented boundaries is claimed.
+headers for API responses. Signup is opt-in in multi-user mode and has a bounded
+per-process creation limit. One-use recovery codes rotate atomically and revoke
+earlier tokens. Public-production limits remain those documented for the chosen
+deployment topology. The public catalog never reads private installed packs.
 
 Command templates are split before substitution and run without a shell. Plugins
 run in a separate process with a timeout, but retain the host user's permissions.

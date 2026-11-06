@@ -1,9 +1,28 @@
 from datetime import datetime, timezone
+import os
 
 import pytest
 
 from ascend.application import Tracker
 from ascend.storage import Database
+
+
+@pytest.fixture(autouse=True)
+def configured_browser_channel(monkeypatch):
+    """Allow the installed full Chromium channel when its headless shell is absent."""
+    channel = os.environ.get("ASCEND_BROWSER_CHANNEL")
+    if not channel:
+        return
+    from playwright.sync_api import BrowserType
+
+    original = BrowserType.launch
+
+    def launch(browser_type, *args, **kwargs):
+        if browser_type.name == "chromium" and not kwargs.get("executable_path"):
+            kwargs.setdefault("channel", channel)
+        return original(browser_type, *args, **kwargs)
+
+    monkeypatch.setattr(BrowserType, "launch", launch)
 
 
 @pytest.fixture
@@ -17,6 +36,7 @@ def remove_playground_schema():
             db.connection.execute(f'DROP TRIGGER "{row[0]}"')
         db.connection.execute("DROP TABLE IF EXISTS external_lab_attempts")
         db.connection.execute("DROP TABLE IF EXISTS practice_rewards")
+        db.connection.execute("DROP TABLE IF EXISTS account_recovery")
         for name in (
             "activity_insert_guard",
             "activity_update_guard",

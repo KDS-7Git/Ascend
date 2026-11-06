@@ -12,13 +12,15 @@ have \texttt{Cache-Control: no-store}.
 
 In \texttt{AUTH\_MODE=multi}, use
 \texttt{Authorization: Bearer \textless{}token\textgreater{}}. The
-health endpoint and login are unauthenticated. Accounts are provisioned
-using \texttt{ascend-server user-add}. There is no public registration
-endpoint. Passwords use scrypt; tokens are hashed at rest. Browser
-tokens are stored in session storage, and CLI tokens are stored with mode 0600.
+health, site-options, bundled catalog and login endpoints are unauthenticated.
+Accounts are provisioned using \texttt{ascend-server user-add} by default.
+\texttt{ASCEND\_REGISTRATION=1} enables self-service signup in multi-user mode
+and also enables account security. Passwords use scrypt; tokens and recovery
+codes are hashed at rest. Browser tokens use session storage by default;
+Remember me also persists the token in local storage. CLI tokens use mode 0600.
 Tokens expire after 30 days, with at most 20 sessions per named account.
 Optional account-security routes are mounted only when multi-user mode and
-\texttt{ASCEND\_ACCOUNT\_MANAGEMENT=1} are both enabled.
+\texttt{ASCEND\_ACCOUNT\_MANAGEMENT=1} are both enabled, or signup is enabled.
 
 \begin{longtable}[]{@{}P{.45\textwidth}P{.50\textwidth}@{}}
 \toprule\noalign{}
@@ -28,6 +30,11 @@ Route & Contract \\
 \bottomrule\noalign{}
 \endlastfoot
 \path|GET /api/health| & \texttt{\{status, auth\_mode, account\_management\}} \\
+\path|GET /api/site| & Enabled authentication, signup and recovery capabilities; supported IANA timezones \\
+\path|GET /api/catalog| & Bundled track summaries and categories; excludes private installed packs \\
+\path|GET /api/catalog/{id}| & Bundled track levels and challenge previews; excludes verifier internals \\
+\path|POST /api/register| & Opt-in: username, password, timezone and optional label; returns token and recovery code \\
+\path|POST /api/recover| & Optional: username, recovery code and new password; replaces code and revokes sessions \\
 \path|POST /api/login| & \texttt{\{username,password,label?\}} →
 \texttt{\{token\}} \\
 \path|GET /api/me?minutes=30| & Mission, next/quick-win node data,
@@ -57,6 +64,7 @@ matches \\
 \path|GET /api/rewards| & Practice points, scored XP, milestone evidence and recent practice receipts \\
 \path|GET /api/account/security| & Optional: own session identifiers and expiry \\
 \path|POST /api/account/password| & Optional: current/new password; rotate token and revoke earlier sessions \\
+\path|POST /api/account/recovery-code| & Optional: current password; create or replace caller's recovery code \\
 \path|POST /api/account/sessions/revoke-others| & Optional: revoke other own sessions \\
 \path|DELETE /api/account/sessions/{id}| & Optional: revoke one own session \\
 \path|POST /api/command| &

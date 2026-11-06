@@ -12,7 +12,7 @@
     if (!account.account_management || account.auth_mode !== 'multi') return;
     const data = await api('account/security');
     host.append(element('h2', 'Account security'));
-    host.append(element('p', 'Your learning history stays with this account. Password recovery and new accounts are managed by your server operator.', 'field-help'));
+    host.append(element('p', 'Your learning history stays with this account. Manage your password, recovery code, and signed-in sessions here.', 'field-help'));
     const feedback = element('p', '', 'account-security-status'); feedback.setAttribute('role', 'status');
     const report = (message, error = false) => {
       feedback.textContent = message; feedback.classList.toggle('error', error);
@@ -73,6 +73,33 @@
       await renderSessions(); report(result.revoked ? `${result.revoked} other session${result.revoked === 1 ? '' : 's'} signed out.` : 'No other sessions are signed in.');
     }));
     host.append(revokeOthers, sessionList);
+    const recovery = element('form', undefined, 'account-recovery');
+    recovery.append(element('h3', 'Recovery code'), element('p', data.recovery_code_configured ? 'Your account has a recovery code. Replacing it makes the previous code unusable. Keep the replacement somewhere private.' : 'Create a private, one-use code to reset your password if you lose access. You can also ask your workspace administrator for help.', 'field-help'));
+    const recoveryLabel = element('label', 'Current password for recovery code'); recoveryLabel.htmlFor = 'account-recovery-password';
+    const recoveryPassword = element('input'); recoveryPassword.id = recoveryLabel.htmlFor; recoveryPassword.type = 'password'; recoveryPassword.required = true; recoveryPassword.maxLength = 1024; recoveryPassword.autocomplete = 'current-password';
+    const createCode = element('button', data.recovery_code_configured ? 'Replace recovery code' : 'Create recovery code'); createCode.type = 'submit';
+    const codeResult = element('section', undefined, 'account-recovery-result'); codeResult.hidden = true;
+    const codeLabel = element('label', 'New recovery code'); codeLabel.htmlFor = 'account-recovery-code';
+    const code = element('input', undefined, 'account-recovery-code'); code.id = codeLabel.htmlFor; code.readOnly = true; code.autocomplete = 'off'; code.spellcheck = false;
+    const actions = element('div', undefined, 'card-actions');
+    const download = element('button', 'Download recovery code', 'secondary'); download.type = 'button';
+    download.addEventListener('click', () => {
+      const url = URL.createObjectURL(new Blob([`Ascend recovery code\nWorkspace: ${location.origin}\nUsername: ${account.username}\n\n${code.value}\n\nKeep this private. It can reset your password once. A reset replaces the code and signs out existing sessions.\n`], {type:'text/plain;charset=utf-8'}));
+      const link = element('a'); link.href = url; link.download = `ascend-recovery-${account.username}.txt`; document.body.append(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+    });
+    const dismiss = element('button', 'I saved this code', 'secondary'); dismiss.type = 'button'; dismiss.addEventListener('click', () => { code.value = ''; codeResult.hidden = true; });
+    actions.append(download, dismiss);
+    codeResult.append(element('h4', 'Keep a way back in.'), element('p', 'Save this code somewhere safe. It is shown here only until you leave this page or dismiss it.', 'field-help'), codeLabel, code, actions);
+    recovery.append(recoveryLabel, recoveryPassword, createCode, codeResult);
+    recovery.addEventListener('submit', event => {
+      event.preventDefault();
+      operation(createCode, async () => {
+        const result = await api('account/recovery-code', {current_password:recoveryPassword.value});
+        recoveryPassword.value = ''; code.value = result.recovery_code; codeResult.hidden = false; createCode.textContent = 'Replace recovery code';
+        report('Recovery code created. Save it somewhere private. Any previous code no longer works.'); code.focus();
+      });
+    });
+    host.append(recovery);
     await renderSessions(); host.hidden = false;
   }
   window.AscendAccounts = {mount};

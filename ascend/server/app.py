@@ -1,13 +1,13 @@
 import asyncio
-from contextlib import asynccontextmanager, suppress
-from dataclasses import asdict
-import logging
 import hashlib
 import hmac
+import logging
 import os
-from pathlib import Path
 import re
 import sqlite3
+from contextlib import asynccontextmanager, suppress
+from dataclasses import asdict
+from pathlib import Path
 from urllib.parse import urlparse
 
 from fastapi import Depends, FastAPI, File, HTTPException, Request, UploadFile
@@ -15,13 +15,13 @@ from fastapi.responses import JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, ConfigDict, Field
 
-from ascend.application import Tracker
 from ascend import challenge_work
+from ascend.application import Tracker
 from ascend.cli import execute, parser
 from ascend.nudge import NudgeRunner
 from ascend.registry import registry_entries
-from ascend.server.auth import authenticate, login
 from ascend.server import presentation
+from ascend.server.auth import authenticate, login
 from ascend.storage import Database, default_home
 
 
@@ -110,7 +110,13 @@ class LabSubmission(LabAttemptToken):
     submission: dict | None = None
 
 
-def create_app(home=None, auth_mode=None, scheduler=True, account_management=None):
+def create_app(
+    home=None,
+    auth_mode=None,
+    scheduler=True,
+    account_management=None,
+    registration=None,
+):
     home = Path(home or default_home())
     auth_mode = auth_mode or os.environ.get("AUTH_MODE", "single")
     if auth_mode not in {"single", "multi"}:
@@ -120,6 +126,10 @@ def create_app(home=None, auth_mode=None, scheduler=True, account_management=Non
     if account_management is None:
         account_management = os.environ.get("ASCEND_ACCOUNT_MANAGEMENT") == "1"
     account_management = bool(account_management and auth_mode == "multi")
+    if registration is None:
+        registration = os.environ.get("ASCEND_REGISTRATION") == "1"
+    registration = bool(registration and auth_mode == "multi")
+    account_management = bool(account_management or registration)
     login_throttle = accounts.LoginThrottle()
     Database(home).close()
 
@@ -214,6 +224,8 @@ def create_app(home=None, auth_mode=None, scheduler=True, account_management=Non
             )
         if request.url.path.startswith("/api/"):
             response.headers["Cache-Control"] = "no-store"
+        elif response.headers.get("content-type", "").startswith("text/html"):
+            response.headers["Cache-Control"] = "no-cache"
         return response
 
     @app.exception_handler(ValueError)
@@ -313,6 +325,9 @@ def create_app(home=None, auth_mode=None, scheduler=True, account_management=Non
         return {"logged_out": True}
 
     accounts.mount(app, tracker, account_management)
+    from ascend.server import public
+
+    public.mount(app, home, auth_mode, registration, account_management)
 
     @app.get("/api/push/key")
     def push_key(t=Depends(tracker)):
@@ -850,5 +865,6 @@ def create_app(home=None, auth_mode=None, scheduler=True, account_management=Non
     if not web.is_dir():
         web = Path(__file__).resolve().parents[1] / "web"
     if web.is_dir():
+        public.mount_pages(app, web)
         app.mount("/", StaticFiles(directory=web, html=True), name="web")
     return app

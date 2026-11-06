@@ -1,5 +1,19 @@
 \section{Workspace UI: documentation, profile and reliable feedback}
 \label{workspace-ui}
+\subsection{Public discovery and account access}
+The public home page, searchable track catalog, actual track previews,
+how-it-works page, privacy page and dedicated auth page share
+\path{web/theme.css}, \path{web/theme.js} and the illustrations in
+\path{web/art.js} with the learning workspace. The root page is public;
+\path{/app} hosts learning, and legacy root-hash links redirect to it.
+Track selection survives login and opens the matching installation or review
+controls. \path{web/session.js} handles credentials and safe return links.
+The auth page adapts to local, administrator-provisioned and opt-in signup
+deployments. Signup, remembered login, password controls, recovery-code downloads
+and one-use recovery use real server endpoints. Public and account browser
+checks cover widths from 320 to 1440 pixels, shared dark mode, failed requests,
+token rotation and cross-account notebook isolation.
+
 \subsection{Current feedback, progression and page context}
 The November 2026 follow-up compares eight public learning products: Duolingo,
 TryHackMe, Hack The Box, PortSwigger Academy, OverTheWire, The Odin Project,

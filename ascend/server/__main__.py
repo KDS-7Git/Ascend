@@ -21,6 +21,12 @@ def main():
         default=os.environ.get("ASCEND_ACCOUNT_MANAGEMENT") == "1",
         help="Enable account security controls with --auth-mode multi; off for single-user testing",
     )
+    parser.add_argument(
+        "--registration",
+        action="store_true",
+        default=os.environ.get("ASCEND_REGISTRATION") == "1",
+        help="Allow self-service signup with --auth-mode multi",
+    )
     sub = parser.add_subparsers(dest="command")
     add = sub.add_parser("user-add")
     add.add_argument("username")
@@ -106,7 +112,10 @@ def main():
         )
     uvicorn.run(
         create_app(
-            args.home, args.auth_mode, account_management=args.account_management
+            args.home,
+            args.auth_mode,
+            account_management=args.account_management,
+            registration=args.registration,
         ),
         host=args.host,
         port=args.port,

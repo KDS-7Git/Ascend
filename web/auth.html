@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en" data-app="auth">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f5ce47">
+  <meta name="description" content="Sign in to your Ascend workspace, create a learning account, or recover access to your saved progress.">
+  <title>Your account · Ascend</title>
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <script src="/theme.js?v=20261106-public1"></script>
+  <script src="/session.js?v=20261106-public1"></script>
+  <link rel="stylesheet" href="/style.css?v=20261106-public1">
+  <link rel="stylesheet" href="/theme.css?v=20261106-public1">
+  <link rel="stylesheet" href="/site.css?v=20261106-public1">
+  <script src="/art.js?v=20261106-public1" defer></script>
+  <script src="/site.js?v=20261106-public1" defer></script>
+  <script src="/auth.js?v=20261106-public1" defer></script>
+</head>
+<body class="public-site auth-site">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header"><div class="site-header-inner"><a class="brand site-brand" href="/" aria-label="Ascend home"><img src="/icon.svg" alt="" width="31" height="31">Ascend<span class="site-brand-dot">.</span></a><a class="site-auth-home" href="/tracks">Explore tracks <span aria-hidden="true">↗</span></a><button type="button" class="site-theme-toggle secondary" data-theme-toggle aria-label="Switch to dark theme" aria-pressed="false"><span data-site-icon="theme" aria-hidden="true"></span></button></div></header>
+  <main id="main" class="site-main site-width auth-main" tabindex="-1">
+    <aside class="auth-story" aria-labelledby="auth-story-heading"><p class="site-stamp"><span data-site-icon="sprout" aria-hidden="true"></span> ONE STEP CLOSER</p><h2 id="auth-story-heading">Big possibilities.<br><span>Small beginnings.</span></h2><p>A useful challenge. A new idea.<br>A little more confidence than yesterday.</p><div class="auth-story-art" data-companion aria-hidden="true"></div><div class="auth-story-note"><span data-site-icon="flag" aria-hidden="true"></span><p>Your path, notes, and progress.<br>Ready when you are.</p></div></aside>
+    <section class="auth-panel" aria-labelledby="auth-heading">
+      <a href="/" class="site-text-link auth-back">← Back to Ascend</a>
+      <p class="eyebrow" id="auth-eyebrow">YOUR LEARNING WORKSPACE</p><h1 id="auth-heading">Welcome back.</h1><p class="auth-intro" id="auth-intro">Pick up where your curiosity left off.</p>
+      <noscript><p class="site-message">Enable JavaScript to connect to your workspace and sign in.</p></noscript>
+      <div id="auth-loading" class="auth-loading" role="status">Connecting to your workspace…</div>
+      <div id="auth-feedback" class="auth-feedback" role="alert" hidden></div>
+      <div id="auth-session" class="auth-session" hidden><p id="auth-session-name"></p><div class="site-actions"><a class="site-button" id="auth-session-continue" href="/app#today">Continue to workspace <span aria-hidden="true">→</span></a><button class="text-button" id="auth-use-another" type="button">Use another account</button></div></div>
+      <div id="auth-local" class="auth-local" hidden><div class="auth-local-mark" data-site-icon="check" aria-hidden="true"></div><h2>A little progress is waiting.</h2><p>This private workspace uses your local learning account. Open it to keep your notes, explore a track, and start practicing.</p><a class="site-button" id="auth-local-continue" href="/app#today">Open my workspace <span data-site-icon="arrow" aria-hidden="true"></span></a><a class="site-text-link" href="/tracks">Find a track first <span aria-hidden="true">→</span></a></div>
+      <div id="auth-forms" hidden>
+        <div class="auth-tabs" role="group" aria-label="Account access"><button id="auth-sign-in-tab" type="button" data-auth-mode="signin" aria-pressed="true">Sign in</button><button id="auth-sign-up-tab" type="button" data-auth-mode="signup" aria-pressed="false" hidden>Create account</button></div>
+        <form id="auth-form" novalidate>
+          <div class="auth-field"><label for="auth-username">Username</label><input id="auth-username" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" required maxlength="40" placeholder="Your username" aria-describedby="auth-username-help"><p id="auth-username-help" class="field-help" hidden>3–40 characters. Use letters, numbers, underscores, or hyphens.</p></div>
+          <div class="auth-field" id="auth-code-field" hidden><label for="auth-recovery-code">Recovery code</label><input id="auth-recovery-code" name="recovery_code" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="120" placeholder="ASCEND-…" aria-describedby="auth-recovery-help"><p id="auth-recovery-help" class="field-help">Use the code you saved when you created your account or in Account security.</p><button class="text-button auth-recovery-assistance" type="button" data-auth-mode="help">I don’t have a recovery code</button></div>
+          <div class="auth-field"><div class="auth-label-row"><label for="auth-password" id="auth-password-label">Password</label><a href="/auth?mode=recover" id="auth-forgot-password">Forgot password?</a></div><div class="auth-password-control"><input id="auth-password" name="password" type="password" autocomplete="current-password" required maxlength="1024" placeholder="Your password" aria-describedby="auth-password-help"><button type="button" class="auth-password-toggle" data-toggle-password="auth-password" aria-label="Show password" aria-pressed="false"><span data-site-icon="eye" aria-hidden="true"></span></button></div><p id="auth-password-help" class="field-help" hidden>Use at least 12 characters. A few unrelated words work well.</p><p class="auth-caps-lock" id="auth-caps-lock" hidden>Caps Lock is on.</p></div>
+          <div class="auth-field" id="auth-confirm-field" hidden><label for="auth-confirm">Confirm password</label><div class="auth-password-control"><input id="auth-confirm" name="confirm" type="password" autocomplete="new-password" maxlength="1024" placeholder="Type your password again"><button type="button" class="auth-password-toggle" data-toggle-password="auth-confirm" aria-label="Show confirmation password" aria-pressed="false"><span data-site-icon="eye" aria-hidden="true"></span></button></div></div>
+          <div class="auth-field" id="auth-timezone-field" hidden><label for="auth-timezone">Your timezone</label><select id="auth-timezone" name="timezone" aria-describedby="auth-timezone-help"><option value="UTC">UTC</option></select><p id="auth-timezone-help" class="field-help">Keeps your daily progress and reminders on your schedule.</p></div>
+          <label class="check auth-remember" id="auth-remember-field"><input id="auth-remember" type="checkbox" name="remember">Remember me on this device</label>
+          <button class="auth-submit" id="auth-submit" type="submit">Sign in <span data-site-icon="arrow" aria-hidden="true"></span></button>
+          <p class="auth-account-note" id="auth-account-note">Use the account provided by your workspace administrator.</p>
+        </form>
+        <div class="auth-recovery-help" id="auth-operator-help" hidden><span data-site-icon="shield" aria-hidden="true"></span><h2>Let’s get you back in.</h2><p>Ask the person who manages this Ascend workspace to reset your password. Your saved learning stays with your account.</p><button class="secondary" type="button" data-auth-mode="signin">Back to sign in <span aria-hidden="true">→</span></button></div>
+      </div>
+      <div class="auth-code-result" id="auth-code-result" hidden><div class="auth-local-mark" data-site-icon="shield" aria-hidden="true"></div><h2 id="auth-code-heading">Keep a way back in.</h2><p id="auth-code-intro">Save this private recovery code. You can use it once to reset your password if you lose access.</p><label for="auth-saved-code">Your recovery code</label><input id="auth-saved-code" readonly spellcheck="false" autocomplete="off"><div class="site-actions"><button class="secondary" type="button" id="auth-copy-code"><span data-site-icon="copy" aria-hidden="true"></span>Copy code</button><button class="secondary" type="button" id="auth-download-code"><span data-site-icon="download" aria-hidden="true"></span>Download code</button></div><p id="auth-code-status" role="status"></p><label class="check"><input id="auth-code-saved" type="checkbox">I’ve saved my recovery code somewhere safe.</label><button class="auth-submit" type="button" id="auth-code-continue" disabled>Continue to workspace <span aria-hidden="true">→</span></button></div>
+      <p class="auth-privacy-note"><span data-site-icon="shield" aria-hidden="true"></span> Your learning stays with your account.<br><a href="/privacy">Privacy &amp; your data</a></p>
+    </section>
+  </main>
+  <footer class="site-width auth-footer"><span>Build understanding, one step at a time.</span><a href="/app#docs/getting-started">Need a little guidance? <span aria-hidden="true">↗</span></a></footer>
+</body>
+</html>

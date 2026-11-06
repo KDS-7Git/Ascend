@@ -60,7 +60,7 @@ with tempfile.TemporaryDirectory(prefix="ascend-screenshot-") as directory:
                     device_scale_factor=1,
                     reduced_motion="reduce",
                 )
-                page.goto(url)
+                page.goto(url + "/app")
                 page.locator(".next-card h2").wait_for()
                 page.screenshot(path=target / f"today-{label}.png", full_page=True)
                 page.get_by_role("button", name="Path", exact=True).click()

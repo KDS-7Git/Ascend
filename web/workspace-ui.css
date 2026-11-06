@@ -1,40 +1,8 @@
 /* Approved workspace direction. Base forms, workspaces, and reward behavior stay in their owning modules. */
-:root {
-  --bg:#eee8d9; --surface:#fffdf5; --text:#292620; --muted:#615b4e;
-  --line:#292620; --divider:#d4cbb8; --accent:#4c377b; --accent-hover:#38265e;
-  --soft:#e4dafa; --mint:#d7eddb; --peach:#ffdbc0; --hover:#f0eadc;
-  --action:#f5ce47; --action-hover:#ffdf72; --on-action:#28251e;
-  --success:#296344; --success-bg:#d7eddb; --shadow:#292620;
-  --shadow-sm:3px 3px 0 var(--shadow); --shadow-lg:6px 6px 0 var(--shadow);
-  --control-radius:5px;
-  --interaction-fill:#fff0b1; --interaction-ink:#292620; --interaction-muted:#5b4c28;
-  --radius:7px; --rail:224px; --content-width:1320px;
-  --workspace-grid-size:28px; --workspace-grid:#9d927501; --workspace-contour:#7d775a; --workspace-glow:#fbefd3;
-}
-:root[data-workspace-theme='dark'] {
-  --bg:#111622; --surface:#1d2434; --text:#f5f0ff; --muted:#bdc4d7;
-  --line:#7e879f; --divider:#3a4459; --accent:#d3b8ff; --accent-hover:#e7d8ff; --on-accent:#30263f;
-  --soft:#393052; --mint:#233f3d; --peach:#563c2f; --hover:#293146;
-  --success:#a9ebc9; --success-bg:#233f3d; --shadow:#080d18;
-  --error:#ffb8ae; --error-bg:#513738; --milestone:#f5ce78; --milestone-bg:#463c24;
-  --workspace-grid:#c7ccff01; --workspace-contour:#9a9ad3; --workspace-glow:#25213a;
-  --interaction-fill:#f5ce47; --interaction-ink:#28251e; --interaction-muted:#51451f;
-}
-body {
-  background-color:var(--bg);
-  background-image:linear-gradient(var(--workspace-grid) 1px,transparent 1px),linear-gradient(90deg,var(--workspace-grid) 1px,transparent 1px),radial-gradient(ellipse at 75% 0,var(--workspace-glow),transparent 65%);
-  background-size:var(--workspace-grid-size) var(--workspace-grid-size),var(--workspace-grid-size) var(--workspace-grid-size),100% 100%; background-attachment:fixed;
-}
-.ws-backdrop { position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden; }
-.ws-landscape,.ws-night-atmosphere,.ws-night-ribbons { position:absolute; inset:0; width:100%; height:100%; }
-.ws-map-stroke { stroke:var(--workspace-contour); stroke-width:1; opacity:.28; }
-.ws-terrain-contours { fill:none; stroke:var(--workspace-contour); stroke-width:1.7; opacity:.2; }
-.ws-terrain-markers { fill:#e2bf4a; stroke:var(--workspace-contour); stroke-width:1.5; opacity:.12; }
-.ws-night-atmosphere { display:none; }
-:root[data-workspace-theme='dark'] body { background-image:linear-gradient(var(--workspace-grid) 1px,transparent 1px),linear-gradient(90deg,var(--workspace-grid) 1px,transparent 1px),radial-gradient(ellipse at 83% 8%,#65449855,transparent 52%),radial-gradient(ellipse at 13% 75%,#1b6d7950,transparent 58%),linear-gradient(145deg,#151723,#101824 55%,#172332); background-size:var(--workspace-grid-size) var(--workspace-grid-size),var(--workspace-grid-size) var(--workspace-grid-size),100% 100%,100% 100%,100% 100%; }
-:root[data-workspace-theme='dark'] .ws-landscape { opacity:.3; }
-:root[data-workspace-theme='dark'] .ws-night-atmosphere { display:block; }
-.ws-night-ribbons { opacity:.7; }
+.account-recovery { margin-top:27px; padding-top:23px; border-top:1px dashed var(--divider); }
+.account-recovery-result { margin-top:24px; padding:21px; background:var(--mint); border:2px solid var(--line); border-radius:var(--radius); }
+.account-recovery-code { font-family:ui-monospace,monospace; font-size:.8rem; user-select:all; margin-bottom:17px; }
+.rail-note>a { display:inline-flex; margin-top:13px; color:var(--accent); font-size:.7rem; text-decoration:none; }
 /* The landscape has a finite entrance; pointer feedback and the challenge glow
    share the existing motion preference and reduced-motion controls. */
 .ambient-scene { display:none; }
