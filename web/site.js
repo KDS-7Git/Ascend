@@ -18,7 +18,8 @@ window.AscendSite = (() => {
     search:['M10.5 3a7.5 7.5 0 1 0 0 15 7.5 7.5 0 0 0 0-15Zm5.5 13 5 5'],
     eye:['M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12Z','M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6'],
     copy:['M8 8h12v13H8V8Z','M16 8V3H3v13h5'],
-    download:['M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5']
+    download:['M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5'],
+    logout:['M9 4H4v16h5','M10 12h11m-4-4 4 4-4 4']
   };
   const element = (tag, text, className) => {
     const node = document.createElement(tag);
@@ -102,23 +103,95 @@ window.AscendSite = (() => {
     let account = null;
     if (options.auth_mode === 'single') document.querySelectorAll('[data-sign-in]').forEach(link => { link.hidden = true; });
     else if (window.AscendSession.get()) {
-      try { account = await request('account', undefined, 'GET', {Authorization:`Bearer ${window.AscendSession.get()}`}); }
-      catch (error) { if (error.status === 401) window.AscendSession.clear(); }
+      const token = window.AscendSession.get();
+      try {
+        const result = await request('account', undefined, 'GET', {Authorization:`Bearer ${token}`});
+        if (token !== window.AscendSession.get()) return;
+        account = result;
+      } catch (error) { if (error.status === 401 && token === window.AscendSession.get()) window.AscendSession.clear(); }
     }
     if (account || options.auth_mode === 'single') {
-      document.querySelectorAll('[data-workspace-link]').forEach(link => { link.replaceChildren(document.createTextNode('Open workspace '), icon('arrow')); });
+      document.querySelectorAll('[data-workspace-link]').forEach(link => {
+        link.replaceChildren(element('span','Open workspace','site-header-cta-label'),icon('arrow'));
+        link.setAttribute('aria-label','Open workspace');
+      });
       if (account) document.querySelectorAll('[data-sign-in]').forEach(link => { link.textContent = 'My account'; link.href = '/app#profile'; });
     }
+    document.querySelectorAll('[data-sign-out]').forEach(control => { control.hidden = !account; });
+    document.documentElement.dataset.siteAccount = account ? 'signed-in' : options.auth_mode === 'single' ? 'local' : 'guest';
     const faq = document.getElementById('account-faq');
     if (faq && options.auth_mode === 'single') faq.textContent = 'This private workspace uses your local learning account, so you can open it directly. Your notes and progress stay in this Ascend installation.';
     else if (faq) faq.textContent = options.registration ? 'This shared workspace uses a username and password. You can create an account on the auth page. You do not need an email address; save your recovery code to keep a way back into your account.' : 'This shared workspace uses a username and password. The person managing the workspace creates your account. Use those credentials to sign in and keep your learning progress together.';
   }
   if (page) accountLinks().catch(() => { /* Public discovery remains useful if account options are unavailable. */ });
+  document.querySelectorAll('[data-sign-out]').forEach(control => control.addEventListener('click', async () => {
+    if (control.disabled) return;
+    control.disabled = true; control.setAttribute('aria-busy','true');
+    const token = window.AscendSession.get();
+    try {
+      if (token) {
+        try { await request('logout',{},'POST',{Authorization:`Bearer ${token}`}); }
+        catch (error) { if (error.status !== 401) throw error; }
+      }
+      if (token !== window.AscendSession.get()) return;
+      window.AscendSession.clear();
+      const next = new URLSearchParams(location.search).get('next') || '/app#today';
+      location.assign(window.AscendSession.signInUrl('signed-out',next));
+    } catch (error) {
+      const message = element('p',error.message,'site-message site-toast'); message.setAttribute('role','alert');
+      document.querySelector('.site-toast')?.remove(); document.body.append(message);
+    } finally { control.disabled = false; control.removeAttribute('aria-busy'); }
+  }));
+  function initializePreview() {
+    const tabs = [...document.querySelectorAll('[data-preview]')];
+    const select = control => {
+      for (const tab of tabs) {
+        const active = tab === control;
+        tab.setAttribute('aria-selected',String(active)); tab.tabIndex = active ? 0 : -1;
+        document.getElementById(tab.getAttribute('aria-controls')).hidden = !active;
+      }
+    };
+    for (const tab of tabs) {
+      tab.addEventListener('click',() => select(tab));
+      tab.addEventListener('keydown',event => {
+        if (!['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) return;
+        event.preventDefault();
+        const index = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : (tabs.indexOf(tab) + (event.key === 'ArrowLeft' ? -1 : 1) + tabs.length) % tabs.length;
+        select(tabs[index]); tabs[index].focus();
+      });
+    }
+    document.getElementById('preview-copy-command').addEventListener('click',async () => {
+      const code = document.querySelector('.product-terminal code'), command = code.textContent.replace(/^\$\s*/,'').trim();
+      const status = document.getElementById('preview-copy-status');
+      try { await navigator.clipboard.writeText(command); status.textContent = 'Example command copied.'; }
+      catch {
+        const range = document.createRange(); range.selectNodeContents(code);
+        const selection = getSelection(); selection.removeAllRanges(); selection.addRange(range);
+        status.textContent = 'Command selected. Copy it to try with your local service.';
+      }
+    });
+  }
   async function loadHome() {
     const data = await request('catalog');
     const selected = ['devops-service-foundations','ethical-hacking-foundations','io-linux-network'].map(id => data.tracks.find(track => track.id === id)).filter(Boolean);
     document.getElementById('featured-tracks').replaceChildren(...selected.map(trackCard));
     document.getElementById('home-catalog-total').textContent = `${data.tracks.length} tracks to explore`;
+    document.getElementById('product-track-count').textContent = data.tracks.length.toLocaleString();
+    document.getElementById('product-task-count').textContent = data.tracks.reduce((count,track) => count + track.nodes,0).toLocaleString();
+    const track = await request('catalog/devops-service-foundations').catch(() => null);
+    if (!track) return;
+    const levels = track.levels.filter(level => level.lane === 'main'), first = levels[0]?.challenges[0];
+    document.getElementById('preview-category').textContent = track.title;
+    if (first) {
+      document.getElementById('preview-task').textContent = first.title;
+      document.getElementById('preview-description').textContent = first.preview;
+    }
+    document.getElementById('preview-level-count').textContent = `${levels.length} levels`;
+    document.getElementById('preview-path').replaceChildren(...levels.slice(0,3).map((level,index) => {
+      const item = element('li'), copy = element('div');
+      copy.append(element('strong',level.title),element('small',`${level.challenges.length} practical tasks`));
+      item.append(element('span',String(index + 1).padStart(2,'0')),copy); return item;
+    }));
   }
   async function loadCatalog() {
     const root = document.getElementById('track-results'), search = document.getElementById('track-search'), select = document.getElementById('track-category'), form = document.getElementById('track-search-form');
@@ -182,7 +255,7 @@ window.AscendSite = (() => {
     const root = document.getElementById(id); root.replaceChildren(empty(error.status === 404 ? 'Track not found.' : 'The learning library could not load.',error.status === 404 ? 'This track isn’t in the bundled library. Explore the available tracks to find your next direction.' : error.message,'Browse all tracks','/tracks')); root.setAttribute('aria-busy','false');
     if (error.status !== 404) { const retry = element('button','Try again','secondary'); retry.addEventListener('click',()=>location.reload()); root.firstChild.append(retry); }
   };
-  if (page === 'home') loadHome().catch(error => fail('featured-tracks',error));
+  if (page === 'home') { initializePreview(); loadHome().catch(error => fail('featured-tracks',error)); }
   if (page === 'tracks') loadCatalog().catch(error => { document.getElementById('track-count').textContent = 'Tracks are temporarily unavailable.'; fail('track-results',error); });
   if (page === 'track') loadTrack().catch(error => fail('track-detail',error));
   return {element,icon,request,siteOptions,download,fillIcons};

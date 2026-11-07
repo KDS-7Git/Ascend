@@ -85,9 +85,10 @@ async function switchTab(tab, options = {}) {
   if (tab === 'challenge' && $('#sheet').open) $('#sheet').close();
   const changed = state.tab !== tab;
   state.tab = tab;
-  if (changed && document.documentElement.dataset.boot !== 'loading') await window.AscendMotion?.leave?.(previous);
+  if (changed && document.documentElement.dataset.boot !== 'loading') await window.AscendMotion?.leave?.(previous, {duration:tab === 'profile' || previous?.id === 'profile' ? 60 : 100});
   if (version !== navigationVersion) return;
   document.querySelectorAll('.screen').forEach(screen => screen.hidden = screen.id !== tab);
+  document.documentElement.dataset.view = tab;
   document.querySelectorAll('.primary-nav [data-tab]').forEach(node => {
     const active = node.dataset.tab === (['activity', 'lab', 'attempts'].includes(tab) ? 'playground' : tab);
     node.classList.toggle('active', active);
@@ -108,12 +109,15 @@ async function switchTab(tab, options = {}) {
   if (location.hash !== `#${hash}`) location.hash = hash;
   if (changed) window.scrollTo({top: 0, behavior: 'instant'});
   const screen = document.getElementById(tab);
+  if (tab === 'profile' && state.account) paintProfile(state.account,state.profileRewards);
   screen.setAttribute('aria-busy', 'true');
+  screen.dataset.navigation = String(version);
   $('#route-progress').hidden = false;
-  const loadingTimer = setTimeout(() => { screen.dataset.loading = 'true'; }, 160);
+  const loadingTimer = setTimeout(() => { if (screen.dataset.navigation === String(version) && screen.dataset.ready !== 'true') screen.dataset.loading = 'true'; }, 160);
   try {
   if (tab === 'docs') {
     await renderDocs();
+    screen.dataset.ready = 'true';
     if (state.tab === tab && version === navigationVersion) window.AscendMotion?.enter?.($('#docs'), `docs/${state.guideTopic}`);
     renderSessionClock();
     if (!state.account) refreshDocsChrome().catch(() => {});
@@ -131,6 +135,7 @@ async function switchTab(tab, options = {}) {
   if (tab === 'lab') await renderLabDetail();
   if (tab === 'attempts') await renderAttemptGroup();
   renderSessionClock();
+  screen.dataset.ready = 'true';
   if (state.tab === tab && version === navigationVersion) window.AscendMotion?.enter?.(document.getElementById(tab), tab);
   } catch (error) {
     if (version === navigationVersion && state.tab === tab && ['playground', 'activity', 'lab', 'attempts', 'stats'].includes(tab)) {
@@ -143,8 +148,10 @@ async function switchTab(tab, options = {}) {
   } finally {
     clearTimeout(loadingTimer);
     if (version === navigationVersion) window.AscendContext?.render();
-    delete screen.dataset.loading;
-    screen.removeAttribute('aria-busy');
+    if (screen.dataset.navigation === String(version)) {
+      delete screen.dataset.loading; delete screen.dataset.navigation;
+      screen.removeAttribute('aria-busy');
+    }
     if (version === navigationVersion) $('#route-progress').hidden = true;
   }
 }
@@ -166,7 +173,8 @@ const ICONS = {
   arrow: ['M4 12h16m-6-6 6 6-6 6'],
   bolt: ['m13 2-9 12h7l-1 8 10-13h-7l1-7'],
   play: ['m8 4 12 8-12 8V4Z'],
-  book: ['M3 4c4-1 6 0 9 2 3-2 5-3 9-2v15c-4-1-6 0-9 2-3-2-5-3-9-2V4Zm9 2v15']
+  book: ['M3 4c4-1 6 0 9 2 3-2 5-3 9-2v15c-4-1-6 0-9 2-3-2-5-3-9-2V4Zm9 2v15'],
+  logout: ['M9 4H4v16h5', 'M10 12h11m-4-4 4 4-4 4']
 };
 function svgElement(tag, attrs = {}) {
   const node = document.createElementNS('http://www.w3.org/2000/svg', tag);
@@ -624,6 +632,12 @@ function updateAccountChrome() {
   if (!state.account) return;
   $('#avatar-initial').textContent = state.account.username.slice(0, 1).toUpperCase();
   $('#profile-link').title = `${state.account.username} · Profile`;
+  const label = state.account.auth_mode === 'single' ? 'Exit workspace' : 'Log out';
+  for (const control of [$('#header-logout'),$('#logout')]) {
+    $('.workspace-exit-label',control).textContent = label;
+    control.setAttribute('aria-label',label); control.title = label;
+  }
+  $('#profile-security-link').hidden = !state.account.account_management;
 }
 async function refreshDocsChrome() {
   // Documentation remains readable when the account is offline or signed out.
@@ -819,46 +833,86 @@ async function readPack(pack) {
   });
   review.disabled = Boolean(pack.reviewed); actions.append(review); content.append(actions);
 }
-async function renderProfile() {
-  const [account, rewardSummary] = await Promise.all([api('account'), api('rewards')]); state.account = account; updateAccountChrome();
-  await refreshSessions();
+function syncProfileField(selector, value, checked = false) {
+  const field = $(selector), current = checked ? String(field.checked) : field.value;
+  const next = checked ? String(Boolean(value)) : String(value);
+  const untouched = field.dataset.profileValue === undefined || (current === field.dataset.profileValue && field !== document.activeElement);
+  if (untouched) { if (checked) field.checked = Boolean(value); else field.value = value; }
+  field.dataset.profileValue = next;
+}
+function populateProfileTimezones(all = false) {
+  const zones = new Set(['UTC','Asia/Kolkata','Europe/London','America/New_York',state.account?.timezone,...(all ? Intl.supportedValuesOf?.('timeZone') || [] : [])].filter(Boolean));
+  const options = [...zones].sort().map(zone => {
+    const option = el('option'); option.value = zone;
+    option.label = zone === 'Asia/Kolkata' ? 'India · Asia/Kolkata · UTC+05:30' : zone.replaceAll('_',' ');
+    return option;
+  });
+  $('#timezone-options').replaceChildren(...options);
+}
+function paintProfile(account, rewardSummary) {
   const summary = $('#profile-summary'); summary.replaceChildren();
   const avatar = el('span', account.username.slice(0, 1).toUpperCase(), 'avatar'); avatar.setAttribute('aria-hidden', 'true');
   const identity = el('div', undefined, 'profile-identity');
   identity.append(el('h2', account.username), el('p', account.auth_mode === 'single' ? 'Local learning account' : 'Your learning account'));
   const metrics = el('div', undefined, 'profile-metrics');
-  for (const [value, label] of [[state.sessions.xp, 'Scored XP'], [state.sessions.verified_awards, 'Assessed track tasks'], [state.overview?.current_streak || 0, 'Day streak']]) {
+  for (const [value, label] of [[state.sessions?.xp || 0, 'Scored XP'], [state.sessions?.verified_awards || 0, 'Assessed track tasks'], [state.overview?.current_streak || 0, 'Day streak']]) {
     const metric = el('div', undefined, 'profile-metric'); metric.append(el('strong', value.toLocaleString()), el('span', label)); metrics.append(metric);
   }
   summary.append(avatar, identity, metrics);
-  $('#profile > .rewards-overview')?.remove();
-  const wallet = window.AscendRewards?.overview(rewardSummary); if (wallet) summary.after(wallet);
-  $('#account-info').textContent = `${account.username} · ${location.origin}`;
-  $('#account-timezone').value = account.timezone;
-  if (!$('#timezone-options').children.length) {
-    const zones = new Set(['UTC', 'Asia/Kolkata', 'Europe/London', 'America/New_York', account.timezone, ...(Intl.supportedValuesOf?.('timeZone') || [])]);
-    for (const zone of [...zones].sort()) {
-      const option = el('option'); option.value = zone;
-      try {
-        const offset = new Intl.DateTimeFormat('en', {timeZone: zone, timeZoneName: 'shortOffset'}).formatToParts().find(part => part.type === 'timeZoneName').value.replace('GMT', 'UTC');
-        option.label = `${zone === 'Asia/Kolkata' ? 'India · ' : ''}${zone.replaceAll('_', ' ')} · ${offset}`;
-      } catch { option.label = zone; }
-      $('#timezone-options').append(option);
-    }
+  const existing = $('#profile-progress');
+  if (rewardSummary) {
+    const wallet = window.AscendRewards?.overview(rewardSummary);
+    if (wallet) { wallet.id = 'profile-progress'; wallet.tabIndex = -1; if (existing) existing.replaceWith(wallet); else $('#profile').append(wallet); }
+  } else if (!existing) {
+    const placeholder = el('section',undefined,'rewards-overview'); placeholder.id = 'profile-progress'; placeholder.tabIndex = -1;
+    placeholder.append(el('h2','Your progress'),el('p','Your recorded rewards will appear here.','muted'));
+    $('#profile').append(placeholder);
   }
-  $('#nudge-time').value = account.settings.nudge_time || '21:30';
-  $('#nudge-channel').value = account.settings.nudge_channel || 'ntfy';
-  $('#ntfy-topic').value = account.settings.ntfy_topic || '';
-  $('#nudge-enabled').checked = account.settings.nudge_enabled || false;
-  $('#logout').hidden = account.auth_mode === 'single';
-  $('#public-streak').checked = account.settings.public_streak || false;
+  $('#account-info').textContent = `${account.username} · ${location.origin}`;
+  syncProfileField('#account-timezone',account.timezone);
+  if (!$('#timezone-options').children.length) populateProfileTimezones();
+  syncProfileField('#nudge-time',account.settings.nudge_time || '21:30');
+  syncProfileField('#nudge-channel',account.settings.nudge_channel || 'ntfy');
+  syncProfileField('#ntfy-topic',account.settings.ntfy_topic || '');
+  syncProfileField('#nudge-enabled',account.settings.nudge_enabled || false,true);
+  syncProfileField('#public-streak',account.settings.public_streak || false,true);
   $('#public-link').textContent = account.settings.public_streak ? `${location.origin}/api/public/${encodeURIComponent(account.username)}/badge.svg` : 'Your streak is private. Sharing is optional.';
-  await window.AscendAccounts?.mount?.($('#account-security'), {
-    account, api,
-    replaceToken: token => { window.AscendSession.set(token); state.token = token; },
-    signOut: finishSignOut
-  });
+  $('#profile').dataset.ready = 'true'; delete $('#profile').dataset.loading;
+  if (state.tab === 'profile') {
+    window.AscendBoot?.finish();
+    window.AscendMotion?.enter?.($('#profile'),'profile');
+  }
 }
+let profileRequestVersion = 0;
+async function renderProfile() {
+  const version = ++profileRequestVersion, route = navigationVersion, token = state.token;
+  const current = () => version === profileRequestVersion && route === navigationVersion && state.tab === 'profile' && token === state.token;
+  const status = $('#profile-status'); status.hidden = false; status.textContent = 'Updating your account…'; status.setAttribute('role','status');
+  if (state.account) paintProfile(state.account,state.profileRewards);
+  try {
+    const [account,rewards] = await Promise.all([api('account'),api('rewards'),refreshSessions()]);
+    if (!current()) return;
+    state.account = account; state.profileRewards = rewards; updateAccountChrome(); paintProfile(account,rewards);
+    status.textContent = '';
+    await window.AscendAccounts?.mount?.($('#account-security'), {
+      account,api,isCurrent:current,
+      replaceToken:newToken => { window.AscendSession.set(newToken); state.token = newToken; },
+      signOut:finishSignOut
+    });
+  } catch (error) {
+    if (!current()) return;
+    status.setAttribute('role','alert'); status.replaceChildren(document.createTextNode(error.message));
+    status.append(button('Retry account refresh',renderProfile,'text-button'));
+  } finally {
+    if (version === profileRequestVersion && route === navigationVersion && state.tab === 'profile' && status.getAttribute('role') === 'status') status.textContent = '';
+  }
+}
+$('#account-timezone').addEventListener('focus',() => populateProfileTimezones(true),{once:true});
+document.querySelectorAll('[data-profile-section]').forEach(control => control.addEventListener('click',() => {
+  const section = document.getElementById(control.dataset.profileSection);
+  if (!section || section.hidden) return;
+  section.scrollIntoView({block:'start',behavior:'instant'}); section.focus({preventScroll:true});
+}));
 document.querySelectorAll("[data-icon]").forEach(node => node.append(icon(node.dataset.icon)));
 window.addEventListener('hashchange', () => {
   const {tab, topic} = currentRoute();
@@ -936,11 +990,22 @@ bindAction('#save-timezone', async () => { await command(['config', 'timezone', 
 function setTheme(theme) { window.AscendTheme.set(theme); }
 $("#theme").value = localStorage.getItem("ascend-theme") || "system"; setTheme($("#theme").value);
 $("#theme").addEventListener("change", event => setTheme(event.target.value));
-function finishSignOut() { window.AscendSession.clear(); state.token = null; location.assign(window.AscendSession.signInUrl('signed-out','/app#today')); }
-$("#logout").addEventListener("click", () => runAction($('#logout'), async () => {
-  try { await flushChallengeNotebook(); await savePlaygroundDraft(true); } catch { /* Existing account-keyed browser drafts retain unsynced work. */ }
-  await api('logout', {}); finishSignOut();
-}));
+function finishSignOut() {
+  const local = state.account?.auth_mode === 'single';
+  window.AscendSession.clear(); state.token = null;
+  location.assign(local ? '/welcome' : window.AscendSession.signInUrl('signed-out','/app#today'));
+}
+let workspaceExitPending = false;
+function exitWorkspace(control) {
+  if (workspaceExitPending) return;
+  workspaceExitPending = true;
+  return runAction(control,async () => {
+    try { await flushChallengeNotebook(); await savePlaygroundDraft(true); } catch { /* Account-keyed browser drafts retain unsynced work. */ }
+    if (state.account?.auth_mode === 'single' || (!state.account && !state.token)) { finishSignOut(); return; }
+    await api('logout',{}); finishSignOut();
+  }).finally(() => { workspaceExitPending = false; });
+}
+for (const control of [$('#logout'),$('#header-logout')]) control.addEventListener('click',() => exitWorkspace(control));
 $("#public-streak").addEventListener("change", async event => { try { await command(["config", "public-streak", String(event.target.checked)]); await renderProfile(); } catch (error) { notify(error.message, 'error'); } });
 $("#enable-push").addEventListener("click", async () => {
   try {

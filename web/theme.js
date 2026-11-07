@@ -41,6 +41,10 @@ try {
   const system = matchMedia('(prefers-color-scheme: dark)');
   const sync = () => {
     root.dataset.workspaceTheme = root.dataset.theme === 'dark' || (!root.dataset.theme && system.matches) ? 'dark' : 'light';
+    const color = document.querySelector('meta[name="theme-color"]');
+    if (color) color.content = root.dataset.workspaceTheme === 'dark' ? '#101720' : '#eee8d9';
+    const preference = document.getElementById('theme');
+    if (preference) preference.value = root.dataset.theme || 'system';
     document.querySelectorAll('[data-theme-toggle]').forEach(control => {
       const dark = root.dataset.workspaceTheme === 'dark';
       control.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');

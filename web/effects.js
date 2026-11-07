@@ -132,6 +132,10 @@ window.AscendMotion = (() => {
     lastPage = key;
     cancelEntrances();
     if (!enabled()) return;
+    if (screen.id === 'profile') {
+      animate(screen,[{transform:'translateY(4px)'},{transform:'none'}],150);
+      return;
+    }
     if (screen.id === 'today') {
       const landscape = document.querySelector('.ws-backdrop');
       animate(landscape, [{opacity: 0, transform: 'translateY(18px)'}, {opacity: 1, transform: 'none'}], 1100);
@@ -159,10 +163,10 @@ window.AscendMotion = (() => {
       ], 600, index * 45));
     }
   }
-  async function leave(screen) {
+  async function leave(screen, {duration = 100} = {}) {
     if (!enabled() || !screen?.animate) return;
     cancelEntrances();
-    const animation = screen.animate([{opacity: 1}, {opacity: 0, transform: 'translateY(-6px)'}], {duration: 100, easing: 'ease-in'});
+    const animation = screen.animate([{opacity: 1}, {opacity: 0, transform: 'translateY(-6px)'}], {duration, easing: 'ease-in'});
     running.add(animation);
     try { await animation.finished; } catch { /* Interrupted navigation. */ }
     running.delete(animation);

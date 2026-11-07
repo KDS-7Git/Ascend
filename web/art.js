@@ -42,18 +42,6 @@ window.AscendArt = (() => {
     <path d="M-150 640c200-90 140 160 330 100s330 100 425 240"/><path d="M-150 685c190-90 145 150 330 100s300 80 370 220"/><path d="M-150 730c185-80 145 140 330 90s265 60 320 190"/></g>
     <g class="ws-terrain-markers"><circle cx="1430" cy="94" r="68"/><path d="m1350 804 80-135 90 152H1320l30-17Z"/><path d="m1343 891 34-60 40 70h-83l9-10Z"/></g>
   </svg>
-  <div class="ws-night-atmosphere" aria-hidden="true">
-    <svg class="ws-night-ribbons" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
-      <defs>
-        <linearGradient id="ws-night-flow" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#40d7bd" stop-opacity=".02"/><stop offset=".48" stop-color="#6986ff" stop-opacity=".25"/><stop offset=".8" stop-color="#d68fff" stop-opacity=".35"/><stop offset="1" stop-color="#fff4d4" stop-opacity=".04"/></linearGradient>
-        <linearGradient id="ws-night-edge" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#c3b0ff" stop-opacity=".02"/><stop offset=".55" stop-color="#d5bbff" stop-opacity=".42"/><stop offset="1" stop-color="#6ae6d5" stop-opacity=".07"/></linearGradient>
-      </defs>
-      <path d="M-170 1070C100 1090 680 510 1090 350S1570 460 1770-90" fill="none" stroke="url(#ws-night-flow)" stroke-width="190"/>
-      <path d="M-170 975C100 995 680 415 1090 255S1570 365 1770-185" fill="none" stroke="url(#ws-night-edge)" stroke-width="2"/>
-      <path d="M530-110C850 155 1260-20 1460 195S1310 670 1750 780" fill="none" stroke="url(#ws-night-flow)" stroke-width="78"/>
-      <path d="M530-149C850 116 1260-59 1460 156S1310 631 1750 741" fill="none" stroke="url(#ws-night-edge)" stroke-width="1.5"/>
-    </svg>
-  </div>
 `;
     document.body.prepend(backdrop);
   }

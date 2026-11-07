@@ -1,0 +1,101 @@
+/* Account navigation and settings share the same geometry in both themes. */
+:root[data-view='profile'] .workspace-layout { grid-template-columns:minmax(0,1fr); }
+:root[data-view='profile'] .context-rail { display:none; }
+#profile { max-width:1100px; animation:none; }
+.profile-page-header { align-items:center; margin-bottom:26px; }
+.profile-page-header h1 { font-size:clamp(2rem,3vw,2.6rem); }
+.profile-page-header>.workspace-exit { margin-top:0; }
+.workspace-exit { min-height:40px; gap:7px; font-size:.76rem; padding:9px 12px; white-space:nowrap; }
+.workspace-exit .icon { width:17px; height:17px; }
+.workspace-exit:not(:disabled):is(:hover,:active) { transform:none; }
+#header-logout { border-width:1.5px; box-shadow:none; }
+.profile-status { min-height:22px; margin:-10px 0 16px; font-size:.74rem; color:var(--muted); }
+.profile-status[role='alert'] { color:var(--error); }
+.profile-status button { min-height:30px; padding-block:4px; font-size:.7rem; margin-left:8px; }
+#profile-summary { padding:24px; background:var(--surface); border:2px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow-sm); gap:22px; margin-bottom:18px; }
+#profile-summary .avatar { width:58px; height:58px; font-size:1.45rem; background:var(--mint); }
+#profile-summary .profile-identity h2 { font-size:1.3rem; }
+#profile-summary .profile-metrics { gap:27px; }
+#profile-summary .profile-metric strong { font-size:1.5rem; font-weight:750; }
+#profile-summary .profile-metric span { font-size:.72rem; }
+.profile-sections { display:flex; align-items:center; gap:6px; margin-bottom:26px; padding-bottom:14px; border-bottom:1px solid var(--divider); overflow:auto; scrollbar-width:thin; }
+.profile-sections button { flex:none; min-height:39px; padding:9px 15px; border:1px solid transparent; background:transparent; color:var(--muted); font-size:.77rem; box-shadow:none!important; transform:none!important; font-weight:650; }
+.profile-sections button:hover { background:var(--hover); color:var(--text); border-color:var(--divider); }
+.profile-settings { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; align-items:start; }
+.profile-settings>.card { margin:0; padding:25px; }
+.profile-settings>.card>h2,.profile-settings>.card>.section-heading>h2 { font-size:1.12rem; margin-bottom:21px; }
+.profile-settings :is(label,.field-help) { font-size:.77rem; }
+.profile-settings .field-help { line-height:1.7; }
+.profile-settings .input-row { gap:9px; }
+.profile-settings .input-row>button { flex:none; font-size:.73rem; }
+.profile-settings :is(input:not([type='checkbox']),select,textarea) { min-height:43px; font-size:.82rem; }
+.profile-settings .settings>.input-row { flex-wrap:wrap; }
+.profile-settings .settings>.input-row>input { flex:1 1 210px; min-width:0; }
+#profile-privacy,#account-security { grid-column:1/-1; }
+#profile-privacy .check { width:fit-content; }
+#profile-privacy>p { font-size:.77rem; }
+.profile-settings>.card:focus,#profile-progress:focus { scroll-margin-top:calc(var(--header) + 24px); }
+.profile-settings>.card,#profile-progress { scroll-margin-top:calc(var(--header) + 24px); }
+.account-security-layout { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:30px; margin-top:24px; }
+.account-security-layout h3 { font-size:.93rem; margin-bottom:17px; }
+.account-password { min-width:0; }
+.account-password>button { font-size:.76rem; }
+.account-sessions-panel { border-left:1px solid var(--divider); padding-left:29px; min-width:0; }
+.account-sessions-panel>.section-heading { margin-bottom:0; }
+.account-sessions-panel .section-heading button { min-height:30px; font-size:.7rem; padding:4px 6px; }
+.account-sessions-panel>button { font-size:.73rem; }
+.account-session { padding:18px 0; margin-top:15px; border-top:1px solid var(--divider); }
+.account-session>h4 { font-size:.83rem; margin:0 0 8px; overflow-wrap:anywhere; }
+.account-session>.field-help { font-size:.7rem; margin-bottom:13px; }
+.account-session>button { font-size:.7rem; min-height:39px; }
+.account-security-status:empty { display:none; }
+.account-security-status { font-size:.77rem; }
+.account-security-status.error { color:var(--error); }
+.account-recovery { margin-top:26px; padding-top:23px; }
+.account-recovery>input { max-width:500px; }
+.account-recovery>button { margin-top:13px; font-size:.76rem; }
+.account-recovery-result { max-width:750px; }
+#profile-progress { margin:30px 0 0; }
+#profile-progress .reward-balance { box-shadow:var(--shadow-sm); }
+:root[data-workspace-theme='dark'] #profile-summary { box-shadow:var(--quiet-shadow); }
+@media (max-width:1050px) {
+  .profile-settings { gap:20px; }
+  .profile-settings>.card { padding:22px; }
+  #profile-summary { gap:18px; }
+  #profile-summary .profile-metrics { gap:20px; }
+  .account-security-layout { gap:22px; }
+  .account-sessions-panel { padding-left:21px; }
+}
+@media (max-width:850px) {
+  .profile-settings { grid-template-columns:1fr; }
+  .account-security-layout { grid-template-columns:1fr; }
+  .account-sessions-panel { padding-left:0; padding-top:23px; border-left:0; border-top:1px solid var(--divider); }
+  #profile-summary .profile-metrics { width:100%; padding-top:17px; border-top:1px solid var(--divider); justify-content:space-between; }
+}
+@media (max-width:650px) {
+  #header-logout { min-width:40px; min-height:40px; padding:7px; }
+  #header-logout .workspace-exit-label { display:none; }
+  .topbar-actions { gap:8px; }
+  .profile-page-header { gap:12px; }
+  .profile-page-header h1 { font-size:1.9rem; }
+  .profile-page-header .page-subtitle { font-size:.8rem; }
+  .profile-page-header>.workspace-exit { font-size:.7rem; padding:9px; }
+  .profile-page-header>.workspace-exit .icon { width:15px; height:15px; }
+  #profile-summary { padding:19px; gap:16px; }
+  #profile-summary .avatar { width:48px; height:48px; font-size:1.2rem; }
+  #profile-summary .profile-metric strong { font-size:1.28rem; }
+  #profile-summary .profile-metric span { font-size:.65rem; }
+  .profile-sections { gap:3px; margin-bottom:21px; padding-bottom:11px; }
+  .profile-sections button { padding:8px 12px; font-size:.72rem; }
+  .profile-settings>.card { padding:20px; }
+}
+@media (max-width:360px) {
+  .topbar-actions { gap:5px; }
+  #header-logout { min-width:36px; padding:6px; }
+  .profile-page-header { align-items:flex-start; }
+  .profile-page-header h1 { font-size:1.65rem; }
+  .profile-page-header>.workspace-exit { font-size:.65rem; padding:8px; gap:5px; }
+  .profile-page-header>.workspace-exit .icon { display:none; }
+  #profile-summary .profile-metrics { gap:10px; }
+  #profile-summary .profile-metric span { font-size:.6rem; }
+}

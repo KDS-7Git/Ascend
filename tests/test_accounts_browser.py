@@ -96,7 +96,15 @@ def test_default_dashboard_stays_logged_in_without_account_controls(account_serv
         )
         expect(page.locator("#account-security")).to_be_hidden()
         expect(page.locator("#login-dialog")).to_be_hidden()
-        expect(page.locator("#logout")).to_be_hidden()
+        expect(page.locator("#logout")).to_be_visible()
+        expect(page.locator("#logout")).to_have_text("Exit workspace")
+        page.locator("#logout").click()
+        expect(page).to_have_url(account_server + "/welcome")
+        expect(page.locator("#home-heading")).to_be_visible()
+        page.goto(account_server + "/app#profile")
+        expect(page.locator("#profile-summary")).to_contain_text(
+            "Local learning account"
+        )
         browser.close()
 
 

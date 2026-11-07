@@ -6,11 +6,27 @@
     if (className) node.className = className;
     return node;
   };
-  async function mount(host, {account, api, replaceToken, signOut}) {
+  const mounted = new WeakMap();
+  async function mount(host, options) {
+    const {account,api,replaceToken,signOut,isCurrent} = options;
     if (!host) return;
-    host.hidden = true; host.replaceChildren();
-    if (!account.account_management || account.auth_mode !== 'multi') return;
-    const data = await api('account/security');
+    if (!account.account_management || account.auth_mode !== 'multi') {
+      host.hidden = true; host.replaceChildren(); mounted.delete(host); return;
+    }
+    host.hidden = false;
+    const previous = mounted.get(host);
+    if (previous?.account === account.id) { await previous.refresh(); return; }
+    host.replaceChildren(element('h2','Account security'),element('p','Loading your security controls…','field-help'));
+    let data;
+    try { data = await api('account/security'); }
+    catch (error) {
+      if (isCurrent && !isCurrent()) return;
+      const message = element('p',error.message,'account-security-status error'); message.setAttribute('role','alert');
+      const retry = element('button','Retry security controls','secondary'); retry.type = 'button'; retry.addEventListener('click',() => mount(host,options));
+      host.replaceChildren(element('h2','Account security'),message,retry); return;
+    }
+    if (isCurrent && !isCurrent()) return;
+    host.replaceChildren();
     host.append(element('h2', 'Account security'));
     host.append(element('p', 'Your learning history stays with this account. Manage your password, recovery code, and signed-in sessions here.', 'field-help'));
     const feedback = element('p', '', 'account-security-status'); feedback.setAttribute('role', 'status');
@@ -24,7 +40,7 @@
       try { await action(); } catch (error) { report(error.message, true); }
       finally { control.disabled = false; control.removeAttribute('aria-busy'); }
     };
-    const form = element('form');
+    const form = element('form',undefined,'account-password');
     form.append(element('h3', 'Change password'));
     const passwordField = (id, label, autocomplete) => {
       const caption = element('label', label); caption.htmlFor = id;
@@ -39,8 +55,8 @@
     form.append(element('p', 'Use at least 12 characters. Changing your password signs out every other browser and CLI session.', 'field-help'));
     const change = element('button', 'Change password'); change.type = 'submit'; form.append(change);
     const sessionList = element('div', undefined, 'account-sessions');
-    const renderSessions = async () => {
-      const snapshot = await api('account/security');
+    const renderSessions = async (snapshot = null) => {
+      snapshot ||= await api('account/security');
       sessionList.replaceChildren();
       for (const session of snapshot.sessions) {
         const row = element('article', undefined, 'account-session');
@@ -65,14 +81,18 @@
         await renderSessions(); report('Password changed. Other sessions are signed out; this session stays open.');
       });
     });
-    host.append(form, feedback, element('h3', 'Signed-in sessions'));
-    host.append(element('p', `Sessions expire ${data.session_lifetime_days} days after sign-in. You can keep up to ${data.max_sessions} sessions. Session labels describe the client; they do not establish a device identity.`, 'field-help'));
+    const layout = element('div',undefined,'account-security-layout'), sessionsPanel = element('section',undefined,'account-sessions-panel');
+    const sessionHeading = element('div',undefined,'section-heading'); sessionHeading.append(element('h3','Signed-in sessions'));
+    const refresh = element('button','Refresh','text-button'); refresh.type = 'button'; refresh.setAttribute('aria-label','Refresh signed-in sessions');
+    refresh.addEventListener('click',() => operation(refresh,async () => { await renderSessions(); report('Signed-in sessions updated.'); }));
+    sessionHeading.append(refresh); sessionsPanel.append(sessionHeading);
+    sessionsPanel.append(element('p', `Sessions expire ${data.session_lifetime_days} days after sign-in. You can keep up to ${data.max_sessions} sessions. Session labels describe the client; they do not establish a device identity.`, 'field-help'));
     const revokeOthers = element('button', 'Sign out other sessions', 'secondary'); revokeOthers.type = 'button';
     revokeOthers.addEventListener('click', () => operation(revokeOthers, async () => {
       const result = await api('account/sessions/revoke-others', {});
       await renderSessions(); report(result.revoked ? `${result.revoked} other session${result.revoked === 1 ? '' : 's'} signed out.` : 'No other sessions are signed in.');
     }));
-    host.append(revokeOthers, sessionList);
+    sessionsPanel.append(revokeOthers,sessionList); layout.append(form,sessionsPanel); host.append(feedback,layout);
     const recovery = element('form', undefined, 'account-recovery');
     recovery.append(element('h3', 'Recovery code'), element('p', data.recovery_code_configured ? 'Your account has a recovery code. Replacing it makes the previous code unusable. Keep the replacement somewhere private.' : 'Create a private, one-use code to reset your password if you lose access. You can also ask your workspace administrator for help.', 'field-help'));
     const recoveryLabel = element('label', 'Current password for recovery code'); recoveryLabel.htmlFor = 'account-recovery-password';
@@ -100,7 +120,7 @@
       });
     });
     host.append(recovery);
-    await renderSessions(); host.hidden = false;
+    await renderSessions(data); mounted.set(host,{account:account.id,refresh:renderSessions}); host.hidden = false;
   }
   window.AscendAccounts = {mount};
 })();

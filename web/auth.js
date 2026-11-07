@@ -20,6 +20,7 @@
     mode = ['signin','signup','recover','help'].includes(requested) ? requested : 'signin';
     if (mode === 'signup' && !options.registration) { mode = 'signin'; report('Accounts for this workspace are provided by its administrator. Ask them for your username and password.',true); }
     $('#auth-forms').hidden = false; $('#auth-session').hidden = true;
+    document.querySelectorAll('[data-sign-out]').forEach(control => { control.hidden = true; });
     const recover = mode === 'recover' || mode === 'help', signup = mode === 'signup';
     const supported = !recover || (mode !== 'help' && options.recovery);
     $('#auth-form').hidden = !supported; $('#auth-operator-help').hidden = supported;
@@ -96,7 +97,9 @@
           if (token !== session.get()) return;
           title('Ready for another step?','Your learning workspace is a click away.');
           $('#auth-session-name').textContent = `You’re signed in as ${account.username}.`;
-          $('#auth-session-continue').href = next; $('#auth-session').hidden = false; return;
+          $('#auth-session-continue').href = next; $('#auth-session').hidden = false;
+          document.querySelectorAll('[data-sign-out]').forEach(control => { control.hidden = false; });
+          return;
         } catch (error) { if (error.status === 401) session.clear(); else throw error; }
       }
       setMode(desired,false);

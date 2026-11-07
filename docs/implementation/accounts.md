@@ -25,6 +25,10 @@ Signup returns a private recovery code to save or download before continuing. Ex
 
 Sign-in uses tab storage by default. “Remember me” also keeps the token in local storage; password rotation updates it and sign-out clears both stores. A remembered token changing in another tab reloads the whole workspace to rehydrate identity. Return links are restricted to the same-origin `/app` route. The root page, track discovery and privacy pages stay public; the public catalog reads bundled metadata and never private installed packs.
 
+Log out is available in the workspace top bar and Profile, and on public pages with an active session. It revokes the current server token and clears both browser credential stores. The implicit local account has an Exit workspace action that returns to the public home page; it remains a local workspace without a sign-in requirement.
+
+Profile renders the available account information immediately and refreshes account, rewards, and security data without hiding the settings. A delayed response cannot pull a newer navigation back to Profile. Unsaved preferences and mounted password fields survive a refresh or a visit to another workspace tab. The same controls, layout, keyboard navigation, and recovery behavior are available in light and dark themes.
+
 Administrator recovery remains a real action against the chosen installation, using a password prompt that does not echo or place the password in shell history:
 
 ```sh

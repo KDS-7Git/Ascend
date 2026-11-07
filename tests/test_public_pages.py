@@ -55,6 +55,8 @@ def test_public_pages_and_shared_assets_are_available_without_auth(tmp_path):
             "site.css",
             "auth.js",
             "art.js",
+            "product.css",
+            "profile.css",
         ):
             assert client.get("/" + name).status_code == 200
         assert client.get("/api/account").status_code == 401

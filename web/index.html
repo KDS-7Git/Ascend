@@ -9,19 +9,20 @@
   <title>Ascend</title>
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" href="/icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/boot.css?v=20261106-public1">
-  <script src="/theme.js?v=20261106-public1"></script>
-  <script src="/session.js?v=20261106-public1"></script>
-  <link rel="stylesheet" href="/style.css?v=20261106-public1">
-  <link rel="stylesheet" href="/theme.css?v=20261106-public1">
+  <link rel="stylesheet" href="/boot.css?v=20261107-ux1">
+  <script src="/theme.js?v=20261107-ux1"></script>
+  <script src="/session.js?v=20261107-ux1"></script>
+  <link rel="stylesheet" href="/style.css?v=20261107-ux1">
+  <link rel="stylesheet" href="/theme.css?v=20261107-ux1">
   <link rel="stylesheet" href="/effects.css?v=20261104-selection-slide1">
   <link rel="stylesheet" href="/feedback.css?v=20261103-ui3">
   <link rel="stylesheet" href="/rewards.css?v=20261103-hover1">
   <link rel="stylesheet" href="/context-rail.css?v=20261103-ui3">
-  <link rel="stylesheet" href="/workspace-ui.css?v=20261106-public1">
-  <script src="/art.js?v=20261106-public1" defer></script>
+  <link rel="stylesheet" href="/workspace-ui.css?v=20261107-ux1">
+  <link rel="stylesheet" href="/profile.css?v=20261107-ux1">
+  <script src="/art.js?v=20261107-ux1" defer></script>
   <script src="/feedback.js?v=20261103-ui3" defer></script>
-  <script src="/effects.js?v=20261104-grid2" defer></script>
+  <script src="/effects.js?v=20261107-ux1" defer></script>
   <script src="/rewards.js?v=20261103-hover1" defer></script>
   <script src="/cursor-preview.js?v=20261103-ui3" defer></script>
   <script src="/context-rail.js?v=20261104-selection-slide1" defer></script>
@@ -29,9 +30,9 @@
   <script src="/playground.js?v=20261103-hover1" defer></script>
   <script src="/local-labs.js?v=20261103-hover1" defer></script>
   <script src="/challenge-work.js?v=20261103-hover1" defer></script>
-  <script src="/accounts.js?v=20261106-public1" defer></script>
-  <script src="/workspace-ui.js?v=20261106-public1" defer></script>
-  <script src="/app.js?v=20261106-public1" defer></script>
+  <script src="/accounts.js?v=20261107-ux1" defer></script>
+  <script src="/workspace-ui.js?v=20261107-ux1" defer></script>
+  <script src="/app.js?v=20261107-ux1" defer></script>
 </head>
 <body>
   <div id="app-loader" class="app-loader" role="status" aria-live="polite">
@@ -73,6 +74,7 @@
         <button id="streak-link" class="streak-chip" aria-label="View streak stats"><span data-icon="flame" aria-hidden="true"></span><span id="streak">—</span><span class="streak-label">day streak</span></button>
         <span class="topbar-divider" aria-hidden="true"></span>
         <button id="profile-link" class="profile-button" aria-label="Open profile" title="Your profile"><span id="avatar-initial" class="avatar" aria-hidden="true">A</span><span class="profile-link-label">Profile</span></button>
+        <button id="header-logout" type="button" class="workspace-exit secondary" aria-label="Exit workspace" title="Exit workspace"><span data-icon="logout" aria-hidden="true"></span><span class="workspace-exit-label">Exit workspace</span></button>
       </div>
     </div>
   </header>
@@ -154,13 +156,15 @@
       <article id="docs-article" class="docs-article" tabindex="-1" aria-labelledby="guide-title"></article>
     </section>
     <section id="profile" class="screen" aria-labelledby="profile-heading" hidden>
-      <header class="page-header"><div><p class="eyebrow">MAKE YOURSELF AT HOME</p><h1 id="profile-heading">Your profile.</h1></div></header>
+      <header class="page-header profile-page-header"><div><p class="eyebrow">YOUR ACCOUNT</p><h1 id="profile-heading">Profile &amp; settings</h1><p class="page-subtitle">Your progress, preferences, and account.</p></div><button id="logout" type="button" class="secondary workspace-exit"><span data-icon="logout" aria-hidden="true"></span><span class="workspace-exit-label">Log out</span></button></header>
+      <p id="profile-status" class="profile-status" role="status" hidden></p>
       <div id="profile-summary" class="profile-summary"></div>
+      <nav class="profile-sections" aria-label="Profile sections"><button type="button" data-profile-section="profile-preferences">Preferences</button><button type="button" data-profile-section="profile-reminders">Reminders</button><button type="button" data-profile-section="profile-privacy">Privacy</button><button type="button" data-profile-section="account-security" id="profile-security-link" hidden>Security</button><button type="button" data-profile-section="profile-progress">Progress</button></nav>
       <div class="profile-settings">
-        <section class="card settings"><h2>Preferences</h2><label for="account-timezone">Timezone</label><div class="input-row"><input id="account-timezone" list="timezone-options" placeholder="Search city or timezone" aria-describedby="timezone-help" autocomplete="off"><datalist id="timezone-options"></datalist><button id="save-timezone" class="secondary">Save timezone</button></div><p id="timezone-help" class="field-help">Choose a city timezone, e.g. Asia/Kolkata (India, UTC+05:30). Your learning day resets at 4 AM.</p><label for="theme">Color theme</label><select id="theme"><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select><div class="motion-preference"><label for="motion-preference">Motion effects</label><select id="motion-preference"><option value="calm">On</option><option value="off">Off</option></select><p class="field-help">Grid highlights, animated illustrations and page transitions. Follows your device’s reduced motion setting.</p></div></section>
-        <section class="card settings"><div class="section-heading"><h2>Reminders</h2><a href="#docs/reminders" class="subtle-link">Setup guide</a></div><form id="reminder-form"><div class="form-columns"><div><label for="nudge-time">First reminder</label><input id="nudge-time" type="time" value="21:30" required></div><div><label for="nudge-channel">Channel</label><select id="nudge-channel"><option value="ntfy">ntfy</option><option value="desktop">Desktop on server</option><option value="telegram">Telegram</option><option value="webpush">This browser (Web Push)</option></select></div></div><label for="ntfy-topic">Private ntfy topic</label><input id="ntfy-topic" autocomplete="off" placeholder="Your hard-to-guess topic"><label class="check"><input id="nudge-enabled" type="checkbox">Enable reminders</label><div class="input-row"><button>Save reminders</button><button id="test-nudge" type="button" class="secondary">Send test</button></div></form><details class="quiet-details"><summary>Browser notifications</summary><div class="input-row"><button id="enable-push" class="secondary">Enable browser notifications</button><button id="disable-push" class="text-button">Disable on this browser</button></div><p id="push-status" class="muted" role="status"></p></details></section>
-        <section class="card settings"><h2>Privacy &amp; account</h2><label class="check"><input id="public-streak" type="checkbox">Share my streak publicly</label><p id="public-link" class="muted small"></p><p id="account-info" class="muted small"></p><button id="logout" class="secondary">Sign out</button></section>
-        <section id="account-security" class="card settings" hidden></section>
+        <section id="profile-preferences" class="card settings" tabindex="-1"><h2>Preferences</h2><label for="account-timezone">Timezone</label><div class="input-row"><input id="account-timezone" list="timezone-options" placeholder="Search city or timezone" aria-describedby="timezone-help" autocomplete="off"><datalist id="timezone-options"></datalist><button id="save-timezone" class="secondary">Save timezone</button></div><p id="timezone-help" class="field-help">Choose a city timezone, e.g. Asia/Kolkata (India, UTC+05:30). Your learning day resets at 4 AM.</p><label for="theme">Color theme</label><select id="theme"><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select><div class="motion-preference"><label for="motion-preference">Motion effects</label><select id="motion-preference"><option value="calm">On</option><option value="off">Off</option></select><p class="field-help">Grid highlights, animated illustrations and page transitions. Follows your device’s reduced motion setting.</p></div></section>
+        <section id="profile-reminders" class="card settings" tabindex="-1"><div class="section-heading"><h2>Reminders</h2><a href="#docs/reminders" class="subtle-link">Setup guide</a></div><form id="reminder-form"><div class="form-columns"><div><label for="nudge-time">First reminder</label><input id="nudge-time" type="time" value="21:30" required></div><div><label for="nudge-channel">Channel</label><select id="nudge-channel"><option value="ntfy">ntfy</option><option value="desktop">Desktop on server</option><option value="telegram">Telegram</option><option value="webpush">This browser (Web Push)</option></select></div></div><label for="ntfy-topic">Private ntfy topic</label><input id="ntfy-topic" autocomplete="off" placeholder="Your hard-to-guess topic"><label class="check"><input id="nudge-enabled" type="checkbox">Enable reminders</label><div class="input-row"><button>Save reminders</button><button id="test-nudge" type="button" class="secondary">Send test</button></div></form><details class="quiet-details"><summary>Browser notifications</summary><div class="input-row"><button id="enable-push" class="secondary">Enable browser notifications</button><button id="disable-push" class="text-button">Disable on this browser</button></div><p id="push-status" class="muted" role="status"></p></details></section>
+        <section id="profile-privacy" class="card settings" tabindex="-1"><h2>Privacy &amp; account</h2><label class="check"><input id="public-streak" type="checkbox">Share my streak publicly</label><p id="public-link" class="muted small"></p><p id="account-info" class="muted small"></p></section>
+        <section id="account-security" class="card settings" tabindex="-1" hidden></section>
       </div>
     </section>
   </main>

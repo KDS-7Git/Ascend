@@ -1248,7 +1248,7 @@ def test_loading_screen_recovers_from_slow_response_and_missing_script(live_serv
             page.locator("#app-loader").evaluate(
                 "e => getComputedStyle(e).backgroundColor"
             )
-            == "rgb(17, 22, 34)"
+            == "rgb(16, 23, 32)"
         )
         # The overlay has a bounded lifetime even while the request is still pending.
         expect(page.locator("#app-loader")).not_to_be_visible(timeout=6500)

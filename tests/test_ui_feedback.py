@@ -217,11 +217,16 @@ def test_shared_feedback_and_page_geometry(live_server, width):
             ), route
             accessibility(page)
             if width >= 1440:
-                expect(page.locator(".context-rail")).to_be_visible()
-                expect(page.locator(".context-rail h2").first).to_be_visible()
                 primary = page.locator(".workspace-primary").bounding_box()
-                rail = page.locator(".context-rail").bounding_box()
-                assert primary["x"] + primary["width"] < rail["x"], route
+                if route == "profile":
+                    expect(page.locator(".context-rail")).not_to_be_visible()
+                    layout = page.locator(".workspace-layout").bounding_box()
+                    assert abs(primary["width"] - layout["width"]) < 1
+                else:
+                    expect(page.locator(".context-rail")).to_be_visible()
+                    expect(page.locator(".context-rail h2").first).to_be_visible()
+                    rail = page.locator(".context-rail").bounding_box()
+                    assert primary["x"] + primary["width"] < rail["x"], route
                 if width == 1920:
                     capture(page, "layout-" + route.replace("/", "-"))
         page.get_by_label("Timezone", exact=True).fill("Asia/Kolkata")

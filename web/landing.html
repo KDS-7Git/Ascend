@@ -9,14 +9,15 @@
   <title>Ascend · Small steps. Real skills.</title>
   <link rel="icon" href="/icon.svg" type="image/svg+xml">
   <link rel="manifest" href="/manifest.webmanifest">
-  <script src="/site-router.js?v=20261106-public1"></script>
-  <script src="/theme.js?v=20261106-public1"></script>
-  <script src="/session.js?v=20261106-public1"></script>
-  <link rel="stylesheet" href="/style.css?v=20261106-public1">
-  <link rel="stylesheet" href="/theme.css?v=20261106-public1">
-  <link rel="stylesheet" href="/site.css?v=20261106-public1">
-  <script src="/art.js?v=20261106-public1" defer></script>
-  <script src="/site.js?v=20261106-public1" defer></script>
+  <script src="/site-router.js?v=20261107-ux1"></script>
+  <script src="/theme.js?v=20261107-ux1"></script>
+  <script src="/session.js?v=20261107-ux1"></script>
+  <link rel="stylesheet" href="/style.css?v=20261107-ux1">
+  <link rel="stylesheet" href="/theme.css?v=20261107-ux1">
+  <link rel="stylesheet" href="/site.css?v=20261107-ux1">
+  <link rel="stylesheet" href="/product.css?v=20261107-ux1">
+  <script src="/art.js?v=20261107-ux1" defer></script>
+  <script src="/site.js?v=20261107-ux1" defer></script>
 </head>
 <body class="public-site">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -32,7 +33,8 @@
       <div class="site-header-actions">
         <button type="button" class="site-theme-toggle secondary" data-theme-toggle aria-label="Switch to dark theme" aria-pressed="false"><span data-site-icon="theme" aria-hidden="true"></span></button>
         <a class="site-sign-in" href="/auth" data-sign-in>Sign in</a>
-        <a class="site-button site-header-cta" href="/app#today" data-workspace-link>Start learning <span aria-hidden="true">↗</span></a>
+        <button class="site-sign-out secondary" type="button" data-sign-out hidden aria-label="Log out"><span data-site-icon="logout" aria-hidden="true"></span><span>Log out</span></button>
+        <a class="site-button site-header-cta" href="/app#today" data-workspace-link aria-label="Start learning"><span class="site-header-cta-label">Start learning</span><span aria-hidden="true">↗</span></a>
       </div>
     </div>
   </header>
@@ -40,22 +42,31 @@
     <noscript><p class="site-message">Turn on JavaScript to search tracks, sign in, and use your learning workspace.</p></noscript>
     <section class="site-hero site-width" data-pages="home" aria-labelledby="home-heading">
       <div class="site-hero-copy">
-        <p class="site-stamp"><span data-site-icon="spark" aria-hidden="true"></span> SMALL STEPS. REAL SKILLS.</p>
-        <h1 id="home-heading">A little practice.<br>A lot of <span class="site-highlight">possibility.</span></h1>
-        <p class="site-lead">Turn “I want to learn that” into something you can do. Find a path, get your hands on a challenge, and build understanding one step at a time.</p>
+        <p class="site-stamp"><span data-site-icon="terminal" aria-hidden="true"></span> YOUR HANDS-ON LEARNING WORKSPACE</p>
+        <h1 id="home-heading">Learn by doing.<br><span class="site-highlight">Build real skills.</span></h1>
+        <p class="site-lead">Cybersecurity, DevOps, Linux, and projects you can actually build. Follow a learning path, solve practical challenges, and keep the work that shows your progress.</p>
         <div class="site-actions"><a class="site-button" href="/app#today" data-workspace-link>Start learning <span data-site-icon="arrow" aria-hidden="true"></span></a><a class="site-button secondary" href="/tracks">Find your track <span data-site-icon="route" aria-hidden="true"></span></a></div>
         <p class="site-fine-print"><span data-site-icon="check" aria-hidden="true"></span> Free to explore <span aria-hidden="true">·</span> At your own pace <span aria-hidden="true">·</span> Progress you can see</p>
+        <div class="product-library" aria-label="Inside the learning library"><span><strong id="product-track-count">—</strong> learning tracks</span><span><strong id="product-task-count">—</strong> practical tasks</span><span><span data-site-icon="sprout" aria-hidden="true"></span> Open source</span></div>
       </div>
-      <div class="site-preview-wrap">
-        <div class="site-preview-label"><span data-site-icon="sun" aria-hidden="true"></span> A LITTLE LOOK INSIDE</div>
-        <article class="site-preview" aria-labelledby="preview-heading">
-          <div class="site-preview-top"><span class="site-small-label">YOUR NEXT SMALL STEP</span><span class="site-preview-pill"><span data-site-icon="bolt" aria-hidden="true"></span> Hands-on learning</span></div>
-          <h2 id="preview-heading">Make something work.</h2><p class="site-preview-intro">A useful next step. A little more understanding.</p>
-          <div class="site-preview-challenge"><div><p class="site-small-label" id="preview-category">DEVOPS · SERVICE FOUNDATIONS</p><h3 id="preview-task">Trace a real request</h3><p id="preview-description">Follow a request from your browser to a running service. Find out what happens along the way.</p><a class="site-button site-button-small" href="/tracks/devops-service-foundations" id="preview-link">Explore this track <span aria-hidden="true">→</span></a></div><div class="site-companion" data-companion aria-hidden="true"></div></div>
-          <div class="site-preview-bottom"><span>A path that grows with you.</span><div class="site-step-dots" aria-label="Example learning path"><span class="done">✓</span><span class="current">2</span><span>3</span><span>4</span><span data-site-icon="flag" aria-hidden="true"></span></div></div>
-        </article>
-        <div class="site-preview-note"><span data-site-icon="sprout" aria-hidden="true"></span> Every small step counts.</div>
-      </div>
+      <article class="product-preview" aria-label="Explore the Ascend product">
+        <header class="product-preview-header"><span><img src="/icon.svg" alt="" width="23" height="23"><strong>Ascend</strong><span class="product-preview-divider" aria-hidden="true">/</span><span>Your workspace</span></span><span class="product-preview-badge">Product preview</span></header>
+        <div class="product-tabs" role="tablist" aria-label="Explore product features"><button type="button" role="tab" id="preview-learn-tab" aria-controls="preview-learn" aria-selected="true" data-preview="learn"><span data-site-icon="route" aria-hidden="true"></span>Learn</button><button type="button" role="tab" id="preview-practice-tab" aria-controls="preview-practice" aria-selected="false" tabindex="-1" data-preview="practice"><span data-site-icon="terminal" aria-hidden="true"></span>Practice</button><button type="button" role="tab" id="preview-progress-tab" aria-controls="preview-progress" aria-selected="false" tabindex="-1" data-preview="progress"><span data-site-icon="flag" aria-hidden="true"></span>Progress</button></div>
+        <section id="preview-learn" class="product-panel" role="tabpanel" aria-labelledby="preview-learn-tab" tabindex="0">
+          <div class="product-panel-heading"><div><p class="eyebrow">YOUR NEXT CHALLENGE</p><h2 id="preview-heading">A clear next step.</h2></div><span class="product-level-pill">Step 01</span></div>
+          <div class="product-learn-grid"><div class="product-task"><p class="product-task-category" id="preview-category">DEVOPS · SERVICE FOUNDATIONS</p><h3 id="preview-task">Run a service locally</h3><p id="preview-description">Read the task, try it in your environment, and save what you learn along the way.</p><a class="site-button site-button-small" href="/tracks/devops-service-foundations" id="preview-link">Explore this track <span aria-hidden="true">→</span></a></div><aside class="product-notes"><span class="product-notes-label"><span data-site-icon="book" aria-hidden="true"></span>Your notebook</span><p>What I tried</p><span class="product-note-line"></span><span class="product-note-line short"></span><p>What I learned</p><span class="product-note-line"></span><span class="product-note-line short"></span><span class="product-saved"><span data-site-icon="check" aria-hidden="true"></span>Keep your place</span></aside></div>
+          <ol class="product-workflow" aria-label="Challenge workflow"><li><span>1</span>Read the task</li><li><span>2</span>Try it out</li><li><span>3</span>Save your work</li></ol>
+        </section>
+        <section id="preview-practice" class="product-panel" role="tabpanel" aria-labelledby="preview-practice-tab" tabindex="0" hidden>
+          <div class="product-panel-heading"><div><p class="eyebrow">MAKE A LITTLE ROOM FOR PRACTICE</p><h2>Try it. Understand it.</h2></div><span class="product-level-pill">Playground</span></div>
+          <p class="product-panel-intro">Follow a worked example, investigate a challenge, or keep a free practice notebook.</p><div class="product-terminal"><div><span>EXAMPLE · INSPECT RESPONSE HEADERS</span><button class="text-button" type="button" id="preview-copy-command" aria-label="Copy example command"><span data-site-icon="copy" aria-hidden="true"></span>Copy</button></div><pre><code><span class="product-terminal-prompt">$</span> curl -I http://localhost:8080</code></pre><p>Send a request to your local service and inspect its response.</p></div><p id="preview-copy-status" class="product-copy-status" role="status"></p><a class="site-text-link" href="/app#playground/quick">Explore worked examples <span data-site-icon="arrow" aria-hidden="true"></span></a>
+        </section>
+        <section id="preview-progress" class="product-panel" role="tabpanel" aria-labelledby="preview-progress-tab" tabindex="0" hidden>
+          <div class="product-panel-heading"><div><p class="eyebrow">SEE WHERE YOU’RE GOING</p><h2>A path you can follow.</h2></div><span class="product-level-pill" id="preview-level-count">Learning path</span></div>
+          <p class="product-panel-intro">Levels give your practice a direction. Your saved notes, results, and evidence stay with each challenge.</p><ol class="product-path" id="preview-path"><li><span>01</span><div><strong>Build the foundations</strong><small>Read the track’s entry skills and setup.</small></div></li><li><span>02</span><div><strong>Put your skills to work</strong><small>Follow practical challenges with clear finish lines.</small></div></li><li><span>03</span><div><strong>Keep moving forward</strong><small>Return to your saved work and next step.</small></div></li></ol><a class="site-text-link" href="/tracks/devops-service-foundations">See the full learning path <span data-site-icon="arrow" aria-hidden="true"></span></a>
+        </section>
+        <footer class="product-preview-footer"><span><span class="product-status-dot" aria-hidden="true"></span>Explore the features · your progress starts in your workspace</span><a href="/app#today" aria-label="Open the Ascend workspace"><span data-site-icon="arrow" aria-hidden="true"></span></a></footer>
+      </article>
     </section>
     <div class="site-principles site-width" data-pages="home"><span><span data-site-icon="route" aria-hidden="true"></span> A clear next step</span><span><span data-site-icon="terminal" aria-hidden="true"></span> Learn by doing</span><span><span data-site-icon="check" aria-hidden="true"></span> Show what you learned</span><span><span data-site-icon="sun" aria-hidden="true"></span> Make room for curiosity</span></div>
     <section class="site-section site-width" data-pages="home" aria-labelledby="directions-heading">

@@ -1,6 +1,7 @@
 """Real landing, discovery, login, signup, and recovery journeys in Chromium."""
 
 import os
+import json
 import re
 import socket
 import subprocess
@@ -94,6 +95,332 @@ def login(page, username="alice", password=PASSWORD):
 
 def assert_fits(page):
     assert page.evaluate("document.documentElement.scrollWidth <= innerWidth"), page.url
+
+
+@pytest.mark.parametrize("theme", ["light", "dark"])
+@pytest.mark.parametrize("width", [320, 390, 1440])
+def test_product_preview_uses_real_curriculum_and_keyboard_controls(
+    public_server, width, theme
+):
+    catalog = httpx.get(public_server + "/api/catalog").json()["tracks"]
+    track = httpx.get(public_server + "/api/catalog/devops-service-foundations").json()
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        context = browser.new_context(
+            viewport={"width": width, "height": 1000},
+            color_scheme=theme,
+            permissions=["clipboard-read", "clipboard-write"],
+        )
+        page = context.new_page()
+        errors = []
+        page.on("pageerror", lambda error: errors.append(str(error)))
+        page.goto(public_server)
+        expect(page.locator("#product-track-count")).to_have_text(f"{len(catalog):,}")
+        expect(page.locator("#product-task-count")).to_have_text(
+            f"{sum(item['nodes'] for item in catalog):,}"
+        )
+        main = [level for level in track["levels"] if level["lane"] == "main"]
+        expect(page.locator("#preview-task")).to_have_text(
+            main[0]["challenges"][0]["title"]
+        )
+        palette = page.locator("#preview-description").evaluate("""element => ({
+            text:getComputedStyle(element).color,
+            background:getComputedStyle(element.closest('.product-task')).backgroundColor
+        })""")
+        assert contrast_ratio(palette["text"], palette["background"]) >= 4.5
+        learn = page.get_by_role("tab", name="Learn", exact=True)
+        learn.focus()
+        page.keyboard.press("ArrowRight")
+        expect(page.get_by_role("tab", name="Practice", exact=True)).to_be_focused()
+        expect(page.locator("#preview-practice")).to_be_visible()
+        expect(page.locator("#preview-learn")).to_be_hidden()
+        page.get_by_role("button", name="Copy example command", exact=True).click()
+        expect(page.locator("#preview-copy-status")).to_have_text(
+            "Example command copied."
+        )
+        assert (
+            page.evaluate("navigator.clipboard.readText()")
+            == "curl -I http://localhost:8080"
+        )
+        assert_fits(page)
+        page.get_by_role("tab", name="Practice", exact=True).focus()
+        page.keyboard.press("End")
+        expect(page.get_by_role("tab", name="Progress", exact=True)).to_be_focused()
+        expect(page.locator("#preview-progress")).to_be_visible()
+        expect(page.locator("#preview-level-count")).to_have_text(f"{len(main)} levels")
+        expect(page.locator("#preview-path li")).to_have_count(3)
+        for index, level in enumerate(main[:3]):
+            expect(page.locator("#preview-path li").nth(index)).to_contain_text(
+                level["title"]
+            )
+        assert_fits(page)
+        page.keyboard.press("Home")
+        expect(learn).to_be_focused()
+        expect(page.locator("#preview-learn")).to_be_visible()
+        assert not errors, errors
+        browser.close()
+
+
+@pytest.mark.parametrize("theme", ["light", "dark"])
+@pytest.mark.parametrize("width", [390, 1440])
+def test_direct_profile_opens_before_deferred_rewards(public_server, width, theme):
+    token = httpx.post(
+        public_server + "/api/login",
+        json={"username": "alice", "password": PASSWORD},
+    ).json()["token"]
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page(
+            viewport={"width": width, "height": 1000}, color_scheme=theme
+        )
+        page.add_init_script(
+            "sessionStorage.setItem('ascend-token', " + json.dumps(token) + ")"
+        )
+        waiting = []
+        page.route("**/api/rewards", lambda route: waiting.append(route))
+        page.goto(public_server + "/app#profile", wait_until="domcontentloaded")
+        expect(page.locator("#profile-preferences")).to_be_visible(timeout=2500)
+        expect(page.locator("#app-loader")).to_be_hidden(timeout=2500)
+        expect(page.locator("#profile-summary")).to_contain_text("alice")
+        expect(page.get_by_label("Timezone", exact=True)).to_have_value("UTC")
+        expect(page.locator("#logout")).to_be_visible()
+        assert waiting
+        waiting.pop().continue_()
+        expect(page.locator("#account-security .account-password")).to_be_visible()
+        expect(page.locator("#profile")).not_to_have_attribute("aria-busy", "true")
+        assert_fits(page)
+        browser.close()
+
+
+@pytest.mark.parametrize("theme", ["light", "dark"])
+@pytest.mark.parametrize("width", [390, 1440])
+def test_profile_keeps_controls_and_edits_during_slow_refresh(
+    public_server, width, theme
+):
+    token = httpx.post(
+        public_server + "/api/login",
+        json={"username": "alice", "password": PASSWORD},
+    ).json()["token"]
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page(
+            viewport={"width": width, "height": 1000}, color_scheme=theme
+        )
+        page.add_init_script(
+            "if (location.pathname === '/app') sessionStorage.setItem('ascend-token', "
+            + json.dumps(token)
+            + ")"
+        )
+        page.goto(public_server + "/app#today")
+        expect(page.locator(".next-card")).to_be_visible()
+        expect(page.locator("#app-loader")).to_be_hidden()
+        waiting = []
+        page.route("**/api/account", lambda route: waiting.append(route))
+        page.get_by_role("button", name="Open profile", exact=True).click()
+        expect(page.locator("#profile-preferences")).to_be_visible(timeout=1000)
+        expect(page.locator("#profile-summary")).to_contain_text("alice")
+        expect(page.locator("#logout")).to_be_visible()
+        page.get_by_label("Timezone", exact=True).fill("Europe/London")
+        page.get_by_label("Private ntfy topic", exact=True).fill(
+            "an unsaved reminder preference"
+        )
+        # Stay beyond the previous skeleton timeout with the request held open.
+        page.wait_for_timeout(250)
+        expect(page.locator("#profile-preferences")).to_be_visible()
+        expect(page.locator("#profile-reminders")).to_be_visible()
+        expect(page.locator("#profile")).to_have_attribute("aria-busy", "true")
+        assert waiting
+        waiting.pop().continue_()
+        page.unroute("**/api/account")
+        expect(page.locator("#account-security .account-password")).to_be_visible()
+        expect(page.locator("#profile")).not_to_have_attribute("aria-busy", "true")
+        expect(page.get_by_label("Timezone", exact=True)).to_have_value("Europe/London")
+        expect(page.get_by_label("Private ntfy topic", exact=True)).to_have_value(
+            "an unsaved reminder preference"
+        )
+        page.get_by_label("Current password", exact=True).fill(PASSWORD)
+        page.get_by_role("button", name="Today", exact=True).click()
+        expect(page.locator("#today")).to_be_visible()
+        page.get_by_role("button", name="Open profile", exact=True).click()
+        expect(page.locator("#profile")).to_be_visible()
+        expect(page.locator("#profile")).not_to_have_attribute("aria-busy", "true")
+        expect(page.get_by_label("Current password", exact=True)).to_have_value(
+            PASSWORD
+        )
+        page.get_by_role("button", name="Privacy", exact=True).click()
+        expect(page.locator("#profile-privacy")).to_be_focused()
+        expect(page).to_have_url(public_server + "/app#profile")
+        assert_fits(page)
+
+        # Session rotation during refresh must keep controls usable and finish its status.
+        page.get_by_role("button", name="Today", exact=True).click()
+        expect(page.locator("#today")).to_be_visible()
+        page.route("**/api/account", lambda route: waiting.append(route))
+        page.get_by_role("button", name="Open profile", exact=True).click()
+        expect(page.locator("#profile-status")).to_contain_text("Updating")
+        replacement = httpx.post(
+            public_server + "/api/login",
+            json={"username": "alice", "password": PASSWORD},
+        ).json()["token"]
+        assert httpx.post(
+            public_server + "/api/logout",
+            headers={"Authorization": "Bearer " + token},
+        ).is_success
+        page.evaluate(
+            "token => { window.AscendSession.set(token,false); state.token = token; }",
+            replacement,
+        )
+        waiting.pop().continue_()
+        page.unroute("**/api/account")
+        expect(page.locator("#profile-status")).not_to_contain_text("Updating")
+        expect(page.locator("#profile-preferences")).to_be_visible()
+        expect(page).to_have_url(public_server + "/app#profile")
+        token = replacement
+
+        # A late profile response must not pull a newer navigation back to Profile.
+        page.get_by_role("button", name="Today", exact=True).click()
+        expect(page.locator("#today")).to_be_visible()
+        page.route("**/api/account", lambda route: waiting.append(route))
+        page.get_by_role("button", name="Open profile", exact=True).click()
+        expect(page.locator("#profile")).to_be_visible()
+        expect(page.locator("#profile-status")).to_contain_text("Updating")
+        page.get_by_role("button", name="Today", exact=True).click()
+        expect(page.locator("#today")).to_be_visible()
+        assert waiting
+        waiting.pop().continue_()
+        page.unroute("**/api/account")
+        expect(page.locator("#today")).to_be_visible()
+        expect(page.locator("#profile")).to_be_hidden()
+        page.locator("#header-logout").click()
+        expect(page.locator("#auth-form")).to_be_visible()
+        assert page.evaluate("sessionStorage.getItem('ascend-token')") is None
+        assert (
+            httpx.get(
+                public_server + "/api/account",
+                headers={"Authorization": "Bearer " + token},
+            ).status_code
+            == 401
+        )
+        browser.close()
+
+
+@pytest.mark.parametrize("theme", ["light", "dark"])
+@pytest.mark.parametrize("width", [320, 390, 1440])
+def test_public_header_logout_revokes_remembered_session(public_server, width, theme):
+    token = httpx.post(
+        public_server + "/api/login",
+        json={"username": "alice", "password": PASSWORD},
+    ).json()["token"]
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page(
+            viewport={"width": width, "height": 900}, color_scheme=theme
+        )
+        page.add_init_script(
+            "if (location.pathname === '/welcome') localStorage.setItem('ascend-token', "
+            + json.dumps(token)
+            + ")"
+        )
+        page.goto(public_server + "/welcome")
+        logout = page.get_by_role("button", name="Log out", exact=True)
+        expect(logout).to_be_visible()
+        assert_fits(page)
+        logout.click()
+        expect(page.locator("#auth-form")).to_be_visible()
+        expect(page.locator("#auth-feedback")).to_contain_text("signed out")
+        assert page.evaluate("localStorage.getItem('ascend-token')") is None
+        assert (
+            httpx.get(
+                public_server + "/api/account",
+                headers={"Authorization": "Bearer " + token},
+            ).status_code
+            == 401
+        )
+        assert_fits(page)
+        browser.close()
+
+
+def contrast_ratio(first, second):
+    def luminance(color):
+        channels = [int(channel) / 255 for channel in re.findall(r"\d+", color)[:3]]
+        linear = [
+            channel / 12.92
+            if channel <= 0.04045
+            else ((channel + 0.055) / 1.055) ** 2.4
+            for channel in channels
+        ]
+        return sum(
+            value * weight for value, weight in zip(linear, (0.2126, 0.7152, 0.0722))
+        )
+
+    dark, light = sorted((luminance(first), luminance(second)))
+    return (light + 0.05) / (dark + 0.05)
+
+
+@pytest.mark.parametrize("theme", ["light", "dark"])
+def test_auth_hides_logout_after_switching_accounts(public_server, theme):
+    token = httpx.post(
+        public_server + "/api/login",
+        json={"username": "alice", "password": PASSWORD},
+    ).json()["token"]
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page(
+            viewport={"width": 390, "height": 1000}, color_scheme=theme
+        )
+        page.add_init_script(
+            "sessionStorage.setItem('ascend-token', " + json.dumps(token) + ")"
+        )
+        page.goto(public_server + "/auth")
+        expect(page.locator("#auth-session")).to_be_visible()
+        expect(page.get_by_role("button", name="Log out", exact=True)).to_be_visible()
+        page.get_by_role("button", name="Use another account", exact=True).click()
+        expect(page.locator("#auth-form")).to_be_visible()
+        expect(page.locator("[data-sign-out]")).to_be_hidden()
+        assert page.evaluate("sessionStorage.getItem('ascend-token')") is None
+        assert (
+            httpx.get(
+                public_server + "/api/account",
+                headers={"Authorization": "Bearer " + token},
+            ).status_code
+            == 401
+        )
+        assert_fits(page)
+        browser.close()
+
+
+@pytest.mark.parametrize("theme", ["light", "dark"])
+def test_theme_changes_in_another_tab_update_profile_preferences(public_server, theme):
+    token = httpx.post(
+        public_server + "/api/login",
+        json={"username": "alice", "password": PASSWORD},
+    ).json()["token"]
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        context = browser.new_context(
+            viewport={"width": 390, "height": 1000}, color_scheme=theme
+        )
+        page = context.new_page()
+        page.add_init_script(
+            "sessionStorage.setItem('ascend-token', " + json.dumps(token) + ")"
+        )
+        page.goto(public_server + "/app#profile")
+        expect(page.locator("#profile-preferences")).to_be_visible()
+        expect(page.get_by_label("Color theme", exact=True)).to_have_value("system")
+        other = context.new_page()
+        other.goto(public_server + "/welcome")
+        opposite = "light" if theme == "dark" else "dark"
+        other.get_by_role(
+            "button", name=f"Switch to {opposite} theme", exact=True
+        ).click()
+        expect(page.locator("html")).to_have_attribute("data-workspace-theme", opposite)
+        expect(page.get_by_label("Color theme", exact=True)).to_have_value(opposite)
+        page.get_by_label("Color theme", exact=True).select_option(theme)
+        expect(other.locator("html")).to_have_attribute("data-workspace-theme", theme)
+        expect(page.get_by_label("Color theme", exact=True)).to_have_value(theme)
+        assert_fits(page)
+        assert_fits(other)
+        browser.close()
 
 
 @pytest.mark.parametrize("width", [320, 390, 820, 1440])
@@ -255,7 +582,7 @@ def test_signup_validates_then_returns_to_track_setup_and_remembers_session(
             ).status_code
             == 401
         )
-        page.get_by_role("button", name="Sign out", exact=True).click()
+        page.locator("#logout").click()
         expect(page.locator("#auth-form")).to_be_visible()
         assert page.evaluate("localStorage.getItem('ascend-token')") is None
         assert page.evaluate("sessionStorage.getItem('ascend-token')") is None
