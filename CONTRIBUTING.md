@@ -35,6 +35,15 @@ or `.env` files. Regenerate and compile `docs/report.tex` at release milestones.
 CI validates every pack and checksum without executing pack commands. Link checks
 are explicit network operations and do not run on every offline test invocation.
 
+## Third-party material
+
+When adding or adapting third-party code, fonts, datasets, or learning materials,
+record the authors, source revision, license, use, and modifications in
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Preserve the original copyright
+and full license notices with the material. Check the selected artifact's terms,
+including attribution and source-distribution requirements; a repository link
+alone is insufficient. Include required notices in the affected release packages.
+
 ## Verifiers
 
 See [Writing a verifier](docs/writing-a-verifier.md). Never bypass the explicit

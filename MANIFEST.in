@@ -1,3 +1,4 @@
+include THIRD_PARTY_NOTICES.md
 recursive-include web *
 recursive-include packs/community *.toml *.json *.md
 recursive-include ascend/storage/migrations *.sql

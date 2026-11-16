@@ -68,4 +68,5 @@ executable checks with `ascend pack trust <id>`. Editing a pack resets its trust
 | [Command reference](docs/command-reference.pdf) | CLI commands and options |
 | [Deployment guide](docs/deployment-guide.pdf) | Installation, Docker, accounts, HTTPS, and backups |
 
-[MIT License](LICENSE)
+Ascend's original code and materials are [MIT licensed](LICENSE).
+See [third-party credits and notices](THIRD_PARTY_NOTICES.md) for upstream components.

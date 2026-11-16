@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 import subprocess
 import sys
 import zipfile
@@ -24,6 +25,15 @@ def test_built_wheel_contains_and_serves_bundled_assets(tmp_path):
     assert build.returncode == 0, build.stdout + build.stderr
     wheel = next(tmp_path.glob("*.whl"))
     with zipfile.ZipFile(wheel) as archive:
+        metadata_path = next(
+            name for name in archive.namelist() if name.endswith(".dist-info/METADATA")
+        )
+        metadata = archive.read(metadata_path).decode()
+        assert "License-Expression: MIT AND OFL-1.1\n" in metadata
+        license_root = metadata_path.removesuffix("METADATA") + "licenses/"
+        for name in ("LICENSE", "THIRD_PARTY_NOTICES.md", "web/fonts/OFL.txt"):
+            assert f"License-File: {name}\n" in metadata
+            assert archive.read(license_root + name) == Path(name).read_bytes()
         assert "ascend/web/index.html" in archive.namelist()
         assert "ascend/web/guide.json" in archive.namelist()
         assert "ascend/web/effects.js" in archive.namelist()

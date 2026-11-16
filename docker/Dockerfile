@@ -2,7 +2,7 @@ FROM python:3.12-slim@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a7
 ARG ASCEND_OFFLINE=0
 WORKDIR /app
 COPY docker/constraints.txt ./constraints.txt
-COPY pyproject.toml setup.py MANIFEST.in README.md LICENSE ./
+COPY pyproject.toml setup.py MANIFEST.in README.md LICENSE THIRD_PARTY_NOTICES.md ./
 COPY ascend ./ascend
 COPY web ./web
 COPY packs/community ./packs/community
