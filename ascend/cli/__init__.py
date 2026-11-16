@@ -120,12 +120,16 @@ def parser():
     )
     sessions.add_parser("status")
     labs = sub.add_parser("lab").add_subparsers(dest="action", required=True)
-    catalog = labs.add_parser("catalog", help="Browse open-source lab references and reviewed recipes")
+    catalog = labs.add_parser(
+        "catalog", help="Browse open-source lab references and reviewed recipes"
+    )
     for name in ("track", "level", "location", "search"):
         catalog.add_argument("--" + name)
     detail = labs.add_parser("detail")
     detail.add_argument("lab_id")
-    labs.add_parser("plan", help="Review upstream setup and evidence contract without executing it").add_argument("lab_id")
+    labs.add_parser(
+        "plan", help="Review upstream setup and evidence contract without executing it"
+    ).add_argument("lab_id")
     begin = labs.add_parser("start")
     begin.add_argument("node")
     begin.add_argument("--fresh", action="store_true")
@@ -313,8 +317,15 @@ def execute(tracker, args):
         if args.action in {"catalog", "detail"}:
             from ascend.local_labs.catalog import catalog, detail
 
-            return detail(args.lab_id) if args.action == "detail" else catalog(
-                **{name: getattr(args, name) for name in ("track", "level", "location", "search")}
+            return (
+                detail(args.lab_id)
+                if args.action == "detail"
+                else catalog(
+                    **{
+                        name: getattr(args, name)
+                        for name in ("track", "level", "location", "search")
+                    }
+                )
             )
         from ascend import labs
 
@@ -638,7 +649,9 @@ def main(argv=None):
         else:
             print(render(args, result))
         if args.command == "local-lab" and isinstance(result, dict):
-            return {"fail": 1, "error": 2, "cleanup_failed": 2, "unsupported": 3}.get(result.get("status"), 0)
+            return {"fail": 1, "error": 2, "cleanup_failed": 2, "unsupported": 3}.get(
+                result.get("status"), 0
+            )
         return (
             1
             if args.command == "pack"

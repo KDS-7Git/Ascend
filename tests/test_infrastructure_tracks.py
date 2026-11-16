@@ -330,8 +330,10 @@ def test_local_dkim_dns_input_is_chunked_and_preserves_existing_file(tmp_path):
     )
     assert "".join(chunk[1:-1] for chunk in chunks) == "v=DKIM1; k=rsa; p=" + key
     if binary := shutil.which("dnsmasq"):
+        # Confined dnsmasq installations may not read pytest's temporary files.
         checked = subprocess.run(
-            [binary, "--test", "--conf-file=" + str(config)],
+            [binary, "--test", "--conf-file=-"],
+            input=original,
             capture_output=True,
             text=True,
             timeout=5,

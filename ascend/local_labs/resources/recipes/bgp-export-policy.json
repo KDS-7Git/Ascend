@@ -30,7 +30,7 @@
   "checker_version": "prefix-policy-v1",
   "fixture_id": "assigned-policy-case-v1",
   "grading": "prefix-policy-v1",
-  "worker_sha256": "53a3c7a46dc6ae49135c94f2e8e18233ab9e58fa9320569cd8302b3827929191",
+  "worker_sha256": "8945399fac2c85456767ab9eb2a092430b11596883c3e3ce9639a5202f7b58ca",
   "worker_review": "Fixed stdlib-only data worker; no submitted code or paths. Python -I -S, empty temporary working directory, minimal environment, 2 CPU seconds, 128 MiB address space, no child processes, 16 descriptors, 32 KiB per output file, 5 second wall timeout; parent caps accepted output at 16 KiB. No persistent pool. This is not a general executable-code sandbox.",
   "evidence_label": "Submission tested (policy model), when synchronized to an Ascend server",
   "objective": "Permit only the assigned customer aggregate and its allowed subprefixes; reject route leaks while keeping legitimate advertisements.",

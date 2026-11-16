@@ -83,13 +83,19 @@ class AssetStore:
                 raise ValueError("Unexpected archive contents")
             info = entries[0]
             mode = info.external_attr >> 16
-            if (info.is_dir() or stat.S_ISLNK(mode) or
-                    (stat.S_IFMT(mode) and not stat.S_ISREG(mode)) or
-                    info.file_size != asset["expanded_bytes"]):
+            if (
+                info.is_dir()
+                or stat.S_ISLNK(mode)
+                or (stat.S_IFMT(mode) and not stat.S_ISREG(mode))
+                or info.file_size != asset["expanded_bytes"]
+            ):
                 raise ValueError("Unsupported archive member")
             with source.open(info) as stream:
                 content = stream.read(asset["expanded_bytes"] + 1)
-            if len(content) != asset["expanded_bytes"] or hashlib.sha256(content).hexdigest() != asset["expanded_sha256"]:
+            if (
+                len(content) != asset["expanded_bytes"]
+                or hashlib.sha256(content).hexdigest() != asset["expanded_sha256"]
+            ):
                 raise ValueError("Expanded artifact hash mismatch")
             destination = Path(destination)
             destination.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
@@ -101,16 +107,28 @@ class AssetStore:
     def prune(self, protected, budget_bytes):
         if type(budget_bytes) is not int or budget_bytes < 0:
             raise ValueError("Cache budget must be a non-negative byte count")
-        files = [p for p in self.root.iterdir() if p.is_file() and not p.is_symlink()
-                 and (re.fullmatch(r"[0-9a-f]{64}", p.name) or p.name.startswith(".part-"))]
+        files = [
+            p
+            for p in self.root.iterdir()
+            if p.is_file()
+            and not p.is_symlink()
+            and (re.fullmatch(r"[0-9a-f]{64}", p.name) or p.name.startswith(".part-"))
+        ]
         total = sum(p.stat().st_size for p in files)
         removed = []
         for path in sorted(files, key=lambda p: p.stat().st_mtime):
-            if path.name in protected or (total <= budget_bytes and not path.name.startswith(".part-")):
+            if path.name in protected or (
+                total <= budget_bytes and not path.name.startswith(".part-")
+            ):
                 continue
             size = path.stat().st_size
             path.unlink()
             total -= size
             removed.append(path.name)
-        return {"cache_bytes": total, "removed": removed, "protected_objects": len(protected),
-                "saved_work_removed": False, "provider_images_removed": False}
+        return {
+            "cache_bytes": total,
+            "removed": removed,
+            "protected_objects": len(protected),
+            "saved_work_removed": False,
+            "provider_images_removed": False,
+        }

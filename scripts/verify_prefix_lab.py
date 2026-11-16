@@ -43,7 +43,7 @@ def main():
             disk_samples.append((logical, allocated))
 
         def monitor():
-            while not stop.wait(.005):
+            while not stop.wait(0.005):
                 sample()
 
         sampler = threading.Thread(target=monitor, daemon=True)
@@ -54,25 +54,59 @@ def main():
             row = runtime.load(cold["id"])
             work = runtime.work_dir(row)
             case = row["assignment"]
-            policy = {"version": 1, "default": "deny", "rules": [
-                {"action": "permit", "prefix": case["customer_prefix"], "min_prefix": 24, "max_prefix": 26}]}
+            policy = {
+                "version": 1,
+                "default": "deny",
+                "rules": [
+                    {
+                        "action": "permit",
+                        "prefix": case["customer_prefix"],
+                        "min_prefix": 24,
+                        "max_prefix": 26,
+                    }
+                ],
+            }
             atomic_json(work / "policy.json", policy)
-            (work / "notes.txt").write_text("Retain the policy and notes after resource cleanup.\n")
+            (work / "notes.txt").write_text(
+                "Retain the policy and notes after resource cleanup.\n"
+            )
             result = runtime.check(row["id"])
             assert result["status"] == "pass"
             workers.append(result["worker_metrics"])
-            trusted = check_submission(recipe, case, {"files": {"policy.json": policy}}, trusted=True)
-            assert trusted["status"] == "pass" and trusted["authority"] == "server-submission"
+            trusted = check_submission(
+                recipe, case, {"files": {"policy.json": policy}}, trusted=True
+            )
+            assert (
+                trusted["status"] == "pass"
+                and trusted["authority"] == "server-submission"
+            )
             workers.append(trusted["worker_metrics"])
-            leaky = {**policy, "rules": [*policy["rules"], *[
-                {"action": "permit", "prefix": f"198.51.100.{i}/32", "min_prefix": 32, "max_prefix": 32} for i in range(1, 32)]]}
-            bad = check_submission(recipe, case, {"files": {"policy.json": leaky}}, trusted=True)
+            leaky = {
+                **policy,
+                "rules": [
+                    *policy["rules"],
+                    *[
+                        {
+                            "action": "permit",
+                            "prefix": f"198.51.100.{i}/32",
+                            "min_prefix": 32,
+                            "max_prefix": 32,
+                        }
+                        for i in range(1, 32)
+                    ],
+                ],
+            }
+            bad = check_submission(
+                recipe, case, {"files": {"policy.json": leaky}}, trusted=True
+            )
             assert bad["status"] == "fail" and bad["counterexample"]
             workers.append(bad["worker_metrics"])
             sample()
             runtime.stop(row["id"])
             assert runtime.prune(0)["protected_objects"] == 2
-            runtime = Runtime(tracker, root=root / "labs", recipe_loader=lambda _: recipe)
+            runtime = Runtime(
+                tracker, root=root / "labs", recipe_loader=lambda _: recipe
+            )
             runtime.resume(row["id"])
             assert runtime.check(row["id"])["status"] == "pass"
             runtime.export(row["id"])
@@ -92,7 +126,10 @@ def main():
             runtime.save(interrupted)
             assert runtime.reconcile()[0]["status"] == "destroyed"
             assert runtime.prune(0)["cache_bytes"] == 0
-            assert all((work / name).is_file() for name in ("policy.json", "TASK.txt", "notes.txt", "submission.json"))
+            assert all(
+                (work / name).is_file()
+                for name in ("policy.json", "TASK.txt", "notes.txt", "submission.json")
+            )
             assert not any((runtime.state / "runtime").iterdir())
             sample()
         finally:
@@ -100,14 +137,22 @@ def main():
             sampler.join()
             db.close()
         metrics = {
-            "measured_on": time.strftime("%Y-%m-%d"), "platform": "linux-x86_64",
-            "download_bytes": cold["metrics"]["download_bytes"], "expanded_bytes": cold["metrics"]["runtime_bytes"],
-            "peak_disk_bytes": max(s[0] for s in disk_samples), "peak_allocated_disk_bytes": max(s[1] for s in disk_samples),
-            "startup_cold_seconds": cold["metrics"]["startup_seconds"], "startup_warm_seconds": warm["metrics"]["startup_seconds"],
-            "peak_memory_bytes": max(w["peak_memory_bytes"] for w in workers), "worker_samples": workers,
-            "worker_cpu_seconds_limit": 2, "worker_address_space_bytes_limit": 134217728,
-            "worker_wall_seconds_limit": 5, "worker_child_processes_limit": 0,
-            "persistent_processes": 0, "after_prune_cache_bytes": 0,
+            "measured_on": time.strftime("%Y-%m-%d"),
+            "platform": "linux-x86_64",
+            "download_bytes": cold["metrics"]["download_bytes"],
+            "expanded_bytes": cold["metrics"]["runtime_bytes"],
+            "peak_disk_bytes": max(s[0] for s in disk_samples),
+            "peak_allocated_disk_bytes": max(s[1] for s in disk_samples),
+            "startup_cold_seconds": cold["metrics"]["startup_seconds"],
+            "startup_warm_seconds": warm["metrics"]["startup_seconds"],
+            "peak_memory_bytes": max(w["peak_memory_bytes"] for w in workers),
+            "worker_samples": workers,
+            "worker_cpu_seconds_limit": 2,
+            "worker_address_space_bytes_limit": 134217728,
+            "worker_wall_seconds_limit": 5,
+            "worker_child_processes_limit": 0,
+            "persistent_processes": 0,
+            "after_prune_cache_bytes": 0,
             "scope": "Actual pinned downloads and local prepare/check/stop/resume/export/finish/destroy/reconcile/cache lifecycle. Worker samples use correct policy and a 32-rule policy with route leaks. CPU and memory are measured inside each fresh data-only worker; no router software runs. Disk includes retained work in four disposable attempts, sampled every 5ms. Server assignment, HTTP sync, resource timeout and malformed-result handling are tested separately.",
         }
         print(json.dumps(metrics, indent=2))

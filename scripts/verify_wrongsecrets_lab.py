@@ -43,9 +43,18 @@ def validation_directory():
 def answers(runtime, row):
     source = runtime.runtime_dir(row)
     values = {
-        "challenge_1": re.search(r'password\s*=\s*"([^"]+)"', (source / "WrongSecretsConstants.java").read_text()).group(1),
-        "challenge_2": re.search(r"^password=(.+)$", (source / "application.properties").read_text(), re.MULTILINE).group(1),
-        "challenge_3": re.search(r'ENV DOCKER_ENV_PASSWORD="([^"]+)"', (source / "Dockerfile").read_text()).group(1),
+        "challenge_1": re.search(
+            r'password\s*=\s*"([^"]+)"',
+            (source / "WrongSecretsConstants.java").read_text(),
+        ).group(1),
+        "challenge_2": re.search(
+            r"^password=(.+)$",
+            (source / "application.properties").read_text(),
+            re.MULTILINE,
+        ).group(1),
+        "challenge_3": re.search(
+            r'ENV DOCKER_ENV_PASSWORD="([^"]+)"', (source / "Dockerfile").read_text()
+        ).group(1),
         "explanation": "Source constants, configuration and image environment variables expose secrets to readers; use a scoped secret store and rotate exposed values.",
     }
     atomic_json(runtime.work_dir(row) / "answers.json", values)
@@ -65,23 +74,35 @@ def main():
         runtime = Runtime(tracker, root=root / "labs", recipe_loader=lambda _: recipe)
         d = Docker(runtime)
         d.provider()
-        if args.cold and any(d.inspect("image", recipe[key]["reference"]) for key in ("image", "helper_image")):
-            raise SystemExit("Cold measurement requires absent references; do not remove preexisting images")
+        if args.cold and any(
+            d.inspect("image", recipe[key]["reference"])
+            for key in ("image", "helper_image")
+        ):
+            raise SystemExit(
+                "Cold measurement requires absent references; do not remove preexisting images"
+            )
         initial_free = shutil.disk_usage(root).free
         disk_samples, memory_samples, checks = [], [], []
         stop = threading.Event()
 
         def monitor():
-            while not stop.wait(.05):
+            while not stop.wait(0.05):
                 disk_samples.append(initial_free - shutil.disk_usage(root).free)
 
         def memory(row):
             values = {}
-            for name in [*row["resources"]["containers"].values(), row["resources"]["proxy"]]:
+            for name in [
+                *row["resources"]["containers"].values(),
+                row["resources"]["proxy"],
+            ]:
                 info = d.owned("container", name, row)
-                assert info["HostConfig"]["ReadonlyRootfs"] and info["HostConfig"]["CapDrop"] == ["ALL"]
+                assert info["HostConfig"]["ReadonlyRootfs"] and info["HostConfig"][
+                    "CapDrop"
+                ] == ["ALL"]
                 assert all(m["Type"] == "tmpfs" for m in info["Mounts"])
-                values[name.rsplit("-", 1)[-1]] = int(d.run("exec", name, "cat", "/sys/fs/cgroup/memory.peak"))
+                values[name.rsplit("-", 1)[-1]] = int(
+                    d.run("exec", name, "cat", "/sys/fs/cgroup/memory.peak")
+                )
             memory_samples.append(values)
 
         sampler = threading.Thread(target=monitor, daemon=True)
@@ -94,9 +115,17 @@ def main():
             values = answers(runtime, row)
             assert runtime.check(row["id"])["status"] == "pass"
             port = row["port"]
-            for path, code in [("/challenge/challenge-4", 404), ("/mcp", 404), ("/actuator/env", 404), ("/challenge/%63hallenge-1", 400)]:
+            for path, code in [
+                ("/challenge/challenge-4", 404),
+                ("/mcp", 404),
+                ("/actuator/env", 404),
+                ("/challenge/%63hallenge-1", 400),
+            ]:
                 assert request(port, path)[0] == code
-            assert request(port, "/", headers={"Origin": "https://unrelated.invalid"})[0] == 403
+            assert (
+                request(port, "/", headers={"Origin": "https://unrelated.invalid"})[0]
+                == 403
+            )
             assert request(port, "/challenge/challenge-1", data="x" * 65537)[0] == 413
             app = row["resources"]["containers"]["app"]
             info = d.owned("container", app, row)
@@ -104,7 +133,15 @@ def main():
             assert d.owned("network", row["resources"]["network"], row)["Internal"]
             assert not info["NetworkSettings"]["Ports"]
             try:
-                d.run("exec", app, "dd", "if=/dev/zero", "of=/tmp/ascend-quota-probe", "bs=1048576", "count=80")
+                d.run(
+                    "exec",
+                    app,
+                    "dd",
+                    "if=/dev/zero",
+                    "of=/tmp/ascend-quota-probe",
+                    "bs=1048576",
+                    "count=80",
+                )
             except ValueError as error:
                 assert "space" in str(error).lower()
             else:
@@ -112,24 +149,46 @@ def main():
             d.run("exec", app, "rm", "/tmp/ascend-quota-probe")
             assert runtime.check(row["id"])["status"] == "pass"
             memory(row)
-            checks.extend(["correct-and-wrong-answers", "subset-origin-request-guards", "internal-network", "tmpfs-full-recovery"])
+            checks.extend(
+                [
+                    "correct-and-wrong-answers",
+                    "subset-origin-request-guards",
+                    "internal-network",
+                    "tmpfs-full-recovery",
+                ]
+            )
             print("Answer, boundary and disk-limit checks passed.", flush=True)
             runtime.stop(row["id"])
             started = time.monotonic()
             runtime.resume(row["id"])
             warm_seconds = time.monotonic() - started
             assert runtime.load(row["id"])["expires_at"] == row["expires_at"]
-            assert json.loads((runtime.work_dir(row) / "answers.json").read_text()) == values
+            assert (
+                json.loads((runtime.work_dir(row) / "answers.json").read_text())
+                == values
+            )
             assert runtime.check(row["id"])["status"] == "pass"
             runtime.export(row["id"])
             assert runtime.finish(row["id"])["status"] == "destroyed"
             assert runtime.destroy(row["id"])["status"] == "destroyed"
             saved = runtime.work_dir(row)
-            assert all((saved / name).exists() for name in ("answers.json", "notes.txt", "submission.json", "checks.json"))
+            assert all(
+                (saved / name).exists()
+                for name in (
+                    "answers.json",
+                    "notes.txt",
+                    "submission.json",
+                    "checks.json",
+                )
+            )
             checks.append("stop-resume-export-finish-retains-work")
 
             missing = runtime._start(recipe, assessment=False)
-            d.remove("container", missing["resources"]["containers"]["app"], runtime.load(missing["id"]))
+            d.remove(
+                "container",
+                missing["resources"]["containers"]["app"],
+                runtime.load(missing["id"]),
+            )
             assert runtime.check(missing["id"])["status"] == "error"
             assert runtime.reconcile()[0]["status"] == "destroyed"
             checks.append("missing-target-error-and-recovery")
@@ -138,10 +197,29 @@ def main():
             busy = runtime._start(recipe, assessment=False)
             busy = runtime.load(busy["id"])
             holder = "ascend-validation-holder-" + busy["id"][:12]
-            holder_id = d.run("create", "--name", holder, "--label", "org.ascend.validation=" + busy["id"],
-                              "--network", busy["resources"]["network"], "--read-only", "--cap-drop", "ALL",
-                              "--memory", "32m", "--pids-limit", "8", "--user", "10001:10001", "--entrypoint", "python",
-                              recipe["helper_image"]["reference"], "-c", "import time; time.sleep(90)")
+            holder_id = d.run(
+                "create",
+                "--name",
+                holder,
+                "--label",
+                "org.ascend.validation=" + busy["id"],
+                "--network",
+                busy["resources"]["network"],
+                "--read-only",
+                "--cap-drop",
+                "ALL",
+                "--memory",
+                "32m",
+                "--pids-limit",
+                "8",
+                "--user",
+                "10001:10001",
+                "--entrypoint",
+                "python",
+                recipe["helper_image"]["reference"],
+                "-c",
+                "import time; time.sleep(90)",
+            )
             try:
                 d.run("start", holder_id)
                 assert runtime.destroy(busy["id"])["status"] == "cleanup_failed"
@@ -150,7 +228,10 @@ def main():
                 d.run("container", "rm", "-f", holder_id)
             assert runtime.reconcile()[0]["status"] == "destroyed"
             checks.append("busy-network-cleanup-failure-and-retry")
-            print("Saved work, missing target and cleanup retry checks passed.", flush=True)
+            print(
+                "Saved work, missing target and cleanup retry checks passed.",
+                flush=True,
+            )
 
             # Kill the real companion after starting its target, before readiness.
             marker = root / "crash-marker"
@@ -173,11 +254,19 @@ def crash_point(self,*args,**kwargs):
 Docker.run=crash_point
 r._start(recipe,assessment=False)
 """
-            process = subprocess.Popen([sys.executable, "-c", script, str(root)], stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
+            process = subprocess.Popen(
+                [sys.executable, "-c", script, str(root)],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.PIPE,
+            )
             try:
                 deadline = time.monotonic() + 60
-                while not marker.exists() and process.poll() is None and time.monotonic() < deadline:
-                    time.sleep(.1)
+                while (
+                    not marker.exists()
+                    and process.poll() is None
+                    and time.monotonic() < deadline
+                ):
+                    time.sleep(0.1)
                 assert marker.exists(), "Companion did not reach the crash point"
                 os.kill(process.pid, signal.SIGKILL)
                 process.wait(timeout=5)
@@ -191,17 +280,25 @@ r._start(recipe,assessment=False)
 
             expiry = runtime._start(recipe, assessment=False, lifetime=60)
             expiry = runtime.load(expiry["id"])
-            print("Waiting for the target's own deadline; the companion is idle.", flush=True)
+            print(
+                "Waiting for the target's own deadline; the companion is idle.",
+                flush=True,
+            )
             while time.time() <= expiry["expires_at"] + 2:
-                time.sleep(.5)
-            for name in [*expiry["resources"]["containers"].values(), expiry["resources"]["proxy"]]:
+                time.sleep(0.5)
+            for name in [
+                *expiry["resources"]["containers"].values(),
+                expiry["resources"]["proxy"],
+            ]:
                 assert not d.owned("container", name, expiry)["State"]["Running"]
             assert runtime.reconcile()[0]["status"] == "destroyed"
             checks.append("internal-hard-expiry")
             assert not d.resource_runs()
             pruned = runtime.prune(0, images=True)
             assert not pruned["images"]["errors"] and pruned["cache_bytes"] == 0
-            assert (saved / "answers.json").is_file() and (saved / "submission.json").is_file()
+            assert (saved / "answers.json").is_file() and (
+                saved / "submission.json"
+            ).is_file()
             checks.append("no-resources-and-owned-image-cache-eviction")
         finally:
             stop.set()
@@ -212,21 +309,37 @@ r._start(recipe,assessment=False)
                 if row["status"] != "destroyed":
                     runtime.destroy(row["id"])
             if d.resource_runs():
-                raise RuntimeError("Validation left resources; restore its manifest before retrying")
+                raise RuntimeError(
+                    "Validation left resources; restore its manifest before retrying"
+                )
             db.close()
-        metrics = {"measured_on": time.strftime("%Y-%m-%d"), "platform": "linux-x86_64",
-                   "cold_images_absent": args.cold,
-                   "download_bytes": sum(recipe[k]["compressed_bytes"] for k in ("image", "helper_image")) + cold["metrics"]["download_bytes"],
-                   "download_scope": "Compressed OCI layer/config sizes plus actual selected source downloads; not wire traffic.",
-                   "expanded_bytes": cold["metrics"]["image_bytes"] + cold["metrics"]["runtime_bytes"],
-                   "image_bytes": cold["metrics"]["image_bytes"], "build_cache_bytes": 0,
-                   "peak_disk_bytes": max(disk_samples), "startup_cold_seconds": cold["metrics"]["startup_seconds"],
-                   "startup_warm_seconds": warm_seconds, "peak_memory_bytes": max(sum(v.values()) for v in memory_samples),
-                   "memory_samples": memory_samples, "memory_limits": {"target": 805306368, "proxy": 67108864},
-                   "cpu_limits": {"target": 1, "proxy": .25}, "pid_limits": {"target": 128, "proxy": 16},
-                   "tmpfs_bytes_limit": 67108864, "after_prune_cache_bytes": 0, "remaining_owned_resources": 0,
-                   "checks": checks,
-                   "scope": "Real Linux Docker runtime. Filesystem disk delta sampled every 50ms during cold pulls and all lifecycle checks; unrelated host activity can affect it. Sum of cgroup memory peaks includes the quota probe and measurement execs. Saved work survives cleanup; upstream browser badges are temporary. A separate browser test exercised correct/incorrect form submissions with no JavaScript exceptions."}
+        metrics = {
+            "measured_on": time.strftime("%Y-%m-%d"),
+            "platform": "linux-x86_64",
+            "cold_images_absent": args.cold,
+            "download_bytes": sum(
+                recipe[k]["compressed_bytes"] for k in ("image", "helper_image")
+            )
+            + cold["metrics"]["download_bytes"],
+            "download_scope": "Compressed OCI layer/config sizes plus actual selected source downloads; not wire traffic.",
+            "expanded_bytes": cold["metrics"]["image_bytes"]
+            + cold["metrics"]["runtime_bytes"],
+            "image_bytes": cold["metrics"]["image_bytes"],
+            "build_cache_bytes": 0,
+            "peak_disk_bytes": max(disk_samples),
+            "startup_cold_seconds": cold["metrics"]["startup_seconds"],
+            "startup_warm_seconds": warm_seconds,
+            "peak_memory_bytes": max(sum(v.values()) for v in memory_samples),
+            "memory_samples": memory_samples,
+            "memory_limits": {"target": 805306368, "proxy": 67108864},
+            "cpu_limits": {"target": 1, "proxy": 0.25},
+            "pid_limits": {"target": 128, "proxy": 16},
+            "tmpfs_bytes_limit": 67108864,
+            "after_prune_cache_bytes": 0,
+            "remaining_owned_resources": 0,
+            "checks": checks,
+            "scope": "Real Linux Docker runtime. Filesystem disk delta sampled every 50ms during cold pulls and all lifecycle checks; unrelated host activity can affect it. Sum of cgroup memory peaks includes the quota probe and measurement execs. Saved work survives cleanup; upstream browser badges are temporary. A separate browser test exercised correct/incorrect form submissions with no JavaScript exceptions.",
+        }
         print(json.dumps(metrics, indent=2), flush=True)
         if args.record:
             atomic_json(args.record, metrics)

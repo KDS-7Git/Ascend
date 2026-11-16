@@ -379,7 +379,8 @@ def _llm(name, data):
     if len(set(identifiers)) != len(identifiers):
         return False
     return name not in {"tool_trace_saved", "repeated_trials_recorded"} or all(
-        sum(t["case"] == case for t in trials) >= 3 for case in ("baseline", "injection")
+        sum(t["case"] == case for t in trials) >= 3
+        for case in ("baseline", "injection")
     )
 
 

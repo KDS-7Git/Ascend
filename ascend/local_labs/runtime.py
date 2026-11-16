@@ -28,12 +28,22 @@ class Runtime:
         base = root or os.environ.get("ASCEND_LAB_HOME")
         if base:
             base = Path(base).expanduser()
-            self.state, self.cache, self.work = base / "state", base / "cache", base / "work"
+            self.state, self.cache, self.work = (
+                base / "state",
+                base / "cache",
+                base / "work",
+            )
         else:
-            data = Path(os.environ.get("XDG_DATA_HOME", "~/.local/share")).expanduser() / "ascend"
+            data = (
+                Path(os.environ.get("XDG_DATA_HOME", "~/.local/share")).expanduser()
+                / "ascend"
+            )
             self.state = data / "labs"
             self.work = data / "lab-work"
-            self.cache = Path(os.environ.get("XDG_CACHE_HOME", "~/.cache")).expanduser() / "ascend/labs"
+            self.cache = (
+                Path(os.environ.get("XDG_CACHE_HOME", "~/.cache")).expanduser()
+                / "ascend/labs"
+            )
         for path in (self.state, self.cache, self.work):
             path.mkdir(parents=True, exist_ok=True, mode=0o700)
         self.attempts = Attempts(tracker)
@@ -67,11 +77,15 @@ class Runtime:
                     try:
                         self.attempts.authorize(attempt["id"], attempt["nonce"])
                     except ValueError:
-                        raise ValueError("Existing lab state belongs to a different Ascend profile; restore ASCEND_HOME or choose another ASCEND_LAB_HOME") from None
+                        raise ValueError(
+                            "Existing lab state belongs to a different Ascend profile; restore ASCEND_HOME or choose another ASCEND_LAB_HOME"
+                        ) from None
             owner["profile"] = profile
             atomic_json(path, owner)
         if owner["profile"] != profile:
-            raise ValueError("Lab state belongs to a different Ascend profile; restore ASCEND_HOME or choose another ASCEND_LAB_HOME")
+            raise ValueError(
+                "Lab state belongs to a different Ascend profile; restore ASCEND_HOME or choose another ASCEND_LAB_HOME"
+            )
         return owner["id"]
 
     def state_path(self, run_id):
@@ -128,15 +142,27 @@ class Runtime:
             from ascend.local_labs.bgp import BgpLab
 
             return BgpLab(self)
-        raise ValueError("Adapter is not installed; keep the run record for reconciliation")
+        raise ValueError(
+            "Adapter is not installed; keep the run record for reconciliation"
+        )
 
     def public(self, row):
-        result = {k: v for k, v in row.items() if k not in {"local_attempt", "remote_attempt", "owner"}} | {"work_dir": str(self.work_dir(row))}
+        result = {
+            k: v
+            for k, v in row.items()
+            if k not in {"local_attempt", "remote_attempt", "owner"}
+        } | {"work_dir": str(self.work_dir(row))}
         if row.get("evidence_only"):
             result["kind"], result["status"] = "external-report", "recorded"
         if row.get("external_workspace"):
             result["kind"] = "local-evidence-workspace"
-            result["status"] = "archived" if row.get("archived") else "recorded" if row.get("finished_at") else "prepared"
+            result["status"] = (
+                "archived"
+                if row.get("archived")
+                else "recorded"
+                if row.get("finished_at")
+                else "prepared"
+            )
         return result
 
     def show(self, run_id):
@@ -161,16 +187,29 @@ class Runtime:
         recipe = report_recipe(recipe_id)
         report = read_report(recipe, report_path)
         with self.lock():
-            row = {"schema_version": 1, "id": secrets.token_hex(16), "owner": self.owner(), "recipe": recipe,
-                   "status": "destroyed", "resources": {}, "evidence_only": True,
-                   "created_at": time.time(), "expires_at": time.time(), "finished_at": time.time(),
-                   "server": self.server, "offline": True, "pending_sync": bool(self.server)}
+            row = {
+                "schema_version": 1,
+                "id": secrets.token_hex(16),
+                "owner": self.owner(),
+                "recipe": recipe,
+                "status": "destroyed",
+                "resources": {},
+                "evidence_only": True,
+                "created_at": time.time(),
+                "expires_at": time.time(),
+                "finished_at": time.time(),
+                "server": self.server,
+                "offline": True,
+                "pending_sync": bool(self.server),
+            }
             atomic_json(self.work_dir(row) / "upstream-report.json", report)
             self.save(row)
             data = self._export(row)
             attempt = self.attempts.create(recipe_id, offline=True)
             row["local_attempt"] = attempt
-            row["local_receipt"] = self.attempts.submit(attempt["id"], self._payload(row, attempt, data))
+            row["local_receipt"] = self.attempts.submit(
+                attempt["id"], self._payload(row, attempt, data)
+            )
             self.save(row)
         if self.server:
             try:
@@ -194,25 +233,45 @@ class Runtime:
         for name in recipe.get("required_tools", []):
             if not shutil.which(name):
                 issues.append(f"Required tool is missing: {name}")
-        free = min(shutil.disk_usage(path).free for path in (self.cache, self.state, self.work))
+        free = min(
+            shutil.disk_usage(path).free for path in (self.cache, self.state, self.work)
+        )
         needed = recipe.get("minimum_free_bytes", 1024 * 1024)
         if free < needed:
             issues.append(f"Needs {needed} free bytes; found {free}")
         provider = None
-        if recipe.get("adapter") in {"vampi-v1", "wrongsecrets-v1", "frr-bgp-v1"} and shutil.which("docker"):
+        if recipe.get("adapter") in {
+            "vampi-v1",
+            "wrongsecrets-v1",
+            "frr-bgp-v1",
+        } and shutil.which("docker"):
             from ascend.local_labs.docker import Docker
 
             try:
                 provider = Docker(self).provider()
                 memory = recipe.get("minimum_provider_memory_bytes", 536870912)
                 if provider["free_bytes"] < needed or provider["memory_bytes"] < memory:
-                    issues.append(f"Docker needs at least {memory // 1048576} MiB RAM and the recipe's minimum free disk")
+                    issues.append(
+                        f"Docker needs at least {memory // 1048576} MiB RAM and the recipe's minimum free disk"
+                    )
             except (ValueError, OSError) as error:
                 issues.append(str(error))
-        return {"recipe_id": recipe_id, "platform": current, "status": "unsupported" if issues else "pass", "issues": issues,
-                "free_bytes": free, "minimum_free_bytes": needed, "cache": str(self.cache), "work": str(self.work),
-                "provider": provider,
-                "first_download_bytes": sum(a["bytes"] for a in recipe.get("assets", [])) + sum(recipe.get(k, {}).get("compressed_bytes", 0) for k in ("image", "helper_image"))}
+        return {
+            "recipe_id": recipe_id,
+            "platform": current,
+            "status": "unsupported" if issues else "pass",
+            "issues": issues,
+            "free_bytes": free,
+            "minimum_free_bytes": needed,
+            "cache": str(self.cache),
+            "work": str(self.work),
+            "provider": provider,
+            "first_download_bytes": sum(a["bytes"] for a in recipe.get("assets", []))
+            + sum(
+                recipe.get(k, {}).get("compressed_bytes", 0)
+                for k in ("image", "helper_image")
+            ),
+        }
 
     def _remote(self, path, data=None, server=None):
         from ascend.cli.remote import request
@@ -234,11 +293,22 @@ class Runtime:
             raise ValueError("Lifetime must be between 60 and 86400 seconds")
         with self.lock():
             if any(r["status"] not in TERMINAL for r in self.rows()):
-                raise ValueError("Stop and finish/destroy the existing local lab, or reconcile an interrupted run")
-            row = {"schema_version": 1, "id": secrets.token_hex(16), "owner": self.owner(),
-                   "recipe": recipe, "status": "preparing", "resources": {},
-                   "created_at": time.time(), "expires_at": time.time() + lifetime,
-                   "server": self.server, "offline": offline, "pending_sync": False}
+                raise ValueError(
+                    "Stop and finish/destroy the existing local lab, or reconcile an interrupted run"
+                )
+            row = {
+                "schema_version": 1,
+                "id": secrets.token_hex(16),
+                "owner": self.owner(),
+                "recipe": recipe,
+                "status": "preparing",
+                "resources": {},
+                "created_at": time.time(),
+                "expires_at": time.time() + lifetime,
+                "server": self.server,
+                "offline": offline,
+                "pending_sync": False,
+            }
             self.save(row)  # Inventory exists before downloading/provisioning.
             started = time.monotonic()
             try:
@@ -246,7 +316,10 @@ class Runtime:
                     row["local_attempt"] = self.attempts.create(recipe["id"])
                     self.save(row)
                     if self.server and not offline:
-                        row["remote_attempt"] = self._remote("/api/lab-attempts", {"recipe_id": recipe["id"], "offline": False})
+                        row["remote_attempt"] = self._remote(
+                            "/api/lab-attempts",
+                            {"recipe_id": recipe["id"], "offline": False},
+                        )
                         self.save(row)
                         self._validate_remote(row, row["remote_attempt"], adopt=True)
                     if row["local_attempt"].get("assignment"):
@@ -260,7 +333,10 @@ class Runtime:
                     attempt = row["local_attempt"]
                     self.attempts.ready(attempt["id"], attempt["nonce"])
                     if remote := row.get("remote_attempt"):
-                        self._remote(f"/api/lab-attempts/{remote['id']}/ready", {"nonce": remote["nonce"]})
+                        self._remote(
+                            f"/api/lab-attempts/{remote['id']}/ready",
+                            {"nonce": remote["nonce"]},
+                        )
                 row["status"], row["ready_at"] = "ready", time.time()
                 row["metrics"]["startup_seconds"] = time.monotonic() - started
                 self.save(row)
@@ -273,7 +349,9 @@ class Runtime:
     def read_work(self, row, name, *, maximum=MAX_RESULT_BYTES):
         path = self.work_dir(row) / name
         if not path.is_file() or path.is_symlink() or path.stat().st_size > maximum:
-            raise ValueError(f"Work must be a regular JSON file no larger than {maximum} bytes")
+            raise ValueError(
+                f"Work must be a regular JSON file no larger than {maximum} bytes"
+            )
         try:
             with path.open("rb") as stream:
                 content = stream.read(maximum + 1)
@@ -333,10 +411,16 @@ class Runtime:
             return self.public(row)
 
     def _export(self, row):
-        data = {"schema_version": 1, "run_id": row["id"], "recipe_id": row["recipe"]["id"],
-                "recipe_version": row["recipe"]["version"], "checker_version": row["recipe"]["checker_version"],
-                "fixture_id": row.get("fixture_id", row["recipe"]["fixture_id"]), "authority": "local",
-                **self.adapter(row).submission(row)}
+        data = {
+            "schema_version": 1,
+            "run_id": row["id"],
+            "recipe_id": row["recipe"]["id"],
+            "recipe_version": row["recipe"]["version"],
+            "checker_version": row["recipe"]["checker_version"],
+            "fixture_id": row.get("fixture_id", row["recipe"]["fixture_id"]),
+            "authority": "local",
+            **self.adapter(row).submission(row),
+        }
         if row.get("assignment"):
             data["case_key"] = row["assignment"]["case_key"]
         bounded(data)
@@ -351,26 +435,48 @@ class Runtime:
             row = self.load(run_id)
             if row.get("external_workspace") and row.get("finished_at"):
                 data = self.read_work(row, "submission.json")
-                return {"path": str(self.work_dir(row) / "submission.json"), "bytes": len(json.dumps(data).encode()), "authority": "local"}
+                return {
+                    "path": str(self.work_dir(row) / "submission.json"),
+                    "bytes": len(json.dumps(data).encode()),
+                    "authority": "local",
+                }
             data = self._export(row)
-            return {"path": row["export"], "bytes": len(json.dumps(data).encode()), "authority": "local"}
+            return {
+                "path": row["export"],
+                "bytes": len(json.dumps(data).encode()),
+                "authority": "local",
+            }
 
     def _payload(self, row, attempt, data):
-        return {"nonce": attempt["nonce"], **{k: data[k] for k in ("recipe_version", "checker_version", "fixture_id")},
-                **{k: data[k] for k in ("answers", "report", "submission") if k in data}}
+        return {
+            "nonce": attempt["nonce"],
+            **{k: data[k] for k in ("recipe_version", "checker_version", "fixture_id")},
+            **{k: data[k] for k in ("answers", "report", "submission") if k in data},
+        }
 
     def _validate_remote(self, row, remote, *, adopt=False):
         recipe = row["recipe"]
-        if any(remote.get(k) != v for k, v in (("recipe_id", recipe["id"]), ("recipe_version", recipe["version"]), ("checker_version", recipe["checker_version"]))):
+        if any(
+            remote.get(k) != v
+            for k, v in (
+                ("recipe_id", recipe["id"]),
+                ("recipe_version", recipe["version"]),
+                ("checker_version", recipe["checker_version"]),
+            )
+        ):
             raise ValueError("Remote recipe or checker version mismatch")
         if recipe["grading"] == "prefix-policy-v1":
             from ascend.local_labs.prefix import fixture_id
 
             if adopt:
                 local = row["local_attempt"]
-                row["local_attempt"] = self.attempts.adopt_local_assignment(local["id"], local["nonce"], remote)
+                row["local_attempt"] = self.attempts.adopt_local_assignment(
+                    local["id"], local["nonce"], remote
+                )
                 return
-            if remote.get("assignment") != row.get("assignment") or fixture_id(recipe, remote.get("assignment")) != remote.get("fixture_id"):
+            if remote.get("assignment") != row.get("assignment") or fixture_id(
+                recipe, remote.get("assignment")
+            ) != remote.get("fixture_id"):
                 raise ValueError("Remote policy assignment mismatch")
         if remote.get("fixture_id") != row.get("fixture_id", recipe["fixture_id"]):
             raise ValueError("Remote fixture version mismatch")
@@ -386,7 +492,9 @@ class Runtime:
                 raise ValueError("Only a ready or stopped lab can finish")
             data = self._export(row)
             if attempt := row.get("local_attempt"):
-                row["local_receipt"] = self.attempts.submit(attempt["id"], self._payload(row, attempt, data))
+                row["local_receipt"] = self.attempts.submit(
+                    attempt["id"], self._payload(row, attempt, data)
+                )
             row["pending_sync"] = bool(row.get("server") or self.server)
             row["finished_at"] = time.time()
             self.save(row)
@@ -418,7 +526,11 @@ class Runtime:
                 self.attempts.abandon(local["id"], local["nonce"])
             if remote := row.get("remote_attempt"):
                 try:
-                    self._remote(f"/api/lab-attempts/{remote['id']}/abandon", {"nonce": remote["nonce"]}, server=row["server"])
+                    self._remote(
+                        f"/api/lab-attempts/{remote['id']}/abandon",
+                        {"nonce": remote["nonce"]},
+                        server=row["server"],
+                    )
                 except (ValueError, OSError) as error:
                     row["pending_abandon"] = True
                     row["sync_error"] = str(error)[:1000]
@@ -448,7 +560,10 @@ class Runtime:
             results = []
             rows = self.rows()
             late_runs = set()
-            if any(r["recipe"]["adapter"] in {"vampi-v1", "wrongsecrets-v1", "frr-bgp-v1"} for r in rows):
+            if any(
+                r["recipe"]["adapter"] in {"vampi-v1", "wrongsecrets-v1", "frr-bgp-v1"}
+                for r in rows
+            ):
                 from ascend.local_labs.docker import Docker
 
                 docker = Docker(self)
@@ -457,29 +572,47 @@ class Runtime:
             for row in rows:
                 if row["status"] in TERMINAL and row["id"] not in late_runs:
                     continue
-                if (row["status"] not in {"ready", "stopped"} or row["expires_at"] <= time.time() or
-                        (row["status"] == "ready" and not self.adapter(row).alive(row))):
+                if (
+                    row["status"] not in {"ready", "stopped"}
+                    or row["expires_at"] <= time.time()
+                    or (row["status"] == "ready" and not self.adapter(row).alive(row))
+                ):
                     self._destroy(row, abandon=not row.get("finished_at"))
                     results.append(self.public(row))
             unknown = late_runs - {r["id"] for r in rows}
             if unknown:
-                results.append({"status": "cleanup_failed", "orphaned_runs": sorted(str(i) for i in unknown),
-                                "error": "Owned provider resources lack their run manifest. Restore the manifest before deleting them."})
+                results.append(
+                    {
+                        "status": "cleanup_failed",
+                        "orphaned_runs": sorted(str(i) for i in unknown),
+                        "error": "Owned provider resources lack their run manifest. Restore the manifest before deleting them.",
+                    }
+                )
             return results
 
     def prune(self, budget_mib=128, images=False):
         if type(budget_mib) is not int or budget_mib < 0:
             raise ValueError("Cache budget must be non-negative MiB")
         with self.lock():
-            protected = {a["sha256"] for row in self.rows() if row["status"] not in TERMINAL for a in row["recipe"]["assets"]}
+            protected = {
+                a["sha256"]
+                for row in self.rows()
+                if row["status"] not in TERMINAL
+                for a in row["recipe"]["assets"]
+            }
             result = AssetStore(self.cache).prune(protected, budget_mib * 1048576)
             if images:
                 from ascend.local_labs.docker import Docker
 
                 docker = Docker(self)
                 docker.provider()
-                protected_images = {row["recipe"][key]["reference"] for row in self.rows() if row["status"] not in TERMINAL
-                                    for key in ("image", "helper_image") if row["recipe"].get(key)}
+                protected_images = {
+                    row["recipe"][key]["reference"]
+                    for row in self.rows()
+                    if row["status"] not in TERMINAL
+                    for key in ("image", "helper_image")
+                    if row["recipe"].get(key)
+                }
                 result["images"] = docker.prune_images(protected_images)
             return result
 
@@ -493,7 +626,11 @@ class Runtime:
                 raise ValueError("This run belongs to a different Ascend server")
             if row.get("pending_abandon"):
                 remote = row["remote_attempt"]
-                self._remote(f"/api/lab-attempts/{remote['id']}/abandon", {"nonce": remote["nonce"]}, server)
+                self._remote(
+                    f"/api/lab-attempts/{remote['id']}/abandon",
+                    {"nonce": remote["nonce"]},
+                    server,
+                )
                 row["pending_abandon"] = False
             elif row.get("finished_at") and not row.get("remote_receipt"):
                 data = self.read_work(row, "submission.json")
@@ -502,17 +639,30 @@ class Runtime:
                     request = {"recipe_id": row["recipe"]["id"], "offline": True}
                     if row.get("assignment"):
                         request["case_key"] = row["assignment"]["case_key"]
-                    row["remote_attempt"] = self._remote("/api/lab-attempts", request, server)
+                    row["remote_attempt"] = self._remote(
+                        "/api/lab-attempts", request, server
+                    )
                     self.save(row)
                 remote = row["remote_attempt"]
                 self._validate_remote(row, remote)
-                existing = self._remote(f"/api/lab-attempts/{remote['id']}", server=server)
+                existing = self._remote(
+                    f"/api/lab-attempts/{remote['id']}", server=server
+                )
                 # A response lost after commit is recovered by reading the owned receipt.
-                row["remote_receipt"] = existing if existing["status"] == "finished" else self._remote(
-                    f"/api/lab-attempts/{remote['id']}/submit", self._payload(row, remote, data), server)
+                row["remote_receipt"] = (
+                    existing
+                    if existing["status"] == "finished"
+                    else self._remote(
+                        f"/api/lab-attempts/{remote['id']}/submit",
+                        self._payload(row, remote, data),
+                        server,
+                    )
+                )
                 row["pending_sync"] = False
             else:
-                raise ValueError("Finish the lab before synchronizing, or it is already synchronized")
+                raise ValueError(
+                    "Finish the lab before synchronizing, or it is already synchronized"
+                )
             row.pop("sync_error", None)
             self.save(row)
             return self.public(row)

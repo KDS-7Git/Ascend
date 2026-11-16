@@ -11,7 +11,10 @@ class ServiceLab:
         self.runtime, self.docker = runtime, Docker(runtime)
 
     def alive(self, row):
-        for name in [*row["resources"].get("containers", {}).values(), row["resources"].get("proxy")]:
+        for name in [
+            *row["resources"].get("containers", {}).values(),
+            row["resources"].get("proxy"),
+        ]:
             if not name:
                 return False
             info = self.docker.owned("container", name, row)
@@ -20,16 +23,33 @@ class ServiceLab:
         return bool(row["resources"].get("containers"))
 
     def stop(self, row):
-        for name in [row["resources"]["proxy"], *row["resources"]["containers"].values()]:
+        for name in [
+            row["resources"]["proxy"],
+            *row["resources"]["containers"].values(),
+        ]:
             if self.docker.owned("container", name, row):
                 self.docker.run("stop", "--time", "5", name)
 
     def destroy(self, row):
         errors = []
         resources = row.get("resources", {})
-        groups = [("container", ([resources["proxy"]] if resources.get("proxy") else []) + list(resources.get("containers", {}).values()) + list(resources.get("initializers", {}).values())),
-                  ("volume", list(resources.get("volumes", {}).values())),
-                  ("network", [resources[k] for k in ("network", "front_network") if resources.get(k)])]
+        groups = [
+            (
+                "container",
+                ([resources["proxy"]] if resources.get("proxy") else [])
+                + list(resources.get("containers", {}).values())
+                + list(resources.get("initializers", {}).values()),
+            ),
+            ("volume", list(resources.get("volumes", {}).values())),
+            (
+                "network",
+                [
+                    resources[k]
+                    for k in ("network", "front_network")
+                    if resources.get(k)
+                ],
+            ),
+        ]
         for kind, names in groups:
             for name in names:
                 try:

@@ -30,8 +30,15 @@ class FileLab:
         if not (work / "answers.json").exists():
             atomic_json(work / "answers.json", recipe["answer_template"])
             (work / "TASK.txt").write_text(recipe["instructions"] + "\n")
-        row["files"] = {"evidence": str(target / "evidence.log"), "benign_control": str(target / "benign-control.json"), "answers": str(work / "answers.json")}
-        return {"download_bytes": downloaded, "runtime_bytes": sum(p.stat().st_size for p in target.iterdir())}
+        row["files"] = {
+            "evidence": str(target / "evidence.log"),
+            "benign_control": str(target / "benign-control.json"),
+            "answers": str(work / "answers.json"),
+        }
+        return {
+            "download_bytes": downloaded,
+            "runtime_bytes": sum(p.stat().st_size for p in target.iterdir()),
+        }
 
     def check(self, row):
         return answer_check(self.runtime.read_work(row, "answers.json"))
