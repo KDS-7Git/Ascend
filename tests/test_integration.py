@@ -599,19 +599,25 @@ def test_library_rows_profile_and_guide_navigation(live_server, width, height):
         page.get_by_label("Timezone", exact=True).fill("UTC+5:30")
         page.get_by_role("button", name="Save timezone").click()
         expect(page.locator("#notice")).to_contain_text("Asia/Kolkata")
-        page.get_by_label("Timezone", exact=True).fill("Asia/Kolkata")
-        page.get_by_role("button", name="Save timezone").click()
-        expect(page.locator("#notice")).to_contain_text("Timezone saved")
-        assert (
-            httpx.get(live_server + "/api/account").json()["timezone"] == "Asia/Kolkata"
-        )
-        page.get_by_label("Timezone", exact=True).fill("Europe/London")
-        page.get_by_role("button", name="Save timezone").click()
-        expect(page.locator("#notice")).to_contain_text("Timezone saved")
-        assert (
-            httpx.get(live_server + "/api/account").json()["timezone"]
-            == "Europe/London"
-        )
+        save_timezone = page.get_by_role("button", name="Save timezone")
+        for timezone in ("Asia/Kolkata", "Europe/London"):
+            page.get_by_label("Timezone", exact=True).fill(timezone)
+            # Both saves reuse the notice text; wait for this specific request.
+            with page.expect_response(
+                lambda response: (
+                    response.url == live_server + "/api/command"
+                    and response.request.method == "POST"
+                    and response.request.post_data_json["argv"]
+                    == ["config", "timezone", timezone]
+                )
+            ) as saved:
+                save_timezone.click()
+            assert saved.value.status == 200
+            expect(save_timezone).to_be_enabled(timeout=15000)
+            expect(page.locator("#notice")).to_contain_text("Timezone saved")
+            assert (
+                httpx.get(live_server + "/api/account").json()["timezone"] == timezone
+            )
         page.reload()
         expect(page.locator("#profile-heading")).to_be_visible()
         expect(page.get_by_label("Timezone", exact=True)).to_have_value("Europe/London")
